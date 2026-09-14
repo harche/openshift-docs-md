@@ -94,28 +94,36 @@ Type
 <p>endpointPublishingStrategy cannot be updated.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>haproxyVersion</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>haproxyVersion specifies the HAProxy version to use for this IngressController.</p>
+<p>OpenShift 5.0 introduces HAProxy 3.2 as its default version and supports HAProxy 2.8 from OpenShift 4.22 for migration purposes. When an OpenShift release introduces a new default HAProxy version, that HAProxy version becomes available as a pinnable value in subsequent OpenShift releases, providing a smooth migration path for administrators who want to defer HAProxy upgrades.</p>
+<p>Valid values for OpenShift 5.0: - Unset (default): Uses HAProxy 3.2 (the default for OpenShift 5.0) - "3.2": Explicitly pins HAProxy 3.2 for preservation during cluster upgrades to future OpenShift releases - "2.8": Uses HAProxy 2.8 from OpenShift 4.22 (migration support, will be dropped in the next OpenShift release)</p>
+<p>If a specific HAProxy version is set and would become unsupported in a target cluster upgrade, a preflight check will block the cluster upgrade until this field is updated to unset or a supported version.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpCompression</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>httpCompression defines a policy for HTTP traffic compression. By default, there is no HTTP compression.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>httpEmptyRequestsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpEmptyRequestsPolicy describes how HTTP connections should be handled if the connection times out before a request is received. Allowed values for this field are "Respond" and "Ignore". If the field is set to "Respond", the ingress controller sends an HTTP 400 or 408 response, logs the connection (if access logging is enabled), and counts the connection in the appropriate metrics. If the field is set to "Ignore", the ingress controller closes the connection without sending a response, logging the connection, or incrementing metrics. The default value is "Respond".</p>
 <p>Typically, these connections come from load balancers' health probes or Web browsers' speculative connections ("preconnect") and can be safely ignored. However, these requests may also be caused by network errors, and so setting this field to "Ignore" may impede detection and diagnosis of problems. In addition, these requests may be caused by port scans, in which case logging empty requests may aid in detecting intrusion attempts.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpErrorCodePages</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>httpErrorCodePages specifies a configmap with custom error pages. The administrator must create this configmap in the openshift-config namespace. This configmap should have keys in the format "error-page-&lt;error code&gt;.http", where &lt;error code&gt; is an HTTP error code. For example, "error-page-503.http" defines an error page for HTTP 503 responses. Currently only error pages for 503 and 404 responses can be customized. Each value in the configmap should be the full response, including HTTP headers. Eg- <a href="https://raw.githubusercontent.com/openshift/router/fadab45747a9b30cc3f0a4b41ad2871f95827a93/images/router/haproxy/conf/error-page-503.http">https://raw.githubusercontent.com/openshift/router/fadab45747a9b30cc3f0a4b41ad2871f95827a93/images/router/haproxy/conf/error-page-503.http</a> If this field is empty, the ingress controller uses the default error pages.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>httpHeaders</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>httpHeaders defines policy for HTTP headers.</p>
 <p>If this field is empty, the default values are used.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>idleConnectionTerminationPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>idleConnectionTerminationPolicy maps directly to HAProxy’s idle-close-on-response option and controls whether HAProxy keeps idle frontend connections open during a soft stop (router reload).</p>
@@ -133,56 +141,56 @@ Type
 <p>- Consider monitoring the number of HAProxy processes in the router pods when Deferred is set.</p>
 <p>- You may need to enable or adjust the <code>ingress.operator.openshift.io/hard-stop-after</code> duration (configured via an annotation on the IngressController resource) in environments with frequent reloads to prevent resource exhaustion.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>logging</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>logging defines parameters for what should be logged where. If this field is empty, operational logs are enabled but access logs are disabled.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>namespaceSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>namespaceSelector is used to filter the set of namespaces serviced by the ingress controller. This is useful for implementing shards.</p>
 <p>If unset, the default is no filtering.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>nodePlacement</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>nodePlacement enables explicit control over the scheduling of the ingress controller.</p>
 <p>If unset, defaults are used. See NodePlacement for more details.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>replicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>replicas is the desired number of ingress controller replicas. If unset, the default depends on the value of the defaultPlacement field in the cluster config.openshift.io/v1/ingresses status.</p>
 <p>The value of replicas is set based on the value of a chosen field in the Infrastructure CR. If defaultPlacement is set to ControlPlane, the chosen field will be controlPlaneTopology. If it is set to Workers the chosen field will be infrastructureTopology. Replicas will then be set to 1 or 2 based whether the chosen field’s value is SingleReplica or HighlyAvailable, respectively.</p>
 <p>These defaults are subject to change.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>routeAdmission</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>routeAdmission defines a policy for handling new route claims (for example, to allow or deny claims across namespaces).</p>
 <p>If empty, defaults will be applied. See specific routeAdmission fields for details about their defaults.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>routeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>routeSelector is used to filter the set of Routes serviced by the ingress controller. This is useful for implementing shards.</p>
 <p>If unset, the default is no filtering.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>tlsSecurityProfile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tlsSecurityProfile specifies settings for TLS connections for ingresscontrollers.</p>
 <p>If unset, the default is based on the apiservers.config.openshift.io/cluster resource.</p>
 <p>Note that when using the Old, Intermediate, and Modern profile types, the effective profile configuration is subject to change between releases. For example, given a specification to use the Intermediate profile deployed on release X.Y.Z, an upgrade to release X.Y.Z+1 may cause a new profile configuration to be applied to the ingress controller, resulting in a rollout.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tuningOptions</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tuningOptions defines parameters for adjusting the performance of ingress controller pods. All fields are optional and will use their respective defaults if not set. See specific tuningOptions fields for more details.</p>
 <p>Setting fields within tuningOptions is generally not recommended. The default values are suitable for most configurations.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>unsupportedConfigOverrides</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>unsupportedConfigOverrides allows specifying unsupported configuration options. Its use is unsupported.</p></td>
@@ -649,6 +657,17 @@ Type
 <p>See <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html</a> for general information about configuration, characteristics, and limitations of Elastic IP addresses.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>protocol</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>protocol specifies whether the Network Load Balancer uses PROXY protocol to forward connections to the IngressController.</p>
+<p>When set to "TCP", the NLB uses AWS’s native client IP preservation. This may cause hairpin connection failures for internal load balancers when connections are made from pods to router pods on the same node.</p>
+<p>When set to "PROXY", the NLB disables native client IP preservation and uses PROXY protocol v2. The IngressController enables PROXY protocol on HAProxy so that it can parse PROXY protocol headers to obtain the original client IP. This avoids hairpin connection failures.</p>
+<p>The following values are valid for this field:</p>
+<p>* "TCP". * "PROXY".</p>
+<p>When omitted, this means the user has no opinion and the value is left to the platform to choose a reasonable default, which is subject to change over time. The current default is "PROXY".</p>
+<p>Note that changing this field may cause brief connection failures during the transition as the NLB attribute change and router rollout occur independently.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subnets</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>subnets specifies the subnets to which the load balancer will attach. The subnets may be specified by either their ID or name. The total number of subnets is limited to 10.</p>
@@ -738,7 +757,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas</a></p>
+<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas"</a></p>
 <p>PROXY protocol can be used with load balancers that support it to communicate the source addresses of client connections when forwarding those connections to the IngressController. Using PROXY protocol enables the IngressController to report those source addresses instead of reporting the load balancer’s address in HTTP headers and logs. Note that enabling PROXY protocol on the IngressController will cause connections to fail if you are not using a load balancer that uses PROXY protocol to forward connections to the IngressController. See <a href="http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt">http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt</a> for information about PROXY protocol.</p>
 <p>Valid values for protocol are TCP, PROXY and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is TCP, without the proxy protocol enabled.</p></td>
 </tr>
@@ -1632,32 +1651,36 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>custom</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic. An example custom profile looks like this:</p>
+<td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic.</p>
+<p>The supported groups list for this profile is empty by default.</p>
+<p>An example custom profile looks like this:</p>
 <p>minTLSVersion: VersionTLS11 ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>intermediate</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>intermediate is a TLS profile for use when you do not need compatibility with legacy clients and want to remain highly secure while being compatible with most clients currently in use.</p>
+<p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
 <p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS12 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>modern</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients.</p>
-<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
+<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients. The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1. This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>old</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>old is a TLS profile for use when services need to be accessed by very old clients or libraries and should be used only as a last resort.</p>
-<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
+<p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA384 - ECDHE-RSA-AES256-SHA384 - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES256-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.</p>
-<p>The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration’s "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.7.json">https://ssl-config.mozilla.org/guidelines/5.7.json</a></p>
+<p>The cipher and groups lists in these profiles are based on version 5.8 of the Mozilla Server Side TLS configuration guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.8.json">https://ssl-config.mozilla.org/guidelines/5.8.json</a></p>
+<p>The groups are listed in suggested preference order, with the most preferred group first. Note that not all platform components honor the ordering: Go-based components use Go’s internal preference order and treat this list as a filter of allowed groups rather than an ordered preference. Note that X25519MLKEM768 is a post-quantum hybrid group that is not FIPS-approved and should be ignored by components running in FIPS mode.</p>
 <p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p></td>
 </tr>
 </tbody>
@@ -1700,25 +1723,35 @@ Type
 <p>If unset, the default timeout is 30s</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>configurationManagement</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>configurationManagement specifies how OpenShift router should update the HAProxy configuration. The following values are valid for this field:</p>
+<p>* "ForkAndReload". * "Dynamic".</p>
+<p>Omitting this field means that the user has no opinion and the platform may choose a reasonable default. This default is subject to change over time. The current default is "ForkAndReload".</p>
+<p>"ForkAndReload" means that OpenShift router should rewrite the HAProxy configuration file and instruct HAProxy to fork and reload. This is OpenShift router’s traditional approach.</p>
+<p>"Dynamic" means that OpenShift router may use HAProxy’s control socket for some configuration updates and fall back to fork and reload for other configuration updates. This is a newer approach, which may be less mature than ForkAndReload. This setting can improve load-balancing fairness and metrics accuracy and reduce CPU and memory usage if HAProxy has frequent configuration updates for route and endpoints updates.</p>
+<p>Note: The "Dynamic" option is currently experimental and should not be enabled on production clusters.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>connectTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>connectTimeout defines the maximum time to wait for a connection attempt to a server/backend to succeed.</p>
 <p>This field expects an unsigned duration string of decimal numbers, each with optional fraction and a unit suffix, e.g. "300ms", "1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs" U+00B5 or "μs" U+03BC), "ms", "s", "m", "h".</p>
 <p>When omitted, this means the user has no opinion and the platform is left to choose a reasonable default. This default is subject to change over time. The current default is 5s.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>headerBufferBytes</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>headerBufferBytes describes how much memory should be reserved (in bytes) for IngressController connection sessions. Note that this value must be at least 16384 if HTTP/2 is enabled for the IngressController (<a href="https://tools.ietf.org/html/rfc7540">https://tools.ietf.org/html/rfc7540</a>). If this field is empty, the IngressController will use a default value of 32768 bytes.</p>
 <p>Setting this field is generally not recommended as headerBufferBytes values that are too small may break the IngressController and headerBufferBytes values that are too large could cause the IngressController to use significantly more memory than necessary.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>headerBufferMaxRewriteBytes</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>headerBufferMaxRewriteBytes describes how much memory should be reserved (in bytes) from headerBufferBytes for HTTP header rewriting and appending for IngressController connection sessions. Note that incoming HTTP requests will be limited to (headerBufferBytes - headerBufferMaxRewriteBytes) bytes, meaning headerBufferBytes must be greater than headerBufferMaxRewriteBytes. If this field is empty, the IngressController will use a default value of 8192 bytes.</p>
 <p>Setting this field is generally not recommended as headerBufferMaxRewriteBytes values that are too small may break the IngressController and headerBufferMaxRewriteBytes values that are too large could cause the IngressController to use significantly more memory than necessary.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>healthCheckInterval</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>healthCheckInterval defines how long the router waits between two consecutive health checks on its configured backends. This value is applied globally as a default for all routes, but may be overridden per-route by the route annotation "router.openshift.io/haproxy.health.check.interval".</p>
@@ -1727,7 +1760,7 @@ Type
 <p>An empty or zero healthCheckInterval means no opinion and IngressController chooses a default, which is subject to change over time. Currently the default healthCheckInterval value is 5s.</p>
 <p>Currently the minimum allowed value is 1s and the maximum allowed value is 2147483647ms (24.85 days). Both are subject to change over time.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>httpKeepAliveTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>httpKeepAliveTimeout defines the maximum allowed time to wait for a new HTTP request to appear on a connection from the client to the router.</p>
@@ -1736,7 +1769,7 @@ Type
 <p>Low values (tens of milliseconds or less) can cause clients to close and reopen connections for each request, leading to reduced connection sharing. For HTTP/2, special care should be taken with low values. A few seconds is a reasonable starting point to avoid holding idle connections open while still allowing subsequent requests to reuse the connection.</p>
 <p>High values (minutes or more) favor connection reuse but may cause idle connections to linger longer.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxConnections</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>maxConnections defines the maximum number of simultaneous connections that can be established per HAProxy process. Increasing this value allows each ingress controller pod to handle more connections but at the cost of additional system resources being consumed.</p>
@@ -1748,7 +1781,7 @@ Type
 <p>You can monitor memory usage for router containers with the following metric: 'container_memory_working_set_bytes{container="router",namespace="openshift-ingress"}'.</p>
 <p>You can monitor memory usage of individual HAProxy processes in router containers with the following metric: 'container_memory_working_set_bytes{container="router",namespace="openshift-ingress"}/container_processes{container="router",namespace="openshift-ingress"}'.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>reloadInterval</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>reloadInterval defines the minimum interval at which the router is allowed to reload to accept new changes. Increasing this value can prevent the accumulation of HAProxy processes, depending on the scenario. Increasing this interval can also lessen load imbalance on a backend’s servers when using the roundrobin balancing algorithm. Alternatively, decreasing this value may decrease latency since updates to HAProxy’s configuration can take effect more quickly.</p>
@@ -1757,32 +1790,32 @@ Type
 <p>This field expects an unsigned duration string of decimal numbers, each with optional fraction and a unit suffix, e.g. "300ms", "1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs" U+00B5 or "μs" U+03BC), "ms", "s", "m", "h".</p>
 <p>Note: Setting a value significantly larger than the default of 5s can cause latency in observing updates to routes and their endpoints. HAProxy’s configuration will be reloaded less frequently, and newly created routes will not be served until the subsequent reload.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>serverFinTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serverFinTimeout defines how long a connection will be held open while waiting for the server/backend response to the client closing the connection.</p>
 <p>If unset, the default timeout is 1s</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>serverTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serverTimeout defines how long a connection will be held open while waiting for a server/backend response.</p>
 <p>If unset, the default timeout is 30s</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>threadCount</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>threadCount defines the number of threads created per HAProxy process. Creating more threads allows each ingress controller pod to handle more connections, at the cost of more system resources being used. HAProxy currently supports up to 64 threads. If this field is empty, the IngressController will use the default value. The current default is 4 threads, but this may change in future releases.</p>
 <p>Setting this field is generally not recommended. Increasing the number of HAProxy threads allows ingress controller pods to utilize more CPU time under load, potentially starving other pods if set too high. Reducing the number of threads may cause the ingress controller to perform poorly.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>tlsInspectDelay</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>tlsInspectDelay defines how long the router can hold data to find a matching route.</p>
 <p>Setting this too short can cause the router to fall back to the default certificate for edge-terminated or reencrypt routes even when a better matching certificate could be used.</p>
 <p>If unset, the default inspect delay is 5s</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tunnelTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>tunnelTimeout defines how long a tunnel connection (including websockets) will be held open while the tunnel is idle.</p>
@@ -1840,31 +1873,37 @@ Type
 <td style="text-align: left;"><p>domain is the actual domain in use.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>effectiveHAProxyVersion</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>effectiveHAProxyVersion reports the HAProxy version currently in use by this IngressController. This reflects the resolved value of the spec.haproxyVersion field. When omitted, the effective value has not yet been resolved by the operator or the feature is not enabled for this cluster.</p>
+<p>Examples for OpenShift 5.0: - "3.2": Using HAProxy 3.2 - "2.8": Using HAProxy 2.8</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>endpointPublishingStrategy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>endpointPublishingStrategy is the actual strategy in use.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>namespaceSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>namespaceSelector is the actual namespaceSelector in use.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>observedGeneration</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>observedGeneration is the most recent generation observed.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>routeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>routeSelector is the actual routeSelector in use.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>selector</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>selector is a label selector, in string format, for ingress controller pods corresponding to the IngressController. The number of matching pods should equal the value of availableReplicas.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsProfile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tlsProfile is the TLS connection configuration that is in effect.</p></td>
@@ -2309,6 +2348,17 @@ Type
 <p>See <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html</a> for general information about configuration, characteristics, and limitations of Elastic IP addresses.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>protocol</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>protocol specifies whether the Network Load Balancer uses PROXY protocol to forward connections to the IngressController.</p>
+<p>When set to "TCP", the NLB uses AWS’s native client IP preservation. This may cause hairpin connection failures for internal load balancers when connections are made from pods to router pods on the same node.</p>
+<p>When set to "PROXY", the NLB disables native client IP preservation and uses PROXY protocol v2. The IngressController enables PROXY protocol on HAProxy so that it can parse PROXY protocol headers to obtain the original client IP. This avoids hairpin connection failures.</p>
+<p>The following values are valid for this field:</p>
+<p>* "TCP". * "PROXY".</p>
+<p>When omitted, this means the user has no opinion and the value is left to the platform to choose a reasonable default, which is subject to change over time. The current default is "PROXY".</p>
+<p>Note that changing this field may cause brief connection failures during the transition as the NLB attribute change and router rollout occur independently.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>subnets</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>subnets specifies the subnets to which the load balancer will attach. The subnets may be specified by either their ID or name. The total number of subnets is limited to 10.</p>
@@ -2398,7 +2448,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas</a></p>
+<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas"</a></p>
 <p>PROXY protocol can be used with load balancers that support it to communicate the source addresses of client connections when forwarding those connections to the IngressController. Using PROXY protocol enables the IngressController to report those source addresses instead of reporting the load balancer’s address in HTTP headers and logs. Note that enabling PROXY protocol on the IngressController will cause connections to fail if you are not using a load balancer that uses PROXY protocol to forward connections to the IngressController. See <a href="http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt">http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt</a> for information about PROXY protocol.</p>
 <p>Valid values for protocol are TCP, PROXY and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is TCP, without the proxy protocol enabled.</p></td>
 </tr>

@@ -195,11 +195,11 @@ Required
 
 The following API endpoints are available:
 
-- `/apis/gateway.networking.k8s.io/v1beta1/referencegrants`
+- `/apis/gateway.networking.k8s.io/v1/referencegrants`
 
   - `GET`: list objects of kind ReferenceGrant
 
-- `/apis/gateway.networking.k8s.io/v1beta1/namespaces/{namespace}/referencegrants`
+- `/apis/gateway.networking.k8s.io/v1/namespaces/{namespace}/referencegrants`
 
   - `DELETE`: delete collection of ReferenceGrant
 
@@ -207,7 +207,7 @@ The following API endpoints are available:
 
   - `POST`: create a ReferenceGrant
 
-- `/apis/gateway.networking.k8s.io/v1beta1/namespaces/{namespace}/referencegrants/{name}`
+- `/apis/gateway.networking.k8s.io/v1/namespaces/{namespace}/referencegrants/{name}`
 
   - `DELETE`: delete a ReferenceGrant
 
@@ -217,7 +217,7 @@ The following API endpoints are available:
 
   - `PUT`: replace the specified ReferenceGrant
 
-## /apis/gateway.networking.k8s.io/v1beta1/referencegrants
+## /apis/gateway.networking.k8s.io/v1/referencegrants
 
 HTTP method
 `GET`
@@ -225,14 +225,14 @@ HTTP method
 Description
 list objects of kind ReferenceGrant
 
-| HTTP code          | Reponse body                                                                                             |
-|--------------------|----------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrantList`](../objects/index.xml#io-k8s-networking-gateway-v1beta1-ReferenceGrantList) schema |
-| 401 - Unauthorized | Empty                                                                                                    |
+| HTTP code          | Reponse body                                                                                        |
+|--------------------|-----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrantList`](../objects/index.xml#io-k8s-networking-gateway-v1-ReferenceGrantList) schema |
+| 401 - Unauthorized | Empty                                                                                               |
 
 HTTP responses
 
-## /apis/gateway.networking.k8s.io/v1beta1/namespaces/{namespace}/referencegrants
+## /apis/gateway.networking.k8s.io/v1/namespaces/{namespace}/referencegrants
 
 HTTP method
 `DELETE`
@@ -253,10 +253,10 @@ HTTP method
 Description
 list objects of kind ReferenceGrant
 
-| HTTP code          | Reponse body                                                                                             |
-|--------------------|----------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrantList`](../objects/index.xml#io-k8s-networking-gateway-v1beta1-ReferenceGrantList) schema |
-| 401 - Unauthorized | Empty                                                                                                    |
+| HTTP code          | Reponse body                                                                                        |
+|--------------------|-----------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrantList`](../objects/index.xml#io-k8s-networking-gateway-v1-ReferenceGrantList) schema |
+| 401 - Unauthorized | Empty                                                                                               |
 
 HTTP responses
 
@@ -273,22 +273,22 @@ create a ReferenceGrant
 
 Query parameters
 
-| Parameter | Type                                                                                                                                             | Description |
-|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |             |
+| Parameter | Type                                                                                                                                   | Description |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                     |
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 201 - Created      | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 202 - Accepted     | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                            |
+| HTTP code          | Reponse body                                                                                                                           |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 201 - Created      | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 202 - Accepted     | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                  |
 
 HTTP responses
 
-## /apis/gateway.networking.k8s.io/v1beta1/namespaces/{namespace}/referencegrants/{name}
+## /apis/gateway.networking.k8s.io/v1/namespaces/{namespace}/referencegrants/{name}
 
 | Parameter | Type     | Description                |
 |-----------|----------|----------------------------|
@@ -322,10 +322,10 @@ HTTP method
 Description
 read the specified ReferenceGrant
 
-| HTTP code          | Reponse body                                                                                                                                     |
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                            |
+| HTTP code          | Reponse body                                                                                                                           |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                  |
 
 HTTP responses
 
@@ -342,10 +342,10 @@ partially update the specified ReferenceGrant
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                                                     |
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                            |
+| HTTP code          | Reponse body                                                                                                                           |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                  |
 
 HTTP responses
 
@@ -362,16 +362,16 @@ replace the specified ReferenceGrant
 
 Query parameters
 
-| Parameter | Type                                                                                                                                             | Description |
-|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |             |
+| Parameter | Type                                                                                                                                   | Description |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |             |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                     |
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 201 - Created      | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1beta1.xml#referencegrant-gateway-networking-k8s-io-v1beta1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                            |
+| HTTP code          | Reponse body                                                                                                                           |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 201 - Created      | [`ReferenceGrant`](../network_apis/referencegrant-gateway-networking-k8s-io-v1.xml#referencegrant-gateway-networking-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                  |
 
 HTTP responses

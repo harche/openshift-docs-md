@@ -165,7 +165,7 @@ Type
 <td style="text-align: left;"><p><code>grpcServerTlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>grpcServerTlsConfig defines the gRPC server from which Thanos Querier reads recorded rule data.</p>
-<p>Note: Currently only the <code>minVersion</code>, <code>caFile</code>, <code>certFile</code>, and <code>keyFile</code> fields are supported.</p></td>
+<p>Note: Currently only the <code>minVersion</code>, <code>caFile</code>, <code>certFile</code>, <code>keyFile</code>, <code>cipherSuites</code> and <code>curves</code> fields are supported.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>hostAliases</code></p></td>
@@ -2224,7 +2224,7 @@ Type
 | `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
 | `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
 | `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
-| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                             |
 | `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
 | `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
 | `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
@@ -2640,7 +2640,7 @@ Required
 Description
 grpcServerTlsConfig defines the gRPC server from which Thanos Querier reads recorded rule data.
 
-Note: Currently only the `minVersion`, `caFile`, `certFile`, and `keyFile` fields are supported.
+Note: Currently only the `minVersion`, `caFile`, `certFile`, `keyFile`, `cipherSuites` and `curves` fields are supported.
 
 Type
 `object`
@@ -2678,6 +2678,20 @@ Type
 <td style="text-align: left;"><p><code>certFile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>certFile defines the path to the client cert file in the Prometheus container for the targets.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>cipherSuites</code></p></td>
+<td style="text-align: left;"><p><code>array (string)</code></p></td>
+<td style="text-align: left;"><p>cipherSuites defines the list of supported cipher suites for TLS versions up to TLS 1.2.</p>
+<p>If not defined, the Go default cipher suites are used. Available cipher suites are documented in the Go documentation: <a href="https://golang.org/pkg/crypto/tls/#pkg-constants">https://golang.org/pkg/crypto/tls/#pkg-constants</a></p>
+<p>It requires Thanos &gt;= v0.42.0. Note that the operator doesn’t verify if the Thanos version supports the provided values.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>curves</code></p></td>
+<td style="text-align: left;"><p><code>array (string)</code></p></td>
+<td style="text-align: left;"><p>curves defines the list of preferred elliptic curves for TLS handshakes.</p>
+<p>If not defined, the Go default curves are used. Available curves are documented in the Go documentation: <a href="https://golang.org/pkg/crypto/tls/#CurveID">https://golang.org/pkg/crypto/tls/#CurveID</a></p>
+<p>It requires Thanos &gt;= v0.42.0. Note that the operator doesn’t verify if the Thanos version supports the provided values.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>insecureSkipVerify</code></p></td>
@@ -3806,7 +3820,7 @@ Type
 | `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
 | `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
 | `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
-| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                             |
 | `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
 | `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
 | `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
@@ -4759,7 +4773,8 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>send</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
-<td style="text-align: left;"><p>send defines whether metric metadata is sent to the remote storage or not.</p></td>
+<td style="text-align: left;"><p>send defines whether metric metadata is sent to the remote storage or not.</p>
+<p>The setting is ignored when Remote Write message’s version 2.0 is used.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>sendInterval</code></p></td>
@@ -5261,14 +5276,15 @@ Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `az
 Type
 `object`
 
-| Property             | Type      | Description                                                                                                       |
-|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------|
-| `accessKey`          | `object`  | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.        |
-| `profile`            | `string`  | profile defines the named AWS profile used to authenticate.                                                       |
-| `region`             | `string`  | region defines the AWS region. If blank, the region from the default credentials chain used.                      |
-| `roleArn`            | `string`  | roleArn defines the named AWS profile used to authenticate.                                                       |
-| `secretKey`          | `object`  | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used. |
-| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0.            |
+| Property             | Type      | Description                                                                                                                                                                                          |
+|----------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessKey`          | `object`  | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.                                                                                           |
+| `externalId`         | `string`  | externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus \>= v3.11.0 or Alertmanager \>= v0.33.0. Currently not supported by Thanos. |
+| `profile`            | `string`  | profile defines the named AWS profile used to authenticate.                                                                                                                                          |
+| `region`             | `string`  | region defines the AWS region. If blank, the region from the default credentials chain used.                                                                                                         |
+| `roleArn`            | `string`  | roleArn defines the named AWS profile used to authenticate.                                                                                                                                          |
+| `secretKey`          | `object`  | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used.                                                                                    |
+| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0.                                                                                               |
 
 ## .spec.remoteWrite\[\].sigv4.accessKey
 
@@ -6836,7 +6852,7 @@ Required
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet’s host machine. The volume is resolved at pod startup depending on which PullPolicy value is provided:</p>
 <p>- Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. - Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn’t present. - IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails.</p>
-<p>The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers[<strong>].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro) and non-executable files (noexec). Sub path mounts for containers are not supported (spec.containers[</strong>].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.</p></td>
+<p>The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers[<strong>].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro). Sub path mounts for containers are not supported (spec.containers[</strong>].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>iscsi</code></p></td>
@@ -6866,7 +6882,7 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>portworxVolume</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.</p></td>
+<td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>projected</code></p></td>
@@ -7512,7 +7528,7 @@ image represents an OCI object (a container image or artifact) pulled and mounte
 
 - IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails.
 
-The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers\[**\].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro) and non-executable files (noexec). Sub path mounts for containers are not supported (spec.containers\[**\].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers\[**\].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro). Sub path mounts for containers are not supported (spec.containers\[**\].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 
 Type
 `object`
@@ -7617,7 +7633,7 @@ Required
 ## .spec.volumes\[\].portworxVolume
 
 Description
-portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.
+portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver.
 
 Type
 `object`

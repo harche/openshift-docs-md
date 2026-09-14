@@ -7,8 +7,6 @@ Type
 Required
 - `addressType`
 
-- `endpoints`
-
 # Specification
 
 <table>

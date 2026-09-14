@@ -1,8 +1,6 @@
 Description
 ResourceClaimTemplate is used to produce ResourceClaim objects.
 
-This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
-
 Type
 `object`
 
@@ -184,6 +182,7 @@ Type
 <td style="text-align: left;"><p><code>distinctAttribute</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>DistinctAttribute requires that all devices in question have this attribute and that its type and value are unique across those devices.</p>
+<p>When the DRAListTypeAttributes feature gate is enabled, comparison uses set semantics (i.e., element order and duplicates are ignored): list-valued attributes must be pairwise disjoint across devices. Scalar values are treated as singleton sets for backward compatibility.</p>
 <p>This acts as the inverse of MatchAttribute.</p>
 <p>This constraint is used to avoid allocating multiple requests to the same device by ensuring attribute-level differentiation.</p>
 <p>This is useful for scenarios where resource requests must be fulfilled by separate physical devices. For example, a container requests two network interfaces that must be allocated from two different physical NICs.</p></td>
@@ -193,6 +192,7 @@ Type
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>MatchAttribute requires that all devices in question have this attribute and that its type and value are the same across those devices.</p>
 <p>For example, if you specified "dra.example.com/numa" (a hypothetical example!), then only devices in the same NUMA node will be chosen. A device which does not have that attribute will not be chosen. All devices should use a value of the same type for this attribute because that is part of its specification, but if one device doesn’t, then it also will not be chosen.</p>
+<p>When the DRAListTypeAttributes feature gate is enabled, comparison uses set semantics(i.e., element order and duplicates are ignored): list-valued attributes match when the intersection across all devices is non-empty. Scalar values are treated as single-element lists for backward compatibility.</p>
 <p>Must include the domain qualifier.</p></td>
 </tr>
 <tr class="odd">
@@ -293,7 +293,7 @@ Required
 <td style="text-align: left;"><p><code>adminAccess</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>AdminAccess indicates that this is a claim for administrative access to the device(s). Claims with AdminAccess are expected to be used for monitoring or other management services for a device. They ignore all ordinary claims to the device with respect to access modes and any resource allocations.</p>
-<p>This is an alpha field and requires enabling the DRAAdminAccess feature gate. Admin access is disabled if this field is unset or set to false, otherwise it is enabled.</p></td>
+<p>Admin access is disabled if this field is unset or set to false, otherwise it is enabled.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>allocationMode</code></p></td>
@@ -339,7 +339,7 @@ Required
 <p>Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.</p>
 <p>In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.</p>
 <p>The maximum number of tolerations is 16.</p>
-<p>This is an alpha field and requires enabling the DRADeviceTaints feature gate.</p></td>
+<p>This is a beta field and requires enabling the DRADeviceTaints feature gate.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
@@ -441,6 +441,8 @@ Required
 <p>A robust expression should check for the existence of attributes before referencing them.</p>
 <p>For ease of use, the cel.bind() function is enabled, and can be used to simplify expressions that access multiple attributes with the same domain. For example:</p>
 <p>cel.bind(dra, device.attributes["dra.example.com"], dra.someBool &amp;&amp; dra.anotherBool)</p>
+<p>When the DRAListTypeAttributes feature gate is enabled, the includes() helper is available and it can work for both scalar and list-type attributes. It was introduced to support smooth migration from scalar attributes to list-type attributes while keeping CEL expressions simple. For example:</p>
+<p>device.attributes["dra.example.com"].models.includes("some-model")</p>
 <p>The length of the expression must be smaller or equal to 10 Ki. The cost of evaluating it is also limited based on the estimated number of logical steps.</p></td>
 </tr>
 </tbody>
@@ -457,7 +459,7 @@ In addition, should any of the allocated devices get tainted with NoExecute afte
 
 The maximum number of tolerations is 16.
 
-This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+This is a beta field and requires enabling the DRADeviceTaints feature gate.
 
 Type
 `array`
@@ -603,7 +605,7 @@ Required
 <p>Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.</p>
 <p>In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.</p>
 <p>The maximum number of tolerations is 16.</p>
-<p>This is an alpha field and requires enabling the DRADeviceTaints feature gate.</p></td>
+<p>This is a beta field and requires enabling the DRADeviceTaints feature gate.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
@@ -705,6 +707,8 @@ Required
 <p>A robust expression should check for the existence of attributes before referencing them.</p>
 <p>For ease of use, the cel.bind() function is enabled, and can be used to simplify expressions that access multiple attributes with the same domain. For example:</p>
 <p>cel.bind(dra, device.attributes["dra.example.com"], dra.someBool &amp;&amp; dra.anotherBool)</p>
+<p>When the DRAListTypeAttributes feature gate is enabled, the includes() helper is available and it can work for both scalar and list-type attributes. It was introduced to support smooth migration from scalar attributes to list-type attributes while keeping CEL expressions simple. For example:</p>
+<p>device.attributes["dra.example.com"].models.includes("some-model")</p>
 <p>The length of the expression must be smaller or equal to 10 Ki. The cost of evaluating it is also limited based on the estimated number of logical steps.</p></td>
 </tr>
 </tbody>
@@ -721,7 +725,7 @@ In addition, should any of the allocated devices get tainted with NoExecute afte
 
 The maximum number of tolerations is 16.
 
-This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+This is a beta field and requires enabling the DRADeviceTaints feature gate.
 
 Type
 `array`

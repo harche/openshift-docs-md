@@ -4,6 +4,9 @@ CronJob represents the configuration of a single cron job.
 Type
 `object`
 
+Required
+- `spec`
+
 # Specification
 
 | Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |

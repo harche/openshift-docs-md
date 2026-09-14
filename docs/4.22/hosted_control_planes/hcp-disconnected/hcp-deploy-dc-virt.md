@@ -589,6 +589,8 @@ If you do not want to use the default ingress and DNS behavior, you can configur
 
 Set up the load balancer service that routes ingress traffic to the KubeVirt VMs and assigns a wildcard DNS entry to the load balancer IP address.
 
+When you create a `LoadBalancer` service on an OpenShift Virtualization hosted cluster, a mirror `LoadBalancer` service is automatically created and configured on the management cluster to expose the service. As a result, the hosted cluster `LoadBalancer` services are exposed through the same technology that the management cluster has configured for its own `LoadBalancer` services, such as MetalLB.
+
 1.  A `NodePort` service that exposes the hosted cluster ingress already exists. You can export the node ports and create the load balancer service that targets those ports.
 
     1.  Get the HTTP node port by entering the following command:

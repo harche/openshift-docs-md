@@ -54,15 +54,18 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>targetRefs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.</p>
+<td style="text-align: left;"><p>TargetRefs identifies an API object to apply the policy to. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.</p>
 <p>TargetRefs must be <em>distinct</em>. This means either that:</p>
 <p>* They select different targets. If this is the case, then targetRef entries are distinct. In terms of fields, this means that the multi-part key defined by <code>group</code>, <code>kind</code>, and <code>name</code> must be unique across all targetRef entries in the BackendTLSPolicy. * They select different sectionNames in the same target.</p>
 <p>When more than one BackendTLSPolicy selects the same target and sectionName, implementations MUST determine precedence using the following criteria, continuing on ties:</p>
-<p>* The older policy by creation timestamp takes precedence. For example, a policy with a creation timestamp of "2021-07-15 01:02:03" MUST be given precedence over a policy with a creation timestamp of "2021-07-15 01:02:04". * The policy appearing first in alphabetical order by {name}. For example, a policy named <code>bar</code> is given precedence over a policy named <code>baz</code>.</p>
+<p>* The older policy by creation timestamp takes precedence. For example, a policy with a creation timestamp of "2021-07-15 01:02:03" MUST be given precedence over a policy with a creation timestamp of "2021-07-15 01:02:04". * The policy appearing first in alphabetical order by {namespace}/{name}. For example, a policy named <code>foo/bar</code> is given precedence over a policy named <code>foo/baz</code>.</p>
 <p>For any BackendTLSPolicy that does not take precedence, the implementation MUST ensure the <code>Accepted</code> Condition is set to <code>status: False</code>, with Reason <code>Conflicted</code>.</p>
 <p>Implementations SHOULD NOT support more than one targetRef at this time. Although the API technically allows for this, the current guidance for conflict resolution and status handling is lacking. Until that can be clarified in a future release, the safest approach is to support a single targetRef.</p>
-<p>Support: Extended for Kubernetes Service</p>
-<p>Support: Implementation-specific for any other resource</p></td>
+<p>Support Levels:</p>
+<p>* Extended: Kubernetes Service referenced by HTTPRoute backendRefs.</p>
+<p>* Implementation-Specific: Services not connected via HTTPRoute, and any other kind of backend. Implementations MAY use BackendTLSPolicy for: - Services not referenced by any Route (e.g., infrastructure services) - Gateway feature backends (e.g., ExternalAuth, rate-limiting services) - Service mesh workload-to-service communication - Other resource types beyond Service</p>
+<p>Implementations SHOULD aim to ensure that BackendTLSPolicy behavior is consistent, even outside of the extended HTTPRoute -(backendRef) → Service path. They SHOULD clearly document how BackendTLSPolicy is interpreted in these scenarios, including: - Which resources beyond Service are supported - How the policy is discovered and applied - Any implementation-specific semantics or restrictions</p>
+<p>Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>targetRefs[]</code></p></td>
@@ -81,7 +84,7 @@ Required
 ## .spec.targetRefs
 
 Description
-TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.
+TargetRefs identifies an API object to apply the policy to. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.
 
 TargetRefs must be *distinct*. This means either that:
 
@@ -93,15 +96,29 @@ When more than one BackendTLSPolicy selects the same target and sectionName, imp
 
 - The older policy by creation timestamp takes precedence. For example, a policy with a creation timestamp of "2021-07-15 01:02:03" MUST be given precedence over a policy with a creation timestamp of "2021-07-15 01:02:04".
 
-- The policy appearing first in alphabetical order by {name}. For example, a policy named `bar` is given precedence over a policy named `baz`.
+- The policy appearing first in alphabetical order by {namespace}/{name}. For example, a policy named `foo/bar` is given precedence over a policy named `foo/baz`.
 
 For any BackendTLSPolicy that does not take precedence, the implementation MUST ensure the `Accepted` Condition is set to `status: False`, with Reason `Conflicted`.
 
 Implementations SHOULD NOT support more than one targetRef at this time. Although the API technically allows for this, the current guidance for conflict resolution and status handling is lacking. Until that can be clarified in a future release, the safest approach is to support a single targetRef.
 
-Support: Extended for Kubernetes Service
+Support Levels:
 
-Support: Implementation-specific for any other resource
+- Extended: Kubernetes Service referenced by HTTPRoute backendRefs.
+
+- Implementation-Specific: Services not connected via HTTPRoute, and any other kind of backend. Implementations MAY use BackendTLSPolicy for:
+
+  - Services not referenced by any Route (e.g., infrastructure services)
+
+  - Gateway feature backends (e.g., ExternalAuth, rate-limiting services)
+
+  - Service mesh workload-to-service communication
+
+  - Other resource types beyond Service
+
+Implementations SHOULD aim to ensure that BackendTLSPolicy behavior is consistent, even outside of the extended HTTPRoute -(backendRef) → Service path. They SHOULD clearly document how BackendTLSPolicy is interpreted in these scenarios, including: - Which resources beyond Service are supported - How the policy is discovered and applied - Any implementation-specific semantics or restrictions
+
+Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.
 
 Type
 `array`
@@ -229,8 +246,10 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>wellKnownCACertificates</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>WellKnownCACertificates specifies whether system CA certificates may be used in the TLS handshake between the gateway and backend pod.</p>
+<td style="text-align: left;"><p>WellKnownCACertificates specifies whether a well-known set of CA certificates may be used in the TLS handshake between the gateway and backend pod.</p>
 <p>If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs must be specified with at least one entry for a valid configuration. Only one of CACertificateRefs or WellKnownCACertificates may be specified, not both. If an implementation does not support the WellKnownCACertificates field, or the supplied value is not recognized, the implementation MUST ensure the <code>Accepted</code> Condition on the BackendTLSPolicy is set to <code>status: False</code>, with a Reason <code>Invalid</code>.</p>
+<p>Valid values include: * "System" - indicates that well-known system CA certificates should be used.</p>
+<p>Implementations MAY define their own sets of CA certificates. Such definitions MUST use an implementation-specific, prefixed name, such as <code>mycompany.com/my-custom-ca-certificates</code>.</p>
 <p>Support: Implementation-specific</p></td>
 </tr>
 </tbody>

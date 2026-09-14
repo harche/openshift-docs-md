@@ -6,7 +6,7 @@ As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator c
 
 The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
 
-Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Managing custom catalogs", "Operator Framework packaging format", and "Mirroring images for a disconnected installation using the oc-mirror plugin".
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Managing custom catalogs", "Operator Framework packaging format", and "Mirroring images for a disconnected installation by using the oc-mirror plugin v2".
 
 </div>
 
@@ -38,7 +38,7 @@ When creating custom catalog images, previous versions of OpenShift Container Pl
 
 - [Packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#installation-oc-mirror-installing-plugin_about-installing-oc-mirror-v2)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 

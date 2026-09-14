@@ -60,13 +60,13 @@ Type
 Required
 - `from`
 
-| Property          | Type                                                                         | Description                                                                                                                                                                                                                                    |
-|-------------------|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `from`            | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference) | from is the source of an image to import; only kind DockerImage is allowed                                                                                                                                                                     |
-| `importPolicy`    | `object`                                                                     | TagImportPolicy controls how images related to this tag will be imported.                                                                                                                                                                      |
-| `includeManifest` | `boolean`                                                                    | includeManifest determines if the manifest for each image is returned in the response                                                                                                                                                          |
-| `referencePolicy` | `object`                                                                     | TagReferencePolicy describes how pull-specs for images in this image stream tag are generated when image change triggers in deployment configs or builds are resolved. This allows the image stream author to control how images are accessed. |
-| `to`              | `LocalObjectReference`                                                       | To is a tag in the current image stream to assign the imported image to, if name is not specified the default tag from from.name will be used                                                                                                  |
+| Property          | Type                                                                                   | Description                                                                                                                                                                                                                                    |
+|-------------------|----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `from`            | [`ObjectReference`](../objects/index.xml#io-k8s-api-core-v1-ObjectReference)           | from is the source of an image to import; only kind DockerImage is allowed                                                                                                                                                                     |
+| `importPolicy`    | `object`                                                                               | TagImportPolicy controls how images related to this tag will be imported.                                                                                                                                                                      |
+| `includeManifest` | `boolean`                                                                              | includeManifest determines if the manifest for each image is returned in the response                                                                                                                                                          |
+| `referencePolicy` | `object`                                                                               | TagReferencePolicy describes how pull-specs for images in this image stream tag are generated when image change triggers in deployment configs or builds are resolved. This allows the image stream author to control how images are accessed. |
+| `to`              | [`LocalObjectReference`](../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference) | to is a tag in the current image stream to assign the imported image to, if name is not specified the default tag from from.name will be used                                                                                                  |
 
 ## .spec.images\[\].importPolicy
 
@@ -242,7 +242,7 @@ Required
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>status</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2"><code>Status_v2</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status"><code>Status</code></a></p></td>
 <td style="text-align: left;"><p>status is the status of the image import, including errors encountered while retrieving the image</p></td>
 </tr>
 <tr class="odd">
@@ -1025,12 +1025,12 @@ RepositoryImportStatus describes the result of an image repository import
 Type
 `object`
 
-| Property         | Type                                                                               | Description                                                                                                                          |
-|------------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `additionalTags` | `array (string)`                                                                   | additionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied. |
-| `images`         | `array`                                                                            | images is a list of images successfully retrieved by the import of the repository.                                                   |
-| `images[]`       | `object`                                                                           | ImageImportStatus describes the result of an image import.                                                                           |
-| `status`         | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) | status reflects whether any failure occurred during import                                                                           |
+| Property         | Type                                                                         | Description                                                                                                                          |
+|------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `additionalTags` | `array (string)`                                                             | additionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied. |
+| `images`         | `array`                                                                      | images is a list of images successfully retrieved by the import of the repository.                                                   |
+| `images[]`       | `object`                                                                     | ImageImportStatus describes the result of an image import.                                                                           |
+| `status`         | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) | status reflects whether any failure occurred during import                                                                           |
 
 ## .status.repository.images
 
@@ -1084,7 +1084,7 @@ Required
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>status</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2"><code>Status_v2</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status"><code>Status</code></a></p></td>
 <td style="text-align: left;"><p>status is the status of the image import, including errors encountered while retrieving the image</p></td>
 </tr>
 <tr class="odd">

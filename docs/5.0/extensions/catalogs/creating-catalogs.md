@@ -176,7 +176,7 @@ After you complete the changes, you can rebuild the image as an updated version 
 
 Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
 
-For more information about the oc-mirror plugin and this use case, see the "Keeping your mirror registry content updated" section, and specifically the "Pruning images" subsection, of "Mirroring images for a disconnected installation using the oc-mirror plugin".
+For more information about the oc-mirror plugin and this use case, see "Mirroring images for a disconnected installation using the oc-mirror plugin v2".
 
 </div>
 
@@ -318,6 +318,6 @@ For more information about the oc-mirror plugin and this use case, see the "Keep
 
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin → Keeping your mirror registry content updated](../../disconnected/installing-mirroring-disconnected.xml#updating-mirror-registry-content)
+- [Mirroring an image set to a mirror registry](../../disconnected/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)

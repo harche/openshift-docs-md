@@ -4,6 +4,9 @@ HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, wh
 Type
 `object`
 
+Required
+- `spec`
+
 # Specification
 
 | Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |

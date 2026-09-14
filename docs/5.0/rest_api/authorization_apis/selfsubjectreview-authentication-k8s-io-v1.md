@@ -10,7 +10,7 @@ Type
 |--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
 | `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                    |
 | `status`     | `object`                                                                             | SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.                                                                                                                                                                                                                     |
 
 ## .status
@@ -33,18 +33,18 @@ UserInfo holds the information about the user needed to implement the user.Info 
 Type
 `object`
 
-| Property   | Type             | Description                                                                                                                                              |
-|------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `extra`    | `object`         | Any additional information provided by the authenticator.                                                                                                |
-| `extra{}`  | `array (string)` |                                                                                                                                                          |
-| `groups`   | `array (string)` | The names of groups this user is a part of.                                                                                                              |
-| `uid`      | `string`         | A unique value that identifies this user across time. If this user is deleted and another user by the same name is added, they will have different UIDs. |
-| `username` | `string`         | The name that uniquely identifies this user among all active users.                                                                                      |
+| Property   | Type             | Description                                                                                                                                                     |
+|------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `extra`    | `object`         | extra is any additional information provided by the authenticator.                                                                                              |
+| `extra{}`  | `array (string)` |                                                                                                                                                                 |
+| `groups`   | `array (string)` | groups is the names of groups this user is a part of.                                                                                                           |
+| `uid`      | `string`         | uid is a unique value that identifies this user across time. If this user is deleted and another user by the same name is added, they will have different UIDs. |
+| `username` | `string`         | username is the name that uniquely identifies this user among all active users.                                                                                 |
 
 ## .status.userInfo.extra
 
 Description
-Any additional information provided by the authenticator.
+extra is any additional information provided by the authenticator.
 
 Type
 `object`

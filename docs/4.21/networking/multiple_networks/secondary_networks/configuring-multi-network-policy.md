@@ -394,7 +394,7 @@ If you log in with `cluster-admin` privileges, you can edit network policies in 
 
 ## Delete a multi-network policy using the CLI
 
-You can delete a multi-network policy in a namespace.
+You can delete a multi-network policy in a namespace by using the CLI.
 
 <div class="note">
 

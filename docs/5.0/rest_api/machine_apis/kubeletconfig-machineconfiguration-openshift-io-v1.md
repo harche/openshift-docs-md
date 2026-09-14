@@ -101,32 +101,36 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>custom</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic. An example custom profile looks like this:</p>
+<td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic.</p>
+<p>The supported groups list for this profile is empty by default.</p>
+<p>An example custom profile looks like this:</p>
 <p>minTLSVersion: VersionTLS11 ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>intermediate</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>intermediate is a TLS profile for use when you do not need compatibility with legacy clients and want to remain highly secure while being compatible with most clients currently in use.</p>
+<p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
 <p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS12 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>modern</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients.</p>
-<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
+<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients. The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1. This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>old</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>old is a TLS profile for use when services need to be accessed by very old clients or libraries and should be used only as a last resort.</p>
-<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
+<p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA384 - ECDHE-RSA-AES256-SHA384 - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES256-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.</p>
-<p>The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration’s "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.7.json">https://ssl-config.mozilla.org/guidelines/5.7.json</a></p>
+<p>The cipher and groups lists in these profiles are based on version 5.8 of the Mozilla Server Side TLS configuration guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.8.json">https://ssl-config.mozilla.org/guidelines/5.8.json</a></p>
+<p>The groups are listed in suggested preference order, with the most preferred group first. Note that not all platform components honor the ordering: Go-based components use Go’s internal preference order and treat this list as a filter of allowed groups rather than an ordered preference. Note that X25519MLKEM768 is a post-quantum hybrid group that is not FIPS-approved and should be ignored by components running in FIPS mode.</p>
 <p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p></td>
 </tr>
 </tbody>

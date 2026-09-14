@@ -4,6 +4,9 @@ IPAddress represents a single IP of a single IP Family. The object is designed t
 Type
 `object`
 
+Required
+- `spec`
+
 # Specification
 
 | Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |

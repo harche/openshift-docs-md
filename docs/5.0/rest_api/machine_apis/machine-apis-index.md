@@ -26,6 +26,16 @@ ControlPlaneMachineSet ensures that a specified number of control plane machine 
 Type
 `object`
 
+# InternalReleaseImage \[machineconfiguration.openshift.io/v1\]
+
+Description
+InternalReleaseImage is used to keep track and manage a set of release bundles (OCP and OLM operators images) that are stored into the control planes nodes. This is a singleton resource with 'cluster' as the only valid name.
+
+Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+
+Type
+`object`
+
 # KubeletConfig \[machineconfiguration.openshift.io/v1\]
 
 Description
@@ -100,6 +110,18 @@ Type
 
 Description
 MachineOSConfig describes the configuration for a build process managed by the MCO Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+
+Type
+`object`
+
+# OSImageStream \[machineconfiguration.openshift.io/v1\]
+
+Description
+OSImageStream describes a set of streams and associated images available for the MachineConfigPools to be used as base OS images.
+
+The resource is a singleton named "cluster".
+
+Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
 
 Type
 `object`

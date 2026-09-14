@@ -251,7 +251,8 @@ Type
 <td style="text-align: left;"><p><code>node</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>node when set to true, Prometheus attaches node metadata to the discovered targets.</p>
-<p>The Prometheus service account must have the <code>list</code> and <code>watch</code> permissions on the <code>Nodes</code> objects.</p></td>
+<p>The Prometheus service account must have the <code>list</code> and <code>watch</code> permissions on the <code>Nodes</code> objects.</p>
+<p>Node metadata labels are not automatically added to scraped metrics. They are exposed as <code>_meta_kubernetes_node*</code> labels and can be copied to timeseries with relabeling configuration.</p></td>
 </tr>
 </tbody>
 </table>
@@ -387,7 +388,7 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>port</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>port defines the name of the Service port which this endpoint refers to.</p>
+<td style="text-align: left;"><p>port defines the name of the Service port which this endpoint refers to (e.g. <code>.spec.ports[].name</code>).</p>
 <p>It takes precedence over <code>targetPort</code>.</p></td>
 </tr>
 <tr class="odd">
@@ -422,7 +423,7 @@ Type
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>relabelings defines the relabeling rules to apply the target’s metadata labels.</p>
 <p>The Operator automatically adds relabelings for a few standard Kubernetes fields.</p>
-<p>The original scrape job’s name is available via the <code>\__tmp_prometheus_job_name</code> label.</p>
+<p>The original scrape job’s name is available via the <code>__tmp_prometheus_job_name</code> label.</p>
 <p>More info: <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config">https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config</a></p></td>
 </tr>
 <tr class="odd">
@@ -445,7 +446,7 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>targetPort</code></p></td>
 <td style="text-align: left;"><p><code>integer-or-string</code></p></td>
-<td style="text-align: left;"><p>targetPort defines the name or number of the target port of the <code>Pod</code> object behind the Service. The port must be specified with the container’s port property.</p></td>
+<td style="text-align: left;"><p>targetPort defines the name or number of a container port on Pods selected by the Service. If a name, it matches against <code>.spec.containers[].ports[].name</code> of the Pods. If a number, it matches against <code>.spec.containers[].ports[].containerPort</code> of the Pods.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
@@ -1082,7 +1083,7 @@ relabelings defines the relabeling rules to apply the target’s metadata labels
 
 The Operator automatically adds relabelings for a few standard Kubernetes fields.
 
-The original scrape job’s name is available via the `\__tmp_prometheus_job_name` label.
+The original scrape job’s name is available via the `__tmp_prometheus_job_name` label.
 
 More info: <https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config>
 

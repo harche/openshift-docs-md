@@ -43,13 +43,164 @@ containerRuntimeConfig defines the tuneables of the container runtime.
 Type
 `object`
 
-| Property         | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `defaultRuntime` | `string`            | defaultRuntime is the name of the OCI runtime to be used as the default for containers. Allowed values are `runc` and `crun`. When set to `runc`, OpenShift will use runc to execute the container When set to `crun`, OpenShift will use crun to execute the container When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. Currently, the default is `crun`. |
-| `logLevel`       | `string`            | logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.                                                                                                                                                                                                                                                                                                        |
-| `logSizeMax`     | `integer-or-string` | logSizeMax specifies the Maximum size allowed for the container log file. Negative numbers indicate that no size limit is imposed. If it is positive, it must be \>= 8192 to match/exceed conmon’s read buffer.                                                                                                                                                                                                                              |
-| `overlaySize`    | `integer-or-string` | overlaySize specifies the maximum size of a container image. This flag can be used to set quota on the size of container images. (default: 10GB)                                                                                                                                                                                                                                                                                             |
-| `pidsLimit`      | `integer`           | pidsLimit specifies the maximum number of processes allowed in a container                                                                                                                                                                                                                                                                                                                                                                   |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>additionalArtifactStores</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>additionalArtifactStores configures additional read-only artifact storage locations for Open Container Initiative (OCI) artifacts.</p>
+<p>Artifacts are checked in order: additional stores first, then the default location (/var/lib/containers/storage/artifacts). Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.</p>
+<p>When omitted, only the default artifact location is used. When specified, at least one store must be provided.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>additionalArtifactStores[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>AdditionalArtifactStore defines an additional read-only storage location for Open Container Initiative (OCI) artifacts.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>additionalImageStores</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>additionalImageStores configures additional read-only container image store locations for Open Container Initiative (OCI) images.</p>
+<p>Images are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.</p>
+<p>When omitted, only the default image location is used. When specified, at least one store must be provided.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>additionalImageStores[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>AdditionalImageStore defines an additional read-only storage location for Open Container Initiative (OCI) images.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>additionalLayerStores</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>additionalLayerStores configures additional read-only container image layer store locations for Open Container Initiative (OCI) images.</p>
+<p>Layers are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 5 stores allowed. Each path must be unique.</p>
+<p>When omitted, only the default layer location is used. When specified, at least one store must be provided.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>additionalLayerStores[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>AdditionalLayerStore defines a read-only storage location for Open Container Initiative (OCI) container image layers.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>defaultRuntime</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>defaultRuntime is the name of the OCI runtime to be used as the default for containers. Allowed values are <code>runc</code> and <code>crun</code>. When set to <code>runc</code>, OpenShift will use runc to execute the container When set to <code>crun</code>, OpenShift will use crun to execute the container When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. Currently, the default is <code>crun</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>logLevel</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>logSizeMax</code></p></td>
+<td style="text-align: left;"><p><code>integer-or-string</code></p></td>
+<td style="text-align: left;"><p>logSizeMax specifies the Maximum size allowed for the container log file. Negative numbers indicate that no size limit is imposed. If it is positive, it must be &gt;= 8192 to match/exceed conmon’s read buffer.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>overlaySize</code></p></td>
+<td style="text-align: left;"><p><code>integer-or-string</code></p></td>
+<td style="text-align: left;"><p>overlaySize specifies the maximum size of a container image. This flag can be used to set quota on the size of container images. (default: 10GB)</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pidsLimit</code></p></td>
+<td style="text-align: left;"><p><code>integer</code></p></td>
+<td style="text-align: left;"><p>pidsLimit specifies the maximum number of processes allowed in a container</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.containerRuntimeConfig.additionalArtifactStores
+
+Description
+additionalArtifactStores configures additional read-only artifact storage locations for Open Container Initiative (OCI) artifacts.
+
+Artifacts are checked in order: additional stores first, then the default location (/var/lib/containers/storage/artifacts). Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.
+
+When omitted, only the default artifact location is used. When specified, at least one store must be provided.
+
+Type
+`array`
+
+## .spec.containerRuntimeConfig.additionalArtifactStores\[\]
+
+Description
+AdditionalArtifactStore defines an additional read-only storage location for Open Container Initiative (OCI) artifacts.
+
+Type
+`object`
+
+Required
+- `path`
+
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`   | `string` | path specifies the absolute location of the additional artifact store. The path must exist on the node before configuration is applied. When an artifact is requested, artifacts found at this location will be used instead of retrieving from the registry. The path is required and must be between 1 and 256 characters long, begin with a forward slash, and only contain the characters a-z, A-Z, 0-9, '/', '.', '\_', and '-'. Consecutive forward slashes are not permitted. |
+
+## .spec.containerRuntimeConfig.additionalImageStores
+
+Description
+additionalImageStores configures additional read-only container image store locations for Open Container Initiative (OCI) images.
+
+Images are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.
+
+When omitted, only the default image location is used. When specified, at least one store must be provided.
+
+Type
+`array`
+
+## .spec.containerRuntimeConfig.additionalImageStores\[\]
+
+Description
+AdditionalImageStore defines an additional read-only storage location for Open Container Initiative (OCI) images.
+
+Type
+`object`
+
+Required
+- `path`
+
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`   | `string` | path specifies the absolute location of the additional image store. The path must exist on the node before configuration is applied. When a container image is requested, images found at this location will be used instead of retrieving from the registry. The path is required and must be between 1 and 256 characters long, begin with a forward slash, and only contain the characters a-z, A-Z, 0-9, '/', '.', '\_', and '-'. Consecutive forward slashes are not permitted. |
+
+## .spec.containerRuntimeConfig.additionalLayerStores
+
+Description
+additionalLayerStores configures additional read-only container image layer store locations for Open Container Initiative (OCI) images.
+
+Layers are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 5 stores allowed. Each path must be unique.
+
+When omitted, only the default layer location is used. When specified, at least one store must be provided.
+
+Type
+`array`
+
+## .spec.containerRuntimeConfig.additionalLayerStores\[\]
+
+Description
+AdditionalLayerStore defines a read-only storage location for Open Container Initiative (OCI) container image layers.
+
+Type
+`object`
+
+Required
+- `path`
+
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`   | `string` | path specifies the absolute location of the additional layer store. The path must exist on the node before configuration is applied. When a container image is requested, layers found at this location will be used instead of retrieving from the registry. The path is required and must be between 1 and 256 characters long, begin with a forward slash, and only contain the characters a-z, A-Z, 0-9, '/', '.', '\_', and '-'. Consecutive forward slashes are not permitted. |
 
 ## .spec.machineConfigPoolSelector
 

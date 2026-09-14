@@ -62,15 +62,15 @@ spec defines the specification of AlertmanagerConfigSpec
 Type
 `object`
 
-| Property          | Type     | Description                                                                                                                                                                                    |
-|-------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `inhibitRules`    | `array`  | inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource’s namespace.                                                                      |
-| `inhibitRules[]`  | `object` | InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See <https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule>           |
-| `receivers`       | `array`  | receivers defines the list of receivers.                                                                                                                                                       |
-| `receivers[]`     | `object` | Receiver defines one or more notification integrations.                                                                                                                                        |
-| `route`           | `object` | route defines the Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route. |
-| `timeIntervals`   | `array`  | timeIntervals defines the list of timeIntervals specifying when the routes should be muted.                                                                                                    |
-| `timeIntervals[]` | `object` | TimeInterval specifies the periods in time when notifications will be muted or active.                                                                                                         |
+| Property          | Type     | Description                                                                                                                                                                                                                                                       |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `inhibitRules`    | `array`  | inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource’s namespace.                                                                                                                                         |
+| `inhibitRules[]`  | `object` | InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See <https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule>                                                                              |
+| `receivers`       | `array`  | receivers defines the list of receivers.                                                                                                                                                                                                                          |
+| `receivers[]`     | `object` | Receiver defines one or more notification integrations.                                                                                                                                                                                                           |
+| `route`           | `object` | route defines the Alertmanager route definition for incoming alerts. It will be added to the generated Alertmanager configuration as a first-level route. The matching behavior of the route depends on the Alertmanager’s AlertmanagerConfigMatcherStrategyType. |
+| `timeIntervals`   | `array`  | timeIntervals defines the list of timeIntervals specifying when the routes should be muted.                                                                                                                                                                       |
+| `timeIntervals[]` | `object` | TimeInterval specifies the periods in time when notifications will be muted or active.                                                                                                                                                                            |
 
 ## .spec.inhibitRules
 
@@ -1068,6 +1068,7 @@ Type
 | `sendResolved`     | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                                                                              |
 | `smarthost`        | `string`  | smarthost defines the SMTP host and port through which emails are sent. Format should be "hostname:port", e.g. "smtp.example.com:587".                                                                                                                                                                                                                                                            |
 | `text`             | `string`  | text defines the plain text body of the email notification. This provides a fallback for email clients that don’t support HTML.                                                                                                                                                                                                                                                                   |
+| `threading`        | `object`  | threading defines the threading configuration for email receiver. It requires Alertmanager \>= v0.30.0.                                                                                                                                                                                                                                                                                           |
 | `tlsConfig`        | `object`  | tlsConfig defines the TLS configuration for SMTP connections. This includes settings for certificates, CA validation, and TLS protocol options.                                                                                                                                                                                                                                                   |
 | `to`               | `string`  | to defines the email address to send notifications to. This is the recipient address for alert notifications.                                                                                                                                                                                                                                                                                     |
 
@@ -1132,6 +1133,21 @@ Required
 |----------|----------|----------------------------------------------------------------------------------------------|
 | `key`    | `string` | key defines the key of the tuple. This is the identifier or name part of the key-value pair. |
 | `value`  | `string` | value defines the value of the tuple. This is the data or content associated with the key.   |
+
+## .spec.receivers\[\].emailConfigs\[\].threading
+
+Description
+threading defines the threading configuration for email receiver. It requires Alertmanager \>= v0.30.0.
+
+Type
+`object`
+
+Required
+- `threadByDate`
+
+| Property       | Type     | Description                                                                                                                                       |
+|----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `threadByDate` | `string` | threadByDate defines what granularity of current date to thread by. Accepted values: Daily, None. (None means group by alert group key, no date). |
 
 ## .spec.receivers\[\].emailConfigs\[\].tlsConfig
 
@@ -6592,34 +6608,35 @@ SlackConfig configures notifications via Slack. See <https://prometheus.io/docs/
 Type
 `object`
 
-| Property       | Type             | Description                                                                                                                                                                                                                                                                                                                                  |
-|----------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `actions`      | `array`          | actions defines a list of Slack actions that are sent with each notification.                                                                                                                                                                                                                                                                |
-| `actions[]`    | `object`         | SlackAction configures a single Slack action that is sent with each notification. See <https://api.slack.com/docs/message-attachments#action_fields> and <https://api.slack.com/docs/message-buttons> for more information.                                                                                                                  |
-| `apiURL`       | `object`         | apiURL defines the secret’s key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                                                                                                                                |
-| `callbackId`   | `string`         | callbackId defines an identifier for the message used in interactive components.                                                                                                                                                                                                                                                             |
-| `channel`      | `string`         | channel defines the channel or user to send notifications to.                                                                                                                                                                                                                                                                                |
-| `color`        | `string`         | color defines the color of the left border of the Slack message attachment. Can be a hex color code (e.g., "#ff0000") or a predefined color name.                                                                                                                                                                                            |
-| `fallback`     | `string`         | fallback defines a plain-text summary of the attachment for clients that don’t support attachments.                                                                                                                                                                                                                                          |
-| `fields`       | `array`          | fields defines a list of Slack fields that are sent with each notification.                                                                                                                                                                                                                                                                  |
-| `fields[]`     | `object`         | SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See <https://api.slack.com/docs/message-attachments#fields> for more information. |
-| `footer`       | `string`         | footer defines small text displayed at the bottom of the message attachment.                                                                                                                                                                                                                                                                 |
-| `httpConfig`   | `object`         | httpConfig defines the HTTP client configuration.                                                                                                                                                                                                                                                                                            |
-| `iconEmoji`    | `string`         | iconEmoji defines the emoji to use as the bot’s avatar (e.g., ":ghost:").                                                                                                                                                                                                                                                                    |
-| `iconURL`      | `string`         | iconURL defines the URL to an image to use as the bot’s avatar.                                                                                                                                                                                                                                                                              |
-| `imageURL`     | `string`         | imageURL defines the URL to an image file that will be displayed inside the message attachment.                                                                                                                                                                                                                                              |
-| `linkNames`    | `boolean`        | linkNames enables automatic linking of channel names and usernames in the message. When true, @channel and @username will be converted to clickable links.                                                                                                                                                                                   |
-| `messageText`  | `string`         | messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager \>= v0.31.0.                                                                                                                                                                        |
-| `mrkdwnIn`     | `array (string)` | mrkdwnIn defines which fields should be parsed as Slack markdown. Valid values include "pretext", "text", and "fields".                                                                                                                                                                                                                      |
-| `pretext`      | `string`         | pretext defines optional text that appears above the message attachment block.                                                                                                                                                                                                                                                               |
-| `sendResolved` | `boolean`        | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                         |
-| `shortFields`  | `boolean`        | shortFields determines whether fields are displayed in a compact format. When true, fields are shown side by side when possible.                                                                                                                                                                                                             |
-| `text`         | `string`         | text defines the main text content of the Slack message attachment.                                                                                                                                                                                                                                                                          |
-| `thumbURL`     | `string`         | thumbURL defines the URL to an image file that will be displayed as a thumbnail on the right side of the message attachment.                                                                                                                                                                                                                 |
-| `timeout`      | `string`         | timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.30.0.                                                                                                                                                                  |
-| `title`        | `string`         | title defines the title text displayed in the Slack message attachment.                                                                                                                                                                                                                                                                      |
-| `titleLink`    | `string`         | titleLink defines the URL that the title will link to when clicked.                                                                                                                                                                                                                                                                          |
-| `username`     | `string`         | username defines the slack bot user name.                                                                                                                                                                                                                                                                                                    |
+| Property        | Type             | Description                                                                                                                                                                                                                                                                                                                                  |
+|-----------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`       | `array`          | actions defines a list of Slack actions that are sent with each notification.                                                                                                                                                                                                                                                                |
+| `actions[]`     | `object`         | SlackAction configures a single Slack action that is sent with each notification. See <https://api.slack.com/docs/message-attachments#action_fields> and <https://api.slack.com/docs/message-buttons> for more information.                                                                                                                  |
+| `apiURL`        | `object`         | apiURL defines the secret’s key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                                                                                                                                |
+| `callbackId`    | `string`         | callbackId defines an identifier for the message used in interactive components.                                                                                                                                                                                                                                                             |
+| `channel`       | `string`         | channel defines the channel or user to send notifications to.                                                                                                                                                                                                                                                                                |
+| `color`         | `string`         | color defines the color of the left border of the Slack message attachment. Can be a hex color code (e.g., "#ff0000") or a predefined color name.                                                                                                                                                                                            |
+| `fallback`      | `string`         | fallback defines a plain-text summary of the attachment for clients that don’t support attachments.                                                                                                                                                                                                                                          |
+| `fields`        | `array`          | fields defines a list of Slack fields that are sent with each notification.                                                                                                                                                                                                                                                                  |
+| `fields[]`      | `object`         | SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See <https://api.slack.com/docs/message-attachments#fields> for more information. |
+| `footer`        | `string`         | footer defines small text displayed at the bottom of the message attachment.                                                                                                                                                                                                                                                                 |
+| `httpConfig`    | `object`         | httpConfig defines the HTTP client configuration.                                                                                                                                                                                                                                                                                            |
+| `iconEmoji`     | `string`         | iconEmoji defines the emoji to use as the bot’s avatar (e.g., ":ghost:").                                                                                                                                                                                                                                                                    |
+| `iconURL`       | `string`         | iconURL defines the URL to an image to use as the bot’s avatar.                                                                                                                                                                                                                                                                              |
+| `imageURL`      | `string`         | imageURL defines the URL to an image file that will be displayed inside the message attachment.                                                                                                                                                                                                                                              |
+| `linkNames`     | `boolean`        | linkNames enables automatic linking of channel names and usernames in the message. When true, @channel and @username will be converted to clickable links.                                                                                                                                                                                   |
+| `messageText`   | `string`         | messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager \>= v0.31.0.                                                                                                                                                                        |
+| `mrkdwnIn`      | `array (string)` | mrkdwnIn defines which fields should be parsed as Slack markdown. Valid values include "pretext", "text", and "fields".                                                                                                                                                                                                                      |
+| `pretext`       | `string`         | pretext defines optional text that appears above the message attachment block.                                                                                                                                                                                                                                                               |
+| `sendResolved`  | `boolean`        | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                         |
+| `shortFields`   | `boolean`        | shortFields determines whether fields are displayed in a compact format. When true, fields are shown side by side when possible.                                                                                                                                                                                                             |
+| `text`          | `string`         | text defines the main text content of the Slack message attachment.                                                                                                                                                                                                                                                                          |
+| `thumbURL`      | `string`         | thumbURL defines the URL to an image file that will be displayed as a thumbnail on the right side of the message attachment.                                                                                                                                                                                                                 |
+| `timeout`       | `string`         | timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.30.0.                                                                                                                                                                  |
+| `title`         | `string`         | title defines the title text displayed in the Slack message attachment.                                                                                                                                                                                                                                                                      |
+| `titleLink`     | `string`         | titleLink defines the URL that the title will link to when clicked.                                                                                                                                                                                                                                                                          |
+| `updateMessage` | `boolean`        | updateMessage enables updating existing Slack messages instead of creating new ones when alert state changes. Please note that Webhook URLs do not support updates. It requires Alertmanager \>= v0.32.0.                                                                                                                                    |
+| `username`      | `string`         | username defines the slack bot user name.                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.receivers\[\].slackConfigs\[\].actions
 
@@ -7521,18 +7538,78 @@ SNSConfig configures notifications via AWS SNS. See <https://prometheus.io/docs/
 Type
 `object`
 
-| Property       | Type              | Description                                                                                                                                                                                     |
-|----------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiURL`       | `string`          | apiURL defines the SNS API URL, e.g. <https://sns.us-east-2.amazonaws.com>. If not specified, the SNS API URL from the SNS SDK will be used.                                                    |
-| `attributes`   | `object (string)` | attributes defines SNS message attributes as key-value pairs. These provide additional metadata that can be used for message filtering and routing.                                             |
-| `httpConfig`   | `object`          | httpConfig defines the HTTP client configuration for SNS API requests.                                                                                                                          |
-| `message`      | `string`          | message defines the message content of the SNS notification. This is the actual notification text that will be sent to subscribers.                                                             |
-| `phoneNumber`  | `string`          | phoneNumber defines the phone number if message is delivered via SMS in E.164 format. If you don’t specify this value, you must specify a value for the TopicARN or TargetARN.                  |
-| `sendResolved` | `boolean`         | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                            |
-| `sigv4`        | `object`          | sigv4 configures AWS’s Signature Verification 4 signing process to sign requests. This includes AWS credentials and region configuration for authentication.                                    |
-| `subject`      | `string`          | subject defines the subject line when the message is delivered to email endpoints. This field is only used when sending to email subscribers of an SNS topic.                                   |
-| `targetARN`    | `string`          | targetARN defines the mobile platform endpoint ARN if message is delivered via mobile notifications. If you don’t specify this value, you must specify a value for the TopicARN or PhoneNumber. |
-| `topicARN`     | `string`          | topicARN defines the SNS topic ARN, e.g. arn:aws:sns:us-east-2:698519295917:My-Topic. If you don’t specify this value, you must specify a value for the PhoneNumber or TargetARN.               |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>apiURL</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>apiURL defines the SNS API URL, e.g. <a href="https://sns.us-east-2.amazonaws.com">https://sns.us-east-2.amazonaws.com</a>. If not specified, the SNS API URL from the SNS SDK will be used.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>attributes</code></p></td>
+<td style="text-align: left;"><p><code>object (string)</code></p></td>
+<td style="text-align: left;"><p>attributes defines SNS message attributes as key-value pairs. These provide additional metadata that can be used for message filtering and routing.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>httpConfig</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>httpConfig defines the HTTP client configuration for SNS API requests.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>message</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>message defines the message content of the SNS notification. This is the actual notification text that will be sent to subscribers.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>phoneNumber</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>phoneNumber defines the phone number if message is delivered via SMS in E.164 format. If you don’t specify this value, you must specify a value for the TopicARN or TargetARN.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>sendResolved</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>sendResolved defines whether or not to notify about resolved alerts.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>sigv4</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>sigv4 configures AWS’s Signature Verification 4 signing process to sign requests. This includes AWS credentials and region configuration for authentication.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>subject</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>subject defines the subject line when the message is delivered to email endpoints. This field is only used when sending to email subscribers of an SNS topic.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>targetARN</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>targetARN defines the mobile platform endpoint ARN if message is delivered via mobile notifications. If you don’t specify this value, you must specify a value for the TopicARN or PhoneNumber.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>topicARN</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>topicARN defines the SNS topic ARN, e.g. arn:aws:sns:us-east-2:698519295917:My-Topic. If you don’t specify this value, you must specify a value for the PhoneNumber or TargetARN.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>useAWSHTTPClient</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>useAWSHTTPClient forces the AWS SDK’s BuildableClient instead of alertmanager’s tracing-wrapped HTTP client. Auto-enabled when AWS_CA_BUNDLE is set; set explicitly when configuring ca_bundle via shared AWS config.</p>
+<p>It requires Alertmanager &gt;= 0.33.0.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.receivers\[\].snsConfigs\[\].httpConfig
 
@@ -8332,14 +8409,15 @@ sigv4 configures AWS’s Signature Verification 4 signing process to sign reques
 Type
 `object`
 
-| Property             | Type      | Description                                                                                                       |
-|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------|
-| `accessKey`          | `object`  | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.        |
-| `profile`            | `string`  | profile defines the named AWS profile used to authenticate.                                                       |
-| `region`             | `string`  | region defines the AWS region. If blank, the region from the default credentials chain used.                      |
-| `roleArn`            | `string`  | roleArn defines the named AWS profile used to authenticate.                                                       |
-| `secretKey`          | `object`  | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used. |
-| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0.            |
+| Property             | Type      | Description                                                                                                                                                                                          |
+|----------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessKey`          | `object`  | accessKey defines the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used.                                                                                           |
+| `externalId`         | `string`  | externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus \>= v3.11.0 or Alertmanager \>= v0.33.0. Currently not supported by Thanos. |
+| `profile`            | `string`  | profile defines the named AWS profile used to authenticate.                                                                                                                                          |
+| `region`             | `string`  | region defines the AWS region. If blank, the region from the default credentials chain used.                                                                                                         |
+| `roleArn`            | `string`  | roleArn defines the named AWS profile used to authenticate.                                                                                                                                          |
+| `secretKey`          | `object`  | secretKey defines the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used.                                                                                    |
+| `useFIPSSTSEndpoint` | `boolean` | useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus \>= v2.54.0.                                                                                               |
 
 ## .spec.receivers\[\].snsConfigs\[\].sigv4.accessKey
 
@@ -10919,6 +10997,7 @@ Type
 |----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `httpConfig`   | `object`  | httpConfig defines the HTTP client configuration for webhook requests.                                                                                                                                                                                                                               |
 | `maxAlerts`    | `integer` | maxAlerts defines the maximum number of alerts to be sent per webhook message. When 0, all alerts are included in the webhook payload.                                                                                                                                                               |
+| `payload`      | `string`  | payload define custom payload to be sent to the webhook endpoint. This is an advanced configuration option that allows you to define a custom payload using Go templates. It requires Alertmanager \>= v0.32.0.                                                                                      |
 | `sendResolved` | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                 |
 | `timeout`      | `string`  | timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.28.0.                                                                                                                          |
 | `url`          | `string`  | url defines the URL to send HTTP POST requests to. urlSecret takes precedence over url. One of urlSecret and url should be defined.                                                                                                                                                                  |
@@ -12573,29 +12652,29 @@ Required
 ## .spec.route
 
 Description
-route defines the Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route.
+route defines the Alertmanager route definition for incoming alerts. It will be added to the generated Alertmanager configuration as a first-level route. The matching behavior of the route depends on the Alertmanager’s AlertmanagerConfigMatcherStrategyType.
 
 Type
 `object`
 
-| Property              | Type                | Description                                                                                                                                                                                                                                       |
-|-----------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `activeTimeIntervals` | `array (string)`    | activeTimeIntervals is a list of TimeInterval names when this route should be active.                                                                                                                                                             |
-| `continue`            | `boolean`           | continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.                                            |
-| `groupBy`             | `array (string)`    | groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list.                                               |
-| `groupInterval`       | `string`            | groupInterval defines how long to wait before sending an updated notification. Must be greater than 0. Example: "5m"                                                                                                                              |
-| `groupWait`           | `string`            | groupWait defines how long to wait before sending the initial notification. Example: "30s"                                                                                                                                                        |
-| `matchers`            | `array`             | matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher. |
-| `matchers[]`          | `object`            | Matcher defines how to match on alert’s labels.                                                                                                                                                                                                   |
-| `muteTimeIntervals`   | `array (string)`    | muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,                                                                                                                                                     |
-| `receiver`            | `string`            | receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.                                                                                                                             |
-| `repeatInterval`      | `string`            | repeatInterval defines how long to wait before repeating the last notification. Must be greater than 0. Example: "4h"                                                                                                                             |
-| `routes`              | `array (undefined)` | routes defines the child routes.                                                                                                                                                                                                                  |
+| Property              | Type                | Description                                                                                                                                                                                                                                                                                                                            |
+|-----------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `activeTimeIntervals` | `array (string)`    | activeTimeIntervals is a list of TimeInterval names when this route should be active.                                                                                                                                                                                                                                                  |
+| `continue`            | `boolean`           | continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.                                                                                                                                 |
+| `groupBy`             | `array (string)`    | groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list.                                                                                                                                    |
+| `groupInterval`       | `string`            | groupInterval defines how long to wait before sending an updated notification. Must be greater than 0. Example: "5m"                                                                                                                                                                                                                   |
+| `groupWait`           | `string`            | groupWait defines how long to wait before sending the initial notification. Example: "30s"                                                                                                                                                                                                                                             |
+| `matchers`            | `array`             | matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher, unless configured otherwise in Alertmanager’s AlertmanagerConfigMatcherStrategyType. |
+| `matchers[]`          | `object`            | Matcher defines how to match on alert’s labels.                                                                                                                                                                                                                                                                                        |
+| `muteTimeIntervals`   | `array (string)`    | muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,                                                                                                                                                                                                                                          |
+| `receiver`            | `string`            | receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.                                                                                                                                                                                                                  |
+| `repeatInterval`      | `string`            | repeatInterval defines how long to wait before repeating the last notification. Must be greater than 0. Example: "4h"                                                                                                                                                                                                                  |
+| `routes`              | `array (undefined)` | routes defines the child routes.                                                                                                                                                                                                                                                                                                       |
 
 ## .spec.route.matchers
 
 Description
-matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher.
+matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher, unless configured otherwise in Alertmanager’s AlertmanagerConfigMatcherStrategyType.
 
 Type
 `array`

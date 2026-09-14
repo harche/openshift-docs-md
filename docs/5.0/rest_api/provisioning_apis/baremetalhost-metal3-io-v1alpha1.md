@@ -123,6 +123,16 @@ Required
 <td style="text-align: left;"><p>NetworkData holds the reference to the Secret containing network configuration which is passed to the Config Drive and interpreted by the first boot software such as cloud-init.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>networkInterfaces</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>NetworkInterfaces defines the network configuration for each interface. This will be used to configure switch ports for the host. Interface names must correspond to actual NICs discovered during inspection (see HardwareData resource). They are referenced by either the name or MAC address of the NIC.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>networkInterfaces[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>NetworkInterface defines the network configuration for a specific interface.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>online</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.</p></td>
@@ -239,12 +249,13 @@ Type
 Required
 - `url`
 
-| Property       | Type     | Description                                                                                                                                                                                                        |
-|----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                    |
-| `checksumType` | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto". |
-| `format`       | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                             |
-| `url`          | `string` | URL is a location of an image to deploy.                                                                                                                                                                           |
+| Property            | Type     | Description                                                                                                                                                                                                                                                                |
+|---------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checksum`          | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                                                                            |
+| `checksumType`      | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto".                                                         |
+| `format`            | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                                                                                     |
+| `ociAuthSecretName` | `string` | OCIAuthSecretName optionally names a Docker-config secret containing registry credentials for oci:// images. Must be in the same namespace as the BareMetalHost. Allowed types: kubernetes.io/dockerconfigjson\|dockercfg. Only used when Image.URL has the oci:// scheme. |
+| `url`               | `string` | URL is a location of an image to deploy.                                                                                                                                                                                                                                   |
 
 ## .spec.metaData
 
@@ -271,6 +282,60 @@ Type
 |-------------|----------|--------------------------------------------------------------------------|
 | `name`      | `string` | name is unique within a namespace to reference a secret resource.        |
 | `namespace` | `string` | namespace defines the space within which the secret name must be unique. |
+
+## .spec.networkInterfaces
+
+Description
+NetworkInterfaces defines the network configuration for each interface. This will be used to configure switch ports for the host. Interface names must correspond to actual NICs discovered during inspection (see HardwareData resource). They are referenced by either the name or MAC address of the NIC.
+
+Type
+`array`
+
+## .spec.networkInterfaces\[\]
+
+Description
+NetworkInterface defines the network configuration for a specific interface.
+
+Type
+`object`
+
+| Property                | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|-------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `hostNetworkAttachment` | `object` | HostNetworkAttachment references the HostNetworkAttachment for this interface                                                                                                                                                                                                                                                                                                                                                   |
+| `macAddress`            | `string` | MAC address of the network interface. This must match the MAC address of a NIC discovered during inspection (see HardwareData resource). Mutually exclusive with Name.                                                                                                                                                                                                                                                          |
+| `name`                  | `string` | Name of the network interface (e.g., "eth0", "ens1f0") This must match the name of a NIC discovered during inspection (see HardwareData resource). Mutually exclusive with MACAddress.                                                                                                                                                                                                                                          |
+| `switchPort`            | `object` | SwitchPort defines the switch port on which this interface is attached. This is intended to be a replacement for LLDP information if LLDP is not enabled on the neighboring switches or if inspection is not used on the BMH. If LLDP information is acquired during inspection and this field is provided then it will override the LLDP provided information; therefore, caution must be exercised when supplying this value. |
+
+## .spec.networkInterfaces\[\].hostNetworkAttachment
+
+Description
+HostNetworkAttachment references the HostNetworkAttachment for this interface
+
+Type
+`object`
+
+| Property    | Type     | Description                                                        |
+|-------------|----------|--------------------------------------------------------------------|
+| `name`      | `string` | Name of the HostNetworkAttachment resource                         |
+| `namespace` | `string` | Namespace of the HostNetworkAttachment (defaults to BMH namespace) |
+
+## .spec.networkInterfaces\[\].switchPort
+
+Description
+SwitchPort defines the switch port on which this interface is attached. This is intended to be a replacement for LLDP information if LLDP is not enabled on the neighboring switches or if inspection is not used on the BMH. If LLDP information is acquired during inspection and this field is provided then it will override the LLDP provided information; therefore, caution must be exercised when supplying this value.
+
+Type
+`object`
+
+Required
+- `portID`
+
+- `switchID`
+
+| Property   | Type     | Description                                                                                  |
+|------------|----------|----------------------------------------------------------------------------------------------|
+| `portID`   | `string` | PortID is expected to be the configuration name of the port in the switch management system. |
+| `switchID` | `string` | SwitchID is expected to be the management MAC address of the switch                          |
 
 ## .spec.raid
 
@@ -748,12 +813,13 @@ Type
 Required
 - `url`
 
-| Property       | Type     | Description                                                                                                                                                                                                        |
-|----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                    |
-| `checksumType` | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto". |
-| `format`       | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                             |
-| `url`          | `string` | URL is a location of an image to deploy.                                                                                                                                                                           |
+| Property            | Type     | Description                                                                                                                                                                                                                                                                |
+|---------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checksum`          | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                                                                            |
+| `checksumType`      | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto".                                                         |
+| `format`            | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                                                                                     |
+| `ociAuthSecretName` | `string` | OCIAuthSecretName optionally names a Docker-config secret containing registry credentials for oci:// images. Must be in the same namespace as the BareMetalHost. Allowed types: kubernetes.io/dockerconfigjson\|dockercfg. Only used when Image.URL has the oci:// scheme. |
+| `url`               | `string` | URL is a location of an image to deploy.                                                                                                                                                                                                                                   |
 
 ## .status.provisioning.raid
 

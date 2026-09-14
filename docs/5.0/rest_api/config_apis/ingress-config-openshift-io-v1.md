@@ -50,7 +50,7 @@ Type
 <td style="text-align: left;"><p><code>componentRoutes</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>componentRoutes is an optional list of routes that are managed by OpenShift components that a cluster-admin is able to configure the hostname and serving certificate for. The namespace and name of each route in this list should match an existing entry in the status.componentRoutes list.</p>
-<p>To determine the set of configurable Routes, look at namespace and name of entries in the .status.componentRoutes list, where participating operators write the status of configurable routes.</p></td>
+<p>To determine the set of configurable Routes, look at namespace and name of entries in the .status.componentRoutes list, where participating operators write the status of configurable routes. A maximum of 250 component routes may be configured.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>componentRoutes[]</code></p></td>
@@ -91,7 +91,7 @@ Type
 Description
 componentRoutes is an optional list of routes that are managed by OpenShift components that a cluster-admin is able to configure the hostname and serving certificate for. The namespace and name of each route in this list should match an existing entry in the status.componentRoutes list.
 
-To determine the set of configurable Routes, look at namespace and name of entries in the .status.componentRoutes list, where participating operators write the status of configurable routes.
+To determine the set of configurable Routes, look at namespace and name of entries in the .status.componentRoutes list, where participating operators write the status of configurable routes. A maximum of 250 component routes may be configured.
 
 Type
 `array`

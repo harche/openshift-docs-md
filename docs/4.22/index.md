@@ -691,6 +691,15 @@
     - [Uninstalling the SR-IOV Operator](networking/networking_operators/sr-iov-operator/uninstalling-sriov-operator.md)
   - **DPU Operator**
     - [DPU Operator](networking/networking_operators/dpu-operator/dpu-operator.md)
+  - **NVIDIA DPF Operator**
+    - [NVIDIA DPF Operator release notes](networking/networking_operators/dpf_operator/dpf-release-notes.md)
+    - [About the NVIDIA DPF Operator](networking/networking_operators/dpf_operator/about-dpf-operator.md)
+    - [Set up the environment for DPF](networking/networking_operators/dpf_operator/dpf-environment-setup.md)
+    - [Install and configure the DPF Operator](networking/networking_operators/dpf_operator/dpf-operator-installation.md)
+    - [Provision the DPU hosted cluster](networking/networking_operators/dpf_operator/dpf-hosted-cluster-provisioning.md)
+    - [Add worker nodes and provision DPUs](networking/networking_operators/dpf_operator/dpf-worker-nodes-provisioning.md)
+    - [Validate traffic and configure telemetry](networking/networking_operators/dpf_operator/dpf-validation-telemetry.md)
+    - [Troubleshoot DPF](networking/networking_operators/dpf_operator/dpf-troubleshooting.md)
 - **Network Observability Operator**
   - [Network Observability Operator](networking/network_observability_operator/network-observability-operator.md)
 - **Network security**

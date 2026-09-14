@@ -25,8 +25,6 @@ Type
 Required
 - `namespace`
 
-- `serviceAccount`
-
 - `source`
 
 <table>
@@ -57,7 +55,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>namespace specifies a Kubernetes namespace. This is the namespace where the provided ServiceAccount must exist. It also designates the default namespace where namespace-scoped resources for the extension are applied to the cluster. Some extensions may contain namespace-scoped resources to be applied in other namespaces. This namespace must exist.</p>
+<td style="text-align: left;"><p>namespace specifies a Kubernetes namespace. It designates the default namespace where namespace-scoped resources for the extension are applied to the cluster. Some extensions may contain namespace-scoped resources to be applied in other namespaces. This namespace must exist.</p>
 <p>The namespace field is required, immutable, and follows the DNS label standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters or hyphens (-), start and end with an alphanumeric character, and be no longer than 63 characters.</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
 </tr>
@@ -69,7 +67,8 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>serviceAccount</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>serviceAccount specifies a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. The serviceAccount field is required.</p></td>
+<td style="text-align: left;"><p>serviceAccount is a deprecated field and is completely ignored. OLMv1 is a single-tenant system where users with ClusterExtension write access are effectively delegated cluster-admin trust. The operator-controller runs with cluster-admin privileges and uses its own service account for all cluster interactions.</p>
+<p>Deprecated: serviceAccount is no longer used and will be removed in a future release.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>source</code></p></td>
@@ -233,13 +232,12 @@ Required
 ## .spec.serviceAccount
 
 Description
-serviceAccount specifies a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. The serviceAccount field is required.
+serviceAccount is a deprecated field and is completely ignored. OLMv1 is a single-tenant system where users with ClusterExtension write access are effectively delegated cluster-admin trust. The operator-controller runs with cluster-admin privileges and uses its own service account for all cluster interactions.
+
+Deprecated: serviceAccount is no longer used and will be removed in a future release.
 
 Type
 `object`
-
-Required
-- `name`
 
 <table>
 <colgroup>
@@ -258,8 +256,8 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>name is a required, immutable reference to the name of the ServiceAccount used for installation and management of the content for the package specified in the packageName field.</p>
-<p>This ServiceAccount must exist in the installNamespace.</p>
+<td style="text-align: left;"><p>name is a deprecated field and is completely ignored.</p>
+<p>Deprecated: name is no longer used and will be removed in a future release.</p>
 <p>The name field follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p>
 <p>Some examples of valid values are: - some-serviceaccount - 123-serviceaccount - 1-serviceaccount-2 - someserviceaccount - some.serviceaccount</p>
 <p>Some examples of invalid values are: - -some-serviceaccount - some-serviceaccount-</p>
@@ -652,10 +650,39 @@ Required
 
 - `version`
 
-| Property  | Type     | Description                                                                                                                                                                                                                                                 |
-|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`    | `string` | name is required and follows the DNS subdomain standard as defined in \[RFC 1123\]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. |
-| `version` | `string` | version is required and references the version that this bundle represents. It follows the semantic versioning standard as defined in <https://semver.org/>.                                                                                                |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>name</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>name is required and follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>release</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>release is an optional field that identifies a specific release of this bundle’s version. A release represents a re-publication of the same version, typically used to deliver packaging or metadata changes without changing the version number. When multiple releases exist for the same version, higher releases are preferred. An unset release is less preferred than all other release values.</p>
+<p>The value consists of dot-separated identifiers, where each identifier is either a numeric value (without leading zeros) or an alphanumeric string (e.g., "2", "1.el9", "3.alpha.1"). Releases are compared identifier by identifier: numeric identifiers are compared as integers, alphanumeric identifiers are compared lexically, and numeric identifiers always sort before alphanumeric identifiers.</p>
+<p>For bundles with explicit pkg.Release metadata, this field contains that release value. For registry+v1 bundles lacking an explicit release value, this field contains the release extracted from version’s build metadata (e.g., '2' from '1.0.0+2'). This field is omitted when the bundle’s release value is unset.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>version</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>version is required and references the version that this bundle represents. It follows the semantic versioning standard as defined in <a href="https://semver.org/">https://semver.org/</a>.</p></td>
+</tr>
+</tbody>
+</table>
 
 # API endpoints
 

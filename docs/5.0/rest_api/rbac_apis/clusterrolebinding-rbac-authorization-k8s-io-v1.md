@@ -27,8 +27,6 @@ Type
 `object`
 
 Required
-- `apiGroup`
-
 - `kind`
 
 - `name`

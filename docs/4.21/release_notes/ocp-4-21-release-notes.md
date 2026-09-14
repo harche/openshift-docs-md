@@ -862,7 +862,7 @@ RHOSP Technology Preview tracker
 | Managing etcd size by setting the `eventTTLMinutes` property                  | Not available        | Not available        | Technology Preview   |
 | Using RHACM `PolicyGenerator` resources to manage GitOps ZTP cluster policies | General Availability | General Availability | General Availability |
 | Pinned Image Sets                                                             | Technology Preview   | Technology Preview   | Technology Preview   |
-| Configuring NUMA-aware scheduler replicas and high availability               | Not available        | Technology Preview   | Technology Preview   |
+| Configuring NUMA-aware scheduler replicas and high availability               | Not available        | General Availability | General Availability |
 
 Scalability and performance Technology Preview tracker
 
@@ -967,6 +967,58 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHSA-2026:63046 - OpenShift Container Platform 4.17.32 bug fix and security update
+
+Issued: 08 September 2026
+
+OpenShift Container Platform release 4.17.32 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:63046](https://access.redhat.com/errata/RHSA-2026:63046) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:63040](https://access.redhat.com/errata/RHBA-2026:63040) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.32 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, in vSphere installer-provisioned infrastructure clusters using static IPs, the control plane machine set (CPMS) Operator was not copying the name server into the CPMS when the CPMS was deleted. As a consequence, the CPMS Operator would identify current control plane machines as not valid and would identify the control plane machines as needing to be recreated. With this release, the CPMS Operator logic is updated to copy the name server definition into the CPMS when the clusters used static IPs. As a result, the name server information is configured in the CPMS when recreating the CPMS cluster instance. ([OCPBUGS-90510](https://issues.redhat.com/browse/OCPBUGS-90510))
+
+- Before this update, the web console required cloud credentials during Operator installation on Workload Identity clusters. With this release, cloud provider fields are optional during Operator installation. ([OCPBUG-113732](https://redhat.atlassian.net/browse/OCPBUGS-113732))
+
+- Before this update, the Node Tuning Operator reconciliation used the rate-limited work queue for all event enqueues. As a consequence, node-tuning configuration was delayed for cluster notes greater than 100. With this release, the Node Tuning Operator reconciliation loop uses the rate-limited work queue only for failures instead of all event enqueues. As a result, node-tuning configuration for cluster nodes greater than 100 is not delayed. ([OCPBUG-114013](https://redhat.atlassian.net/browse/OCPBUGS-114013))
+
+- Before this update, the Machine Config Controller (MCC) `EventRecorder` was initialized with the client set scheme specific to the MachineConfigOperator (MCO), which did not include core Kubernetes types such as `Node`. As a consequence, drain failure events were silently dropped when a node drain failed, for example, due to a blocking `PodDisruptionBudget` parameter. When a node drain failed, the expected warning events, such as the `DrainThresholdExceeded` event, were not emitted. This issue made drain failures more difficult to diagnose and observe. With this release, the `EventRecorder` scheme is updated to include the core Kubernetes types, which ensures that drain failure events are correctly recorded against `Node` objects. As a result, drain failure events are correctly emitted, which improves observability for node drain issues. ([OCPBUG-114391](https://redhat.atlassian.net/browse/OCPBUGS-114391))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHBA-2026:60477 - OpenShift Container Platform 4.17.31 bug fix and security update
+
+Issued: 01 September 2026
+
+OpenShift Container Platform release 4.17.31 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:60477](https://access.redhat.com/errata/RHSA-2026:60477) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:60450](https://access.redhat.com/errata/RHBA-2026:60450) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.31 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, Image-Based Installation (IBI) with a proxy configuration wrote the user-provided `noProxy` value directly into the cluster configuration without adding the cluster, service, and machine network Classless Inter-Domain Routing (CIDR) blocks and internal host names required for in-cluster communication. As a consequence, the `noProxy` value did not match the proxy settings applied by the Machine Config Operator template, causing the Operator to detect a configuration drift and trigger an additional node reboot during installation. With this release, IBI enriches the `noProxy` setting by using the same logic as standard installations, aligning the initial proxy configuration with the Machine Config Operator template and preventing the extra reboot. ([OCPBUGS-60993](https://issues.redhat.com/browse/OCPBUGS-60993))
+
+- Before this update, the Go OpenSSL FIPS provider could potentially overwhelm the `libcrypto` library with concurrent requests. As a consequence, processes could hit the `maxThreads` limit of 10,000 and crash. With this release, the Go OpenSSL FIPS provider is updated to limit concurrent requests to the `libcrypto` library to four times the number of CPUs, buffering requests as lightweight Go routines. As a result, processes avoid the `maxThreads` limit and do not crash. ([OCPBUGS-112086](https://issues.redhat.com/browse/OCPBUGS-112086))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHSA-2026:57801 - OpenShift Container Platform 4.17.30 bug fix and security update
 

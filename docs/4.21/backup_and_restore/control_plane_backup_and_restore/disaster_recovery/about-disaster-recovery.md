@@ -64,57 +64,63 @@ Quorum restoration should not be used to decrease the number of nodes outside of
 
 4.  Return to a three-node configuration if any nodes are offline. Repeat the following steps for each node that is offline to delete and re-create them. After the machines are re-created, a new revision is forced and etcd automatically scales up.
 
-    - If you use a user-provisioned bare-metal installation, you can re-create a control plane machine by using the same method that you used to originally create it. For more information, see "Installing a user-provisioned cluster on bare metal".
+    <div class="warning">
 
-      <div class="warning">
+    For installer-provisioned infrastructure and user-provisioned infrastructure, do not delete and re-create the machine for the recovery host.
 
-      Do not delete and re-create the machine for the recovery host.
+    </div>
 
-      </div>
+    - If you use a user-provisioned bare-metal installation, you can re-create a control plane machine by using the same method that you used to originally create it.
 
-    - If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps:
+      <div class="important">
 
-      <div class="warning">
-
-      Do not delete and re-create the machine for the recovery host.
-
-      For bare-metal installations on installer-provisioned infrastructure, control plane machines are not re-created. For more information, see "Replacing a bare-metal control plane node".
+      Before starting the newly provisioned node, you must delete the existing node object from the cluster by running the `oc delete node <node_name>` command. Failing to delete the node object before reinstallating the node can cause conflicts and issues during the reinstallation process.
 
       </div>
 
-      1.  In a terminal that has access to the cluster as a `cluster-admin` user, obtain the machine for one of the offline nodes by running the following command:
+      For more information, see "Installing a user-provisioned cluster on bare metal".
 
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
+      - If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps:
 
-          <div class="formalpara-title">
+        <div class="important">
 
-          **Example output**
+        For bare-metal installations on installer-provisioned infrastructure, control plane machines are not re-created. For more information, see "Replacing a bare-metal control plane node".
 
-          </div>
+        </div>
 
-          ``` terminal
-          NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
-          clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-143-125.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-154-194.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba  running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
+        1.  In a terminal that has access to the cluster as a `cluster-admin` user, obtain the machine for one of the offline nodes by running the following command:
 
-          In the example output, `clustername-8qw5l-master-0` is the control plane machine for the offline node, `ip-10-0-131-183.ec2.internal`.
+            ``` terminal
+            $ oc get machines -n openshift-machine-api -o wide
+            ```
 
-      2.  Delete the machine of the offline node by running the following command:
+            <div class="formalpara-title">
 
-          ``` terminal
-          $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
-          ```
+            **Example output**
 
-          Specify the name of the control plane machine for the offline node.
+            </div>
 
-          A new machine is automatically provisioned after deleting the machine of the offline node.
+            ``` terminal
+            NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+            clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
+            clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-143-125.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+            clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-154-194.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba  running
+            clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+            clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+            clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+            ```
+
+            In the example output, `clustername-8qw5l-master-0` is the control plane machine for the offline node, `ip-10-0-131-183.ec2.internal`.
+
+        2.  Delete the machine of the offline node by running the following command:
+
+            ``` terminal
+            $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
+            ```
+
+            Specify the name of the control plane machine for the offline node.
+
+            A new machine is automatically provisioned after deleting the machine of the offline node.
 
 5.  Verify that a new machine has been created by running the following command:
 

@@ -97,7 +97,7 @@ Type
 <td style="text-align: left;"><p><code>errorCode</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.</p>
-<p>This is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.</p></td>
+<p>This field requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>message</code></p></td>
@@ -138,7 +138,7 @@ Type
 <td style="text-align: left;"><p><code>errorCode</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.</p>
-<p>This is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.</p></td>
+<p>This field requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>message</code></p></td>

@@ -1317,6 +1317,7 @@ Type
 |------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `httpConfig`     | `object` | httpConfig defines the default HTTP configuration.                                                                                                                                                                                                                       |
 | `jira`           | `object` | jira defines the default configuration for Jira.                                                                                                                                                                                                                         |
+| `mattermost`     | `object` | mattermost defines the default Mattermost Config                                                                                                                                                                                                                         |
 | `opsGenieApiKey` | `object` | opsGenieApiKey defines the default OpsGenie API Key.                                                                                                                                                                                                                     |
 | `opsGenieApiUrl` | `object` | opsGenieApiUrl defines the default OpsGenie API URL.                                                                                                                                                                                                                     |
 | `pagerdutyUrl`   | `string` | pagerdutyUrl defines the default Pagerduty URL.                                                                                                                                                                                                                          |
@@ -2161,6 +2162,56 @@ Type
 </tr>
 </tbody>
 </table>
+
+## .spec.alertmanagerConfiguration.global.mattermost
+
+Description
+mattermost defines the default Mattermost Config
+
+Type
+`object`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>webhookURL</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>webhookURL defines the default Mattermost Webhook URL.</p>
+<p>It requires Alertmanager &gt;= v0.32.0.</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.alertmanagerConfiguration.global.mattermost.webhookURL
+
+Description
+webhookURL defines the default Mattermost Webhook URL.
+
+It requires Alertmanager \>= v0.32.0.
+
+Type
+`object`
+
+Required
+- `key`
+
+| Property   | Type      | Description                                                                                                                                                                                                                                                                                  |
+|------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `key`      | `string`  | The key of the secret to select from. Must be a valid secret key.                                                                                                                                                                                                                            |
+| `name`     | `string`  | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| `optional` | `boolean` | Specify whether the Secret or its key must be defined                                                                                                                                                                                                                                        |
 
 ## .spec.alertmanagerConfiguration.global.opsGenieApiKey
 
@@ -4070,7 +4121,7 @@ Type
 | `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
 | `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
 | `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
-| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                             |
 | `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
 | `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
 | `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
@@ -5438,7 +5489,7 @@ Type
 | `appArmorProfile`          | `object`  | appArmorProfile is the AppArmor options to use by this container. If set, this profile overrides the pod’s appArmorProfile. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                 |
 | `capabilities`             | `object`  | The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                         |
 | `privileged`               | `boolean` | Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                     |
-| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.                                                                                                                 |
+| `procMount`                | `string`  | procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                             |
 | `readOnlyRootFilesystem`   | `boolean` | Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows.                                                                                                                                                                                                                                                                                   |
 | `runAsGroup`               | `integer` | The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows.                                                                                                               |
 | `runAsNonRoot`             | `boolean` | Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. |
@@ -6985,7 +7036,7 @@ Required
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet’s host machine. The volume is resolved at pod startup depending on which PullPolicy value is provided:</p>
 <p>- Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. - Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn’t present. - IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails.</p>
-<p>The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers[<strong>].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro) and non-executable files (noexec). Sub path mounts for containers are not supported (spec.containers[</strong>].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.</p></td>
+<p>The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers[<strong>].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro). Sub path mounts for containers are not supported (spec.containers[</strong>].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>iscsi</code></p></td>
@@ -7015,7 +7066,7 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>portworxVolume</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.</p></td>
+<td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>projected</code></p></td>
@@ -7661,7 +7712,7 @@ image represents an OCI object (a container image or artifact) pulled and mounte
 
 - IfNotPresent: the kubelet pulls if the reference isn’t already present on disk. Container creation will fail if the reference isn’t present and the pull fails.
 
-The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers\[**\].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro) and non-executable files (noexec). Sub path mounts for containers are not supported (spec.containers\[**\].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation. A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message. The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field. The OCI object gets mounted in a single directory (spec.containers\[**\].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images. The volume will be mounted read-only (ro). Sub path mounts for containers are not supported (spec.containers\[**\].volumeMounts.subpath) before 1.33. The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 
 Type
 `object`
@@ -7766,7 +7817,7 @@ Required
 ## .spec.volumes\[\].portworxVolume
 
 Description
-portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.
+portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver.
 
 Type
 `object`

@@ -55,7 +55,7 @@ Type
 <td style="text-align: left;"><p><code>nodeAllocatableUpdatePeriodSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.</p>
-<p>This is a beta feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.</p>
+<p>This feature requires the MutableCSINodeAllocatableCount feature gate to be enabled.</p>
 <p>This field is mutable.</p></td>
 </tr>
 <tr class="even">
@@ -68,12 +68,20 @@ Type
 <p>This field was immutable in Kubernetes &lt; 1.29 and now is mutable.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>preventPodSchedulingIfMissing</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>PreventPodSchedulingIfMissing indicates that the CSI driver wants to prevent pod scheduling if the CSI driver on the node is missing.</p>
+<p>Enabling this option will prevent the scheduler (or any other component which embeds default scheduler such as cluster-autoscaler) from scheduling pods to nodes where CSI driver is not installed.</p>
+<p>For components(such as cluster-autoscaler) that embed the scheduler and run pod placement simulations using scheduler plugins, they MUST be aware of CSI driver registration information via CSINode object. They must create simulated CSINode objects in addition to Node objects during scheduling simulation, otherwise if PreventPodSchedulingIfMissing is enabled globally for CSIDriver object, any newly created node may be rejected by the scheduler because of missing CSI driver information from the node.</p>
+<p>This is an alpha feature and requires the VolumeLimitScaling feature gate to be enabled. Default is "false".</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requiresRepublish</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>requiresRepublish indicates the CSI driver wants <code>NodePublishVolume</code> being periodically called to reflect any possible change in the mounted volume. This field defaults to false.</p>
 <p>Note: After a successful initial NodePublishVolume call, subsequent calls to NodePublishVolume should only update the contents of the volume. New mount points will not be seen by a running container.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>seLinuxMount</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>seLinuxMount specifies if the CSI driver supports "-o context" mount option.</p>
@@ -81,7 +89,7 @@ Type
 <p>When "false", Kubernetes won’t pass any special SELinux mount options to the driver. This is typical for volumes that represent subdirectories of a bigger shared filesystem.</p>
 <p>Default is "false".</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>serviceAccountTokenInSecrets</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>serviceAccountTokenInSecrets is an opt-in for CSI drivers to indicate that service account tokens should be passed via the Secrets field in NodePublishVolumeRequest instead of the VolumeContext field. The CSI specification provides a dedicated Secrets field for sensitive information like tokens, which is the appropriate mechanism for handling credentials. This addresses security concerns where sensitive tokens were being logged as part of volume context.</p>
@@ -90,7 +98,7 @@ Type
 <p>This field can only be set when TokenRequests is configured. The API server will reject CSIDriver specs that set this field without TokenRequests.</p>
 <p>Default behavior if unset is to pass tokens in the VolumeContext field.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>storageCapacity</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information, if set to true.</p>
@@ -98,18 +106,18 @@ Type
 <p>Alternatively, the driver can be deployed with the field unset or false and it can be flipped later when storage capacity information has been published.</p>
 <p>This field was immutable in Kubernetes ⇐ 1.22 and now is mutable.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenRequests</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>tokenRequests indicates the CSI driver needs pods' service account tokens it is mounting volume for to do necessary authentication. Kubelet will pass the tokens in VolumeContext in the CSI NodePublishVolume calls. The CSI driver should parse and validate the following VolumeContext: "csi.storage.k8s.io/serviceAccount.tokens": { "&lt;audience&gt;": { "token": &lt;token&gt;, "expirationTimestamp": &lt;expiration timestamp in RFC3339&gt;, }, …​ }</p>
 <p>Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tokenRequests[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TokenRequest contains parameters of a service account token.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>volumeLifecycleModes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>volumeLifecycleModes defines what kind of volumes this CSI volume driver supports. The default if the list is empty is "Persistent", which is the usage defined by the CSI specification and implemented in Kubernetes via the usual PV/PVC mechanism.</p>

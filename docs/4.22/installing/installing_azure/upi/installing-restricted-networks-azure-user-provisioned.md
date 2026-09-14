@@ -893,7 +893,7 @@ Minimum required hosts
 
 <div class="important">
 
-To keep high availability of your cluster, use separate physical hosts for these cluster machines.
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
@@ -2747,7 +2747,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 

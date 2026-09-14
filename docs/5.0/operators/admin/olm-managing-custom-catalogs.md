@@ -28,7 +28,7 @@ As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator c
 
 The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
 
-Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Operator Framework packaging format" and "Mirroring images for a disconnected installation using the oc-mirror plugin".
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Operator Framework packaging format" and "Mirroring images for a disconnected installation using the oc-mirror plugin v2".
 
 </div>
 
@@ -202,7 +202,7 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
 
 - [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected)
+- [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 ## Updating or filtering a file-based catalog image
 
@@ -214,7 +214,7 @@ After you complete the changes, you can rebuild the image as an updated version 
 
 Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
 
-For more information about the oc-mirror plugin and this use case, see the "Keeping your mirror registry content updated" section, and specifically the "Pruning images" subsection, of "Mirroring images for a disconnected installation using the oc-mirror plugin".
+For more information about the oc-mirror plugin and this use case, see "Mirroring images for a disconnected installation using the oc-mirror plugin v2".
 
 </div>
 
@@ -356,7 +356,7 @@ For more information about the oc-mirror plugin and this use case, see the "Keep
 
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin → Keeping your mirror registry content updated](../../disconnected/installing-mirroring-disconnected.xml#updating-mirror-registry-content)
+- [Mirroring an image set to a mirror registry](../../disconnected/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)
 

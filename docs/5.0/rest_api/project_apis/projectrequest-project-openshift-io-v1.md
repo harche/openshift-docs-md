@@ -34,10 +34,10 @@ HTTP method
 Description
 list objects of kind ProjectRequest
 
-| HTTP code          | Reponse body                                                                              |
-|--------------------|-------------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
-| 401 - Unauthorized | Empty                                                                                     |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 

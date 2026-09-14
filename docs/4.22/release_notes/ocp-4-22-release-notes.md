@@ -211,6 +211,13 @@ For more information, see [About node status during updates](../machine_configur
 
 ## Machine management
 
+Bare-metal nodes on VMware vSphere clusters is generally available
+You can add bare-metal compute machines to an existing OpenShift Container Platform cluster on vSphere. With this capability, you can migrate workloads to physical hardware without reinstalling the cluster.
+
+Bare-metal nodes on vSphere clusters was introduced in OpenShift Container Platform 4.21 with Technology Preview status. Beginning in OpenShift Container Platform 4.22.13, it is now generally available.
+
+For more information, see [Adding bare-metal compute machines to a vSphere cluster](../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra).
+
 AWS Dedicated Host support (Technology Preview)
 You can now place compute machines on Amazon Web Services (AWS) Dedicated Hosts. Dedicated Hosts are physical servers that are fully dedicated to your use. With Dedicated Hosts, you can use your existing per-socket, per-core, or per-VM software licenses and comply with corporate policies that require physical CPU assignment.
 
@@ -445,6 +452,15 @@ Custom image configuration for the Support Log Gather
 With this update, you can collect diagnostic data by using custom images in the Support Log Gather. By pointing the `spec.imageStreamRef` field to an approved `ImageStream` tag, you can override the default image. The cluster administrators are responsible for creating and maintaining the list of allowed custom images by managing `ImageStream` resources in the Operator namespace. Each custom image requires its own `MustGather` custom resource and a service account with permissions to access the `ImageStream`. For more information, see [Configuring a Support Log Gather instance](../support/gathering-cluster-data.xml#support-log-gather-config-cli_gathering-cluster-data).
 
 ## Storage
+
+Adding bare-metals nodes on VMware vSphere is generally available
+OpenShift Container Platform 4.21 added the ability to add bare-metal nodes to an OpenShift Container Platform cluster on vSphere as a Technology Preview feature. Beginning in OpenShift Container Platform 4.22.13, this feature is generally available.
+
+However, if you add bare-metal nodes, you must remove the vSphere Container Storage Interface (CSI) Driver, otherwise the cluster is marked as degraded.
+
+For information about how to add bare-metal nodes, see [Adding bare-metal nodes](../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-adding-bm-nodes_persistent-storage-csi-vsphere).
+
+For information about how to remove the vSphere CSI Driver, see [Disabling and enabling storage on vSphere](../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-disable-storage-overview_persistent-storage-csi-vsphere).
 
 New VolumeSnapshotClass csi-gce-pd-vsc-images is generally available
 By default, you cannot restore more than six volumes per snapshot per hour. So in Kubevirt environments, you normally cannot create more than six VMs per hour from a "golden image" (templates saved as snapshots).
@@ -1013,7 +1029,7 @@ You can review the list of issues resolved for OpenShift Container Platform 4.17
 
 # Technology Preview features status
 
-You can determine if a new feature in OpenShift Container Platform4.17 is currently in Technology Preview before deciding to install the feature. These experimental features are not intended for production use.
+You can determine if a new feature in OpenShift Container Platform 4.17 is currently in Technology Preview before deciding to install the feature. These experimental features are not intended for production use.
 
 Note the following scope of support on the Red Hat Customer Portal for these features:
 
@@ -1114,19 +1130,19 @@ Machine Config Operator Technology Preview tracker
 
 ## Machine management Technology Preview features
 
-| Feature                                                                                     | 4.20               | 4.21               | 4.22               |
-|---------------------------------------------------------------------------------------------|--------------------|--------------------|--------------------|
-| Managing machines with the Cluster API for Amazon Web Services                              | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for Google Cloud                                     | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for IBM Power® Virtual Server                        | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for Microsoft Azure                                  | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for RHOSP                                            | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for VMware vSphere                                   | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for bare-metal                                       | Technology Preview | Technology Preview | Technology Preview |
-| Cloud controller manager for IBM Power® Virtual Server                                      | Technology Preview | Technology Preview | Technology Preview |
-| Adding multiple subnets to an existing VMware vSphere cluster by using compute machine sets | Technology Preview | Technology Preview | Technology Preview |
-| Bare-metal nodes on VMware vSphere clusters                                                 | Not Available      | Technology Preview | Technology Preview |
-| Amazon Web Services Dedicated Host support                                                  | Not Available      | Not Available      | Technology Preview |
+| Feature                                                                                     | 4.20               | 4.21               | 4.22                 |
+|---------------------------------------------------------------------------------------------|--------------------|--------------------|----------------------|
+| Managing machines with the Cluster API for Amazon Web Services                              | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for Google Cloud                                     | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for IBM Power® Virtual Server                        | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for Microsoft Azure                                  | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for RHOSP                                            | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for VMware vSphere                                   | Technology Preview | Technology Preview | Technology Preview   |
+| Managing machines with the Cluster API for bare-metal                                       | Technology Preview | Technology Preview | Technology Preview   |
+| Cloud controller manager for IBM Power® Virtual Server                                      | Technology Preview | Technology Preview | Technology Preview   |
+| Adding multiple subnets to an existing VMware vSphere cluster by using compute machine sets | Technology Preview | Technology Preview | Technology Preview   |
+| Bare-metal nodes on VMware vSphere clusters                                                 | Not Available      | Technology Preview | General Availability |
+| Amazon Web Services Dedicated Host support                                                  | Not Available      | Not Available      | Technology Preview   |
 
 Machine management Technology Preview tracker
 
@@ -1155,7 +1171,7 @@ Multi-Architecture Technology Preview tracker
 | Dynamic configuration manager                                                                             | Technology Preview   | Technology Preview   |                      |
 | SR-IOV Network Operator support for Intel C741 Emmitsburg Chipset                                         | Technology Preview   | Technology Preview   | General Availability |
 | Dual-port NIC for PTP ordinary clock                                                                      | General Availability | General Availability |                      |
-| DPU Operator                                                                                              | Technology Preview   | Technology Preview   |                      |
+| DPU Operator                                                                                              | Technology Preview   | Technology Preview   | Technology Preview   |
 | Fast IPAM for the Whereabouts IPAM CNI plugin                                                             | Technology Preview   | Technology Preview   |                      |
 | Unnumbered BGP peering                                                                                    | General Availability | General Availability |                      |
 | Load balancing across the aggregated bonded interface with xmitHashPolicy                                 | Technology Preview   | Technology Preview   |                      |
@@ -1199,16 +1215,16 @@ RHOSP Technology Preview tracker
 
 ## Scalability and performance Technology Preview features
 
-| Feature                                                         | 4.20               | 4.21               | 4.22 |
-|-----------------------------------------------------------------|--------------------|--------------------|------|
-| factory-precaching-cli tool                                     | Technology Preview | Technology Preview |      |
-| Hyperthreading-aware CPU manager policy                         | Technology Preview | Technology Preview |      |
-| Mount namespace encapsulation                                   | Technology Preview | Technology Preview |      |
-| Node Observability Operator                                     | Technology Preview | Technology Preview |      |
-| Increasing the etcd database size                               | Technology Preview | Technology Preview |      |
-| Managing etcd size by setting the `eventTTLMinutes` property    | Not available      | Technology Preview |      |
-| Pinned Image Sets                                               | Technology Preview | Technology Preview |      |
-| Configuring NUMA-aware scheduler replicas and high availability | Technology Preview | Technology Preview |      |
+| Feature                                                         | 4.20                 | 4.21                 | 4.22                 |
+|-----------------------------------------------------------------|----------------------|----------------------|----------------------|
+| factory-precaching-cli tool                                     | Technology Preview   | Technology Preview   | Technology Preview   |
+| Hyperthreading-aware CPU manager policy                         | Technology Preview   | Technology Preview   | Technology Preview   |
+| Mount namespace encapsulation                                   | Technology Preview   | Technology Preview   | Technology Preview   |
+| Node Observability Operator                                     | Technology Preview   | Technology Preview   | Technology Preview   |
+| Increasing the etcd database size                               | Technology Preview   | Technology Preview   | Technology Preview   |
+| Managing etcd size by setting the `eventTTLMinutes` property    | Not available        | Technology Preview   | General Availability |
+| Pinned Image Sets                                               | Technology Preview   | Technology Preview   | General Availability |
+| Configuring NUMA-aware scheduler replicas and high availability | General Availability | General Availability | General Availability |
 
 Scalability and performance Technology Preview tracker
 
@@ -1300,6 +1316,110 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:63096 - OpenShift Container Platform 4.17.13 bug fix and security update
+
+Issued: 08 September 2026
+
+OpenShift Container Platform release 4.17.13 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:63096](https://access.redhat.com/errata/RHSA-2026:63096) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:63091](https://access.redhat.com/errata/RHSA-2026:63091) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.13 --pullspecs
+```
+
+### Enhancements
+
+- In OpenShift Container Platform release 4.22.13 and later, you can add bare-metal compute machines to an existing OpenShift Container Platform cluster on vSphere. With this capability, you can migrate workloads to physical hardware without reinstalling the cluster. Previously, that bare-metal compute machines feature was listed as a Technology Preview feature. The feature is now generally available for OpenShift Container Platform release 4.22.13 and later.
+
+### Fixed issues
+
+- Before this update, the `IngressNodeFirewall` custom resource (CR) could not apply rules on sub-interfaces with dotted names because the Berkeley Packet Filter (BPF) file system did not allow dots (".") in the filenames. With this release, the dots in the interface names are replaced by a placeholder before writing to the BPF file system. As a result, the `IngressNodeFirewall` CR can apply rules on the sub-interfaces. ([OCPBUGS-86993](https://redhat.atlassian.net/browse/OCPBUGS-86993))
+
+- Before this update, the Bare Metal Operator (BMO) `getChecksum()` function accepted non-empty checksums for Oracle Cloud Infrastructure (OCI) images. As a consequence, OCI image provisioning failed. With this release, a check in the `getChecksum()` function rejects non-empty user-provided checksums for OCI images. As a result, OCI image provisioning does not fail. ([OCPBUGS-90570](https://redhat.atlassian.net/browse/OCPBUGS-90570))
+
+- Before this update, detaching and re-attaching a bare-metal host (BMH) using the Redfish Virtual Media driver did not set the `bootMACAddress` parameter. As a consequence, host provisioning failed because port records for the network interface controllers (NICs) were not re-created for the host. With this release, port records are recreated on-demand using the information from the inventory, that is, the HardwareData schema resources. As a result, re-attached hosts are successfully provisioned. ([OCPBUGS-99420](https://redhat.atlassian.net/browse/OCPBUGS-99420))
+
+- Before this update, when the bare-metal host (BMH) `spec.online` parameter was set to `False`, the Bare Metal Operator (BMO) forced Ironic to issue a power off command to the node at the end of inspection, after the ramdisk had been ejected. As a consequence, the node OS lost access to the boot media during shutdown, and filesystem corruption errors were visible on the BMH console. With this release, the node is powered off after inspection, while cleaning up the ramdisk, before ejecting Redfish virtual media. As a result, the host does not lose access to the boot media. ([OCPBUGS-112341](https://redhat.atlassian.net/browse/OCPBUGS-112341))
+
+- Before this update, the `GetMarketplaceImage` function for the installation program experienced timeout issues because the function used a deprecated SDK that lacked a retry mechanism. As a consequence, the marketplace image fetch failed, which terminated the installation. With this release, the timeout for retrieving marketplace images is increased from 30 seconds to five minutes because the `GetMarketplaceImage` function now uses the new Azure SDK to retry requests. As a result, timeout issues do not cause installation failure.([OCPBUGS-112471](https://redhat.atlassian.net/browse/OCPBUGS-112471))
+
+- Before this update, the Node Tuning Operator reconciliation used the rate-limited work queue for all event enqueues. As a consequence, node-tuning configuration was delayed for cluster notes greater than 100. With this release, the Node Tuning Operator reconciliation loop uses the rate-limited work queue only for failures instead of all event enqueues. As a result, node-tuning configuration for cluster nodes greater than 100 is not delayed. ([OCPBUG-112554](https://redhat.atlassian.net/browse/OCPBUGS-112554))
+
+- Before this update, the short description for the `info` command in the Performance Profile Creator (PPC) tool was not updated after the cluster inspection was moved. As a consequence, inconsistencies between the parent help and the info help occurred when you ran the PPC tool. With this release, the short description for the `info` command in the PPC tool is updated to match the current CLI. As a result, the help inconsistencies do not occur when you run the tool. ([OCPBUGS-113579](https://redhat.atlassian.net/browse/OCPBUGS-113579))
+
+- Before this update, the Machine Config Controller `EventRecorder` was initialized with the MCO-specific client set scheme, which did not include core Kubernetes types such as `Node`. As a consequence, drain failure events were silently dropped when a node drain failed, for example, due to a blocking `PodDisruptionBudget` parameter. When a node drain failed, the expected warning events, such as the `DrainThresholdExceeded` event, were not emitted. This issue made drain failures more difficult to diagnose and observe. With this release, the `EventRecorder` scheme is updated to include the core Kubernetes types, which ensures that drain failure events are correctly recorded against `Node` objects. As a result, drain failure events are correctly emitted, which improves observability for node drain issues. ([OCPBUG-114392](https://redhat.atlassian.net/browse/OCPBUGS-114392))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:60441 - OpenShift Container Platform 4.17.12 bug fix and security update
+
+Issued: 01 September 2026
+
+OpenShift Container Platform release 4.17.12 is now available. The list of bug fixes and enhancements that are included in the update is documented in the [RHSA-2026:60441](https://access.redhat.com/errata/RHSA-2026:60441) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:60439](https://access.redhat.com/errata/RHBA-2026:60439) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.12 --pullspecs
+```
+
+### Enhancements
+
+- You can now pin the HAProxy version to `2.8` by using the new `haproxyVersion` field from the `IngressResource` API, before upgrading OpenShift Container Platform cluster to 4.23 or 5.0. If you do not pin the HAProxy version, it is upgraded to version `3.2`. ([OCPBUGS-105168](https://issues.redhat.com/browse/OCPBUGS-105168))
+
+### Fixed issues
+
+- Before this update, the machine controller in the Hosted Cluster Config Operator (HCCO) included non-routable ovn-kubernetes routes in the node network configuration. As a consequence, it caused networking conflicts and routing issues. With this release, non-routable routes are filtered out during configuration. As a result, networking conflicts are resolved. ([OCPBUGS-98328](https://issues.redhat.com/browse/OCPBUGS-98328))
+
+- Before this update, by default, the Vertical Pod Autoscaler (VPA) Operator required a control plane node for running workloads. As a consequence, it caused issues in single-node deployments. With this release, the Operator is updated to support deployment without control plane node requirements. As a result, the VPA Operator now functions correctly in single-node configurations. ([OCPBUGS-98604](https://issues.redhat.com/browse/OCPBUGS-98604))
+
+- Before this update, socket connections triggered multiple state synchronization, leading to excessive socket connection reconciliation. As a consequence, it caused unnecessary API calls and reduced performance. With this release, the reconciliation logic is updated to synchronize only on meaningful state changes. As a result, API calls are reduced and performance is improved. ([OCPBUGS-105877](https://issues.redhat.com/browse/OCPBUGS-105877))
+
+- Before this update, the console required cloud credentials during Operator initialization. As a consequence, installation failed when credentials were not immediately available. With this release, the initialization process is updated to defer credential requirements. As a result, installation succeeds without requiring immediate cloud credentials. ([OCPBUGS-111417](https://issues.redhat.com/browse/OCPBUGS-111417))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:57365 - OpenShift Container Platform 4.17.11 bug fix and security update
+
+Issued: 25 August 2026
+
+OpenShift Container Platform release 4.17.11 is now available with updates to packages and images that fix several bugs. The list of bug fixes that are included in the update is documented in the [RHSA-2026:57365](https://access.redhat.com/errata/RHSA-2026:57365) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:57361](https://access.redhat.com/errata/RHSA-2026:57361) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.11 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the OpenShift Container Platform web console used the identity UID as the settings key, and that UID differed across identity providers. As a consequence, the OpenShift Container Platform web console created a duplicate `user-settings` `ConfigMap` object each time you logged in if you had multiple identity providers such as LDAP and OpenID. With this release, the console now uses a stable hash of your user name as the settings key instead of the identity UID and automatically migrates existing settings on upgrade. As a result, the OpenShift Container Platform web console reuses a single `user-settings` `ConfigMap` object per user across all identity providers and login sessions. ([OCPBUGS-87832](https://issues.redhat.com/browse/OCPBUGS-87832))
+
+- Before this update, when you navigated to a **Terminal** tab of a node in the OpenShift Container Platform web console, the component checked for the debug pod even if the pod was still being created. As a consequence, a `Debug pod not found or was deleted.` error appeared before the terminal loaded successfully. With this release, a loading spinner is shown when the debug pod is being created, and the cleanup logic guards against an undefined namespace to prevent errors on early unmount. As a result, the **Terminal** tab of a node loads without displaying a false error message. ([OCPBUGS-100402](https://issues.redhat.com/browse/OCPBUGS-100402))
+
+- Before this update, the Cluster Monitoring Operator did not specify resource limits for some of its managed components. As a consequence, in clusters with limited resources, these components could be evicted due to memory pressure. With this release, the Cluster Monitoring Operator now sets appropriate resource limits for all managed components. As a result, components are less likely to be evicted in resource-constrained environments. ([OCPBUGS-105190](https://issues.redhat.com/browse/OCPBUGS-105190))
+
+- Before this update, the `azure-disk` CSI driver controller attempted to read the `kube-system/azure-cloud-provider` secret. As a consequence, the controller could crash when reading this secret. With this release, the `azure-disk` CSI driver controller no longer attempts to read the `kube-system/azure-cloud-provider` secret and instead falls back to `AZURE_CREDENTIAL_FILE` unconditionally. As a result, the `azure-disk` CSI driver controller no longer crashes. ([OCPBUGS-106152](https://issues.redhat.com/browse/OCPBUGS-106152))
+
+- Before this update, the `kas-connection-checker` deployment created in the `kube-system` namespace of a hosted cluster did not set a security context. Because the `kube-system` is an exempt from both SCC and Pod Security admission, no UID was assigned. As a consequence, the `kas-connection-checker` pods ran as root (UID 0) in the hosted cluster even though the workload does not need elevated privileges. With this release, an explicit non-root security context is set for the `kas-connection-checker` pods. As a result, the pods no longer run as root. ([OCPBUGS-111083](https://issues.redhat.com/browse/OCPBUGS-111083))
+
+- Before this update, the Go OpenSSL FIPS provider could potentially overwhelm the `libcrypto` library with concurrent requests. As a consequence, processes could hit the `maxThreads` limit of 10,000 and crash. With this release, the Go OpenSSL FIPS provider is updated to limit concurrent requests to the `libcrypto` library to four times the number of CPUs, buffering requests as lightweight Go routines. As a result, processes avoid the `maxThreads` limit and do not crash. ([OCPBUGS-112084](https://issues.redhat.com/browse/OCPBUGS-112084))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:54770 - OpenShift Container Platform 4.17.10 bug fix and security update
 
 Issued: 18 August 2026
@@ -1332,7 +1452,7 @@ $ oc adm release info 4.22.10 --pullspecs
 
 - Before this update, on a Telecom Boundary Clock (T-BC) PTP configuration, the `ts2phc` system daemon could start before the upstream PTP source was stable enough and before `phc2sys` system clock sync was ready. As a consequence, the T-BC took a long time to converge, and `phc2sys` system clock sync could adjust the system clock too early based on an irrelevant `ts2phc` system daemon offset. With this release, the `ts2phc` system daemon start on T-BC is delayed until the upstream source is qualified and the `phc2sys` system clock is ready; Telecom Grandmaster (T-GM) behavior is unchanged. As a result, T-BC no longer starts the `ts2phc` system daemon against an unqualified upstream source. ([OCPBUGS-104578](https://redhat.atlassian.net/browse/OCPBUGS-104578))
 
-- Before this update, when you viewed **Quick Start** `{{execute}}` code snippets in the OpenShift Container Platform web console, leading whitespace in the code block could render as an empty line before the command text. As a consequence, execute snippets across **Quick Starts** could display an extra blank line above the command, making the content harder to read. With this release, leading whitespace rendering in **Quick Start** execute code snippets is corrected. As a result, execute code blocks display the command text without an empty line above it. ([OCPBUGS-105611](https://redhat.atlassian.net/browse/OCPBUGS-105611))
+- Before this update, when you viewed `execute code` snippets on the **Quick Start** page in the OpenShift Container Platform web console, leading whitespace in the code block could render as an empty line before the command text. As a consequence, `execute code` snippets across the **Quick Start** page could display an extra blank line above the command, making the content harder to read. With this release, leading whitespace rendering in the `execute code` snippet on the **Quick Start** page is corrected. As a result, execute code blocks display the command text without a spurious empty line above it. ([OCPBUGS-105611](https://redhat.atlassian.net/browse/OCPBUGS-105611))
 
 ### Updating
 

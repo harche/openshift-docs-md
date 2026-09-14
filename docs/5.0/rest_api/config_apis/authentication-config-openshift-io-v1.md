@@ -176,6 +176,16 @@ Required
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.</p></td>
 </tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>userValidationRules</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>userValidationRules is an optional field that configures the set of rules used to validate the cluster user identity that was constructed via mapping token claims to user identity attributes. Rules are CEL expressions that must evaluate to 'true' for authentication to succeed. If any rule in the chain of rules evaluates to 'false', authentication will fail. When specified, at least one rule must be specified and no more than 64 rules may be specified.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>userValidationRules[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>TokenUserValidationRule provides a CEL-based rule used to validate a token subject. Each rule contains a CEL expression that is evaluated against the token’s claims.</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -325,6 +335,14 @@ Type
 <td style="text-align: left;"><p>claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string <code>""</code>, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>expression</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>expression is an optional CEL expression used to derive group values from JWT claims.</p>
+<p>CEL expressions have access to the token claims through a CEL variable, 'claims'.</p>
+<p>expression must be at least 1 character and must not exceed 1024 characters in length .</p>
+<p>When specified, claim must not be set or be explicitly set to the empty string (<code>""</code>).</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>prefix</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.</p>
@@ -407,12 +425,19 @@ Type
 <p>claim must not be an empty string ("") and must not exceed 256 characters.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>expression</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>expression is an optional CEL expression used to derive the username from JWT claims.</p>
+<p>CEL expressions have access to the token claims through a CEL variable, 'claims'.</p>
+<p>expression must be at least 1 character and must not exceed 1024 characters in length. expression must not be set when claim is set.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>prefix</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>prefix configures the prefix that should be prepended to the value of the JWT claim.</p>
 <p>prefix must be set when prefixPolicy is set to 'Prefix' and must be unset otherwise.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>prefixPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.</p>
@@ -496,11 +521,16 @@ Required
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>cel</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>cel holds the CEL expression and message for validation. Must be set when Type is "CEL", and forbidden otherwise.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>requiredClaim</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>requiredClaim allows configuring a required claim name and its expected value. This field is required when <code>type</code> is set to RequiredClaim, and must be omitted when <code>type</code> is set to any other value. The Kubernetes API server uses this field to validate if an incoming JWT is valid for this identity provider.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is an optional field that configures the type of the validation rule.</p>
@@ -510,6 +540,24 @@ Required
 </tr>
 </tbody>
 </table>
+
+## .spec.oidcProviders\[\].claimValidationRules\[\].cel
+
+Description
+cel holds the CEL expression and message for validation. Must be set when Type is "CEL", and forbidden otherwise.
+
+Type
+`object`
+
+Required
+- `expression`
+
+- `message`
+
+| Property     | Type     | Description                                                                                                                                                                                                                                                                  |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `expression` | `string` | expression is a CEL expression evaluated against token claims. expression is required, must be at least 1 character in length and must not exceed 1024 characters. The expression must return a boolean value where 'true' signals a valid token and 'false' an invalid one. |
+| `message`    | `string` | message is a required human-readable message to be logged by the Kubernetes API server if the CEL expression defined in 'expression' fails. message must be at least 1 character in length and must not exceed 256 characters.                                               |
 
 ## .spec.oidcProviders\[\].claimValidationRules\[\].requiredClaim
 
@@ -587,13 +635,19 @@ Required
 <p>audiences must contain at least one entry and must not exceed ten entries.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>discoveryURL</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>discoveryURL is an optional field that, if specified, overrides the default discovery endpoint used to retrieve OIDC configuration metadata. By default, the discovery URL is derived from <code>issuerURL</code> as "{issuerURL}/.well-known/openid-configuration".</p>
+<p>The discoveryURL must be a valid absolute HTTPS URL. It must not contain query parameters, user information, or fragments. Additionally, it must differ from the value of <code>issuerURL</code> (ignoring trailing slashes). The discoveryURL value must be at least 1 character long and no longer than 2048 characters.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>issuerCertificateAuthority</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>issuerCertificateAuthority is an optional field that configures the certificate authority, used by the Kubernetes API server, to validate the connection to the identity provider when fetching discovery information.</p>
 <p>When not specified, the system trust is used.</p>
 <p>When specified, it must reference a ConfigMap in the openshift-config namespace containing the PEM-encoded CA certificates under the 'ca-bundle.crt' key in the data field of the ConfigMap.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>issuerURL</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>issuerURL is a required field that configures the URL used to issue tokens by the identity provider. The Kubernetes API server determines how authentication tokens should be handled by matching the 'iss' claim in the JWT to the issuerURL of configured identity providers.</p>
@@ -718,6 +772,55 @@ Required
 | Property | Type     | Description                                        |
 |----------|----------|----------------------------------------------------|
 | `name`   | `string` | name is the metadata.name of the referenced secret |
+
+## .spec.oidcProviders\[\].userValidationRules
+
+Description
+userValidationRules is an optional field that configures the set of rules used to validate the cluster user identity that was constructed via mapping token claims to user identity attributes. Rules are CEL expressions that must evaluate to 'true' for authentication to succeed. If any rule in the chain of rules evaluates to 'false', authentication will fail. When specified, at least one rule must be specified and no more than 64 rules may be specified.
+
+Type
+`array`
+
+## .spec.oidcProviders\[\].userValidationRules\[\]
+
+Description
+TokenUserValidationRule provides a CEL-based rule used to validate a token subject. Each rule contains a CEL expression that is evaluated against the token’s claims.
+
+Type
+`object`
+
+Required
+- `expression`
+
+- `message`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>expression</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>expression is a required CEL expression that performs a validation on cluster user identity attributes like username, groups, etc.</p>
+<p>The expression must evaluate to a boolean value. When the expression evaluates to 'true', the cluster user identity is considered valid. When the expression evaluates to 'false', the cluster user identity is not considered valid. expression must be at least 1 character in length and must not exceed 1024 characters.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>message</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>message is a required human-readable message to be logged by the Kubernetes API server if the CEL expression defined in 'expression' fails. message must be at least 1 character in length and must not exceed 256 characters.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.webhookTokenAuthenticator
 

@@ -60,11 +60,8 @@ To mirror your OpenShift Container Platform image repository to your mirror regi
 
     ``` yaml
       kind: ImageSetConfiguration
-      apiVersion: mirror.openshift.io/v1alpha2
+      apiVersion: mirror.openshift.io/v2alpha1
       archiveSize: 4
-      storageConfig:
-        imageURL: <your-local-registry-dns-name>:<your-local-registry-port>/mirror/oc-mirror-metadata
-        skipTLS: true
       mirror:
         platform:
           architectures:
@@ -86,12 +83,6 @@ To mirror your OpenShift Container Platform image repository to your mirror regi
     `archiveSize`
     Specifies the maximum size, in GiB, of each file within the image set.
 
-    `storageConfig`
-    Specifies the back-end location to receive the image set metadata. This location can be a registry or local directory. It is required to specify `storageConfig` values.
-
-    `storageConfig.imageURL`
-    Specifies the registry URL for the storage backend.
-
     `channels.name`
     Specifies the channel that contains the OpenShift Container Platform images for the version you are installing.
 
@@ -110,19 +101,19 @@ To mirror your OpenShift Container Platform image repository to your mirror regi
 3.  To mirror a specific OpenShift Container Platform image repository, the multicluster engine, and the LSO, run the following command:
 
     ``` terminal
-    $ oc mirror --dest-skip-tls --config ocp-mce-imageset.yaml docker://<your-local-registry-dns-name>:<your-local-registry-port>
+    $ oc mirror --dest-tls-verify=false --config ocp-mce-imageset.yaml docker://<your-local-registry-dns-name>:<your-local-registry-port> --v2
     ```
 
 4.  Update the registry and certificate in the `install-config.yaml` file:
 
     <div class="formalpara-title">
 
-    **Example `imageContentSources.yaml`**
+    **Example `imageDigestSources.yaml`**
 
     </div>
 
     ``` yaml
-      imageContentSources:
+      imageDigestSources:
         - source: "quay.io/openshift-release-dev/ocp-release"
           mirrors:
             - "<your-local-registry-dns-name>:<your-local-registry-port>/openshift/release-images"
@@ -160,7 +151,7 @@ To mirror your OpenShift Container Platform image repository to your mirror regi
 
     <div class="important">
 
-    The `oc mirror` command creates a folder called `oc-mirror-workspace` with several outputs. This includes the `imageContentSourcePolicy.yaml` file that identifies all the mirrors you need for OpenShift Container Platform and your selected Operators.
+    The `oc mirror` command creates `ImageDigestMirrorSet` (IDMS) and `ImageTagMirrorSet` (ITMS) files under `working-dir/cluster-resources` folder that identifies all the mirrors you need for OpenShift Container Platform and your selected Operators.
 
     </div>
 

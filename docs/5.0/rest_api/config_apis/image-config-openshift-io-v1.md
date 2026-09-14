@@ -97,13 +97,13 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>allowedRegistries</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>allowedRegistries are the only registries permitted for image pull and push actions. All other registries are denied.</p>
+<td style="text-align: left;"><p>allowedRegistries are the only registries permitted for image pull and push actions. All other registries are denied. Each entry must be a valid registry scope in the format hostname[:port][/path], optionally prefixed with "<strong>." for wildcard subdomains (e.g., "</strong>.example.com"). The hostname must consist of valid DNS labels separated by dots, where each label contains only alphanumeric characters and hyphens and does not start or end with a hyphen. Entries must not be empty, must not include tags (e.g., ":latest") or digests (e.g., "@sha256:…​"), and must be at most 256 characters in length. The list may contain at most 1024 entries.</p>
 <p>Only one of BlockedRegistries or AllowedRegistries may be set.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>blockedRegistries</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>blockedRegistries cannot be used for image pull and push actions. All other registries are permitted.</p>
+<td style="text-align: left;"><p>blockedRegistries cannot be used for image pull and push actions. All other registries are permitted. Each entry must be a valid registry scope in the format hostname[:port][/path], optionally prefixed with "<strong>." for wildcard subdomains (e.g., "</strong>.example.com"). The hostname must consist of valid DNS labels separated by dots, where each label contains only alphanumeric characters and hyphens and does not start or end with a hyphen. Entries must not be empty, must not include tags (e.g., ":latest") or digests (e.g., "@sha256:…​"), and must be at most 256 characters in length. The list may contain at most 1024 entries.</p>
 <p>Only one of BlockedRegistries or AllowedRegistries may be set.</p></td>
 </tr>
 <tr class="odd">
@@ -114,7 +114,7 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>insecureRegistries</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>insecureRegistries are registries which do not have a valid TLS certificates or only support HTTP connections.</p></td>
+<td style="text-align: left;"><p>insecureRegistries are registries which do not have a valid TLS certificates or only support HTTP connections. Each entry must be a valid registry scope in the format hostname[:port][/path], optionally prefixed with "<strong>." for wildcard subdomains (e.g., "</strong>.example.com"). The hostname must consist of valid DNS labels separated by dots, where each label contains only alphanumeric characters and hyphens and does not start or end with a hyphen. Entries must not be empty, must not include tags (e.g., ":latest") or digests (e.g., "@sha256:…​"), and must be at most 256 characters in length. The list may contain at most 1024 entries.</p></td>
 </tr>
 </tbody>
 </table>

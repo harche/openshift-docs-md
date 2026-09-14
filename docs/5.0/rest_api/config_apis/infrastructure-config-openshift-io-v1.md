@@ -431,18 +431,18 @@ Type
 | Property               | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |------------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiServerInternalIPs` | `array (string)` | apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.apiServerInternalIPs will be used. Once set, the list cannot be completely removed (but its second entry can). |
-| `failureDomains`       | `array`          | failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `failureDomains`       | `array`          | failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used. Each failure domain’s server must match the server field of an entry in the vcenters list.                                                                                                                                                                                                                                                                                                                                                         |
 | `failureDomains[]`     | `object`         | VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `ingressIPs`           | `array (string)` | ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.ingressIPs will be used. Once set, the list cannot be completely removed (but its second entry can).                                                                                                                       |
 | `machineNetworks`      | `array (string)` | machineNetworks are IP networks used to connect all the OpenShift cluster nodes. Each network is provided in the CIDR format and should be IPv4 or IPv6, for example "10.0.0.0/8" or "fd00::/8".                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `nodeNetworking`       | `object`         | nodeNetworking contains the definition of internal and external network constraints for assigning the node’s networking. If this field is omitted, networking defaults to the legacy address selection behavior which is to only support a single address and return the first one found.                                                                                                                                                                                                                                                                                                                    |
-| `vcenters`             | `array`          | vcenters holds the connection details for services to communicate with vCenter. Currently, only a single vCenter is supported, but in tech preview 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except in the case where the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present. You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.                                |
+| `vcenters`             | `array`          | vcenters holds the connection details for services to communicate with vCenter. Up to 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except when 1.) the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present or 2.) in TechPreview you are able to add and remove vCenters but may not remove all vCenters. You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.        |
 | `vcenters[]`           | `object`         | VSpherePlatformVCenterSpec stores the vCenter connection fields. This is used by the vSphere CCM.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## .spec.platformSpec.vsphere.failureDomains
 
 Description
-failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.
+failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used. Each failure domain’s server must match the server field of an entry in the vcenters list.
 
 Type
 `array`
@@ -466,15 +466,15 @@ Required
 
 - `zone`
 
-| Property         | Type     | Description                                                                                                                                                                                                                                                            |
-|------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`           | `string` | name defines the arbitrary but unique name of a failure domain.                                                                                                                                                                                                        |
-| `region`         | `string` | region defines the name of a region tag that will be attached to a vCenter datacenter. The tag category in vCenter must be named openshift-region.                                                                                                                     |
-| `regionAffinity` | `object` | regionAffinity holds the type of region, Datacenter or ComputeCluster. When set to Datacenter, this means the region is a vCenter Datacenter as defined in topology. When set to ComputeCluster, this means the region is a vCenter Cluster as defined in topology.    |
-| `server`         | `string` | server is the fully-qualified domain name or the IP address of the vCenter server.                                                                                                                                                                                     |
-| `topology`       | `object` | topology describes a given failure domain using vSphere constructs                                                                                                                                                                                                     |
-| `zone`           | `string` | zone defines the name of a zone tag that will be attached to a vCenter cluster. The tag category in vCenter must be named openshift-zone.                                                                                                                              |
-| `zoneAffinity`   | `object` | zoneAffinity holds the type of the zone and the hostGroup which vmGroup and the hostGroup names in vCenter corresponds to a vm-host group of type Virtual Machine and Host respectively. Is also contains the vmHostRule which is an affinity vm-host rule in vCenter. |
+| Property         | Type     | Description                                                                                                                                                                                                                                                                                                      |
+|------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`           | `string` | name defines the arbitrary but unique name of a failure domain.                                                                                                                                                                                                                                                  |
+| `region`         | `string` | region defines the name of a region tag that will be attached to a vCenter datacenter. The tag category in vCenter must be named openshift-region.                                                                                                                                                               |
+| `regionAffinity` | `object` | regionAffinity holds the type of region, Datacenter or ComputeCluster. When set to Datacenter, this means the region is a vCenter Datacenter as defined in topology. When set to ComputeCluster, this means the region is a vCenter Cluster as defined in topology.                                              |
+| `server`         | `string` | server is the fully-qualified domain name or the IP address of the vCenter server. This must match the server field of an entry in the vcenters list. The match is case-sensitive; the value must be specified exactly as it appears in the vcenters entry. The value must be between 1 and 255 characters long. |
+| `topology`       | `object` | topology describes a given failure domain using vSphere constructs                                                                                                                                                                                                                                               |
+| `zone`           | `string` | zone defines the name of a zone tag that will be attached to a vCenter cluster. The tag category in vCenter must be named openshift-zone.                                                                                                                                                                        |
+| `zoneAffinity`   | `object` | zoneAffinity holds the type of the zone and the hostGroup which vmGroup and the hostGroup names in vCenter corresponds to a vm-host group of type Virtual Machine and Host respectively. Is also contains the vmHostRule which is an affinity vm-host rule in vCenter.                                           |
 
 ## .spec.platformSpec.vsphere.failureDomains\[\].regionAffinity
 
@@ -642,7 +642,7 @@ Type
 ## .spec.platformSpec.vsphere.vcenters
 
 Description
-vcenters holds the connection details for services to communicate with vCenter. Currently, only a single vCenter is supported, but in tech preview 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except in the case where the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present. You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.
+vcenters holds the connection details for services to communicate with vCenter. Up to 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except when 1.) the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present or 2.) in TechPreview you are able to add and remove vCenters but may not remove all vCenters. You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.
 
 Type
 `array`
@@ -890,13 +890,60 @@ aws contains settings specific to the Amazon Web Services infrastructure provide
 Type
 `object`
 
-| Property             | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
-|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `region`             | `string` | region holds the default AWS region for new AWS resources created by the cluster.                                                                                                                                                                                                                                                           |
-| `resourceTags`       | `array`  | resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See <https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html> for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user. |
-| `resourceTags[]`     | `object` | AWSResourceTag is a tag to apply to AWS resources created for the cluster.                                                                                                                                                                                                                                                                  |
-| `serviceEndpoints`   | `array`  | serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.                                                                                                                                                                         |
-| `serviceEndpoints[]` | `object` | AWSServiceEndpoint store the configuration of a custom url to override existing defaults of AWS Services.                                                                                                                                                                                                                                   |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>cloudLoadBalancerConfig</code></p></td>
+<td style="text-align: left;"><p>``</p></td>
+<td style="text-align: left;"><p>cloudLoadBalancerConfig holds configuration related to DNS and cloud load balancers. It allows configuration of in-cluster DNS as an alternative to the platform default DNS implementation. When using the ClusterHosted DNS type, Load Balancer IP addresses must be provided for the API and internal API load balancers as well as the ingress load balancer.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>ipFamily</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.</p>
+<p>Valid values are: * "IPv4" (default): Cloud platform resources use IPv4 addressing only. * "DualStackIPv6Primary": Cloud platform resources use dual-stack networking with IPv6 as the primary protocol family. * "DualStackIPv4Primary": Cloud platform resources use dual-stack networking with IPv4 as the primary protocol family.</p>
+<p>When omitted, this field defaults to "IPv4".</p>
+<p>This field is immutable and cannot be changed once set.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>region</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>region holds the default AWS region for new AWS resources created by the cluster.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>resourceTags</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See <a href="https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html">https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html</a> for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>resourceTags[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>AWSResourceTag is a tag to apply to AWS resources created for the cluster.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>serviceEndpoints</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>serviceEndpoints[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>AWSServiceEndpoint store the configuration of a custom url to override existing defaults of AWS Services.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .status.platformStatus.aws.resourceTags
 
@@ -1154,15 +1201,64 @@ gcp contains settings specific to the Google Cloud Platform infrastructure provi
 Type
 `object`
 
-| Property                  | Type     | Description                                                                                                                                                                                                                                                                                                                                                       |
-|---------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cloudLoadBalancerConfig` | \`\`     | cloudLoadBalancerConfig holds configuration related to DNS and cloud load balancers. It allows configuration of in-cluster DNS as an alternative to the platform default DNS implementation. When using the ClusterHosted DNS type, Load Balancer IP addresses must be provided for the API and internal API load balancers as well as the ingress load balancer. |
-| `projectID`               | `string` | resourceGroupName is the Project ID for new GCP resources created for the cluster.                                                                                                                                                                                                                                                                                |
-| `region`                  | `string` | region holds the region for new GCP resources created for the cluster.                                                                                                                                                                                                                                                                                            |
-| `resourceLabels`          | `array`  | resourceLabels is a list of additional labels to apply to GCP resources created for the cluster. See <https://cloud.google.com/compute/docs/labeling-resources> for information on labeling GCP resources. GCP supports a maximum of 64 labels per resource. OpenShift reserves 32 labels for internal use, allowing 32 labels for user configuration.            |
-| `resourceLabels[]`        | `object` | GCPResourceLabel is a label to apply to GCP resources created for the cluster.                                                                                                                                                                                                                                                                                    |
-| `resourceTags`            | `array`  | resourceTags is a list of additional tags to apply to GCP resources created for the cluster. See <https://cloud.google.com/resource-manager/docs/tags/tags-overview> for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.                                                                                                    |
-| `resourceTags[]`          | `object` | GCPResourceTag is a tag to apply to GCP resources created for the cluster.                                                                                                                                                                                                                                                                                        |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>cloudLoadBalancerConfig</code></p></td>
+<td style="text-align: left;"><p>``</p></td>
+<td style="text-align: left;"><p>cloudLoadBalancerConfig holds configuration related to DNS and cloud load balancers. It allows configuration of in-cluster DNS as an alternative to the platform default DNS implementation. When using the ClusterHosted DNS type, Load Balancer IP addresses must be provided for the API and internal API load balancers as well as the ingress load balancer.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>projectID</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>resourceGroupName is the Project ID for new GCP resources created for the cluster.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>region</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>region holds the region for new GCP resources created for the cluster.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>resourceLabels</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>resourceLabels is a list of additional labels to apply to GCP resources created for the cluster. See <a href="https://cloud.google.com/compute/docs/labeling-resources">https://cloud.google.com/compute/docs/labeling-resources</a> for information on labeling GCP resources. GCP supports a maximum of 64 labels per resource. OpenShift reserves 32 labels for internal use, allowing 32 labels for user configuration.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>resourceLabels[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>GCPResourceLabel is a label to apply to GCP resources created for the cluster.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>resourceTags</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>resourceTags is a list of additional tags to apply to GCP resources created for the cluster. See <a href="https://cloud.google.com/resource-manager/docs/tags/tags-overview">https://cloud.google.com/resource-manager/docs/tags/tags-overview</a> for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>resourceTags[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>GCPResourceTag is a tag to apply to GCP resources created for the cluster.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>universeDomain</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>universeDomain is the GCP universe domain for the cluster, detected from the installer credentials. Components with their own GCP credentials should read the universe domain from those credentials, as they are the authoritative source. This field is provided for components that do not have GCP credentials and for general observability.</p>
+<p>When omitted, standard public GCP (googleapis.com) is assumed.</p>
+<p>universeDomain is an optional field that, when specified, must be non-empty and at most 253 characters. It must be a valid DNS subdomain: containing only lowercase alphanumeric characters, '-' or '.', and starting and ending with an alphanumeric character.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .status.platformStatus.gcp.resourceLabels
 

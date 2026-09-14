@@ -1,8 +1,6 @@
 Description
 DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
 
-This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
-
 Type
 `object`
 
@@ -55,7 +53,7 @@ Type
 <td style="text-align: left;"><p><code>extendedResourceName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ExtendedResourceName is the extended resource name for the devices of this class. The devices of this class can be used to satisfy a pod’s extended resource requests. It has the same format as the name of a pod’s extended resource. It should be unique among all the device classes in a cluster. If two device classes have the same name, then the class created later is picked to satisfy a pod’s extended resource requests. If two classes are created at the same time, then the name of the class lexicographically sorted first is picked.</p>
-<p>This is an alpha field.</p></td>
+<p>This is a beta field.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>selectors</code></p></td>
@@ -193,6 +191,8 @@ Required
 <p>A robust expression should check for the existence of attributes before referencing them.</p>
 <p>For ease of use, the cel.bind() function is enabled, and can be used to simplify expressions that access multiple attributes with the same domain. For example:</p>
 <p>cel.bind(dra, device.attributes["dra.example.com"], dra.someBool &amp;&amp; dra.anotherBool)</p>
+<p>When the DRAListTypeAttributes feature gate is enabled, the includes() helper is available and it can work for both scalar and list-type attributes. It was introduced to support smooth migration from scalar attributes to list-type attributes while keeping CEL expressions simple. For example:</p>
+<p>device.attributes["dra.example.com"].models.includes("some-model")</p>
 <p>The length of the expression must be smaller or equal to 10 Ki. The cost of evaluating it is also limited based on the estimated number of logical steps.</p></td>
 </tr>
 </tbody>

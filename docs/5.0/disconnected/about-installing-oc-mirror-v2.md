@@ -1135,7 +1135,7 @@ You can disable signature mirroring for all images by providing the `--remove-si
 1.  If you want to disable signature mirroring for all images, add `remove-signatures` flag while mirroring images. For example:
 
     ``` terminal
-    $ oc mirror --config=imageset-config.yaml <destination_registry> --remove-signatures
+    $ oc mirror --config=imageset-config.yaml <destination_registry> --remove-signatures --v2
     ```
 
 2.  If you want to enable or disable signature mirroring for specific elements, such as transport protocol, registry, namespace or image, use the following steps:
@@ -1180,7 +1180,7 @@ When enabled, the plugin verifies that container images match their signatures, 
 1.  If you want to enable signature verification for all images, run the following command:
 
     ``` terminal
-    $ oc mirror --secure-policy=true
+    $ oc mirror --secure-policy=true --v2
     ```
 
 2.  If you want to enable or disable signature verification for specific elements — such as a transport protocol, registry, namespace, or image — follow these steps:

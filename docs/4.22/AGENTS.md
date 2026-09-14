@@ -149,6 +149,7 @@ Root: ./
 |networking/networking_operators/metallb-operator:{about-metallb.md,metallb-operator-install.md,metallb-upgrading-operator.md}
 |networking/networking_operators/sr-iov-operator:{installing-sriov-operator.md,configuring-sriov-operator.md,uninstalling-sriov-operator.md}
 |networking/networking_operators/dpu-operator:{dpu-operator.md}
+|networking/networking_operators/dpf_operator:{dpf-release-notes.md,about-dpf-operator.md,dpf-environment-setup.md,dpf-operator-installation.md,dpf-hosted-cluster-provisioning.md,dpf-worker-nodes-provisioning.md,dpf-validation-telemetry.md,dpf-troubleshooting.md}
 |networking/network_observability_operator:{network-observability-operator.md}
 |networking/network_security:{network-policy-apis.md,logging-network-security.md,configuring-ipsec-ovn.md,zero-trust-networking.md}
 |networking/network_security/AdminNetworkPolicy:{ovn-k-anp.md,ovn-k-banp.md,ovn-k-anp-banp-metrics.md,ovn-k-egress-nodes-networks-peer.md,ovn-k-anp-troubleshooting.md,ovn-k-anp-recommended-practices.md}

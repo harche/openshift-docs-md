@@ -141,6 +141,10 @@ For platform `none`:
 
 - See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
 
+For platform `vsphere`, or for platform `baremetal` on vSphere:
+
+- You must set the `disk.EnableUUID` parameter to `TRUE` on all OpenShift Container Platform nodes. If this parameter is not enabled, the Agent-based Installer validation fails.
+
 </div>
 
 <div class="note">

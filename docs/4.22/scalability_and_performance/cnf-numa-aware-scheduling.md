@@ -226,14 +226,6 @@ For more information about creating a performance profile, see "About the Perfor
 
 To ensure high availability for the NUMA-aware secondary scheduler, the NUMA Resources Operator automatically creates scheduler replicas on control plane nodes. The Operator manages this configuration by using the `spec.replicas` field in the `NUMAResourcesScheduler` custom resource (CR).
 
-<div class="important">
-
-Managing high availability is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 By default, the NUMA Resources Operator automatically enables HA mode by creating one scheduler replica for each control plane node, with a maximum of three replicas.
 
 The following manifest demonstrates the default behavior. To automatically enable replica detection, omit the `replicas` field.

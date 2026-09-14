@@ -394,6 +394,8 @@ The following permissions are required for creating compute resources:
 
 - `compute.disks.setLabels`
 
+- `compute.diskTypes.get`
+
 - `compute.instanceGroups.create`
 
 - `compute.instanceGroups.delete`
@@ -454,6 +456,8 @@ The following permissions are required for creating health check resources:
 
 - `compute.healthChecks.list`
 
+- `compute.healthChecks.update`
+
 - `compute.healthChecks.useReadOnly`
 
 - `compute.httpHealthChecks.create`
@@ -467,6 +471,8 @@ The following permissions are required for creating health check resources:
 - `compute.regionHealthChecks.create`
 
 - `compute.regionHealthChecks.get`
+
+- `compute.regionHealthChecks.update`
 
 - `compute.regionHealthChecks.useReadOnly`
 

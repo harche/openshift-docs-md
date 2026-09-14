@@ -220,6 +220,15 @@ You can now configure a custom video device type when creating a virtual machine
 
 Some linked Jira tickets are accessible only with Red Hat credentials.
 
+Detaching a disk from a virtual machine does not remove the owner reference from the data volume
+When you detach a disk from a virtual machine (VM), the `DataVolume` object retains a stale owner reference to the original VM. If you then delete the original VM, garbage collection deletes the `DataVolume` object and its underlying persistent volume claim (PVC), even if the disk is attached to a different VM. As a consequence, data loss can occur.
+
+To work around this problem, after detaching a disk from a VM, manually remove the `ownerReference` entry from the `DataVolume` object before deleting the original VM. As a result, the disk is not deleted when the original VM is removed.
+
+[CNV-71659](https://redhat.atlassian.net/browse/CNV-71659)
+
+<!-- -->
+
 VMs using the cnv-bridge CNI fail to live migrate after updates from 4.12
 When you update from OpenShift Container Platform 4.12 to a newer minor version, virtual machines that use the `cnv-bridge` Container Network Interface (CNI) fail to live migrate. As a consequence, live migration fails for affected VMs.
 
