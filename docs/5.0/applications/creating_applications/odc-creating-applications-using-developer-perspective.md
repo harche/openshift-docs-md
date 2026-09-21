@@ -72,7 +72,7 @@ To create serverless applications, in addition to the preceding prerequisites, e
 
 - You have created a `KnativeServing` resource in the `knative-serving` namespace.
 
-# Creating sample applications
+# Create sample applications
 
 You can use the sample applications in the **+Add** flow of the **Developer** perspective to create, build, and deploy applications quickly.
 
@@ -106,7 +106,7 @@ The **Quick Starts** page shows you how to create, import, and run applications 
 
 4.  Perform the steps that are displayed.
 
-# Importing a codebase from Git to create an application
+# Import a codebase from Git to create an application
 
 You can use the **Developer** perspective to create, build, and deploy an application on OpenShift Container Platform using an existing codebase in GitHub.
 
@@ -279,7 +279,7 @@ The following procedure walks you through the **From Git** option in the **Devel
 
 12. Click **Create** to create the application and a success notification is displayed. You can see the build status of the application in the **Topology** view.
 
-# Creating applications by deploying container image
+# Create applications by deploying container image
 
 You can use an external image registry or an image stream tag from an internal registry to deploy an application on your cluster.
 
@@ -363,7 +363,7 @@ You can use the devfiles in the **+Add** flow of the **Developer** perspective t
 
 4.  Click **Create** to create an application and view the application in the **Topology** view.
 
-# Using the Developer Catalog to add services or components to your application
+# Use the Developer Catalog to add services or components to your application
 
 You use the Developer Catalog to deploy applications and services based on Operator backed services such as Databases, Builder Images, and Helm Charts. The Developer Catalog contains a collection of application components, services, event sources, or source-to-image builders that you can add to your project. Cluster administrators can customize the content made available in the catalog.
 

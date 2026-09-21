@@ -38,14 +38,6 @@ You can add bare-metal compute machines to your cluster.
 
 See [Adding bare-metal compute machines to a vSphere cluster](../../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra) for more information.
 
-<div class="important">
-
-Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Adding compute machines to bare metal
 
 You can add more compute machines to your OpenShift Container Platform cluster on bare metal.

@@ -1,6 +1,6 @@
 In OpenShift Container Platform, the DNS Operator deploys and manages a CoreDNS instance to provide a name resolution service to pods inside the cluster, enables DNS-based Kubernetes Service discovery, and resolves internal `cluster.local` names.
 
-# Checking the status of the DNS Operator
+# Check the status of the DNS Operator
 
 You can check the DNS Operator deployment and Cluster Operator status. The DNS Operator is deployed during installation with a `Deployment` object.
 

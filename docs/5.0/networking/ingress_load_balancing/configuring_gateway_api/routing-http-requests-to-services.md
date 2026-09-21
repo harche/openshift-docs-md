@@ -1,6 +1,6 @@
 When you expose your applications through a gateway, you must configure an `HTTPRoute` custom resource (CR) to accurately direct incoming HTTP requests from your network listener to the appropriate backend services. A Gateway API `HTTPRoute` CR specifies the exact routing behavior for these requests by evaluating a set of rules.
 
-The core configuration element of an `HTTPRoute` CR is a rule. You can configure up to 16 rules for a single route. Within each rule, you can establish the following routing behaviors:
+Traffic delivery can be configured for an `HTTPRoute` using rules. You can configure up to 16 rules for a single route. Within each rule, you can establish the following routing behaviors:
 
 - `Matches`: Define the conditions an HTTP request must meet based on paths, headers, query parameters, or methods.
 
@@ -68,11 +68,9 @@ To direct incoming network traffic from a gateway to your backend applications, 
   sample-route   ["app1.example.com","app2.example.com"]   45s
   ```
 
-# Configure HTTP request matching conditions
+# Configure path-based routing
 
 To ensure traffic is routed to the correct application when multiple services share a gateway, you can define request matching conditions within your `HTTPRoute` custom resource (CR). You can match HTTP requests based on paths, headers, query parameters, or methods.
-
-- You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -125,12 +123,6 @@ Each consists of type, name, and value. QueryParameters match type indicates how
 
 `method`
 A value in upper case that should match on the HTTP request method. Must be one of: GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, or PATCH.
-
-<div class="note">
-
-According to Gateway API conventions, the `RegularExpression` match type is classified as an implementation-specific feature (`Support: Implementation-specific`). While Red Hat OpenShift Service Mesh fully supports regular expression matching, this feature might not be available or behave identically across other Gateway API implementations.
-
-</div>
 
 ### Example: path match
 
@@ -186,8 +178,6 @@ spec:
 
 To modify how HTTP requests are processed before they reach your backend services, you can pre-configure filters within the rules of your `HTTPRoute` custom resource (CR). Configuring these filters allows you to automatically redirect traffic, modify headers, or mirror requests to achieve your desired routing behavior.
 
-- You have access to the cluster as a user with the `cluster-admin` role.
-
 - You have installed the OpenShift CLI (`oc`).
 
 1.  Create or edit an `HTTPRoute` YAML file to include your desired processing directives under the `spec.rules.filters` field.
@@ -222,26 +212,27 @@ To modify how HTTP requests are processed before they reach your backend service
 
 ## Supported HTTPRoute filters
 
-Filters apply processing directions to the HTTP request, such as header modification or redirect to another URL. You can specify up to 16 filters in a rule. Filters may usually be combined for advanced filtering results, except for the urlRewrite and requestRedirect filters, which may not be combined.
+Filters apply processing directions to the HTTP request, such as header modification or redirect to another URL. You can specify up to 16 filters in a rule. Filters may usually be combined for advanced filtering results, except for the `urlRewrite` and `requestRedirect` filters, which may not be combined.
 
 You can apply the following filter types to a rule:
 
 `requestRedirect`
-Responds to an HTTP request with an HTTP 3xx code, instructing the client to retrieve another URL. Optional fields include scheme (http \| https), hostname, path (type: replaceFullPath \| replacePrefixMatch, string values for replaceFullPath or replacePrefixMatch), port, and statusCode (301 \| 302 \| 303 \| 307 \| 308).
+Responds to an HTTP request with an HTTP 3xx code, instructing the client to retrieve another URL. Optional fields include scheme (`http | https`), `hostname`, `path` (`type: replaceFullPath | replacePrefixMatch`, string values for `replaceFullPath` or `replacePrefixMatch`), `port`, and `statusCode` (`301 | 302 | 303 | 307 | 308`).
 
 `requestHeaderModifier`
-Modifies an HTTP request’s headers. Only one modifier per header may be specified. Multiple values for a header must be comma-separated. Up to 16 header filters may be listed. Fields are one of Set, Add, Remove. Set, Add, and Remove may modify, add, and remove up to 16 header values that match a given name.
+Modifies an HTTP request’s headers. Only one modifier per header may be specified. Multiple values for a header must be comma-separated. Up to 16 header filters may be listed. Fields are one of `Set`, `Add`, `Remove`. These fields can modify, add, and remove up to 16 header values that match a given name.
 
 `responseHeaderModifier`
-Available on Red Hat OpenShift Service Mesh, this extended filter modifies an HTTP response’s headers with the same constraints as requestHeaderModifier.
+Available on Red Hat OpenShift Service Mesh, this extended filter modifies an HTTP response’s headers with the same constraints as `requestHeaderModifier`.
 
 `requestMirror`
-Available on Red Hat OpenShift Service Mesh, this extended filter mirrors (i.e. sends a duplicate) requests to specified destinations (backendRef). Fields include: backendRef, and the optional percent or fraction to specify the portion of requests that should be mirrored. If neither percent nor fraction are specified, then 100% of requests are mirrored.
+Available on Red Hat OpenShift Service Mesh, this extended filter mirrors (sends duplicate) requests to specified destinations (`backendRef`). Fields include: `backendRef`, and the optional percent or fraction to specify the portion of requests that should be mirrored. If neither percent nor fraction are specified, then 100% of requests are mirrored.
 
 `urlRewrite`
-Available on Red Hat OpenShift Service Mesh, this extended filter modifies an HTTP request’s hostname, path, or both. It may not be used in combination with the requestRedirect filter. However, the path semantics for requestRedirect can also be used for urlRewrite, i.e. (type: replaceFullPath \| replacePrefixMatch, string values for replaceFullPath or replacePrefixMatch).
+Available on Red Hat OpenShift Service Mesh, this extended filter modifies an HTTP request’s hostname, path, or both. The filter cannot be used in combination with the `requestRedirect` filter. However, the path semantics for `requestRedirect` can be used for `urlRewrite`. For example, you can specify `type: replaceFullPath | replacePrefixMatch`, string values for `replaceFullPath` or `replacePrefixMatch`.
 
-### Example: requestRedirect filter
+`cors`
+Available on Red Hat OpenShift Service Mesh and this extended filter configures Cross-Origin Resource Sharing (CORS). CORS lets a browser permit a web application from one origin to access resources from a different origin. Use a CORS filter when a browser-based application needs to request resources from a different origin. The gateway applies the policy and answers pre-flight requests directly, so your backend services do not have to implement CORS themselves. Fields include `allowOrigins`, `allowMethods`, `allowHeaders`, `exposeHeaders`, `allowCredentials`, and `maxAge`. For information, see "Cross-Origin Resource Sharing".
 
 The following example demonstrates a complete `HTTPRoute` custom resource (CR) with a `requestRedirect` filter that issues a permanent redirect (301) from HTTP to HTTPS:
 
@@ -265,15 +256,13 @@ spec:
         statusCode: 301
 ```
 
-- `hostnames` defines the domain, such as `"<example.com>"`, that this route applies to.
+- `hostnames` defines the domain, such as `<example.com>`, that this route applies to.
 
 - `filters` specifies the processing logic. In this example, the `RequestRedirect` type is used.
 
 - `scheme: https` instructs the gateway to redirect the client to the secure version of the URL.
 
 - `statusCode: 301` indicates a permanent redirect.
-
-### Example: requestHeaderModifier filter
 
 The following snippet demonstrates how to configure a `requestHeaderModifier` filter that adds a new header, modifies an existing header, and removes a specific header:
 
@@ -296,11 +285,42 @@ spec:
         remove: ["x-request-id"]
 ```
 
+The following snippet demonstrates how to configure a `cors` filter that allows a browser-based application served from a different origin to call your backend:
+
+``` yaml
+spec:
+  rules:
+  - filters:
+    - type: CORS
+      cors:
+        allowOrigins:
+        - "https://<trusted_origin.com>"
+        allowMethods:
+        - GET
+        - POST
+        allowHeaders:
+        - Content-Type
+        exposeHeaders:
+        - X-Custom-Response-Header
+        allowCredentials: true
+        maxAge: 3600
+```
+
+- `allowOrigins` lists the origins the browser is permitted to make cross-origin requests from, such as `https://<trusted_origin.com>`.
+
+- `allowMethods` lists the HTTP methods allowed for cross-origin requests.
+
+- `allowHeaders` lists the request headers a client is allowed to send.
+
+- `exposeHeaders` lists the response headers the browser is allowed to read.
+
+- `allowCredentials` when set to `true` allows the browser to include credentials, such as cookies, in the request.
+
+- `maxAge` specifies for how long the browser caches the pre-flight response in seconds.
+
 # Configure routing destinations and traffic weights
 
 To route traffic to your backends, you must define service destinations and traffic weights within your `HTTPRoute` custom resource (CR) to distribute requests across your applications.
-
-- You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -379,8 +399,6 @@ spec:
 # Set timeouts for HTTP requests
 
 To prevent hanging connections and ensure your application remains responsive, you can set strict timeouts for the entire request and the backend hop within your `HTTPRoute` custom resource (CR).
-
-- You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -489,7 +507,7 @@ spec:
       port: 8080
 ```
 
-# OpenShift Container Platform routes and HTTPRoutes Comparison
+# OpenShift Container Platform routes and HTTPRoutes comparison
 
 When you migrate from standard networking to the Gateway API, you can compare OpenShift Container Platform routes with `HTTPRoute` custom resources (CRs) to understand which features are supported and how your configuration must change. While both resources handle ingress traffic, they have distinct feature sets and implementation differences.
 
@@ -506,6 +524,8 @@ The following features are exclusive to `HTTPRoute` CRs:
 - Request redirection
 
 - Request mirroring
+
+- Cross-Origin Resource Sharing (CORS)
 
 The following features are exclusive to OpenShift Container Platform routes:
 
@@ -529,3 +549,7 @@ The following table outlines the features that are shared between both resources
 | Sharding           | Configured using metadata labels.                                             | Configured using parent references (`parentRefs`).                |
 
 Shared features and implementation differences
+
+# Additional resources
+
+- [Cross-Origin Resource Sharing (Gateway API documentation)](https://gateway-api.sigs.k8s.io/guides/user-guides/http-cors/)

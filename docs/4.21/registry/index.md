@@ -162,7 +162,7 @@ However, the `managementState` of the Image Registry Operator alters the behavio
 
   - `Failed`: Indicates if the most recent pruning job failed.
 
-# Creating containers by using images from third-party registries
+# Create containers by using images from third-party registries
 
 Some container image registries require access authorization. Podman is an open source tool for managing containers and container images and interacting with image registries. You can use Podman to authenticate your credentials, pull the registry image, and store local images in a local file system. The procedure provides a generic example of authenticating the registry with Podman.
 

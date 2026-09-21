@@ -32,7 +32,7 @@ When you create a pod service account or a namespace, wait until the service acc
         --namespace=project-b
     ```
 
-# Allowing pods to reference images from other secured registries
+# Allow pods to reference images from other secured registries
 
 Pull secrets enable pods in OpenShift Container Platform to authenticate with secured registries and pull container images. Docker and Podman store authentication credentials in configuration files that you can use to create pull secrets for your service accounts.
 
@@ -93,7 +93,7 @@ metadata:
 type: Opaque
 ```
 
-## Creating a pull secret
+## Create a pull secret
 
 To authenticate with container registries in OpenShift Container Platform, you can create pull secrets from existing Docker or Podman authentication files. You can also create secrets by providing registry credentials directly by using the `oc create secret docker-registry` command.
 
@@ -125,7 +125,7 @@ To authenticate with container registries in OpenShift Container Platform, you c
         --docker-email=<email>
     ```
 
-## Using a pull secret in a workload
+## Use a pull secret in a workload
 
 To allow workloads to pull images from private registries in OpenShift Container Platform, you can link the pull secret to a service account by entering the `oc secrets link` command or by defining it directly in your workload configuration YAML file.
 
@@ -203,7 +203,7 @@ To allow workloads to pull images from private registries in OpenShift Container
       - name: <pull_secret_name>
     ```
 
-## Pulling from private registries with delegated authentication
+## Pull from private registries with delegated authentication
 
 To pull images from private registries that delegate authentication to a separate service in OpenShift Container Platform, you can create pull secrets for both the authentication server and the registry endpoint. Use the `oc create secret docker-registry` command to create separate secrets for each service.
 
@@ -229,7 +229,7 @@ To pull images from private registries that delegate authentication to a separat
         private-registry
     ```
 
-# Updating the global cluster pull secret
+# Update the global cluster pull secret
 
 To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret*. To do this, you can use the `oc set data secret/additional-pull-secret -n kube-system` command. Hypershift manages the new credential propagation among the HostedCluster nodes.
 

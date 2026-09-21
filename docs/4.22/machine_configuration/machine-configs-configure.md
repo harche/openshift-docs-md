@@ -151,7 +151,7 @@ You can disable the chrony time service (`chronyd`) for nodes with a specific ro
         $ oc create -f disable-chronyd.yaml
         ```
 
-# Adding kernel arguments to nodes
+# Add kernel arguments to nodes
 
 In some special cases, you can add kernel arguments to a set of nodes in your cluster to customize the kernel behavior to meet specific needs you might have.
 
@@ -476,7 +476,7 @@ When an OpenShift Container Platform cluster is installed or configured as a pos
 
     You should see the added kernel arguments.
 
-# Adding a real-time kernel to nodes
+# Add a real-time kernel to nodes
 
 If your OpenShift Container Platform workloads require real-time operating system characteristics, you can switch your machines to the Linux real-time kernel. Switching to the real-time kernel provides a higher degree of determinism for your OpenShift Container Platform workloads.
 
@@ -675,7 +675,7 @@ This procedure describes how to modify `journald` rate limiting settings in the 
     sh-4.4# exit
     ```
 
-# Adding extensions to RHCOS
+# Add extensions to RHCOS
 
 You can add software packages to Red Hat Enterprise Linux CoreOS (RHCOS) systems by using extension packages to add a minimal set of features to specific nodes.
 

@@ -179,7 +179,7 @@ If the service uses a custom service CA, the `caCertificate` field must contain 
 `spec.proxy.endpoint`
 Endpoint of the proxy.
 
-# Enabling a dynamic plugin with the CLI
+# Enable a dynamic plugin with the CLI
 
 You can enable a dynamic plugin to extend the core web console with more features, such as additional pages, perspectives, or dashboard items. Use the OpenShift CLI (`oc`) after a scripted installation, such as an Operator or Helm-based install. Add the `ConsolePlugin` name to `spec.plugins` in the console Operator configuration (`console.operator.openshift.io/cluster`) so the web console loads it.
 
@@ -279,7 +279,7 @@ You can enable a dynamic plugin to extend the core web console with more feature
 
 - [Dynamic plugin API](../../web_console/dynamic-plugin/dynamic-plugins-reference.xml#dynamic-plugin-api_dynamic-plugins-reference)
 
-# Disabling your plugin in the browser
+# Disable your plugin in the browser
 
 Console users can use the `disable-plugins` query parameter to disable specific or all dynamic plugins that would normally get loaded at runtime.
 

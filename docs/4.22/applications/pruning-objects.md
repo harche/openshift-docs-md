@@ -383,7 +383,7 @@ For an image to be pruned using this method, all of the following conditions mus
 
       With this method, the primary trigger is the project’s size, but the safety check to ensure that the image is not actively in use is still performed.
 
-## Running image prune operations
+## Run image prune operations
 
 Securely remove unused container images from your registry to reclaim the cluster disk space and prevent registry storage exhaustion.
 
@@ -411,7 +411,7 @@ Securely remove unused container images from your registry to reclaim the cluste
     $ oc adm prune images <image_prune_option_one> <image_prune_option_two> --confirm
     ```
 
-## Using secure or insecure connections
+## Use secure or insecure connections
 
 Configure secure or insecure flags when pruning images to communicate with image registries. Setting custom CA certificates or bypassing HTTPS verification prevents connection failures during pruning.
 

@@ -1,6 +1,6 @@
 Before you install OpenShift Container Platform, decide what kind of installation process to follow and verify that you have all of the required resources to prepare the cluster for users.
 
-# Selecting a cluster installation type
+# Select a cluster installation type
 
 Decide what kind of installation process to follow based on your infrastructure, experience, and security requirements.
 

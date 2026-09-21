@@ -1,6 +1,6 @@
 To update the boot loader on RHCOS nodes using `bootupd`, you must either run the `bootupctl update` command on RHCOS machines manually or provide a machine config with a `systemd` unit.
 
-Unlike `grubby` or other boot loader tools, `bootupd` does not manage kernel space configuration such as passing kernel arguments. To configure kernel arguments, see [Adding kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing).
+Unlike `grubby` or other boot loader tools, `bootupd` does not manage kernel space configuration such as passing kernel arguments. To configure kernel arguments, see [Add kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing).
 
 <div class="note">
 

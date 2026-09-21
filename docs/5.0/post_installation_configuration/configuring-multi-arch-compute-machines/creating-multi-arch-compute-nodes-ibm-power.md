@@ -28,7 +28,7 @@ Before adding a secondary architecture node to your cluster, Red Hat recommends 
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
-# Creating RHCOS machines by using an ISO image
+# Create RHCOS machines by using an ISO image
 
 To scale your OpenShift Container Platform cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using an ISO image.
 
@@ -103,7 +103,7 @@ To scale your OpenShift Container Platform cluster, you can create more Red Hat
 
 9.  Continue to create more compute machines for your cluster.
 
-# Creating RHCOS machines by PXE or iPXE booting
+# Create RHCOS machines by PXE or iPXE booting
 
 To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using PXE or iPXE booting.
 
@@ -215,7 +215,7 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
 
 2.  Use the PXE or iPXE infrastructure to create the required compute machines for your cluster.
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

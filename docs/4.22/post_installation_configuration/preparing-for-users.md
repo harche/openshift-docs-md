@@ -1213,7 +1213,7 @@ If you choose automatic updates for an installed Operator, when a new version of
 
 If you select manual updates, when a newer version of an Operator is available, OLM creates an update request. As a cluster administrator, you must then manually approve that update request to have the Operator updated to the new version.
 
-## Installing from the software catalog by using the web console
+## Install from the software catalog by using the web console
 
 To install and subscribe to an Operator from the software catalog, you can use the OpenShift Container Platform web console. The console guides you through selecting an install mode, namespace, and approval strategy.
 
@@ -1299,7 +1299,7 @@ To install and subscribe to an Operator from the software catalog, you can use t
 
   </div>
 
-## Installing from the software catalog by using the CLI
+## Install from the software catalog by using the CLI
 
 To install an Operator from the software catalog without using the web console, you can create or update a `Subscription` object by using the `oc` command in OpenShift Container Platform.
 

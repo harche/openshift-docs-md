@@ -701,6 +701,163 @@ You can specify static IPs, otherwise known as elastic IPs, for your network loa
     $ oc get ingresscontroller -n openshift-ingress-operator <name> -o jsonpath="{.status.conditions}" | yq -PC
     ```
 
+# BYO security groups for AWS Network Load Balancers
+
+The AWS Cloud Controller Manager (CCM) supports attaching your Bring Your Own (BYO) security groups to Network Load Balancers (NLBs). The NLBs must have been created for Kubernetes `Service` resources of type `LoadBalancer`.
+
+By default, the CCM automatically creates and manages a dedicated security group for each NLB. With BYO security groups, you specify your own security groups so you can access the following capabilities:
+
+- Provides full control over ingress and egress rules.
+
+- Enables advanced use cases such as shared security policies and custom compliance rules.
+
+When a BYO security group annotation is set at NLB creation time, the CCM skips creating a managed security group entirely. The CCM then associates the NLB with the provided custom security groups.
+
+When a BYO security group annotation is attached after the NLB was provisioned with a managed group, the CCM removes the managed security group and replaces it with the requested BYO security groups.
+
+<div class="important">
+
+The CCM does not add, modify, or delete any rules on BYO security groups. You are responsible for configuring BYO security groups correctly according to their use cases.
+
+</div>
+
+Before you provide your BYO security groups to NLBs, read the following considerations:
+
+- For the BYO security group feature to work, you must ensure that `NLBSecurityGroupMode = Managed` is set in the AWS CCM config file. By default, the installation program sets this configuration for a new cluster installation. If the configuration is not set, the CCM cannot manage security groups for AWS NLBs.
+
+- When using BYO security groups, you must take full responsibility for managing all ingress and egress rules according to their use cases and setup. The CCM does not automatically add rules to BYO security groups.
+
+- BYO security groups must be in the same VPC as the NLB.
+
+- You cannot associate BYO security groups to pre-existing NLBs that were created without security groups. This limitation exists for AWS NLBs. To resolve this limitation, you must delete the NLB, recreate it, and configure it to minimize disruption during a cluster upgrade.
+
+The following list details considerations for when upgrading your cluster to OpenShift Container Platform 4.17:
+
+- For Identity and Access Management (IAM) permissions, verify that the IAM role for a control plane node includes the `elasticloadbalancing:SetSecurityGroups` permission. The upgrade operation does not automatically modify IAM policies.
+
+- For existing NLBs with managed security groups, these groups continue to work as expected. The managed security group mode is preserved, and no action is required.
+
+- For existing NLBs without security groups, if NLBs were created before managed security group mode was available, they continue to operate without security groups. To enable BYO or managed security groups on these NLBs, you must delete and recreate the service.
+
+## Creating a service with an NLB by using BYO security groups
+
+To create an NLB with BYO security groups, add the annotation `service.beta.kubernetes.io/aws-load-balancer-security-groups` with one or more security group IDs to the service manifest file.
+
+1.  You checked that the AWS Identity and Access Management (IAM) role for each control plane node of your cluster includes the `elasticloadbalancing:SetSecurityGroups` permission.
+
+    1.  For new clusters installed on installer-provisioned infrastructure, the installation program adds this role to each control plane node.
+
+    2.  For user-provisioned infrastructure, you must add the permission to the IAM role of each control plane. The following configuration adds the permission to the IAM role in a JSON file:
+
+        ``` json
+        {
+          "Effect": "Allow",
+          "Action": [
+            "elasticloadbalancing:SetSecurityGroups"
+          ],
+          "Resource": "*"
+        }
+        ```
+
+2.  You checked that the NLB security group is enabled in the AWS CCM configuration. For example:
+
+    ``` txt
+    [Global]
+    NLBSecurityGroupMode = Managed
+    ```
+
+3.  To create an NLB with BYO security groups, add the annotation `service.beta.kubernetes.io/aws-load-balancer-security-groups` with one or more security group IDs to the service manifest:
+
+    ``` yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: my-nlb-service
+      namespace: my-namespace
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+        service.beta.kubernetes.io/aws-load-balancer-security-groups: "<security_group_id1>,<security_group_id2>"
+    spec:
+      selector:
+        app: my-app
+      ports:
+        - port: 443
+          targetPort: 8443
+          protocol: TCP
+      type: LoadBalancer
+    # ...
+    ```
+
+## Switching the management service for security groups
+
+You can switch an existing Network Load Balancer (NLB) from a CCM-managed security group to a Bring Your Own (BYO) security group.
+
+- You have provisioned security groups for your service NLB.
+
+<!-- -->
+
+- To switch from a CCM-managed security group to a BYO security group, complete the following steps.
+
+  - Create your BYO security group in the same VPC as the cluster and configure the appropriate ingress rules.
+
+  - Add the annotation `service.beta.kubernetes.io/aws-load-balancer-security-groups` with one or more security group IDs to the service manifest by entering the following command:
+
+    ``` terminal
+    $ oc annotate svc <nlb_service> \
+      service.beta.kubernetes.io/aws-load-balancer-security-groups=<security_group_ID>
+    ```
+
+    Replace `<nlb_service>` with the name of your service and `<security_group_ID>` with your security group ID.
+
+    <div class="note">
+
+    After you complete the switch operation, the CCM completes the following tasks:
+
+    - Detects the annotation change and updates the NLB security group configuration associating it with the requested BYO security group.
+
+    - Automatically deletes the old managed security group. This happens because the security group is cluster-owned and is no longer needed.
+
+    </div>
+
+## Reverting the management service for security groups
+
+You can revert from a Bring Your Own (BYO) security group back to a CCM-managed security group.
+
+- You have provisioned security groups for your service NLB.
+
+<!-- -->
+
+- To revert from a BYO security group to a CCM-managed security group, remove the annotation from your service by entering the following command:
+
+  ``` terminal
+  $ oc annotate svc <nlb_service> \
+    service.beta.kubernetes.io/aws-load-balancer-security-groups-
+  ```
+
+  Replace `<nlb_service>` with the name of your service.
+
+  <div class="note">
+
+  After you complete the revert operation, the CCM creates and attaches a new managed security group to the NLB. The CCM then detaches the BYO security group from the NLB. The CCM does not delete the BYO security group from your AWS customer account as the group is not a cluster-owned resource. You must manually delete the security group.
+
+  </div>
+
+## Updating BYO security groups
+
+As a postinstallation task, you can add, remove, or swap Bring Your Own (BYO) security groups that are attached to an Network Load Balancer (NLB). This means that you can update ingress and egress rules dynamically and align network access policies across your load balancers.
+
+- To modify BYO security groups, update the annotation value with the new security group IDs by entering the following command:
+
+  ``` terminal
+  $ oc annotate svc <nlb_service> \
+    service.beta.kubernetes.io/aws-load-balancer-security-groups=<security_group_name> \
+    --overwrite
+  ```
+
+  Replace `<nlb_service>` with the name of your NLB service and `<security_group_name>` with the name of your security group.
+
+  After the command successfully executes, the CCM detects the change and updates the NLB with the new security groups.
+
 # Additional resources
 
 - [Converting to a dual-stack cluster network](../../../networking/ovn_kubernetes_network_provider/converting-to-dual-stack.xml#nw-dual-stack-convert_converting-to-dual-stack)

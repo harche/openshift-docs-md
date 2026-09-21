@@ -1308,7 +1308,7 @@ Configure a persistent volume, which is required for production clusters. Where 
 
 You can also allow the image registry to use block storage types by using the `Recreate` rollout strategy during upgrades.
 
-## Configuring registry storage for VMware vSphere
+## Configure registry storage for VMware vSphere
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 

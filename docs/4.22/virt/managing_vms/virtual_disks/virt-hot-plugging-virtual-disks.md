@@ -46,7 +46,7 @@ The hot plugged disk remains attached to the VM until you unplug it.
 
     2.  Click **Detach**.
 
-# Hot plugging and hot unplugging a disk by using the CLI
+# Hot plug and hot unplug a disk by using the CLI
 
 You can hot plug and hot unplug a disk while a virtual machine (VM) is running by using the command line.
 
@@ -61,12 +61,19 @@ The hot plugged disk remains attached to the VM until you unplug it.
   ``` terminal
   $ virtctl addvolume <virtual-machine|virtual-machine-instance> \
     --volume-name=<datavolume|PVC> \
-    [--bus <bus_type>] [--serial=<label_name>]
+    [--bus <bus_type>] [--persist] [--serial=<label_name>]
   ```
 
-  - The optional `--bus` flag allows you to specify the bus type of the added disk. The options are `virtio` and `scsi`. The default bus type is `virtio`.
+  where:
 
-  - The optional `--serial` flag allows you to add an alphanumeric string label of your choice. This helps you to identify the hot plugged disk in a guest virtual machine. If you do not specify this option, the label defaults to the name of the hot plugged data volume or PVC.
+  `--bus <bus_type>`
+  Optional: Specifies the bus type of the added disk. Supported values are `virtio` and `scsi`. The default bus type is `virtio`.
+
+  `--persist`
+  Optional: Specifies that the virtual disk is permanently mounted on a virtual machine. This flag does not apply to virtual machine instances.
+
+  `--serial=<label_name>`
+  Optional: Specifies an alphanumeric string label of your choice to identify the hot plugged disk in a guest virtual machine. If you do not specify this option, the label defaults to the name of the hot plugged data volume or PVC.
 
 - Hot unplug a disk by running the following command:
 

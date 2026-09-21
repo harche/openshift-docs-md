@@ -34,7 +34,7 @@ You can configure the Cluster Samples Operator to manage the installation and up
 
 </div>
 
-# Understanding the Cluster Samples Operator
+# Understand the Cluster Samples Operator
 
 During installation, the Operator creates the default configuration object for itself and then creates the sample image streams and templates, including quick start templates.
 
@@ -289,7 +289,7 @@ The samples resource maintains the following conditions in its status:
 </tbody>
 </table>
 
-# Accessing the Cluster Samples Operator configuration
+# Access the Cluster Samples Operator configuration
 
 You can configure the Cluster Samples Operator by editing the file with the provided parameters.
 
@@ -311,7 +311,7 @@ You can configure the Cluster Samples Operator by editing the file with the prov
   # ...
   ```
 
-# Removing deprecated image stream tags from the Cluster Samples Operator
+# Remove deprecated image stream tags from the Cluster Samples Operator
 
 The Cluster Samples Operator leaves deprecated image stream tags in an image stream because users can have deployments that use the deprecated image stream tags.
 

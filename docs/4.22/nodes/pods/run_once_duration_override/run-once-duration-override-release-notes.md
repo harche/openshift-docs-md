@@ -6,6 +6,20 @@ These release notes track the development of the Run Once Duration Override Oper
 
 - [About the Run Once Duration Override Operator](../../../nodes/pods/run_once_duration_override/index.xml#rodoo-about_run-once-duration-override-about)
 
+# Run Once Duration Override Operator 1.4.2
+
+Review the features, enhancements, and advisory for the release of Run Once Duration Override Operator 1.4.2.
+
+Issued: 17 September 2026
+
+The following advisory is available for the Run Once Duration Override Operator 1.4.2:
+
+- [RHBA-2026:68626](https://access.redhat.com/errata/RHBA-2026:68626)
+
+## New features and enhancements
+
+- This release rebuilds the base image for the Run Once Duration Override Operator to improve its image grade.
+
 # Run Once Duration Override Operator 1.4.1
 
 Review the features, enhancements, and advisory for the release of Run Once Duration Override Operator 1.4.1.

@@ -64,7 +64,7 @@ You can use the **Topology** view to display applications, components, and workl
 
 - [Viewing application composition using the Topology](https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html)
 
-# Enabling the **Developer** perspective in the web console
+# Enable the **Developer** perspective in the web console
 
 Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. There is no longer a **Developer** perspective by default; however, cluster administrators can enable the **Developer** perspective for developers to use.
 

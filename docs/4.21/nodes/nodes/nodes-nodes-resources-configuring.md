@@ -274,6 +274,6 @@ For `memory` and `ephemeral-storage`, you specify the resource quantity in units
 
 # Additional resources
 
-- [Creating a KubeletConfig CR to edit kubelet parameters](../../machine_configuration/machine-configs-custom.xml#create-a-kubeletconfig-crd-to-edit-kubelet-parameters_machine-configs-custom)
+- [Create a KubeletConfig CR to edit kubelet parameters](../../machine_configuration/machine-configs-custom.xml#create-a-kubeletconfig-crd-to-edit-kubelet-parameters_machine-configs-custom)
 
 - [Node metrics data (Kubernetes documentation)](https://kubernetes.io/docs/reference/instrumentation/node-metrics/)

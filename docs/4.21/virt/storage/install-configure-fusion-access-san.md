@@ -1,4 +1,12 @@
-You configure SAN-based storage for virtual machines by using IBM Fusion Access for SAN with OpenShift Virtualization. You must install the Fusion Access for SAN Operator (Fusion Access for SAN) and set up the storage cluster and file systems.
+You can configure SAN-based storage for virtual machines by using IBM Fusion Access for SAN with OpenShift Virtualization.
+
+<div class="important">
+
+The Fusion Access for SAN Operator is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
+
+For new deployments, configure IBM Fusion Access for SAN in Fusion Data Foundation as an external system. For more information, see "Deploying IBM Fusion Access for SAN" in the Additional resources section.
+
+</div>
 
 # About IBM Fusion Access for SAN
 
@@ -332,6 +340,4 @@ No workaround is available. Contact IBM Support for assistance.
 
 # Additional resources
 
-- [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
-
-- [Creating virtual machines from templates](../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-creating-vms-from-templates)
+- [Deploying IBM Fusion Access for SAN](https://www.ibm.com/docs/en/fusion-software/2.13.x?topic=san-deploying-fusion-access)

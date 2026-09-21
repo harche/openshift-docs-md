@@ -360,7 +360,7 @@ Available bulk actions:
 
 - **Delete VMs** - Select multiple VMs to delete. The confirmation dialog displays the number of VMs selected for deletion.
 
-- **Move VMs to folder** - Move selected VMs to a folder. All VMs must belong to the same namespace.
+- **Move VMs to group** - Move selected VMs to a group. All VMs must belong to the same namespace.
 
 - **LiveMigration** - Perform live migration of multiple selected VMs. The confirmation dialog displays the number of VMs selected for migration. The target node is chosen automatically; there is no option of specifying it.
 

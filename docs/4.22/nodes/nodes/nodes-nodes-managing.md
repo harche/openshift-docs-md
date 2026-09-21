@@ -206,7 +206,7 @@ OpenShift Container Platform allows you to enable and disable an SELinux boolean
 
     </div>
 
-# Adding kernel arguments to nodes
+# Add kernel arguments to nodes
 
 In some special cases, you can add kernel arguments to a set of nodes in your cluster to customize the kernel behavior to meet specific needs you might have.
 

@@ -1,4 +1,4 @@
-Release notes for additional related components and products not included in the core [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-4-22-release-notes.xml#ocp-4-22-release-notes) are available in the following documentation.
+Release notes for additional related components and products not included in the core [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-5-0-release-notes.xml#ocp-5-0-release-notes) are available in the following documentation.
 
 <div class="important">
 

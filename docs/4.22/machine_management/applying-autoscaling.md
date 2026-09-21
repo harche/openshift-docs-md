@@ -254,7 +254,7 @@ The minimum and maximum CPUs, memory, and GPU values are determined by calculati
 
 </div>
 
-## Configuring a priority expander for the cluster autoscaler
+## Configure a priority expander for the cluster autoscaler
 
 Configure a priority expander to control which machine set expands when the cluster autoscaler increases the size of the cluster. You can create a priority expander config map by listing priority values and regular expressions that define machine sets.
 
@@ -327,7 +327,7 @@ Configure a priority expander to control which machine set expands when the clus
 
 - To use the priority expander, ensure that the `ClusterAutoscaler` resource definition is configured to use the `expanders: ["Priority"]` parameter.
 
-## Labeling GPU machine sets for the cluster autoscaler
+## Label GPU machine sets for the cluster autoscaler
 
 Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
@@ -361,7 +361,7 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
   </div>
 
-## Deploying a cluster autoscaler
+## Deploy a cluster autoscaler
 
 To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler` resource.
 
@@ -388,7 +388,7 @@ You must deploy a machine autoscaler for the cluster autoscaler to scale your ma
 
 </div>
 
-## Configuring machine autoscalers
+## Configure machine autoscalers
 
 After you deploy the cluster autoscaler, deploy `MachineAutoscaler` resources that reference the compute machine sets that are used to scale the cluster.
 
@@ -451,7 +451,7 @@ The `kind` parameter value is always `MachineSet`.
 \<name\>
 The `name` value must match the name of an existing compute machine set, as shown in the `metadata.name` parameter value.
 
-## Deploying a machine autoscaler
+## Deploy a machine autoscaler
 
 To deploy a machine autoscaler, you create an instance of the `MachineAutoscaler` resource.
 
@@ -468,7 +468,7 @@ To deploy a machine autoscaler, you create an instance of the `MachineAutoscaler
     `<filename>`
     Specifies the name of the YAML file you created.
 
-# Disabling a machine autoscaler
+# Disable a machine autoscaler
 
 To disable a machine autoscaler, you delete the corresponding `MachineAutoscaler` custom resource (CR).
 
@@ -537,7 +537,7 @@ Disabling a machine autoscaler does not disable the cluster autoscaler. To disab
 
 - If you need to re-enable the machine autoscaler, use the `<machine_autoscaler_name_backup>.yaml` backup file and follow the instructions in "Deploying a machine autoscaler".
 
-# Disabling the cluster autoscaler
+# Disable the cluster autoscaler
 
 To disable the cluster autoscaler, you delete the corresponding `ClusterAutoscaler` resource.
 

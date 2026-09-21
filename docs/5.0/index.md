@@ -19,7 +19,7 @@
 
 ### Release notes
 
-- [OpenShift Container Platform 4.22 release notes](release_notes/ocp-4-22-release-notes.md)
+- [OpenShift Container Platform 4.22 release notes](release_notes/ocp-5-0-release-notes.md)
 - [Additional release notes](release_notes/addtl-release-notes.md)
 
 ### Tutorials
@@ -2118,7 +2118,6 @@
   - [Using preallocation for data volumes](virt/storage/virt-using-preallocation-for-datavolumes.md)
   - [Managing data volume annotations](virt/storage/virt-managing-data-volume-annotations.md)
   - [Understanding virtual machine storage with the CSI paradigm](virt/storage/virt-storage-with-csi-paradigm.md)
-  - [Using OpenShift Virtualization with IBM Fusion Access for SAN](virt/storage/install-configure-fusion-access-san.md)
 - **Live migration**
   - [About live migration](virt/live_migration/virt-about-live-migration.md)
   - [Configuring live migration](virt/live_migration/virt-configuring-live-migration.md)
@@ -2150,7 +2149,6 @@
   - [Backing up and restoring virtual machines](virt/backup_restore/virt-backup-restore-overview.md)
   - [Recover individual files from virtual machine backups](virt/backup_restore/virt-recovering-individual-files-from-vm-backups.md)
   - [Use virtual machine file restore](virt/backup_restore/virt-using-vm-file-restore.md)
-  - [File Restore Operator](virt/backup_restore/virt-file-restore-operator.md)
   - [Disaster recovery](virt/backup_restore/virt-disaster-recovery.md)
 
 ### AI applications

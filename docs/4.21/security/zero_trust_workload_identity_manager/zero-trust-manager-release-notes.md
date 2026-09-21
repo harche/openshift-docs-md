@@ -146,6 +146,46 @@ Create-only mode status updates reconcile reliably
 
   ([SPIRE-506](https://issues.redhat.com/browse/SPIRE-506))
 
+# Zero Trust Workload Identity Manager 1.0.2
+
+Issued: 3 September 2026
+
+This release fixes some Common Vulnerabilities and Exposures (CVEs).
+
+The following advisories are available for the Zero Trust Workload Identity Manager:
+
+- [RHBA-2026:62762](https://access.redhat.com/errata/RHBA-2026:62762)
+
+- [RHBA-2026:62764](https://access.redhat.com/errata/RHBA-2026:62764)
+
+- [RHBA-2026:62766](https://access.redhat.com/errata/RHBA-2026:62766)
+
+- [RHBA-2026:62768](https://access.redhat.com/errata/RHBA-2026:62768)
+
+- [RHBA-2026:62769](https://access.redhat.com/errata/RHBA-2026:62769)
+
+- [RHBA-2026:62770](https://access.redhat.com/errata/RHBA-2026:62770)
+
+- [RHBA-2026:63118](https://access.redhat.com/errata/RHBA-2026:63118)
+
+## CVEs
+
+- [CVE-2026-32283](https://access.redhat.com/security/cve/cve-2026-32283)
+
+- [CVE-2026-33811](https://access.redhat.com/security/cve/cve-2026-33811)
+
+- [CVE-2026-39829](https://access.redhat.com/security/cve/cve-2026-39829)
+
+- [CVE-2026-39831](https://access.redhat.com/security/cve/cve-2026-39831)
+
+- [CVE-2026-42502](https://access.redhat.com/security/cve/cve-2026-42502)
+
+- [CVE-2026-46597](https://access.redhat.com/security/cve/cve-2026-46597)
+
+- [CVE-2026-68121](https://access.redhat.com/security/cve/cve-2026-68121)
+
+- [CVE-2026-71235](https://access.redhat.com/security/cve/cve-2026-71235)
+
 # Zero Trust Workload Identity Manager 1.0.1
 
 Issued: 17 May 2026

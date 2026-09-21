@@ -10,7 +10,7 @@ To view your applications in the **Topology** view and interact with them, ensur
 
 - You are in [the **Developer** perspective](../web_console/web-console-overview.xml#about-developer-perspective_web-console-overview).
 
-# Viewing the topology of your application
+# View the topology of your application
 
 You can navigate to the **Topology** view using the left navigation panel in the **Developer** perspective. After you deploy an application, you are directed automatically to the **Graph view** where you can see the status of the application pods, quickly access the application on a public URL, access the source code to modify it, and see the status of your last build. You can zoom in and out to see more details for a particular application.
 
@@ -42,7 +42,7 @@ You can customize the views as required using the following:
 
 The **Topology** view also provides you the **Export application** option to download your application in the ZIP file format. You can then import the downloaded application to another project or cluster. For more details, see *Exporting an application to another project or cluster* in the *Additional resources* section.
 
-# Interacting with applications and components
+# Interact with applications and components
 
 In the **Topology** view in the **Developer** perspective of the web console, the **Graph view** provides the following options to interact with applications and components:
 
@@ -107,7 +107,7 @@ In the **Topology** view in the **Developer** perspective of the web console, th
 
     </div>
 
-# Scaling application pods and checking builds and routes
+# Scale application pods and check builds and routes
 
 The **Topology** view provides the details of the deployed components in the **Overview** panel. You can use the **Overview** and **Details** tabs to scale the application pods, check build status, services, and routes as follows:
 

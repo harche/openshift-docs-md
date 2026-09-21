@@ -1,6 +1,6 @@
 Device plugins allow you to use a particular device type (GPU, InfiniBand, or other similar computing resources that require vendor-specific initialization and setup) in your OpenShift Container Platform pod without needing to write custom code.
 
-# Understanding device plugins
+# Understand device plugins
 
 A device plugin is a gRPC service running on nodes that manages specific hardware resources through an extension mechanism, enabling containers to consume these devices.
 
@@ -78,7 +78,7 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 - [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
 
-# Understanding the Device Manager
+# Understand the Device Manager
 
 Device Manager advertises specialized node hardware resources through device plugins, enabling pods to consume hardware devices without requiring upstream code changes.
 
@@ -102,7 +102,7 @@ While handling a new pod admission request, Kubelet passes requested `Extended R
 
 Additionally, device plugins can also perform several other device-specific operations, such as driver installation, device initialization, and device resets. These functionalities vary from implementation to implementation.
 
-# Enabling Device Manager
+# Enable Device Manager
 
 Enable Device Manager to allow device plugins to advertise specialized node hardware resources and make them available to pods without requiring code changes.
 

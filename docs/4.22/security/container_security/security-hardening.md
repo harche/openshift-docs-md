@@ -66,7 +66,7 @@ All of the features noted here are described in the OpenShift Container Platform
 
 - [Customizing nodes](../../installing/install_config/installing-customizing.xml#installing-customizing)
 
-- [Adding kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing)
+- [Add kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing)
 
 - [Optional configuration parameters](../../installing/installing_aws/installation-config-parameters-aws.xml#installation-configuration-parameters-optional_installation-config-parameters-aws)
 

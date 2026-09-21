@@ -1043,7 +1043,7 @@ $ oc -n openshift-machine-api \
 
 </div>
 
-### Creating a compute machine set
+### Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 

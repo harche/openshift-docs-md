@@ -92,7 +92,7 @@ Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was use
 `<ibm_power_vs_service_instance_id>`
 Specifies the infrastructure ID within your region to place machines on.
 
-# Creating a compute machine set
+# Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 

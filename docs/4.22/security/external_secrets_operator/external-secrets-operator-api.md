@@ -223,7 +223,7 @@ The `commonConfigs` specifies the common configurations available for all operan
 <tr class="even">
 <td style="text-align: left;"><p><code>proxy</code></p></td>
 <td style="text-align: left;"><p><em>proxyConfig</em></p></td>
-<td style="text-align: left;"><p><code>proxy</code> sets the proxy configurations which are made avaiable in operand containers managed by the Operator as environment variables.</p></td>
+<td style="text-align: left;"><p><code>proxy</code> sets the proxy configurations which are made available in operand containers managed by the Operator as environment variables.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>

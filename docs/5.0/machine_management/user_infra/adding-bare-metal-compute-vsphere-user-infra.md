@@ -4,19 +4,13 @@ This procedure supports clusters installed using installer-provisioned infrastru
 
 <div class="important">
 
-Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-<div class="important">
-
 Bare-metal compute machines added to a vSphere cluster are unmanaged by the Machine API. You cannot use compute machine sets or the cluster autoscaler to manage these compute machines. Lifecycle tasks such as provisioning and replacement must be performed manually.
 
 </div>
 
-# Prerequisites
+# Prerequisites for adding bare-metal compute machines to a vSphere cluster
+
+Before you add bare-metal compute machines to your VMware vSphere cluster, you must meet the following infrastructure and network requirements.
 
 - You have an existing OpenShift Container Platform cluster installed on vSphere.
 
@@ -41,14 +35,6 @@ To use this feature, you must explicitly disable the native vSphere Container St
 # Creating RHCOS machines using an ISO image
 
 To add bare-metal compute machines to your VMware vSphere cluster, you must manually provision them using an RHCOS ISO image and the `coreos-installer` utility.
-
-<div class="important">
-
-Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
 
 - You have access to the RHCOS ISO image that matches your cluster version.
 
@@ -105,7 +91,7 @@ For more information about the support scope of Red Hat Technology Preview featu
   $ oc get nodes
   ```
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

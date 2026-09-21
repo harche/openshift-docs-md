@@ -29,7 +29,7 @@ If you select manual updates, when a newer version of an Operator is available, 
 
 - [Understanding the software catalog](../../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog)
 
-# Installing from the software catalog by using the web console
+# Install from the software catalog by using the web console
 
 To install and subscribe to an Operator from the software catalog, you can use the OpenShift Container Platform web console. The console guides you through selecting an install mode, namespace, and approval strategy.
 
@@ -119,7 +119,7 @@ To install and subscribe to an Operator from the software catalog, you can use t
 
 - [Manually approving a pending Operator update](../../operators/admin/olm-upgrading-operators.xml#olm-approving-pending-upgrade_olm-upgrading-operators)
 
-# Installing from the software catalog by using the CLI
+# Install from the software catalog by using the CLI
 
 To install an Operator from the software catalog without using the web console, you can create or update a `Subscription` object by using the `oc` command in OpenShift Container Platform.
 
@@ -596,7 +596,7 @@ In the following procedure, the *tenant* is a user or group of users that share 
 
 - [Operators in multitenant clusters](../../operators/understanding/olm-multitenancy.xml#olm-multitenancy)
 
-# Installing global Operators in custom namespaces
+# Install global Operators in custom namespaces
 
 To avoid installing global Operators in the default `openshift-operators` namespace, you can create a custom global namespace in OpenShift Container Platform and install Operators there instead.
 

@@ -1814,7 +1814,7 @@ After creating all required infrastructure in AWS, you can start the bootstrap s
 
 - [Gathering bootstrap node diagnostic data](../../../support/troubleshooting/troubleshooting-installations.xml#gathering-bootstrap-diagnostic-data_troubleshooting-installations)
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
@@ -2094,7 +2094,7 @@ To secure your registry images in Amazon Web Services (AWS), [block public acces
           region: <region_name>
     ```
 
-### Configuring storage for the image registry in non-production clusters
+### Configure storage for the image registry in non-production clusters
 
 You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory, but you lose all images if you restart the registry.
 

@@ -6,7 +6,7 @@ You cannot disable a cluster capability after it is enabled.
 
 </div>
 
-# Enabling cluster capabilities
+# Enable cluster capabilities
 
 If you are using an installation method that includes customizing your cluster by creating an `install-config.yaml` file, you can select which cluster capabilities you want to make available on the cluster.
 
@@ -465,7 +465,7 @@ Operator Lifecycle Manager (OLM) v1 comprises the following component projects:
 
 - [operator-framework/catalogd](https://github.com/operator-framework/catalogd)
 
-# Viewing the cluster capabilities
+# View the cluster capabilities
 
 As a cluster administrator, you can view the capabilities by using the `clusterversion` resource status.
 
@@ -490,7 +490,7 @@ As a cluster administrator, you can view the capabilities by using the `clusterv
   {"enabledCapabilities":["openshift-samples"],"knownCapabilities":["CSISnapshot","Console","Insights","Storage","baremetal","marketplace","openshift-samples"]}
   ```
 
-# Enabling the cluster capabilities by setting baseline capability set
+# Enable the cluster capabilities by setting baseline capability set
 
 As a cluster administrator, you can enable cluster capabilities any time after a OpenShift Container Platform installation by setting the `baselineCapabilitySet` configuration parameter.
 
@@ -506,7 +506,7 @@ As a cluster administrator, you can enable cluster capabilities any time after a
 
   For `baselineCapabilitySet` you can specify `vCurrent`, `v4.17`, or `None`.
 
-# Enabling the cluster capabilities by setting additional enabled capabilities
+# Enable the cluster capabilities by setting additional enabled capabilities
 
 As a cluster administrator, you can enable cluster capabilities any time after a OpenShift Container Platform installation by setting the `additionalEnabledCapabilities` configuration parameter.
 

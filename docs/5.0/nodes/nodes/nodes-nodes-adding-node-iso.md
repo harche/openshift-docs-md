@@ -43,7 +43,7 @@ You can add nodes with this method in the following two ways:
 
   You can add a node by running the `oc adm node-image create` command with flags to specify your configurations. This is useful if you want to add only a single node at a time, and have only simple configurations to specify for that node.
 
-# Adding one or more nodes using a configuration file
+# Add one or more nodes using a configuration file
 
 You can add one or more nodes to your cluster by using the `nodes-config.yaml` file to specify configurations for the new nodes.
 
@@ -150,7 +150,7 @@ You can add one or more nodes to your cluster by using the `nodes-config.yaml` f
     $ oc adm certificate approve <csr_name>
     ```
 
-# Adding a node with command flags
+# Add a node with command flags
 
 You can add a single node to your cluster by using command flags to specify configurations for the new node.
 

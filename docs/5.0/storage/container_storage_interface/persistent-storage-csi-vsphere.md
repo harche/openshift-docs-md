@@ -881,19 +881,9 @@ Before running this procedure, carefully review the preceding "Consequences of d
 
 # Adding bare-metal nodes
 
-OpenShift Container Platform has the ability to add bare-metal nodes to a cluster on vSphere as a Technology Preview feature.
-
-However, if you add bare-metal nodes, you must remove the vSphere CSI Driver, otherwise the cluster is marked as degraded. For information about how to remove the driver and the consequences of doing this, see "Disabling and enabling storage on vSphere".
+Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported. However, if you add bare-metal nodes, you must remove the vSphere CSI Driver, otherwise the cluster is marked as degraded. For information about how to remove the driver and the consequences of doing this, see Section "Disabling and enabling storage on vSphere".
 
 For information about how to add bare-metal nodes, see "Adding bare-metal compute machines to a vSphere cluster".
-
-<div class="important">
-
-Adding bare-metal nodes is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
 
 - [Disabling and enabling storage on vSphere](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-disable-storage-overview_persistent-storage-csi-vsphere)
 

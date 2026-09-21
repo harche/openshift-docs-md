@@ -189,7 +189,17 @@ To maintain network stability during an MTU change, you must prepare the configu
     where:
 
     `<interface>`
-    Specifies the primary network interface name.
+    Specifies the primary network interface name or the bond if using bonding.
+
+    <div class="important">
+
+    Observe the following constraints when specifying the interface:
+
+    - Do not specify subordinate interfaces of a bond, such as `eth0` or `eth1`. Subordinate interfaces automatically inherit the MTU value set on the parent bond.
+
+    - The MTU of the VLAN interface cannot exceed the MTU of its parent physical or bonded interface. A parent interface with a larger MTU, such as `9000` for jumbo frames, can host VLANs with smaller MTUs, such as `1500`. However, raising the MTU of a VLAN interface beyond the MTU parent interface current limit requires updating the parent interface first.
+
+    </div>
 
     `<mtu>`
     Specifies the new hardware MTU value.

@@ -2,7 +2,7 @@ In addition to `MachineConfig` objects, you can use `KubeletConfig` or `Containe
 
 The kubelet configuration is currently serialized as an Ignition configuration, so it can be directly edited. However, there is also a new `kubelet-config-controller` added to the Machine Config Controller (MCC). This lets you use a `KubeletConfig` custom resource (CR) to edit the kubelet parameters.
 
-# Creating a KubeletConfig CR to edit kubelet parameters
+# Create a KubeletConfig CR to edit kubelet parameters
 
 You can use a `KubeletConfig` custom resource (CR) to edit a kubelet parameters without modifing the kubelet configuration directly.
 
@@ -294,7 +294,7 @@ The following procedure is an example to show how to configure the maximum numbe
         type: Success
     ```
 
-# Creating a ContainerRuntimeConfig CR to edit CRI-O parameters
+# Create a ContainerRuntimeConfig CR to edit CRI-O parameters
 
 You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP) by using a `ContainerRuntimeConfig` custom resource (CR).
 

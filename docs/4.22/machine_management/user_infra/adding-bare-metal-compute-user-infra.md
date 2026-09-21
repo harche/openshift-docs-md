@@ -22,7 +22,7 @@ If you do not have access to the Red Hat Enterprise Linux CoreOS (RHCOS) images
 
 </div>
 
-# Creating Red Hat Enterprise Linux CoreOS (RHCOS) machines
+# Create Red Hat Enterprise Linux CoreOS (RHCOS) machines
 
 Before you add more compute machines to a cluster that you installed on bare metal infrastructure, you must create RHCOS machines for it to use. You can either use an ISO image or network PXE booting to create the machines.
 
@@ -32,7 +32,7 @@ You must use the same ISO image that you used to install a cluster to deploy all
 
 </div>
 
-## Creating RHCOS machines by using an ISO image
+## Create RHCOS machines by using an ISO image
 
 To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using an ISO image.
 
@@ -107,7 +107,7 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
 
 9.  Continue to create more compute machines for your cluster.
 
-## Creating RHCOS machines by PXE or iPXE booting
+## Create RHCOS machines by PXE or iPXE booting
 
 To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using PXE or iPXE booting.
 
@@ -223,7 +223,7 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
 
 - [`IMAGE_GZIP` option in iPXE (iPXE documentation)](https://ipxe.org/buildcfg/image_gzip)
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

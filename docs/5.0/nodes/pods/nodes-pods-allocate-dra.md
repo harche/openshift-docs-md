@@ -65,14 +65,6 @@ The DRA driver on each node creates and manages *resource slices*, which describ
 
 A partitionable device is a single physical hardware device that can be split into smaller, logical instances, such as Multi-Instance GPUs, based on workload demands. By partitioning devices, you can safely and efficiently share expensive accelerators across multiple pods.
 
-<div class="important">
-
-Partitionable devices is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 To allocate partitions, the DRA creates a *counter set*, which is a set of named *counters*. The counters represent the resources available on the physical device that are used by the logical devices advertised through DRA.
 
 Logical devices can specify the `consumesCounters` list in a resource slice. Each entry contains a reference to a counter set and a set of named counters with the amounts they can consume.
@@ -294,8 +286,9 @@ spec:
             expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
 ```
 
-Admin access
-A cluster administrator can gain privileged access to a device that is in use by other users. This enables administrators to perform tasks such as monitoring the health and status of devices while ensuring that users can continue to use these devices with their workloads.
+## About DRA admin access
+
+When working with Dynamic Resource Allocation (DRA), as a cluster administrator you can gain privileged access to a device that is in use by other users, so that you can perform tasks such as monitoring the health and status of the device while ensuring that users can continue to use the device.
 
 To gain admin access, an administrator must create a resource claim or resource claim template with the `adminAccess: true` parameter in a namespace that includes the `resource.kubernetes.io/admin-access: "true"` label. Non-administrator users cannot access namespaces with this label.
 
@@ -345,7 +338,9 @@ where:
 `spec.devices.requests.exactly.adminAccess.true` or `spec.devices.requests.firstAvailable.adminAccess.true`
 Specifies that the admin access mode is enabled for the specified device.
 
-For information on adding resource claims to pods, see "Adding resource claims to pods".
+For information on adding a resource claim to a pod, see "Adding resource claims to pods".
+
+- [Adding resource claims to pods](../../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra-configure_nodes-pods-allocate-dra)
 
 # Adding resource claims to pods
 
@@ -358,14 +353,6 @@ The example in the following procedure creates a resource claim to schedule a po
 - A Dynamic Resource Allocation (DRA) driver is installed. For more information on DRA, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
 - A resource slice has been created.
-
-- If your resource slice is allocating a partitioned device, you enabled the required Technology Preview features for your cluster by adding the `TechPreviewNoUpgrade` feature set to the `FeatureGate` CR named `cluster`. For information about enabling Feature Gates, see "Enabling features using feature gates".
-
-  <div class="warning">
-
-  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-  </div>
 
 - A resource claim and/or resource claim template has been created.
 

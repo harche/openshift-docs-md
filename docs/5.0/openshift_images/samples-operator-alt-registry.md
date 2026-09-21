@@ -430,7 +430,7 @@ As an alternative, use the oc-mirror plugin v2.
     $ openshift-install
     ```
 
-# Using Cluster Samples Operator image streams with alternate or mirrored registries
+# Use Cluster Samples Operator image streams with alternate or mirrored registries
 
 You can use an alternate or mirror registry to host your images streams instead of using the Red Hat registry.
 

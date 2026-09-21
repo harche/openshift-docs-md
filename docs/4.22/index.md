@@ -2166,7 +2166,6 @@
   - [Using preallocation for data volumes](virt/storage/virt-using-preallocation-for-datavolumes.md)
   - [Managing data volume annotations](virt/storage/virt-managing-data-volume-annotations.md)
   - [Understanding virtual machine storage with the CSI paradigm](virt/storage/virt-storage-with-csi-paradigm.md)
-  - [Using OpenShift Virtualization with IBM Fusion Access for SAN](virt/storage/install-configure-fusion-access-san.md)
 - **Live migration**
   - [About live migration](virt/live_migration/virt-about-live-migration.md)
   - [Configuring live migration](virt/live_migration/virt-configuring-live-migration.md)

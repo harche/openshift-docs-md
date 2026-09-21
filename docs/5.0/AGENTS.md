@@ -20,7 +20,7 @@ Root: ./
 
 ### Release notes
 
-|release_notes:{ocp-4-22-release-notes.md,addtl-release-notes.md}
+|release_notes:{ocp-5-0-release-notes.md,addtl-release-notes.md}
 
 ### Tutorials
 
@@ -422,12 +422,12 @@ Root: ./
 |virt/managing_vms/virtual_disks:{virt-hot-plugging-virtual-disks.md,virt-expanding-vm-disks.md,virt-configuring-shared-volumes-for-vms.md,virt-migrating-storage-class.md,virt-inserting-cd-roms-in-virtual-machines.md}
 |virt/managing_vms/cpu_models:{virt-choosing-cpu-models.md,virt-configuring-default-cpu-model.md,virt-schedule-vms.md}
 |virt/vm_networking:{virt-networking-overview.md,virt-connecting-vm-to-default-pod-network.md,virt-connecting-vm-to-primary-udn.md,virt-connecting-vm-to-secondary-udn.md,virt-exposing-vm-with-service.md,virt-accessing-vm-internal-fqdn.md,virt-connecting-vm-to-linux-bridge.md,virt-connecting-vm-to-sriov.md,virt-using-dpdk-with-sriov.md,virt-connecting-vm-to-ovn-secondary-network.md,virt-hot-plugging-network-interfaces.md,virt-hot-swap-vm-secondary-network.md,virt-setting-interface-link-state.md,virt-connecting-vm-to-service-mesh.md,virt-configuring-physical-networks.md,virt-dedicated-network-live-migration.md,virt-configuring-viewing-ips-for-vms.md,virt-accessing-vm-secondary-network-fqdn.md,virt-using-mac-address-pool-for-vms.md}
-|virt/storage:{virt-storage-config-overview.md,virt-configuring-storage-profile.md,virt-automatic-bootsource-updates.md,virt-boot-source-image-heterogeneous-clusters.md,virt-reserving-pvc-space-fs-overhead.md,virt-configuring-local-storage-with-hpp.md,virt-enabling-user-permissions-to-clone-datavolumes.md,virt-configuring-cdi-for-namespace-resourcequota.md,virt-preparing-cdi-scratch-space.md,virt-using-preallocation-for-datavolumes.md,virt-managing-data-volume-annotations.md,virt-storage-with-csi-paradigm.md,install-configure-fusion-access-san.md}
+|virt/storage:{virt-storage-config-overview.md,virt-configuring-storage-profile.md,virt-automatic-bootsource-updates.md,virt-boot-source-image-heterogeneous-clusters.md,virt-reserving-pvc-space-fs-overhead.md,virt-configuring-local-storage-with-hpp.md,virt-enabling-user-permissions-to-clone-datavolumes.md,virt-configuring-cdi-for-namespace-resourcequota.md,virt-preparing-cdi-scratch-space.md,virt-using-preallocation-for-datavolumes.md,virt-managing-data-volume-annotations.md,virt-storage-with-csi-paradigm.md}
 |virt/live_migration:{virt-about-live-migration.md,virt-configuring-live-migration.md,virt-initiating-live-migration.md,virt-configuring-cross-cluster-live-migration-network.md,virt-about-mtv-providers.md}
 |virt/nodes:{virt-node-maintenance.md,virt-eviction-strategies.md,virt-managing-node-labeling-obsolete-cpu-models.md,virt-preventing-node-reconciliation.md,virt-activating-ksm.md}
 |virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-standalone-observability-controller.md,virt-runbooks.md}
 |virt/support:{virt-support-overview.md,virt-collecting-virt-data.md,virt-troubleshooting.md}
-|virt/backup_restore:{virt-backup-restore-snapshots.md,virt-backup-restore-overview.md,virt-recovering-individual-files-from-vm-backups.md,virt-using-vm-file-restore.md,virt-file-restore-operator.md,virt-disaster-recovery.md}
+|virt/backup_restore:{virt-backup-restore-snapshots.md,virt-backup-restore-overview.md,virt-recovering-individual-files-from-vm-backups.md,virt-using-vm-file-restore.md,virt-disaster-recovery.md}
 
 ### AI applications
 

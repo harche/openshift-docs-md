@@ -50,7 +50,7 @@ If you do not use the provided CloudFormation template to create your compute no
 
 2.  Continue to create compute stacks until you have created enough compute machines for your cluster.
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

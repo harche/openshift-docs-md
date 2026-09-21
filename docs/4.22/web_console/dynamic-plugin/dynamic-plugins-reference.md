@@ -2372,7 +2372,7 @@ const AppPage: React.FC = () => {
 }
 ```
 
-# Troubleshooting your dynamic plugin
+# Troubleshoot your dynamic plugin
 
 Refer to this list of troubleshooting tips if you run into issues loading your plugin.
 

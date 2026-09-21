@@ -109,7 +109,7 @@ If any of the machine sets for which you want to enable boot image management us
 
 </div>
 
-# Disabling boot image management
+# Disable boot image management
 
 You can disable the boot image management feature so that the Machine Config Operator (MCO) no longer manages or updates the boot image in the affected machine sets. For example, you could disable this feature for the worker nodes in order to use a custom boot image that you do not want changed.
 
@@ -271,7 +271,7 @@ After disabling the feature, you can re-enable the feature at any time. For more
   `status.managedBootImagesStatus.machineManagers.selection.mode`
   Specifies that the boot image management feature is disabled when set to `None`. In this example, the boot image management feature is disabled for control plane machine sets and enabled for worker machine sets.
 
-# Enabling boot image management
+# Enable boot image management
 
 For supported platforms, the Machine Config Operator (MCO) can manage and update the boot image on each node to ensure the Red Hat Enterprise Linux CoreOS (RHCOS) version of the boot image matches the Red Hat Enterprise Linux CoreOS (RHCOS) version appropriate for your cluster.
 
@@ -485,8 +485,8 @@ When boot image management is enabled, the MCO automatically enables boot image 
 
 # Additional resources
 
-- [Disabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-disable_machine-configs-configure)
+- [Disable boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-disable_machine-configs-configure)
 
-- [Enabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-configuring_machine-configs-configure)
+- [Enable boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-configuring_machine-configs-configure)
 
 - [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)

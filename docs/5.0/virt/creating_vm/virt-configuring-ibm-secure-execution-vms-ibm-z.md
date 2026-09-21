@@ -445,6 +445,54 @@ You can create a bootable and encrypted IBM Secure Execution VM image for Red H
 
         The value of this attribute is 1 for Linux instances that detect their environment as consistent with that of a secure host. For other instances, the value is 0.
 
+# Upload and use an IBM Secure Execution bootable image on IBM Z and IBM LinuxONE
+
+You can upload an IBM® Secure Execution bootable image and associate it with a predefined preference so that virtual machines (VMs) created from the image automatically enable the `launchSecurity` setting.
+
+The following predefined preferences are available:
+
+- `fedora.s390x.secex`
+
+- `rhel.<stream>.secex`, where `<stream>` is a supported RHEL version 9 or later
+
+<!-- -->
+
+- You have created an IBM® Secure Execution disk image.
+
+1.  In the OpenShift Container Platform web console, click **Virtualization** → **Bootable volumes**.
+
+2.  Click **Add volume** → **With form**.
+
+3.  In the **Add volume** window, complete the following steps:
+
+    1.  From the **Source type** list, select **Upload new Volume**.
+
+    2.  Select your IBM® Secure Execution disk image to upload.
+
+    3.  In the **Volume name** field, enter a name for the new boot source image.
+
+    4.  From the **Preference** list, select the `.secex` preference that matches the operating system of your image.
+
+    5.  From the **Default Instance Type** list, select the instance type with the correct CPU and memory requirements for your image.
+
+    6.  For heterogeneous clusters only: From the **Architecture** list, select the architecture that corresponds with the selected volume.
+
+    7.  Click **Save**.
+
+<div class="note">
+
+When you create a new VM from the uploaded bootable image, OpenShift Container Platform automatically enables `launchSecurity`.
+
+</div>
+
+# Confidential computing with CCRV on IBM Z and IBM LinuxONE
+
+You can deploy confidential computing workloads with encrypted volumes, attestation capabilities, and hardware-backed memory protection by using IBM® Confidential Computing Container Runtime for Red Hat Virtualization Solutions (CCRV). You can use CCRV with OpenShift Virtualization on IBM® z17 and IBM® LinuxONE 5.
+
+For more information, see the IBM® documentation on 'Deploying Confidential Computing with CCRV on OpenShift Virtualization'.
+
 # Additional resources
 
 - [What is IBM Secure Execution?](https://www.ibm.com/docs/en/linux-on-systems?topic=execution-introduction)
+
+- [Deploying Confidential Computing with CCRV on OpenShift Virtualization](https://www.ibm.com/docs/en/ccrv/1.1.x?topic=solutions-deploying-confidential-computing-ccrv-openshift-virtualization)

@@ -44,7 +44,7 @@ To enable multi-tenancy for developer access and for administrators with limited
 
 </div>
 
-- [Enabling multi-tenancy in network observability](../../observability/network_observability/installing-operators.xml#network-observability-multi-tenancy_network_observability)
+- [Enable multi-tenancy in network observability](../../observability/network_observability/installing-operators.xml#network-observability-multi-tenancy_network_observability)
 
 ## Network observability metrics dashboards
 

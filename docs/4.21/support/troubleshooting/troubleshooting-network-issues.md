@@ -601,7 +601,7 @@ For long-term changes to the Open vSwitch (OVS) log level, you can change the lo
 
 - [Understanding the Machine Config Operator](../../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
-- [Checking machine config pool status](../../machine_configuration/index.xml#checking-mco-status_machine-config-overview)
+- [Check machine config pool status](../../machine_configuration/index.xml#checking-mco-status_machine-config-overview)
 
 ## Displaying Open vSwitch logs
 

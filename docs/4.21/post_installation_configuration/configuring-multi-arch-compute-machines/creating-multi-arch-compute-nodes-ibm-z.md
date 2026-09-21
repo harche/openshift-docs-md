@@ -176,7 +176,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
     See [IPL](https://www.ibm.com/docs/en/zvm/latest?topic=commands-ipl) in IBM® Documentation.
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

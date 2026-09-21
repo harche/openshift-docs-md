@@ -709,7 +709,7 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
   compute-1.example.com          Ready    worker          11m   v1.35.4
   ```
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

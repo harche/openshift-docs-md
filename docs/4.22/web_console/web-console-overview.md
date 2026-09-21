@@ -66,7 +66,7 @@ You can use the **Topology** view to display applications, components, and workl
 
 - [Viewing application composition using the Topology](https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html)
 
-# Enabling the **Developer** perspective in the web console
+# Enable the **Developer** perspective in the web console
 
 Enable the **Developer** perspective in the web console to give your developers tools to manage applications, visualize topology, and monitor projects as they develop and build them.
 

@@ -22,7 +22,7 @@ If you do not have access to the Red Hat Enterprise Linux CoreOS (RHCOS) images
 
 </div>
 
-# Adding more compute machines to a cluster in vSphere
+# Add more compute machines to a cluster in vSphere
 
 To scale a user-provisioned OpenShift Container Platform cluster on VMware vSphere, you can add more compute machines by cloning the vSphere template into a virtual machine (VM).
 
@@ -66,7 +66,7 @@ To scale a user-provisioned OpenShift Container Platform cluster on VMware vSphe
 
 - Continue to create more compute machines for your cluster.
 
-# Approving the certificate signing requests for your machines
+# Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 

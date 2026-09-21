@@ -185,7 +185,7 @@ Endpoint of the proxy.
 
 - [Dynamic plugin API](../../web_console/dynamic-plugin/dynamic-plugins-reference.xml#dynamic-plugin-api_dynamic-plugins-reference)
 
-# Disabling your plugin in the browser
+# Disable your plugin in the browser
 
 Console users can use the `disable-plugins` query parameter to disable specific or all dynamic plugins that would normally get loaded at runtime.
 

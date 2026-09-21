@@ -1,6 +1,6 @@
 You can configure port forwarding to pods, which expose services in your cluster to clients outside of the cluster.
 
-# Understanding port forwarding
+# Understand port forwarding
 
 You can use the OpenShift CLI (`oc`) to forward one or more local ports to a pod. This allows you to listen on a given or random port locally, and have data forwarded to and from given ports in the pod.
 
@@ -24,7 +24,7 @@ OpenShift Container Platform handles port-forward requests from clients. Upon re
 
 Architecturally, there are options for forwarding to a pod’s port. The supported OpenShift Container Platform implementation invokes `nsenter` directly on the node host to enter the pod’s network namespace, then invokes `socat` to copy data between the stream and the pod’s port. However, a custom implementation could include running a *helper* pod that then runs `nsenter` and `socat`, so that those binaries are not required to be installed on the host.
 
-# Using port forwarding
+# Use port forwarding
 
 You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to a pod.
 

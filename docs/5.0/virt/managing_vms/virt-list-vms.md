@@ -83,11 +83,11 @@ You can list all of the virtual machines (VMs) in your cluster by using the web 
 
 # Organize virtual machines by using the web console
 
-In addition to creating virtual machines (VMs) in different projects, you can use the tree view to further organize them in folders.
+In addition to creating virtual machines (VMs) in different projects, you can use the tree view to further organize them in groups.
 
 <div class="important">
 
-Enabling folders in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Enabling groups in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -95,7 +95,7 @@ For more information about the support scope of Red Hat Technology Preview feat
 
 <div class="note">
 
-OpenShift Virtualization does not enable folders in the virtual machine tree by default. To enable folders, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable folders in Virtual Machines tree view**.
+OpenShift Virtualization does not enable groups in the virtual machine tree by default. To enable groups, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable groups in VirtualMachines tree view**.
 
 </div>
 
@@ -103,22 +103,22 @@ OpenShift Virtualization does not enable folders in the virtual machine tree by 
 
 2.  Perform one of the following actions depending on your use case:
 
-    - To move the VM to a new folder in the same project:
+    - To move the VM to a new group in the same project:
 
       1.  Right-click the name of the VM in the tree view.
 
-      2.  Select **Move to folder** from the menu.
+      2.  Select **Move to group** from the menu.
 
-      3.  Type the name of the folder to create in the "Search folder" bar.
+      3.  Type the name of the group to create in the "Search group" bar.
 
-      4.  Click **Create folder** in the drop-down list.
+      4.  Click **Create group** in the drop-down list.
 
       5.  Click **Save**.
 
-    - To move the VM to an existing folder in the same project:
+    - To move the VM to an existing group in the same project:
 
-      - Click the name of the VM in the tree view and drag it to a folder in the same project. A highlight is displayed on the folder for permitted operations.
+      - Click the name of the VM in the tree view and drag it to a group in the same project. A highlight is displayed on the group for permitted operations.
 
-    - To move the VM from a folder to the project:
+    - To move the VM from a group to the project:
 
-      - Click the name of the VM in the tree view and drag it on the project name. A highlight is displayed on the folder for permitted operations.
+      - Click the name of the VM in the tree view and drag it on the project name. A highlight is displayed on the group for permitted operations.

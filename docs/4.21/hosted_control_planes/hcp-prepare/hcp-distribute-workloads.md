@@ -28,7 +28,7 @@ For more information about dedicating a node to a single hosted cluster, see "La
 
 - [Network isolation for hosted clusters](../../hosted_control_planes/hcp-networking.xml#hcp-isolation-overview_hcp-networking)
 
-# Labeling management cluster nodes
+# Label management cluster nodes
 
 Proper node labeling is a prerequisite to deploying hosted control planes.
 

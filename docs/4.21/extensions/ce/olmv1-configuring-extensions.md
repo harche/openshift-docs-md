@@ -168,7 +168,7 @@ You can render the bundle metadata to find which install modes a bundle supports
 
     In this example, the bundle supports both `OwnNamespace` and `SingleNamespace` modes. The `.spec.config.inline.watchNamespace` field is required and can match or differ from the `.spec.namespace` field.
 
-# Configuring a watch namespace for a cluster extension (Technology Preview)
+# Configure a watch namespace for a cluster extension (Technology Preview)
 
 You can configure the watch namespace for extensions that support namespace-scoped resource watching.
 

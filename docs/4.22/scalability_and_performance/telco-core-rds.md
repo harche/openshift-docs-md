@@ -1101,7 +1101,7 @@ Limits and requirements
 
 Use the following custom resources (CRs) to configure and deploy OpenShift Container Platform clusters with the telco core profile. Use the CRs to form the common baseline used in all the specific use models unless otherwise indicated.
 
-## Extracting the telco core reference design configuration CRs
+## Extract the telco core reference design configuration CRs
 
 You can extract the complete set of custom resources (CRs) for the telco core profile from the `telco-core-rds-rhel9` container image. The container image has both the required CRs, and the optional CRs, for the telco core profile.
 
@@ -1204,7 +1204,7 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
   └── README.md
   ```
 
-## Comparing a cluster with the telco core reference configuration
+## Compare a cluster with the telco core reference configuration
 
 After you deploy a telco core cluster, you can use the `cluster-compare` plugin to assess the cluster’s compliance with the telco core reference design specifications (RDS). The `cluster-compare` plugin is an OpenShift CLI (`oc`) plugin. The plugin uses a telco core reference configuration to validate the cluster with the telco core custom resources (CRs).
 

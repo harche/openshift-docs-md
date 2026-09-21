@@ -1225,11 +1225,11 @@ $ oc adm release info 4.21.24 --pullspecs
 
 To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2026:34769 - OpenShift Container Platform 4.17.23 fixed issues advisory
+## RHSA-2026:34764 - OpenShift Container Platform 4.17.23 fixed issues advisory
 
 Issued: 07 July 2026
 
-OpenShift Container Platform release 4.17.23 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:34769](https://access.redhat.com/errata/RHSA-2026:34769) advisory. There are no RPM packages for this release.
+OpenShift Container Platform release 4.17.23 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:34764](https://access.redhat.com/errata/RHSA-2026:34764) advisory. There are no RPM packages for this release.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
