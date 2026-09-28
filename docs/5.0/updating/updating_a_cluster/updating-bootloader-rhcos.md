@@ -2,9 +2,11 @@ To update the boot loader on RHCOS nodes using `bootupd`, you must either run th
 
 Unlike `grubby` or other boot loader tools, `bootupd` does not manage kernel space configuration such as passing kernel arguments. To configure kernel arguments, see [Add kernel arguments to nodes](../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-kernel-arguments_nodes-nodes-managing).
 
+For example, you can use `bootupd` to update the boot loader to protect against the BootHole vulnerability.
+
 <div class="note">
 
-You can use `bootupd` to update the boot loader to protect against the BootHole vulnerability.
+On clusters that use the `x86_64` or ARM CPU architecture, RHCOS automatically updates the boot loader when a node gets upgraded to a new operating system image. For UEFI systems, the `bootloader-update.service` updates the boot loader inside the EFI System Partition. For Legacy BIOS systems, the `bootloader-update.service` writes the boot loader directly to the boot sectors. With these clusters, there is no need to manually update the boot loader.
 
 </div>
 

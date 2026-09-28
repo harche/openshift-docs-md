@@ -770,7 +770,7 @@ You can rotate API keys for your existing service IDs and update the correspondi
 
 Some organizations require the rotation of the cloud provider credentials. To allow the cluster to use the new credentials, you must update the secrets that the Cloud Credential Operator (CCO) uses to manage cloud provider credentials.
 
-## Rotating cloud provider credentials manually
+## Rotate cloud provider credentials manually
 
 If your cloud provider credentials are changed for any reason, you must manually update the secret that the Cloud Credential Operator (CCO) uses to manage cloud provider credentials.
 

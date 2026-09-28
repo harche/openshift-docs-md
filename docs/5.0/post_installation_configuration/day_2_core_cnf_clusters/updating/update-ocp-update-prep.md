@@ -6,7 +6,7 @@ To update clusters in disconnected environments, you must update your offline im
 
 - [API compatibility guidelines](../../../rest_api/overview/understanding-compatibility-guidelines.xml#api-compatibility-guidelines_compatibility-guidelines)
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 # Ensuring the host firmware is compatible with the update
 

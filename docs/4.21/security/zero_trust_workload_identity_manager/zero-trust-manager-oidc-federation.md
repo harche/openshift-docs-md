@@ -10,7 +10,7 @@ The following providers are verified to work with SPIRE OIDC federation:
 
 Integrate Entra ID OpenID Connect (OIDC) with SPIRE to provide workloads with automatic, short-lived cryptographic identities. This configuration allows you to securely authenticate services without maintaining static secrets.
 
-## Configuring the external certificate for the managed OIDC discovery provider route
+## Configure the external certificate for the managed OIDC discovery provider route
 
 Configure the managed OIDC discovery provider route to use an externally managed TLS certificate. By referencing a TLS secret, you can secure the OIDC endpoint with your own certificate credentials.
 
@@ -79,7 +79,7 @@ Configure the managed OIDC discovery provider route to use an externally managed
     }%
     ```
 
-## Disabling a managed route
+## Disable a managed route
 
 If you want to fully control the behavior of exposing the OIDC Discovery Provider service, you can disable the managed route based on your requirements.
 
@@ -91,7 +91,7 @@ If you want to fully control the behavior of exposing the OIDC Discovery Provide
     managedRoute: "false"
   ```
 
-## Using Entra ID with Microsoft Azure
+## Use Entra ID with Microsoft Azure
 
 Configure your Microsoft Azure environment to enable Entra ID integration with Azure. By defining variables and creating a resource group, you establish the infrastructure needed to securely manage workload identities.
 
@@ -175,7 +175,7 @@ Configure your Microsoft Azure environment to enable Entra ID integration with A
       --location "${LOCATION}"
     ```
 
-## Configuring Azure blob storage
+## Configure Azure blob storage
 
 Create a new Microsoft Azure storage account and container to provide a dedicated location for your content. Configuring this storage ensures that the Zero Trust Workload Identity Manager can successfully store and retrieve blobs for your environment.
 
@@ -204,7 +204,7 @@ Create a new Microsoft Azure storage account and container to provide a dedicate
       --auth-mode login
     ```
 
-## Configuring an Azure user managed identity
+## Configure an Azure user managed identity
 
 Create a user-assigned managed identity in Azure to manage access control for your resources. You must also obtain the Client ID to associate roles with the service principal.
 
@@ -235,7 +235,7 @@ Create a user-assigned managed identity in Azure to manage access control for yo
       --scope ${STORAGE_ACCOUNT_ID}
     ```
 
-## Creating the demonstration application
+## Create the demonstration application
 
 Create the demonstration application to verify that the entire system functions correctly. This process validates the configuration of your application secrets and namespaces.
 
@@ -274,7 +274,7 @@ Create the demonstration application to verify that the entire system functions 
     EOF
     ```
 
-## Deploying the workload application
+## Deploy the workload application
 
 Deploy the workload application to your cluster to validate the Zero Trust Workload Identity Manager environment. This application confirms that the SPIFFE Workload API is functioning and can successfully retrieve JWT tokens.
 
@@ -394,7 +394,7 @@ Deploy the workload application to your cluster to validate the Zero Trust Workl
           /opt/app-root/src/get-spiffe-token.py -a "api://AzureADTokenExchange"
         ```
 
-## Configuring Azure with the SPIFFE identity federation
+## Configure Azure with the SPIFFE identity federation
 
 Configure Microsoft Azure with SPIFFE identity federation to enable password-free, automated authentication for the demonstration application. This federates the User Managed Identity with the SPIFFE identity associated with your workload application.
 
@@ -410,7 +410,7 @@ Configure Microsoft Azure with SPIFFE identity federation to enable password-fre
    --audience api://AzureADTokenExchange
   ```
 
-## Verifying that the application workload can access the content in the Azure Blob Storage
+## Verify that the application workload can access the content in the Azure Blob Storage
 
 Verify that your application workload can connect to the Azure Blob Storage. By uploading a test file, you validate the authentication token and ensure that the workload has the correct permissions.
 
@@ -468,7 +468,7 @@ Verify that your application workload can connect to the Azure Blob Storage. By 
 
 Use Vault OpenID Connect (OIDC) with SPIRE to securely authenticate workloads. Vault uses SPIRE as a trusted OIDC provider to validate workload identities. This configuration enables workloads to receive short-lived tokens to access secrets and perform actions within Vault.
 
-## Installing Vault
+## Install Vault
 
 Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This establishes the necessary infrastructure to manage workload identities securely in your Zero Trust Workload Identity Manager environment.
 
@@ -575,7 +575,7 @@ Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This esta
   }
   ```
 
-## Initializing and unsealing Vault
+## Initialize and unseal Vault
 
 To prepare a newly installed Vault server for operation, initialize and unseal it. This process loads the primary encryption key into memory so that Vault can decrypt data and protect other encryption keys.
 
@@ -642,7 +642,7 @@ The steps to initialize a Vault server are:
   vault-0     1/1          Running     0            65d
   ```
 
-## Enabling the key-value secrets engine and store a test secret
+## Enable the key-value secrets engine and store a test secret
 
 Enable the key-value secrets engine to create a secure, centralized location for managing credentials. You can also store a test secret to verify that the engine is working.
 
@@ -684,7 +684,7 @@ Enable the key-value secrets engine to create a secure, centralized location for
   $ vault kv get secret/$NAME
   ```
 
-## Configuring JSON Web Token authentication with SPIRE
+## Configure JSON Web Token authentication with SPIRE
 
 To help your applications securely log in to Vault using SPIFFE identities, configure JSON Web Token (JWT) authentication.
 
@@ -795,7 +795,7 @@ To help your applications securely log in to Vault using SPIFFE identities, conf
     EOF
     ```
 
-## Deploying a demonstration application
+## Deploy a demonstration application
 
 Deploy a demonstration application to create a simple client that uses its SPIFFE identity to authenticate with Vault. By doing this you can verify that the client can successfully authenticate using the configured identity.
 
@@ -839,7 +839,7 @@ Deploy a demonstration application to create a simple client that uses its SPIFF
   backend-api      3/3          3               3             120d
   ```
 
-## Authenticating and retrieving the secret
+## Authenticate and retrieve the secret
 
 Use the demonstration application to fetch a JWT token from the SPIFFE Workload API. Use the token to authenticate with Vault so that you can securely retrieve the secret and verify the workflow.
 

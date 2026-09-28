@@ -2,7 +2,7 @@ As a cluster administrator, you can change interface-level network sysctls and s
 
 Before you perform any tasks in the following documentation, ensure that you [installed the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator).
 
-# Labeling nodes with an SR-IOV enabled NIC
+# Label nodes with an SR-IOV enabled NIC
 
 If you want to enable SR-IOV on only SR-IOV capable nodes there are a couple of ways to do this.
 
@@ -20,7 +20,7 @@ If you want to enable SR-IOV on only SR-IOV capable nodes there are a couple of 
 
     </div>
 
-# Setting one sysctl flag
+# Set one sysctl flag
 
 You can set interface-level network `sysctl` settings for a pod connected to a SR-IOV network device.
 
@@ -32,7 +32,7 @@ The `sysctl-tuning-test` is a namespace used in this example.
 
       $ oc create namespace sysctl-tuning-test
 
-## Setting one sysctl flag on nodes with SR-IOV network devices
+## Set one sysctl flag on nodes with SR-IOV network devices
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
@@ -106,7 +106,7 @@ Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-## Configuring sysctl on a SR-IOV network
+## Configure sysctl on a SR-IOV network
 
 You can set interface specific `sysctl` settings on virtual interfaces created by SR-IOV by adding the tuning configuration to the optional `metaPlugins` parameter of the `SriovNetwork` resource.
 
@@ -254,7 +254,7 @@ To change the interface-level network `net.ipv4.conf.IFNAME.accept_redirects` `s
       $ sysctl net.ipv4.conf.net1.accept_redirects
       ```
 
-# Configuring sysctl settings for pods associated with bonded SR-IOV interface flag
+# Configure sysctl settings for pods associated with bonded SR-IOV interface flag
 
 You can set interface-level network `sysctl` settings for a pod connected to a bonded SR-IOV network device.
 
@@ -266,7 +266,7 @@ The `sysctl-tuning-test` is a namespace used in this example.
 
       $ oc create namespace sysctl-tuning-test
 
-## Setting all sysctl flag on nodes with bonded SR-IOV network devices
+## Set all sysctl flag on nodes with bonded SR-IOV network devices
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
@@ -340,7 +340,7 @@ Follow this procedure to create a `SriovNetworkNodePolicy` custom resource (CR).
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-## Configuring sysctl on a bonded SR-IOV network
+## Configure sysctl on a bonded SR-IOV network
 
 You can set interface specific `sysctl` settings on a bonded interface created from two SR-IOV interfaces. Do this by adding the tuning configuration to the optional `Plugins` parameter of the bond network attachment definition.
 
@@ -550,7 +550,7 @@ Enabling all-multicast mode, particularly in the context of rootless application
 
 The tuning CNI plugin supports changing several interface attributes, including all-multicast mode. By enabling this mode, you can allow applications running on Virtual Functions (VFs) that are configured on a SR-IOV network device to receive multicast traffic from applications on other VFs, whether attached to the same or different physical functions.
 
-## Enabling the all-multicast mode on an SR-IOV network
+## Enable the all-multicast mode on an SR-IOV network
 
 You can enable the all-multicast mode on an SR-IOV interface by:
 

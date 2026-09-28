@@ -2,7 +2,7 @@ You can gather audit logs, which are a security-relevant chronological set of re
 
 For example, audit logs can help you understand where an autoscaling request is coming from. This is key information when backends are getting overloaded by autoscaling requests made by user applications and you need to determine which is the troublesome application.
 
-# Configuring audit logging
+# Configure audit logging
 
 You can configure auditing for the Custom Metrics Autoscaler Operator by editing the `KedaController` custom resource. The logs are sent to an audit log file on a volume that is secured by using a persistent volume claim in the `KedaController` CR.
 

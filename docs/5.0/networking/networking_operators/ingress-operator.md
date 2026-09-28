@@ -91,21 +91,34 @@ The `IngressController` custom resource (CR) includes optional configuration par
 </ul></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>haproxyVersion</code></p></td>
+<td style="text-align: left;"><p><code>haproxyVersion</code> specifies the HAProxy version for this Ingress Controller.</p>
+<p>OpenShift Container Platform 4.17 uses HAProxy 3.2 as the default version and supports HAProxy 2.8 from OpenShift Container Platform 4.22 for migration. When a later OpenShift Container Platform release introduces a new default HAProxy version, that version becomes available as a pinnable value in subsequent releases.</p>
+<p>Valid values for OpenShift Container Platform 4.17 include the following:</p>
+<ul>
+<li><p>Unset (default): Uses HAProxy 3.2.</p></li>
+<li><p><code>3.2</code>: Pins HAProxy 3.2 so that a later cluster update keeps this version while it remains supported.</p></li>
+<li><p><code>2.8</code>: Uses HAProxy 2.8. This value is available for migration and is planned to be removed in a later release.</p></li>
+</ul>
+<p>If <code>haproxyVersion</code> is set to a value that a target cluster update does not support, a preflight check blocks the update until you unset the field or change it to a supported version.</p>
+<p>The Ingress Operator reports the resolved version in <code>status.effectiveHAProxyVersion</code>.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>defaultCertificate</code></p></td>
 <td style="text-align: left;"><p>The <code>defaultCertificate</code> value is a reference to a secret that contains the default certificate that is served by the Ingress Controller. When Routes do not specify their own certificate, <code>defaultCertificate</code> is used.</p>
 <p>The secret must contain the following keys and data: * <code>tls.crt</code>: certificate file contents * <code>tls.key</code>: key file contents</p>
 <p>If not set, a wildcard certificate is automatically generated and used. The certificate is valid for the Ingress Controller <code>domain</code> and <code>subdomains</code>, and the generated certificate’s CA is automatically integrated with the cluster’s trust store.</p>
 <p>The in-use certificate, whether generated or user-specified, is automatically integrated with OpenShift Container Platform built-in OAuth server.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>namespaceSelector</code></p></td>
 <td style="text-align: left;"><p><code>namespaceSelector</code> is used to filter the set of namespaces serviced by the Ingress Controller. This is useful for implementing shards.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>routeSelector</code></p></td>
 <td style="text-align: left;"><p><code>routeSelector</code> is used to filter the set of Routes serviced by the Ingress Controller. This is useful for implementing shards.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>nodePlacement</code></p></td>
 <td style="text-align: left;"><p><code>nodePlacement</code> enables explicit control over the scheduling of the Ingress Controller.</p>
 <p>If not set, the defaults values are used.</p>
@@ -120,7 +133,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">operator</span><span class="kw">:</span><span class="at"> Exists</span></span></code></pre></div>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tlsSecurityProfile</code></p></td>
 <td style="text-align: left;"><p><code>tlsSecurityProfile</code> specifies settings for TLS connections for Ingress Controllers.</p>
 <p>If not set, the default value is based on the <code>apiservers.config.openshift.io/cluster</code> resource.</p>
@@ -133,14 +146,14 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <p>The Ingress Operator converts the TLS <code>1.0</code> of an <code>Old</code> or <code>Custom</code> profile to <code>1.1</code>.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>clientTLS</code></p></td>
 <td style="text-align: left;"><p><code>clientTLS</code> authenticates client access to the cluster and services; as a result, mutual TLS authentication is enabled. If not set, then client TLS is not enabled.</p>
 <p><code>clientTLS</code> has the required subfields, <code>spec.clientTLS.clientCertificatePolicy</code> and <code>spec.clientTLS.ClientCA</code>.</p>
 <p>The <code>ClientCertificatePolicy</code> subfield accepts one of the two values: <code>Required</code> or <code>Optional</code>. The <code>ClientCA</code> subfield specifies a config map that is in the openshift-config namespace. The config map should contain a CA certificate bundle.</p>
 <p>The <code>AllowedSubjectPatterns</code> is an optional value that specifies a list of regular expressions, which are matched against the distinguished name on a valid client certificate to filter requests. The regular expressions must use PCRE syntax. At least one pattern must match a client certificate’s distinguished name; otherwise, the Ingress Controller rejects the certificate and denies the connection. If not specified, the Ingress Controller does not reject certificates based on the distinguished name.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>routeAdmission</code></p></td>
 <td style="text-align: left;"><p><code>routeAdmission</code> defines a policy for handling new route claims, such as allowing or denying claims across namespaces.</p>
 <p><code>namespaceOwnership</code> describes how hostname claims across namespaces should be handled. The default is <code>Strict</code>.</p>
@@ -154,7 +167,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <li><p><code>WildcardsDisallowed</code>: Indicates only routes with a wildcard policy of <code>None</code> are admitted by the Ingress Controller. Updating <code>wildcardPolicy</code> from <code>WildcardsAllowed</code> to <code>WildcardsDisallowed</code> causes admitted routes with a wildcard policy of <code>Subdomain</code> to stop working. These routes must be recreated to a wildcard policy of <code>None</code> to be readmitted by the Ingress Controller. <code>WildcardsDisallowed</code> is the default setting.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>IngressControllerLogging</code></p></td>
 <td style="text-align: left;"><p><code>logging</code> defines parameters for what is logged where. If this field is empty, operational logs are enabled but access logs are disabled.</p>
 <ul>
@@ -180,7 +193,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 </ul></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpHeaders</code></p></td>
 <td style="text-align: left;"><p><code>httpHeaders</code> defines the policy for HTTP headers.</p>
 <p>By setting the <code>forwardedHeaderPolicy</code> for the <code>IngressControllerHTTPHeaders</code>, you specify when and how the Ingress Controller sets the <code>Forwarded</code>, <code>X-Forwarded-For</code>, <code>X-Forwarded-Host</code>, <code>X-Forwarded-Port</code>, <code>X-Forwarded-Proto</code>, and <code>X-Forwarded-Proto-Version</code> HTTP headers.</p>
@@ -200,18 +213,18 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <li><p>The <code>request</code> subfield specifies a list of HTTP request headers to set or delete.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>httpCompression</code></p></td>
 <td style="text-align: left;"><p><code>httpCompression</code> defines the policy for HTTP traffic compression.</p>
 <ul>
 <li><p><code>mimeTypes</code> defines a list of MIME types to which compression should be applied. For example, <code>text/css; charset=utf-8</code>, <code>text/html</code>, <code>text/*</code>, <code>image/svg+xml</code>, <code>application/octet-stream</code>, <code>X-custom/customsub</code>, using the format pattern, <code>type/subtype; [;attribute=value]</code>. The <code>types</code> are: application, image, message, multipart, text, video, or a custom type prefaced by <code>X-</code>; e.g. To see the full notation for MIME types and subtypes, see <a href="https://datatracker.ietf.org/doc/html/rfc1341#page-7">RFC1341</a></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpErrorCodePages</code></p></td>
 <td style="text-align: left;"><p><code>httpErrorCodePages</code> specifies custom HTTP error code response pages. By default, an IngressController uses error pages built into the IngressController image.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>httpCaptureCookies</code></p></td>
 <td style="text-align: left;"><p><code>httpCaptureCookies</code> specifies HTTP cookies that you want to capture in access logs. If the <code>httpCaptureCookies</code> field is empty, the access logs do not capture the cookies.</p>
 <p>For any cookie that you want to capture, the following parameters must be in your <code>IngressController</code> configuration:</p>
@@ -226,7 +239,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">maxLength</span><span class="kw">:</span><span class="at"> </span><span class="dv">128</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MYCOOKIE</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>httpCaptureHeaders</code></p></td>
 <td style="text-align: left;"><p><code>httpCaptureHeaders</code> specifies the HTTP headers that you want to capture in the access logs. If the <code>httpCaptureHeaders</code> field is empty, the access logs do not capture the headers.</p>
 <p><code>httpCaptureHeaders</code> contains two lists of headers to capture in the access logs. The two lists of header fields are <code>request</code> and <code>response</code>. In both lists, the <code>name</code> field must specify the header name and the <code>maxlength</code> field must specify the maximum length of the header. For example:</p>
@@ -242,7 +255,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">maxLength</span><span class="kw">:</span><span class="at"> </span><span class="dv">256</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Content-Length</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>tuningOptions</code></p></td>
 <td style="text-align: left;"><p><code>tuningOptions</code> specifies options for tuning the performance of Ingress Controller pods.</p>
 <ul>
@@ -266,7 +279,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 </ul></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>logEmptyRequests</code></p></td>
 <td style="text-align: left;"><p><code>logEmptyRequests</code> specifies connections for which no request is received and logged. These empty requests come from load balancer health probes or web browser speculative connections (preconnect) and logging these requests can be undesirable. However, these requests can be caused by network errors, in which case logging empty requests can be useful for diagnosing the errors. These requests can be caused by port scans, and logging empty requests can aid in detecting intrusion attempts. Allowed values for this field are <code>Log</code> and <code>Ignore</code>. The default value is <code>Log</code>.</p>
 <p>The <code>LoggingPolicy</code> type accepts either one of two values:</p>
@@ -275,7 +288,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 <li><p><code>Ignore</code>: Setting this value to <code>Ignore</code> sets the <code>dontlognull</code> option in the HAproxy configuration.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>HTTPEmptyRequestsPolicy</code></p></td>
 <td style="text-align: left;"><p><code>HTTPEmptyRequestsPolicy</code> describes how HTTP connections are handled if the connection times out before a request is received. Allowed values for this field are <code>Respond</code> and <code>Ignore</code>. The default value is <code>Respond</code>.</p>
 <p>The <code>HTTPEmptyRequestsPolicy</code> type accepts either one of two values:</p>
@@ -292,7 +305,7 @@ The `IngressController` custom resource (CR) includes optional configuration par
 
 TLS security profiles provide a way for servers to regulate which ciphers a connecting client can use when connecting to the server.
 
-### Understanding TLS security profiles
+### Understand TLS security profiles
 
 You can use a TLS (Transport Layer Security) security profile, as described in this section, to define which TLS ciphers are required by various OpenShift Container Platform components.
 
@@ -352,7 +365,7 @@ When using one of the predefined profile types, the effective profile configurat
 
 </div>
 
-### Configuring the TLS security profile for the Ingress Controller
+### Configure the TLS security profile for the Ingress Controller
 
 To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile.
 
@@ -563,7 +576,7 @@ Your can view the status of a particular Ingress Controller.
   $ oc describe --namespace=openshift-ingress-operator ingresscontroller/<name>
   ```
 
-# Creating a custom Ingress Controller
+# Create a custom Ingress Controller
 
 As a cluster administrator, you can create a new custom Ingress Controller. Because the default Ingress Controller might change during OpenShift Container Platform updates, creating a custom Ingress Controller can be helpful when maintaining a configuration manually that persists across cluster updates.
 
@@ -610,7 +623,7 @@ This example provides a minimal spec for a custom Ingress Controller. To further
 
 # Configuring the Ingress Controller
 
-## Setting a custom default certificate
+## Set a custom default certificate
 
 As an administrator, you can configure an Ingress Controller to use a custom certificate by creating a Secret resource and editing the `IngressController` custom resource (CR).
 
@@ -707,7 +720,7 @@ This action will cause the Ingress Controller to be redeployed, using a rolling 
 
 Once the IngressController CR has been modified, the Ingress Operator updates the Ingress Controller’s deployment to use the custom certificate.
 
-## Removing a custom default certificate
+## Remove a custom default certificate
 
 As an administrator, you can remove a custom certificate that you configured an Ingress Controller to use.
 
@@ -755,7 +768,7 @@ As an administrator, you can remove a custom certificate that you configured an 
   notAfter=May 10 10:44:36 2023 GMT
   ```
 
-## Autoscaling an Ingress Controller
+## Autoscale an Ingress Controller
 
 You can automatically scale an Ingress Controller to dynamically meet routing performance or availability requirements. For example, the requirement to increase throughput.
 
@@ -997,7 +1010,7 @@ The following procedure provides an example for scaling up the default Ingress C
 
 - [Understanding how to add custom metrics autoscalers](../../nodes/cma/nodes-cma-autoscaling-custom-adding.xml#nodes-cma-autoscaling-custom-adding)
 
-## Scaling an Ingress Controller
+## Scale an Ingress Controller
 
 Manually scale an Ingress Controller to meeting routing performance or availability requirements such as the requirement to increase throughput. `oc` commands are used to scale the `IngressController` resource. The following procedure provides an example for scaling up the default `IngressController`.
 
@@ -1049,7 +1062,7 @@ Scaling is not an immediate action, as it takes time to create the desired numbe
 
     - If you need a different amount of replicas, change the `replicas` value.
 
-## Configuring Ingress access logging
+## Configure Ingress access logging
 
 You can configure the Ingress Controller to enable access logs. If you have clusters that do not receive much traffic, then you can log to a sidecar. If you have high traffic clusters, to avoid exceeding the capacity of the logging stack or to integrate with a logging infrastructure outside of OpenShift Container Platform, you can forward logs to a custom syslog endpoint. You can also specify the format for access logs.
 
@@ -1137,7 +1150,7 @@ Syslog is needed for high-traffic clusters where access logs could exceed the Op
 
 - [Capturing Original Client IP from the X-Forwarded-For Header in Ingress and Application Logs](https://access.redhat.com/solutions/7096271)
 
-## Setting Ingress Controller thread count
+## Set Ingress Controller thread count
 
 A cluster administrator can set the thread count to increase the amount of incoming connections a cluster can handle. You can patch an existing Ingress Controller to increase the amount of threads.
 
@@ -1157,7 +1170,7 @@ A cluster administrator can set the thread count to increase the amount of incom
 
   </div>
 
-## Configuring an Ingress Controller to use an internal load balancer
+## Configure an Ingress Controller to use an internal load balancer
 
 When creating an Ingress Controller on cloud platforms, the Ingress Controller is published by a public cloud load balancer by default. As an administrator, you can create an Ingress Controller that uses an internal cloud load balancer.
 
@@ -1228,7 +1241,7 @@ The preceding graphic shows the following concepts pertaining to OpenShift Conta
     $ oc --all-namespaces=true get ingresscontrollers
     ```
 
-## Configuring global access for an Ingress Controller on Google Cloud
+## Configure global access for an Ingress Controller on Google Cloud
 
 An Ingress Controller created on Google Cloud with an internal load balancer generates an internal IP address for the service. A cluster administrator can specify the global access option, which enables clients in any region within the same VPC network and compute region as the load balancer, to reach the workloads running on your cluster.
 
@@ -1286,7 +1299,7 @@ For more information, see the Google Cloud documentation for [global access](htt
 
     The output shows that global access is enabled for Google Cloud with the annotation, `networking.gke.io/internal-load-balancer-allow-global-access`.
 
-## Setting the Ingress Controller health check interval
+## Set the Ingress Controller health check interval
 
 A cluster administrator can set the health check interval to define how long the router waits between two consecutive health checks. This value is applied globally as a default for all routes. The default value is 5 seconds.
 
@@ -1306,7 +1319,7 @@ A cluster administrator can set the health check interval to define how long the
 
   </div>
 
-## Configuring the default Ingress Controller for your cluster to be internal
+## Configure the default Ingress Controller for your cluster to be internal
 
 You can configure the `default` Ingress Controller for your cluster to be internal by deleting and recreating it.
 
@@ -1343,7 +1356,7 @@ If you want to change the `scope` for an `IngressController`, you can change the
     EOF
     ```
 
-## Configuring the route admission policy
+## Configure the route admission policy
 
 Administrators and application developers can run applications in multiple namespaces with the same domain name. This is for organizations where multiple teams develop microservices that are exposed on the same hostname.
 
@@ -1393,7 +1406,7 @@ Allowing claims across namespaces should only be enabled for clusters with trust
 
   </div>
 
-## Using wildcard routes
+## Use wildcard routes
 
 The HAProxy Ingress Controller has support for wildcard routes. The Ingress Operator uses `wildcardPolicy` to configure the `ROUTER_ALLOW_WILDCARD_ROUTES` environment variable of the Ingress Controller.
 
@@ -1559,7 +1572,7 @@ The following headers are either prevented entirely from being set or deleted, o
 
 Special case header configuration options
 
-## Setting or deleting HTTP request and response headers in an Ingress Controller
+## Set or delete HTTP request and response headers in an Ingress Controller
 
 You can set or delete certain HTTP request and response headers for compliance purposes or other reasons. You can set or delete these headers either for all routes served by an Ingress Controller or for specific routes.
 
@@ -1617,7 +1630,7 @@ The following procedure modifies the Ingress Controller to set the X-Forwarded-C
 
 3.  Save the file to apply the changes.
 
-## Using X-Forwarded headers
+## Use X-Forwarded headers
 
 You configure the HAProxy Ingress Controller to specify a policy for how to handle HTTP headers including `Forwarded` and `X-Forwarded-For`. The Ingress Operator uses the `HTTPHeaders` field to configure the `ROUTER_SET_FORWARDED_HEADERS` environment variable of the Ingress Controller.
 
@@ -1698,7 +1711,7 @@ This sequence of events causes an issue if the client subsequently tries to upgr
 
 </div>
 
-### Enabling HTTP/2
+### Enable HTTP/2
 
 You can enable HTTP/2 on a specific Ingress Controller, or you can enable HTTP/2 for the entire cluster.
 
@@ -1731,7 +1744,7 @@ metadata:
 
 </div>
 
-### Disabling HTTP/2
+### Disable HTTP/2
 
 You can disable HTTP/2 on a specific Ingress Controller, or you can disable HTTP/2 for the entire cluster.
 
@@ -1764,7 +1777,7 @@ metadata:
 
 </div>
 
-## Configuring the PROXY protocol for an Ingress Controller
+## Configure the PROXY protocol for an Ingress Controller
 
 A cluster administrator can configure [the PROXY protocol](https://www.haproxy.org/download/2.8/doc/proxy-protocol.txt) when an Ingress Controller uses either the `HostNetwork`, `NodePortService`, or `Private` endpoint publishing strategy types. The PROXY protocol enables the load balancer to preserve the original client addresses for connections that the Ingress Controller receives. The original client addresses are useful for logging, filtering, and injecting HTTP headers. In the default configuration, the connections that the Ingress Controller receives only contain the source address that is associated with the load balancer.
 
@@ -1868,7 +1881,7 @@ You must configure both OpenShift Container Platform and the external load balan
 
 - [Configuring Ingress access logging](../../networking/networking_operators/ingress-operator.xml#nw-configure-ingress-access-logging_configuring-ingress)
 
-## Specifying an alternative cluster domain using the appsDomain option
+## Specify an alternative cluster domain using the appsDomain option
 
 As a cluster administrator, you can specify an alternative to the default cluster domain for user-created routes by configuring the `appsDomain` field. The `appsDomain` field is an optional domain for OpenShift Container Platform to use instead of the default, which is specified in the `domain` field. If you specify an alternative domain, it overrides the default cluster domain for the purpose of determining the default host for a new route.
 
@@ -1940,13 +1953,107 @@ For example, you can use the DNS domain for your company as the default domain f
         hello-openshift   8080-tcp                 None
         ```
 
-## Converting HTTP header case
+## About HAProxy versions for Ingress Controllers
+
+You can select the HAProxy version that an Ingress Controller runs so that you can keep a known-good version after a cluster update or move to the current default version. Use this control when applications depend on a specific HAProxy behavior.
+
+OpenShift Container Platform 4.17 uses HAProxy 3.2 as the default version and continues to support HAProxy 2.8 from OpenShift Container Platform 4.22 for migration. Set `spec.haproxyVersion` on the `IngressController` custom resource (CR) to choose a version. If you omit the field, the Ingress Operator uses the default for the cluster version, which is HAProxy 3.2 in OpenShift Container Platform 4.17.
+
+Valid values in OpenShift Container Platform 4.17 are:
+
+- Unset (default): Uses HAProxy 3.2.
+
+- `3.2`: Pins HAProxy 3.2 so that a later cluster upgrade keeps this version while it remains supported.
+
+- `2.8`: Uses HAProxy 2.8. This value is available for migration and is planned to be removed in a later release.
+
+The Ingress Operator reports the version that is in use in `status.effectiveHAProxyVersion`.
+
+### Selecting an HAProxy version
+
+You can set `spec.haproxyVersion` on an Ingress Controller so that the router uses HAProxy 2.8 or HAProxy 3.2. Pin HAProxy 2.8 when you need the previous ingress behavior after an update to OpenShift Container Platform 4.17.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+1.  Optional: View the current HAProxy version for the default Ingress Controller by running the following command:
+
+    ``` terminal
+    $ oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.effectiveHAProxyVersion}{"\n"}'
+    ```
+
+2.  Set the HAProxy version using one of the following methods:
+
+    <div class="note">
+
+    The Ingress Operator restarts Ingress Controller pods to apply the change. Wait until the pods are ready before you verify the updated version.
+
+    </div>
+
+    1.  To keep HAProxy 2.8, run the following command:
+
+        ``` terminal
+        $ oc -n openshift-ingress-operator patch ingresscontroller/default --type=merge -p '{"spec":{"haproxyVersion":"2.8"}}'
+        ```
+
+    2.  To set HAProxy to 3.2, run the following command:
+
+        ``` terminal
+        $ oc -n openshift-ingress-operator patch ingresscontroller/default --type=merge -p '{"spec":{"haproxyVersion":"3.2"}}'
+        ```
+
+    3.  To return to the release default, unset the field by running the following command:
+
+        ``` terminal
+        $ oc -n openshift-ingress-operator patch ingresscontroller/default --type=json -p '[{"op": "remove", "path": "/spec/haproxyVersion"}]'
+        ```
+
+3.  Repeat the patch for each additional Ingress Controller that must use the same HAProxy version.
+
+### Verifying the active HAProxy version
+
+You can confirm which HAProxy version an Ingress Controller is running after you set `spec.haproxyVersion` or after a cluster update. Verification shows whether the Ingress Operator applied the version that you selected.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+1.  Check the configured HAProxy version on the default Ingress Controller by running the following command:
+
+    ``` terminal
+    $ oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.spec.haproxyVersion}{"\n"}'
+    ```
+
+    An empty result means that the Ingress Controller uses the release default.
+
+2.  Check the effective HAProxy version by running the following command:
+
+    ``` terminal
+    $ oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.effectiveHAProxyVersion}{"\n"}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    2.8
+    ```
+
+    The Operator reports `2.8` or `3.2` after it resolves the version. If `status.effectiveHAProxyVersion` is omitted, the Operator has not resolved the version yet.
+
+3.  Optional: Repeat these commands for each additional Ingress Controller in the `openshift-ingress-operator` namespace.
+
+## Convert HTTP header case
 
 HAProxy lowercases HTTP header names by default; for example, changing `Host: xyz.com` to `host: xyz.com`. If legacy applications are sensitive to the capitalization of HTTP header names, use the Ingress Controller `spec.httpHeaders.headerNameCaseAdjustments` API field for a solution to accommodate legacy applications until they can be fixed.
 
 <div class="important">
 
-OpenShift Container Platform includes HAProxy 2.8. If you want to update to this version of the web-based load balancer, ensure that you add the `spec.httpHeaders.headerNameCaseAdjustments` section to your cluster’s configuration file.
+OpenShift Container Platform 4.17 uses HAProxy 3.2 by default and can run HAProxy 2.8. If applications are sensitive to HTTP header name capitalization, add the `spec.httpHeaders.headerNameCaseAdjustments` section to your Ingress Controller configuration.
 
 </div>
 
@@ -2033,7 +2140,7 @@ As a cluster administrator, you can convert the HTTP header case by entering the
 
       - Set `haproxy.router.openshift.io/h1-adjust-case` to true.
 
-## Using router compression
+## Use router compression
 
 You configure the HAProxy Ingress Controller to specify router compression globally for specific MIME types. You can use the `mimeTypes` variable to define the formats of MIME types to which compression is applied. The types are: application, image, message, multipart, text, video, or a custom type prefaced by "X-". To see the full notation for MIME types and subtypes, see [RFC1341](https://datatracker.ietf.org/doc/html/rfc1341#page-7).
 
@@ -2070,7 +2177,7 @@ Not all MIME types benefit from compression, but HAProxy still uses resources to
            ...
         ```
 
-## Exposing router metrics
+## Expose router metrics
 
 You can retrieve Prometheus-format HAProxy ingress router metrics from port `1936` to monitor ingress load and troubleshoot routing behavior. By analyzing these metrics, you can identify capacity bottlenecks and determine when to scale your router deployment.
 
@@ -2153,7 +2260,7 @@ The Prometheus `/metrics` endpoint and the HAProxy HTML statistics dashboard are
 
     If the ratio approaches `1`, adjust `spec.tuningOptions.maxConnections` on the `IngressController` or scale the router deployment.
 
-## Customizing HAProxy error code response pages
+## Customize HAProxy error code response pages
 
 As a cluster administrator, you can specify a custom error code response page for either 503, 404, or both error pages. The HAProxy router serves a 503 error page when the application pod is not running or a 404 error page when the requested URL does not exist. For example, if you customize the 503 error code response page, then the page is served when the application pod is not running, and the default 404 error code HTTP response page is served by the HAProxy router for an incorrect route or a non-existing route.
 
@@ -2266,7 +2373,7 @@ Verify your custom error code HTTP response:
     $ oc -n openshift-ingress rsh <router> cat /var/lib/haproxy/conf/haproxy.config | grep errorfile
     ```
 
-## Setting the Ingress Controller maximum connections
+## Set the Ingress Controller maximum connections
 
 A cluster administrator can set the maximum number of simultaneous connections for OpenShift router deployments. You can patch an existing Ingress Controller to increase the maximum number of connections.
 

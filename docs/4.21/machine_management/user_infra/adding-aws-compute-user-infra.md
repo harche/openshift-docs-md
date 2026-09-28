@@ -6,7 +6,7 @@ To scale your OpenShift Container Platform cluster on Amazon Web Services (AWS) 
 
 - You have the JSON file and CloudFormation template that you used to create the compute machines during cluster installation. If you do not have these files, you must recreate them by following the instructions in the [installation procedure](../../installing/installing_aws/upi/installing-aws-user-infra.xml#installing-aws-user-infra).
 
-# Adding more compute machines to your AWS cluster by using CloudFormation templates
+# Add more compute machines to your AWS cluster by using CloudFormation templates
 
 To scale your OpenShift Container Platform cluster on Amazon Web Services (AWS), you can add more compute machines by creating additional CloudFormation stacks from the sample templates that you used during installation.
 

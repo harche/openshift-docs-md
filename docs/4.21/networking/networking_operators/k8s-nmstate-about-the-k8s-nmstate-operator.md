@@ -47,7 +47,7 @@ Do not make configuration changes to the `br-ex` bridge or its underlying interf
 
 You can install the Kubernetes NMState Operator by using the web console or the CLI.
 
-## Installing the Kubernetes NMState Operator by using the web console
+## Install the Kubernetes NMState Operator by using the web console
 
 You can install the Kubernetes NMState Operator by using the web console. After you install the Kubernetes NMState Operator, the Operator has deployed the NMState State Controller as a daemon set across all of the cluster nodes.
 
@@ -77,7 +77,7 @@ You can install the Kubernetes NMState Operator by using the web console. After 
 
 9.  Accept the default settings and click **Create** to create the instance.
 
-## Installing the Kubernetes NMState Operator by using the CLI
+## Install the Kubernetes NMState Operator by using the CLI
 
 You can install the Kubernetes NMState Operator by using the OpenShift CLI (`oc)`. After it is installed, the Operator deploys the NMState State Controller as a daemon set across all of the cluster nodes to manage the node network state and configuration.
 
@@ -184,7 +184,7 @@ You can install the Kubernetes NMState Operator by using the OpenShift CLI (`oc)
     $ oc get pod -n openshift-nmstate
     ```
 
-## Viewing metrics collected by the Kubernetes NMState Operator
+## View metrics collected by the Kubernetes NMState Operator
 
 The Kubernetes NMState Operator, `kubernetes-nmstate-operator`, can collect metrics from the `kubernetes_nmstate_features_applied` component and expose them as ready-to-use metrics. As a use case for viewing metrics, consider a situation where you created a `NodeNetworkConfigurationPolicy` custom resource (CR) and you want to confirm that the policy is active.
 

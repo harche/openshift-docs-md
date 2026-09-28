@@ -254,9 +254,9 @@ Install LVM Storage in a disconnected environment where your cluster has no inte
 
 - [Mirroring the OpenShift Container Platform image repository](../../disconnected/installing-mirroring-installation-images.xml#installation-mirror-repository_installing-mirroring-installation-images)
 
-- [Creating the image set configuration](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2)
+- [Creating the image set configuration](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2)
 
-- [Mirroring an image set to a mirror registry](../../disconnected/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
+- [Mirroring an image set to a mirror registry](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Configuring image registry repository mirroring](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror_image-configuration)
 

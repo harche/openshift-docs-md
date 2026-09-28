@@ -22,7 +22,7 @@ Using Google as an identity provider requires users to get a token using `<names
 
 </div>
 
-# Creating the secret
+# Create the secret
 
 Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
 
@@ -91,7 +91,7 @@ Specifies a hosted domain used to restrict sign-in accounts. Optional if the `lo
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
-# Adding an identity provider to your cluster
+# Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
 

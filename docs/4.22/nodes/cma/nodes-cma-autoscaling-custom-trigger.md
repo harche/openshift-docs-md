@@ -124,7 +124,7 @@ spec:
 
 - Specifies a Prometheus query using NVIDIA DCGM metrics to monitor GPU utilization across all GPU devices. The `DCGM_FI_DEV_GPU_UTIL` metric provides GPU utilization percentages.
 
-## Configuring the custom metrics autoscaler to use OpenShift Container Platform monitoring
+## Configure the custom metrics autoscaler to use OpenShift Container Platform monitoring
 
 You can use the installed OpenShift Container Platform Prometheus monitoring as a source for the metrics used by the custom metrics autoscaler. However, there are some additional configurations you must perform.
 

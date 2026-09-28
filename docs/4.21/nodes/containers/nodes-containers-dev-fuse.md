@@ -1,6 +1,6 @@
 You can configure your pods with the `/dev/fuse` device to enable faster and more efficient container image builds, particularly for unprivileged users. This device allows unprivileged pods to mount overlay filesystems, which can be leveraged by tools such as Podman.
 
-# Configuring /dev/fuse for unprivileged builds in pods
+# Configure /dev/fuse for unprivileged builds in pods
 
 You can grant an unprivileged pod the capability to perform Filesystem in Userspace (FUSE) mounts by exposing the `/dev/fuse` device. With this setup, an unprivileged user within the pod can use tools such as `podman` with storage drivers such as `fuse-overlayfs` by mimicking privileged build capabilities in a secure and efficient manner without granting full privileged access to the pod.
 

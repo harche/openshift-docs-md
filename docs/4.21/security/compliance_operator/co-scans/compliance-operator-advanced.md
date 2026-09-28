@@ -168,7 +168,7 @@ To perform a single scan, annotate the scan with the `compliance.openshift.io/re
 
     </div>
 
-# Setting custom storage size for results
+# Set custom storage size for results
 
 Although `ComplianceCheckResult` custom resources summarize one check across all scanned nodes, raw scanner results in ARF format are too large to store in etcd-backed Kubernetes resources. You can store them on a per-scan persistent volume and increase the default 1 GiB size by setting the `rawResultStorage.size` value in a `ScanSetting` or `ComplianceScan` resource.
 

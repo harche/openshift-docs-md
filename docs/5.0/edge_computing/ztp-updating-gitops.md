@@ -55,7 +55,7 @@ Use the following procedure to prepare your site for the GitOps Zero Touch Provi
     ```
 
     ``` terminal
-    $ podman run --log-driver=none --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 extract /home/ztp --tar | tar x -C ./update
+    $ podman run --log-driver=none --rm registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17 extract /home/ztp --tar | tar x -C ./update
     ```
 
     The `/update` directory contains the following subdirectories:

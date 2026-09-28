@@ -302,7 +302,7 @@ metadata:
 ...
 ```
 
-# Creating a horizontal pod autoscaler by using the web console
+# Create a horizontal pod autoscaler by using the web console
 
 You can use the web console to create a horizontal pod autoscaler (HPA) that specifies the minimum and maximum number of pods you want to run on a `Deployment` or `DeploymentConfig` object. You can also define the amount of CPU or memory usage that your pods should target.
 
@@ -331,7 +331,7 @@ The following procedure creates an HPA in the web console.
 
     </div>
 
-## Editing a horizontal pod autoscaler by using the web console
+## Edit a horizontal pod autoscaler by using the web console
 
 You can use the web console to modify a horizontal pod autoscaler (HPA) that specifies the minimum and maximum number of pods you want to run on a `Deployment` or `DeploymentConfig` object. You can also define the amount of CPU or memory usage that your pods should target.
 
@@ -347,7 +347,7 @@ You can use the web console to modify a horizontal pod autoscaler (HPA) that spe
 
     </div>
 
-## Removing a horizontal pod autoscaler by using the web console
+## Remove a horizontal pod autoscaler by using the web console
 
 You can use the web console to remove a horizontal pod autoscaler (HPA).
 
@@ -365,7 +365,7 @@ You can autoscale based on CPU or memory use by specifying a percentage of resou
 
 The HPA increases and decreases the number of replicas between the minimum and maximum numbers to maintain the specified resource use across all pods.
 
-## Creating a horizontal pod autoscaler for a percent of CPU use
+## Create a horizontal pod autoscaler for a percent of CPU use
 
 You can use the OpenShift Container Platform CLI to create a horizontal pod autoscaler (HPA) that automatically scales an existing object based on percent of CPU use. The HPA scales the pods associated with that object to maintain the CPU use that you specify.
 
@@ -470,7 +470,7 @@ Events:                <none>
   cpu-autoscale   Deployment/example   173m/500m       1         10        1          20m
   ```
 
-## Creating a horizontal pod autoscaler for a specific CPU value
+## Create a horizontal pod autoscaler for a specific CPU value
 
 You can use the OpenShift Container Platform CLI to create a horizontal pod autoscaler (HPA) that automatically scales an existing object based on a specific CPU value by creating a `HorizontalPodAutoscaler` object with the target CPU and pod limits. The HPA scales the pods associated with that object to maintain the CPU use that you specify.
 
@@ -609,7 +609,7 @@ Events:                <none>
   cpu-autoscale   Deployment/example   173m/500m       1         10        1          20m
   ```
 
-## Creating a horizontal pod autoscaler object for a percent of memory use
+## Create a horizontal pod autoscaler object for a percent of memory use
 
 You can use the OpenShift Container Platform CLI to create a horizontal pod autoscaler (HPA) that automatically scales an existing object based on a percent of memory use. The HPA scales the pods associated with that object to maintain the memory use that you specify.
 
@@ -816,7 +816,7 @@ Events:                <none>
     Normal   SuccessfulRescale        6m34s               horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
   ```
 
-## Creating a horizontal pod autoscaler object for specific memory use
+## Create a horizontal pod autoscaler object for specific memory use
 
 You can use the OpenShift Container Platform CLI to create a horizontal pod autoscaler (HPA) that automatically scales an existing object. The HPA scales the pods associated with that object to maintain the average memory use that you specify.
 
@@ -1134,7 +1134,7 @@ Conditions:
   ScalingLimited    False     DesiredWithinRange  the desired replica count is within the acceptable range
 ```
 
-## Viewing horizontal pod autoscaler status conditions by using the CLI
+## View horizontal pod autoscaler status conditions by using the CLI
 
 You can view the status conditions set on a pod by the horizontal pod autoscaler (HPA).
 

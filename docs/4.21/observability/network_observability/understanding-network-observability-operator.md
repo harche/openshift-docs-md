@@ -129,7 +129,7 @@ If you use the Kafka option, the `eBPF agent` sends the network flow data to Kaf
 
 - [Network Observability without Loki](../network_observability/installing-operators.xml#network-observability-without-loki_network_observability)
 
-# Viewing Network Observability Operator status and configuration
+# View Network Observability Operator status and configuration
 
 Inspect the current status, configuration details, and generated resources of the Network Observability Operator by using the `oc describe flowcollector/cluster` command.
 

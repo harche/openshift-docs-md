@@ -209,10 +209,10 @@ To migrate from oc-mirror plugin v1 to v2, you must manually update the `ImageSe
 
 # Additional resources
 
-- [Mirroring an image set in a partially disconnected environment](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
+- [Mirroring an image set in a partially disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
 
-- [Mirroring an image set in a fully disconnected environment](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-fully-disconnected-v2_about-installing-oc-mirror-v2)
+- [Mirroring an image set in a fully disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-fully-disconnected-v2_about-installing-oc-mirror-v2)
 
-- [Changes from oc-mirror plugin v1 to v2](../disconnected/oc-mirror-migration-v1-to-v2.xml#oc-mirror-migration-differences_oc-mirror-migration-v1-to-v2)
+- [Changes from oc-mirror plugin v1 to v2](../../disconnected/oc-mirror-migration-v1-to-v2.xml#oc-mirror-migration-differences_oc-mirror-migration-v1-to-v2)
 
-- [Deletion of images from your disconnected environment](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-procedure-delete-v2_about-installing-oc-mirror-v2)
+- [Deletion of images from your disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-procedure-delete-v2_about-installing-oc-mirror-v2)

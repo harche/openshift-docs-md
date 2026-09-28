@@ -1,6 +1,6 @@
 If you no longer need the Secondary Scheduler Operator for Red Hat OpenShift in your cluster, you can uninstall the Operator and remove its related resources.
 
-# Uninstalling the Secondary Scheduler Operator
+# Uninstall the Secondary Scheduler Operator
 
 You can use the web console to uninstall the Secondary Scheduler Operator for Red Hat OpenShift if you no longer need the Operator in your cluster.
 
@@ -20,7 +20,7 @@ You can use the web console to uninstall the Secondary Scheduler Operator for Re
 
     3.  In the confirmation dialog, click **Uninstall**.
 
-# Removing Secondary Scheduler Operator resources
+# Remove Secondary Scheduler Operator resources
 
 Optionally, remove the custom resource definition (CRD) and associated namespace after the Secondary Scheduler Operator for Red Hat OpenShift is uninstalled. This cleans up all remaining secondary scheduler artifacts.
 

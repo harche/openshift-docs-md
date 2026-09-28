@@ -1135,7 +1135,7 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [*mirror registry for Red Hat OpenShift*](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
 
-- [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 

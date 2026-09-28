@@ -12,7 +12,7 @@ Use the following "Configuring chrony time service" procedure as a model for how
 
 </div>
 
-# Configuring chrony time service
+# Configure chrony time service
 
 You can set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
 
@@ -85,7 +85,7 @@ For more information on chrony best practices, see the following resources:
       $ oc apply -f ./99-worker-chrony.yaml
       ```
 
-# Disabling the chrony time service
+# Disable the chrony time service
 
 You can disable the chrony time service (`chronyd`) for nodes with a specific role by using a `MachineConfig` custom resource (CR).
 
@@ -329,7 +329,7 @@ In the following procedure, you create a `MachineConfig` object that identifies:
 
     You should see the `enforcing=0` argument added to the other kernel arguments.
 
-# Enabling multipathing with kernel arguments on RHCOS
+# Enable multipathing with kernel arguments on RHCOS
 
 You can achieve higher host availability by enabling multipathing on the primary disk, which allows stronger resilience to hardware failure, by using a `MachineConfig` object.
 
@@ -565,7 +565,7 @@ Although making the change is as simple as changing a machine config `kernelType
     $ oc delete -f 99-worker-realtime.yaml
     ```
 
-# Configuring journald settings
+# Configure journald settings
 
 To configure settings for the `journald` service on OpenShift Container Platform nodes, you can modify the appropriate configuration file and pass the file to the appropriate pool of nodes as a machine config.
 
@@ -825,7 +825,7 @@ The following procedure describes how to use a machine config to add one or more
             Active: active (running)
     ```
 
-# Loading custom firmware blobs in the machine config manifest
+# Load custom firmware blobs in the machine config manifest
 
 You can load local firmware blobs that are not managed by RHCOS into the machine config manifest by updating the search path with a machine config.
 
@@ -897,7 +897,7 @@ By default, the location for firmware blobs in `/usr/lib` is read-only.
 
 4.  Save the Butane config in case you need to update the `MachineConfig` object in the future.
 
-# Changing the core user password for node access
+# Change the core user password for node access
 
 You can use the default `core` user to access a node through a cloud provider serial console or a bare metal baseboard controller manager (BMC) if a node is down and you cannot access that node by using SSH or the `oc debug node` command.
 
@@ -998,7 +998,7 @@ You can change the password, if needed, by editing the machine config you used t
 
     The hashed password is assigned to the `core` user.
 
-# Overriding storage or partition setup
+# Override storage or partition setup
 
 You can use a `MachineConfig` object to change the disk partition schema, file systems, and RAID configurations that were established during the cluster installation. This allows you to make specific configuration changes that are different from the initial cluster state.
 

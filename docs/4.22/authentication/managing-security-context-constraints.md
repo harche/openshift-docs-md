@@ -677,7 +677,7 @@ A container or pod that requests a specific user ID will be accepted by OpenShif
 
 This configuration is valid for SELinux, fsGroup, and Supplemental Groups.
 
-# Creating security context constraints
+# Create security context constraints
 
 If the default security context constraints (SCCs) do not satisfy your application workload requirements, you can create a custom SCC by using the OpenShift CLI (`oc`).
 
@@ -769,7 +769,7 @@ Setting an SCC priority greater than 0 for the default OpenShift Container Platf
   scc-admin   true      []        RunAsAny   RunAsAny    RunAsAny   RunAsAny   <none>     false            [awsElasticBlockStore azureDisk azureFile cephFS cinder configMap downwardAPI emptyDir fc flexVolume flocker gcePersistentDisk gitRepo glusterfs iscsi nfs persistentVolumeClaim photonPersistentDisk quobyte rbd secret vsphere]
   ```
 
-# Configuring a workload to require a specific SCC
+# Configure a workload to require a specific SCC
 
 You can configure a workload to require a certain security context constraint (SCC). This is useful in scenarios where you want to pin a specific SCC to the workload or if you want to prevent your required SCC from being preempted by another SCC in the cluster.
 

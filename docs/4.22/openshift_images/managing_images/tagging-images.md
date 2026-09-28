@@ -48,7 +48,7 @@ If your team requires the use of unique, date-specific, or highly revisioned tag
 
 </div>
 
-# Adding tags to image streams
+# Add tags to image streams
 
 To organize images and create aliases for specific versions or automatically track changes to source tags in OpenShift Container Platform, you can add tags to image streams with the `oc tag` command.
 
@@ -110,7 +110,7 @@ The default behavior creates a permanent tag that is pinned to an image ID.
   $ oc tag <source_reference> <destination_image_stream>:<destination_tag> --reference-policy=local
   ```
 
-# Removing tags from image streams
+# Remove tags from image streams
 
 To keep your image streams clean and maintain organized image references in OpenShift Container Platform, you can remove unused or outdated image stream tags. Remove tags by using the `oc delete istag` or `oc tag -d` commands.
 
@@ -138,7 +138,7 @@ To keep your image streams clean and maintain organized image references in Open
   $ oc tag -d ruby:latest
   ```
 
-# Using image stream reference syntax
+# Use image stream reference syntax
 
 To ensure that your builds and deployments use the intended image version in OpenShift Container Platform, you must use the correct reference syntax format.
 

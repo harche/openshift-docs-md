@@ -441,13 +441,13 @@ Migrate a single-node OpenShift cluster from using a `SiteConfig` CR to a `Clust
     1.  Pull the `ztp-site-generate` container image by running the following command:
 
         ``` bash
-        podman pull registry.redhat.io/openshift4/ztp-site-generate-rhel8:4.17
+        podman pull registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17
         ```
 
     2.  Run the `siteconfig-converter` tool interactively through the container by running the following command:
 
         ``` bash
-        $ podman run -v "${PWD}":/resources:Z,U -it registry.redhat.io/openshift4/ztp-site-generate-rhel8:{product-version} siteconfig-converter -d /resources/<output_folder> /resources/<path_to_siteconfig_resource>
+        $ podman run -v "${PWD}":/resources:Z,U -it registry.redhat.io/openshift5/ztp-site-generate-rhel9:v{product-version} siteconfig-converter -d /resources/<output_folder> /resources/<path_to_siteconfig_resource>
         ```
 
         - Replace `<output_folder>` with the output directory for the generated files.

@@ -87,7 +87,7 @@ The following table summarizes the default ingress and egress rules:
 | Secrets Store CSI Driver Operator | `8443`        | `6443`       | Accesses metrics and communicates with the API server |
 | Secrets Store CSI driver          | `8095`        | `6443`       | Accesses metrics and communicates with the API server |
 
-# Installing the Secrets Store CSI driver
+# Install the Secrets Store CSI driver
 
 To enable OpenShift Container Platform to mount secrets from external secret management systems, install the Secrets Store CSI Driver Operator and create a `ClusterCSIDriver` instance.
 
@@ -242,7 +242,7 @@ The Secrets Store CSI driver is typically installed in the namespace `openshift-
 
 - [Mounting secrets from an external secrets store to a CSI volume](../../nodes/pods/nodes-pods-secrets-store.xml#mounting-secrets-external-secrets-store_nodes-pods-secrets-store)
 
-# Uninstalling the Secrets Store CSI Driver Operator
+# Uninstall the Secrets Store CSI Driver Operator
 
 To remove the Secrets Store CSI Driver Operator and free cluster resources, uninstall the Operator after stopping applications and removing the CSI driver.
 

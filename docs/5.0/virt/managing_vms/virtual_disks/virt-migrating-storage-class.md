@@ -51,29 +51,45 @@ Cluster administrators must grant users permission to perform storage migrations
 
 # Migrating VM disks to a different storage class by using the web console
 
-You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
-
-- You must have a data volume or a persistent volume claim (PVC) available for storage class migration.
-
-- The cluster must have a node available for live migration. As part of the storage class migration, the VM is live migrated to a different node.
-
-- The VM must be running.
+You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When migrating a running VM, the VM operation is not interrupted and the data on the migrated disks remains accessible.
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
-2.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside the virtual machine and select **Migration** → **Storage**.
+2.  Click the **Virtual machines** tab.
+
+3.  Click the **Options** menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside the virtual machine and select **Migration** → **Storage**.
 
     You can also access this option from the **VirtualMachine details** page by selecting **Actions** → **Migration** → **Storage**.
 
-    Alternatively, right-click the VM in the tree view and select **Migration** from the menu.
+    Alternatively, right-click the VM in the tree view and select **Migration** → **Storage** from the menu.
 
-3.  On the **Migration details** page, choose whether to migrate the entire VM storage or selected volumes only. If you click **Selected volumes**, select any disks that you intend to migrate. Click **Next** to proceed.
+4.  On the **Migration details** page, perform the following actions:
 
-4.  From the list of available options on the **Destination StorageClass** page, select the storage class to migrate to. Click **Next** to proceed.
+    1.  Enter a migration plan name in the **VirtualMachine storage migration plan name** field or use the provided default.
 
-5.  On the **Review** page, review the list of affected disks and the target storage class. To start the migration, click **Migrate VirtualMachine storage**.
+    2.  Use the provided option buttons to select whether to migrate **The entire VirtualMachine** or **Selected volumes**.
 
-6.  Stay on the **Migrate VirtualMachine storage** page to watch the progress and wait for the confirmation that the migration completed successfully.
+    3.  (Optional) If you selected **Selected volumes** in the previous step, use the provided checkboxes to select the volumes to migrate. Volumes that cannot be migrated have a greyed out checkbox.
+
+    4.  Click **Next**.
+
+5.  On the **Source and target StorageClass** page, perform the following actions:
+
+    1.  Select the storage migration target with the **Select the target storage for the VirtualMachine storage migration** dropdown list.
+
+    2.  The system automatically decommissions the migration source volumes once the migration completes. Select the **Keep original volumes at source after successful migration** checkbox if you want to manually verify and remove the source volumes later.
+
+    3.  Click **Next**.
+
+6.  On the **Review** page, confirm the storage migration options.
+
+7.  (Optional) Click **Back** to move back to previous pages to change storage migration options.
+
+8.  Click **Migrate VirtualMachine storage** to start the migration.
+
+9.  Stay on the **Migrate VirtualMachine storage** page to watch the progress and wait for the confirmation that the migration completed successfully.
+
+10. (Optional) Click **View storage migrations** to view all storage migration plans.
 
 <!-- -->
 

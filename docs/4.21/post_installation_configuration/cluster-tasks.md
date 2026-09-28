@@ -150,7 +150,7 @@ The `MachineConfigPool` object allows users to configure how upgrades are rolled
 
 The `NodeSelector` object can be replaced with a reference to the `MachineSet` object.
 
-## Scaling a compute machine set manually
+## Scale a compute machine set manually
 
 To add or remove an instance of a machine in a compute machine set, you can manually scale the compute machine set.
 
@@ -250,7 +250,7 @@ Custom compute machine sets can be used for use cases requiring that services ru
 
 </div>
 
-## Creating default cluster-wide node selectors
+## Create default cluster-wide node selectors
 
 You can use default cluster-wide node selectors on pods together with labels on nodes to constrain all pods created in a cluster to specific nodes.
 
@@ -562,7 +562,7 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 </div>
 
-## Using and changing worker latency profiles
+## Use and change worker latency profiles
 
 You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. With this configuration, you can ensure that your cluster runs properly if network latency between the control plane and the compute nodes fluctuates.
 
@@ -2593,7 +2593,7 @@ Uses AES-GCM with a random nonce and a 32-byte key to perform the encryption.
 
 The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
 
-## Enabling etcd encryption
+## Enable etcd encryption
 
 Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
@@ -2686,7 +2686,7 @@ To migrate your etcd database from one encryption type to the other, you can mod
 
   If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-## Disabling etcd encryption
+## Disable etcd encryption
 
 Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 

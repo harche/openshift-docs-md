@@ -76,119 +76,35 @@ If you add a secret to a project and then delete the VM, the secret is retained 
 
 </div>
 
-## Adding a key when creating a VM from a template
+## Adding a static SSH key when creating a VM by using the web console
 
-You can add a statically managed public SSH key when you create a virtual machine (VM) by using the OpenShift Container Platform web console. The key is added to the VM as a cloud-init data source at first boot. This method does not affect cloud-init user data.
+You can add a statically managed public SSH key when you create a virtual machine (VM) by using the web console creation wizard. The key is added to the VM as a cloud-init data source at first boot. This method does not affect cloud-init user data.
 
-Optional: You can add a key to a project. Afterwards, this key is added automatically to VMs that you create in the project.
+You can also save the key to the project as a secret so that it is added automatically to the VMs that you create in the project.
 
-- You generated an SSH key pair by running the `ssh-keygen` command.
+- You generated an SSH key pair by using the `ssh-keygen` command.
 
-1.  Navigate to **Virtualization** → **Catalog** in the web console.
+1.  In the OpenShift Container Platform web console, start creating a VM by using the creation wizard until you reach the **Customization** page.
 
-2.  Click a template tile.
+2.  Click the **SSH** tab.
 
-    The guest operating system must support configuration from a cloud-init data source.
+3.  Beside **Public SSH key**, click **Edit**.
 
-3.  Click **Customize VirtualMachine**.
-
-4.  Click **Next**.
-
-5.  Click the **Scripts** tab.
-
-6.  If you have not already added a public SSH key to your project, click the edit icon beside **Authorized SSH key** and select one of the following options:
+4.  Select one of the following options:
 
     - **Use existing**: Select a secret from the secrets list.
 
-    - **Add new**:
+    - **Add new**: Add a key by performing the following steps:
 
-      1.  Browse to the SSH key file or paste the file in the key field.
+      1.  Browse to the public SSH key file or paste the file in the key field.
 
       2.  Enter the secret name.
 
       3.  Optional: Select **Automatically apply this key to any new VirtualMachine you create in this project**.
 
-7.  Click **Save**.
+5.  Click **Save**.
 
-8.  Click **Create VirtualMachine**.
-
-    The **VirtualMachine details** page displays the progress of the VM creation.
-
-- Click the **Scripts** tab on the **Configuration** tab.
-
-  The secret name is displayed in the **Authorized SSH key** section.
-
-## Creating a VM from an instance type by using the web console
-
-You can add a statically managed SSH key when you create a virtual machine (VM) from an instance type by using the OpenShift Container Platform web console. The key is added to the VM as a cloud-init data source at first boot. This method does not affect cloud-init user data.
-
-1.  In the web console, navigate to **Virtualization** → **Catalog**.
-
-    The **InstanceTypes** tab opens by default.
-
-    <div class="note">
-
-    When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
-
-    </div>
-
-2.  Heterogeneous clusters only: To filter the bootable volumes using the options provided, click **Architecture**.
-
-3.  Select either of the following options:
-
-    - Select a suitable bootable volume from the list. If the list is truncated, click the **Show all** button to display the entire list.
-
-      <div class="note">
-
-      The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
-
-      </div>
-
-      - Optional: Click the star icon to designate a bootable volume as a favorite. Starred bootable volumes appear first in the volume list.
-
-    - Click **Add volume** to upload a new volume or to use an existing persistent volume claim (PVC), a volume snapshot, or a `containerDisk` volume. Click **Save**.
-
-      Logos of operating systems that are not available in the cluster are shown at the bottom of the list. You can add a volume for the required operating system by clicking the **Add volume** link.
-
-      In addition, there is a link to the **Create a Windows bootable volume** quick start. The same link appears in a popover if you hover the pointer over the question mark icon next to the *Select volume to boot from* line.
-
-      Immediately after you install the environment or when the environment is disconnected, the list of volumes to boot from is empty. In that case, three operating system logos are displayed: Windows, RHEL, and Linux. You can add a new volume that meets your requirements by clicking the **Add volume** button.
-
-      1.  If you have not already added a public SSH key to your project, click the edit icon beside **Authorized SSH key** in the **VirtualMachine details** section.
-
-      2.  Select one of the following options:
-
-          - **Use existing**: Select a secret from the secrets list.
-
-          - **Add new**: Follow these steps:
-
-            1.  Browse to the public SSH key file or paste the file in the key field.
-
-            2.  Enter the secret name.
-
-            3.  Optional: Select **Automatically apply this key to any new VirtualMachine you create in this project**.
-
-      3.  Click **Save**.
-
-4.  Optional: If you are creating a Windows VM, you can mount a Windows driver disk:
-
-    1.  Click the **Customize VirtualMachine** button.
-
-    2.  On the **VirtualMachine details** page, click **Storage**.
-
-    3.  Select the **Mount Windows drivers disk** checkbox.
-
-5.  Optional: Click **View YAML & CLI** to view the YAML file. Click **CLI** to view the CLI commands. You can also download or copy either the YAML file contents or the CLI commands.
-
-6.  Click **Create VirtualMachine**.
-
-<div class="formalpara-title">
-
-**Result**
-
-</div>
-
-After the VM is created, you can monitor the status on the **VirtualMachine details** page.
+6.  Complete the remaining wizard steps to create the VM.
 
 ## Adding a key when creating a VM by using the CLI
 
@@ -311,138 +227,6 @@ Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
 </div>
 
 If you disable dynamic key injection, the VM inherits the key management method of the image from which it was created.
-
-## Enabling dynamic key injection when creating a VM from a template
-
-You can enable dynamic public SSH key injection when you create a virtual machine (VM) from a template by using the OpenShift Container Platform web console. Then, you can update the key at runtime.
-
-<div class="note">
-
-Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
-
-</div>
-
-The key is added to the VM by the QEMU guest agent, which is installed with RHEL 9.
-
-- You generated an SSH key pair by running the `ssh-keygen` command.
-
-1.  Navigate to **Virtualization** → **Catalog** in the web console.
-
-2.  Click the **Red Hat Enterprise Linux 9 VM** tile.
-
-3.  Click **Customize VirtualMachine**.
-
-4.  Click **Next**.
-
-5.  Click the **Scripts** tab.
-
-6.  If you have not already added a public SSH key to your project, click the edit icon beside **Authorized SSH key** and select one of the following options:
-
-    - **Use existing**: Select a secret from the secrets list.
-
-    - **Add new**:
-
-      1.  Browse to the SSH key file or paste the file in the key field.
-
-      2.  Enter the secret name.
-
-      3.  Optional: Select **Automatically apply this key to any new VirtualMachine you create in this project**.
-
-7.  Set **Dynamic SSH key injection** to on.
-
-8.  Click **Save**.
-
-9.  Click **Create VirtualMachine**.
-
-    The **VirtualMachine details** page displays the progress of the VM creation.
-
-- Click the **Scripts** tab on the **Configuration** tab.
-
-  The secret name is displayed in the **Authorized SSH key** section.
-
-## Creating a VM from an instance type by using the web console
-
-You can enable dynamic SSH key injection when you create a virtual machine (VM) from an instance type by using the OpenShift Container Platform web console. Then, you can add or revoke the key at runtime.
-
-<div class="note">
-
-Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
-
-</div>
-
-The key is added to the VM by the QEMU guest agent, which is installed with RHEL 9.
-
-1.  In the web console, navigate to **Virtualization** → **Catalog**.
-
-    The **InstanceTypes** tab opens by default.
-
-    <div class="note">
-
-    When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
-
-    </div>
-
-2.  Heterogeneous clusters only: To filter the bootable volumes using the options provided, click **Architecture**.
-
-3.  Select either of the following options:
-
-    - Select a suitable bootable volume from the list. If the list is truncated, click the **Show all** button to display the entire list.
-
-      <div class="note">
-
-      The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
-
-      </div>
-
-      - Optional: Click the star icon to designate a bootable volume as a favorite. Starred bootable volumes appear first in the volume list.
-
-    - Click **Add volume** to upload a new volume or to use an existing persistent volume claim (PVC), a volume snapshot, or a `containerDisk` volume. Click **Save**.
-
-      Logos of operating systems that are not available in the cluster are shown at the bottom of the list. You can add a volume for the required operating system by clicking the **Add volume** link.
-
-      In addition, there is a link to the **Create a Windows bootable volume** quick start. The same link appears in a popover if you hover the pointer over the question mark icon next to the *Select volume to boot from* line.
-
-      Immediately after you install the environment or when the environment is disconnected, the list of volumes to boot from is empty. In that case, three operating system logos are displayed: Windows, RHEL, and Linux. You can add a new volume that meets your requirements by clicking the **Add volume** button.
-
-4.  Click the **Red Hat Enterprise Linux 9 VM** tile.
-
-    1.  If you have not already added a public SSH key to your project, click the edit icon beside **Authorized SSH key** in the **VirtualMachine details** section.
-
-    2.  Select one of the following options:
-
-        - **Use existing**: Select a secret from the secrets list.
-
-        - **Add new**: Follow these steps:
-
-          1.  Browse to the public SSH key file or paste the file in the key field.
-
-          2.  Enter the secret name.
-
-          3.  Optional: Select **Automatically apply this key to any new VirtualMachine you create in this project**.
-
-    3.  Click **Save**.
-
-5.  Set **Dynamic SSH key injection** in the **VirtualMachine details** section to on.
-
-6.  Optional: If you are creating a Windows VM, you can mount a Windows driver disk:
-
-    1.  Click the **Customize VirtualMachine** button.
-
-    2.  On the **VirtualMachine details** page, click **Storage**.
-
-    3.  Select the **Mount Windows drivers disk** checkbox.
-
-7.  Optional: Click **View YAML & CLI** to view the YAML file. Click **CLI** to view the CLI commands. You can also download or copy either the YAML file contents or the CLI commands.
-
-8.  Click **Create VirtualMachine**.
-
-<div class="formalpara-title">
-
-**Result**
-
-</div>
-
-After the VM is created, you can monitor the status on the **VirtualMachine details** page.
 
 ## Enabling dynamic SSH key injection by using the web console
 
@@ -643,3 +427,9 @@ This method is recommended for low-traffic applications because port-forwarding 
     ``` terminal
     $ ssh <user>@vm/<vm_name>.<namespace>
     ```
+
+# Additional resources
+
+- [Create virtual machines by using the web console](../../../virt/creating_vm/virt-creating-vms-web.xml#virt-creating-vms-web)
+
+- [Virtual machine creation wizard reference](../../../virt/creating_vm/virt-creating-vms-web.xml#virt-vm-creation-considerations-web_virt-creating-vms-web)

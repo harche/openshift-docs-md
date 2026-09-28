@@ -16,7 +16,7 @@ To successfully assign network addresses to your gateway, complete the following
 
 - Configure DNS for on-premise gateways to ensure clients can reliably resolve your gateway.
 
-# Understand gateway address assignment and types
+# Understanding gateway address assignment and types
 
 OpenShift Container Platform automatically handles address assignment by provisioning a `LoadBalancer` service when you create a `Gateway` resource. The network address assigned to your gateway corresponds to the IP address or hostname of this underlying load balancer.
 
@@ -56,7 +56,7 @@ Additionally, be aware of the following topology and load balancer limitations f
 
 - Unsupported topologies: Environments without a load balancer controller are not supported. For example, you cannot use annotations to enforce a `NodePort` service type in place of a load balancer.
 
-# Configure automatic address assignment for a gateway
+# Configuring automatic address assignment for a gateway
 
 When you create a gateway resource, you must configure it for automatic address provisioning to successfully deploy the gateway without violating OpenShift Container Platform manual address constraints. By intentionally omitting the addresses field, you allow the controller to seamlessly provision and bind the necessary external network addresses to your gateway.
 
@@ -122,7 +122,7 @@ When you create a gateway resource, you must configure it for automatic address 
 
     The `ADDRESS` column in the output displays the dynamically provisioned network address for your gateway.
 
-# Configure an internal load balancer for a gateway
+# Configuring an internal load balancer for a gateway
 
 By default, Gateway API provisions an external load balancer. To restrict your gateway traffic to your private network, you can configure Gateway API to provision an internal load balancer by adding a cloud-specific annotation to your `Gateway` custom resource (CR).
 

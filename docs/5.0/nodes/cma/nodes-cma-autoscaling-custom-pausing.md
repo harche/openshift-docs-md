@@ -2,7 +2,7 @@ You can pause and restart the autoscaling of a workload, as needed.
 
 For example, you might want to pause autoscaling before performing cluster maintenance or to avoid resource starvation by removing non-mission-critical workloads.
 
-# Pausing a custom metrics autoscaler
+# Pause a custom metrics autoscaler
 
 You can pause the autoscaling of a scaled object by adding the `autoscaling.keda.sh/paused-replicas` annotation to the custom metrics autoscaler for that scaled object. The custom metrics autoscaler scales the replicas for that workload to the specified value and pauses autoscaling until the annotation is removed.
 
@@ -39,7 +39,7 @@ metadata:
 
     - Specifies that the Custom Metrics Autoscaler Operator is to scale the replicas to the specified value and stop autoscaling.
 
-# Restarting the custom metrics autoscaler for a scaled object
+# Restart the custom metrics autoscaler for a scaled object
 
 You can restart a paused custom metrics autoscaler by removing the `autoscaling.keda.sh/paused-replicas` annotation for that `ScaledObject`.
 

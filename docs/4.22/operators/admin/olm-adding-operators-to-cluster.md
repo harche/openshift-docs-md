@@ -685,7 +685,7 @@ Using an installed Operator, users can create an application in the project, whi
 
 - [Creating a project with a node selector and toleration](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-projects_nodes-scheduler-taints-tolerations)
 
-# Controlling where an Operator is installed
+# Control where an Operator is installed
 
 You can use affinities to schedule an Operator pod on a specific node or set of nodes.
 

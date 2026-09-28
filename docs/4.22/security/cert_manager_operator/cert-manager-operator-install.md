@@ -8,7 +8,7 @@ The cert-manager Operator for Red Hat OpenShift version 1.15 or later supports t
 
 </div>
 
-# Installing the cert-manager Operator for Red Hat OpenShift by using the web console
+# Install the cert-manager Operator for Red Hat OpenShift by using the web console
 
 You can use the web console to install the cert-manager Operator for Red Hat OpenShift.
 
@@ -81,7 +81,7 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
 
     You can use the cert-manager Operator for Red Hat OpenShift only after cert-manager pods are up and running.
 
-# Installing the cert-manager Operator for Red Hat OpenShift by using the CLI
+# Install the cert-manager Operator for Red Hat OpenShift by using the CLI
 
 You can install the cert-manager Operator for Red Hat OpenShift by using the command-line interface (CLI).
 
@@ -231,7 +231,7 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
 
 - [Supported cert-manager Operator for Red Hat OpenShift versions](../cert_manager_operator/index.xml#cert-manager-operator-supported-versions_cert-manager-operator-about)
 
-# Understanding update channels of the cert-manager Operator for Red Hat OpenShift
+# Understand update channels of the cert-manager Operator for Red Hat OpenShift
 
 Update channels are the mechanism by which you can declare the version of your cert-manager Operator for Red Hat OpenShift in your cluster. The cert-manager Operator for Red Hat OpenShift offers the following update channels:
 

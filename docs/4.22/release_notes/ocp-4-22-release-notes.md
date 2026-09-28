@@ -1316,6 +1316,32 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:68552 - OpenShift Container Platform 4.17.15 bug fix and security update
+
+Issued: 22 September 2026
+
+OpenShift Container Platform release 4.17.15 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:68552](https://access.redhat.com/errata/RHSA-2026:68552) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:68550](https://access.redhat.com/errata/RHSA-2026:68550) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.15 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, in Amazon Web Services (AWS), the installation program created a security group rule that applied to cluster nodes and allowed ports 6441 and 6442. However, these ports are not needed or used anywhere. With this update, this security group rule is removed. ([OCPBUGS-95072](https://issues.redhat.com/browse/OCPBUGS-95072))
+
+- Before this update, the `AWSMachine` controller was requeuing machine instances before confirming the presence of tags. As a consequence, duplicate Amazon Web Services (AWS) EC2 instances were created. With this release, the `AWSMachine` controller verifies tags before requeuing instances. As a result, duplicate EC2 instances are not created. ([OCPBUGS-112305](https://issues.redhat.com/browse/OCPBUGS-112305))
+
+- Before this update, the Machine Config Operator (MCO) boot image controller on VMware vSphere incorrectly concatenated failure domain and compute cluster inventory paths using the `path.Join` parameter. As a consequence, the controller created an invalid path when you used absolute paths, for example, `<datacenter>/network/<portgroup>`. The invalid path caused a `failed to find` network error. With this update, the network name is passed directly to the vSphere finder library, which natively supports all network identifier formats. As a result, the failure domain networks are correctly resolved and MCO degradation is prevented. ([OCPBUGS-121849](https://issues.redhat.com/browse/OCPBUGS-121849))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:66358 - OpenShift Container Platform 4.17.14 bug fix and security update
 
 Issued: 15 September 2026
@@ -1533,6 +1559,15 @@ You can view the container images in this release by running the following comma
 ``` terminal
 $ oc adm release info 4.22.8 --pullspecs
 ```
+
+### Notable technical changes
+
+Metrics forwarding annotation is deprecated
+As of OpenShift Container Platform 4.22.8, the `hypershift.openshift.io/enable-metrics-forwarding` annotation is deprecated. The `spec.monitoring.metricsForwarding` field on the `HostedCluster` API replaces this annotation and provides per-cluster configuration that the annotation cannot support.
+
+The annotation continues to be honored when `spec.monitoring` is not set on the `HostedCluster` object. If you set `spec.monitoring.metricsForwarding` on a cluster, the spec field takes precedence and the annotation is ignored for that cluster, even if both are present.
+
+Migrate all hosted clusters that use the `hypershift.openshift.io/enable-metrics-forwarding` annotation to use `spec.monitoring.metricsForwarding` before the annotation is removed in a future release. For more information, see [Migrating from annotation-based to API-based metrics forwarding](../hosted_control_planes/hcp-observability.xml#hcp-cp-metrics-forwarding-migrate_hcp-observability).
 
 ### Fixed issues
 

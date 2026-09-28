@@ -6,7 +6,7 @@ You can use bound service account tokens to limit the scope of permissions for a
 
 Bound service account tokens are audience-bound and time-bound. This facilitates the authentication of a service account to an IAM role and the generation of temporary credentials mounted to a pod. You can request bound service account tokens by using volume projection and the TokenRequest API.
 
-# Configuring bound service account tokens using volume projection
+# Configure bound service account tokens using volume projection
 
 You can configure pods to request bound service account tokens by using volume projection.
 
@@ -166,7 +166,7 @@ You can configure pods to request bound service account tokens by using volume p
 
     The kubelet rotates the token if it is older than 80 percent of its time to live, or if the token is older than 24 hours.
 
-# Creating bound service account tokens outside the pod
+# Create bound service account tokens outside the pod
 
 You can create bound service tokens outside of the pod, if needed.
 

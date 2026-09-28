@@ -21,7 +21,7 @@ Switching to the `HighNodeUtilization` scheduler profile will result in all pods
 `NoScoring`
 This is a low-latency profile that strives for the quickest scheduling cycle by disabling all score plugins. This might sacrifice better scheduling decisions for faster ones.
 
-# Configuring a scheduler profile
+# Configure a scheduler profile
 
 To customize how the cluster distributes pods across your nodes based on resource use, you can configure a specific scheduler profile.
 

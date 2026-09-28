@@ -144,7 +144,7 @@ If you are using node affinity and node selectors in the same pod configuration,
 
 </div>
 
-# Configuring a required node affinity rule
+# Configure a required node affinity rule
 
 You can use a *required* rule to instruct the scheduler that the rules **must** be met before a pod can be scheduled on a node.
 
@@ -230,7 +230,7 @@ The following steps demonstrate a simple configuration that creates a node and a
         $ oc create -f <file-name>.yaml
         ```
 
-# Configuring a preferred node affinity rule
+# Configure a preferred node affinity rule
 
 You can use a *preferred* rule to instruct the scheduler that if a matching node is not available, schedule the pod on a different node to ensure the workload application runs.
 

@@ -36,13 +36,35 @@ This release adds improvements related to the following components and concepts:
 
 ## Authentication and authorization
 
+## Autoscaling
+
 ## Cluster Version Operator
 
 ## Extensions (OLM v1)
 
 ## IBM Power
 
+The IBM Power® release on OpenShift Container Platform 4.17 adds improvements and new capabilities to OpenShift Container Platform components
+New features on IBM Power® include:
+
+- Custom Metrics Autoscaler Operator (KEDA) on IBM Power®
+
+- Dual Operating Stream on IBM Power®
+
+  - IBM Power®9 requires RHEL version 9 stream
+
+  - IBM Power®10 and IBM Power®11 may use either RHEL version 9 or RHEL version 10 stream
+
 ## IBM Z and IBM LinuxONE
+
+The IBM Z® and IBM® LinuxONE release on OpenShift Container Platform 4.17 adds improvements and new capabilities to OpenShift Container Platform components
+New features on IBM Z® and IBM® LinuxONE include:
+
+- SR-IOV Network Operator support for IBM Z® and IBM® LinuxONE
+
+- Custom Metrics Autoscaler Operator (KEDA) on IBM Z®
+
+- Dual Operating Stream on IBM Z®
 
 ## Insights Operator
 
@@ -50,15 +72,117 @@ This release adds improvements related to the following components and concepts:
 
 ## Machine Config Operator
 
+Overriding storage or partition setup is generally available
+With this update, the overriding storage or partition setup feature is generally available. With this feature, you can change the installed disk partition schema, file systems, and RAID configurations for new nodes.
+
+For more information, see [Overriding storage and partition setup](../machine_configuration/machine-configs-configure.xml#machine-config-install-time-configs_machine-configs-configure).
+
+Updated boot images for AWS Marketplace now supported
+Updated boot images are now supported for clusters that use AWS Marketplace boot images. With this feature, you can configure your cluster to update the node boot image whenever you update your cluster. By default, the boot image in your cluster is not updated along with your cluster.
+
+For more information, see [Boot image management](../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images).
+
+Network policy support for the Machine Config Operator
+The Machine Config Operator now has multiple network policies that control network traffic to and from the Operator and operand pods. These policies restrict traffic to only traffic that is explicitly allowed or required.
+
 ## Machine management
 
 ## Networking
 
+Selectable HAProxy versions on Ingress Controllers
+With this release, you can set `spec.haproxyVersion` on an `IngressController` custom resource to choose HAProxy 2.8 or HAProxy 3.2. Set `2.8` on OpenShift Container Platform 4.22 before you update if you need Ingress Controllers to keep HAProxy 2.8. Pin HAProxy 3.2 after you update when you want a later cluster update to keep the current default. If you set a version that a target release does not support, a preflight check blocks the cluster update until you unset the field or change it to a supported version. For more information, see [HAProxy version changes before a cluster update](../updating/preparing_for_updates/updating-cluster-prepare.xml#update-preparing-haproxy-version_updating-cluster-prepare) and [Selecting an HAProxy version](../networking/networking_operators/ingress-operator.xml#nw-selecting-haproxy-version_configuring-ingress).
+
+HAProxy version update to 3.2.22
+OpenShift Container Platform 4.17 uses HAProxy 3.2.22 as the default Ingress Controller version and includes HAProxy 2.8.27 for migration. OpenShift Container Platform 4.22 used HAProxy 2.8.18. Set `spec.haproxyVersion` to `2.8` if you need to defer HAProxy 3.2-specific behavior. HAProxy 2.8.27 still includes tighter request validation than HAProxy 2.8.18.
+
+If Ingress Controllers use the default HAProxy 3.2.22, the following behavior changes can affect applications:
+
+- Requests with a malformed target that does not start with `/` now receive HTTP `400` instead of being accepted.
+
+- Requests with a comma or other disallowed characters in the `Host` header now receive HTTP `400` instead of HTTP `503` or `404`.
+
+- Passthrough routes that use consistent-hash affinity remap backend pods one time after the update.
+
+- Denied or redirected HTTP/1 requests no longer force `Connection: close`; keep-alive connections stay open.
+
+- Requests that exceed header or URI size limits now return HTTP `414` or `431` instead of HTTP `400`.
+
+- `OPTIONS` requests with an empty path keep that empty path instead of rewriting it to `/`. CORS handlers that match only `/` might stop matching.
+
+If you pin HAProxy 2.8, Ingress Controllers run HAProxy 2.8.27. That version still rejects commas and additional disallowed characters in `Host` headers, preserves empty `OPTIONS` paths, and sanitizes inconsistent WebSocket `Upgrade` headers.
+
+For the complete upstream change lists, see the [HAProxy 2.8 changelog](https://www.haproxy.org/download/2.8/src/CHANGELOG) and the [HAProxy 3.2 changelog](https://www.haproxy.org/download/3.2/src/CHANGELOG).
+
+Dual stack enabled for OpenShift Container Platform clusters on Amazon Web Services (AWS)
+With this update, OpenShift Container Platform clusters on Amazon Web Services (AWS) can be configured to use dual-stack networking. This allows for both IPv4 and IPv6 addresses to be used for network traffic. Currently, single stack IPv6 is not supported. For more information, see [Cluster Network Operator configuration object](../networking/networking_operators/cluster-network-operator.xml#nw-operator-cr_cluster-network-operator).
+
+BYO security groups for AWS Network Load Balancers
+The AWS Cloud Controller Manager (CCM) now supports attaching your Bring Your Own (BYO) security groups to Network Load Balancers (NLBs). The NLBs must have been created for Kubernetes `Service` resources of type `LoadBalancer`.
+
+For more information, see [BYO security groups for AWS Network Load Balancers](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-aws.xml#nw-ingress-aws-about-byo-security-groups_configuring-ingress-cluster-traffic-aws).
+
 ## Nodes
+
+Additional CRI-O storage locations is generally available
+With this update, the Additional CRI-O storage locations feature is generally available. With this feature, you can create additional, non-default artifact storage locations in CRI-O that your pods can pull from, which can reduce application startup time and make your applications run more efficiently.
+
+For more information, see [Additional CRI-O storage locations for faster container startup](../nodes/nodes/nodes-nodes-additional-crio-storage.xml#nodes-nodes-additional-crio-storage).
+
+Project-scoped image pull secrets for mirrored registries is generally available
+With this update, the Project-scoped image pull secrets for mirrored registries feature is generally available. With this feature, you can pull images from mirrored registries by using project-scoped pull secrets rather than node-level secrets.
+
+For more information, see [Configuring project-scoped image pull secrets for mirrored registries](../openshift_images/image-configuration.xml#images-configuration-registry-mirror-project-secret_image-configuration).
+
+Dynamic resource allocation (DRA) improvements
+With this update, the following improvements have been made to the DRA feature:
+
+- Partitionable devices with DRA is generally available. With this update, manually partitioning physical hardware into smaller, logical instances, such as Multi-Instance GPUs, to use with dynamic resource allocation is generally available.
+
+  For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
+
+- Consumable capacity for DRA. With this update, the consumable capacity method for DRA is available. You can share a single device, such as a GPU, among multiple independent resource claims without creating fixed partitions in advance. Each claim requests a quantity of device capacity, and the scheduler ensures that the total consumed capacity does not exceed the device’s capacity.
+
+  As a result, workloads can use only the device capacity they need, which improves utilization of accelerators compared to exclusive allocation or predefined partitions.
+
+  For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
+
+- Device taints and tolerations for DRA. With this update, device taints and tolerations for DRA are available. You can use your DRA driver in a resource slice to taint individual devices, such as GPUs, so that the scheduler does not place new pods on them and can remove pods that already use the devices. Cluster administrators can apply the same effect to matching devices by creating a `DeviceTaintRule` object. Workloads tolerate those taints in a resource claim, not in the pod specification.
+
+  For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
+
+- Device binding conditions for DRA. With this update, device binding conditions for DRA are available. For devices that must be attached or prepared on a node before a pod starts, such as fabric-attached or network-attached accelerators, the scheduler waits until the device is ready instead of binding the pod immediately. DRA drivers declare the required readiness and failure conditions on the device. If the driver also requires the allocation to stay on the selected node, the scheduler records that node on the resource claim so that a controller can attach or prepare the device there.
+
+  As a result, pods that need those devices start only after the hardware is actually available on the node, which avoids failed startups caused by devices that are still being attached.
+
+  For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
+
+- Device health status in pod status. With this update, reporting the health of allocated DRA devices in the pod status is available. When your DRA driver reports that a device such as a GPU is unhealthy, the kubelet records that information on each container that uses the device. You can inspect the pod status to see whether an allocated device is `Healthy`, `Unhealthy`, or `Unknown`. If the driver provides extra detail, the status can also include a message that explains the health result.
+
+  As a result, you can determine whether a failing pod is caused by the application or by the underlying device, without relying only on application logs.
+
+  For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
 
 ## OpenShift CLI (oc)
 
 ## Postinstallation configuration
+
+## Red Hat Enterprise Linux CoreOS (RHCOS)
+
+Red Hat Enterprise Linux CoreOS (RHCOS) now ships with the Toolbx tool for debugging
+With this update, the underlying tool for debugging on Red Hat Enterprise Linux CoreOS (RHCOS) nodes is changing from the `rhcos-toolbox` script to the upstream Toolbx tool. This update simplifies the workflow for generating `sosreport` archives and other tasks. For example, you no longer need to invoke a toolbox container to generate an `sosreport` archive.
+
+For more information, see [About Toolbx](../support/gathering-cluster-data.xml#about-toolbox_gathering-cluster-data) and [Generating a sosreport archive for an OpenShift Container Platform cluster node](../support/gathering-cluster-data.xml#support-generating-a-sosreport-archive_gathering-cluster-data).
+
+Automatic boot loader updates on RHCOS
+With this update, RHCOS automatically updates the boot loader on nodes when a node gets updated to a new operating system image. The automatic updates occur only on clusters that use the `x86_64` or ARM CPU architecture.
+
+For UEFI systems, the `bootloader-update.service` updates the boot loader inside the EFI System Partition. For Legacy BIOS systems, the `bootloader-update.service` writes the boot loader directly to the boot sectors.
+
+Before this change, during an operating system update the boot loader was not automatically updated. You needed to manually run the `bootupctl update` command or apply a machine config to update the boot loader.
+
+As a result of this change, the boot loader stays in sync with the RHCOS version on the node.
+
+For more information on manually updating the boot loader, see [Updating the boot loader on RHCOS nodes using bootupd](../updating/updating_a_cluster/updating-bootloader-rhcos.xml#updating-bootloader-rhcos).
 
 ## Scalability and performance
 
@@ -180,7 +304,7 @@ For information about updating the `BareMetalHost` resource, see [Editing a Bare
 Deprecation of the `oc adm release mirror` command
 As of OpenShift Container Platform 4.22, using the `oc adm release mirror` command to mirror release images has been deprecated and will be removed in a future release.
 
-As an alternative, use the [oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2).
+As an alternative, use the [oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2).
 
 Deprecation of adding kernel modules to nodes with KVC
 As of OpenShift Container Platform 4.22, support for adding kernel modules to nodes with kmods-via-containers software (KVC) has been deprecated and will be removed in a future release.
@@ -326,12 +450,11 @@ Fleet Management supersedes Selectable Cluster Inventory in OpenShift Container 
 
 ## Machine Config Operator Technology Preview features
 
-| Feature                                                | 4.20               | 4.21                 | 4.22                 |
+| Feature                                                | 4.21               | 4.22                 | 5.0                  |
 |--------------------------------------------------------|--------------------|----------------------|----------------------|
-| Boot image management for Azure and vSphere            | Technology Preview | General Availability | General Availability |
-| Boot image management for control plane nodes          | Not available      | Technology Preview   | General Availability |
-| Image mode for OpenShift status reporting improvements | Not available      | Technology Preview   | Technology Preview   |
-| Overriding storage or partition setup                  | Not available      | Technology Preview   | Technology Preview   |
+| Boot image management for control plane nodes          | Technology Preview | General Availability | General Availability |
+| Image mode for OpenShift status reporting improvements | Technology Preview | Technology Preview   | Technology Preview   |
+| Overriding storage or partition setup                  | Technology Preview | Technology Preview   | General Availability |
 
 Machine Config Operator Technology Preview tracker
 
@@ -393,13 +516,12 @@ Networking Technology Preview tracker
 
 ## Node Technology Preview features
 
-| Feature                                                   | 4.20               | 4.21                 | 4.22                 |
-|-----------------------------------------------------------|--------------------|----------------------|----------------------|
-| `MaxUnavailableStatefulSet` featureset                    | Technology Preview | Technology Preview   | Technology Preview   |
-| Default sigstore `openshift` cluster image policy         | Technology Preview | General Availability | General Availability |
-| Attribute-Based GPU Allocation                            | Technology Preview | General Availability | General Availability |
-| Project-scoped image pull secrets for mirrored registries | Not Available      | Not Available        | Technology Preview   |
-| Partitionable device DRA support                          | Not Available      | Not Available        | Technology Preview   |
+| Feature                                                   | 4.21               | 4.22               | 5.0                  |
+|-----------------------------------------------------------|--------------------|--------------------|----------------------|
+| Additional CRI-O storage locations                        | Not Available      | Technology Preview | General Availability |
+| `MaxUnavailableStatefulSet` featureset                    | Technology Preview | Technology Preview | Technology Preview   |
+| Project-scoped image pull secrets for mirrored registries | Not Available      | Technology Preview | General Availability |
+| Partitionable device DRA support                          | Not Available      | Technology Preview | General Availability |
 
 Nodes Technology Preview tracker
 

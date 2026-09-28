@@ -85,15 +85,13 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 - [Install and use the `virtctl` command-line interface (CLI) tool](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)
 
-- [Create a VM from a Red Hat image](../../virt/creating_vm/virt-creating-vms-from-rh-images-overview.xml#virt-creating-vms-from-rh-images-overview)
+- [Create a VM by using the web console](../../virt/creating_vm/virt-creating-vms-web.xml#virt-creating-vms-web)
 
-- [Create a VM from an instance type](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
+- [Import a custom image from a web page](../../virt/creating_vm/virt-creating-vms-from-cli.xml#virt-creating-vm-web-page-cli_virt-creating-vms-cli)
 
-- [Import a custom image from a web page](../../virt/creating_vm/virt-creating-vms-from-web-images.xml#virt-creating-vms-from-web-images)
+- [Upload an image from your local machine](../../virt/creating_vm/virt-creating-vms-from-cli.xml#virt-uploading-image-virtctl_virt-creating-vms-cli)
 
-- [Upload an image from your local machine](../../virt/creating_vm/virt-creating-vms-uploading-images.xml#virt-creating-vms-uploading-images)
-
-- [Clone a persistent volume claim (PVC)](../../virt/creating_vm/virt-creating-vms-by-cloning-pvcs.xml#virt-creating-vms-by-cloning-pvcs)
+- [Clone a persistent volume claim (PVC)](../../virt/creating_vm/virt-creating-vms-from-cli.xml#virt-creating-vm-by-cloning-pvcs-cli_virt-creating-vms-cli)
 
 - [Connect a VM to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 

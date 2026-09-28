@@ -47,8 +47,9 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/connected-to-disconnected.md">Converting a connected cluster to a disconnected cluster</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/index.md">About disconnected installation mirroring</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/installing-mirroring-creating-registry.md">Creating a mirror registry with mirror registry for Red Hat OpenShift</a></div>
-<div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/about-installing-oc-mirror-v2.md">Mirroring images for a disconnected installation using oc-mirror plugin v2</a></div>
-<div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/oc-mirror-migration-v1-to-v2.md">Migrating from oc-mirror plugin v1 to v2</a></div>
+<div style="padding-left:0px">&bull; <strong>Mirroring images by using oc-mirror plugin</strong></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.md">Mirroring images for a disconnected installation by using the oc-mirror plugin v2</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=disconnected/oc_mirror_v2/oc-mirror-migration-v1-to-v2.md">Migrating from oc-mirror plugin v1 to v2</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/installing-mirroring-installation-images.md">Mirroring images for a disconnected installation by using the oc adm command</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/installing.md">Installing a cluster in a disconnected environment</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/using-olm.md">Using OLM in disconnected environments</a></div>
@@ -164,7 +165,6 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/understanding-disconnected-installation-mirroring.md">Understanding disconnected installation mirroring</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installing-with-agent-basic.md">Installing a cluster</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installing-with-agent-based-installer.md">Installing a cluster with customizations</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installing-ove.md">Installing a cluster without an external registry</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/prepare-pxe-assets-agent.md">Preparing PXE assets for OCP</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installing-using-iscsi.md">Preparing installation assets for iSCSI booting</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/preparing-an-agent-based-installed-cluster-for-mce.md">Preparing an Agent-based installed cluster for the multicluster engine for Kubernetes</a></div>
@@ -180,6 +180,7 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/install-tnf.md">Installing a two-node OpenShift cluster with fencing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/operating-a-degraded-tnf.md">Operating a degraded two-node OpenShift cluster with fencing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/install-post-tnf.md">Post-installation troubleshooting and recovery</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/tuning-fencing-parameters-tnf.md">Tuning the fencing parameters for a two-node OpenShift cluster with fencing</a></div>
 <div style="padding-left:0px">&bull; <strong>Installing on bare metal</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/preparing-to-install-on-bare-metal.md">Preparing to install on bare metal</a></div>
 <div style="padding-left:20px">&bull; <strong>User-provisioned infrastructure</strong></div>
@@ -779,13 +780,13 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md">Patching existing ingress objects</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md">Configuring the Ingress Controller for manual DNS management</a></div>
 <div style="padding-left:20px">&bull; <strong>Configuring Gateway API</strong></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/understand-gateway-api.md">Understand Gateway API</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/enable-gateway-api.md">Enable Gateway API</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/understand-gateway-api.md">Understanding Gateway API</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/enable-gateway-api.md">Enabling Gateway API</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md">Controlling incoming traffic with Gateway listeners</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md">Assigning network addresses to gateways</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md">Routing HTTP requests to services</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/securing-httproutes.md">Securing HTTPRoutes</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md">Routing gRPC requests to services</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/securing-httproutes.md">Securing HTTPRoutes</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/verifying-gateway-infrastructure-status.md">Verifying Gateway infrastructure status</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/load-balancing-openstack.md">Load balancing on OpenStack</a></div>
 <div style="padding-left:20px">&bull; <strong>Load balancing with MetalLB</strong></div>
@@ -1340,6 +1341,7 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.md">Optimizing memory management for workloads by using huge pages</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-understanding-low-latency.md">Understanding low latency</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.md">Tuning nodes for low latency with the performance profile</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-reserving-cpus-for-ovs-dpdk.md">Reserving CPUs for OVS-DPDK</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-tuning-low-latency-hosted-cp-nodes-with-perf-profile.md">Tuning hosted control planes for low latency with the performance profile</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-provisioning-low-latency-workloads.md">Provisioning real-time and low latency workloads</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/cnf-debugging-low-latency-tuning-status.md">Debugging low latency tuning</a></div>
@@ -1949,18 +1951,14 @@
 <div style="padding-left:0px">&bull; <strong>Updating</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/updating/upgrading-virt.md">Updating OpenShift Virtualization</a></div>
 <div style="padding-left:0px">&bull; <strong>Creating virtual machines</strong></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-web.md">Create virtual machines by using the web console</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-cli.md">Creating virtual machines by using the CLI</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-web-images.md">Creating VMs by importing images from web pages</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-uploading-images.md">Creating VMs by uploading images</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-container-disks.md">Creating VMs by using container disks</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-by-cloning-pvcs.md">Creating VMs by cloning PVCs</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.md">Configuring IBM Secure Execution virtual machines on IBM Z and IBM LinuxONE</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-aws-li-windows.md">Creating AWS EC2 Windows License Included (LI) compliant VMs</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-instance-types.md">Creating VMs from instance types</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-templates.md">Creating VMs from templates</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-rh-images-overview.md">Creating virtual machines from Red Hat images</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-instance-types.md">Instance types</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-templates.md">Managing VM templates</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-from-rh-images-overview.md">Managing boot sources</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-import-dv-vms.md">Import a virtual machine image using the DataVolume API</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-cloning-vms.md">Cloning VMs</a></div>
 <div style="padding-left:0px">&bull; <strong>Managing VMs</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-list-vms.md">Listing virtual machines</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-installing-qemu-guest-agent.md">Install the QEMU guest agent</a></div>
@@ -1982,7 +1980,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-controlling-vm-states.md">Controlling virtual machine states</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-using-vtpm-devices.md">Using virtual Trusted Platform Module devices</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-managing-vms-openshift-pipelines.md">Managing virtual machines with OpenShift Pipelines</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-migrating-vms-in-single-cluster-to-different-storage-class.md">Migrating VMs in a single cluster to a different storage class</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-migrating-vm-storage.md">Migrating VM storage</a></div>
 <div style="padding-left:20px">&bull; <strong>Advanced virtual machine management</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-working-with-resource-quotas-for-vms.md">Working with resource quotas for virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md">Configuring the Application-Aware Quota Operator</a></div>

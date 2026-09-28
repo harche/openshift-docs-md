@@ -330,7 +330,7 @@ Specifies the minimum amount of storage that can be requested in a persistent vo
 `spec.limit.max.storage`
 Specifies the maximum amount of storage that can be requested in a persistent volume claim.
 
-# Creating a Limit Range
+# Create a Limit Range
 
 You can define `LimitRange` objects to set specific resource limits for a pod, container, image, image stream, or persistent volume claim (PVC) in a specific project. A limit range allows you to restrict resource consumption in that project.
 
@@ -422,7 +422,7 @@ You can define `LimitRange` objects to set specific resource limits for a pod, c
     `<project>`
     Specifies the project where you want the limits to apply.
 
-# Viewing a limit
+# View a limit
 
 You can view the limits defined in a project by navigating in the web console to the project’s **Quota** page. This allows you to see details about each of the limit ranges in a project.
 
@@ -460,7 +460,7 @@ You can also use the CLI to view limit range details:
     PersistentVolumeClaim           storage                 -       50Gi    -               -               -
     ```
 
-# Deleting a Limit Range
+# Delete a Limit Range
 
 You can remove any active `LimitRange` object so that it no longer enforces the limits in a project.
 

@@ -14,7 +14,7 @@ The following list details these methods:
 
 - **Local Agent-based**: You can deploy a cluster locally with the Agent-based Installer for disconnected environments or restricted networks. The Local Agent-based installer provides many of the benefits of the Assisted Installer, but you must download and configure the Agent-based Installer first. Configuration is done with a command-line interface. This approach is ideal for disconnected environments.
 
-  - Additionally, you can deploy a cluster without an external registry, using self-contained installation media that also provides a simplified user interface similar to the Assisted Installer during on-premise installations. For more information, see "Installing a cluster without an external registry".
+<!-- -->
 
 - **Automated**: You can deploy a cluster on installer-provisioned infrastructure. The installation program uses each cluster host’s baseboard management controller (BMC) for provisioning. You can deploy clusters in connected or disconnected environments.
 
@@ -31,8 +31,6 @@ Each method deploys a cluster with the following characteristics:
 - [Assisted Installer](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
 - [Agent-based Installer](https://console.redhat.com/openshift/install/metal/agent-based)
-
-- [Installing a cluster without an external registry](../installing/installing_with_agent_based_installer/installing-ove.xml#installing-ove)
 
 ## The installation program
 

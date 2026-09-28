@@ -32,7 +32,7 @@ For more information about persistent disk types, compatibility, regional availa
 
 - Using the Google Cloud console, review the details for a machine deployed by the machine set and verify that the `Type` field matches the configured disk type.
 
-# Configuring Confidential VM by using machine sets
+# Configure Confidential VM by using machine sets
 
 You create machine sets to scale clusters on Google Cloud. By editing the machine set YAML file, you can configure the Confidential VM options that a machine set uses for machines that it deploys.
 
@@ -160,7 +160,7 @@ For more information about Shielded VM features and functionality, see the Googl
 
 - [Integrity monitoring (Google Cloud documentation)](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#integrity-monitoring)
 
-# Enabling customer-managed encryption keys for a machine set
+# Enable customer-managed encryption keys for a machine set
 
 Use Google Cloud Compute Engine to supply an encryption key to encrypt data on disks at rest. The key is used to encrypt the data encryption key, not to encrypt the customer’s data. By default, Compute Engine encrypts this data by using Compute Engine keys.
 

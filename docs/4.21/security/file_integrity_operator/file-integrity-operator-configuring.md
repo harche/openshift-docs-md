@@ -1,6 +1,6 @@
 You can configure the Custom File Integrity Operator to meet your cluster requirements.
 
-# Viewing FileIntegrity object attributes
+# View FileIntegrity object attributes
 
 As with any Kubernetes custom resources (CRs), you can run `oc explain fileintegrity`, and then examine the individual attributes.
 
@@ -44,7 +44,7 @@ The default File Integrity Operator configuration is stored in a config map with
   $ oc describe cm/worker-fileintegrity
   ```
 
-# Understanding the default File Integrity Operator configuration
+# Understand the default File Integrity Operator configuration
 
 The default configuration for a `FileIntegrity` instance provides coverage for files under key system directories and excludes others.
 
@@ -85,7 +85,7 @@ The following directories are not covered:
 
 - Some OpenShift Container Platform-specific excludes under `/etc/`
 
-# Supplying a custom AIDE configuration
+# Supply a custom AIDE configuration
 
 Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `database`, and `database_out` are overwritten by the Operator. The Operator adds a prefix to `/hostroot/` before all paths to be watched for integrity changes. As a result, you can reuse existing AIDE configs that might not be tailored for a containerized environment and that start from the root directory.
 
@@ -95,7 +95,7 @@ Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `da
 
 </div>
 
-# Defining a custom File Integrity Operator configuration
+# Define a custom File Integrity Operator configuration
 
 This example focuses on defining a custom configuration for a scanner that runs on the control plane nodes based on the default configuration provided for the `worker-fileintegrity` CR. This workflow might be useful if you are planning to deploy a custom software running as a daemon set and storing its data under `/opt/mydaemon` on the control plane nodes.
 
@@ -184,7 +184,7 @@ This example focuses on defining a custom configuration for a scanner that runs 
     !/hostroot/opt/mydaemon
     ```
 
-# Changing the custom File Integrity configuration
+# Change the custom File Integrity configuration
 
 To change the File Integrity configuration, never change the generated config map. Instead, change the config map that is linked to the `FileIntegrity` object through the `spec.name`, `namespace`, and `key` attributes.
 

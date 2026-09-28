@@ -69,6 +69,46 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 - [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255)
 
+# Analyzing update risk and status using AI
+
+To quickly assess either the risk of an update path or the status of an in-progress update, you can use the web console to generate AI-powered guidance specific to your cluster.
+
+Using this AI assessment feature opens OpenShift Lightspeed Service (OLS) with pre-loaded prompts and requires no manually written prompts. Cluster state data is processed by the large language model (LLM) provider that you have configured OLS to use.
+
+<div class="important">
+
+The completeness and accuracy of the assessment depend on the configured model interacting correctly with the OpenShift MCP tools. If the model does not invoke the required tools, or a tool call fails, the response might not reflect the current cluster state.
+
+AI-generated analysis is advisory. Verify the analysis against the current cluster state before taking action.
+
+</div>
+
+- You have OLS installed and actively connected to an LLM.
+
+  - The configured model can interact with the OpenShift MCP tools.
+
+  - OLS is configured with access to the OpenShift MCP server.
+
+- You have access to the cluster with `cluster-admin` privileges.
+
+- You have access to the OpenShift Container Platform web console.
+
+1.  On the web console, navigate to **Administration** → **Cluster Settings**.
+
+2.  If you want to evaluate an update to the latest version, click **Precheck your cluster with AI** in the **AI Assessment** section. You can click **Update status** to troubleshoot any issues identified by the assessment.
+
+3.  If you want to assess a specific update path, perform the following steps:
+
+    1.  Click **Select a version**.
+
+    2.  Choose a target update version from the **Select a version** dropdown menu.
+
+    3.  Click **Precheck your cluster with AI**. You can click **Update status** to troubleshoot any issues identified by the assessment.
+
+4.  If you want to evaluate the status of an in-progress update, click **Update status** in the **AI Assessment** section while an update is in progress.
+
+- [Red Hat OpenShift Lightspeed documentation](https://docs.redhat.com/en/documentation/red_hat_openshift_lightspeed/1.0)
+
 # The risk of conditional updates
 
 Conditional updates are update targets flagged by the OpenShift Update Service (OSUS) as available but not recommended due to known risks that apply to your cluster.
@@ -388,6 +428,32 @@ When planning a cluster update, check the configuration of the `PodDisruptionBud
 <!-- -->
 
 - [Understanding cluster Operator condition types](../../updating/understanding_updates/intro-to-updates.xml#understanding_clusteroperator_conditiontypes_understanding-openshift-updates)
+
+# HAProxy version changes before a cluster update
+
+Before you update to OpenShift Container Platform 4.17, decide whether your Ingress Controller should keep HAProxy 2.8 or move to HAProxy 3.2. Pinning the HAProxy version reduces the risk that an ingress behavior change will disrupt applications during the cluster update.
+
+OpenShift Container Platform 4.17 changes the default HAProxy version for Ingress Controllers from 2.8 to 3.2.
+
+- To keep HAProxy 2.8 when you upgrade from OpenShift Container Platform 4.22, set `spec.haproxyVersion` to `2.8` on each Ingress Controller. That setting does not change HAProxy on 4.22; it pins the version so that the update does not switch Ingress Controllers to HAProxy 3.2.
+
+- To move to HAProxy 3.2 when you upgrade from OpenShift Container Platform 4.22, leave `spec.haproxyVersion` unset. Ingress Controller pods use HAProxy 3.2 after the update.
+
+- After you upgrade to OpenShift Container Platform 4.17, you can pin HAProxy 3.2 so that a later cluster upgrade does not change the version while 3.2 remains supported.
+
+<div class="important">
+
+If `spec.haproxyVersion` is set to a value that a target release does not support, a preflight check blocks the cluster update until you unset the field or change it to a supported version. HAProxy 2.8 is supported in OpenShift Container Platform 4.17 for migration and is planned to be removed in a later release.
+
+</div>
+
+- [About HAProxy versions for Ingress Controllers](../../networking/networking_operators/ingress-operator.xml#nw-about-haproxy-versions_configuring-ingress)
+
+- [Selecting an HAProxy version](../../networking/networking_operators/ingress-operator.xml#nw-selecting-haproxy-version_configuring-ingress)
+
+- [Verifying the active HAProxy version](../../networking/networking_operators/ingress-operator.xml#nw-verifying-haproxy-version_configuring-ingress)
+
+- [Ingress Controller configuration parameters](../../networking/networking_operators/ingress-operator.xml#nw-ingress-controller-configuration-parameters_configuring-ingress)
 
 # Minimizing worker node deployment time
 

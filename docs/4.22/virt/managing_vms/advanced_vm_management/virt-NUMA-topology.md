@@ -318,4 +318,4 @@ The following table outlines which policies are supported for different VM confi
 
 - [Topology Manager policies](../../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager_topology-manager-policies)
 
-- [Creating virtual machines from instance types](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
+- [Instance types](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)

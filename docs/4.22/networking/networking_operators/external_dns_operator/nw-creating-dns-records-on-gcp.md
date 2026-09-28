@@ -6,7 +6,7 @@ Using the External DNS Operator on a cluster with Google Cloud Workload Identity
 
 </div>
 
-# Creating DNS records on a public managed zone for Google Cloud
+# Create DNS records on a public managed zone for Google Cloud
 
 To create DNS records on Google Cloud, use the External DNS Operator. The DNS Operator manages external name resolution for your cluster services.
 

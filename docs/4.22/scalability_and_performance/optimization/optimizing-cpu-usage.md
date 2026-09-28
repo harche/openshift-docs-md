@@ -48,7 +48,7 @@ The following diagram illustrates the system state after encapsulation.
 
 - The behavior of Container 2 and Container 3 is unchanged.
 
-# Configuring mount namespace encapsulation
+# Configure mount namespace encapsulation
 
 You can configure mount namespace encapsulation so that a cluster runs with less resource overhead.
 
@@ -214,7 +214,7 @@ Mount namespace encapsulation is a Technology Preview feature and the feature is
 
     Encapsulation is in effect if systemd is in a different mount namespace from kubelet and CRI-O as in the previous output example. Encapsulation is not in effect if all three processes are in the same mount namespace.
 
-# Inspecting encapsulated namespaces
+# Inspect encapsulated namespaces
 
 You can inspect Kubernetes-specific mount points in the cluster host operating system for debugging or auditing purposes by using the `kubensenter` script that is available in Red Hat Enterprise Linux CoreOS (RHCOS).
 

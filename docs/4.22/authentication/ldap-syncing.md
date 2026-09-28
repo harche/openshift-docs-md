@@ -243,13 +243,13 @@ Specifies the attribute to use as the name of the user in the OpenShift Containe
 `augmentedActiveDirectory.groupMembershipAttributes`
 Specifies the attribute on the user that stores the membership information.
 
-# Running LDAP sync
+# Run LDAP sync
 
 Review LDAP sync types before running group sync between your LDAP server and OpenShift Container Platform. Each type defines sync direction and scope so you select the command that matches your directory layout.
 
 After you have created a sync configuration file, you can begin to sync. OpenShift Container Platform allows administrators to perform several different sync types with the same server.
 
-## Syncing the LDAP server with OpenShift Container Platform
+## Sync the LDAP server with OpenShift Container Platform
 
 Sync all groups from your LDAP server with OpenShift Container Platform so you can mirror your complete LDAP group membership in the cluster.
 
@@ -271,7 +271,7 @@ Sync all groups from your LDAP server with OpenShift Container Platform so you c
 
   </div>
 
-## Syncing OpenShift Container Platform groups with the LDAP server
+## Sync OpenShift Container Platform groups with the LDAP server
 
 Sync existing OpenShift Container Platform groups with your LDAP server so you can update membership for groups that already exist in the cluster.
 
@@ -295,7 +295,7 @@ You can sync all groups already in OpenShift Container Platform that correspond 
 
   </div>
 
-## Syncing subgroups from the LDAP server with OpenShift Container Platform
+## Sync subgroups from the LDAP server with OpenShift Container Platform
 
 Sync a subset of LDAP groups with OpenShift Container Platform so you can control which groups are synchronized using allowlist files, denylist files, or both.
 
@@ -360,7 +360,7 @@ You can use any combination of denylist files, allowlist files, or allowlist lit
 
   </div>
 
-# Running a group pruning job
+# Run a group pruning job
 
 Run a group pruning job to remove LDAP-synced groups from OpenShift Container Platform when they no longer exist on your LDAP server so you can keep cluster group records aligned with your directory.
 
@@ -629,7 +629,7 @@ These examples cover only direct group membership. Each user is a direct member 
 
 </div>
 
-## Syncing groups using the RFC 2307 schema
+## Sync groups using the RFC 2307 schema
 
 Sync LDAP groups by using the RFC 2307 schema so you can mirror direct group membership from your LDAP server in OpenShift Container Platform.
 
@@ -733,7 +733,7 @@ Specifies that the members of a group are listed with an identifying reference a
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
 
-## Syncing groups by using the RFC 2307 schema with user-defined name mappings
+## Sync groups by using the RFC 2307 schema with user-defined name mappings
 
 Sync LDAP groups using the RFC 2307 schema with user-defined name mappings so you can map LDAP group identifiers to OpenShift Container Platform group names.
 
@@ -812,7 +812,7 @@ Specifies the attribute that uniquely identifies a user on the LDAP server. You 
   `metadata.name`
   Specifies the name of the group as specified by the user-defined name mapping.
 
-## Syncing groups by using RFC 2307 with user-defined error tolerances
+## Sync groups by using RFC 2307 with user-defined error tolerances
 
 Sync LDAP groups using the RFC 2307 schema with error tolerances so you can complete group synchronization when some members are missing or out of scope.
 
@@ -948,7 +948,7 @@ Specifies whether the sync job tolerates groups for which some members are outsi
   `users`
   Specifies the users that are members of the group, as specified by the sync file. Members for which lookup encountered tolerated errors are absent.
 
-## Syncing groups using the Active Directory schema
+## Sync groups using the Active Directory schema
 
 You can sync LDAP groups for your OpenShift Container Platform cluster using the Active Directory schema by running `oc adm groups sync` with an LDAP sync configuration file. In this schema, group membership is stored in attributes on user entries, such as `memberOf`.
 
@@ -1033,7 +1033,7 @@ Specifies that the group memberships of the user are listed as attributes on the
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
 
-## Syncing groups using the augmented Active Directory schema
+## Sync groups using the augmented Active Directory schema
 
 You can sync LDAP groups for your OpenShift Container Platform cluster using the augmented Active Directory schema by running `oc adm groups sync` with an LDAP sync configuration file.
 

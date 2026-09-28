@@ -585,7 +585,7 @@ Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need t
 2.  Export the `argocd` directory from the `ztp-site-generate` container image using the following commands:
 
     ``` terminal
-    $ podman pull registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17
+    $ podman pull registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17
     ```
 
     ``` terminal
@@ -593,7 +593,7 @@ Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need t
     ```
 
     ``` terminal
-    $ podman run --log-driver=none --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 extract /home/ztp --tar | tar x -C ./out
+    $ podman run --log-driver=none --rm registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17 extract /home/ztp --tar | tar x -C ./out
     ```
 
 3.  Check that the `out` directory contains the following subdirectories:

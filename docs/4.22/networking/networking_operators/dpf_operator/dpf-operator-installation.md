@@ -10,27 +10,45 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
 
 Set the following required environment variables before you install and configure the DPF Operator on OpenShift Container Platform. The values of these variables are used in multiple DPF Operator installation and configuration procedures.
 
-| Variable                        | Description                                                                                                                                                                                                                                                  | Example value                                                                                                                                            |
-|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `CLUSTER_NAME`                  | The name of the management cluster.                                                                                                                                                                                                                          | `<YOUR_CLUSTER_NAME>`                                                                                                                                    |
-| `BASE_DOMAIN`                   | The base domain for the management cluster.                                                                                                                                                                                                                  | `example.com`                                                                                                                                            |
-| `HOST_CLUSTER_API`              | The API server hostname of the management cluster. Derived from `CLUSTER_NAME` and `BASE_DOMAIN`.                                                                                                                                                            | `api.mycluster.example.com`                                                                                                                              |
-| `TAG`                           | The version tag for the DPF Operator Helm chart.                                                                                                                                                                                                             | `v26.4.1`                                                                                                                                                |
-| `TARGETCLUSTER_API_SERVER_PORT` | The port number of the hosted cluster API server.                                                                                                                                                                                                            | `6443`                                                                                                                                                   |
-| `VTEP_CIDR`                     | The CIDR range for the VTEP (tunnel endpoint) network. Used as the OVN `vtepCIDR` and the `DPUServiceIPAM` network. Must be a dedicated range from the DPU high-speed network, routable between DPUs and host systems.                                       | `10.0.120.0/22`                                                                                                                                          |
-| `DPU_HOST_CIDR`                 | The CIDR range of the subnet where the DPU host nodes reside. Used as the OVN `hostCIDR`. You must set this to your actual host subnet; the example value is illustrative only and is not a usable default.                                                  | `10.0.110.0/24`                                                                                                                                          |
-| `NUM_VFS`                       | Number of SR-IOV VFs per physical function. Sets `NUM_OF_VFS` in the DPUFlavor `nvconfig`. The `NodeSRIOVDevicePluginConfig` allocates these VFs as VF0 (DPF communication channel), VF1 (OVN-Kubernetes management), and the remainder (workload and RDMA). | `46`                                                                                                                                                     |
-| `OVN_TEMPLATE_CHART_URL`        | The OCI chart URL for the OVN-Kubernetes Helm chart.                                                                                                                                                                                                         | `oci://ghcr.io/mellanox/charts`                                                                                                                          |
-| `OVN_CHART_VERSION`             | The version of the OVN-Kubernetes Helm chart.                                                                                                                                                                                                                | `v26.4.1-ocp-release-v4.22`                                                                                                                              |
-| `OVN_MTU`                       | The MTU value for OVN-Kubernetes overlay networking. Set to `1400` for standard MTU (`NODES_MTU` of 1500) or `8940` for jumbo frames (`NODES_MTU` of 9000). Must be kept consistent with `NODES_MTU`.                                                        | `1400`                                                                                                                                                   |
-| `BFB_URL`                       | The download URL for the BlueField Bootstream File image used to provision DPUs.                                                                                                                                                                             | `https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb` |
-| `BFB_FILENAME`                  | The local file name for the BFB image, which is typically the base name of `BFB_URL`.                                                                                                                                                                        | `rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb`                                                                                                      |
-| `HOSTED_CLUSTER_NAME`           | The name of the hosted cluster running on the DPUs.                                                                                                                                                                                                          | `dpf-hosted`                                                                                                                                             |
-| `REGISTRY`                      | The Helm chart registry URL for the DPF Operator.                                                                                                                                                                                                            | `https://helm.ngc.nvidia.com/nvidia/doca`                                                                                                                |
-| `NODES_MTU`                     | The MTU value for the node network interfaces. Use `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across all DPF networking configuration.                                                       | `1500` (standard) or `9000` (jumbo frames)                                                                                                               |
-| `FLANNEL_POD_CIDR`              | The pod CIDR for the Flannel network in the hosted cluster. Required for OpenShift Container Platform 4.22 and later.                                                                                                                                        | `10.132.0.0/14`                                                                                                                                          |
+| Variable                        | Description                                                                                                                                                                                                                                                     | Example value                                                                                                                                            |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `CLUSTER_NAME`                  | The name of the management cluster.                                                                                                                                                                                                                             | `<YOUR_CLUSTER_NAME>`                                                                                                                                    |
+| `BASE_DOMAIN`                   | The base domain for the management cluster.                                                                                                                                                                                                                     | `example.com`                                                                                                                                            |
+| `HOST_CLUSTER_API`              | The API server hostname of the management cluster. Derived from `CLUSTER_NAME` and `BASE_DOMAIN`.                                                                                                                                                               | `api.mycluster.example.com`                                                                                                                              |
+| `REGISTRY`                      | The Helm chart registry URL for the DPF Operator.                                                                                                                                                                                                               | `https://helm.ngc.nvidia.com/nvidia/doca`                                                                                                                |
+| `TAG`                           | The version tag for the DPF Operator Helm chart.                                                                                                                                                                                                                | `v26.4.1`                                                                                                                                                |
+| `TARGETCLUSTER_API_SERVER_PORT` | The port number of the hosted cluster API server.                                                                                                                                                                                                               | `6443`                                                                                                                                                   |
+| `VTEP_CIDR`                     | A dedicated IP range allocated from the DPU high-speed network for VTEP (tunnel endpoint) IPs. Used for DPU service IPs by HBN and OVN-Kubernetes tunnels. The management network and this VTEP CIDR network must be routable to each other in both directions. | `10.0.120.0/22`                                                                                                                                          |
+| `NUM_VFS`                       | Number of SR-IOV VFs per physical function. Sets `NUM_OF_VFS` in the DPUFlavor `nvconfig`. The `NodeSRIOVDevicePluginConfig` allocates these VFs as VF0 (DPF communication channel), VF1 (OVN-Kubernetes management), and the remainder (workload and RDMA).    | `46`                                                                                                                                                     |
+| `NODES_MTU`                     | The MTU value for the node network interfaces. Use `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across all DPF networking configuration.                                                          | `1500` (standard) or `9000` (jumbo frames)                                                                                                               |
+| `OVN_TEMPLATE_CHART_URL`        | The OCI chart URL for the OVN-Kubernetes Helm chart.                                                                                                                                                                                                            | `oci://ghcr.io/mellanox/charts`                                                                                                                          |
+| `OVN_CHART_VERSION`             | The version of the OVN-Kubernetes Helm chart.                                                                                                                                                                                                                   | `v26.4.1-ocp-release-v4.22`                                                                                                                              |
+| `OVN_MTU`                       | The MTU value for OVN-Kubernetes overlay networking. Set to `1400` for standard MTU (1500 minus encapsulation overhead) or `8900` for jumbo frames (9000 minus encapsulation overhead). Must be kept consistent with `NODES_MTU`.                               | `1400` or `8900`                                                                                                                                         |
+| `DPU_HOST_CIDR`                 | The CIDR range of the subnet where the DPU host nodes reside. Used as the OVN `hostCIDR`. You must set this to your actual host subnet; the example value is illustrative only and is not a usable default.                                                     | `10.0.110.0/24`                                                                                                                                          |
+| `FLANNEL_POD_CIDR`              | The pod CIDR for the Flannel network in the hosted cluster. Required for OpenShift Container Platform 4.22 and later.                                                                                                                                           | `10.132.0.0/14`                                                                                                                                          |
+| `BFB_URL`                       | The download URL for the BlueField Bootstream File image used to provision DPUs.                                                                                                                                                                                | `https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb` |
 
 DPF Operator environment variables
+
+You must set the following environment variables in your terminal session before you proceed.
+
+``` terminal
+$ export CLUSTER_NAME="<YOUR_CLUSTER_NAME>"
+$ export BASE_DOMAIN="example.com"
+$ export HOST_CLUSTER_API="api.${CLUSTER_NAME}.${BASE_DOMAIN}"
+$ export REGISTRY="https://helm.ngc.nvidia.com/nvidia/doca"
+$ export TAG="v26.4.1"
+$ export TARGETCLUSTER_API_SERVER_PORT="6443"
+$ export VTEP_CIDR="10.0.120.0/22"
+$ export NUM_VFS="46"
+$ export NODES_MTU="1500"
+$ export OVN_TEMPLATE_CHART_URL="oci://ghcr.io/mellanox/charts"
+$ export OVN_CHART_VERSION="v26.4.1-ocp-release-v4.22"
+$ export OVN_MTU=1400
+$ export DPU_HOST_CIDR="10.0.110.0/24"
+$ export FLANNEL_POD_CIDR="10.132.0.0/14"
+$ export BFB_URL="https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb"
+```
 
 # Install the DPF Operator
 
@@ -368,6 +386,7 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
         name: hbn-ovnk
         namespace: dpf-operator-system
         annotations:
+          # Required when flavor bfcfg exceeds the DPF limit of 128K
           provisioning.dpu.nvidia.com/skip-bfcfg-size-check: ""
       spec:
         grub:
@@ -380,7 +399,7 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
             - hugepagesz=2048kB
             - hugepages=250
         nvconfig:
-          - device: '*'
+          - device: "*"
             parameters:
               - PF_BAR2_ENABLE=0
               - PER_PF_NUM_SF=1
@@ -486,6 +505,7 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
         name: hbn-ovnk
         namespace: dpf-operator-system
         annotations:
+          # Required when flavor bfcfg exceeds the DPF limit of 128K
           provisioning.dpu.nvidia.com/skip-bfcfg-size-check: ""
       spec:
         grub:
@@ -498,7 +518,7 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
             - hugepagesz=2048kB
             - hugepages=250
         nvconfig:
-          - device: '*'
+          - device: "*"
             parameters:
               - PF_BAR2_ENABLE=0
               - PER_PF_NUM_SF=1
@@ -629,7 +649,6 @@ You can create a `BFB` custom resource to define the DPU image, known as a BlueF
       name: bf-bundle
       namespace: dpf-operator-system
     spec:
-      fileName: $BFB_FILENAME
       url: $BFB_URL
       versions:
         atf: 4.15.0-4-g419fbf393
@@ -638,13 +657,7 @@ You can create a `BFB` custom resource to define the DPU image, known as a BlueF
         uefi: 4.15.0-19-g37c6f5adb2
     ```
 
-2.  Set the `BFB_FILENAME` environment variable to the file name of the BFB image, which is the base name of `BFB_URL`:
-
-    ``` terminal
-    $ export BFB_FILENAME=$(basename "$BFB_URL")
-    ```
-
-3.  Apply the resource file:
+2.  Apply the resource file:
 
     ``` terminal
     $ envsubst < bfb.yaml | oc apply -f -

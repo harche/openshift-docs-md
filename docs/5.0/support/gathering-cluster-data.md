@@ -1218,7 +1218,7 @@ The recommended way to generate a `sosreport` for an OpenShift Container Platfor
     $ oc debug node/my-cluster-node
     ```
 
-3.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+3.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in the `/host` directory within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
 
     ``` terminal
     # chroot /host
@@ -1230,24 +1230,12 @@ The recommended way to generate a `sosreport` for an OpenShift Container Platfor
 
     </div>
 
-4.  Start a `toolbox` container, which includes the required binaries and plugins to run `sosreport`:
-
-    ``` terminal
-    # toolbox
-    ```
-
-    <div class="note">
-
-    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. Remove the running toolbox container with `podman rm toolbox-` and spawn a new toolbox container, to avoid issues with `sosreport` plugins.
-
-    </div>
-
-5.  Collect a `sosreport` archive.
+4.  Collect a `sosreport` archive.
 
     1.  Run the `sos report` command to collect necessary troubleshooting data on `crio` and `podman`:
 
         ``` terminal
-        # sos report -k crio.all=on -k crio.logs=on  -k podman.all=on -k podman.logs=on
+        # sudo sos report -k crio.all=on -k crio.logs=on  -k podman.all=on -k podman.logs=on
         ```
 
         where
@@ -1256,7 +1244,7 @@ The recommended way to generate a `sosreport` for an OpenShift Container Platfor
     2.  Optional: To include information on OVN-Kubernetes networking configurations from a node in your report, run the following command:
 
         ``` terminal
-        # sos report --all-logs
+        # sudo sos report --all-logs
         ```
 
     3.  Press **Enter** when prompted, to continue.
@@ -1267,22 +1255,19 @@ The recommended way to generate a `sosreport` for an OpenShift Container Platfor
 
         ``` terminal
         Your sosreport has been generated and saved in:
-          /host/var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
+          /var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
 
         The checksum is: 382ffc167510fd71b4f12a4f40b97a4e
         ```
 
-        where
-        - The `sosreport` archive’s file path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
-
-6.  Provide the `sosreport` archive to Red Hat Support for analysis, using one of the following methods.
+5.  Provide the `sosreport` archive to Red Hat Support for analysis, using one of the following methods.
 
     - Upload the file to an existing Red Hat support case.
 
       1.  Concatenate the `sosreport` archive by running the `oc debug node/<node_name>` command and redirect the output to a file. This command assumes you have exited the previous `oc debug` session:
 
           ``` terminal
-          $ oc debug node/my-cluster-node -- bash -c 'cat /host/var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz' > /tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
+          $ oc debug node/my-cluster-node -- bash -c 'cat /var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz' > /tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
           ```
 
           where
@@ -1513,73 +1498,96 @@ When investigating potential network-related OpenShift Container Platform issues
     $ oc debug node/my-cluster-node
     ```
 
-3.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
-
-    ``` terminal
-    # chroot /host
-    ```
-
     <div class="note">
 
     OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
 
     </div>
 
-4.  From within the `chroot` environment console, obtain the node’s interface names:
+3.  Start the `tcpdump` capture for the current node or a specific container on the node.
 
-    ``` terminal
-    # ip ad
-    ```
+    - Optionally, start a `tcpdump` capture for the node by running the following commands:
 
-5.  Start a `toolbox` container, which includes the required binaries and plugins to run `sosreport`:
+      1.  Set `/host` as the root directory within the debug shell by running the following command. The debug pod mounts the host’s root file system in the `/host` directory within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths.
 
-    ``` terminal
-    # toolbox
-    ```
+          ``` terminal
+          # chroot /host
+          ```
 
-    <div class="note">
+      2.  Start a Toolbx container by running the following command:
 
-    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. To avoid `tcpdump` issues, remove the running toolbox container with `podman rm toolbox-` and spawn a new toolbox container.
+          ``` terminal
+          # toolbox create
+          ```
 
-    </div>
+          <div class="note">
 
-6.  Initiate a `tcpdump` session on the cluster node and redirect output to a capture file. This example uses `ens5` as the interface name:
+          If an existing `toolbox` container is already running, Toolbx outputs an error. Remove the existing Toolbx container by using the `toolbox rm <name>` or `toolbox rm --force <name>` command, where `<name>` is the name of the container. Then spawn a new toolbox container.
 
-    ``` terminal
-    $ tcpdump -nn -s 0 -i ens5 -w /host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
-    ```
+          </div>
 
-    where:
+      3.  If prompted, download the Toolbx image by entering `y` at the prompt:
 
-    `/host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
-    The `tcpdump` capture file’s path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
+          ``` terminal
+          Image required to create Toolbx container.
+          Download registry.access.redhat.com/ubi10/toolbox:10.2 (345MB)? [y/N]
+          ```
 
-7.  If a `tcpdump` capture is required for a specific container on the node, follow these steps.
+      4.  Enter the Toolbx container to execute commands by running the following command:
 
-    1.  Determine the target container ID. The `chroot host` command precedes the `crictl` command in this step because the toolbox container mounts the host’s root directory at `/host`:
+          ``` terminal
+          # toolbox enter
+          ```
 
-        ``` terminal
-        # chroot /host crictl ps
-        ```
+      5.  Obtain the node’s interface names by running the following command:
 
-    2.  Determine the container’s process ID. In this example, the container ID is `a7fe32346b120`:
+          ``` terminal
+          # ip ad
+          ```
 
-        ``` terminal
-        # chroot /host crictl inspect --output yaml a7fe32346b120 | grep 'pid' | awk '{print $2}'
-        ```
+      6.  Initiate a `tcpdump` session on the cluster node and redirect output to a capture file. This example uses `ens5` as the interface name:
 
-    3.  Initiate a `tcpdump` session on the container and redirect output to a capture file. This example uses `49628` as the container’s process ID and `ens5` as the interface name. The `nsenter` command enters the namespace of a target process and runs a command in its namespace. because the target process in this example is a container’s process ID, the `tcpdump` command is run in the container’s namespace from the host:
+          ``` terminal
+          $ tcpdump -nn -s 0 -i ens5 -w /host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+          ```
 
-        ``` terminal
-        # nsenter -n -t 49628 -- tcpdump -nn -i ens5 -w /host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
-        ```
+          where:
 
-        where:
+          `/host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
+          The `tcpdump` capture file path is outside of the `chroot` environment.
 
-        `/host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
-        The `tcpdump` capture file’s path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
+    - Optionally, start a `tcpdump` capture for a specific container on the node by running the following commands:
 
-8.  Provide the `tcpdump` capture file to Red Hat Support for analysis, using one of the following methods.
+      1.  Determine the target container ID by running the following commandin:
+
+          ``` terminal
+          # chroot /host crictl ps
+          ```
+
+      2.  Determine the container’s process ID. In this example, the container ID is `a7fe32346b120`:
+
+          ``` terminal
+          # chroot /host crictl inspect --output yaml a7fe32346b120 | grep 'pid' | awk '{print $2}'
+          ```
+
+      3.  Obtain the node’s interface names by running the following command:
+
+          ``` terminal
+          # ip ad
+          ```
+
+      4.  Initiate a `tcpdump` session on the container and redirect output to a capture file. This example uses `49628` as the container’s process ID and `ens5` as the interface name. The `nsenter` command enters the namespace of a target process and runs a command in its namespace. because the target process in this example is a container’s process ID, the `tcpdump` command is run in the container’s namespace from the host:
+
+          ``` terminal
+          # nsenter -n -t 49628 -- tcpdump -nn -i ens5 -w /host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+          ```
+
+          where:
+
+          `/host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
+          The `tcpdump` capture file path is outside of the `chroot` environment.
+
+4.  Provide the `tcpdump` capture file to Red Hat Support for analysis, using one of the following methods.
 
     - Upload the file to an existing Red Hat support case.
 
@@ -1645,88 +1653,144 @@ When investigating OpenShift Container Platform issues, Red Hat Support might as
 
   3.  Select **Attach files** and follow the prompts to upload the file.
 
-# About `toolbox`
+# About Toolbx
 
-`toolbox` is a tool that starts a container on a Red Hat Enterprise Linux CoreOS (RHCOS) system. The tool is primarily used to start a container that includes the required binaries and plugins that are needed to run commands such as `sosreport`.
+Toolbx is a tool for creating persistent containers on a Red Hat Enterprise Linux CoreOS (RHCOS) system. Because RHCOS is immutable, you can use Toolbx containers to install and run your favorite debugging or administration tools, even if they are not included in the RHCOS base image.
 
-The primary purpose for a `toolbox` container is to gather diagnostic information and to provide it to Red Hat Support. However, if additional diagnostic tools are required, you can add RPM packages or run an image that is an alternative to the standard support tools image.
+You can use Toolbx to gather diagnostic information and provide it to Red Hat Support.
 
-## Installing packages to a `toolbox` container
+## Installing packages to a Toolbx container
 
-By default, running the `toolbox` command starts a container with the `registry.redhat.io/rhel9/support-tools:latest` image. This image contains the most frequently used support tools. If you need to collect node-specific data that requires a support tool that is not part of the image, you can install additional packages.
+You can collect node-specific data that requires a support tool that is not part of the image by using Toolbx to install additional packages.
 
-- You have accessed a node with the `oc debug node/<node_name>` command.
+By default, running the `toolbox create` command starts a Toolbx container with the default Red Hat Universal Base Image (UBI) for the matching Red Hat Enterprise Linux (RHEL) version, for example, `registry.access.redhat.com/ubi10/toolbox:10.2`. If the package you need is not in that base image, you can launch a Toolbx container and install that package.
 
 - You can access your system as a user with root privileges.
 
-1.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+1.  Access a node by running the following command.
+
+    ``` terminal
+    $ oc debug node/<node_name>
+    ```
+
+    Replace `<node_name>` with the name of the node.
+
+2.  Set `/host` as the root directory within the debug shell by running the following command. The debug pod mounts the host’s root file system in the `/host` directory within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths.
 
     ``` terminal
     # chroot /host
     ```
 
-2.  Start the toolbox container:
+3.  Launch Toolbx:
 
-    ``` terminal
-    # toolbox
-    ```
+    1.  Start the Toolbx container by running the following command:
 
-3.  Install the additional package, such as `wget`:
+        ``` terminal
+        # toolbox create
+        ```
+
+        <div class="note">
+
+        If an existing `toolbox` container is already running, Toolbx outputs an error. Remove the existing Toolbx container by running the `toolbox rm <name>` or `toolbox rm --force <name>` command, where `<name>` is the name of the container. Then spawn a new toolbox container.
+
+        </div>
+
+    2.  If prompted, download the Toolbx image by entering `y` at the prompt:
+
+        ``` terminal
+        Image required to create Toolbx container.
+        Download registry.access.redhat.com/ubi10/toolbox:10.2 (345MB)? [y/N]
+        ```
+
+    3.  Enter the Toolbx container to execute commands by running the following command:
+
+        ``` terminal
+        # toolbox enter
+        ```
+
+4.  Install the additional package, such as `wget`, by running the following command:
 
     ``` terminal
     # dnf install -y <package_name>
     ```
 
-## Starting an alternative image with `toolbox`
+    Replace `<package_name>` with the name of the additional package.
 
-By default, running the `toolbox` command starts a container with the `registry.redhat.io/rhel9/support-tools:latest` image.
+## Starting an alternative image with Toolbx
+
+The `toolbox create` command creates a container from the default Red Hat Universal Base Image (UBI) Toolbx image for the matching Red Hat Enterprise Linux (RHEL) version. You can create a container from an alternative image by running the command with the path to the image you want to run.
 
 <div class="note">
 
-You can start an alternative image by creating a `.toolboxrc` file and specifying the image to run. However, running an older version of the `support-tools` image, such as `registry.redhat.io/rhel8/support-tools:latest`, is not supported on OpenShift Container Platform 4.17.
+Running older RHEL-based images is not supported on OpenShift Container Platform 4.17.
 
 </div>
 
-- You have accessed a node with the `oc debug node/<node_name>` command.
-
 - You can access your system as a user with root privileges.
 
-1.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+1.  Access a node by running the following command.
+
+    ``` terminal
+    $ oc debug node/<node_name>
+    ```
+
+    Replace `<node_name>` with the name of the node.
+
+2.  Set `/host` as the root directory within the debug shell by running the following command. The debug pod mounts the host’s root file system in the `/host` directory within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths.
 
     ``` terminal
     # chroot /host
     ```
 
-2.  Optional: If you need to use an alternative image instead of the default image, create a `.toolboxrc` file in the home directory for the root user ID, and specify the image metadata:
-
-    ``` text
-    REGISTRY=quay.io
-    IMAGE=fedora/fedora:latest
-    TOOLBOX_NAME=toolbox-fedora-latest
-    ```
-
-    where:
-
-    `REGISTRY=quay.io`
-    Optional: Specify an alternative container registry.
-
-    `IMAGE=fedora/fedora:latest`
-    Specify an alternative image to start.
-
-    `TOOLBOX_NAME=toolbox-fedora-latest`
-    Optional: Specify an alternative name for the toolbox container.
-
-3.  Start a toolbox container by entering the following command:
+3.  Specify the image to use as an alternative image by running the following command:
 
     ``` terminal
-    # toolbox
+    # toolbox create --image <image-url> <image_name>
+    ```
+
+    Replace `<image-url>` with path to the alternative image you want to use. Optionally, specify a name for the resulting Toolbx container. If you do not specify a name, Toolbx assigns a name.
+
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
+    ``` terminal
+    # toolbox create --image quay.io/toolbx/ubuntu-toolbox:latest ubuntu-dev
     ```
 
     <div class="note">
 
-    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. To avoid issues with `sosreport` plugins, remove the running toolbox container with `podman rm toolbox-` and then spawn a new toolbox container.
+    If an existing `toolbox` container is already running, Toolbx outputs an error. Remove the existing Toolbx container by running the `toolbox rm <name>` command, where `<name>` is the name of the container. Then spawn a new toolbox container.
 
     </div>
+
+4.  If prompted, download the alternative image by entering `y` at the prompt.
+
+    ``` terminal
+    Image required to create Toolbx container.
+    Download quay.io/toolbx/ubuntu-toolbox:latest (189.5MB)? [y/N]:
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    Created container: ubuntu-dev
+    Enter with: toolbox enter ubuntu-dev
+    ```
+
+5.  Enter the Toolbx container by entering the following command:
+
+    ``` terminal
+    # toolbox enter <container_name>
+    ```
+
+    Replace `<container_name>` with the name of the container.
 
 # Additional resources
 

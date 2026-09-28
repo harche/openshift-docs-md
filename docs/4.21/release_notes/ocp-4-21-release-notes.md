@@ -968,6 +968,56 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:68546 - OpenShift Container Platform 4.17.34 bug fix and security update
+
+Issued: 22 September 2026
+
+OpenShift Container Platform release 4.17.34 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:68546](https://access.redhat.com/errata/RHSA-2026:68546) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:68538](https://access.redhat.com/errata/RHSA-2026:68538) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.34 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the GatewayClass controller set up watches on the Operator Lifecycle Manager (OLM) `Subscription` and `InstallPlan` resources without checking whether the capability was enabled. As a consequence, startup blocks on clusters without OLM occurred. With this release, the `Subscription` and `InstallPlan` watches and the status controller `subscriptionCache` creation are guarded with an `OperatorLifecycleManagerEnabled` check. As a result, the GatewayClass controller starts successfully and the Gateway API functions correctly on non-OLM clusters. ([OCPBUGS-93736](https://issues.redhat.com/browse/OCPBUGS-93736))
+
+- Before this update, the Google Cloud cloud controller manager could not properly adhere to the `node.kubernetes.io/exclude-from-external-load-balancers` label when selecting load balancer backend nodes on Google Cloud clusters. As a consequence, primary nodes with the exclusion label were still added as backends to external load balancers. With this release, the cloud controller manager correctly checks for the exclusion label. As a result, primary nodes with the `node.kubernetes.io/exclude-from-external-load-balancers` label are not included as load balancer backends. ([OCPBUGS-115261](https://issues.redhat.com/browse/OCPBUGS-115261))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:66352 - OpenShift Container Platform 4.17.33 bug fix and security update
+
+Issued: 15 September 2026
+
+OpenShift Container Platform release 4.17.33 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:66352](https://access.redhat.com/errata/RHSA-2026:66352) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:66350](https://access.redhat.com/errata/RHSA-2026:66350) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.33 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the collection and emission of SELinux conflict metrics was inefficient and consumed excessive system resources. As a consequence, cluster performance degraded during metric collection cycles, leading to delayed reporting and high CPU overhead. With this release, the collection and emission logic is optimized to streamline data processing. As a result, metric collection is now significantly faster, improving overall cluster performance and responsiveness. ([OCPBUGS-87157](https://issues.redhat.com/browse/OCPBUGS-87157))
+
+- Before this update, the `GetMarketplaceImage` function for the installation program experienced timeout issues because the function used a deprecated SDK that lacked a retry mechanism. As a consequence, the marketplace image fetch failed, which terminated the installation. With this release, the timeout for retrieving marketplace images is increased from 30 seconds to five minutes because the `GetMarketplaceImage` function now uses the new Azure SDK to retry requests. As a result, timeout issues do not cause installation failure. ([OCPBUGS-112472](https://issues.redhat.com/browse/OCPBUGS-112472))
+
+- Before this update, the short description for the `info` command in the Performance Profile Creator (PPC) tool was not updated after the cluster inspection was moved. As a consequence, inconsistencies between the parent help and the info help occurred when you ran the PPC tool. With this release, the short description for the `info` command in the PPC tool is updated to match the current CLI. As a result, the help inconsistencies do not occur when you run the tool. ([OCPBUGS-114931](https://issues.redhat.com/browse/OCPBUGS-114931))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:63046 - OpenShift Container Platform 4.17.32 bug fix and security update
 
 Issued: 08 September 2026

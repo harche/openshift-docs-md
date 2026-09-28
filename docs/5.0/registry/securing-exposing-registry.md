@@ -1,6 +1,6 @@
 By default, the OpenShift image registry is secured during cluster installation so that it serves traffic through the Transport Layer Security (TLS) protocol. Unlike previous versions of OpenShift Container Platform, the registry is not exposed outside of the cluster at the time of installation.
 
-# Exposing a default registry manually
+# Expose a default registry manually
 
 Instead of logging in to the default OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
 
@@ -48,7 +48,7 @@ Instead of logging in to the default OpenShift image registry from within the cl
     $ sudo podman login -u kubeadmin -p $(oc whoami -t) $HOST
     ```
 
-# Exposing a secure registry manually
+# Expose a secure registry manually
 
 Instead of logging in to the OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
 

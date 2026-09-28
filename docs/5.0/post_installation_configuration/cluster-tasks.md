@@ -150,7 +150,7 @@ The `MachineConfigPool` object allows users to configure how upgrades are rolled
 
 The `NodeSelector` object can be replaced with a reference to the `MachineSet` object.
 
-## Scaling a compute machine set manually
+## Scale a compute machine set manually
 
 To add or remove an instance of a machine in a compute machine set, you can manually scale the compute machine set.
 
@@ -250,7 +250,7 @@ Custom compute machine sets can be used for use cases requiring that services ru
 
 </div>
 
-## Creating default cluster-wide node selectors
+## Create default cluster-wide node selectors
 
 You can use default cluster-wide node selectors on pods together with labels on nodes to constrain all pods created in a cluster to specific nodes.
 
@@ -562,7 +562,7 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 </div>
 
-## Using and changing worker latency profiles
+## Use and change worker latency profiles
 
 You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. With this configuration, you can ensure that your cluster runs properly if network latency between the control plane and the compute nodes fluctuates.
 
@@ -1938,6 +1938,7 @@ kind: "ClusterAutoscaler"
 metadata:
   name: "default"
 spec:
+  enforceNodeGroupMinSize: Enabled
   podPriorityThreshold: -10
   resourceLimits:
     maxNodesTotal: 24
@@ -1979,42 +1980,50 @@ spec:
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>enforceNodeGroupMinSize</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies whether the cluster autoscaler maintains the minimum size of a node group.</p>
+<ul>
+<li><p><code>Enabled</code>: The cluster autoscaler ensures that the node group never scales below the configured size set by the <code>minReplicas</code> parameter in your <code>MachineAutoscaler</code> resources, even if nodes are deemed unneeded.</p></li>
+<li><p><code>Disabled</code>: The cluster autoscaler can scale the node group below the configured minimum size if nodes are deemed unneeded. This is the default.</p></li>
+</ul></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>podPriorityThreshold</code></p></td>
 <td style="text-align: left;"><p>Specify the priority that a pod must exceed to cause the cluster autoscaler to deploy additional nodes. Enter a 32-bit integer value. The <code>podPriorityThreshold</code> value is compared to the value of the <code>PriorityClass</code> that you assign to each pod.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxNodesTotal</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of nodes to deploy. This value is the total number of machines that are deployed in your cluster, not just the ones that the autoscaler controls. Ensure that this value is large enough to account for all of your control plane and compute machines and the total number of replicas that you specify in your <code>MachineAutoscaler</code> resources.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>cores.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>cores.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>memory.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>memory.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>gpus.type</code></p></td>
 <td style="text-align: left;"><p>Optional: To configure the cluster autoscaler to deploy GPU-enabled nodes, specify a <code>type</code> value. This value must match the value of the <code>spec.template.spec.metadata.labels[cluster-api/accelerator]</code> label in the machine set that manages the GPU-enabled nodes of that type. For example, this value might be <code>nvidia-t4</code> to represent Nvidia T4 GPUs, or <code>nvidia-a10g</code> for A10G GPUs. For more information, see "Labeling GPU machine sets for the cluster autoscaler".</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>gpus.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>gpus.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>logVerbosity</code></p></td>
 <td style="text-align: left;"><p>Specify the logging verbosity level between <code>0</code> and <code>10</code>. The following log level thresholds are provided for guidance:</p>
 <ul>
@@ -2024,11 +2033,11 @@ spec:
 </ul>
 <p>If you do not specify a value, the default value of <code>1</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait for each action by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.cordonNodeBeforeTerminating</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify whether the cluster autoscaler should cordon a node before removing that node by using one of the following values:</p>
 <ul>
@@ -2036,40 +2045,40 @@ spec:
 <li><p><code>Disabled</code>: The cluster autoscaler does not cordon the node before draining any pods and removing that node. This is the default.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.enabled</code></p></td>
 <td style="text-align: left;"><p>Specify whether the cluster autoscaler can remove unnecessary nodes.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterAdd</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>added</em>. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterDelete</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>deleted</em>. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterFailure</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a scale down failure occurred. If you do not specify a value, the default value of <code>3m</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.unneededTime</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify a period of time before an unnecessary node is eligible for deletion. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.utilizationThreshold</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the <em>node utilization level</em>. Nodes below this utilization level are eligible for deletion.</p>
 <p>The node utilization level is the sum of the requested resources divided by the allocated resources for the node, and must be a value greater than <code>"0"</code> but less than <code>"1"</code>. If you do not specify a value, the cluster autoscaler uses a default value of <code>"0.5"</code>, which corresponds to 50% utilization. You must express this value as a string.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleUp</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait before recognizing newly pending pods by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleUp.newPodScaleUpDelay</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to ignore a new unschedulable pod before adding a new node. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>expanders</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify any expanders that you want the cluster autoscaler to use. The following values are valid:</p>
 <ul>
@@ -2587,7 +2596,7 @@ Uses AES-GCM with a random nonce and a 32-byte key to perform the encryption.
 
 The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
 
-## Enabling etcd encryption
+## Enable etcd encryption
 
 Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
@@ -2680,7 +2689,7 @@ To migrate your etcd database from one encryption type to the other, you can mod
 
   If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-## Disabling etcd encryption
+## Disable etcd encryption
 
 Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 

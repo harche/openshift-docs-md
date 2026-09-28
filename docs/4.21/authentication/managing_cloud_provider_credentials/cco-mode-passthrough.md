@@ -234,7 +234,7 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 
 - [vSphere CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml)
 
-## Reducing permissions after installation
+## Reduce permissions after installation
 
 When using passthrough mode, after installing you can reduce the installed permissions to only those permissions required to run the cluster.
 

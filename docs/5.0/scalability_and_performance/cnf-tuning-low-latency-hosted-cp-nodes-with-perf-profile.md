@@ -12,7 +12,7 @@ The PPC combines information about your cluster with user-supplied configuration
 
 3.  Apply the performance profile to your cluster.
 
-## Gathering data about your hosted control planes cluster for the PPC
+## Gather data about your hosted control planes cluster for the PPC
 
 The Performance Profile Creator (PPC) tool requires `must-gather` data. As a cluster administrator, run the `must-gather` command to capture information about your cluster.
 
@@ -122,7 +122,7 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
 
-## Running the Performance Profile Creator on a hosted cluster using Podman
+## Run the Performance Profile Creator on a hosted cluster using Podman
 
 As a cluster administrator, you can use Podman with the Performance Profile Creator (PPC) tool to create a performance profile.
 
@@ -267,7 +267,7 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
 
 - [Performance Profile Creator arguments](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#performance-profile-creator-arguments_cnf-tuning-low-latency-nodes-with-perf-profile)
 
-## Configuring low-latency tuning in a hosted cluster
+## Configure low-latency tuning in a hosted cluster
 
 To set low latency with the performance profile on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure low-latency tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
 

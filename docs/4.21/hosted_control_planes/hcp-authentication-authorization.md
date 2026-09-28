@@ -1,6 +1,6 @@
 The OpenShift Container Platform control plane includes a built-in OAuth server. You can obtain OAuth access tokens to authenticate to the OpenShift Container Platform API. After you create your hosted cluster, you can configure OAuth by specifying an identity provider.
 
-# Configuring the OAuth server for a hosted cluster by using the CLI
+# Configure the OAuth server for a hosted cluster by using the CLI
 
 You can configure the internal OAuth server for your hosted cluster by using the command-line interface (CLI).
 
@@ -91,7 +91,7 @@ When you configure identity providers, you must configure at least one `NodePool
 
 3.  Save the file to apply the changes.
 
-# Configuring the OAuth server for a hosted cluster by using the web console
+# Configure the OAuth server for a hosted cluster by using the web console
 
 You can configure the internal OAuth server for your hosted cluster by using the OpenShift Container Platform web console.
 
@@ -195,7 +195,7 @@ The CCO supports a manual mode only for hosted clusters on AWS. By default, host
 
 </div>
 
-## Enabling Operators to support CCO-based workflows with AWS STS
+## Enable Operators to support CCO-based workflows with AWS STS
 
 As an Operator author designing your project to run on Operator Lifecycle Manager (OLM), you can enable your Operator to authenticate against AWS on STS-enabled OpenShift Container Platform clusters by customizing your project to support the Cloud Credential Operator (CCO).
 
@@ -517,7 +517,7 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-## Verifying the CCO installation in a hosted cluster on AWS
+## Verify the CCO installation in a hosted cluster on AWS
 
 You can verify that the Cloud Credential Operator (CCO) is running correctly in your hosted control plane.
 

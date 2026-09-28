@@ -1,6 +1,6 @@
 Although the Compliance Operator automates many of the checks and remediations for the cluster, an administrator can use the `oc-compliance` plugin to perform the full process of bringing a cluster into compliance by interacting with the Compliance Operator API and other components.
 
-# Installing the oc-compliance plugin
+# Install the oc-compliance plugin
 
 You can install the `oc-compliance` plugin to simplify compliance operations from the command line.
 
@@ -22,7 +22,7 @@ You can install the `oc-compliance` plugin to simplify compliance operations fro
 
   You can now run `oc-compliance`.
 
-# Fetching raw results
+# Fetch raw results
 
 An administrator or auditor can review the complete detailed results of a scan as created by the OpenSCAP tool. These results contain more details than what is contained in the `ComplianceCheckResult` custom resource (CR).
 
@@ -125,7 +125,7 @@ Rerunning a scan with the Compliance Operator requires the use of an annotation 
   Re-running scan 'openshift-compliance/ocp4-cis'
   ```
 
-# Using ScanSettingBinding custom resources
+# Use ScanSettingBinding custom resources
 
 When using the `ScanSetting` and `ScanSettingBinding` custom resources (CRs) that the Compliance Operator provides, it is possible to run scans for multiple profiles while using a common set of scan options, such as `schedule`, `machine roles`, `tolerations`, and so on.
 
@@ -230,7 +230,7 @@ The `oc compliance bind` subcommand helps you create a `ScanSettingBinding` CR.
 
     After the `ScanSettingBinding` CR is created, the bound profile begins scanning for both profiles with the related settings. Overall, this is the fastest way to begin scanning with the Compliance Operator.
 
-# Printing controls
+# Print controls
 
 You can view a report of the compliance standards and controls that a given profile satisfies.
 
@@ -271,7 +271,7 @@ Compliance standards are generally organized into a the following hierarchy:
   ...
   ```
 
-# Fetching compliance remediation details
+# Fetch compliance remediation details
 
 The Compliance Operator provides remediation objects that are used to automate the changes required to make the cluster compliant. You can use the `fetch-fixes` subcommand to help you understand exactly which configuration remediations are used.
 
@@ -392,7 +392,7 @@ Use caution before applying remediations directly. Some remediations might not b
         type: aescbc
     ```
 
-# Viewing ComplianceCheckResult object details
+# View ComplianceCheckResult object details
 
 When scans are finished running, `ComplianceCheckResult` objects are created for the individual scan rules. You can use the `view-result` subcommand to provide a human-readable output of the `ComplianceCheckResult` object details.
 

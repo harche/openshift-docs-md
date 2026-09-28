@@ -14,7 +14,7 @@ The following are the limitations of External Secrets Operator for Red Hat OpenS
 
 - Ensure `cert-manager` Operator is installed and operational before deploying the External Secrets Operator for Red Hat OpenShift for seamless functioning. If you install the `cert-manager` Operator later, manually restart the `external-secrets-operator` pod to apply cert-manager configurations in `externalsecrets.operator.openshift.io` object.
 
-# Installing the External Secrets Operator for Red Hat OpenShift by using the web console
+# Install the External Secrets Operator for Red Hat OpenShift by using the web console
 
 You can install the External Secrets Operator for Red Hat OpenShift by using the OpenShift Container Platform web console. You can select the desired update channel and approval strategy, and deploy the Operator into the recommended namespace without manually defining YAML resources.
 
@@ -58,7 +58,7 @@ You can install the External Secrets Operator for Red Hat OpenShift by using the
 
 2.  Verify that **External Secrets Operator** is listed with a **Status** of **Succeeded** in the `external-secrets-operator` namespace.
 
-# Installing the External Secrets Operator for Red Hat OpenShift by using the CLI
+# Install the External Secrets Operator for Red Hat OpenShift by using the CLI
 
 You can install the External Secrets Operator for Red Hat OpenShift by manually configuring the Operator Lifecycle Manager (OLM) resources using the OpenShift CLI. You can create a dedicated namespace, define the Operator’s scope, and install the Operator from the catalog.
 
@@ -158,7 +158,7 @@ You can install the External Secrets Operator for Red Hat OpenShift by manually 
 
 - [Adding Operators to a cluster](../../operators/admin/olm-adding-operators-to-cluster.xml#olm-adding-operators-to-a-cluster)
 
-# Installing the External Secrets operand by using the CLI
+# Install the External Secrets operand by using the CLI
 
 To install the External Secrets operand, create an instance of the `ExternalSecrets` custom resource by using the command-line interface (CLI) which deploys necessary operand components such as the core controller, webhook, and certificate controller into the `external-secrets` namespace.
 
@@ -253,7 +253,7 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
 
 - Configure the network policies of the operand as described in "Configuring network policy for the operand".
 
-# Understanding update channels of the External Secrets Operator for Red Hat OpenShift
+# Understand update channels of the External Secrets Operator for Red Hat OpenShift
 
 Control the version of the External Secrets Operator for Red Hat OpenShift in your cluster by selecting an update channel. By using this mechanism, you can declare a specific version track, ensuring your environment receives only the updates you require for stability.
 

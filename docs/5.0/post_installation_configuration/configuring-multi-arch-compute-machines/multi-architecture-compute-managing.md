@@ -281,7 +281,7 @@ Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or cluster
   worker-64k-pages  rendered-worker-64k-pages-e7b61751c4a5b7ff995d64b967c421ff   True      False      False      2              2                   2                     0                      35m
   ```
 
-# Importing manifest lists in image streams on your multi-architecture compute machines
+# Import manifest lists in image streams on your multi-architecture compute machines
 
 On an OpenShift Container Platform 4.17 cluster with multi-architecture compute machines, the image streams in the cluster do not import manifest lists automatically. You must manually change the default `importMode` option to the `PreserveOriginal` option to import the manifest list.
 

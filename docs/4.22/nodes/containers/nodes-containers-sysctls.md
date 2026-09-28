@@ -247,7 +247,7 @@ When setting these values using the `tuning` CNI plugin, use the value `IFNAME` 
 
 - [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
-# Updating the interface-specific safe sysctls list
+# Update the interface-specific safe sysctls list
 
 You can modify the default list of safe interface-specific `sysctls` by updating the `cni-sysctl-allowlist` in the `openshift-multus` namespace.
 
@@ -468,7 +468,7 @@ For example, the following procedure modifies the predefined list of safe `sysct
     net.ipv4.conf.net1.rp_filter = 1
     ```
 
-# Starting a pod with safe sysctls
+# Start a pod with safe sysctls
 
 You can modify kernel parameters for all containers in a pod by adding the sysctls parameter to the `securityContext` parameter in a pod spec.
 
@@ -599,7 +599,7 @@ In most cases you modify an existing pod definition and add the `securityContext
     kernel.shm_rmid_forced = 1
     ```
 
-# Starting a pod with unsafe sysctls
+# Start a pod with unsafe sysctls
 
 You can run a pod that is configured to use unsafe sysctls on a node where a cluster administrator explicitly enabled unsafe sysctls. You might use unsafe sysctls for situations such as high performance or real-time application tuning.
 
@@ -669,7 +669,7 @@ The following example illustrates what happens when you add safe and unsafe sysc
     sysctl-example-unsafe      0/1               SysctlForbidden   0          14s
     ```
 
-# Enabling unsafe sysctls
+# Enable unsafe sysctls
 
 As a cluster administrator, you can allow certain unsafe sysctls for very special situations such as high performance or real-time application tuning.
 

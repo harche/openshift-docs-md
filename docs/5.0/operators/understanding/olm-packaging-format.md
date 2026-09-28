@@ -237,7 +237,7 @@ Many of the `opm` subcommands and flags for working with the SQLite database for
 
 - [Managing custom catalogs](../../operators/admin/olm-managing-custom-catalogs.xml#olm-managing-custom-catalogs-fb)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 ## Directory structure
 

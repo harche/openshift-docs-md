@@ -32,7 +32,7 @@ Before installing an OpenShift Container Platform cluster on IBM Cloud® in a di
 
 - [Configuring an IBM Cloud® account](../../installing/installing_ibm_cloud/installing-ibm-cloud-account.xml#installing-ibm-cloud-account)
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [Access to IBM service endpoints](../../installing/installing_ibm_cloud/installing-ibm-cloud-restricted.xml#access-to-ibm-service-endpoints_installing-ibm-cloud-restricted)
 
@@ -106,7 +106,7 @@ Clusters in restricted networks have the following additional limitations and re
 
 <!-- -->
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [Additional IBM Cloud configuration parameters](../../installing/installing_ibm_cloud/installation-config-parameters-ibm-cloud-vpc.xml#installation-configuration-parameters-additional-ibm-cloud_installation-config-parameters-ibm-cloud-vpc)
 

@@ -1,6 +1,6 @@
 With the NBDE Tang Server Operator, you can deploy and quickly configure Tang servers. On the deployed Tang servers, you can list existing keys and rotate them.
 
-# Deploying a Tang server using the NBDE Tang Server Operator
+# Deploy a Tang server using the NBDE Tang Server Operator
 
 You can deploy and quickly configure one or more Tang servers using the NBDE Tang Server Operator in the web console.
 
@@ -54,7 +54,7 @@ You can deploy and quickly configure one or more Tang servers using the NBDE Tan
 
 11. After you enter the required values a change settings that differ from the default values in your scenario, click **Create**.
 
-# Rotating keys using the NBDE Tang Server Operator
+# Rotate keys using the NBDE Tang Server Operator
 
 With the NBDE Tang Server Operator, you also can rotate your Tang server keys. The precise interval at which you should rotate them depends on your application, key sizes, and institutional policy.
 
@@ -152,7 +152,7 @@ With the NBDE Tang Server Operator, you also can rotate your Tang server keys. T
     …
     ```
 
-# Deleting hidden keys with the NBDE Tang Server Operator
+# Delete hidden keys with the NBDE Tang Server Operator
 
 After you rotate your Tang server keys, the previously active keys become hidden and are no longer advertised by the Tang instance. You can use the NBDE Tang Server Operator to remove encryption keys no longer used.
 

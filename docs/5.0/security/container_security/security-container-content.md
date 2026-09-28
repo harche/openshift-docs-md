@@ -1,6 +1,6 @@
 To ensure the security of the content inside your containers you need to start with trusted base images, such as Red Hat Universal Base Images, and add trusted software. To check the ongoing security of your container images, there are both Red Hat and third-party tools for scanning images.
 
-# Securing inside the container
+# Secure inside the container
 
 For the security of your containers, you need to know where any source packages originally came from, what versions are used, who built them, and whether there is any malicious code inside them.
 
@@ -20,7 +20,7 @@ By building your containers from Red Hat Universal Base Images (UBI) you are ass
 
 To assure ongoing security of the containers themselves, security scanning features, used directly from RHEL or added to OpenShift Container Platform, can alert you when an image you are using has vulnerabilities. OpenSCAP image scanning is available in RHEL and the Red Hat Quay Container Security Operator can be added to check container images used in OpenShift Container Platform.
 
-# Creating redistributable images with UBI
+# Create redistributable images with UBI
 
 You can typically start with a trusted base image that offers the components that are usually provided by the operating system to create containerized applications. These include the libraries, utilities, and other features the application expects to see in the operating system’s file system.
 
@@ -52,7 +52,7 @@ For the container images that are running in OpenShift Container Platform and ar
 
 Container image scanning for Red Hat Quay is performed by Clair. In Red Hat Quay, Clair can search for and report vulnerabilities in images built from RHEL, CentOS, Oracle, Alpine, Debian, and Ubuntu operating system software.
 
-# Integrating external scanning
+# Integrate external scanning
 
 OpenShift Container Platform makes use of object annotations to extend functionality. You can use external tools, such as vulnerability scanners, to annotate image objects with metadata to summarize results and control pod execution.
 

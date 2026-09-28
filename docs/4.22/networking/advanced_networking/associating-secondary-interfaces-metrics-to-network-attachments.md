@@ -1,6 +1,6 @@
 To gain better visibility into cluster traffic, you can associate secondary interface metrics with specific network attachments. By using the `pod_network_info` metric to label interfaces based on their `NetworkAttachmentDefinition` resource, you can more easily monitor performance and troubleshoot connectivity issues across your network.
 
-# Extending secondary network metrics for monitoring
+# Extend secondary network metrics for monitoring
 
 To monitor and manage network traffic effectively, you can extend secondary network metrics with identifying information. By using the `pod_network_name_info` metric to label interfaces based on their `NetworkAttachmentDefinition` resource, you can classify interface types to enable precise metric aggregation and alerting.
 

@@ -834,7 +834,7 @@ failed to create vm <machine_name>: failure sending request for machine <machine
 
 If the deletion of ultra disks as data disks is not working as expected, the machines are deleted and the data disks are orphaned. You must delete the orphaned disks manually if desired.
 
-# Enabling customer-managed encryption keys for a machine set
+# Enable customer-managed encryption keys for a machine set
 
 To enhance data security, enable customer-managed encryption on Microsoft Azure by adding the disk encryption set ID to your machine set.
 
@@ -944,7 +944,7 @@ For more information about related features and functionality, see the Microsoft
 
 - On the Microsoft Azure portal, review the details for a machine deployed by the machine set and verify that the trusted launch options match the values that you configured.
 
-# Configuring Azure confidential virtual machines by using machine sets
+# Configure Azure confidential virtual machines by using machine sets
 
 You can enable Microsoft Azure confidential virtual machines (VMs) to use memory encryption to improve data confidentiality.
 
@@ -1075,7 +1075,7 @@ You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedN
 
 - [Enabling Accelerated Networking during installation](../../installing/installing_azure/ipi/installing-azure-customizations.xml#machineset-azure-enabling-accelerated-networking-new-install_installing-azure-customizations)
 
-# Configuring Capacity Reservations by using machine sets
+# Configure Capacity Reservations by using machine sets
 
 You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define by using on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
 
@@ -1139,7 +1139,7 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
   In the output, verify that the characteristics of the listed machines match the parameters of your Capacity Reservation.
 
-# Adding a GPU node to an existing OpenShift Container Platform cluster
+# Add a GPU node to an existing OpenShift Container Platform cluster
 
 To provide specialized hardware for compute-intensive workloads that require NVIDIA GPU acceleration, you can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the Microsoft Azure cloud provider.
 
@@ -1572,7 +1572,7 @@ There is no need to specify a namespace for the node. The node definition is clu
 
 </div>
 
-# Deploying the Node Feature Discovery Operator
+# Deploy the Node Feature Discovery Operator
 
 After the GPU-enabled node is created, you need to discover the GPU-enabled node so it can be scheduled. To do this, install the Node Feature Discovery (NFD) Operator.
 

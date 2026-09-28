@@ -6,7 +6,7 @@ A key feature of OpenShift Container Platform and its Kubernetes engine is to be
 
 So, if you are setting out to harden RHCOS nodes in OpenShift Container Platform to meet your security needs, you should consider both what to harden and how to go about doing that hardening.
 
-# Choosing what to harden in RHCOS
+# Choose what to harden in RHCOS
 
 You can review the information on how to approach security for any RHEL system in the Red Hat Enterprise Linux 9 Security Hardening guide.
 
@@ -16,7 +16,7 @@ With the knowledge of what features you want to harden, you can then decide how 
 
 - [Red Hat Enterprise Linux 9 Security Hardening guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#scanning-container-and-container-images-for-vulnerabilities_scanning-the-system-for-security-compliance-and-vulnerabilities)
 
-# Choosing how to harden RHCOS
+# Choose how to harden RHCOS
 
 Direct modification of RHCOS systems in OpenShift Container Platform is discouraged. Instead, you should think of modifying systems in pools of nodes, such as worker nodes and control plane nodes.
 

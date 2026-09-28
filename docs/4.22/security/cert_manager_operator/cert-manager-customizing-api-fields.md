@@ -298,7 +298,7 @@ The following table describes the pod scheduling parameters for the cert-manager
 
 Overridable scheduling parameters for the cert-manager components
 
-# Customizing cert-manager by overriding environment variables from the cert-manager Operator API
+# Customize cert-manager by overriding environment variables from the cert-manager Operator API
 
 To refine your deployment for specific operational requirements, override supported environment variables for the cert-manager Operator for Red Hat OpenShift. You can customize these variables through the Operator API to apply configurations, such as proxy settings or system-level adjustments, that differ from the default values.
 
@@ -392,7 +392,7 @@ You can override the supported environment variables for the cert-manager Operat
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
 
-# Customizing cert-manager by overriding arguments from the cert-manager Operator API
+# Customize cert-manager by overriding arguments from the cert-manager Operator API
 
 You can override the supported arguments for the cert-manager Operator for Red Hat OpenShift by adding a `spec.controllerConfig` section in the `CertManager` resource.
 
@@ -439,7 +439,7 @@ You can override the supported arguments for the cert-manager Operator for Red H
           - '--v=<verbosity_level>'
     ```
 
-    For information about the overridable aruguments, see "Overridable arguments for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
+    For information about the overridable arguments, see "Overridable arguments for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
 
 3.  Save your changes and quit the text editor to apply your changes.
 
@@ -500,7 +500,7 @@ You can override the supported arguments for the cert-manager Operator for Red H
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
 
-# Deleting a TLS secret automatically upon Certificate removal
+# Delete a TLS secret automatically upon Certificate removal
 
 You can enable the `--enable-certificate-owner-ref` flag for the cert-manager Operator for Red Hat OpenShift by adding a `spec.controllerConfig` section in the `CertManager` resource. The `--enable-certificate-owner-ref` flag sets the certificate resource as an owner of the secret where the TLS certificate is stored.
 
@@ -578,7 +578,7 @@ If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certi
         - --enable-certificate-owner-ref
   ```
 
-# Overriding CPU and memory limits for the cert-manager components
+# Override CPU and memory limits for the cert-manager components
 
 To ensure stable resource allocation and operation, configure CPU and memory limits for cert-manager Operator for Red Hat OpenShift components. You can set specific constraints for the cert-manager controller, CA injector, and Webhook to align with your specific cluster requirements.
 
@@ -771,7 +771,7 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
 
-# Configuring scheduling overrides for cert-manager components
+# Configure scheduling overrides for cert-manager components
 
 You can configure the pod scheduling from the cert-manager Operator for Red Hat OpenShift API for the cert-manager Operator for Red Hat OpenShift components, such as the cert-manager controller, CA injector, and Webhook.
 
@@ -870,7 +870,7 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
 
-# Configuring cluster TLS security profile adherence for cert-manager components
+# Configure cluster TLS security profile adherence for cert-manager components
 
 You can configure the cert-manager Operator for Red Hat OpenShift to apply the cluster-wide TLS security profile by setting the TLS adherence policy on the cluster `APIServer` resource. When the adherence policy is set to `StrictAllComponents`, cert-manager components automatically apply the cluster TLS security profile settings.
 
@@ -922,7 +922,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 1.  The cert-manager Operator for Red Hat OpenShift automatically applies the cluster TLS security profile to the cert-manager controller, webhook, and CA injector deployments. Check that the TLS configuration is applied to the cert-manager components. For more information, see "Verifying TLS security profile adherence for cert-manager components".
 
-# Verifying TLS security profile adherence for cert-manager components
+# Verify TLS security profile adherence for cert-manager components
 
 After configuring the cluster TLS security profile adherence, you can verify that the TLS configuration is applied to the cert-manager controller, webhook, and CA injector deployments.
 

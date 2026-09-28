@@ -1,6 +1,6 @@
 To manage SR-IOV network devices and network attachments in your cluster, use the Single Root I/O Virtualization (SR-IOV) Network Operator.
 
-# Configuring the SR-IOV Network Operator
+# Configure the SR-IOV Network Operator
 
 To manage SR-IOV network devices and network attachments in your cluster, configure the Single Root I/O Virtualization (SR-IOV) Network Operator.
 
@@ -175,7 +175,7 @@ spec:
 # ...
 ```
 
-# Disabling or enabling the Network Resources Injector
+# Disable or enable the Network Resources Injector
 
 To control the automatic configuration of your cluster workloads, enable or disable the Network Resources Injector.
 
@@ -249,7 +249,7 @@ operator-webhook-rpfrl                    1/1     Running   0          16m
 
 - [Configuring the SR-IOV Network Operator to use an unsupported NIC](https://access.redhat.com/articles/7010183)
 
-# Disabling or enabling the SR-IOV Network Operator admission controller webhook
+# Disable or enable the SR-IOV Network Operator admission controller webhook
 
 To manage validation of your network configurations, enable or disable the SR-IOV Network Operator admission controller webhook.
 
@@ -286,7 +286,7 @@ To manage validation of your network configurations, enable or disable the SR-IO
 
   </div>
 
-# Configuring a custom NodeSelector for the SR-IOV Network Config daemon
+# Configure a custom NodeSelector for the SR-IOV Network Config daemon
 
 The SR-IOV Network Config daemon discovers and configures the SR-IOV network devices on cluster nodes. By default, the daemon is deployed to all the compute nodes in the cluster. You can use node labels to specify on which nodes the SR-IOV Network Config daemon runs.
 
@@ -328,7 +328,7 @@ When you update the `configDaemonNodeSelector` field, the SR-IOV Network Config 
 
   </div>
 
-# Configuring the SR-IOV Network Operator for single node installations
+# Configure the SR-IOV Network Operator for single node installations
 
 By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that no workloads are using the virtual functions before the reconfiguration. As a result, you must configure the Operator to not drain workloads from the single node.
 
@@ -373,7 +373,7 @@ After performing the following procedure to disable draining workloads, you must
 
   </div>
 
-## Deploying the SR-IOV Operator for hosted control planes
+## Deploy the SR-IOV Operator for hosted control planes
 
 After you configure and deploy your hosting service cluster, you can create a subscription to the SR-IOV Operator on a hosted cluster. The SR-IOV pod runs on worker machines rather than the control plane.
 
@@ -474,7 +474,7 @@ You can also combine these queries by using the `kube-state-metrics` tool to get
 (sriov_vf_tx_packets * on (pciAddr,node)  group_left(pod,namespace)  sriov_kubepoddevice) * on (pod,namespace) group_left (label_app_kubernetes_io_name) kube_pod_labels
 ```
 
-## Enabling the SR-IOV network metrics exporter
+## Enable the SR-IOV network metrics exporter
 
 To enable the SR-IOV network metrics exporter, set the `spec.featureGates.metricsExporter` field to `true`. Because the exporter is disabled by default, you must explicitly enable the SR-IOV network metrics exporter.
 

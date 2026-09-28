@@ -23,7 +23,7 @@ data:
 
 - [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
 
-# Managing proxy certificates during installation
+# Manage proxy certificates during installation
 
 Configure proxy-trusted CA certificates during OpenShift Container Platform installation using the `additionalTrustBundle` value in the installation program configuration.
 

@@ -225,7 +225,7 @@ where:
 `network_name`
 Optional parameter. If set, must match the `network_name` of `NetworkAttachmentDefinition 1`.
 
-## Creating a whereabouts-reconciler daemon set
+## Create a whereabouts-reconciler daemon set
 
 The Whereabouts reconciler is responsible for managing dynamic IP address assignments for the pods within a cluster by using the Whereabouts IP Address Management (IPAM) solution. The Whereabouts reconciler ensures that each pod gets a unique IP address from the specified IP address range. The Whereabouts reconciler also handles IP address releases when pods are deleted or scaled down.
 
@@ -284,7 +284,7 @@ To trigger the deployment of the `whereabouts-reconciler` daemon set, you must m
     daemonset.apps/whereabouts-reconciler 6 6 6 6 6 kubernetes.io/os=linux 6s
     ```
 
-## Configuring the Whereabouts IP reconciler schedule
+## Configure the Whereabouts IP reconciler schedule
 
 The Whereabouts IPAM CNI plugin runs the IP address reconciler daily. This process cleans up any stranded IP address allocations that might result in exhausting IP addresses and therefore prevent new pods from getting a stranded IP address allocated to them.
 
@@ -537,7 +537,7 @@ The Fast IPAM feature uses `nodeslicepools`, which are managed by the Whereabout
     wb-ipam-cni-name   32m
     ```
 
-## Creating a configuration for assignment of dual-stack IP addresses dynamically
+## Create a configuration for assignment of dual-stack IP addresses dynamically
 
 You can dynamically assign dual-stack IP addresses to a secondary network so that pods can communicate over both IPv4 and IPv6 addresses.
 

@@ -4,7 +4,7 @@ Red Hat delivers signatures for the images in the Red Hat Container Registries. 
 
 To verify the integrity of those images between Red Hat registries and your infrastructure, enable signature verification.
 
-# Enabling signature verification for Red Hat Container Registries
+# Enable signature verification for Red Hat Container Registries
 
 To verify the integrity of the images in the Red Hat Container Registries, you can enable container signature validation for Red Hat Container Registries by writing a signature verification policy file specifying the keys to verify images from these registries.
 
@@ -174,7 +174,7 @@ For RHEL8 nodes, the registries are already defined in `/etc/containers/registri
 
     5.  Exit the debug session.
 
-# Verifying the signature verification configuration
+# Verify the signature verification configuration
 
 After you apply the machine configs to the cluster, you can verify that the Machine Config Controller detected the new `MachineConfig` object and generated a new `rendered-worker-<hash>` version.
 
@@ -437,7 +437,7 @@ After you apply the machine configs to the cluster, you can verify that the Mach
              sigstore: https://access.redhat.com/webassets/docker/content/sigstore
     ```
 
-# Understanding the verification of container images lacking verifiable signatures
+# Understand the verification of container images lacking verifiable signatures
 
 Each OpenShift Container Platform release image is immutable and signed with a Red Hat production key. During cluster update or installation, a release image might deploy container images without a verifiable signature. The signature on the release image validates all release contents transitively.
 
@@ -462,7 +462,7 @@ Verification of signatures is automatic. The OpenShift Cluster Version Operator 
 
 Verification of signatures can also be done manually using the `skopeo` command-line utility.
 
-## Using skopeo to verify signatures of Red Hat container images
+## Use skopeo to verify signatures of Red Hat container images
 
 You can verify the signatures for container images included in an OpenShift Container Platform release image by pulling those signatures from the OpenShift Container Platform release mirror site.
 

@@ -1,6 +1,6 @@
 You can use a variety of techniques to make sure that the containers you deploy hold the latest production-quality content and that they have not been tampered with, such as setting up build triggers and using signatures.
 
-# Controlling container deployments with triggers
+# Control container deployments with triggers
 
 If something happens during the build process, or if a vulnerability is discovered after an image has been deployed, you can use tool for automated, policy-based deployment to remediate. You can use triggers to rebuild and replace images, ensuring the immutable containers process, instead of patching running containers, which is not recommended.
 
@@ -18,7 +18,7 @@ $ oc set triggers deploy/deployment-example \
     --containers=web
 ```
 
-# Controlling what image sources can be deployed
+# Control what image sources can be deployed
 
 OpenShift Container Platform enables cluster administrators to apply security policy that is broad or narrow, reflecting deployment environment and security requirements.
 
@@ -80,7 +80,7 @@ The policy can be saved onto a node as `/etc/containers/policy.json`. Saving thi
 
 - Reject all other registries not specified by the global `default` definition.
 
-# Using signature transports
+# Use signature transports
 
 You can use a signature transport as a way to store and retrieve the binary signature blob.
 
@@ -110,7 +110,7 @@ docker:
 
 In this example, the Red Hat Registry, `access.redhat.com`, is the signature server that provides signatures for the `docker` transport type. Its URI is defined in the `sigstore` parameter. You might name this file `/etc/containers/registries.d/redhat.com.yaml` and use the Machine Config Operator to automatically place the file on each node in your cluster. No service restart is required since policy and `registries.d` files are dynamically loaded by the container runtime.
 
-# Creating secrets and config maps
+# Create secrets and config maps
 
 You can use the `Secret` object type to provide a mechanism to hold sensitive information such as passwords, OpenShift Container Platform client configuration files, `dockercfg` files, and private source repository credentials. Secrets decouple sensitive content from pods.
 
@@ -128,7 +128,7 @@ For example, to add a secret to your deployment so that it can access a private 
 
 4.  When creating a deployment (for example, from the **Add to Project** → **Deploy Image** page), set the `Pull Secret` to your new secret.
 
-# Automating continuous deployment
+# Automate continuous deployment
 
 You can integrate your own continuous deployment (CD) tooling with OpenShift Container Platform.
 

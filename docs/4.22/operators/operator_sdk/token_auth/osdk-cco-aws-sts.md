@@ -34,7 +34,7 @@ Your code should check for secrets that never appear and warn users to follow th
 
 - [Installing from OperatorHub using the CLI](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-operator-from-software-catalog-using-cli_olm-adding-operators-to-a-cluster)
 
-# Enabling Operators to support CCO-based workflows with AWS STS
+# Enable Operators to support CCO-based workflows with AWS STS
 
 As an Operator author designing your project to run on Operator Lifecycle Manager (OLM), you can enable your Operator to authenticate against AWS on STS-enabled OpenShift Container Platform clusters by customizing your project to support the Cloud Credential Operator (CCO).
 

@@ -217,7 +217,7 @@ Engineering considerations
 
 - In OpenShift Container Platform 4.17 and later, pulling OpenShift images from a disconnected mirror registry requires copying the image signatures into that registry during the mirroring process. The `oc adm mirror` command does not mirror signatures and must not be used. Instead, use the `oc mirror` plugin v2 to ensure signatures are properly mirrored.
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [Installing a cluster in a disconnected environment](../disconnected/installing.xml#installing-disconnected-environments)
 

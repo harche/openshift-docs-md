@@ -8,7 +8,7 @@ If both the run-once pod and the Run Once Duration Override Operator have their 
 
 </div>
 
-# Installing the Run Once Duration Override Operator
+# Install the Run Once Duration Override Operator
 
 Install the Run Once Duration Override Operator by using the web console to create the required namespace, install the Operator from the software catalog, and create a `RunOnceDurationOverride` instance.
 
@@ -84,7 +84,7 @@ Install the Run Once Duration Override Operator by using the web console to crea
     runoncedurationoverride-tdsqk                          1/1     Running   0          41s
     ```
 
-# Enabling the run-once duration override on a namespace
+# Enable the run-once duration override on a namespace
 
 Enable the run-once duration override on a namespace by adding the `runoncedurationoverrides.admission.runoncedurationoverride.openshift.io/enabled=true` label to the namespace.
 
@@ -157,7 +157,7 @@ Enable the run-once duration override on a namespace by adding the `runoncedurat
         activeDeadlineSeconds: 3600
     ```
 
-# Updating the run-once active deadline override value
+# Update the run-once active deadline override value
 
 Update the `activeDeadlineSeconds` field in the `RunOnceDurationOverride` resource to customize the override value that the operator applies to run-once pods.
 

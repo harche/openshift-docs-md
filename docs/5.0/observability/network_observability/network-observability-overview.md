@@ -4,7 +4,7 @@ You can view and analyze this stored information in the OpenShift Container Plat
 
 # Network Observability Operator
 
-The Network Observability Operator provides the cluster-scoped `FlowCollector` API custom resource, which manages a pipeline of eBPF agents and services that collect, enrich, and store network flows in Loki or Prometheus.
+The Network Observability Operator monitors and analyzes cluster network traffic by deploying eBPF-based flow collection that captures, enriches, and stores network data for troubleshooting and performance analysis.
 
 A `FlowCollector` instance deploys pods and services that form a monitoring pipeline.
 
@@ -34,7 +34,7 @@ If you choose to use Kafka, it is recommended to use Red Hat supported AMQ Strea
 
 # OpenShift Container Platform console integration
 
-The Network Observability Operator integrates with the OpenShift Container Platform console, providing an overview, topology view, and traffic flow tables.
+The Network Observability Operator integrates with the OpenShift Container Platform console to visualize and analyze network traffic through views that display traffic overviews, topology graphs, and detailed flow tables for troubleshooting connectivity issues.
 
 The Network observability metrics dashboards in **Observe** → **Dashboards** are available only to users with administrator access.
 
@@ -48,7 +48,7 @@ To enable multi-tenancy for developer access and for administrators with limited
 
 ## Network observability metrics dashboards
 
-Review the network observability metrics dashboards in the OpenShift Container Platform console, which provide overall traffic flow aggregation, filtering options, and dedicated dashboards for monitoring operator health.
+The network observability dashboards in the OpenShift Container Platform console provide cluster traffic pattern monitoring, metric filtering, and Network Observability Operator health tracking.
 
 In the OpenShift Container Platform console on the **Overview** tab, you can view the overall aggregated metrics of the network traffic flow on the cluster. You can choose to display the information by cluster, node, namespace, owner, pod, and service. Filters and display options can further refine the metrics. For more information, see "Observing the network traffic from the Overview view".
 
@@ -68,7 +68,7 @@ The OpenShift Container Platform console offers the **Topology** tab which repre
 
 ## Traffic flow tables
 
-The **Traffic flow** tables in the OpenShift Container Platform web console provide a detailed view of raw network flows, offering powerful filtering options and configurable columns for in-depth analysis.
+The **Traffic flow** tables in the OpenShift Container Platform console provide detailed network flow data with filtering options, customizable columns, and tools to analyze connection patterns and troubleshoot issues.
 
 The **Traffic flows** tab in the OpenShift Container Platform web console displays the data of the network flows and the amount of traffic.
 

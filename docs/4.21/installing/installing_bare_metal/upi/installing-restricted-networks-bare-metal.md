@@ -1683,7 +1683,7 @@ The installation program converts the installation configuration into Kubernetes
 
 - See [Recovering from expired control plane certificates](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs) for more information about recovering kubelet certificates.
 
-# Configuring chrony time service
+# Configure chrony time service
 
 You must set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
 

@@ -10,13 +10,13 @@ You must perform the rekeying operation for every node before you can delete the
 
 The following sections provide procedures for rekeying and deleting old keys.
 
-# Backing up keys for a Tang server
+# Back up keys for a Tang server
 
 The Tang server uses `/usr/libexec/tangd-keygen` to generate new keys and stores them in the `/var/db/tang` directory by default. To recover the Tang server in the event of a failure, back up this directory. The keys are sensitive and because they are able to perform the boot disk decryption of all hosts that have used them, the keys must be protected accordingly.
 
 - Copy the backup key from the `/var/db/tang` directory to the temp directory from which you can restore the key.
 
-# Recovering keys for a Tang server
+# Recover keys for a Tang server
 
 You can recover the keys for a Tang server by accessing the keys from a backup.
 
@@ -24,7 +24,7 @@ You can recover the keys for a Tang server by accessing the keys from a backup.
 
   When the Tang server starts up, it advertises and uses these restored keys.
 
-# Rekeying Tang servers
+# Rekey Tang servers
 
 This procedure uses a set of three Tang servers, each with unique keys, as an example.
 
@@ -51,7 +51,7 @@ Rekeying a Tang server, and all associated NBDE-encrypted nodes, is a three-step
 <figcaption>Example workflow for rekeying a Tang server</figcaption>
 </figure>
 
-## Generating a new Tang server key
+## Generate a new Tang server key
 
 - A root shell on the Linux machine running the Tang server.
 
@@ -177,7 +177,7 @@ Rekeying a Tang server, and all associated NBDE-encrypted nodes, is a three-step
     # clevis decrypt </tmp/encrypted.oldkey
     ```
 
-## Rekeying all NBDE nodes
+## Rekey all NBDE nodes
 
 You can rekey all of the nodes on a remote cluster by using a `DaemonSet` object without incurring any downtime to the remote cluster.
 
@@ -329,7 +329,7 @@ If you use ACM policies to distribute the daemon sets to multiple clusters, you 
 
 </div>
 
-## Troubleshooting temporary rekeying errors for Tang servers
+## Troubleshoot temporary rekeying errors for Tang servers
 
 To determine if the error condition from rekeying the Tang servers is temporary, perform the following procedure. Temporary error conditions might include:
 
@@ -343,7 +343,7 @@ Generally, when these types of temporary error conditions occur, you can wait un
 
 2.  If any of the associated Tang servers are unavailable, try rekeying until all the servers are back online.
 
-## Troubleshooting permanent rekeying errors for Tang servers
+## Troubleshoot permanent rekeying errors for Tang servers
 
 If, after rekeying the Tang servers, the `READY` count does not equal the `DESIRED` count after an extended period of time, it might indicate a permanent failure condition. In this case, the following conditions might apply:
 
@@ -462,7 +462,7 @@ Check the logs from each pod in the daemon set to determine whether the rekeying
     Pin applied successfully
     ```
 
-# Deleting old Tang server keys
+# Delete old Tang server keys
 
 - A root shell on the Linux machine running the Tang server.
 

@@ -20,7 +20,7 @@ If you use GitLab version 7.7.0 to 11.0, you connect using OAuth integration. If
 
 - [OpenID Connect](https://docs.gitlab.com/ce/integration/openid_connect_provider.html)
 
-# Creating the secret
+# Create the secret
 
 Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
 
@@ -49,7 +49,7 @@ Create a `Secret` object in the `openshift-config` namespace to store the client
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
-# Creating a ConfigMap
+# Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
 
@@ -119,7 +119,7 @@ Specifies a reference to an OpenShift Container Platform `ConfigMap` object cont
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
-# Adding an identity provider to your cluster
+# Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
 

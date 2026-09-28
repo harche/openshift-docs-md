@@ -14,7 +14,7 @@ You can use the `must-gather` tool to collect data about the Custom Metrics Auto
 
 - The Custom Metric Autoscaler Operator CRD objects.
 
-# Gathering debugging data
+# Gather debugging data
 
 The following command runs the `must-gather` tool for the Custom Metrics Autoscaler Operator:
 

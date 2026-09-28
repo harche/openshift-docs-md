@@ -92,7 +92,7 @@ Optional: Specifies the capabilities to configure for this additional network. Y
 
 - [Checking SR-IOV Network Operator status with Ready conditions](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-monitoring-conditions-proc_configuring-sriov-operator)
 
-## Creating a configuration for assignment of dual-stack IP addresses dynamically
+## Create a configuration for assignment of dual-stack IP addresses dynamically
 
 You can dynamically assign dual-stack IP addresses to a secondary network so that pods can communicate over both IPv4 and IPv6 addresses.
 
@@ -363,7 +363,7 @@ where:
 `network_name`
 Optional parameter. If set, must match the `network_name` of `NetworkAttachmentDefinition 1`.
 
-# Configuring SR-IOV additional network
+# Configure SR-IOV additional network
 
 You can configure an additional network that uses SR-IOV hardware by creating an `SriovNetwork` object. When you create an `SriovNetwork` object, the SR-IOV Network Operator automatically creates a `NetworkAttachmentDefinition` object.
 
@@ -567,7 +567,7 @@ Optional parameter. The MAC address for the SR-IOV device that is allocated from
 `k8s.v1.cni.cncf.io/networks.ips`
 Optional parameter. IP addresses for the SR-IOV device that is allocated from the resource type defined in the SR-IOV network attachment definition CR. Both IPv4 and IPv6 addresses are supported. To use this feature, you also must specify `{ "ips": true }` in the `SriovNetwork` object. Example value is `192.168.10.1/24", "2001::1/64`.
 
-# Adding a pod to a secondary network
+# Add a pod to a secondary network
 
 To enable a pod to use additional network interfaces in OpenShift Container Platform, you can attach the pod to a secondary network. The pod continues to send normal cluster-related network traffic over the default network.
 
@@ -674,7 +674,7 @@ The pod must be in the same namespace as the secondary network.
     `k8s.v1.cni.cncf.io/network-status`
     Specifies a JSON array of objects. Each object describes the status of a secondary network attached to the pod. The annotation value is stored as a plain text value.
 
-## Exposing MTU for vfio-pci SR-IOV devices to pod
+## Expose MTU for vfio-pci SR-IOV devices to pod
 
 After adding a pod to an additional network, you can check that the MTU is available for the SR-IOV network.
 
@@ -1008,7 +1008,7 @@ If you already configured a value for the `mtu` field in your `SriovNetworkNodeP
 
     The example output confirms that the VF MTU matches the value set by the pod startup command. The SR-IOV Network Operator preserves this value because the `SriovNetworkNodePolicy` CR delegates MTU management to the pod.
 
-# Configuring parallel node draining during SR-IOV network policy updates
+# Configure parallel node draining during SR-IOV network policy updates
 
 By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action, one node at a time, to ensure that the reconfiguration does not impact workloads.
 

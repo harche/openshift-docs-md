@@ -597,7 +597,7 @@ You can save on costs by creating a compute machine set that deploys machines as
 
   </div>
 
-# Configuring Capacity Reservations by using machine sets
+# Configure Capacity Reservations by using machine sets
 
 You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define by using Capacity Reservations on Amazon Web Services clusters, including On-Demand Capacity Reservations and Capacity Blocks for ML.
 
@@ -668,7 +668,7 @@ For more information, including limitations and suggested use cases for this Ama
 
   In the output, verify that the characteristics of the listed machines match the parameters of your Capacity Reservation.
 
-# Adding a GPU node to an existing OpenShift Container Platform cluster
+# Add a GPU node to an existing OpenShift Container Platform cluster
 
 You can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the AWS EC2 cloud provider.
 
@@ -858,7 +858,7 @@ For more information about the supported instance types, see the following NVIDI
 
 Note that there is no need to specify a namespace for the node. The node definition is cluster scoped.
 
-# Deploying the Node Feature Discovery Operator
+# Deploy the Node Feature Discovery Operator
 
 After the GPU-enabled node is created, you need to discover the GPU-enabled node so it can be scheduled. To do this, install the Node Feature Discovery (NFD) Operator.
 

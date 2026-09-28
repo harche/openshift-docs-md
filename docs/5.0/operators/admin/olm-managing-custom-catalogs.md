@@ -202,7 +202,7 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
 
 - [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 ## Updating or filtering a file-based catalog image
 
@@ -356,7 +356,7 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
 
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
-- [Mirroring an image set to a mirror registry](../../disconnected/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
+- [Mirroring an image set to a mirror registry](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)
 

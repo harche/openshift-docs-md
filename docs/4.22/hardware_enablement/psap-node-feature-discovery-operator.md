@@ -6,7 +6,7 @@ You can use the Node Feature Discovery Operator (NFD) to detect hardware feature
 
 The NFD Operator can be found on the OperatorHub by searching for “Node Feature Discovery”.
 
-# Installing the Node Feature Discovery Operator
+# Install the Node Feature Discovery Operator
 
 As a cluster administrator, you can install the NFD Operator by using the OpenShift Container Platform CLI or the web console. The Node Feature Discovery (NFD) Operator orchestrates all resources needed to run the NFD daemon set.
 
@@ -151,7 +151,7 @@ Starting with version 4.12, the `operand.image` field in the `NodeFeatureDiscove
 
 </div>
 
-## Creating a NodeFeatureDiscovery CR by using the CLI
+## Create a NodeFeatureDiscovery CR by using the CLI
 
 Create a `NodeFeatureDiscovery` CR instance by using the OpenShift CLI (`oc`) to deploy the NFD operand and enable hardware feature detection on your cluster nodes.
 
@@ -478,7 +478,7 @@ Create a `NodeFeatureDiscovery` CR instance in a disconnected environment by usi
     $ oc get pods -n <nfd_namespace>
     ```
 
-## Creating a NodeFeatureDiscovery CR by using the web console
+## Create a NodeFeatureDiscovery CR by using the web console
 
 Create a `NodeFeatureDiscovery` CR by using the OpenShift Container Platform web console to deploy the NFD operand and enable hardware feature detection on your cluster nodes.
 
@@ -901,7 +901,7 @@ Create a `NodeFeatureRule` object to apply custom labels to nodes based on detec
 
     </div>
 
-# Using the NFD Topology Updater
+# Use the NFD Topology Updater
 
 Enable the NFD Topology Updater to detect allocated resources on worker nodes and report per-zone resource availability. This information helps the scheduler make topology-aware placement decisions for workloads that require specific NUMA node configurations.
 

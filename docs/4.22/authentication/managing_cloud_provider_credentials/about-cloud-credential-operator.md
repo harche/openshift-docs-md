@@ -35,7 +35,7 @@ CCO mode support matrix
 
 1.  This platform uses the `ccoctl` utility during installation to configure long-term credentials.
 
-# Determining the Cloud Credential Operator mode
+# Determine the Cloud Credential Operator mode
 
 For platforms that support using the CCO in multiple modes, you can determine what mode the CCO is configured to use by using the web console or the CLI.
 
@@ -44,7 +44,7 @@ For platforms that support using the CCO in multiple modes, you can determine wh
 <figcaption>Determining the CCO configuration</figcaption>
 </figure>
 
-## Determining the Cloud Credential Operator mode by using the web console
+## Determine the Cloud Credential Operator mode by using the web console
 
 You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
 
@@ -144,7 +144,7 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
         - An empty value (`''`) indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
 
-## Determining the Cloud Credential Operator mode by using the CLI
+## Determine the Cloud Credential Operator mode by using the CLI
 
 You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
 

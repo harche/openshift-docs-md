@@ -4,7 +4,7 @@ You can configure API requests to impersonate users or groups to test permission
 
 You can configure API requests in OpenShift Container Platform to act as another user. Impersonation allows you to perform actions on behalf of another account without switching credentials.
 
-# Impersonating the system:admin user
+# Impersonate the system:admin user
 
 You can use the OpenShift Console to impersonate a user and select multiple group memberships at the same time to reproduce that user’s effective permissions.
 
@@ -35,7 +35,7 @@ You can use the OpenShift Console to impersonate a user and select multiple grou
 
   </div>
 
-# Impersonating the system:admin group
+# Impersonate the system:admin group
 
 To impersonate a user who has cluster administration privileges through group membership, you must specify both the user and the associated groups in the impersonation command.
 
@@ -46,7 +46,7 @@ To impersonate a user who has cluster administration privileges through group me
   --as-group=<group1> --as-group=<group2>
   ```
 
-# Impersonating a user with multiple group memberships in the web console
+# Impersonate a user with multiple group memberships in the web console
 
 You can start user impersonation from multiple locations in the OpenShift Container Platform Console. Depending on where you start, you can impersonate a single user, a single group, or a user with one or more group memberships.
 
@@ -76,7 +76,7 @@ You can start user impersonation from multiple locations in the OpenShift Contai
 
     </div>
 
-# Starting impersonation from the Users or Groups pages
+# Start impersonation from the Users or Groups pages
 
 You can start impersonation for users or groups from the **Users** or **Groups** pages in the OpenShift Container Platform Console.
 
@@ -86,7 +86,7 @@ You can start impersonation for users or groups from the **Users** or **Groups**
 
 3.  Optional: To impersonate a group, click **User Management** → **Groups**, click the menu for that group, and select **Impersonate Group**.
 
-# Stopping impersonation
+# Stop impersonation
 
 You can stop impersonating a user or group at any time from the OpenShift Container Platform Console.
 
@@ -94,7 +94,7 @@ You can stop impersonating a user or group at any time from the OpenShift Contai
 
 2.  Alternatively, click your user name and select **Stop impersonating**.
 
-# Adding unauthenticated groups to cluster roles
+# Add unauthenticated groups to cluster roles
 
 Grant unauthenticated users access to specific cluster roles to enable features that require cluster access without authentication, such as external webhooks or automated token management.
 

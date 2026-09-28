@@ -4,7 +4,7 @@ You can configure the Network Observability Operator to collect and enrich netwo
 
 - Access to an OpenShift Container Platform cluster with an additional network interface, such as a secondary interface or an L2 network.
 
-# Configuring monitoring for SR-IOV interface traffic
+# Configure monitoring for SR-IOV interface traffic
 
 Configure the `FlowCollector` resource to monitor traffic on Single Root I/O Virtualization (SR-IOV) device by setting the `spec.agent.ebpf.privileged` field to `true`, which enables the eBPF agent to monitor other network namespaces.
 
@@ -46,7 +46,7 @@ The eBPF agent monitors other network namespaces in addition to the host network
 
 - [Configuring an SR-IOV network device](../../networking/hardware_networks/configuring-sriov-device.xml#cnf-creating-an-additional-sriov-network-with-vrf-plug-in_configuring-sriov-device)
 
-# Configuring virtual machine (VM) secondary network interfaces for Network Observability
+# Configure virtual machine (VM) secondary network interfaces for Network Observability
 
 Configure the `FlowCollector` to monitor VM secondary network traffic by setting the eBPF agent to `privileged` mode and defining the indexing for secondary networks, enabling the capture and enrichment of flows from OpenShift Virtualization.
 

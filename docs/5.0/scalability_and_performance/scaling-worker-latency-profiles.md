@@ -104,7 +104,7 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 </div>
 
-# Implementing worker latency profiles at cluster creation
+# Implement worker latency profiles at cluster creation
 
 During cluster creation, you can implement worker latency profiles so that you can control the reaction of the cluster to latency issues without relying on manual methods to determine the best values.
 
@@ -152,7 +152,7 @@ To edit the configuration of the installation program, first use the command `op
   # ...
   ```
 
-# Using and changing worker latency profiles
+# Use and change worker latency profiles
 
 You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. With this configuration, you can ensure that your cluster runs properly if network latency between the control plane and the compute nodes fluctuates.
 
@@ -297,7 +297,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
   To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
 
-# Displaying resulting values of worker latency profile
+# Display resulting values of worker latency profile
 
 You can run specific commands to display the values for the worker latency profile. You can then check the displayed values for information accuracy.
 

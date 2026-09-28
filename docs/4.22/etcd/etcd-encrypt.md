@@ -42,7 +42,7 @@ Uses AES-GCM with a random nonce and a 32-byte key to perform the encryption.
 
 The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
 
-# Enabling etcd encryption
+# Enable etcd encryption
 
 Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
@@ -135,7 +135,7 @@ To migrate your etcd database from one encryption type to the other, you can mod
 
   If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-# Disabling etcd encryption
+# Disable etcd encryption
 
 Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 

@@ -203,7 +203,7 @@ RAN DU clusters are typically deployed in disconnected environments without dire
 
 In OpenShift Container Platform 4.17 and later, pulling OpenShift images from a disconnected mirror registry requires copying the image signatures into that registry during the mirroring process. The `oc adm mirror` command does not mirror signatures and must not be used. Instead, use the `oc mirror` plugin v2 to ensure signatures are properly mirrored.
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 # Telco RAN DU application workloads
 
@@ -1105,10 +1105,10 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     $ podman login registry.redhat.io
     ```
 
-2.  Extract the content from the `ztp-site-generate-rhel8` container image by running the following commands::
+2.  Extract the content from the `ztp-site-generate-rhel9` container image by running the following commands::
 
     ``` terminal
-    $ podman pull registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17
+    $ podman pull registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17
     ```
 
     ``` terminal
@@ -1116,7 +1116,7 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     ```
 
     ``` terminal
-    $ podman run --log-driver=none --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 extract /home/ztp --tar | tar x -C ./out
+    $ podman run --log-driver=none --rm registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17 extract /home/ztp --tar | tar x -C ./out
     ```
 
 3.  Compare the configuration for your cluster to the reference configuration by running the following command:

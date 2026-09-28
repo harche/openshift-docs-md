@@ -60,7 +60,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 The Security Support Provider Interface (SSPI) enables the OpenShift CLI (`oc`) to support SSO flows on Microsoft Windows. If you use the request header identity provider with a GSSAPI-enabled proxy to connect an Active Directory server to OpenShift Container Platform, users can automatically authenticate to OpenShift Container Platform by using the `oc` command line interface from a domain-joined Microsoft Windows computer.
 
-# Creating a ConfigMap
+# Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
 
@@ -157,7 +157,7 @@ Specifies header names to check, in order, for a preferred username, if differen
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
-# Adding an identity provider to your cluster
+# Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
 
@@ -221,7 +221,7 @@ The `https://<namespace_route>` address is the route to the OAuth server and can
 
 </div>
 
-# Configuring Apache authentication using the request header
+# Configure Apache authentication using the request header
 
 Configure an Apache authentication proxy with the `mod_auth_gssapi` module for the request header identity provider. Use this example to set up a proxy that validates users and forwards trusted identity headers to OpenShift Container Platform.
 

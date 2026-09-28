@@ -2,29 +2,29 @@ You can manage network security at several levels, such as by using network name
 
 At the pod level, network namespaces can prevent containers from seeing other pods or the host system by restricting network access. Network policies give you control over allowing and rejecting connections. You can manage ingress and egress traffic to and from your containerized applications.
 
-# Using network namespaces
+# Use network namespaces
 
 You can use software-defined networking (SDN) in OpenShift Container Platform to give a unified cluster network that enables communication between containers across the cluster.
 
 Network policy mode, by default, makes all pods in a project accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create `NetworkPolicy` objects in that project to indicate the allowed incoming connections. Using multitenant mode, you can provide project-level isolation for pods and services.
 
-# Isolating pods with network policies
+# Isolate pods with network policies
 
 Using *network policies*, you can isolate pods from each other in the same project. Network policies can deny all network access to a pod, only allow connections for the Ingress Controller, reject connections from pods in other projects, or set similar rules for how networks behave.
 
 - [About network policy](../../networking/network_security/network_policy/about-network-policy.xml#about-network-policy)
 
-# Using multiple pod networks
+# Use multiple pod networks
 
 Each running container has only one network interface by default. You can use the Multus CNI plugin to create multiple CNI networks, and then attach any of those networks to a pod. In that way, you can do things such as separate private data onto a more restricted network and have multiple network interfaces on each node.
 
 - [Using multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)
 
-# Isolating applications
+# Isolate applications
 
 You can segment network traffic on a single cluster to make multitenant clusters that isolate users, teams, applications, and environments from non-global resources.
 
-# Securing ingress traffic
+# Secure ingress traffic
 
 There are many security implications related to how you configure access to your Kubernetes services from outside of your OpenShift Container Platform cluster.
 
@@ -32,7 +32,7 @@ In addition to exposing HTTP and HTTPS routes, ingress routing allows you to set
 
 - [Configuring ingress cluster traffic](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#configuring-ingress-cluster-traffic-ingress-controller)
 
-# Securing egress traffic
+# Secure egress traffic
 
 A cluster administrator can control egress traffic by using either a router or firewall method. For example, you can use the IP allow list to control database access. A cluster administrator can assign one or more egress IP addresses to a project by configuring an egress IP address.
 

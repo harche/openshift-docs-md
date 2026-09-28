@@ -54,7 +54,7 @@ Before you configure hardware offloading, ensure that the following conditions a
 
 - [OVN-Kubernetes network plugin configuration](../../networking/networking_operators/cluster-network-operator.xml#gatewayConfig-object_cluster-network-operator)
 
-# Setting the SR-IOV Network Operator into systemd mode
+# Set the SR-IOV Network Operator into systemd mode
 
 To support hardware offloading, you must first set the SR-IOV Network Operator into `systemd` mode.
 
@@ -89,7 +89,7 @@ To support hardware offloading, you must first set the SR-IOV Network Operator i
         $ oc apply -f sriovOperatorConfig.yaml
         ```
 
-# Configuring a machine config pool for hardware offloading
+# Configure a machine config pool for hardware offloading
 
 To enable hardware offloading, you now create a dedicated machine config pool and configure it to work with the SR-IOV Network Operator.
 
@@ -175,7 +175,7 @@ To enable hardware offloading, you now create a dedicated machine config pool an
 
         </div>
 
-# Configuring the SR-IOV network node policy
+# Configure the SR-IOV network node policy
 
 You can create an SR-IOV network device configuration for a node by creating an SR-IOV network node policy. To enable hardware offloading, you must define the `.spec.eSwitchMode` field with the value `"switchdev"`.
 
@@ -254,7 +254,7 @@ spec:
   resourceName: ${name}
 ```
 
-# Improving network traffic performance using a virtual function
+# Improve network traffic performance using a virtual function
 
 Follow this procedure to assign a virtual function to the OVN-Kubernetes management port and increase its network traffic performance.
 
@@ -368,7 +368,7 @@ This procedure results in the creation of two pools: the first has a virtual fun
 
 - [SR-IOV network node configuration object](../../networking/hardware_networks/configuring-sriov-device.xml#nw-sriov-networknodepolicy-object_configuring-sriov-device)
 
-# Creating a network attachment definition
+# Create a network attachment definition
 
 After you define the machine config pool and the SR-IOV network node policy, you can create a network attachment definition for the network interface controller (NIC) you specified.
 
@@ -410,7 +410,7 @@ After you define the machine config pool and the SR-IOV network node policy, you
 
   The output shows the namespace, name, and age of the new definition.
 
-# Adding the network attachment definition to your pods
+# Add the network attachment definition to your pods
 
 After you create the machine config pool, the `SriovNetworkPoolConfig` and `SriovNetworkNodePolicy` custom resources, and the network attachment definition, you can apply these configurations to your pods by adding the network attachment definition to your pod specifications.
 

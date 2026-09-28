@@ -254,8 +254,6 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
 # Additional resources
 
-- [Installing a cluster for OpenShift Virtualization using the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-ove.xml#installing-ove)
-
 - [Installing with the virtualization operator bundle (Assisted Installer)](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/customizing-with-bundles-and-operators#openshift-virtualization-operator_customizing-with-bundles-and-operators)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)

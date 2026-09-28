@@ -382,7 +382,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - [Virtual machine sizes (Microsoft Azure documentation)](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#virtual-machines-sizes)
 
-## Enabling confidential VMs
+## Enable confidential VMs
 
 To enable confidential VMs on Azure for your OpenShift Container Platform cluster, you can configure the `install-config.yaml` file before deployment. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 
@@ -820,7 +820,9 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
 # Cluster Network Operator configuration
 
-To manage cluster networking, configure the Cluster Network Operator (CNO) `Network` custom resource (CR) named `cluster` so the cluster uses the correct IP ranges and network plugin settings for reliable pod and service connectivity. Some settings and fields are inherited at the time of install or by the `default.Network.type` plugin, OVN-Kubernetes.
+To manage cluster networking, configure the Cluster Network Operator (CNO) `Network` custom resource (CR) named `cluster` so the cluster uses the correct IP ranges and network plugin settings for reliable pod and service connectivity.
+
+Some settings and fields are inherited at the time of install or by the `default.Network.type` plugin, OVN-Kubernetes.
 
 The CNO configuration inherits the following fields during cluster installation from the `Network` API in the `Network.config.openshift.io` API group:
 
@@ -1290,7 +1292,7 @@ defaultNetwork:
       mode: Full
 ```
 
-# Configuring hybrid networking with OVN-Kubernetes
+# Configure hybrid networking with OVN-Kubernetes
 
 To configure hybrid networking with OVN-Kubernetes, you can set `hybridOverlayConfig` during installation or patch the Cluster Network Operator (CNO) after installation.
 

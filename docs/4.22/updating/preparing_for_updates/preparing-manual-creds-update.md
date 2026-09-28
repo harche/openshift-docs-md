@@ -71,7 +71,7 @@ The required update process depends on the mode that the cluster is configured t
 
 - [About the Cloud Credential Operator](../../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator)
 
-## Determining the Cloud Credential Operator mode by using the web console
+## Determine the Cloud Credential Operator mode by using the web console
 
 You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
 
@@ -150,7 +150,7 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
 - [Extracting and preparing credentials request resources](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#cco-ccoctl-upgrading-extracting_preparing-manual-creds-update)
 
-## Determining the Cloud Credential Operator mode by using the CLI
+## Determine the Cloud Credential Operator mode by using the CLI
 
 You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
 

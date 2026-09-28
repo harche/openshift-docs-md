@@ -2,7 +2,7 @@ To add a custom metrics autoscaler, create a `ScaledObject` custom resource for 
 
 You can create only one scaled object for each workload that you want to scale. Also, you cannot use a scaled object and the horizontal pod autoscaler (HPA) on the same workload.
 
-# Adding a custom metrics autoscaler to a workload
+# Add a custom metrics autoscaler to a workload
 
 You can create a custom metrics autoscaler for a workload that is created by a `Deployment`, `StatefulSet`, or `custom resource` object.
 
@@ -231,7 +231,7 @@ You can create a custom metrics autoscaler for a workload that is created by a `
 
     - If `True`, the custom metrics autoscaler is getting metrics because there are no metrics or there is a problem in one or more of the objects you created.
 
-# Adding a custom metrics autoscaler to a job
+# Add a custom metrics autoscaler to a job
 
 You can create a custom metrics autoscaler for any `Job` object.
 

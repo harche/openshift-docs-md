@@ -309,7 +309,7 @@ The following default projects are considered highly privileged: `default`, `kub
 
 - [Guaranteed Scheduling For Critical Add-On Pods (Kubernetes documentation)](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#rescheduler-guaranteed-scheduling-of-critical-add-ons)
 
-## Viewing cluster roles and bindings
+## View cluster roles and bindings
 
 You can view cluster roles and bindings by using the `oc` CLI to determine the permissions associated with roles and identify the users, groups, and service accounts assigned to them.
 
@@ -603,7 +603,7 @@ Users with the `cluster-admin` default cluster role bound cluster-wide can perfo
     ...
     ```
 
-## Viewing local roles and bindings
+## View local roles and bindings
 
 You can view local role bindings by using the `oc` CLI to identify the users, groups, and service accounts that have roles within the current project or another project.
 
@@ -690,7 +690,7 @@ You can use the `oc` CLI to view local roles and bindings by using the `oc descr
       Group  system:serviceaccounts:joe-project
     ```
 
-## Adding roles to users
+## Add roles to users
 
 To grant a user access within a project, you can bind an appropriate role to the user and verify the resulting role binding.
 
@@ -820,7 +820,7 @@ You can bind any of the default cluster roles to local users or groups in your p
 
     The `alice` user has been added to the `admins` `RoleBinding`.
 
-## Creating a local role
+## Create a local role
 
 You can create a local role and bind it to a user to define custom permissions within a project.
 
@@ -852,7 +852,7 @@ You can create a local role and bind it to a user to define custom permissions w
     $ oc adm policy add-role-to-user podview user2 --role-namespace=blue -n blue
     ```
 
-## Creating a cluster role
+## Create a cluster role
 
 To define custom cluster-wide permissions, you can create a cluster role that specifies the verbs and resources users can access.
 
@@ -911,7 +911,7 @@ You can also manage cluster role bindings using the following operations. The `-
 
 Cluster role binding operations
 
-## Creating a cluster admin
+## Create a cluster admin
 
 To grant a user full administrative access to the cluster, you can bind the `cluster-admin` cluster role to that user.
 
@@ -957,7 +957,7 @@ Always verify compliance with your organization’s security standards when modi
 
 </div>
 
-## Adding unauthenticated groups to cluster roles
+## Add unauthenticated groups to cluster roles
 
 Grant unauthenticated users access to specific cluster roles to enable features that require cluster access without authentication, such as external webhooks or automated token management.
 
@@ -1020,7 +1020,7 @@ INFO Access the OpenShift web-console here: https://console-openshift-console.ap
 INFO Login to the console with user: kubeadmin, password: <provided>
 ```
 
-## Removing the kubeadmin user
+## Remove the kubeadmin user
 
 After you define an identity provider and create a new `cluster-admin` user, you can remove the `kubeadmin` to improve cluster security.
 

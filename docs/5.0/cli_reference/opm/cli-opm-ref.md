@@ -246,7 +246,7 @@ $ opm index rm [<flags>]
 
 - [Managing custom catalogs](../../operators/admin/olm-managing-custom-catalogs.xml#olm-managing-custom-catalogs-fb)
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#installation-oc-mirror-installing-plugin_about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#installation-oc-mirror-installing-plugin_about-installing-oc-mirror-v2)
 
 # init
 

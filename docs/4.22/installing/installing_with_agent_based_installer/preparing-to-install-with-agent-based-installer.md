@@ -147,12 +147,6 @@ For platform `vsphere`, or for platform `baremetal` on vSphere:
 
 </div>
 
-<div class="note">
-
-For installations on IBM Z® (`s390x`) architecture, the minimum memory requirement is 24 GB RAM per host instead of 16 GB.
-
-</div>
-
 - [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 
 - [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)

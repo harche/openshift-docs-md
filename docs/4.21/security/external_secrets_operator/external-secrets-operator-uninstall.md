@@ -1,6 +1,6 @@
 You can remove the External Secrets Operator for Red Hat OpenShift from OpenShift Container Platform by uninstalling the Operator and removing its related resources.
 
-# Uninstalling the External Secrets Operator for Red Hat OpenShift using the web console
+# Uninstall the External Secrets Operator for Red Hat OpenShift using the web console
 
 You can uninstall the External Secrets Operator for Red Hat OpenShift from your cluster using the OpenShift Container Platform web console. Uninstalling the Operator does not automatically delete the `ExternalSecrets` custom resources or the running `external-secrets` application workload. These resources remain in the cluster to prevent accidental data loss and must be removed manually if they are no longer needed.
 
@@ -20,7 +20,7 @@ You can uninstall the External Secrets Operator for Red Hat OpenShift from your 
 
     3.  In the confirmation dialog, click **Uninstall**.
 
-# Removing External Secrets Operator for Red Hat OpenShift resources by using the web console
+# Remove External Secrets Operator for Red Hat OpenShift resources by using the web console
 
 After you have uninstalled the External Secrets Operator for Red Hat OpenShift, you can optionally eliminate its associated resources from your cluster.
 
@@ -100,7 +100,7 @@ After you have uninstalled the External Secrets Operator for Red Hat OpenShift, 
 
     3.  In the confirmation dialog, enter `external-secrets-operator` in the field and click **Delete**.
 
-# Removing External Secrets Operator for Red Hat OpenShift resources by using the CLI
+# Remove External Secrets Operator for Red Hat OpenShift resources by using the CLI
 
 After you have uninstalled the External Secrets Operator for Red Hat OpenShift, you can optionally eliminate its associated resources from your cluster by using the command-line interface (CLI).
 

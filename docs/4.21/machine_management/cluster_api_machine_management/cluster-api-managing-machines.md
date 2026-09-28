@@ -92,7 +92,7 @@ You can update the machine template resource for your cluster by modifying the Y
 
 - [Modifying a compute machine set by using the CLI](../../machine_management/cluster_api_machine_management/cluster-api-managing-machines.xml#machineset-modifying_cluster-api-managing-machines)
 
-# Modifying a compute machine set by using the CLI
+# Modify a compute machine set by using the CLI
 
 To enable features or change the properties of machines, you can modify the configuration of a compute machine set using the CLI. You can then propagate the changes to the machines in your cluster.
 

@@ -240,7 +240,7 @@ Consider the following situations related to the volume file paths.
 
 - Collisions when One Path is Explicit and the Other is Automatically Projected. If there is a collision due to a user-specified path matching data that is automatically projected, the latter resource overwrites anything preceding it as before.
 
-# Configuring a projected volume for a Pod
+# Configure a projected volume for a Pod
 
 You can create projected volumes to map multiple configuration sources, such as secrets and config maps, into a single directory. Projected volumes centralize sensitive information and environment metadata for your applications into a single directory.
 

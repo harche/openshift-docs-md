@@ -1,5 +1,102 @@
 You can troubleshoot and restore a two-node OpenShift Container Platform cluster with fencing (TNF) after a disruption event. Manually recover services when automated recovery is unavailable, replace degraded control plane nodes, and use the `fencing_validator` script to verify cluster health.
 
+# Fencing credential management
+
+You must provide Baseboard Management Controller (BMC) connection details for each control plane node in a two-node OpenShift Container Platform cluster with fencing. Pacemaker stores the Redfish API endpoint, username, and password information in the fencing configuration.
+
+When a node becomes unresponsive and fails its health checks, Pacemaker connects to the BMC of a node by using the stored credentials to power off or isolate the node. This isolation prevents the unresponsive node from continuing to serve requests while the remaining node manages the cluster.
+
+In earlier versions of OpenShift Container Platform, Pacemaker identified fencing credentials by hostname. When a hostname was changed after initial cluster installation through DNS reconfiguration or system renaming, the fencing mechanism could not locate the correct credentials. Because of this, Pacemaker could not access the BMC for that node, and if the node became unresponsive, Pacemaker could not fence it, risking data corruption and cluster unavailability.
+
+Additionally, updating credentials across the cluster required manual configuration changes that were complex and error-prone. You had to manually verify and reconfigure credentials, leaving room for inconsistencies.
+
+The credential identification system now handles this automatically.
+
+# Update fencing credentials by using the script
+
+You can use the credential update script to simplify updating Baseboard Management Controller (BMC) credentials for fencing in a two-node OpenShift Container Platform cluster. The script handles credential updates automatically, eliminating error-prone manual configuration.
+
+- You have administrative access to the control plane nodes.
+
+- You have necessary permissions to run the credential update script.
+
+- You have the new BMC credentials for the fencing devices, including the Redfish API endpoint, username, and password.
+
+1.  Log in to a control plane node with SSH by running the following command:
+
+    ``` terminal
+    $ ssh core@<control_plane_node_ip>
+    ```
+
+    Replace `<control_plane_node_ip>` with the IP address of your control plane node.
+
+2.  Run the credential update script on the control plane node by using the following command:
+
+    ``` terminal
+    # ./etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-scripts/update-fencing-credentials.sh
+    ```
+
+3.  Enter your new BMC credentials for each prompt and proceed to the next node when directed.
+
+    The script prompts you to enter the Redfish API endpoint, BMC username, and BMC password for each node.
+
+4.  Check the script output to confirm successful completion:
+
+    The script displays a completion message and reports any errors that occurred during the update process.
+
+<!-- -->
+
+1.  Check that the credential update script completed without errors in its output.
+
+2.  Check that all Pacemaker resources are in a `Started` state with no authentication errors:
+
+    ``` terminal
+    $ sudo pcs status
+    ```
+
+3.  Check that the `openshift-etcd` secret exists and has a recent timestamp:
+
+    ``` terminal
+    $ oc get secret -n openshift-etcd
+    ```
+
+<!-- -->
+
+1.  Check the script output for specific error messages related to credential format or BMC connectivity.
+
+2.  Verify that the new BMC credentials are correct and that the Redfish API endpoint is reachable from the control plane nodes.
+
+3.  Contact your infrastructure team or Red Hat support for assistance if the script fails repeatedly.
+
+4.  Provide the script output and any relevant Pacemaker logs that are available by running the following command:
+
+    ``` terminal
+    $ sudo journalctl -u pacemaker
+    ```
+
+- Monitor the cluster for several hours to confirm that Pacemaker can successfully authenticate with the BMC using the new credentials.
+
+- If a node becomes unresponsive and requires fencing, verify that Pacemaker can power off or isolate the node without credential-related errors.
+
+# Troubleshooting fencing credential updates
+
+When updating Baseboard Management Controller (BMC) credentials for fencing in a two-node OpenShift Container Platform cluster, issues can occur during credential updates, validation, or Pacemaker synchronization.
+
+This reference describes common error messages, diagnostic procedures, and recovery steps to resolve credential-related failures.
+
+The following table describes common error messages and their causes when updating fencing credentials:
+
+| Error Message                                              | Cause                                                                                                                                                   | Solution                                                                                                                                                                                                      |
+|------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Authentication failed connecting to BMC`                  | Wrong Redfish API endpoint, username, or password. The BMC credentials do not match the actual BMC configuration.                                       | Check that credentials are correct. Verify BMC connection settings and that the Redfish endpoint is reachable.                                                                                                |
+| `Connection timeout to BMC at <endpoint>`                  | The Redfish API endpoint is not reachable or the network is down. The BMC is not responding within the expected timeout.                                | Check the endpoint is correct and reachable. Verify network connectivity from the control plane nodes. Confirm the BMC is on and responding.                                                                  |
+| `Script execution failed with code <exit_code>`            | The credential update script hit an error or stopped before completion. This can occur if you interrupted the script or the Kubernetes cluster is down. | Check script output for specific error messages. Ensure the cluster is running and healthy. Check Pacemaker logs with `journalctl -u pacemaker`.                                                              |
+| `Secret update failed: openshift-etcd secret not found`    | The Kubernetes secret for credentials does not exist. You deleted it, or the cluster API is down.                                                       | Verify the `openshift-etcd` namespace exists with `oc get ns openshift-etcd`. Check cluster connectivity and API availability. Check Pacemaker credentials with `sudo pcs resource status`.                   |
+| `Invalid credential format: expected Redfish endpoint URL` | The Redfish API endpoint is not a valid URL. Common issues: missing protocol (`http://` or `https://`), wrong IP or hostname, or port issues.           | Check the Redfish endpoint follows this format: `https://<bmc_ip_or_hostname>/redfish/v1/`. Verify the endpoint has the correct protocol, hostname or IP, and port.                                           |
+| `BMC username or password contains unsupported characters` | Special characters in credentials are not properly escaped or encoded. Quotes, backslashes, or pipes can break script processing.                       | Check credentials for special characters. Escape special characters or create new credentials without these characters. Contact your BMC administrator or Red Hat support if you must use special characters. |
+
+common error messages
+
 # Manually recovering from a disruption event when automated recovery is unavailable
 
 You might need to perform manual recovery steps if a disruption event prevents fencing from functioning correctly. In this case, you can run commands directly on the control plane nodes to recover the cluster. There are five main recovery scenarios, which should be attempted in the following order:

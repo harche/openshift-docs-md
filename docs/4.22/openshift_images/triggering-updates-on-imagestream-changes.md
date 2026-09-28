@@ -68,7 +68,7 @@ Examples of core Kubernetes resources that can contain both a pod template and a
 
 - `Pods`
 
-# Setting the image trigger on Kubernetes resources
+# Set the image trigger on Kubernetes resources
 
 To enable automatic updates for your deployed applications managed by Kubernetes, use the command-line interface (CLI) to set an image stream change trigger on Kubernetes resources. This ensures that resources, like `Deployments` and `StatefulSets`, are automatically invoked when a new version of an upstream image is available.
 

@@ -481,7 +481,7 @@ OpenShift Container Platform includes Prometheus, but by default it only monitor
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
 
-1.  Create a `ConfigMap` to enable user workload monitoring in the `openshift-monitoring` namespace:
+1.  Create a file named `cluster-monitoring-config.yaml` with the following content:
 
     ``` yaml
     apiVersion: v1
@@ -1013,155 +1013,7 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     $ oc apply -f grafana-datasource.yaml
     ```
 
-6.  Deploy the DTS console dashboard for OpenShift Container Platform web console integration:
-
-    ``` yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: dpf-dts-console-dashboard
-      namespace: openshift-config-managed
-      labels:
-        console.openshift.io/dashboard: "true"
-    data:
-      doca-dpu-telemetry-dts.json: |
-        {
-          "title": "DOCA DPU Telemetry (DTS)",
-          "uid": "doca-dpu-telemetry-dts-console",
-          "editable": false,
-          "schemaVersion": 16,
-          "tags": ["dpf", "dpu", "dts", "telemetry"],
-          "timezone": "browser",
-          "time": {"from": "now-1h", "to": "now"},
-          "refresh": "30s",
-          "templating": {"list": []},
-          "rows": [
-            {
-              "title": "PCIe / Link",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "PCIe Link Speed (GT/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true},
-                  "yaxes": [{"format": "none", "show": true}, {"format": "none", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "current_link_speed", "legendFormat": "{{source}} {{hca}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "PCIe Link Width (lanes)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true},
-                  "yaxes": [{"format": "none", "show": true}, {"format": "none", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "current_link_width", "legendFormat": "{{source}} {{hca}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "Uplink Throughput (p0/p1)",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "Uplink RX (bits/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "values": true, "avg": true, "max": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "bps", "show": true}, {"format": "bps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_bytes\"}[5m])) * 8",
-                     "legendFormat": "{{source}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "Uplink TX (bits/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "values": true, "avg": true, "max": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "bps", "show": true}, {"format": "bps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_tx_bytes\"}[5m])) * 8",
-                     "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "Uplink Packets & Errors",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "Uplink packets/s (rx + tx)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "pps", "show": true}, {"format": "pps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_packets\"}[5m]))",
-                     "legendFormat": "{{source}} rx"},
-                    {"refId": "B", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_tx_packets\"}[5m]))",
-                     "legendFormat": "{{source}} tx"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "Uplink errors & drops/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_errors\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_tx_errors\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_rx_dropped\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_tx_dropped\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_rx_crc_errors\"}[5m]))",
-                     "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "NIC Channel Activity",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "NIC channel poll/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate(ch_poll[5m]))", "legendFormat": "{{source}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "NIC channel events/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate(ch_events[5m]))", "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-    ```
-
-    Apply the YAML:
-
-    ``` terminal
-    $ oc apply -f dts-console-dashboard.yaml
-    ```
-
-7.  Deploy the complete DTS Grafana dashboard:
+6.  Create a file named `dts-grafana-dashboard.yaml` with the following content:
 
     ``` yaml
     apiVersion: v1
@@ -1390,7 +1242,7 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
 3.  Verify that the Grafana pod is running on a control plane node:
 
     ``` terminal
-    $ oc get pods -n dpf-operator-system -l app.kubernetes.io/name=grafana -o wide
+    $ oc get pods -n dpf-operator-system -o wide | grep grafana
     ```
 
     <div class="formalpara-title">
@@ -1421,13 +1273,7 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     dpf-grafana-route   dpf-grafana-route-dpf-operator-system.apps.cluster.example.com          dpf-grafana   grafana   edge          None
     ```
 
-5.  Verify that the console dashboard ConfigMap exists:
-
-    ``` terminal
-    $ oc get configmap dpf-dts-console-dashboard -n openshift-config-managed
-    ```
-
-6.  Access the Grafana web interface:
+5.  Access the Grafana web interface:
 
     Get the Grafana URL:
 
@@ -1437,7 +1283,7 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
 
     Open the returned URL in a web browser. Use anonymous access (read-only) or sign in with the default credentials (`admin`/`admin`) for editing capabilities.
 
-7.  Navigate to the DTS dashboard:
+6.  Navigate to the DTS dashboard:
 
     1.  In Grafana, go to **Dashboards** and open **DOCA DPU Telemetry (DTS)**.
 
@@ -1489,157 +1335,7 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     A status of `READY: True` and `PHASE: Success` confirms that DTS is deployed and running.
 
-2.  Deploy the DTS console dashboard for the OpenShift Container Platform web console:
-
-    The console dashboard provides in-console visibility of DPU performance without requiring Grafana:
-
-    ``` yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: dpf-dts-console-dashboard
-      namespace: openshift-config-managed
-      labels:
-        console.openshift.io/dashboard: "true"
-    data:
-      doca-dpu-telemetry-dts.json: |
-        {
-          "title": "DOCA DPU Telemetry (DTS)",
-          "uid": "doca-dpu-telemetry-dts-console",
-          "editable": false,
-          "schemaVersion": 16,
-          "tags": ["dpf", "dpu", "dts", "telemetry"],
-          "timezone": "browser",
-          "time": {"from": "now-1h", "to": "now"},
-          "refresh": "30s",
-          "templating": {"list": []},
-          "rows": [
-            {
-              "title": "PCIe / Link",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "PCIe Link Speed (GT/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true},
-                  "yaxes": [{"format": "none", "show": true}, {"format": "none", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "current_link_speed", "legendFormat": "{{source}} {{hca}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "PCIe Link Width (lanes)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true},
-                  "yaxes": [{"format": "none", "show": true}, {"format": "none", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "current_link_width", "legendFormat": "{{source}} {{hca}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "Uplink Throughput (p0/p1)",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "Uplink RX (bits/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "values": true, "avg": true, "max": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "bps", "show": true}, {"format": "bps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_bytes\"}[5m])) * 8",
-                     "legendFormat": "{{source}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "Uplink TX (bits/s)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "values": true, "avg": true, "max": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "bps", "show": true}, {"format": "bps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_tx_bytes\"}[5m])) * 8",
-                     "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "Uplink Packets & Errors",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "Uplink packets/s (rx + tx)", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "pps", "show": true}, {"format": "pps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_packets\"}[5m]))",
-                     "legendFormat": "{{source}} rx"},
-                    {"refId": "B", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_tx_packets\"}[5m]))",
-                     "legendFormat": "{{source}} tx"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "Uplink errors & drops/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate({__name__=~\"p[01]_eth_rx_errors\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_tx_errors\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_rx_dropped\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_tx_dropped\"}[5m])) + sum by(source)(rate({__name__=~\"p[01]_eth_rx_crc_errors\"}[5m]))",
-                     "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "NIC Channel Activity",
-              "showTitle": true,
-              "height": "250px",
-              "panels": [
-                {
-                  "type": "graph", "title": "NIC channel poll/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate(ch_poll[5m]))", "legendFormat": "{{source}}"}
-                  ]
-                },
-                {
-                  "type": "graph", "title": "NIC channel events/s", "span": 6,
-                  "datasource": "prometheus", "nullPointMode": "null",
-                  "legend": {"show": true, "alignAsTable": true, "rightSide": true},
-                  "yaxes": [{"format": "cps", "show": true}, {"format": "cps", "show": false}],
-                  "targets": [
-                    {"refId": "A", "format": "time_series", "intervalFactor": 2,
-                     "expr": "sum by(source)(rate(ch_events[5m]))", "legendFormat": "{{source}}"}
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-    ```
-
-    Create a file named `dts-console-dashboard.yaml` with the preceding content and apply it:
-
-    ``` terminal
-    $ oc apply -f dts-console-dashboard.yaml
-    ```
-
-3.  View metrics in the OpenShift Container Platform web console.
+2.  View metrics in the OpenShift Container Platform web console.
 
     <div class="note">
 
@@ -1667,7 +1363,7 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     To view the console dashboard, go to **Observe** → **Dashboards**, then in the **Dashboard** dropdown menu, select **DOCA DPU Telemetry (DTS)**. The dashboard displays PCIe link speed and width, uplink throughput, packets per second, errors and drops per second, and NIC channel activity, with each DPU as its own line.
 
-4.  Optional: View metrics in Grafana.
+3.  Optional: View metrics in Grafana.
 
     Grafana provides richer dashboards with per-DPU dropdown filters and customizable panels. After you install the Grafana Operator and Grafana instance, retrieve the route URL:
 
@@ -1685,7 +1381,7 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     In Grafana, go to **Dashboards** and open **DOCA DPU Telemetry (DTS)**. Use the **DPU (source)** dropdown menu to focus on a specific DPU or select **All**. Adjust the time range by using the **time-range** control on the dashboard toolbar. The dashboard refreshes every 30 seconds.
 
-5.  Optional: Review DPF framework dashboards in Grafana.
+4.  Optional: Review DPF framework dashboards in Grafana.
 
     The DPF Operator installs framework dashboards that track DPU lifecycle and control-plane health separately from the DTS hardware telemetry dashboard. These dashboards are loaded into Grafana automatically through `GrafanaDashboard` resources created from `ConfigMaps`.
 

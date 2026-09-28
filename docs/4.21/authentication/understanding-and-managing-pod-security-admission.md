@@ -141,7 +141,7 @@ You cannot enable synchronization for any system-created `openshift-*` namespace
 
 If an Operator is installed in a user-created `openshift-*` namespace, synchronization is enabled automatically after a cluster service version (CSV) is created in the namespace. The synchronized label is derived from the permissions of the service accounts in the namespace.
 
-# Controlling pod security admission synchronization
+# Control pod security admission synchronization
 
 To customize which namespaces have their pod security admission labels automatically updated, you can enable or disable synchronization for most namespaces.
 
@@ -179,7 +179,7 @@ You cannot enable pod security admission synchronization on some system-created 
 
 - [Pod security admission synchronization namespace exclusions](../authentication/understanding-and-managing-pod-security-admission.xml#security-context-constraints-psa-sync-exclusions_understanding-and-managing-pod-security-admission)
 
-# Configuring pod security admission for a namespace
+# Configure pod security admission for a namespace
 
 You can configure pod security admission modes and profiles at the namespace level to control the security standards that pods must meet in a specific namespace.
 
@@ -210,7 +210,7 @@ You can view the Kubernetes API server audit logs to investigate alerts that wer
 
 To identify pod security admission violation audit events, see "Audit annotations" in the Kubernetes documentation.
 
-## Identifying pod security violations
+## Identify pod security violations
 
 To identify which workloads are causing pod security violations, you can review the Kubernetes API server audit logs by using the `must-gather` tool.
 

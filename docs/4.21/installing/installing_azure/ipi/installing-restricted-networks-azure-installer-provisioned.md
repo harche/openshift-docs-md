@@ -518,7 +518,7 @@ For more information about the support scope of Red Hat Technology Preview featu
               virtualizedTrustedPlatformModule: Enabled
     ```
 
-## Enabling confidential VMs
+## Enable confidential VMs
 
 To enable confidential VMs on Azure for your OpenShift Container Platform cluster, you can configure the `install-config.yaml` file before deployment. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 

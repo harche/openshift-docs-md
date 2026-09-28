@@ -6,7 +6,7 @@ The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RH
 
 </div>
 
-# Creating SELinux profiles
+# Create SELinux profiles
 
 Use the `SelinuxProfile` object to create SELinux profiles.
 
@@ -198,7 +198,7 @@ This procedure defines logging policies. It does not set enforcement policies.
     permissive: true
   ```
 
-## Binding workloads to profiles with ProfileBindings
+## Bind workloads to profiles with ProfileBindings
 
 You can use the `ProfileBinding` resource to bind a security profile to the `SecurityContext` of a container.
 

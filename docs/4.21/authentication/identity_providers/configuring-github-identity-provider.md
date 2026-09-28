@@ -24,7 +24,7 @@ Configure GitHub authentication so users can log in with GitHub or GitHub Enterp
 
 To prevent anyone with any GitHub user ID from logging in to your OpenShift Container Platform cluster, you can restrict access to only those in specific GitHub organizations.
 
-# Registering a GitHub application
+# Register a GitHub application
 
 Register an OAuth application on GitHub or GitHub Enterprise to obtain the client ID and client secret for the identity provider configuration.
 
@@ -52,7 +52,7 @@ Register an OAuth application on GitHub or GitHub Enterprise to obtain the clien
 
 7.  Click **Register application**. GitHub provides a client ID and a client secret. You need these values to complete the identity provider configuration.
 
-# Creating the secret
+# Create the secret
 
 Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
 
@@ -81,7 +81,7 @@ Create a `Secret` object in the `openshift-config` namespace to store the client
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
-# Creating a ConfigMap
+# Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
 
@@ -175,7 +175,7 @@ If `organizations` or `teams` is specified, only GitHub users that are members o
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
-# Adding an identity provider to your cluster
+# Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
 

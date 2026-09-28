@@ -68,7 +68,7 @@ To direct incoming network traffic from a gateway to your backend applications, 
   sample-route   ["app1.example.com","app2.example.com"]   45s
   ```
 
-# Configure path-based routing
+# Configuring path-based routing
 
 To ensure traffic is routed to the correct application when multiple services share a gateway, you can define request matching conditions within your `HTTPRoute` custom resource (CR). You can match HTTP requests based on paths, headers, query parameters, or methods.
 
@@ -82,22 +82,22 @@ To ensure traffic is routed to the correct application when multiple services sh
     apiVersion: gateway.networking.k8s.io/v1
     kind: HTTPRoute
     metadata:
-      name: <path_match_example>
-      namespace: <example_application>
+      name: <path_match_example>
+      namespace: <example_application>
     spec:
-      parentRefs:
-      - name: <example_gateway>
-        namespace: openshift-ingress
-      hostnames:
-      - "<example.com>"
-      rules:
-      - matches:
-        - path:
-            type: Exact
-            value: /<example_app>
-        backendRefs:
-        - name: <example_backend>
-          port: 8080
+      parentRefs:
+      - name: <example_gateway>
+        namespace: openshift-ingress
+      hostnames:
+      - "<example.com>"
+      rules:
+      - matches:
+        - path:
+            type: Exact
+            value: /<example_app>
+        backendRefs:
+        - name: <example_backend>
+          port: 8080
     ```
 
 2.  Apply the `HTTPRoute` CR by running the following command:
@@ -132,22 +132,22 @@ The following example demonstrates a complete `HTTPRoute` custom resource (CR) c
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: <path_match_example>
-  namespace: <example_application>
+  name: <path_match_example>
+  namespace: <example_application>
 spec:
-  parentRefs:
-  - name: <example_gateway>
-    namespace: openshift-ingress
-  hostnames:
-  - "<example.com>"
-  rules:
-  - matches:
-    - path:
-        type: Exact
-        value: /<example_app>
-    backendRefs:
-    - name: <example_backend>
-      port: 8080
+  parentRefs:
+  - name: <example_gateway>
+    namespace: openshift-ingress
+  hostnames:
+  - "<example.com>"
+  rules:
+  - matches:
+    - path:
+        type: Exact
+        value: /<example_app>
+    backendRefs:
+    - name: <example_backend>
+      port: 8080
 ```
 
 - `path` specifies that the request must match a specific URL path.
@@ -162,19 +162,19 @@ The following snippet demonstrates how to combine multiple header matches so tha
 
 ``` yaml
 spec:
-  rules:
-  - matches:
-    - headers:
-      - name: <my_header>
-        value: <new_header_value>
-      - name: <color_header>
-        value: <orange_value>
-    backendRefs:
-    - name: <example_service>
-      port: 8080
+  rules:
+  - matches:
+    - headers:
+      - name: <my_header>
+        value: <new_header_value>
+      - name: <color_header>
+        value: <orange_value>
+    backendRefs:
+    - name: <example_service>
+      port: 8080
 ```
 
-# Apply processing filters to HTTP requests
+# Applying processing filters to HTTP requests
 
 To modify how HTTP requests are processed before they reach your backend services, you can pre-configure filters within the rules of your `HTTPRoute` custom resource (CR). Configuring these filters allows you to automatically redirect traffic, modify headers, or mirror requests to achieve your desired routing behavior.
 
@@ -188,20 +188,20 @@ To modify how HTTP requests are processed before they reach your backend service
     apiVersion: gateway.networking.k8s.io/v1
     kind: HTTPRoute
     metadata:
-      name: <http_filter_example>
-      namespace: <example_application>
+      name: <http_filter_example>
+      namespace: <example_application>
     spec:
-      parentRefs:
-      - name: <example_gateway>
-        namespace: openshift-ingress
-      hostnames:
-      - "<example.com>"
-      rules:
-      - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            statusCode: 301
+      parentRefs:
+      - name: <example_gateway>
+        namespace: openshift-ingress
+      hostnames:
+      - "<example.com>"
+      rules:
+      - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
     ```
 
 2.  Apply the `HTTPRoute` CR by running the following command:
@@ -240,20 +240,20 @@ The following example demonstrates a complete `HTTPRoute` custom resource (CR) w
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: <http_filter_example>
-  namespace: <example_application>
+  name: <http_filter_example>
+  namespace: <example_application>
 spec:
-  parentRefs:
-  - name: <example_gateway>
-    namespace: openshift-ingress
-  hostnames:
-  - "<example.com>"
-  rules:
-  - filters:
-    - type: RequestRedirect
-      requestRedirect:
-        scheme: https
-        statusCode: 301
+  parentRefs:
+  - name: <example_gateway>
+    namespace: openshift-ingress
+  hostnames:
+  - "<example.com>"
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
 ```
 
 - `hostnames` defines the domain, such as `<example.com>`, that this route applies to.
@@ -268,21 +268,21 @@ The following snippet demonstrates how to configure a `requestHeaderModifier` fi
 
 ``` yaml
 spec:
-  rules:
-  - filters:
-    - type: RequestHeaderModifier
-      requestHeaderModifier:
-        add:
-        - name: <my_header_name>
-          value: <my_header_value>
-    - type: RequestHeaderModifier
-      requestHeaderModifier:
-        set:
-        - name: <old_header>
-          value: <new_header_value>
-    - type: RequestHeaderModifier
-      requestHeaderModifier:
-        remove: ["x-request-id"]
+  rules:
+  - filters:
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        add:
+        - name: <my_header_name>
+          value: <my_header_value>
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        set:
+        - name: <old_header>
+          value: <new_header_value>
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        remove: ["x-request-id"]
 ```
 
 The following snippet demonstrates how to configure a `cors` filter that allows a browser-based application served from a different origin to call your backend:
@@ -318,7 +318,7 @@ spec:
 
 - `maxAge` specifies for how long the browser caches the pre-flight response in seconds.
 
-# Configure routing destinations and traffic weights
+# Configuring routing destinations and traffic weights
 
 To route traffic to your backends, you must define service destinations and traffic weights within your `HTTPRoute` custom resource (CR) to distribute requests across your applications.
 
@@ -332,16 +332,16 @@ To route traffic to your backends, you must define service destinations and traf
     apiVersion: gateway.networking.k8s.io/v1
     kind: HTTPRoute
     metadata:
-      name: <backend_route_example>
-      namespace: <example_application>
+      name: <backend_route_example>
+      namespace: <example_application>
     spec:
-      parentRefs:
-      - name: <example_gateway>
-        namespace: openshift-ingress
-      rules:
-      - backendRefs:
-        - name: <service_v1>
-          port: 8080
+      parentRefs:
+      - name: <example_gateway>
+        namespace: openshift-ingress
+      rules:
+      - backendRefs:
+        - name: <service_v1>
+          port: 8080
     ```
 
 2.  Apply the `HTTPRoute` CR by running the following command:
@@ -362,16 +362,16 @@ This example shows a BackendRef where there is a single backend destination, a s
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: <backend_route_example>
-  namespace: <example_application>
+  name: <backend_route_example>
+  namespace: <example_application>
 spec:
-  parentRefs:
-  - name: <example_gateway>
-    namespace: openshift-ingress
-  rules:
-  - backendRefs:
-    - name: <service_v1>
-      port: 8080
+  parentRefs:
+  - name: <example_gateway>
+    namespace: openshift-ingress
+  rules:
+  - backendRefs:
+    - name: <service_v1>
+      port: 8080
 ```
 
 - `backendRefs` defines the destination services for the traffic.
@@ -396,7 +396,7 @@ spec:
       weight: 25
 ```
 
-# Set timeouts for HTTP requests
+# Setting timeouts for HTTP requests
 
 To prevent hanging connections and ensure your application remains responsive, you can set strict timeouts for the entire request and the backend hop within your `HTTPRoute` custom resource (CR).
 
@@ -410,22 +410,22 @@ To prevent hanging connections and ensure your application remains responsive, y
     apiVersion: gateway.networking.k8s.io/v1
     kind: HTTPRoute
     metadata:
-      name: <timeout_example>
-      namespace: <example_application>
+      name: <timeout_example>
+      namespace: <example_application>
     spec:
-      parentRefs:
-      - name: <example_gateway>
-        namespace: openshift-ingress
-      rules:
-      - matches:
-        - path:
-            type: PathPrefix
-            value: /<timeout_path>
-        timeouts:
-          request: 30s
-        backendRefs:
-        - name: <example_service>
-          port: 8080
+      parentRefs:
+      - name: <example_gateway>
+        namespace: openshift-ingress
+      rules:
+      - matches:
+        - path:
+            type: PathPrefix
+            value: /<timeout_path>
+        timeouts:
+          request: 30s
+        backendRefs:
+        - name: <example_service>
+          port: 8080
     ```
 
 2.  Apply the `HTTPRoute` CR by running the following command:
@@ -470,22 +470,22 @@ The following example demonstrates a complete `HTTPRoute` custom resource (CR) w
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: <timeout_example>
-  namespace: <example_application>
+  name: <timeout_example>
+  namespace: <example_application>
 spec:
-  parentRefs:
-  - name: <example_gateway>
-    namespace: openshift-ingress
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /<timeout_path>
-    timeouts:
-      request: 30s
-    backendRefs:
-    - name: <example_service>
-      port: 8080
+  parentRefs:
+  - name: <example_gateway>
+    namespace: openshift-ingress
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /<timeout_path>
+    timeouts:
+      request: 30s
+    backendRefs:
+    - name: <example_service>
+      port: 8080
 ```
 
 - `request` specifies the timeout for the full request-response cycle.
@@ -498,13 +498,13 @@ The following snippet demonstrates a configuration where the request must succee
 
 ``` yaml
 spec:
-  rules:
-  - timeouts:
-      request: 5s
-      backendRequest: 1s
-    backendRefs:
-    - name: <example_service>
-      port: 8080
+  rules:
+  - timeouts:
+      request: 5s
+      backendRequest: 1s
+    backendRefs:
+    - name: <example_service>
+      port: 8080
 ```
 
 # OpenShift Container Platform routes and HTTPRoutes comparison

@@ -351,6 +351,6 @@ The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` 
 
 # Additional resources
 
-- [Routing HTTP requests to services](routing-http-requests-to-services.xml#routing-http-requests-to-services)
+- [Routing HTTP requests to services](../../../networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.xml#routing-http-requests-to-services)
 
-- [Securing routes](../routes/securing-routes.xml#securing-routes)
+- [Securing routes](../../../networking/ingress_load_balancing/routes/securing-routes.xml#securing-routes)

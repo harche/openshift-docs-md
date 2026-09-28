@@ -1,4 +1,4 @@
-A two-node OpenShift Container Platform cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
+A two-node OpenShift Container Platform cluster with fencing (TNF) provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
 
 A two-node cluster does not include compute nodes. The two control plane machines run user workloads in addition to managing the cluster.
 
@@ -10,7 +10,7 @@ You can deploy a two-node OpenShift Container Platform cluster with fencing by u
 
 </div>
 
-The two-node OpenShift cluster with fencing requires the following hosts:
+The two-node OpenShift Container Platform cluster with fencing requires the following hosts:
 
 | Hosts                           | Description                                                                                                                                                                        |
 |---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

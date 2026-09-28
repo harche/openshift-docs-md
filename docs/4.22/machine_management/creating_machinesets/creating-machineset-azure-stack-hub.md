@@ -352,7 +352,7 @@ You can enable boot diagnostics on Microsoft Azure machines that your machine se
 
 - On the Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
 
-# Enabling customer-managed encryption keys for a machine set
+# Enable customer-managed encryption keys for a machine set
 
 To enhance data security, enable customer-managed encryption on Microsoft Azure by adding the disk encryption set ID to your machine set.
 

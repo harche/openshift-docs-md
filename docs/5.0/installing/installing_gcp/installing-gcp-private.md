@@ -486,7 +486,7 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
              secureBoot: Enabled
       ```
 
-## Enabling Confidential VMs
+## Enable Confidential VMs
 
 You can use Confidential VMs when installing your OpenShift Container Platform cluster. Confidential VMs encrypt data during processing.
 

@@ -56,7 +56,7 @@ The following example procedure describes how to update fields in the generated 
     2.  Extract the source CRs:
 
         ``` terminal
-        $ podman run --log-driver=none --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17.1 extract /home/ztp --tar | tar x -C ./out
+        $ podman run --log-driver=none --rm registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17.1 extract /home/ztp --tar | tar x -C ./out
         ```
 
 2.  Review the baseline `PerformanceProfile` CR in `./out/source-crs/PerformanceProfile.yaml`:

@@ -10,7 +10,7 @@ Seccomp profiles cannot be applied to privileged containers.
 
 </div>
 
-# Verifying the default seccomp profile applied to a pod
+# Verify the default seccomp profile applied to a pod
 
 OpenShift Container Platform ships with a default seccomp profile that is referenced as `runtime/default`. In 4.17, newly created pods have the Security Context Constraint (SCC) set to `restricted-v2` and the default seccomp profile applies to the pod.
 
@@ -123,7 +123,7 @@ You can configure a custom seccomp profile, which allows you to update the filte
 
 Seccomp security profiles list the system calls (syscalls) a process can make. Permissions are broader than SELinux, which restrict operations, such as `write`, system-wide.
 
-## Creating seccomp profiles
+## Create seccomp profiles
 
 You can use the `MachineConfig` object to create profiles.
 
@@ -157,7 +157,7 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
           path: /var/lib/kubelet/seccomp/seccomp-nostat.json
   ```
 
-## Setting up the custom seccomp profile
+## Set up the custom seccomp profile
 
 - You have cluster administrator permissions.
 
@@ -176,7 +176,7 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
 
     - Provide the name of your custom seccomp profile.
 
-## Applying the custom seccomp profile to the workload
+## Apply the custom seccomp profile to the workload
 
 - The cluster administrator has set up the custom seccomp profile. For more details, see "Setting up the custom seccomp profile".
 

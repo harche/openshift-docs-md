@@ -466,7 +466,7 @@ When a pod matches the selector for multiple `EgressIP` objects, there is no gua
 
 Additionally, if an `EgressIP` object specifies multiple egress IP addresses, there is no guarantee which of the egress IP addresses might be used. For example, if a pod matches a selector for an `EgressIP` object with two egress IP addresses, `10.10.20.1` and `10.10.20.2`, either might be used for each TCP connection or UDP conversation.
 
-# Assigning an egress IP address to a namespace
+# Assign an egress IP address to a namespace
 
 You can assign one or more egress IP addresses to a namespace or to specific pods in a namespace.
 
@@ -558,7 +558,7 @@ You can assign one or more egress IP addresses to a namespace or to specific pod
   # ...
   ```
 
-# Understanding EgressIP failover control
+# Understand EgressIP failover control
 
 The `reachabilityTotalTimeoutSeconds` parameter controls how quickly the system detects a failing `egressIP` node and initiates a failover. This parameter directly determines the maximum time the platform waits before declaring a node unreachable.
 
@@ -570,7 +570,7 @@ When you configure `egressIP` with multiple egress nodes, the complete failover 
 
 To ensure traffic uses the correct external path, `egressIP` traffic on a node will always egress through the network interface on which the `egressIP` address has been assigned.
 
-## Configuring the EgressIP failover time limit
+## Configure the EgressIP failover time limit
 
 You can configure the `reachabilityTotalTimeoutSeconds` parameter to control how quickly the system detects a failing `egressIP` node and initiates a failover.
 
@@ -636,7 +636,7 @@ The following table summarizes the acceptable values and their implications:
 | `0`                       | Disables the reachability check.                    | No automatic failover: Use only if an external system handles node health monitoring and failover. The platform will not automatically react to node failures.                                                                                 |
 | `1 - 60`                  | Sets the total time limit for reachability probing. | Directly controls detection time: This value defines the lower limit for your overall failover time. A smaller value leads to faster failover but might increase network traffic. Default: 1 second. The maximum accepted integer value is 60. |
 
-# Labeling a node to host egress IP addresses
+# Label a node to host egress IP addresses
 
 You can apply the `k8s.ovn.org/egress-assignable=""` label to a node in your cluster so that OpenShift Container Platform can assign one or more egress IP addresses to the node.
 
@@ -670,7 +670,7 @@ You can apply the `k8s.ovn.org/egress-assignable=""` label to a node in your clu
 
   </div>
 
-# Configuring dual-stack networking for an EgressIP object
+# Configure dual-stack networking for an EgressIP object
 
 For a cluster configured for dual-stack networking, you can apply dual-stack networking to a single `EgressIP` object. The `EgressIP` object can then extend dual-stack networking capabilities to a pod.
 

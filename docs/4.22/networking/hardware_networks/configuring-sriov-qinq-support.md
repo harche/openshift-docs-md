@@ -22,7 +22,7 @@ The OpenShift Container Platform SR-IOV solution already supports setting the VL
 
 - [Configuration for an VLAN additional network](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-other-cni.xml#nw-multus-vlan-object_configuring-additional-network-cni)
 
-# Configuring QinQ support for SR-IOV enabled workloads
+# Configure QinQ support for SR-IOV enabled workloads
 
 Configure QinQ support for SR-IOV enabled workloads to enable double VLAN tagging on your cluster.
 

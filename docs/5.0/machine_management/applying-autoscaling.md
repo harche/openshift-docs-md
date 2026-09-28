@@ -98,6 +98,7 @@ kind: "ClusterAutoscaler"
 metadata:
   name: "default"
 spec:
+  enforceNodeGroupMinSize: Enabled
   podPriorityThreshold: -10
   resourceLimits:
     maxNodesTotal: 24
@@ -139,42 +140,50 @@ spec:
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>enforceNodeGroupMinSize</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies whether the cluster autoscaler maintains the minimum size of a node group.</p>
+<ul>
+<li><p><code>Enabled</code>: The cluster autoscaler ensures that the node group never scales below the configured size set by the <code>minReplicas</code> parameter in your <code>MachineAutoscaler</code> resources, even if nodes are deemed unneeded.</p></li>
+<li><p><code>Disabled</code>: The cluster autoscaler can scale the node group below the configured minimum size if nodes are deemed unneeded. This is the default.</p></li>
+</ul></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>podPriorityThreshold</code></p></td>
 <td style="text-align: left;"><p>Specify the priority that a pod must exceed to cause the cluster autoscaler to deploy additional nodes. Enter a 32-bit integer value. The <code>podPriorityThreshold</code> value is compared to the value of the <code>PriorityClass</code> that you assign to each pod.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>maxNodesTotal</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of nodes to deploy. This value is the total number of machines that are deployed in your cluster, not just the ones that the autoscaler controls. Ensure that this value is large enough to account for all of your control plane and compute machines and the total number of replicas that you specify in your <code>MachineAutoscaler</code> resources.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>cores.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>cores.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>memory.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>memory.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>gpus.type</code></p></td>
 <td style="text-align: left;"><p>Optional: To configure the cluster autoscaler to deploy GPU-enabled nodes, specify a <code>type</code> value. This value must match the value of the <code>spec.template.spec.metadata.labels[cluster-api/accelerator]</code> label in the machine set that manages the GPU-enabled nodes of that type. For example, this value might be <code>nvidia-t4</code> to represent Nvidia T4 GPUs, or <code>nvidia-a10g</code> for A10G GPUs. For more information, see "Labeling GPU machine sets for the cluster autoscaler".</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>gpus.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>gpus.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>logVerbosity</code></p></td>
 <td style="text-align: left;"><p>Specify the logging verbosity level between <code>0</code> and <code>10</code>. The following log level thresholds are provided for guidance:</p>
 <ul>
@@ -184,11 +193,11 @@ spec:
 </ul>
 <p>If you do not specify a value, the default value of <code>1</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait for each action by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.cordonNodeBeforeTerminating</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify whether the cluster autoscaler should cordon a node before removing that node by using one of the following values:</p>
 <ul>
@@ -196,40 +205,40 @@ spec:
 <li><p><code>Disabled</code>: The cluster autoscaler does not cordon the node before draining any pods and removing that node. This is the default.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.enabled</code></p></td>
 <td style="text-align: left;"><p>Specify whether the cluster autoscaler can remove unnecessary nodes.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterAdd</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>added</em>. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterDelete</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>deleted</em>. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.delayAfterFailure</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a scale down failure occurred. If you do not specify a value, the default value of <code>3m</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleDown.unneededTime</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify a period of time before an unnecessary node is eligible for deletion. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleDown.utilizationThreshold</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the <em>node utilization level</em>. Nodes below this utilization level are eligible for deletion.</p>
 <p>The node utilization level is the sum of the requested resources divided by the allocated resources for the node, and must be a value greater than <code>"0"</code> but less than <code>"1"</code>. If you do not specify a value, the cluster autoscaler uses a default value of <code>"0.5"</code>, which corresponds to 50% utilization. You must express this value as a string.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>scaleUp</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait before recognizing newly pending pods by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>scaleUp.newPodScaleUpDelay</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to ignore a new unschedulable pod before adding a new node. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>expanders</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify any expanders that you want the cluster autoscaler to use. The following values are valid:</p>
 <ul>

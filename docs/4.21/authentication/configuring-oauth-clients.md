@@ -21,7 +21,7 @@ Specifies the namespace route. Find this value by running the following command:
 $ oc get route oauth-openshift -n openshift-authentication -o json | jq .spec.host
 ```
 
-# Registering an additional OAuth client
+# Register an additional OAuth client
 
 Register additional OAuth clients to manage authentication for applications that need to interact with your OpenShift Container Platform cluster.
 
@@ -54,7 +54,7 @@ Register additional OAuth clients to manage authentication for applications that
   `grantMethod`
   Specifies the action to take when this client requests tokens and has not yet been granted access by the user. Use `auto` to automatically approve the grant and retry the request, or `prompt` to prompt the user to approve or deny the grant.
 
-# Configuring token inactivity timeout for an OAuth client
+# Configure token inactivity timeout for an OAuth client
 
 Configure OAuth clients to expire tokens after a set period of inactivity, improving security by automatically invalidating idle sessions.
 

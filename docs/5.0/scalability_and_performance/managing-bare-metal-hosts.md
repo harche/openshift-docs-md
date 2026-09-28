@@ -12,7 +12,7 @@ When you scale up the relevant `MachineSet` CR that contains a `metal3.io/autosc
 
 You can maintain the details of the bare metal hosts in your cluster from the OpenShift Container Platform web console.
 
-1.  From the web console, comlete the following steps:
+1.  From the web console, complete the following steps:
 
     1.  Navigate to **Compute** → **Bare Metal Hosts**.
 

@@ -56,7 +56,7 @@ You can use the oc-mirror OpenShift CLI (`oc`) plugin to mirror images to a mirr
 
 For more information, see "Mirroring images for a disconnected installation by using the oc-mirror plugin v2".
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 # Mirroring images using the oc adm release mirror command
 

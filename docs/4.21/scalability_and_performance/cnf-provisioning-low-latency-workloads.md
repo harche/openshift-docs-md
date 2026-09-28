@@ -12,7 +12,7 @@ When writing your applications, follow the general recommendations described in 
 
 - [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
-# Scheduling a low latency workload onto a compute node
+# Schedule a low latency workload onto a compute node
 
 You can schedule low latency workloads onto a compute node where a performance profile that configures real-time capabilities is applied.
 
@@ -211,7 +211,7 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
 
 - [Assigning pods to nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node)
 
-# Creating a pod with a guaranteed QoS class
+# Create a pod with a guaranteed QoS class
 
 You can create a pod with a quality of service (QoS) class of `Guaranteed` for high-performance workloads. Configuring a pod with a QoS class of `Guaranteed` ensures that the pod has priority access to the specified CPU and memory resources.
 
@@ -378,7 +378,7 @@ Only disable CPU load balancing when the CPU manager static policy is enabled an
 
 </div>
 
-# Disabling power saving mode for high priority pods
+# Disable power saving mode for high priority pods
 
 To protect high priority workloads when using power saving configurations on a node, apply performance settings at the pod level. This ensures that the configuration applies to all cores used by the pod, maintaining performance stability.
 
@@ -449,7 +449,7 @@ Configuration for high priority workloads
 
 - [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-tuning-low-latency-nodes-with-perf-profile)
 
-# Disabling CPU CFS quota
+# Disable CPU CFS quota
 
 To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.crio.io: "disable"` annotation. This annotation disables the CPU completely fair scheduler (CFS) quota when the pod runs.
 
@@ -482,7 +482,7 @@ To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.cr
 
 - [Recommended firmware configuration for vDU cluster hosts](../edge_computing/ztp-vdu-validating-cluster-tuning.xml#ztp-du-firmware-config-reference_vdu-config-ref)
 
-# Configuring interrupt processing for individual pods
+# Configure interrupt processing for individual pods
 
 To achieve low latency for workloads, some containers require that the CPUs they are pinned to do not process device interrupts. You can use the `irq-load-balancing.crio.io` pod annotation to control whether device interrupts are processed on CPUs where the pinned containers are running.
 

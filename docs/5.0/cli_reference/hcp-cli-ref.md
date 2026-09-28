@@ -100,7 +100,7 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, b
 
 - On an OpenShift Container Platform cluster, you have installed multicluster engine for Kubernetes Operator 2.7 or later. The multicluster engine Operator is automatically installed when you install Red Hat Advanced Cluster Management. You can also install multicluster engine Operator without Red Hat Advanced Management as an Operator from OpenShift Container Platform OperatorHub.
 
-1.  Navigate to the [content gateway](https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli/) and download the `hcp` binary.
+1.  Navigate to the [content gateway](https://developers.redhat.com/content-gateway/rest/browse/hcp-cli/latest/) and download the `hcp` binary.
 
 2.  Unpack the downloaded archive by running the following command:
 

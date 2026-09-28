@@ -74,7 +74,7 @@ You can assign IP addresses from an `IPAddressPool` to services and namespaces b
 
 MetalLB IPAddressPool custom resource spec.serviceAllocation subfields
 
-# Configuring an address pool
+# Configure an address pool
 
 To precisely manage external access to application workloads, configure MetalLB address pools for your cluster. By defining these pools, you can control the specific IP address ranges assigned to load balancer services for consistent network routing.
 

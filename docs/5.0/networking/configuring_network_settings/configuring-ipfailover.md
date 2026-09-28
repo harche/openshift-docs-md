@@ -126,7 +126,7 @@ The IP failover environment variables reference lists all variables you can use 
 
 IP failover environment variables
 
-# Configuring IP failover in your cluster
+# Configure IP failover in your cluster
 
 To configure IP failover in your OpenShift Container Platform cluster and provide high availability for Virtual IP addresses, you can create a deployment that runs Keepalived on selected nodes to monitor services and fail over VIPs when nodes become unavailable.
 
@@ -377,7 +377,7 @@ For production use, set a `selector` that selects at least two nodes, and set `r
     `openshift-pull-secret`
     Specifies the name of the pull secret to use for the IP failover deployment. Create the pull secret before creating the deployment, otherwise you will get an error when creating the deployment.
 
-# Configuring check and notify scripts
+# Configure check and notify scripts
 
 To customize health monitoring for IP failover and receive notifications when VIP state changes in OpenShift Container Platform, you can configure check and notify scripts by using `ConfigMap` objects.
 
@@ -492,7 +492,7 @@ As a cluster administrator, you can provide an optional notify script that Keepa
 
     3.  Save the changes and exit the editor. This restarts the `ipfailover-keepalived` configuration.
 
-# Configuring VRRP preemption
+# Configure VRRP preemption
 
 To control VIP preemption behavior when nodes recover in OpenShift Container Platform, you can configure the `OPENSHIFT_HA_PREEMPTION` variable to set a delay before higher priority VIPs take over or disable preemption entirely.
 
@@ -522,7 +522,7 @@ In the following example, the `OPENSHIFT_HA_PREEMPTION` value is set to `preempt
   #...
   ```
 
-# Deploying multiple IP failover instances
+# Deploy multiple IP failover instances
 
 When deploying multiple IP failover instances in OpenShift Container Platform, each Keepalived daemon assigns unique VRRP IDs to virtual IP addresses. Configure the `OPENSHIFT_HA_VRRP_ID_OFFSET` variable to prevent VRRP ID range overlaps between different IP failover configurations.
 
@@ -534,7 +534,7 @@ The IP failover pod assigns `vrrp-id` values sequentially to the VIPs defined in
 
 When you deploy multiple IP failover configurations, ensure that the configured offset leaves sufficient space for additional VIPs and prevents `vrrp-id` ranges from overlapping across configurations.
 
-# Configuring IP failover for more than 254 addresses
+# Configure IP failover for more than 254 addresses
 
 To configure IP failover for more than 254 Virtual IP addresses in OpenShift Container Platform, you can use the `OPENSHIFT_HA_VIP_GROUPS` variable to group multiple addresses together. By using the `OPENSHIFT_HA_VIP_GROUPS` variable, you can change the number of VIPs per VRRP instance and define the number of VIP groups available for each VRRP instance when configuring IP failover.
 
@@ -593,7 +593,7 @@ Because IP failover can support up to a maximum of 255 VIPs for the entire clust
 
 - [Kubernetes documentation on ExternalIP](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips)
 
-# Removing IP failover
+# Remove IP failover
 
 To remove IP failover from your OpenShift Container Platform cluster and clean up iptables rules and virtual IP addresses, you can delete the deployment and service account, then run a cleanup job on each configured node.
 

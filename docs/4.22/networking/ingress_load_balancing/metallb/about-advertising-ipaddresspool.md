@@ -101,7 +101,7 @@ Because the `localPref` and `communities` fields are not specified, the routes a
 
 Ensure that you can configure MetalLB so that the peer BGP routers receive one `203.0.113.200/32` route and one `fc00:f853:ccd:e799::1/128` route for each load-balancer IP address that MetalLB assigns to a service. If you do not specify the `localPref` and `communities` parameters, MetalLB advertises the routes with `localPref` set to \`0 and no BGP communities.
 
-## Advertising a basic address pool configuration with BGP
+## Advertise a basic address pool configuration with BGP
 
 Configure MetalLB to advertise the `IPAddressPool` by using Border Gateway Protocol (BGP).
 
@@ -154,7 +154,7 @@ Configure MetalLB to advertise the `IPAddressPool` by using Border Gateway Proto
         $ oc apply -f bgpadvertisement.yaml
         ```
 
-# Configuring MetalLB with a BGP advertisement and an advanced use case
+# Configure MetalLB with a BGP advertisement and an advanced use case
 
 Configure MetalLB so that MetalLB assigns IP addresses to load-balancer services in the ranges between `203.0.113.200` and `203.0.113.203` and between `fc00:f853:ccd:e799::0` and `fc00:f853:ccd:e799::f`.
 
@@ -166,7 +166,7 @@ To explain the two BGP advertisements, consider an instance when MetalLB assigns
 
 As you add more services and MetalLB assigns more load-balancer IP addresses from the pool, peer routers receive one local route, `203.0.113.20x/32`, for each service, and the `203.0.113.200/30` aggregate route. Each service that you add generates the `/30` route, but MetalLB deduplicates the routes to one BGP advertisement before communicating with peer routers.
 
-## Advertising an advanced address pool configuration with BGP
+## Advertise an advanced address pool configuration with BGP
 
 Configure MetalLB to advertise an advanced address pool by using BGP attributes such as BGP communities, route aggregation, and local preference.
 
@@ -368,7 +368,7 @@ Use this procedure when many `BGPAdvertisement` resources reference the same `IP
         `<project>`
         Specifies the namespace that contains the service.
 
-# Advertising an IP address pool from a subset of nodes
+# Advertise an IP address pool from a subset of nodes
 
 To advertise an IP address from an IP addresses pool, from a specific set of nodes only, use the `.spec.nodeSelector` specification in the `BGPAdvertisement` custom resource (CR). This specification associates a pool of IP addresses with a set of nodes in the cluster. This is useful when you have nodes on different subnets in a cluster and you want to advertise an IP addresses from an address pool from a specific subnet, for example a public-facing subnet only.
 
@@ -474,7 +474,7 @@ The following table details parameters for the `l2Advertisements` CR:
 
 L2 advertisements configuration
 
-# Configuring MetalLB with an L2 advertisement
+# Configure MetalLB with an L2 advertisement
 
 You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol.
 
@@ -557,7 +557,7 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
     l2advertisement   ["doc-example-l2"]
     ```
 
-# Configuring MetalLB with an L2 advertisement and labels
+# Configure MetalLB with an L2 advertisement and labels
 
 You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` custom resource definition to associate the `IPAddressPool` with the advertisement based on the label assigned to the pool instead of the pool name. The example configures MetalLB to advertise the pool over Layer 2 by using `ipAddressPoolSelectors`.
 
@@ -725,7 +725,7 @@ Use this procedure when many `L2Advertisement` resources reference the same `IPA
         `<project>`
         Specifies the namespace that contains the service.
 
-# Configuring MetalLB with an L2 advertisement for selected interfaces
+# Configure MetalLB with an L2 advertisement for selected interfaces
 
 By default, the IP addresses from IP address pool that has been assigned to the service, is advertised from all the network interfaces. You can use the `interfaces` field in the `L2Advertisement` custom resource definition to restrict those network interfaces that advertise the IP address pool.
 

@@ -20,6 +20,14 @@ Consider the following guidance:
 
 - As needed, create multiple `KubeletConfig` CRs with a limit of 10 per cluster. For the first `KubeletConfig` CR, the Machine Config Operator (MCO) creates a machine config appended with `kubelet`. With each subsequent CR, the controller creates another `kubelet` machine config with a numeric suffix. For example, if you have a `kubelet` machine config with a `-2` suffix, the next `kubelet` machine config is appended with `-3`.
 
+  <div class="important">
+
+  The Machine Config Operator does not merge multiple `KubeletConfig` CRs that target the same machine config pool. Each CR generates a separate machine config that writes the kubelet configuration. The most recently created `KubeletConfig` CR takes precedence and overrides the kubelet settings from earlier CRs for that pool.
+
+  To apply multiple kubelet settings to the same pool, include all of the settings in a single `KubeletConfig` CR.
+
+  </div>
+
 <div class="note">
 
 If you are applying a kubelet or container runtime config to a custom machine config pool, the custom role in the `machineConfigSelector` must match the name of the custom machine config pool.

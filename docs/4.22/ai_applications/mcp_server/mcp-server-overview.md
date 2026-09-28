@@ -358,7 +358,9 @@ Install the Model Context Protocol (MCP) gateway to provide a secure, centralize
 
 Verify that the Model Context Protocol (MCP) gateway is deployed and running correctly before configuring routing, authentication, and authorization.
 
-- Access to OpenShift console with admin rights.
+- Access to OpenShift Container Platform console with admin rights.
+
+- OpenShift CLI (`oc`) is installed.
 
 - The MCP server Helm chart is installed.
 
@@ -369,12 +371,12 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
 1.  Check the status of your deployment by running the following command:
 
     ``` terminal
-    $ oc get pods -n mcp-system -l "app.kubernetes.io/instance=mcp-gateway"
+    $ oc get pods -n gateway-namespace -l "app.kubernetes.io/name=mcp-gateway"
     ```
 
     <div class="note">
 
-    This example uses the namespace "mcp-system" for installing the gateway. If you install the gateway in a different namespace than "mcp-system", use that namespace instead throughout the procedure.
+    This example uses the namespace "gateway-namespace" for installing the gateway. If you install the gateway in a different namespace than "gateway-namespace", use that namespace instead throughout the procedure.
 
     </div>
 
@@ -402,20 +404,20 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
     </div>
 
     ``` terminal
-    NAMESPACE   NAME          READY   AGE
-    mcp-system  mcp-gateway           105s
+    NAMESPACE          NAME          READY   AGE
+    gateway-namespace  mcp-gateway           105s
     ```
 
 3.  Verify the broker-router deployment by running the following command:
 
     ``` terminal
-    $ oc logs -n mcp-system deployment/mcp-gateway-broker-router
+    $ oc logs -n gateway-namespace deployment/mcp-gateway
     ```
 
 4.  Verify EnvoyFilter was created in the gateway namespace by running the following command:
 
     ``` terminal
-    $ oc get envoyfilter -n mcp-system -l app.kubernetes.io/managed-by=mcp-gateway-controller
+    $ oc get envoyfilter -n gateway-namespace -l app.kubernetes.io/managed-by=mcp-gateway-controller
     ```
 
 ## Configure the MCP gateway
@@ -430,7 +432,15 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
 - MCP gateway is installed and verified.
 
-1.  Create the HTTPRoute for the MCP server by running the following command:
+1.  Before creating the `HTTPRoute`, verify the exact name of your MCP server service by entering the following command:
+
+    ``` terminal
+    $ oc get svc -n openshift-mcp-server
+    ```
+
+    Ensure that the `backendRefs.name` field in the following manifest matches the `NAME` output of your service. For example, `openshift-mcp-server`.
+
+2.  Create the HTTPRoute for the MCP server by running the following command:
 
     ``` terminal
     $ oc apply -f - <<EOF
@@ -444,7 +454,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
       - group: gateway.networking.k8s.io
         kind: Gateway
         name: mcp-gateway
-        namespace: gateway-system
+        namespace: gateway-namespace
         sectionName: mcp
       hostnames:
       - ${MCP_SERVER_HOST}
@@ -463,7 +473,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
     This HTTPRoute enables the MCP gateway to route traffic to your MCP server instance and is referenced in the MCPServerRegistration resource.
 
-2.  Create an MCP server Registration Resource by running the following command:
+3.  Create an MCP server Registration Resource by running the following command:
 
     ``` terminal
     $ oc apply -f - <<EOF
@@ -473,7 +483,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
       name: my-mcp-server-reg
       namespace: openshift-mcp-server
     spec:
-      toolPrefix: "openshift_"
+      prefix: "openshift_"
       targetRef:
         group: "gateway.networking.k8s.io"
         kind: "HTTPRoute"
@@ -490,7 +500,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
     - `spec.targetRef.namespace`: The namespace for the MCP server HTTPRoute, which is `openshift-mcp-server`.
 
-3.  Verify the registration status by running the following commands:
+4.  Verify the registration status by running the following commands:
 
     ``` terminal
     $ oc wait --for=condition=Ready mcpsr/my-mcp-server-reg -n openshift-mcp-server --timeout=120s
@@ -516,19 +526,19 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
     $ oc describe mcpsr my-mcp-server-reg -n openshift-mcp-server
     ```
 
-4.  Check the controller logs by running the following command:
+5.  Check the controller logs by running the following command:
 
     ``` terminal
-    $ oc logs -n mcp-system deployment/mcp-gateway-controller
+    $ oc logs -n gateway-namespace deployment/mcp-gateway-controller
     ```
 
-5.  Check the broker logs for tool discovery by running the following command:
+6.  Check the broker logs for tool discovery by running the following command:
 
     ``` terminal
-    $ oc logs -n mcp-system deployment/mcp-gateway-broker-router
+    $ oc logs -n gateway-namespace deployment/mcp-gateway
     ```
 
-6.  Verify that your MCP server tools are available through the MCP gateway:
+7.  Verify that your MCP server tools are available through the MCP gateway:
 
     1.  Initialize the MCP session and capture session ID by using -D to dump headers to a file, and then reading the session ID by running the following command:
 
@@ -565,7 +575,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
         $ rm -f /tmp/mcp_headers
         ```
 
-        You should now see your MCP server tools in the response, prefixed with your configured toolPrefix (for example, myserver\_).
+        You should now see your MCP server tools in the response, prefixed with your configured `prefix` value, such as `openshift_`.
 
 ## Configure RBAC enforcement
 
@@ -734,7 +744,7 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
 1.  Configure OAuth metadata discovery by setting environment variables on the MCP gateway broker-router deployment by running the following command:
 
     ``` terminal
-    $ oc set env deployment/mcp-gateway-broker-router -n mcp-system\
+    $ oc set env mcp-gateway/gateway-namespace -n mcp-system\
     OAUTH_RESOURCE_NAME="MCP Server" \
     OAUTH_RESOURCE="http://mcp.127-0-0-1.sslip.io:8001/mcp" \
     OAUTH_AUTHORIZATION_SERVERS="https://login.microsoftonline.com/<tenant-id>/v2.0" \
@@ -752,13 +762,13 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
     kind: HTTPRoute
     metadata:
       name: mcp-gateway-oauth-metadata
-      namespace: mcp-system
+      namespace: gateway-namespace
     spec:
       parentRefs:
       - group: gateway.networking.k8s.io
         kind: Gateway
         name: mcp-gateway
-        namespace: gateway-system
+        namespace: gateway-namespace
         sectionName: mcp
       hostnames:
       - ${MCP_GATEWAY_HOST}
@@ -820,7 +830,7 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
     kind: AuthPolicy
     metadata:
       name: mcp-auth-policy
-      namespace: mcp-system
+      namespace: gateway-namespace
     spec:
       targetRef:
         group: gateway.networking.k8s.io

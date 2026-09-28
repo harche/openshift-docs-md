@@ -57,7 +57,7 @@ Unless your organizational needs require you to choose another option, use the f
 
 # Additional resources
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [Installing a cluster with customizations](../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer)
 

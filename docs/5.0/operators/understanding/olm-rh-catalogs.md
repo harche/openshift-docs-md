@@ -38,7 +38,7 @@ When creating custom catalog images, previous versions of OpenShift Container Pl
 
 - [Packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
 
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#installation-oc-mirror-installing-plugin_about-installing-oc-mirror-v2)
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#installation-oc-mirror-installing-plugin_about-installing-oc-mirror-v2)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 

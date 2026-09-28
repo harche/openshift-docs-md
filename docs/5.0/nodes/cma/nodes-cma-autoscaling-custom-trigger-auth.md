@@ -269,7 +269,7 @@ spec:
 
 - [Providing sensitive data to pods](../../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets).
 
-# Using trigger authentications
+# Use trigger authentications
 
 You use trigger authentications and cluster trigger authentications by using a custom resource to create the authentication, then add a reference to a scaled object or scaled job.
 

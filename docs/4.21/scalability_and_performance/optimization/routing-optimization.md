@@ -101,7 +101,7 @@ $ oc -n openshift-ingress describe deploy/router-default | grep -e Liveness: -e 
     Readiness:  http-get http://:1936/healthz/ready delay=0s timeout=5s period=10s #success=1 #failure=3
 ```
 
-# Configuring HAProxy reload interval
+# Configure HAProxy reload interval
 
 You can configure the HAProxy reload interval, so that when HAProxy reloads it generates a new process that handles new connections by using the updated configuration.
 

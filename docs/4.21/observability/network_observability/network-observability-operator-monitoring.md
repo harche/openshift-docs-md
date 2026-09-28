@@ -36,7 +36,7 @@ A health alert banner that directs you to the dashboard can appear on the **Netw
 
 - The `NetObservFlowsDropped` alert occurs if the Network Observability eBPF agent hashmap table is full, and the eBPF agent processes flows with degraded performance, or when the capacity limiter is triggered.
 
-# Viewing health information
+# View health information
 
 View the **Netobserv/Health** dashboard within the OpenShift Container Platform web console to monitor the health status and resource usage of the Network Observability Operator and its components.
 
@@ -50,7 +50,7 @@ View the **Netobserv/Health** dashboard within the OpenShift Container Platform 
 
 3.  View the metrics about the health of the Operator that are displayed on the page.
 
-## Disabling health alerts
+## Disable health alerts
 
 Disable specific health alerts, such as `NetObservLokiError` or `NetObservNoFlows`, by editing the `FlowCollector` resource and using the `spec.processor.metrics.disableAlerts` specification.
 
@@ -78,7 +78,7 @@ Disable specific health alerts, such as `NetObservLokiError` or `NetObservNoFlow
     `spec.processor.metrics.disableAlerts`
     Specifies one or more types of alerts to disable.
 
-# Creating Loki rate limit alerts for the NetObserv dashboard
+# Create Loki rate limit alerts for the NetObserv dashboard
 
 Create a custom `AlertingRule` resource based on Loki metrics to monitor for and trigger alerts when the Loki ingestion rate limits are reached, indicated by HTTP 429 errors.
 
@@ -115,7 +115,7 @@ You can create custom alerting rules for the **Netobserv** dashboard metrics to 
 
 3.  Click **Create** to apply the configuration file to the cluster.
 
-# Using the eBPF agent alert
+# Use the eBPF agent alert
 
 Resolve the `NetObservAgentFlowsDropped` alert, which occurs when the eBPF agent hashmap is full, by increasing the `spec.agent.ebpf.cacheMaxFlows` value in the `FlowCollector` custom resource.
 

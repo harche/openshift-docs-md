@@ -239,7 +239,7 @@ See "OpenShift Virtualization supported limits" in the Additional resources sect
 
 - [Configuring a downward metrics device](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-configuring-downward-metrics_virt-exposing-downward-metrics)
 
-- [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
+- [Instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
 
 - [Networking overview](../../virt/vm_networking/virt-networking-overview.xml#virt-networking)
 

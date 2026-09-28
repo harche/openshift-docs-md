@@ -464,7 +464,7 @@ You must have SSH access to the cluster. Without SSH access, you cannot disable 
     3.  Disable the `kubelet` service by running the following command:
 
         ``` terminal
-        $ sudo systemctl disable kubelet.service
+        $ sudo systemctl disable kubelet.service --now
         ```
 
 2.  Exit every SSH session.
@@ -475,12 +475,12 @@ You must have SSH access to the cluster. Without SSH access, you cannot disable 
     $ oc get nodes
     ```
 
-4.  Restore your cluster to an earlier cluster state using an etcd backup. For more information, see "Restoring to an earlier cluster state".
+4.  Restore your cluster to an earlier cluster state by using an etcd backup. For more information, see "Restoring to an earlier cluster state".
 
 5.  After you restore the cluster and the API responds, use SSH to connect to each nonrecovery node and enable the `kubelet` service by running the following command:
 
     ``` terminal
-    $ sudo systemctl enable kubelet.service
+    $ sudo systemctl enable kubelet.service --now
     ```
 
 6.  Exit every SSH session.

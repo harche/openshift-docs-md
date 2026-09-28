@@ -6,8 +6,6 @@ File Integrity Operator is not supported on HCP clusters.
 
 </div>
 
-# Additional resources
-
 - [File Integrity Operator release notes](../../security/file_integrity_operator/file-integrity-operator-release-notes.xml#file-integrity-operator-release-notes)
 
 - [File Integrity Operator support](../../security/file_integrity_operator/fio-support.xml#fio-support)

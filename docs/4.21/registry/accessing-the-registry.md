@@ -24,7 +24,7 @@ After you logged in to the registry by using the `podman login` command, you can
 
   - Your cluster must have an existing project where the images can be pushed to.
 
-# Accessing the registry directly from the cluster
+# Access the registry directly from the cluster
 
 You can access the registry from inside the cluster by using internal routes.
 
@@ -100,7 +100,7 @@ You can access the registry from inside the cluster by using internal routes.
 
         </div>
 
-# Checking the status of the registry pods
+# Check the status of the registry pods
 
 As a cluster administrator, you can list the image registry pods running in the `openshift-image-registry` project and check their status.
 
@@ -123,7 +123,7 @@ As a cluster administrator, you can list the image registry pods running in the 
   node-ca-zvt9q 1/1 Running 0 74m
   ```
 
-# Viewing registry logs
+# View registry logs
 
 You can view the logs for the registry by using the `oc logs` command.
 
@@ -141,7 +141,7 @@ You can view the logs for the registry by using the `oc logs` command.
   2015-05-01T19:48:36.303439084Z time="2015-05-01T19:48:36Z" level=info msg="listening on :5000" instance.id=9ed6c43d-23ee-453f-9a4b-031fea646002
   ```
 
-# Accessing registry metrics
+# Access registry metrics
 
 The OpenShift Container Registry provides an endpoint for [Prometheus metrics](https://prometheus.io/docs/introduction/overview/). Prometheus is a stand-alone, open source systems monitoring and alerting toolkit. The metrics get exposed at the ***/extensions/v2/metrics*** path of the registry endpoint. You can access the metrics by running a metrics query that includes a cluster role.
 

@@ -26,7 +26,7 @@ In earlier versions of OpenShift Container Platform, the Performance Addon Opera
 
 </div>
 
-# Accessing an example Node Tuning Operator specification
+# Access an example Node Tuning Operator specification
 
 Use this process to access an example Node Tuning Operator specification.
 

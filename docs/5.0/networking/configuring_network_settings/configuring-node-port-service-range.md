@@ -14,7 +14,7 @@ If you expand the node port range and OpenShift CLI (`oc`) stops working because
 
 </div>
 
-# Expanding the node port range
+# Expand the node port range
 
 To expand the node port range for your OpenShift Container Platform cluster after installation, you can use the `oc patch` command to update the `serviceNodePortRange` parameter. You can expand the range on either side, but you cannot shrink it after installation.
 

@@ -257,7 +257,7 @@ You can diagnose and resolve DPU hosted cluster issues, including CSR approval f
     $ oc cluster-info
     ```
 
-    If the hosted cluster API server is not accessible, check the hosted control planes status on the management cluster.
+    If the hosted cluster API server is not accessible, check the hosted control plane status on the management cluster.
 
 2.  Switch to the management cluster context and verify that the hosted control plane components are running:
 

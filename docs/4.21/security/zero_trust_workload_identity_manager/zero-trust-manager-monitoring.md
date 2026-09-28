@@ -1,6 +1,6 @@
 Track the performance of the Zero Trust Workload Identity Manager by collecting metrics. Configure monitoring to collect metrics from the Security Production Identity Framework for Everyone (SPIRE) Server and SPIRE Agent components.
 
-# Enabling user workload monitoring
+# Enable user workload monitoring
 
 Enable user workload monitoring to track metrics for your user-defined projects. Configuring this feature allows you to observe application performance and helps you maintain the health of your services.
 
@@ -50,7 +50,7 @@ The status of the pods such as `prometheus-operator`, `prometheus-user-workload`
 
 - [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
 
-# Configuring metrics collection for SPIRE Server by using a ServiceMonitor
+# Configure metrics collection for SPIRE Server by using a ServiceMonitor
 
 To collect custom metrics from the SPIRE Server, create a ServiceMonitor custom resource (CR). This configuration enables the Prometheus Operator to scrape metrics from the default endpoint, which helps you monitor your SPIRE deployment.
 
@@ -119,7 +119,7 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 
 - [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
-# Configuring metrics collection for SPIRE Agent by using a Service Monitor
+# Configure metrics collection for SPIRE Agent by using a Service Monitor
 
 Configure metrics collection for the SPIRE Agent by creating a `ServiceMonitor` custom resource (CR). This enables the Prometheus Operator to collect custom metrics that the SPIRE Agent exposes on the default port.
 
@@ -186,7 +186,7 @@ The SPIRE Agent operand exposes metrics by default on port `9402` at the `/metri
 
 3.  Confirm that the **Status** column shows `Up` for the `spire-agent-metrics` entry.
 
-# Configuring metrics collection for the Operator by using a ServiceMonitor
+# Configure metrics collection for the Operator by using a ServiceMonitor
 
 The Zero Trust Workload Identity Manager exposes metrics by default on port 8443 at the `/metrics` service endpoint. You can configure metrics collection for the Operator by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
 
@@ -372,7 +372,7 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 
 - [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
-# Querying metrics for the Zero Trust Workload Identity Manager
+# Query metrics for the Zero Trust Workload Identity Manager
 
 Query SPIRE Agent and SPIRE Server metrics using the OpenShift Container Platform web console or the command line. This helps you monitor the performance of SPIRE components that match specific job labels.
 

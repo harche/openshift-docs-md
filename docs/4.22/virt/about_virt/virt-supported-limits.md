@@ -8,12 +8,14 @@ Maximums are based on a single cluster of the largest possible size for a OpenSh
 
 Maximums apply to virtual machines (VMs) running on OpenShift Virtualization and are subject to the limits specified in "Virtualization limits for Red Hat Enterprise Linux with KVM".
 
-| Objective (per VM)  | Tested limit | Theoretical limit |
-|---------------------|--------------|-------------------|
-| Virtual CPUs        | 255 vCPUs    | 255 vCPUs         |
-| Memory              | 6 TB         | 16 TB             |
-| Single disk size    | 100 TB       | 100 TB            |
-| Hot-pluggable disks | 255 disks    | N/A               |
+| Objective (per VM)      | Tested limit | Theoretical limit |
+|-------------------------|--------------|-------------------|
+| Virtual CPUs            | 255 vCPUs    | 255 vCPUs         |
+| Memory                  | 6 TB         | 16 TB             |
+| Single disk size        | 100 TB       | 100 TB            |
+| Hot-pluggable disks     | 255 disks    | N/A               |
+| Attached disks (virtio) | 160 disks    | 170 disks         |
+| Attached disks (SCSI)   | 200 disks    | N/A               |
 
 <div class="note">
 

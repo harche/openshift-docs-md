@@ -16,7 +16,7 @@ Extended resources cannot be overcommitted, so request and limit must be equal i
 
 </div>
 
-# Enabling workload partitioning
+# Enable workload partitioning
 
 To partition cluster management pods into a specified CPU affinity, enable workload partitioning. This configuration ensures that management pods operate within the reserved CPU limits defined in your Performance Profile.
 

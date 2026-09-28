@@ -37,7 +37,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
 3.  Extract the reference and example CRs from the `ztp-site-generate` container image by running the following command:
 
     ``` terminal
-    $ podman run --log-driver=none --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 extract /home/ztp --tar | tar x -C ./out
+    $ podman run --log-driver=none --rm registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17 extract /home/ztp --tar | tar x -C ./out
     ```
 
     The `./out` directory contains the reference `PolicyGenerator` and `ClusterInstance` CRs in the `out/argocd/example/` folder.
@@ -256,7 +256,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
     2.  Generate the configuration CRs by running the following command:
 
         ``` terminal
-        $ podman run -it --rm -v `pwd`/out/argocd/example/policygentemplates:/resources:Z -v `pwd`/ref:/output:Z,U registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17 generator config -N . /output
+        $ podman run -it --rm -v `pwd`/out/argocd/example/policygentemplates:/resources:Z -v `pwd`/ref:/output:Z,U registry.redhat.io/openshift5/ztp-site-generate-rhel9:v4.17 generator config -N . /output
         ```
 
         The command generates example group and cluster-specific configuration CRs in the `./ref` folder. You can apply these CRs to the cluster after installation is complete.

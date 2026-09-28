@@ -308,7 +308,7 @@ You can tune hosted cluster node performance on RHOSP for high-performance workl
 
 CNFs are designed to run in cloud-native environments. They can provide network services such as routing, firewalling, and load balancing. You can configure the node pool to use high-performance computing and networking devices to run CNFs.
 
-## Tuning performance for hosted cluster nodes
+## Tune performance for hosted cluster nodes
 
 To run high-performance workloads on hosted control planes on Red Hat OpenStack Platform (RHOSP), you can create a performance profile and deploy a tuned `NodePool` resource.
 
@@ -449,7 +449,7 @@ To run high-performance workloads on hosted control planes on Red Hat OpenStack
 
         </div>
 
-## Enabling the SR-IOV Network Operator in a hosted cluster
+## Enable the SR-IOV Network Operator in a hosted cluster
 
 To manage the SR-IOV-capable devices on nodes deployed by the `NodePool` resource, you can enable the SR-IOV Network Operator.
 

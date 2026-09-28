@@ -1,6 +1,6 @@
 Perform diagnostic actions to troubleshoot common issues related to the Network Observability Operator and its components.
 
-# Using the must-gather tool
+# Use the must-gather tool
 
 Use the must-gather tool to collect diagnostic information about Network Observability Operator resources, including pod logs and configuration details, to assist in troubleshooting cluster issues.
 
@@ -14,7 +14,7 @@ Use the must-gather tool to collect diagnostic information about Network Observa
      --image=quay.io/netobserv/must-gather
     ```
 
-# Configuring network traffic menu entry in the OpenShift Container Platform console
+# Configure network traffic menu entry in the OpenShift Container Platform console
 
 Restore a missing network traffic menu entry in the **Observe** menu of the OpenShift Container Platform console by manually registering the console plugin in the `FlowCollector` resource and the console operator configuration.
 
@@ -214,7 +214,7 @@ You can increase memory limits for the Network Observability Operator by editing
 
     - This value should not be edited, but note that it changes depending on the most current release of the Operator.
 
-# Running custom queries to Loki
+# Run custom queries to Loki
 
 Troubleshoot network flow data by running custom Loki queries to retrieve available labels or filter logs by specific criteria, such as source namespaces, using the command-line interface.
 
@@ -242,7 +242,7 @@ These examples use the `netobserv` namespace for the Network Observability Opera
 
 - [Resource considerations](../../observability/network_observability/configuring-operator.xml#network-observability-resources-table_network_observability)
 
-# Troubleshooting Loki ResourceExhausted error
+# Troubleshoot Loki ResourceExhausted error
 
 Resolve Loki `ResourceExhausted` errors by adjusting the `batchSize` in the `FlowCollector` resource or the maximum message size settings in your Loki configuration to ensure flow data stays within memory limits.
 

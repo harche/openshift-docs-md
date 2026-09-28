@@ -6,7 +6,7 @@ Currently, only Red Hat Enterprise Linux CoreOS (RHCOS) nodes are supported.
 
 </div>
 
-# Creating the FileIntegrity custom resource
+# Create the FileIntegrity custom resource
 
 An instance of a `FileIntegrity` custom resource (CR) represents a set of continuous file integrity scans for one or more nodes.
 
@@ -81,7 +81,7 @@ For all-in-one control plane and worker nodes, separate `FileIntegrity` CRs that
   worker-fileintegrity   14s
   ```
 
-# Checking the FileIntegrity custom resource status
+# Check the FileIntegrity custom resource status
 
 The `FileIntegrity` custom resource (CR) reports its status through the `.status.phase` subresource.
 
@@ -111,7 +111,7 @@ The `FileIntegrity` CR reports one of the following phases during its lifecycle.
 
 - `Initializing` - The phase when the AIDE database is being reinitialized.
 
-# Understanding the FileIntegrityNodeStatuses object
+# Understand the FileIntegrityNodeStatuses object
 
 The scan results of the `FileIntegrity` CR are reported in another object called `FileIntegrityNodeStatuses`.
 
@@ -338,7 +338,7 @@ Compressed logs are indicated by the presence of a `file-integrity.openshift.io/
 
 </div>
 
-# Understanding events
+# Understand events
 
 Transitions in the status of the `FileIntegrity` and `FileIntegrityNodeStatus` objects are logged by *events*. The creation time of the event reflects the latest transition, such as `Initializing` to `Active`, and not necessarily the latest scan result. However, the newest event always reflects the most recent status.
 

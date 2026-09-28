@@ -1831,7 +1831,7 @@ Redeploy the monitoring stack to infrastructure nodes to reduce your subscriptio
 
     The component from the deleted pod is re-created on the `infra` node.
 
-## Moving the Vertical Pod Autoscaler Operator components
+## Move the Vertical Pod Autoscaler Operator components
 
 You can move the VPA Operator and component pods to infrastructure nodes by adding a node selector to the VPA subscription and the `VerticalPodAutoscalerController` CR.
 
@@ -2033,7 +2033,7 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
   vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0          5m37s   10.129.2.21   c416-tfsbj-infra-eastus1-lrgj8   <none>           <none>
   ```
 
-## Moving the Cluster Resource Override Operator pods
+## Move the Cluster Resource Override Operator pods
 
 By default, the Cluster Resource Override Operator installation process creates an Operator pod and two Cluster Resource Override pods on nodes in the `clusterresourceoverride-operator` namespace. You can move these pods to other nodes, such as infrastructure nodes, as needed.
 

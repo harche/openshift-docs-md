@@ -318,6 +318,6 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
 
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
-- [Mirroring an image set to a mirror registry](../../disconnected/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
+- [Mirroring an image set to a mirror registry](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)

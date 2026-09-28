@@ -55,6 +55,13 @@ Virtual machine (VM) owners can create VMs from the OpenShift Virtualization clu
 
 [CNV-73392](https://redhat.atlassian.net/browse/CNV-73392)
 
+<!-- -->
+
+Groups label for organizing virtual machines (Technology Preview)
+The label for organizing and grouping virtual machines (VMs) in the web console is **Groups**, which more accurately reflects the functionality. This capability is a Technology Preview feature. For more information, see [Organize virtual machines by using the web console](../../virt/managing_vms/virt-list-vms.xml#virt-organize-vms-web_virt-list-vms).
+
+[CNV-91926](https://redhat.atlassian.net/browse/CNV-91926)
+
 # Fixed issues
 
 # Known issues

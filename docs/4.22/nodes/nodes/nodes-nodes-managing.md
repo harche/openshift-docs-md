@@ -396,7 +396,7 @@ To control the number of images that can be pulled simultaneously, use a kubelet
 
 To force serial image pulls, use a kubelet configuration to set `serializeImagePulls` field to `true`.
 
-## Configuring parallel container image pulls
+## Configure parallel container image pulls
 
 You can control the number of images that can be pulled by your workload simultaneously by using a kubelet configuration. You can set a maximum number of images that can be pulled or force workloads to pull images one at a time.
 

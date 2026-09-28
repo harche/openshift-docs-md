@@ -67,7 +67,7 @@ spec:
       statsPort: 1936
 ```
 
-## Configuring the Ingress Controller endpoint publishing scope to Internal
+## Configure the Ingress Controller endpoint publishing scope to Internal
 
 As a cluster administrator, when you install a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`. You can change an `External` scoped Ingress Controller to `Internal`.
 
@@ -97,7 +97,7 @@ As a cluster administrator, when you install a new cluster without specifying th
 
     If you delete the service, the Ingress Operator recreates it as `Internal`.
 
-## Configuring the Ingress Controller endpoint publishing scope to External
+## Configure the Ingress Controller endpoint publishing scope to External
 
 As an installation or post-installation task, a cluster administrator can configure the Ingress Controller to `Internal`. Additionally, a cluster administrator can change an `Internal` Ingress Controller to `External`.
 
@@ -137,7 +137,7 @@ Changing the scope can cause disruption to Ingress traffic, potentially for seve
 
     If you delete the service, the Ingress Operator recreates it as `External`.
 
-## Adding a single NodePort service to an Ingress Controller
+## Add a single NodePort service to an Ingress Controller
 
 To prevent port conflicts, instead of creating a `NodePort`-type `Service` for each project, create a custom Ingress Controller that can use the `NodePortService` endpoint publishing strategy.
 

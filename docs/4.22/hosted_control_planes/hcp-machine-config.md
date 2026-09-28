@@ -16,7 +16,7 @@ In OpenShift Container Platform 4.18 or later, the default container runtime for
 
 </div>
 
-# Configuring node pools for hosted control planes
+# Configure node pools for hosted control planes
 
 In hosted control planes, you can configure node pools by creating a `MachineConfig` object inside of a config map in the management cluster.
 
@@ -75,7 +75,7 @@ In hosted control planes, you can configure node pools by creating a `MachineCon
 
     Replace `<configmap_name>` with the name of your config map.
 
-# Referencing the kubelet configuration in node pools
+# Reference the kubelet configuration in node pools
 
 To reference your kubelet configuration in node pools, you add the kubelet configuration in a config map and then apply the config map in the `NodePool` resource.
 
@@ -139,7 +139,7 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
     # ...
     ```
 
-# Configuring node tuning in a hosted cluster
+# Configure node tuning in a hosted cluster
 
 To set node-level tuning on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure node tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
 
@@ -278,7 +278,7 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     vm.dirty_ratio = 55
     ```
 
-# Deploying the SR-IOV Operator for hosted control planes
+# Deploy the SR-IOV Operator for hosted control planes
 
 After you configure and deploy your hosting service cluster, you can create a subscription to the SR-IOV Operator on a hosted cluster. The SR-IOV pod runs on worker machines rather than the control plane.
 
@@ -351,7 +351,7 @@ You must configure and deploy the hosted cluster on AWS.
     $ oc get pods -n openshift-sriov-network-operator
     ```
 
-# Configuring the NTP server for hosted clusters
+# Configure the NTP server for hosted clusters
 
 You can configure the Network Time Protocol (NTP) server for your hosted clusters by using Butane.
 
@@ -547,7 +547,7 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
 
 - [Creating a host inventory by using the command line interface](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html-single/clusters/index#create-host-inventory-cli)
 
-# Scaling down the data plane to zero
+# Scale down the data plane to zero
 
 If you are not using the hosted control plane, to save the resources and cost you can scale down a data plane to zero.
 
@@ -647,7 +647,7 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
   $ oc get nodepool -n <hosted_cluster_namespace> <nodepool_name> -ojsonpath='{.spec.nodeDrainTimeout}'
   ```
 
-# Scaling up and down workloads in a hosted cluster
+# Scale up and down workloads in a hosted cluster
 
 To scale up and down the workloads in your hosted cluster, you can use the `ScaleUpAndScaleDown` behavior. The compute nodes scale up when you add workloads and scale down when you delete workloads.
 
@@ -693,7 +693,7 @@ To scale up and down the workloads in your hosted cluster, you can use the `Scal
 
 - [Scaling a node pool (OpenShift Virtualization)](../hosted_control_planes/hcp-deploy/hcp-deploy-virt.xml#hcp-virt-scale-nodpool_hcp-deploy-virt)
 
-# Scaling up workloads in a hosted cluster
+# Scale up workloads in a hosted cluster
 
 To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` behavior.
 
@@ -822,7 +822,7 @@ This constraint ensures highly available platform Operators, such as ingress, co
 
 Tainted workload pools might use `spec.autoScaling.min: 0` because taints prevent system pods from scheduling on those nodes. Baseline non-tainted pools must retain enough minimum capacity to satisfy the cluster-wide constraint.
 
-## Configuring autoscaling to and from zero on hosted control planes node pools
+## Configure autoscaling to and from zero on hosted control planes node pools
 
 Configure a `NodePool` object to autoscale between zero and a maximum replica count on supported Amazon Web Services (AWS) or Azure hosted clusters. After configuration, verify the `AutoscalingEnabled` condition and validate scale-down and scale-up behavior.
 
@@ -1005,7 +1005,7 @@ Get familiar with the `NodePool` specification fields related to autoscaling, in
 | `--scale-from-zero-provider` | Provider used to fetch instance-type metadata on AWS and Azure. |
 | `--scale-from-zero-creds`    | Credentials for the scale-from-zero provider on AWS and Azure.  |
 
-# Setting the priority expander in a hosted cluster
+# Set the priority expander in a hosted cluster
 
 You can define the priority for your node pools and create high priority machines before low priority machines by using the priority expander in your hosted cluster.
 
@@ -1073,7 +1073,7 @@ You can define the priority for your node pools and create high priority machine
   $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
   ```
 
-# Balancing ignored labels in a hosted cluster
+# Balance ignored labels in a hosted cluster
 
 After you scale up your node pools, you can use `balancingIgnoredLabels` to evenly distribute the machines across node pools.
 

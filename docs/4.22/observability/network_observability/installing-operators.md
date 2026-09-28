@@ -30,7 +30,7 @@ Comparison of feature availability with and without Loki
 
 - [Export enriched network flow data](../../observability/network_observability/configuring-operator.xml#network-observability-enriched-flows_network_observability)
 
-# Installing the Loki Operator
+# Install the Loki Operator
 
 Install the supported Loki Operator version from the software catalog to enable the secure `LokiStack` instance, which provides automatic in-cluster authentication and authorization for network observability.
 
@@ -60,7 +60,7 @@ To uninstall Loki, refer to the uninstallation process that corresponds with the
 
 </div>
 
-## Creating a secret for Loki storage
+## Create a secret for Loki storage
 
 Create a secret with cloud storage credentials, such as for Amazon Web Services (AWS), to allow the Loki Operator to access the necessary object store for log persistence.
 
@@ -110,7 +110,7 @@ The Loki Operator supports a few log storage options, such as AWS S3, Google Clo
 
 - After you create the secret, you view the secret listed under **Workloads** → **Secrets** in the web console.
 
-## Creating a LokiStack custom resource
+## Create a LokiStack custom resource
 
 Deploy the `LokiStack` custom resource using the web console or OpenShift CLI (`oc`), ensuring you configure the correct namespace, deployment size, and secret name for Loki object storage.
 
@@ -334,7 +334,7 @@ Therefore, you can consider configuring the following options when creating the 
 
 - [Network observability architecture](../../observability/network_observability/understanding-network-observability-operator.xml#network-observability-architecture_nw-network-observability-operator)
 
-# Migrating removed stored versions of the FlowCollector CRD
+# Migrate removed stored versions of the FlowCollector CRD
 
 Manually remove the deprecated `v1alpha1` version from the `FlowCollector` custom resource definition (CRD) `storedVersion` list to prevent upgrade errors and successfully migrate to Network Observability Operator 1.6.
 

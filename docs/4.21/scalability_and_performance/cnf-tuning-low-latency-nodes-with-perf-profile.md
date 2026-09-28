@@ -52,7 +52,7 @@ Using the wrapper script abstracts some of the more granular Podman tasks into a
 
 </div>
 
-## Creating a machine config pool to target nodes for performance tuning
+## Create a machine config pool to target nodes for performance tuning
 
 For multi-node clusters, you can define a machine config pool (MCP) to identify the target nodes that you want to configure with a performance profile.
 
@@ -147,7 +147,7 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
   worker-cnf   rendered-worker-cnf-168f52b168f151e4f853259729b6azc4   True      False      False      1              1                   1                     0                      73s
   ```
 
-## Gathering data about your cluster for the PPC
+## Gather data about your cluster for the PPC
 
 The Performance Profile Creator (PPC) tool requires `must-gather` data. As a cluster administrator, run the `must-gather` command to capture information about your cluster.
 
@@ -183,7 +183,7 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
 
-## Running the Performance Profile Creator using Podman
+## Run the Performance Profile Creator using Podman
 
 As a cluster administrator, you can use Podman with the Performance Profile Creator (PPC) to create a performance profile.
 
@@ -396,7 +396,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     performanceprofile.performance.openshift.io/performance created
     ```
 
-## Running the Performance Profile Creator wrapper script
+## Run the Performance Profile Creator wrapper script
 
 The wrapper script simplifies the process of creating a performance profile with the Performance Profile Creator (PPC) tool. The script handles tasks such as pulling and running the required container image, mounting directories into the container, and providing parameters directly to the container through Podman.
 
@@ -1085,7 +1085,7 @@ For more information how combinations of power consumption and real-time setting
 
 - [Understanding workload hints](https://access.redhat.com/articles/7081587)
 
-# Configuring power saving for nodes that run colocated high and low priority workloads
+# Configure power saving for nodes that run colocated high and low priority workloads
 
 You can enable power savings for a node that has low priority workloads that are colocated with high priority workloads without impacting the latency or throughput of the high priority workloads. Power saving is possible without modifications to the workloads themselves.
 
@@ -1200,7 +1200,7 @@ Use this annotation only as a temporary fallback and is expected to be removed i
 
 </div>
 
-## Isolating exec processes from latency-sensitive workloads
+## Isolate exec processes from latency-sensitive workloads
 
 You can prevent `oc exec` and shell processes from interrupting latency-sensitive workloads by applying a `PerformanceProfile` to a node. The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` feature, which pins exec processes to a designated CPU so that your primary workload CPUs remain undisturbed.
 
@@ -1373,7 +1373,7 @@ You can prevent `oc exec` and shell processes from interrupting latency-sensitiv
 
         In this example, while the container has access to CPUs 4-5, the `ExecCPUAffinity` logic has pinned the exec process specifically to CPU 4. This confirms the pinning logic is active and that your primary workload’s exclusive CPUs remain undisturbed.
 
-## Disabling CPU isolation for executed processes
+## Disable CPU isolation for executed processes
 
 If you have a high-performance workload that requires executed processes to use any available core rather than being pinned to the first core, you can opt out of the default behavior by following this procedure.
 
@@ -1434,7 +1434,7 @@ Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation t
         performance.openshift.io/exec-cpu-affinity: "disable"
     ```
 
-## Troubleshooting ExecCPUAffinity configuration
+## Troubleshoot ExecCPUAffinity configuration
 
 If a process initiated by using `oc exec` is not being pinned correctly despite the pod meeting the Guaranteed QoS and integer CPU requirements, use the following procedure to verify the configuration at the node level.
 
@@ -1562,7 +1562,7 @@ To ensure that housekeeping tasks and workloads do not interfere with each other
 
 - `reserved` - Specifies the CPUs for the cluster and operating system housekeeping duties. Threads in the `reserved` group are often busy. Do not run latency-sensitive applications in the `reserved` group. Latency-sensitive applications run in the `isolated` group.
 
-# Partitioning CPUs for infra and application containers
+# Partition CPUs for infra and application containers
 
 By partitioning CPUs, you can prevent noisy processes from interfering with latency-sensitive processes by separating the processes from each other.
 
@@ -1593,7 +1593,7 @@ By partitioning CPUs, you can prevent noisy processes from interfering with late
     `spec.nodeSelector`
     Specifies a node selector to apply the performance profile to specific nodes. Optional parameter.
 
-# Configuring Hyper-Threading for a cluster
+# Configure Hyper-Threading for a cluster
 
 To configure Hyper-Threading for an OpenShift Container Platform cluster, set the CPU threads in the performance profile to the same cores that are configured for the reserved or isolated CPU pools.
 
@@ -1679,7 +1679,7 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
 
     </div>
 
-# Disabling Hyper-Threading for low latency applications
+# Disable Hyper-Threading for low latency applications
 
 When configuring clusters for low latency processing, consider whether you want to disable Hyper-Threading before you deploy the cluster.
 
@@ -1802,7 +1802,7 @@ Some drivers use `managed_irqs`, whose affinity is managed internally by the ker
 
 - [Affinity of managed interrupts cannot be changed even if they target isolated CPU](https://access.redhat.com/solutions/4819541)
 
-## Configuring node interrupt affinity
+## Configure node interrupt affinity
 
 Configure a cluster node for IRQ dynamic load balancing to control which cores can receive device interrupt requests (IRQ).
 
@@ -1838,7 +1838,7 @@ Configure a cluster node for IRQ dynamic load balancing to control which cores c
 
 By configuring memory page sizes, system administrators can implement more efficient memory management on a specific node to suit workload requirements. The Node Tuning Operator provides a method for configuring huge pages and kernel page sizes by using a performance profile.
 
-## Configuring kernel page sizes
+## Configure kernel page sizes
 
 Use the `kernelPageSize` specification in a performance profile to configure the kernel page size on a specific node. Specify larger kernel page sizes for memory-intensive, high-performance workloads.
 
@@ -1923,7 +1923,7 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
 
         65536
 
-## Configuring huge pages
+## Configure huge pages
 
 Because nodes must pre-allocate huge pages used in an OpenShift Container Platform cluster, use the Node Tuning Operator to allocate huge pages on a specific node.
 
@@ -2007,7 +2007,7 @@ OpenShift Container Platform provides a method for creating and allocating huge 
    hugepages-###:  ###
   ```
 
-## Allocating multiple huge page sizes
+## Allocate multiple huge page sizes
 
 You can request huge pages with different sizes under the same container. By doing this task, you can define more complicated pods consisting of containers with different huge page size needs.
 
@@ -2038,7 +2038,7 @@ The following example, shows you how to define sizes `1G` and `2M`. The Node Tun
 
 The Node Tuning Operator facilitates reducing NIC queues for enhanced performance. Adjustments are made using the performance profile, allowing customization of queues for different network devices.
 
-## Adjusting the NIC queues with the performance profile
+## Adjust the NIC queues with the performance profile
 
 You can use a performance profile to adjust the queue count for each network device. By using the Node Tuning Operator, you can reduce NIC queues for enhanced performance.
 

@@ -322,7 +322,7 @@ The following default projects are considered highly privileged: `default`, `kub
 
 </div>
 
-## Getting information about image streams
+## Get information about image streams
 
 To efficiently manage and monitor your image streams in OpenShift Container Platform, retrieve information about their versions. You can get general information about the image stream and detailed information about all the tags it is pointing to, ensuring your deployed applications rely on the correct image versions.
 
@@ -432,7 +432,7 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   linux/s390x
   ```
 
-## Adding tags to an image stream
+## Add tags to an image stream
 
 To accurately manage and track specific versions of your container images, add tags to your image streams within OpenShift Container Platform, This ensures reliable referencing and deployment throughout your environment.
 
@@ -522,7 +522,7 @@ To enable OpenShift Container Platform resources to track and consume container 
 
   If the external image is secured, you must create a secret with credentials for accessing that registry.
 
-## Updating image stream tags
+## Update image stream tags
 
 To maintain flexibility and consistency in deployment definitions, update an image stream tag to reflect a different tag in OpenShift Container Platform. Specifically, you can update a tag to reflect another tag in an image stream, which is essential for managing image versions effectively.
 
@@ -548,7 +548,7 @@ To maintain flexibility and consistency in deployment definitions, update an ima
   Tag python:latest set to python@sha256:438208801c4806548460b27bd1fbcb7bb188273d13871ab43f.
   ```
 
-## Removing image stream tags
+## Remove image stream tags
 
 To maintain control over your image history and simplify management within OpenShift Container Platform, you can remove old tags from an image stream. This action helps ensure that your resources track only the current and necessary image references.
 
@@ -578,7 +578,7 @@ To maintain control over your image history and simplify management within OpenS
 
 - [Remove deprecated image stream tags from the Cluster Samples Operator](../openshift_images/configuring-samples-operator.xml#images-samples-operator-deprecated-image-stream_configuring-samples-operator)
 
-## Configuring periodic importing of image stream tags
+## Configure periodic importing of image stream tags
 
 To maintain up-to-date image definitions from an external container image registry, configure periodic importing of image stream tags. This process allows you to quickly re-import images for critical security updates by using the `--scheduled` flag.
 
@@ -685,7 +685,7 @@ To avoid this limitation, you can use the manifest list by tag or by digest inst
 
   </div>
 
-### Configuring periodic importing of manifest lists
+### Configure periodic importing of manifest lists
 
 To maintain up-to-date image references for complex, multi-architecture images, configure periodic importing of manifest lists. To periodically re-import a manifest list, you can use the `--scheduled` flag, ensuring your image stream tracks the latest versions from external registries.
 
@@ -696,7 +696,7 @@ To maintain up-to-date image references for complex, multi-architecture images, 
   --import-mode='PreserveOriginal' --scheduled=true
   ```
 
-### Configuring SSL/TLS when importing manifest lists
+### Configure SSL/TLS when importing manifest lists
 
 To control connection security and access policies for manifest lists sourced from external repositories, configure SSL/TLS settings during image importing. To configure SSL/TLS when importing a manifest list, you can use the `--insecure` flag to bypass standard certificate validation requirements if necessary.
 
@@ -707,7 +707,7 @@ To control connection security and access policies for manifest lists sourced fr
   --import-mode='PreserveOriginal' --insecure=true
   ```
 
-## Specifying architecture for --import-mode
+## Specify architecture for --import-mode
 
 To control the architecture of your imported images and ensure proper deployment, use the `--import-mode=` flag. You can swap your imported image stream between multi-architecture and single architecture by excluding or including the `--import-mode=` flag as needed.
 

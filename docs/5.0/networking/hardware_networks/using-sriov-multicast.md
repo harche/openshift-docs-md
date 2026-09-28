@@ -12,7 +12,7 @@ When using additional SR-IOV interfaces for multicast:
 
 - The physical network which connects the SR-IOV interfaces decides the multicast routing and topology, which is not controlled by OpenShift Container Platform.
 
-# Configuring an SR-IOV interface for multicast
+# Configure an SR-IOV interface for multicast
 
 The following procedure creates an example SR-IOV interface for multicast.
 
