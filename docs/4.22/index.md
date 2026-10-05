@@ -133,6 +133,7 @@
   - [Installing a cluster on Google Cloud into an existing VPC](installing/installing_gcp/installing-gcp-vpc.md)
   - [Installing a cluster on Google Cloud into a shared VPC](installing/installing_gcp/installing-gcp-shared-vpc.md)
   - [Installing a private cluster on Google Cloud](installing/installing_gcp/installing-gcp-private.md)
+  - [Installing a cluster on Google Cloud Dedicated](installing/installing_gcp/installing-gcp-dedicated.md)
   - [Installing a cluster on Google Cloud using Infrastructure Manager templates](installing/installing_gcp/installing-gcp-user-infra.md)
   - [Installing a cluster into a shared VPC on Google Cloud using Infrastructure Manager templates](installing/installing_gcp/installing-gcp-user-infra-vpc.md)
   - [Installing a cluster on Google Cloud in a disconnected environment with user-provisioned infrastructure](installing/installing_gcp/installing-restricted-networks-gcp.md)

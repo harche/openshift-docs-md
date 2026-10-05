@@ -107,13 +107,13 @@ It is best to avoid running `sshd` in your image. You can use the `podman exec` 
 
 ### Use volumes for persistent data
 
-Images use a [volume](https://docs.docker.com/reference/builder/#volume) for persistent data. This way OpenShift Container Platform mounts the network storage to the node running the container, and if the container moves to a new node the storage is reattached to that node. By using the volume for all persistent storage needs, the content is preserved even if the container is restarted or moved. If your image writes data to arbitrary locations within the container, that content could not be preserved.
+Images use a *volume* for persistent data. This way OpenShift Container Platform mounts the network storage to the node running the container, and if the container moves to a new node the storage is reattached to that node. By using the volume for all persistent storage needs, the content is preserved even if the container is restarted or moved. If your image writes data to arbitrary locations within the container, that content could not be preserved.
 
 All data that needs to be preserved even after the container is destroyed must be written to a volume. Container engines support a `readonly` flag for containers, which can be used to strictly enforce good practices about not writing data to ephemeral storage in a container. Designing your image around that capability now makes it easier to take advantage of it later.
 
 Explicitly defining volumes in your `Dockerfile` makes it easy for consumers of the image to understand what volumes they must define when running your image.
 
-See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/) for more information on how volumes are used in OpenShift Container Platform.
+See the "Kubernetes documentation" for more information on how volumes are used in OpenShift Container Platform.
 
 <div class="note">
 
@@ -121,13 +121,19 @@ Even with persistent volumes, each instance of your image has its own volume, an
 
 </div>
 
+### Additional resources
+
+- [volume](https://docs.docker.com/reference/builder/#volume)
+
+- [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes)
+
 ## OpenShift Container Platform-specific guidelines
 
 Use the integrated image-building capabilities of OpenShift Container Platform to create, manage, and deploy reproducible container images directly from source code or Dockerfiles.
 
 ### Enable images for source-to-image (S2I)
 
-For images that are intended to run application code provided by a third party, such as a Ruby image designed to run Ruby code provided by a developer, you can enable your image to work with the [Source-to-Image (S2I)](https://github.com/openshift/source-to-image) build tool. S2I is a framework that makes it easy to write images that take application source code as an input and produce a new image that runs the assembled application as output.
+For images that are intended to run application code provided by a third party, such as a Ruby image designed to run Ruby code provided by a developer, you can enable your image to work with the Source-to-Image (S2I) build tool. S2I is a framework that makes it easy to write images that take application source code as an input and produce a new image that runs the assembled application as output.
 
 ### Support arbitrary user ids
 
@@ -210,6 +216,8 @@ Document example liveness and readiness probes that can be used with your image.
 
 Consider providing an example template with your image. A template gives users an easy way to quickly get your image deployed with a working configuration. Your template must include the liveness and readiness probes you documented with the image, for completeness.
 
+- [Source-to-Image (S2I)](https://github.com/openshift/source-to-image)
+
 # Include metadata in images
 
 Define comprehensive image metadata during creation to ensure OpenShift Container Platform correctly configures image runtime settings and tracks image lineage and compliance. This helps to provide a better experience for developers using your image.
@@ -222,11 +230,11 @@ This topic only defines the metadata needed by the current set of use cases. Add
 
 You can use the `LABEL` instruction in a `Dockerfile` to define image metadata. Labels are similar to environment variables in that they are key value pairs attached to an image or a container. Labels are different from environment variable in that they are not visible to the running application and they can also be used for fast look-up of images and containers.
 
-[Docker documentation](https://docs.docker.com/engine/reference/builder/#label) for more information on the `LABEL` instruction.
+For more information on the `LABEL` instruction, see "LABEL - Docker documentation".
 
 The label names are typically namespaced. The namespace is set accordingly to reflect the project that is going to pick up the labels and use them. For OpenShift Container Platform the namespace is set to `io.openshift` and for Kubernetes the namespace is `io.k8s`.
 
-See the [Docker custom metadata](https://docs.docker.com/engine/userguide/labels-custom-metadata) documentation for details about the format.
+See the "Docker custom metadata" documentation for details about the format.
 
 <table>
 <caption>Supported Metadata</caption>
@@ -271,6 +279,12 @@ LABEL io.openshift.min-cpu     4</code></pre></td>
 </table>
 
 Supported Metadata
+
+## Additional resources
+
+- [LABEL - Docker documentation](https://docs.docker.com/engine/reference/builder/#label)
+
+- [Docker custom metadata](https://docs.docker.com/engine/userguide/labels-custom-metadata)
 
 # Create images from source code with source-to-image
 

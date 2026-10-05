@@ -104,7 +104,7 @@ Configure OpenShift Container Platform to use an external OIDC identity provider
 
     ``` terminal
     $ oc create secret generic console-secret \
-        --from-literal=clientSecret=<secret_value> \//
+        --from-literal=clientSecret=<secret_value> \
         -n openshift-config
     ```
 
@@ -370,7 +370,7 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.groups.expression</code></p></td>
-<td style="text-align: left;"><p>Optional parameter (Technology Preview). CEL expression that produces a string or string array from JWT token claims.</p>
+<td style="text-align: left;"><p>Optional parameter. CEL expression that produces a string or string array from JWT token claims.</p>
 <p>Access claims by using the <code>claims</code> variable (for example, <code>claims.groups</code> or <code>claims.foo.bar</code> for nested claims).</p>
 <p>Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-1024 characters.</p></td>
 </tr>
@@ -403,7 +403,7 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.username.expression</code></p></td>
-<td style="text-align: left;"><p>Optional parameter (Technology Preview). CEL expression that produces a string value from JWT token claims. Must result in a single string.</p>
+<td style="text-align: left;"><p>Optional parameter. CEL expression that produces a string value from JWT token claims. Must result in a single string.</p>
 <p>Access claims by using the <code>claims</code> variable (for example, <code>claims.email</code> or <code>claims.foo.bar</code> for nested claims).</p>
 <p>Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-1024 characters.</p></td>
 </tr>
@@ -429,17 +429,17 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimValidationRules.cel</code></p></td>
-<td style="text-align: left;"><p>Optional parameter (Technology Preview). Required when <code>type</code> is <code>CEL</code>. Contains <code>expression</code> (CEL expression to evaluate) and <code>message</code> (error text).</p></td>
+<td style="text-align: left;"><p>Optional parameter. Required when <code>type</code> is <code>CEL</code>. Contains <code>expression</code> (CEL expression to evaluate) and <code>message</code> (error text).</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>claimValidationRules.cel.expression</code></p></td>
-<td style="text-align: left;"><p>Technology Preview. CEL expression that validates token claims. Must evaluate to <code>true</code> for authentication to succeed.</p>
+<td style="text-align: left;"><p>CEL expression that validates token claims. Must evaluate to <code>true</code> for authentication to succeed.</p>
 <p>Access claims by using the <code>claims</code> variable using dot notation (for example, <code>claims.sub</code> or <code>claims.foo.bar</code>).</p>
 <p>Constraints: 1-1024 characters.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimValidationRules.cel.message</code></p></td>
-<td style="text-align: left;"><p>Technology Preview. Error message displayed when validation fails. Constraints: 1-256 characters.</p></td>
+<td style="text-align: left;"><p>Error message displayed when validation fails. Constraints: 1-256 characters.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>claimValidationRules.requiredClaim</code></p></td>
@@ -458,7 +458,7 @@ The following table lists all available OIDC provider parameters for direct auth
 <td style="text-align: left;"><p>Validation rule type. Allowed values: <code>RequiredClaim</code> and <code>CEL</code>.</p>
 <ul>
 <li><p><code>RequiredClaim</code> - Validates that the JWT contains the required claim with the required value</p></li>
-<li><p><code>CEL</code> (Technology Preview) - Validates the JWT against a CEL expression</p></li>
+<li><p><code>CEL</code> - Validates the JWT against a CEL expression</p></li>
 </ul></td>
 </tr>
 <tr class="even">
@@ -471,7 +471,7 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>issuer.discoveryURL</code></p></td>
-<td style="text-align: left;"><p>Optional parameter (Technology Preview). Custom OIDC discovery endpoint URL. Must be a valid HTTPS URL and differ from <code>issuer.issuerURL</code>.</p>
+<td style="text-align: left;"><p>Optional parameter. Custom OIDC discovery endpoint URL. Must be a valid HTTPS URL and differ from <code>issuer.issuerURL</code>.</p>
 <p>When not specified, OpenShift Container Platform constructs the discovery URL by using the standard OIDC format: <code>{issuerURL}/.well-known/openid-configuration</code>.</p></td>
 </tr>
 <tr class="odd">
@@ -523,7 +523,7 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>userValidationRules</code></p></td>
-<td style="text-align: left;"><p>Optional parameter (Technology Preview). Validation rules for user objects created from authenticated tokens. All rules must pass (AND operation).</p>
+<td style="text-align: left;"><p>Optional parameter. Validation rules for user objects created from authenticated tokens. All rules must pass (AND operation).</p>
 <p>Each rule contains <code>expression</code> (must evaluate to <code>true</code>) and <code>message</code> (error text).</p>
 <p>Access user by using the <code>user</code> variable: <code>user.username</code> (string), <code>user.groups</code> (array), <code>user.uid</code> (string), <code>user.extra</code> (map).</p></td>
 </tr>

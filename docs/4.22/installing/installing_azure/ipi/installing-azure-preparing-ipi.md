@@ -350,11 +350,11 @@ The OpenShift Container Platform installation program can use an existing Disk E
 
   8.  Repeat the above steps on all the nodes that run `encryptionAtHost`.
 
-<div class="note">
+      <div class="note">
 
-If you want to enable encryption for your host during cluster installation, specify the following parameters in the `install-config.yaml` file: \* `compute.platform.azure.encryptionAtHost` \* `controlPlane.platform.azure.encryptionAtHost` \* `platform.azure.defaultMachinePlatform.encryptionAtHost`
+      If you want to enable encryption for your host during cluster installation, specify the following parameters in the `install-config.yaml` file: \* `compute.platform.azure.encryptionAtHost` \* `controlPlane.platform.azure.encryptionAtHost` \* `platform.azure.defaultMachinePlatform.encryptionAtHost`
 
-</div>
+      </div>
 
 # Preparing an Azure Disk Encryption Set
 

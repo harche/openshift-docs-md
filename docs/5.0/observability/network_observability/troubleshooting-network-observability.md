@@ -166,7 +166,10 @@ Manually remove the part in the `interfaces` or `excludeInterfaces` that restric
             ebpf:
               interfaces: [ 'br-int', 'br-ex' ]
 
-    - Specifies the network interfaces.
+    where:
+
+    `spec.agent.ebpf.interfaces`
+    Specifies the network interfaces.
 
 # Network observability controller manager pod runs out of memory
 
@@ -210,9 +213,13 @@ You can increase memory limits for the Network Observability Operator by editing
       startingCSV: <network_observability_operator_latest_version>
     ```
 
-    - For example, you can increase the memory limit to `800Mi`.
+    where:
 
-    - This value should not be edited, but note that it changes depending on the most current release of the Operator.
+    `spec.config.resources.limits.memory`
+    Specifies the memory limit. For example, you can increase the memory limit to `800Mi`.
+
+    `spec.startingCSV`
+    Specifies the starting CSV. This value should not be edited, but note that it changes depending on the most current release of the Operator.
 
 # Run custom queries to Loki
 
@@ -307,9 +314,13 @@ You can update the LokiStack CRD with the `perStreamRateLimit` and `perStreamRat
       managementState: Managed
     ```
 
-    - The default value for `perStreamRateLimit` is `3`.
+    where:
 
-    - The default value for `perStreamRateLimitBurst` is `15`.
+    `spec.limits.global.ingestion.perStreamRateLimit`
+    Specifies the ingestion rate limit. The default value is `3`.
+
+    `spec.limits.global.ingestion.perStreamRateLimitBurst`
+    Specifies the ingestion rate limit burst. The default value is `15`.
 
 4.  Click **Save**.
 
@@ -339,9 +350,17 @@ If the data that you need isn’t available as a Prometheus metric, you can use 
 Configure Loki to improve the query performance
 If the problem persists, you can consider configuring Loki to improve the query performance. Some options depend on the installation mode you used for Loki, such as using the Operator and `LokiStack`, or `Monolithic` mode, or `Microservices` mode.
 
-- In `LokiStack` or `Microservices` modes, try [increasing the number of querier replicas](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-LokiComponentSpec).
+- In `LokiStack` or `Microservices` modes, try increasing the number of querier replicas. For more information, see "LokiComponentSpec".
 
-- Increase the [query timeout](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-QueryLimitSpec). You must also increase the Network Observability read timeout to Loki in the `FlowCollector` `spec.loki.readTimeout`.
+- Increase the query timeout. You must also increase the Network Observability read timeout to Loki in the `FlowCollector` `spec.loki.readTimeout`. For more information, see "QueryLimitSpec".
+
+## Additional resources
+
+- [LokiComponentSpec](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-LokiComponentSpec)
+
+- [QueryLimitSpec](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-QueryLimitSpec)
+
+<!-- -->
 
 - [Network flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
 

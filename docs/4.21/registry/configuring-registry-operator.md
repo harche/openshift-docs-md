@@ -187,7 +187,7 @@ You can configure the Image Registry Operator using the `configs.imageregistry.o
 </tbody>
 </table>
 
-# Enabling the Image Registry default route by using a CRD
+# Enable the Image Registry default route by using a CRD
 
 In OpenShift Container Platform, the `Registry` Operator controls the OpenShift image registry feature and you define this Operator in the `configs.imageregistry.operator.openshift.io` Custom Resource Definition (CRD). If you need to automatically enable the Image Registry default route, patch the Image Registry Operator CRD.
 
@@ -197,7 +197,7 @@ In OpenShift Container Platform, the `Registry` Operator controls the OpenShift 
   $ oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"defaultRoute":true}}'
   ```
 
-# Configuring additional trust stores for image registry access
+# Configure additional trust stores for image registry access
 
 You can add references to a config map that has additional certificate authorities (CAs) to be trusted during image registry access to the `image.config.openshift.io/cluster` custom resource (CR).
 
@@ -253,7 +253,7 @@ You can add references to a config map that has additional certificate authoriti
         name: registry-config
     ```
 
-# Configuring storage credentials for the Image Registry Operator
+# Configure storage credentials for the Image Registry Operator
 
 In addition to the `configs.imageregistry.operator.openshift.io` Custom Resource (CR) and ConfigMap resources, storage credential configuration is provided to the Operator by a separate secret resource. This resource is located within the `openshift-image-registry` namespace.
 

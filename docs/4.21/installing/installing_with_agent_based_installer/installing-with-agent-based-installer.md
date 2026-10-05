@@ -24,7 +24,7 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - [Port requirements for the rendezvous host](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-networking-ports_preparing-to-install-with-agent-based-installer)
 
-# Downloading the Agent-based Installer
+# Download the Agent-based Installer
 
 Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
@@ -93,7 +93,7 @@ Before installing an OpenShift Container Platform cluster using the Agent-based 
 
     If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command.
 
-# Creating the preferred configuration inputs
+# Create the preferred configuration inputs
 
 Create the preferred configuration inputs used to create the agent image.
 
@@ -328,7 +328,9 @@ Customizations to the cluster made by additional manifests are not validated, ar
 
 ## Creating a directory to contain additional manifests
 
-If you create additional manifests to configure your Agent-based installation beyond the `install-config.yaml` and `agent-config.yaml` files, you must create an `openshift` subdirectory within your installation directory. All of your additional machine configurations must be located within this subdirectory.
+If you create additional manifests to configure your Agent-based installation beyond the `install-config.yaml` and `agent-config.yaml` files, you must create an `openshift` subdirectory within your installation directory.
+
+All of your additional machine configurations must be located within this subdirectory.
 
 <div class="note">
 
@@ -355,6 +357,12 @@ By default, OpenShift Container Platform automatically configures the Open vSwit
 Customizations to the cluster made by additional manifests are not validated and not guaranteed to work. These manifests might result in a nonfunctional cluster.
 
 For more information about an additional manifest file, see "Creating a directory to contain additional manifests".
+
+</div>
+
+<div class="note">
+
+You can use Butane to create machine configs. For more information, see "Creating a MachineConfig object by using Butane".
 
 </div>
 
@@ -562,6 +570,8 @@ The following list of interface names are reserved and you cannot use the names 
 
     On completing other configuration inputs for your installation, such as encrypting the disk, you create the ISO image. After booting this image, the customized `br-ex` bridge configuration applies to each node in your cluster.
 
+- [Creating a MachineConfig object by using Butane](../../installing/install_config/installing-customizing.xml#installation-special-config-butane-create_installing-customizing)
+
 ## Creating disk partitions
 
 In general, you must use the default disk partitioning that is created during the RHCOS installation. However, there are cases where you might want to create a separate partition for a directory that you expect to grow.
@@ -639,7 +649,7 @@ The following procedure sets up a separate `/var` partition by adding a machine 
     $ butane $HOME/clusterconfig/98-var-partition.bu -o $HOME/clusterconfig/openshift/98-var-partition.yaml
     ```
 
-## Using ZTP manifests
+## Use ZTP manifests
 
 As an optional task, you can use GitOps Zero Touch Provisioning (ZTP) manifests to configure your installation beyond the options available through the `install-config.yaml` and `agent-config.yaml` files.
 
@@ -876,7 +886,7 @@ To avoid selecting an MTU value that a node cannot support, verify the maximum M
         mtu: 8900
   ```
 
-# Creating and booting the agent image
+# Create and boot the agent image
 
 After you have prepared the configuration inputs for your installation, create the ISO image and boot it on your machines.
 
@@ -1062,7 +1072,7 @@ If the agent console application detects host network configuration issues, the 
 
     11. If the `Release image URL` pull check succeeds and displays a green icon beside the URL, select **Quit** to exit the agent console application and continue with the installation.
 
-# Tracking and verifying installation progress
+# Track and verify installation progress
 
 After the installation has started, you can track installation progress and verify a successful installation.
 
@@ -1331,7 +1341,7 @@ stringData:
 
 - [Challenges of the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-deploying-far-edge-clusters-at-scale)
 
-# Gathering log data from a failed Agent-based installation
+# Gather log data from a failed Agent-based installation
 
 If you encounter a failed Agent-based installation, you can gather log data to provide for a support case.
 

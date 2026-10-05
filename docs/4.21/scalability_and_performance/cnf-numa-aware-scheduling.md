@@ -1282,7 +1282,9 @@ After applying the configuration, verify that the NUMA Resources Operator is cor
 
 # Configure polling operations for NUMA resources updates
 
-As an optional task, you can improve scheduling behavior and troubleshoot suboptimal scheduling decisions by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR). This configuration fine-tunes how daemons poll for available NUMA resources, providing advanced control over your polling operations.
+As an optional task, you can improve scheduling behavior and troubleshoot suboptimal scheduling decisions by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR).
+
+This configuration fine-tunes how daemons poll for available NUMA resources, providing advanced control over your polling operations.
 
 The configuration options are listed as follows:
 
@@ -1576,7 +1578,9 @@ To resolve common problems with NUMA-aware pod scheduling, troubleshoot your clu
 
 ## Report more exact resource availability
 
-To report more exact resource availability and minimize Topology Affinity Errors, enable the `cacheResyncPeriod` specification for the NUMA Resources Operator. This configuration monitors pending resources on nodes and synchronizes them in the scheduler cache, though lower intervals increase network load.
+To report more exact resource availability and minimize Topology Affinity Errors, enable the `cacheResyncPeriod` specification for the NUMA Resources Operator.
+
+This configuration monitors pending resources on nodes and synchronizes them in the scheduler cache, though lower intervals increase network load.
 
 The lower the interval, the greater the network load. The `cacheResyncPeriod` specification is disabled by default.
 

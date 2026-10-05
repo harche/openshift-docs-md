@@ -30,91 +30,95 @@ Use the `cluster-compare` plugin with live clusters in non-production environmen
 
   - `-r` specifies a path to the `metadata.yaml` file of the reference configuration. You can specify a local directory or a URI.
 
-The following is example output:
+    <div class="formalpara-title">
 
-``` terminal
-...
+    **Example output**
 
-**********************************
+    </div>
 
-Cluster CR: operator.openshift.io/v1_Console_cluster
-Reference File: optional/console-disable/ConsoleOperatorDisable.yaml
-Diff Output: diff -u -N /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster
-/tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster  2024-11-20 15:43:42.888633602 +0000
-+++ /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster   2024-11-20 15:43:42.888633602 +0000
-@@ -4,5 +4,5 @@
-   name: cluster
- spec:
-   logLevel: Normal
--  managementState: Removed
-+  managementState: Managed
-   operatorLogLevel: Normal
+    ``` terminal
+    ...
 
-**********************************
+    **********************************
 
-…
+    Cluster CR: operator.openshift.io/v1_Console_cluster
+    Reference File: optional/console-disable/ConsoleOperatorDisable.yaml
+    Diff Output: diff -u -N /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster
+    /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster  2024-11-20 15:43:42.888633602 +0000
+    +++ /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster   2024-11-20 15:43:42.888633602 +0000
+    @@ -4,5 +4,5 @@
+       name: cluster
+     spec:
+       logLevel: Normal
+    -  managementState: Removed
+    +  managementState: Managed
+       operatorLogLevel: Normal
 
-Summary
-CRs with diffs: 5/49
-CRs in reference missing from the cluster: 1
-required-cluster-tuning:
-  cluster-tuning:
-    Missing CRs:
-    - required/cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml
-No CRs are unmatched to reference CRs
-Metadata Hash: 512a9bf2e57fd5a5c44bbdea7abb3ffd7739d4a1f14ef9021f6793d5cdf868f0
-No patched CRs
-```
+    **********************************
 
-where:
+    …
 
-`Cluster CR`
-The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    Summary
+    CRs with diffs: 5/49
+    CRs in reference missing from the cluster: 1
+    required-cluster-tuning:
+      cluster-tuning:
+        Missing CRs:
+        - required/cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml
+    No CRs are unmatched to reference CRs
+    Metadata Hash: 512a9bf2e57fd5a5c44bbdea7abb3ffd7739d4a1f14ef9021f6793d5cdf868f0
+    No patched CRs
+    ```
 
-`Reference File`
-The template matching with the CR for comparison.
+    where:
 
-`Diff Output`
-The output in Linux diff format shows the difference between the template and the cluster CR.
+    `Cluster CR`
+    The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-`Summary`
-After the plugin reports the line diffs for each CR, the summary of differences are reported.
+    `Reference File`
+    The template matching with the CR for comparison.
 
-`CRs with diffs`
-The number of CRs in the comparison with differences from the corresponding templates.
+    `Diff Output`
+    The output in Linux diff format shows the difference between the template and the cluster CR.
 
-`CRs in reference missing from the cluster`
-The number of CRs represented in the reference configuration, but missing from the live cluster.
+    `Summary`
+    After the plugin reports the line diffs for each CR, the summary of differences are reported.
 
-`Missing CRs`
-The list of CRs represented in the reference configuration, but missing from the live cluster.
+    `CRs with diffs`
+    The number of CRs in the comparison with differences from the corresponding templates.
 
-`No CRs are unmatched to reference CRs`
-The CRs that did not match to a corresponding template in the reference configuration.
+    `CRs in reference missing from the cluster`
+    The number of CRs represented in the reference configuration, but missing from the live cluster.
 
-`Metadata Hash`
-The metadata hash identifies the reference configuration.
+    `Missing CRs`
+    The list of CRs represented in the reference configuration, but missing from the live cluster.
 
-`No patched CRs`
-The list of patched CRs.
+    `No CRs are unmatched to reference CRs`
+    The CRs that did not match to a corresponding template in the reference configuration.
 
-<div class="note">
+    `Metadata Hash`
+    The metadata hash identifies the reference configuration.
 
-Get the output in the `junit` format by adding `-o junit` to the command. For example:
+    `No patched CRs`
+    The list of patched CRs.
 
-``` terminal
-$ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -o junit
-```
+    <div class="note">
 
-The `junit` output includes the following result types:
+    Get the output in the `junit` format by adding `-o junit` to the command. For example:
 
-- Passed results for each fully matched template.
+    ``` terminal
+    $ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -o junit
+    ```
 
-- Failed results for differences found or missing required custom resources (CRs).
+    The `junit` output includes the following result types:
 
-- Skipped results for differences patched using the user override mechanism.
+    - Passed results for each fully matched template.
 
-</div>
+    - Failed results for differences found or missing required custom resources (CRs).
+
+    - Skipped results for differences patched using the user override mechanism.
+
+    </div>
 
 # Using the cluster-compare plugin with must-gather data
 
@@ -218,23 +222,25 @@ For production environments, use the `cluster-compare` plugin with `must-gather`
     `No patched CRs`
     The list of patched CRs.
 
-<div class="note">
+    <div class="note">
 
-Get the output in the `junit` format by adding `-o junit` to the command. For example:
+    Get the output in the `junit` format by adding `-o junit` to the command. For example:
 
-``` terminal
-$ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R -o junit
-```
+    ``` terminal
+    $ oc cluster-compare -r <path_to_reference_config>/metadata.yaml -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R -o junit
+    ```
 
-The `junit` output includes the following result types:
+    The `junit` output includes the following result types:
 
-- Passed results for each fully matched template.
+    - Passed results for each fully matched template.
 
-- Failed results for differences found or missing required custom resources (CRs).
+    - Failed results for differences found or missing required custom resources (CRs).
 
-- Skipped results for differences patched using the user override mechanism.
+    - Skipped results for differences patched using the user override mechanism.
 
-</div>
+    </div>
+
+<!-- -->
 
 - [Gathering data about your cluster](../../support/gathering-cluster-data.xml#about-must-gather_gathering-cluster-data)
 
@@ -498,23 +504,23 @@ For further examples of using the `cluster-compare` plugin with the telco core a
     `No patched CRs`
     The list of patched CRs.
 
-<div class="note">
+    <div class="note">
 
-Get the output in the `junit` format by adding `-o junit` to the command. For example:
+    Get the output in the `junit` format by adding `-o junit` to the command. For example:
 
-``` terminal
-$ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml -o junit
-```
+    ``` terminal
+    $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml -o junit
+    ```
 
-The `junit` output includes the following result types:
+    The `junit` output includes the following result types:
 
-- Passed results for each fully matched template.
+    - Passed results for each fully matched template.
 
-- Failed results for differences found or missing required custom resources (CRs).
+    - Failed results for differences found or missing required custom resources (CRs).
 
-- Skipped results for differences patched using the user override mechanism.
+    - Skipped results for differences patched using the user override mechanism.
 
-</div>
+    </div>
 
 # Additional resources
 

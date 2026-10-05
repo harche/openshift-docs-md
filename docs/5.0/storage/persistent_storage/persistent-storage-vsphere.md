@@ -149,19 +149,19 @@ To statically provision VMware vSphere volumes you must create the virtual machi
     `spec.vsphereVolume.fsType`
     Specifies the file system type to mount. For example, ext4, xfs, or other file systems.
 
-<div class="important">
+    <div class="important">
 
-Changing the value of the fsType parameter after the volume is formatted and provisioned can result in data loss and pod failure.
+    Changing the value of the fsType parameter after the volume is formatted and provisioned can result in data loss and pod failure.
 
-</div>
+    </div>
 
-1.  Create the `PersistentVolume` object from the file:
+3.  Create the `PersistentVolume` object from the file:
 
     ``` terminal
     $ oc create -f pv1.yaml
     ```
 
-2.  Create a persistent volume claim that maps to the persistent volume you created in the previous step. Create a file, `pvc1.yaml`, with the `PersistentVolumeClaim` object definition:
+4.  Create a persistent volume claim that maps to the persistent volume you created in the previous step. Create a file, `pvc1.yaml`, with the `PersistentVolumeClaim` object definition:
 
     ``` yaml
     apiVersion: v1
@@ -191,7 +191,7 @@ Changing the value of the fsType parameter after the volume is formatted and pro
     `spec.volumeName`
     Specifies the name of the existing persistent volume.
 
-3.  Create the `PersistentVolumeClaim` object from the file:
+5.  Create the `PersistentVolumeClaim` object from the file:
 
     ``` terminal
     $ oc create -f pvc1.yaml

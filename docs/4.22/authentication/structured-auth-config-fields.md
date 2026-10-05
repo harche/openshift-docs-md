@@ -104,10 +104,6 @@ Configure a custom OIDC discovery URL when your identity provider does not follo
 - Verify the kube-apiserver is using the custom discovery URL by checking the authentication configuration:
 
   ``` terminal
-  $ oc get configmap kube-apiserver-to-kubelet-client-ca -n openshift-kube-apiserver -o yaml
-  ```
-
-  ``` terminal
   $ oc get authentication.config.openshift.io/cluster -o jsonpath='{.spec.oidcProviders[0].issuer.discoveryURL}'
   ```
 

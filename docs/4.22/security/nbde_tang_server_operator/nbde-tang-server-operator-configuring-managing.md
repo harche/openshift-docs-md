@@ -87,7 +87,7 @@ With the NBDE Tang Server Operator, you also can rotate your Tang server keys. T
     …
     ```
 
-2.  Create a YAML file for moving your active keys to hidden keys, for example, `minimal-keyretrieve-rotate-tangserver.yaml`:
+2.  Create a YAML file for moving your active keys to hidden keys, for example, `minimal-keyretrieve-rotate-tangserver.yaml`. Specify the SHA-1 thumbprint of your active key in the `hiddenKeys` entry:
 
     <div class="formalpara-title">
 
@@ -108,8 +108,6 @@ With the NBDE Tang Server Operator, you also can rotate your Tang server keys. T
       hiddenKeys:
         - sha1: "PvYQKtrTuYsMV2AomUeHrUWkCGg"
     ```
-
-    - Specify the SHA-1 thumbprint of your active key to rotate it.
 
 3.  Apply the YAML file:
 
@@ -188,7 +186,7 @@ Do not remove any hidden keys unless you are sure that all bound Clevis clients 
     …
     ```
 
-2.  Create a YAML file for removing all hidden keys, for example, `hidden-keys-deletion-tangserver.yaml`:
+2.  Create a YAML file for removing all hidden keys, for example, `hidden-keys-deletion-tangserver.yaml`. Set the `hiddenKeys` entry to an empty array to preserve no hidden keys on your Tang server:
 
     <div class="formalpara-title">
 
@@ -208,8 +206,6 @@ Do not remove any hidden keys unless you are sure that all bound Clevis clients 
       replicas: 1
       hiddenKeys: []
     ```
-
-    - The empty array as the value of the `hiddenKeys` entry indicates you want to preserve no hidden keys on your Tang server.
 
 3.  Apply the YAML file:
 

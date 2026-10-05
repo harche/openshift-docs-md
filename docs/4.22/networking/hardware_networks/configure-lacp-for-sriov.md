@@ -97,7 +97,9 @@ Install the PF Status Relay Operator to enable OpenShift Container Platform to u
 
 # Configure the PF Status Relay Operator for LACP state monitoring on SR-IOV networks
 
-Use the PF Status Relay Operator to enable Link Aggregation Control Protocol (LACP) state monitoring for workloads by using pod-level bonding with SR-IOV networks. The Operator monitors the LACP state on physical functions (PF) and changes the link state for attached virtual functions (VF) when it detects an upstream failure. With this approach, you can detect failures on VFs attached to a PF to ensure a timely failover to a backup network path, ensuring high availability for your workloads.
+Use the PF Status Relay Operator to enable Link Aggregation Control Protocol (LACP) state monitoring for workloads by using pod-level bonding with SR-IOV networks.
+
+The Operator monitors the LACP state on physical functions (PF) and changes the link state for attached virtual functions (VF) when it detects an upstream failure. With this approach, you can detect failures on VFs attached to a PF to ensure a timely failover to a backup network path, ensuring high availability for your workloads.
 
 The following scenario demonstrates how to configure and verify LACP state monitoring for SR-IOV networks:
 

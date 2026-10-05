@@ -58,8 +58,9 @@ Instead of modifying the default SCCs, create and modify your own SCCs as needed
 
 </div>
 
+The following table describes the default SCCs that are available in OpenShift Container Platform.
+
 <table>
-<caption>Default security context constraints</caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 75%" />
@@ -200,8 +201,6 @@ Instead of modifying the default SCCs, create and modify your own SCCs as needed
 </tbody>
 </table>
 
-Default security context constraints
-
 ## Security context constraints settings
 
 Security context constraints (SCCs) are composed of settings and strategies that control the security features a pod has access to. These settings fall into three categories:
@@ -267,6 +266,8 @@ You can drop all capabilites from containers by setting the `requiredDropCapabil
 
 ## Security context constraints strategies
 
+The following example shows the strategies that are available for the `RunAsUser` field.
+
 - `MustRunAs` - Requires a `runAsUser` to be configured. Uses the configured `runAsUser` as the default. Validates against the configured `runAsUser`.
 
   <div class="formalpara-title">
@@ -330,19 +331,19 @@ You can drop all capabilites from containers by setting the `requiredDropCapabil
   ...
   ```
 
-<!-- -->
+The following example shows the strategies that are available for the `seLinuxOptions` field.
 
 - `MustRunAs` - Requires `seLinuxOptions` to be configured if not using pre-allocated values. Uses `seLinuxOptions` as the default. Validates against `seLinuxOptions`.
 
 - `RunAsAny` - No default provided. Allows any `seLinuxOptions` to be specified.
 
-<!-- -->
+The following example shows the strategies that are available for the `supplementalGroups` field.
 
 - `MustRunAs` - Requires at least one range to be specified if not using pre-allocated values. Uses the minimum value of the first range as the default. Validates against all ranges.
 
 - `RunAsAny` - No default provided. Allows any `supplementalGroups` to be specified.
 
-<!-- -->
+The following example shows the strategies that are available for the `fsGroup` field.
 
 - `MustRunAs` - Requires at least one range to be specified if not using pre-allocated values. Uses the minimum value of the first range as the default. Validates against the first ID in the first range.
 

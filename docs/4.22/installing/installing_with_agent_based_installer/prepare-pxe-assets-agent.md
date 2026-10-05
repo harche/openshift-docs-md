@@ -14,7 +14,7 @@ Before beginning to prepare PXE assets, you must complete prerequisite tasks.
 
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
-# Downloading the Agent-based Installer
+# Download the Agent-based Installer
 
 Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
@@ -32,7 +32,7 @@ Begin the installation process by downloading the Agent-based Installer and the 
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-# Creating the preferred configuration inputs
+# Create the preferred configuration inputs
 
 Create the preferred configuration inputs used to create the PXE files.
 

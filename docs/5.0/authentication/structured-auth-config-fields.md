@@ -1,13 +1,5 @@
 You can configure advanced direct authentication fields in the `authentications.config.openshift.io` custom resource definition (CRD) to enable enhanced OIDC configurations, security enforcement, and flexible token validation for standalone and hosted control plane (HCP) clusters.
 
-<div class="important">
-
-Advanced direct authentication fields is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # About advanced direct authentication fields
 
 Advanced direct authentication fields provide flexibility and security for OIDC-based authentication in OpenShift Container Platform. You can configure advanced OIDC settings, implement custom token validation logic, and enforce security policies on usernames and groups.
@@ -28,11 +20,11 @@ Enforce security policies on usernames and groups extracted from tokens to preve
 
 These fields extend the base OIDC authentication configuration introduced in OpenShift Container Platform 4.14. You must first configure an external OIDC identity provider before using these advanced fields.
 
-These fields require the `TechPreviewNoUpgrade` feature set to be enabled. They are available on standalone OpenShift Container Platform clusters and hosted control plane (HCP) environments.
+These fields are available on standalone OpenShift Container Platform clusters and hosted control plane (HCP) environments.
 
 <div class="important">
 
-These advanced authentication fields are available as a Technology Preview feature. Ensure you have a backup authentication method, such as a certificate-based kubeconfig file, before configuring these fields.
+Ensure you have a backup authentication method, such as a certificate-based kubeconfig file, before configuring these fields. Misconfiguring authentication can lock users out of the cluster.
 
 </div>
 
@@ -102,10 +94,6 @@ Configure a custom OIDC discovery URL when your identity provider does not follo
   ```
 
 - Verify the kube-apiserver is using the custom discovery URL by checking the authentication configuration:
-
-  ``` terminal
-  $ oc get configmap kube-apiserver-to-kubelet-client-ca -n openshift-kube-apiserver -o yaml
-  ```
 
   ``` terminal
   $ oc get authentication.config.openshift.io/cluster -o jsonpath='{.spec.oidcProviders[0].issuer.discoveryURL}'
@@ -590,7 +578,7 @@ If you incorrectly configure validation rules and lock users out of the cluster:
 
 # Advanced authentication field reference
 
-The following table describes the advanced authentication configuration fields available as Technology Preview in OpenShift Container Platform.
+The following table describes the advanced authentication configuration fields available in OpenShift Container Platform.
 
 <table>
 <caption>Advanced <code>oidcProviders</code> configuration fields</caption>

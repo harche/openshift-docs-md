@@ -241,7 +241,7 @@ The `default` Ingress Controller continues to serve all routes unless the `names
 
 ## Overlapped sharding example
 
-An example of a configured Ingress Controller `devops-router` that has the label selector `spec.namespaceSelector.matchExpressions` with key values set to `dev` and `ops`:
+An overlapped sharding example shows how an Ingress Controller in OpenShift Container Platform can serve overlapping namespace label selectors so that more than one controller can admit the same routes.
 
 <div class="formalpara-title">
 

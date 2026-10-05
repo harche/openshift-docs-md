@@ -537,7 +537,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 ## Enabling a user-managed DNS
 
-You can install a cluster with a domain name server (DNS) solution that you manage instead of the default cluster-provisioned DNS solution. As a result, you can manage the API and Ingress DNS records in your own system rather than adding the records to the DNS of the cloud. For example, your organization’s security policies might not allow the use of public DNS services such as Microsoft Azure. In such scenarios, you can use your own DNS service to bypass the public DNS service and manage your own DNS for the IP addresses of the API and Ingress services.
+To manage API and Ingress DNS records in your own system, install your cluster with a DNS solution that you manage.
+
+This solution replaces the default cluster-provisioned DNS solution. For example, your organization’s security policies might not allow the use of public DNS services such as Microsoft Azure. In such scenarios, you can use your own DNS service to bypass the public DNS service and manage your own DNS for the IP addresses of the API and Ingress services.
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
@@ -1363,7 +1365,9 @@ For more information about using Linux and Windows nodes in the same cluster, se
 
 # Configuring user-defined tags for Azure
 
-In OpenShift Container Platform, you can use tags for grouping resources and for managing resource access and cost. Tags are applied only to the resources created by the OpenShift Container Platform installation program and its core Operators such as Machine API Operator, Cluster Ingress Operator, Cluster Image Registry Operator. The OpenShift Container Platform consists of the following types of tags:
+In OpenShift Container Platform, you can use tags for grouping resources and for managing resource access and cost.
+
+Tags are applied only to the resources created by the OpenShift Container Platform installation program and its core Operators such as Machine API Operator, Cluster Ingress Operator, Cluster Image Registry Operator. The OpenShift Container Platform consists of the following types of tags:
 
 OpenShift Container Platform tags
 By default, OpenShift Container Platform installation program attaches the OpenShift Container Platform tags to the Azure resources. These OpenShift Container Platform tags are not accessible to the users. The format of the OpenShift Container Platform tags is `kubernetes.io_cluster.<cluster_id>:owned`, where `<cluster_id>` is the value of `.status.infrastructureName` in the infrastructure resource for the cluster.
@@ -1394,27 +1398,31 @@ To define the list of user-defined tags, edit the `.platform.azure.userTags` fie
   #...
   ```
 
-  - Defines the additional keys and values that the installation program adds as tags to all Azure resources that it creates.
+  where:
 
-  - Specify the key and value. You can configure a maximum of 10 tags for resource group and resources. Tag keys are case-insensitive. For more information on requirements for specifying user-defined tags, see "User-defined tags requirements" section.
+  `.platform.azure.userTags`
+  Specifies the additional keys and values that the installation program adds as tags to all Azure resources that it creates.
 
-    <div class="formalpara-title">
+  `<key>: <value>`
+  Specifies the key and value. You can configure a maximum of 10 tags for resource group and resources. Tag keys are case-insensitive. For more information on requirements for specifying user-defined tags, see "User-defined tags requirements" section.
 
-    **Example `install-config.yaml` file**
+  <div class="formalpara-title">
 
-    </div>
+  **Example `install-config.yaml` file**
 
-    ``` yaml
-    apiVersion: v1
-    baseDomain: example.com
-    #...
-    platform:
-      azure:
-        userTags:
-          createdBy: user
-          environment: dev
-    #...
-    ```
+  </div>
+
+  ``` yaml
+  apiVersion: v1
+  baseDomain: example.com
+  #...
+  platform:
+    azure:
+      userTags:
+        createdBy: user
+        environment: dev
+  #...
+  ```
 
 <!-- -->
 
@@ -2040,7 +2048,9 @@ When the cluster deployment completes successfully:
 
 # Provisioning your own DNS records
 
-Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain. Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
+Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
+
+Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
 
 - You have installed the Azure CLI client `(az)`.
 

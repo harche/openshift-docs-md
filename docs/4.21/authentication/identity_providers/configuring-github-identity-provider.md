@@ -209,9 +209,13 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     $ oc login --token=<token>
     ```
 
-This identity provider does not support logging in with a username and password.
+    <div class="note">
 
-1.  Confirm that the user logged in successfully and that the username displays by running the following command:
+    This identity provider does not support logging in with a username and password.
+
+    </div>
+
+4.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
     ``` terminal
     $ oc whoami

@@ -28,6 +28,120 @@ By default, every Ingress Controller in the cluster can admit any route created 
 
 - Can be scaled up to have more replicas on more nodes.
 
+# AI-driven networking troubleshooting
+
+AI-driven network troubleshooting uses large language models (LLMs) and the Model Context Protocol (MCP) to automate root-cause analysis across Network Ingress and DNS (NIDS) components.
+
+The netedge toolset of the OpenShift Container Platform MCP server provides AI-driven networking troubleshooting rather than a separate service for this capability. The system disables this toolset by default, so you must explicitly enable the toolset if you want to use its functionality.
+
+AI-driven networking troubleshooting is not a separate service. The netedge toolset of the OpenShift Container Platform MCP server provides this service. The service is disabled by default so to use the service you must explicitly enable the service.
+
+The following list highlights the key characteristics of the netedge toolset within the OpenShift Container Platform MCP server:
+
+- Read-Only Safety: Strictly restricted by RBAC to non-mutating operations (`get`, `list`, `describe`, and `logs`).
+
+- Multi-Layer Coverage: Inspects IngressControllers, HAProxy routers, CoreDNS, Gateway API, and Prometheus metrics.
+
+- Flexible Execution: Supports real-time analysis on live clusters and offline post-mortems by using `must-gather` or `sosreport` archives.
+
+The netedge toolset in the MCP server translates natural language requests into structured, read-only diagnostic commands.
+
+The following workflow provides an example of using the netedge toolset in the MCP server to troubleshoot an issue:
+
+1.  **User Request:** An engineer submits a troubleshooting query to an MCP-compliant LLM client.
+
+2.  **Tool Execution:** The LLM selects and invokes safe MCP tools, such as `inspect_route` or `get_service_endpoints`.
+
+3.  **Cluster Inspection:** The MCP server executes non-mutating inspection commands on the cluster and returns structured JSON.
+
+4.  **Analysis:** The LLM evaluates the output and provides a direct root-cause diagnosis.
+
+# Troubleshooting NIDS issues with an AI agent
+
+You can use the netedge toolset in the MCP server for OpenShift Container Platform to diagnose Network Ingress and DNS (NIDS) issues by describing symptoms to a connected LLM client in natural language.
+
+- You have installed the MCP server for Red Hat OpenShift and enabled the netedge toolset.
+
+- You have connected an MCP-compliant client to the MCP server.
+
+1.  Enable the netedge toolset by using one of the following methods, which depend on your deployment type:
+
+    1.  For standalone or configuration-file deployments, specify the netedge toolset in the `toolsets` list of your `config.toml` file:
+
+        ``` toml
+        # Enable the default core and config toolsets alongside the netedge toolset
+        toolsets = ["core", "config", "netedge"]
+        ```
+
+    2.  For Operator-managed custom resource (CR) deployments, specify the netedge toolset in the `toolsets` list inside the `MCPServer` CR specification:
+
+        ``` yaml
+        apiVersion: mcp.openshift.io/v1alpha1
+        kind: MCPServer
+        metadata:
+          name: openshift-mcp-server
+          namespace: openshift-lightspeed
+        spec:
+          config:
+            toolsets:
+              - core
+              - config
+              - netedge
+        # ...
+        ```
+
+2.  In your connected client, describe the issue that you want to troubleshoot. For example, to investigate a router problem, enter a prompt similar to the following:
+
+    ``` terminal
+    Why is the route for my application unreachable? Check the router configuration and active sessions.
+    ```
+
+3.  Review the tools that the LLM selects and invokes to diagnose the issue.
+
+    - For router or Ingress issues, the LLM might use the following tools:
+
+      - `exec_dns_in_pod`: Launches an ephemeral scratch pod inside the cluster to run a `dig` lookup query. The query tests actual resolution of the container.
+
+      - `get_router_config`: Retrieves the current HAProxy configuration of the router.
+
+      - `get_router_info`: Retrieves HAProxy runtime information from the router.
+
+      - `get_router_sessions`: Retrieves all active sessions from the router.
+
+      - `get_service_endpoints`: Queries EndpointSlices for a target service to verify backend pod availability.
+
+      - `inspect_route`: Inspects the OpenShift Route status and configuration. The tool is crucial for verifying host mappings, target services, and automatically redacting sensitive TLS keys or certificates.
+
+      - `probe_dns_local`: Sends DNS lookups locally from the MCP host to verify resolution externally.
+
+      - `probe_http`: Performs active HTTP(S) queries from the host to test actual routing and ingress endpoints.
+
+      - `netedge_query_prometheus`: Executes specialized Prometheus queries to find active alerts, reload counts, and ingress error spikes. This tool marks the essential starting point for NIDS troubleshooting.
+
+    - For DNS resolution issues, the LLM might use the `get_coredns_config` tool to retrieve the current CoreDNS configuration.
+
+4.  Review the structured output that the MCP server returns and the root-cause diagnosis that the LLM provides based on that output.
+
+- Confirm the diagnosis by retrieving the same resources directly. For example, to cross-check a router or Ingress diagnosis, run the following commands:
+
+  ``` terminal
+  $ oc get pods -n openshift-ingress
+  ```
+
+  ``` terminal
+  $ oc describe route <route_name> -n <namespace>
+  ```
+
+  ``` terminal
+  $ oc get endpoints <service_name> -n <namespace>
+  ```
+
+- To cross-check a DNS diagnosis, run the following command:
+
+  ``` terminal
+  $ oc get configmap dns-default -n openshift-dns -o yaml
+  ```
+
 # Creating a project and service
 
 If the project and service that you want to expose does not exist, create the project and then create the service.
@@ -241,7 +355,7 @@ The `default` Ingress Controller continues to serve all routes unless the `names
 
 ## Overlapped sharding example
 
-An example of a configured Ingress Controller `devops-router` that has the label selector `spec.namespaceSelector.matchExpressions` with key values set to `dev` and `ops`:
+An overlapped sharding example shows how an Ingress Controller in OpenShift Container Platform can serve overlapping namespace label selectors so that more than one controller can admit the same routes.
 
 <div class="formalpara-title">
 

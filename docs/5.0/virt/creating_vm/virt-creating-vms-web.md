@@ -142,7 +142,7 @@ Use this workflow when:
 
 4.  On the **Template** page, select a template:
 
-    1.  Optional: Filter the template list. You can select a project from the **All projects** menu, apply a **Filter** for categories such as operating system or workload type, or enter a keyword in the **Filter by keyword** field.
+    1.  Optional: Filter the template list. You can select a project from the **All projects** menu, apply a **Category** filter to narrow templates by application type, apply other filters such as operating system, or enter a keyword in the **Filter by keyword** field.
 
     2.  Click a template tile to select it and view its details.
 

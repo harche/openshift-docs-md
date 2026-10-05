@@ -626,7 +626,9 @@ Note the following points about the boot disk encryption and mirroring feature:
 
 ## Configuring an encryption threshold
 
-In OpenShift Container Platform, you can specify a requirement for more than one Tang server. You can also configure the TPM v2 and Tang encryption modes simultaneously. Configuring both modes enables boot disk data decryption only if the TPM secure cryptoprocessor is present and the Tang servers are accessible over a secure network.
+In OpenShift Container Platform, define an encryption threshold to require more than one Tang server for boot disk decryption.
+
+You can also configure the TPM v2 and Tang encryption modes simultaneously. Configuring both modes enables boot disk data decryption only if the TPM secure cryptoprocessor is present and the Tang servers are accessible over a secure network.
 
 You can use the `threshold` attribute in your Butane configuration to define the minimum number of TPM v2 and Tang encryption conditions required for decryption to occur.
 

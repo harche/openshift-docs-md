@@ -67,7 +67,9 @@ For more details on the process of building container images, pushing them to re
 
 ## Container build tool options
 
-Building and managing containers with `buildah`, `podman`, and `skopeo` results in industry-standard container images that include features specifically tuned for deploying containers in OpenShift Container Platform or other Kubernetes environments. These daemonless, rootless tools reduce overhead while tuning your containers for Kubernetes.
+Building and managing containers with `buildah`, `podman`, and `skopeo` results in industry-standard container images that include features specifically tuned for deploying containers in OpenShift Container Platform or other Kubernetes environments.
+
+These daemonless, rootless tools reduce overhead while tuning your containers for Kubernetes.
 
 <div class="important">
 

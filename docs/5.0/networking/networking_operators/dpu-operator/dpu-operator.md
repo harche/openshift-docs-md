@@ -20,11 +20,11 @@ The DPU Operator is responsible for managing the DPU devices and network attachm
 
 The following table describes the currently supported DPU devices.
 
-| Vendor  | Device                  | Firmware                     | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------|-------------------------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Intel   | IPU E2100               | Version 2.0.0.11126 or later | A DPU designed to offload networking, storage, and security tasks from host CPUs in data centers, improving efficiency and performance. For instructions on deploying a full end-to-end solution, see the Red Hat Knowledgebase solution [Accelerating Confidential AI on OpenShift with the Intel E2100 IPU, DPU Operator, and F5 NGINX](https://access.redhat.com/articles/7120276). |
-| Senao   | SX904                   | 35.23.47.0008 or later       | A SmartNIC designed to offload compute and network services from the host CPUs in data centers and edge computing environments, improving efficiency and isolation of workloads.                                                                                                                                                                                                       |
-| Marvell | Marvell Octeon 10 CN106 | SDK12.25.01 or later         | A DPU designed to offload workloads that require high speed data processing from host CPUs in data centers and edge computing environments, improving performance and energy efficiency                                                                                                                                                                                                |
+| Vendor  | Device                  | Firmware                     | Description                                                                                                                                                                                                                                                                                            |
+|---------|-------------------------|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Intel   | IPU E2100               | Version 2.0.0.11126 or later | A DPU designed to offload networking, storage, and security tasks from host CPUs in data centers, improving efficiency and performance. For instructions on deploying a full end-to-end solution, see "Accelerating Confidential AI on OpenShift with the Intel E2100 IPU, DPU Operator, and F5 NGINX" |
+| Senao   | SX904                   | 35.23.47.0008 or later       | A SmartNIC designed to offload compute and network services from the host CPUs in data centers and edge computing environments, improving efficiency and isolation of workloads.                                                                                                                       |
+| Marvell | Marvell Octeon 10 CN106 | SDK12.25.01 or later         | A DPU designed to offload workloads that require high speed data processing from host CPUs in data centers and edge computing environments, improving performance and energy efficiency                                                                                                                |
 
 Supported devices
 
@@ -33,6 +33,8 @@ Supported devices
 The NVIDIA BlueField-3 is not supported.
 
 </div>
+
+- [Accelerating Confidential AI on OpenShift with the Intel E2100 IPU, DPU Operator, and F5 NGINX (Red Hat Knowledgebase)](https://access.redhat.com/articles/7120276)
 
 # Install the DPU Operator
 

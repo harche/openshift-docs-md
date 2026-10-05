@@ -193,7 +193,9 @@ OpenShift Container Platform nodes must agree on a date and time to run properly
 
 # Configuring a local or self-signed Baseboard Management Controller CA certificate
 
-You can configure a local or self-signed Baseboard Management Controller (BMC) CA certificate on a cluster that already has a CA certificate, or add one to a cluster that was installed without a CA certificate. Providing a local or self-signed CA certificate gives you more control over secure communication with bare metal BMC’s.
+You can configure a local or self-signed Baseboard Management Controller (BMC) CA certificate on a cluster that already has a CA certificate, or add one to a cluster that was installed without a CA certificate.
+
+Providing a local or self-signed CA certificate gives you more control over secure communication with bare metal BMC’s.
 
 ## Replacing an existing BMC CA certificate
 
@@ -522,7 +524,9 @@ The following list of interface names are reserved and you cannot use the names 
 
 # Making disruptive changes to a customized br-ex bridge
 
-For certain situations, you might need to make disruptive changes to a `br-ex` bridge for planned maintenance or network configuration updates. A `br-ex` bridge is a gateway for all external network traffic from your workloads, so any change to the bridge might temporarily disconnect pods and virtual machines (VMs) from an external network.
+For certain situations, you might need to make disruptive changes to a `br-ex` bridge for planned maintenance or network configuration updates.
+
+A `br-ex` bridge is a gateway for all external network traffic from your workloads, so any change to the bridge might temporarily disconnect pods and virtual machines (VMs) from an external network.
 
 The following procedure shows how to make disruptive changes to a `br-ex` bridge while minimizing the impact to running cluster workloads.
 
@@ -665,7 +669,9 @@ Misconfiguring any files that form part of the migration operation can cause dis
 
     To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
-    The following example sets the MTU to `9000` for both the physical device and the bridge interface in the NMState configuration file. You must base64-encode the file and then embed the output in a `MachineConfig` manifest file. The `MachineConfig` manifest file writes to `/etc/nmstate/openshift/cluster.yml` or a per-node path under `/etc/nmstate/openshift/`.
+    </div>
+
+    You can use NMState to apply various network settings across cluster nodes. As an example, the following configuration sets the MTU to `9000` for both a physical device and a bridge interface. You must encode the file in base64 format and then embed the output in a `MachineConfig` manifest file. The `MachineConfig` manifest file writes to `/etc/nmstate/openshift/cluster.yml` or a per-node path under `/etc/nmstate/openshift/`.
 
     <div class="formalpara-title">
 
@@ -712,8 +718,6 @@ Misconfiguring any files that form part of the migration operation can cause dis
             path: /etc/nmstate/openshift/cluster.yml
     # ...
     ```
-
-    </div>
 
 4.  Apply the updates from the `MachineConfig` object to your cluster by entering the following command:
 
@@ -1346,7 +1350,9 @@ To access hardware metrics for your bare-metal nodes in the web console, enable 
 
 # Configuration using the Bare Metal Operator
 
-When deploying OpenShift Container Platform on bare-metal hosts, there are times when you need to make changes to the host either before or after provisioning. This can include inspecting the host’s hardware, firmware, and firmware details. It can also include formatting disks or changing modifiable firmware settings.
+When deploying OpenShift Container Platform on bare-metal hosts, there are times when you need to make changes to the host either before or after provisioning.
+
+This can include inspecting the host’s hardware, firmware, and firmware details. It can also include formatting disks or changing modifiable firmware settings.
 
 You can use the Bare Metal Operator (BMO) to provision, manage, and inspect bare-metal hosts in your cluster. The BMO can complete the following operations:
 
@@ -1969,7 +1975,9 @@ Do not remove finalizers from the `BareMetalHost` resource.
 
 ## Attaching a non-bootable ISO to a bare-metal node
 
-You can attach a generic, non-bootable ISO virtual media image to a provisioned node by using the `DataImage` resource. After you apply the resource, the ISO image becomes accessible to the operating system after it has booted. This is useful for configuring a node after provisioning the operating system and before the node boots for the first time.
+You can attach a generic, non-bootable ISO virtual media image to a provisioned node by using the `DataImage` resource. After you apply the resource, the ISO image becomes accessible to the operating system after it has booted.
+
+This is useful for configuring a node after provisioning the operating system and before the node boots for the first time.
 
 - The node must use Redfish or drivers derived from it to support this feature.
 
@@ -2069,7 +2077,9 @@ You can attach a generic, non-bootable ISO virtual media image to a provisioned 
 
 ## Configuring NC-SI and DisablePowerOff for shared NICs
 
-The Network Controller Sideband Interface (NC-SI) enables the Baseboard Management Controller (BMC) to share a system network interface card (NIC) with the host for management traffic, using protocols like Redfish, IPMI, or vendor-specific interfaces. The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to maintain BMC connectivity.
+The Network Controller Sideband Interface (NC-SI) enables the Baseboard Management Controller (BMC) to share a system network interface card (NIC) with the host for management traffic, using protocols like Redfish, IPMI, or vendor-specific interfaces.
+
+The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to maintain BMC connectivity.
 
 - NC-SI-capable hardware and NICs.
 

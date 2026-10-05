@@ -21,7 +21,7 @@ Agent-based Installer supported architectures
 
 - [Understanding virtualized control planes](../../vcp/vcp-overview.xml#vcp-overview)
 
-# Understanding Agent-based Installer
+# Understand Agent-based Installer
 
 As an OpenShift Container Platform user, you can leverage the advantages of the Assisted Installer hosted service in disconnected environments.
 
@@ -181,7 +181,9 @@ When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreO
 
 # Configure FIPS through the Agent-based Installer
 
-During a cluster deployment, the Federal Information Processing Standards (FIPS) change is applied when the Red Hat Enterprise Linux CoreOS (RHCOS) machines are deployed in your cluster. For Red Hat Enterprise Linux (RHEL) machines, you must enable FIPS mode when you install the operating system on the machines that you plan to use as worker machines.
+During a cluster deployment, the Federal Information Processing Standards (FIPS) change is applied when the Red Hat Enterprise Linux CoreOS (RHCOS) machines are deployed in your cluster.
+
+For Red Hat Enterprise Linux (RHEL) machines, you must enable FIPS mode when you install the operating system on the machines that you plan to use as worker machines.
 
 <div class="important">
 

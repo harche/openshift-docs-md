@@ -8,7 +8,9 @@ The hardware acceleration capabilities of the AMD GPU Operator provide enhanced 
 
 # Installing the AMD GPU Operator
 
-As a cluster administrator, you can install the AMD GPU Operator by using the OpenShift CLI and the web console. This is a multi-step procedure that requires the installation of the Node Feature Discovery Operator, the Kernel Module Management Operator, and then the AMD GPU Operator. Use the following steps in succession to install the AMD community release of the Operator.
+As a cluster administrator, you can install the AMD GPU Operator by using the OpenShift CLI and the web console. This is a multi-step procedure that requires the installation of the Node Feature Discovery Operator, the Kernel Module Management Operator, and then the AMD GPU Operator.
+
+Use the following steps in succession to install the AMD community release of the Operator.
 
 1.  Install the [Node Feature Discovery Operator](../hardware_enablement/psap-node-feature-discovery-operator.xml#installing-the-node-feature-discovery-operator_node-feature-discovery-operator).
 

@@ -58,7 +58,9 @@ Additionally, be aware of the following topology and load balancer limitations f
 
 # Configuring automatic address assignment for a gateway
 
-When you create a gateway resource, you must configure it for automatic address provisioning to successfully deploy the gateway without violating OpenShift Container Platform manual address constraints. By intentionally omitting the addresses field, you allow the controller to seamlessly provision and bind the necessary external network addresses to your gateway.
+When you create a gateway resource, you must configure it for automatic address provisioning to successfully deploy the gateway without violating OpenShift Container Platform manual address constraints.
+
+By intentionally omitting the addresses field, you allow the controller to seamlessly provision and bind the necessary external network addresses to your gateway.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 

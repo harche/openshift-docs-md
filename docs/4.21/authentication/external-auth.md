@@ -104,7 +104,7 @@ Configure OpenShift Container Platform to use an external OIDC identity provider
 
     ``` terminal
     $ oc create secret generic console-secret \
-        --from-literal=clientSecret=<secret_value> \//
+        --from-literal=clientSecret=<secret_value> \
         -n openshift-config
     ```
 

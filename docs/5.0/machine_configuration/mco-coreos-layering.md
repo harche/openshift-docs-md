@@ -1358,7 +1358,9 @@ You can verify that the custom layered image is removed by performing any of the
 
 # Applying a custom layered image during OpenShift Container Platform installation
 
-You can use the standard OpenShift Container Platform installation process to apply a custom layered image to your nodes by adding a `MachineOSConfig` custom resource (CR) YAML and a push secret YAML to the `<installation_directory>/manifests/` directory. This allows you to use image mode for OpenShift to apply additional functionality to specific nodes upon cluster installation.
+You can use the standard OpenShift Container Platform installation process to apply a custom layered image to your nodes by adding a `MachineOSConfig` custom resource (CR) YAML and a push secret YAML to the `<installation_directory>/manifests/` directory.
+
+This allows you to use image mode for OpenShift to apply additional functionality to specific nodes upon cluster installation.
 
 After the installation, if you modify a machine config pool or update the OpenShift Container Platform version, the Machine Config Operator (MCO) builds and applies a new custom layered image, and pushes the updated image to your repository.
 

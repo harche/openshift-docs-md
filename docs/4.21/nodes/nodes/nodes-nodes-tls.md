@@ -72,11 +72,7 @@ When using one of the predefined profile types, the effective profile configurat
 
 To configure TLS ciphers and minimum versions for the kubelet HTTP server in OpenShift Container Platform, apply a predefined or custom TLS security profile through a `KubeletConfig` custom resource (CR). Without a custom profile, the kubelet defaults to the `Intermediate` profile.
 
-<div class="formalpara-title">
-
-**Sample `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes**
-
-</div>
+The following example is a `KubeletConfig` CR that configures the `Old` TLS security profile on worker nodes:
 
 ``` yaml
 apiVersion: machineconfiguration.openshift.io/v1

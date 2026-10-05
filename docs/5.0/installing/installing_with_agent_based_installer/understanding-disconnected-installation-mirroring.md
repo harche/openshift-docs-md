@@ -67,7 +67,7 @@ spec:
     source: quay.io/openshift-release-dev/ocp-release
 ```
 
-## Configuring the Agent-based Installer to use mirrored images
+## Configure the Agent-based Installer to use mirrored images
 
 You must use the output of either the `oc adm release mirror` command or the oc-mirror plugin to configure the Agent-based Installer to use mirrored images.
 

@@ -668,13 +668,18 @@ The Ingress Controller automatically serves services that have both IPv4 and IPv
       loadbalancer: {}
     ```
 
-    - In a dual-stack instance, there are two different `clusterIPs` provided.
+    where:
 
-    - For a single-stack instance, enter `IPv4` or `IPv6`. For a dual-stack instance, enter both `IPv4` and `IPv6`.
+    `spec.clusterIPs`
+    Specifies the cluster IP addresses assigned to the service. In a dual-stack instance, there are two different `clusterIPs` provided.
 
-    - For a single-stack instance, enter `SingleStack`. For a dual-stack instance, enter `RequireDualStack`.
+    `spec.ipFamilies`
+    Specifies the IP family. For a single-stack instance, enter `IPv4` or `IPv6`. For a dual-stack instance, enter both `IPv4` and `IPv6`.
 
-      These resources generate corresponding `endpoints`. The Ingress Controller now watches `endpointslices`.
+    `spec.ipFamilyPolicy`
+    Specifies the IP family policy. For a single-stack instance, enter `SingleStack`. For a dual-stack instance, enter `RequireDualStack`.
+
+    These resources generate corresponding `endpoints`. The Ingress Controller now watches `endpointslices`.
 
 2.  To view `endpoints`, enter the following command:
 

@@ -309,6 +309,10 @@ You can view CoreDNS pod logs to troubleshoot DNS issues by using the `oc logs` 
 
   - `<number>`: Specifies the number of DNS pods to stream logs from. The maximum is 6.
 
+<!-- -->
+
+- [Troubleshooting NIDS issues with an AI agent](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#troubleshooting-nids-ai-agent_configuring-ingress-cluster-traffic-ingress-controller)
+
 # Setting the CoreDNS Operator log level
 
 You can configure the Operator log level to quickly track down OpenShift DNS issues.

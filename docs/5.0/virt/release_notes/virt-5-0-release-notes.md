@@ -6,6 +6,71 @@ To view the supported guest operating systems for OpenShift Virtualization, see 
 
 # New features and enhancements
 
+Boot source image support for heterogeneous clusters is generally available
+After you enable the `enableMultiArchBootImageImport` feature gate, OpenShift Virtualization creates architecture-specific boot sources for each supported architecture, such as `rhel9-amd64` and `rhel9-arm64`. You can also specify the architecture for standalone data volumes and virtual machines. For more information, see [Heterogeneous cluster support](../../virt/storage/virt-boot-source-image-heterogeneous-clusters.xml#virt-boot-source-image-heterogeneous-clusters).
+
+[CNV-67900](https://issues.redhat.com/browse/CNV-67900)
+
+<!-- -->
+
+The `virt-platform-autopilot` controller is generally available
+The `virt-platform-autopilot` controller lowers deployment complexity by automatically enforcing configuration best practices across OpenShift Virtualization and adjacent Operators, such as the Kube Descheduler Operator and Cluster Observability Operator. It simplifies initial setup and maintains safe, optimal settings for swap readiness, load-aware balancing, and enhanced cluster observability to help ensure long-term stability across version upgrades.
+
+[CNV-81291](https://issues.redhat.com/browse/CNV-81291)
+
+<!-- -->
+
+Self-service Technical Supportability Review
+You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices. The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization, and coverage is continually expanding.
+
+For more information, see [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze) and [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255).
+
+<!-- -->
+
+Custom video device types are generally available
+You can configure a custom video device type when you create a virtual machine (VM). Configuring a custom device type overrides the default video configuration. You can specify different video devices, based on your guest operating system requirements and performance needs.
+
+[CNV-71195](https://issues.redhat.com/browse/CNV-71195)
+
+<!-- -->
+
+The `virt-platform-autopilot` controller replaces the `wasp-agent` component
+The `virt-platform-autopilot` controller replaces the `wasp-agent` component for configuring higher VM workload density. When you enable memory overcommitment in the `HyperConverged` custom resource, the controller automatically deploys the necessary node-level configurations, which simplifies the setup process. You must manually provision swap storage on worker nodes by creating a `MachineConfig` object. For more information, see [Configuring higher VM workload density](../../virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.xml#virt-configuring-higher-vm-workload-density).
+
+[CNV-83420](https://issues.redhat.com/browse/CNV-83420)
+
+<!-- -->
+
+Automatic cleanup of source PVCs after storage migration
+You can clear the option to keep source persistent volume claims (PVCs) after a storage migration. If you clear this option in the web console, OpenShift Virtualization cleans up the original PVCs after the storage migration completes. By default, OpenShift Virtualization retains the source PVCs after a storage migration, and you clean up the PVCs manually.
+
+[CNV-73509](https://issues.redhat.com/browse/CNV-73509)
+
+<!-- -->
+
+CSV export for OpenShift Virtualization list tables
+You can download table data in CSV format from OpenShift Virtualization list views in the OpenShift Container Platform web console, including **Virtual Machines**, **Templates**, **DataSources**, **Bootable volumes**, **Migration policies**, and **Storage migrations**. The downloaded CSV file has the filtered and sorted rows exactly as shown in the table and excludes hidden content and non-data columns.
+
+[CNV-89012](https://issues.redhat.com/browse/CNV-89012)
+
+<!-- -->
+
+Virtual machine filtering by group
+You can filter virtual machines by group in the OpenShift Container Platform web console. The **Group** filter is available in the advanced search dialog and as a drop-down filter in the main virtual machine list view.
+
+[CNV-94093](https://issues.redhat.com/browse/CNV-94093)
+
+<!-- -->
+
+New virtual machine panic alerts in the OpenShift Virtualization runbooks
+The following alerts for the OpenShift Virtualization Operator are included in the OpenShift Virtualization runbooks:
+
+- `ClusterVMPanicDetected`
+
+- `VMNonRecoverableOSPanic`
+
+  [CNV-81546](https://issues.redhat.com/browse/CNV-81546)
+
 # Deprecated features
 
 The `HotplugVolume` feature gate is deprecated
@@ -23,25 +88,16 @@ The `HotplugVolume` feature gate, which allows you to add storage without restar
 
 Removed features are no longer supported in OpenShift Virtualization.
 
+The `wasp-agent` component is removed
+The `wasp-agent` component, which configured higher VM workload density, is removed and is no longer supported. You configure higher VM workload density by using the `virt-platform-autopilot` controller. For more information, see [Configuring higher VM workload density](../../virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.xml#virt-configuring-higher-vm-workload-density).
+
+[CNV-83420](https://issues.redhat.com/browse/CNV-83420)
+
 # Technology Preview features
 
 Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
 
 [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
-
-Golden image support for heterogeneous clusters (Technology Preview)
-Golden image support is available for heterogeneous clusters, which enables you to create and use golden images for virtual machines in environments with differing node configurations. This capability is a Technology Preview feature.
-
-[CNV-62357](https://issues.redhat.com/browse/CNV-62357)
-
-<!-- -->
-
-Custom video device support in virtual machines (Technology Preview)
-You can now configure a custom video device type when creating a virtual machine. Configuring a custom device type overrides the default video configuration, and allows you to specify different video devices, based on your guest operating system requirements and performance needs. This capability is a Technology Preview feature.
-
-[CNV-71192](https://issues.redhat.com/browse/CNV-71192)
-
-<!-- -->
 
 Convert an existing VM to a template from the user interface (Technology Preview)
 Virtual machine (VM) owners can create, filter, and delete a user-generated template. You can create a template from an existing VM in the same project as the running VM or a different project from the OpenShift Virtualization user interface. To make sure that the data is consistent, stop the VM before you create a template. This capability is a Technology Preview feature.

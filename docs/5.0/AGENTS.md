@@ -56,7 +56,7 @@ Root: ./
 |installing/installing_with_agent_based_installer:{preparing-to-install-with-agent-based-installer.md,understanding-disconnected-installation-mirroring.md,installing-with-agent-basic.md,installing-with-agent-based-installer.md,prepare-pxe-assets-agent.md,installing-using-iscsi.md,preparing-an-agent-based-installed-cluster-for-mce.md,installation-config-parameters-agent.md,agent-based-installer-postinstallation.md}
 |installing/installing_sno:{install-sno-preparing-to-install-sno.md,install-sno-installing-sno.md}
 |installing/installing_two_node_cluster:{about-two-node-arbiter-installation.md}
-|installing/installing_two_node_cluster/installing_tnf:{installing-two-node-fencing.md,install-tnf.md,operating-a-degraded-tnf.md,install-post-tnf.md,tuning-fencing-parameters-tnf.md}
+|installing/installing_two_node_cluster/installing_tnf:{installing-two-node-fencing.md,install-tnf.md,operating-a-degraded-tnf.md,monitoring-two-node-fencing.md,install-post-tnf.md,tuning-fencing-parameters-tnf.md}
 |installing/installing_bare_metal:{preparing-to-install-on-bare-metal.md,bare-metal-postinstallation-configuration.md,bare-metal-expanding-the-cluster.md,bare-metal-using-bare-metal-as-a-service.md}
 |installing/installing_bare_metal/upi:{installing-bare-metal.md,installing-bare-metal-network-customizations.md,installing-restricted-networks-bare-metal.md,scaling-a-user-provisioned-cluster-with-the-bare-metal-operator.md,installation-config-parameters-bare-metal.md}
 |installing/installing_bare_metal/ipi:{ipi-install-overview.md,ipi-install-prerequisites.md,ipi-install-installation-workflow.md,ipi-install-installing-a-cluster.md,ipi-install-troubleshooting.md}

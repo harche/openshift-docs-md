@@ -171,7 +171,9 @@ As a cluster administrator, or as a user with view access to all namespaces, you
 
 # Configure metrics collection for the istio-csr operand
 
-The `istio-csr` operand exposes metrics by default on port `9402` at the `/metrics` service endpoint. You can configure metrics collection for the operand by creating a `ServiceMonitor` custom resource (CR), which enables the Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
+The `istio-csr` operand exposes metrics by default on port `9402` at the `/metrics` service endpoint. You can configure metrics collection for the operand by creating a `ServiceMonitor` custom resource (CR), which enables the Prometheus Operator to collect custom metrics.
+
+For more information, see "Configuring user workload monitoring".
 
 - You have access to the cluster with `cluster-admin` privileges.
 

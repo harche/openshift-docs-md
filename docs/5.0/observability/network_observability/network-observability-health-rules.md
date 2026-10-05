@@ -132,7 +132,9 @@ For example, packet drop rules are created only if the `PacketDrop` agent featur
 
 # Health rule threshold and grouping customization
 
-Health rules in the Network Observability Operator are defined by using rule templates and variants in the `spec.processor.metrics.healthRules` field of the `FlowCollector` custom resource (CR). Customizing these templates allows for flexible, fine-grained alerting tailored to specific environment needs.
+Health rules in the Network Observability Operator are defined by using rule templates and variants in the `spec.processor.metrics.healthRules` field of the `FlowCollector` custom resource (CR).
+
+Customizing these templates allows for flexible, fine-grained alerting tailored to specific environment needs.
 
 For each template, a list of variants can be defined, each with distinct thresholds and grouping configurations.
 

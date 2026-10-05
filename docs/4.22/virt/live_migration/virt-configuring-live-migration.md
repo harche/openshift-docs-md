@@ -24,7 +24,7 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
     namespace: openshift-cnv
   spec:
     liveMigrationConfig:
-      bandwidthPerMigration: 64Mi
+      bandwidthPerMigration: 2048Mi
       completionTimeoutPerGiB: 800
       parallelMigrationsPerCluster: 5
       parallelOutboundMigrationsPerNode: 2

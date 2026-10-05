@@ -171,7 +171,9 @@ The mount points of build volumes, from which the running build reads data, are 
 
 # Source-to-image build
 
-Source-to-image (S2I) is a tool for building reproducible container images. It produces ready-to-run images by injecting application source into a container image and assembling a new image. The new image incorporates the base image, the builder, and built source and is ready to use with the `buildah run` command. S2I supports incremental builds, which re-use previously downloaded dependencies, previously built artifacts, and so on.
+Source-to-image (S2I) is a tool for building reproducible container images. It produces ready-to-run images by injecting application source into a container image and assembling a new image.
+
+The new image incorporates the base image, the builder, and built source and is ready to use with the `buildah run` command. S2I supports incremental builds, which re-use previously downloaded dependencies, previously built artifacts, and so on.
 
 ## Perform source-to-image incremental builds
 
@@ -217,13 +219,13 @@ You can override the `assemble`, `run`, and `save-artifacts` source-to-image (S2
         scripts: "http://somehost.com/scripts_directory"
     ```
 
-    - The build process appends `run`, `assemble`, and `save-artifacts` to the path. If any or all scripts with these names exist, the build process uses these scripts in place of scripts with the same name that are provided in the image.
+    The build process appends `run`, `assemble`, and `save-artifacts` to the path. If any or all scripts with these names exist, the build process uses these scripts in place of scripts with the same name that are provided in the image.
 
-      <div class="note">
+    <div class="note">
 
-      Files located at the `scripts` URL take precedence over files located in `.s2i/bin` of the source repository.
+    Files located at the `scripts` URL take precedence over files located in `.s2i/bin` of the source repository.
 
-      </div>
+    </div>
 
 ## Source-to-image environment variables
 

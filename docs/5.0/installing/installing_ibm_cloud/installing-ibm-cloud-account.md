@@ -216,11 +216,11 @@ IBM Cloud® does not support IPv6, so dual stack or IPv6 environments are not po
 
 3.  Record the name of the DNS zone you have created. As part of the installation process, you must update the `install-config.yaml` file before deploying the cluster. Use the name of the DNS zone as the value for the `baseDomain` parameter.
 
-<div class="note">
+    <div class="note">
 
-You do not have to manage permitted networks or configure an "A" DNS resource record. As required, the installation program configures these resources automatically.
+    You do not have to manage permitted networks or configure an "A" DNS resource record. As required, the installation program configures these resources automatically.
 
-</div>
+    </div>
 
 - [IBM Cloud® CLI (IBM Cloud® documentation)](https://www.ibm.com/cloud/cli)
 

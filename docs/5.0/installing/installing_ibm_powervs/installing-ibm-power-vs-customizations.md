@@ -184,11 +184,11 @@ You must set the API key you created as a global variable; the installation prog
   $ export IBMCLOUD_API_KEY=<api_key>
   ```
 
-<div class="important">
+  <div class="important">
 
-You must set the variable name exactly as specified; the installation program expects the variable name to be present during startup.
+  You must set the variable name exactly as specified; the installation program expects the variable name to be present during startup.
 
-</div>
+  </div>
 
 # Creating the installation configuration file
 

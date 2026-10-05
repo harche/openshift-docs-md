@@ -28,7 +28,9 @@ If you are planning work that might cause a loss of network connectivity, you ca
 
 # Unexpected loss of network connectivity
 
-If the network disruption is unexpected and a node reboots, consider the following scenarios:
+If the network disruption is unexpected and a node reboots, there are scenarios to consider.
+
+The scenarios are:
 
 - If any nodes are still online, ensure that they do not reboot until network connectivity is restored. This is not applicable for single-node clusters.
 
@@ -70,7 +72,9 @@ If you are unable to recover network connectivity manually, consider the followi
 
 # Loss of a network segment
 
-The loss of a network segment, making a Tang server temporarily unavailable, has the following consequences:
+The loss of a network segment makes a Tang server temporarily unavailable.
+
+This has the following consequences:
 
 - OpenShift Container Platform nodes continue to boot as normal, provided other servers are available.
 
@@ -100,8 +104,8 @@ If key material is potentially exposed to unauthorized third parties, such as th
 
 4.  Scrutinize any incidents that result in unintended exposure of the master encryption key. If possible, take compromised nodes offline and re-encrypt their disks.
 
-<div class="tip">
+    <div class="tip">
 
-Reformatting and reinstalling on the same physical hardware, although slow, is easy to automate and test.
+    Reformatting and reinstalling on the same physical hardware, although slow, is easy to automate and test.
 
-</div>
+    </div>

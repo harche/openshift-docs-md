@@ -225,13 +225,8 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
     $ cat my-hosted-cp-performance-profile
     ```
 
-    <div class="formalpara-title">
+<!-- -->
 
-    **Example output**
-
-    </div>
-
-    ``` yaml
     ---
     apiVersion: v1
     data:
@@ -263,7 +258,6 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
     metadata:
       name: performance
       namespace: clusters
-    ```
 
 - [Performance Profile Creator arguments](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#performance-profile-creator-arguments_cnf-tuning-low-latency-nodes-with-perf-profile)
 

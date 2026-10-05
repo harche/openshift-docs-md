@@ -21,7 +21,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # About boot image management
 
-With boot image management enabled, the Machine Config Operator (MCO) manages and updates the Red Hat Enterprise Linux CoreOS (RHCOS) version of the boot image in the machine sets for your control plane or worker nodes. This means that the MCO updates the boot image whenever you update your cluster. Without boot image management enabled, if your cluster was originally created with an older OpenShift Container Platform version, the boot image that the MCO would use to create new nodes is an older Red Hat Enterprise Linux CoreOS (RHCOS) version, even if your cluster is at a later OpenShift Container Platform version.
+With boot image management enabled, the Machine Config Operator (MCO) manages and updates the Red Hat Enterprise Linux CoreOS (RHCOS) version of the boot image in the machine sets for your control plane or worker nodes.
+
+This means that the MCO updates the boot image whenever you update your cluster. Without boot image management enabled, if your cluster was originally created with an older OpenShift Container Platform version, the boot image that the MCO would use to create new nodes is an older Red Hat Enterprise Linux CoreOS (RHCOS) version, even if your cluster is at a later OpenShift Container Platform version.
 
 New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
 

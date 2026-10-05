@@ -2181,7 +2181,9 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 # Configuring network components to run on the control plane
 
-You can configure networking components to run exclusively on the control plane nodes. By default, OpenShift Container Platform allows any node in the machine config pool to host the `ingressVIP` virtual IP address. However, some environments deploy compute nodes in separate subnets from the control plane nodes, which requires configuring the `ingressVIP` virtual IP address to run on the control plane nodes.
+You can configure networking components to run exclusively on the control plane nodes.
+
+By default, OpenShift Container Platform allows any node in the machine config pool to host the `ingressVIP` virtual IP address. However, some environments deploy compute nodes in separate subnets from the control plane nodes, which requires configuring the `ingressVIP` virtual IP address to run on the control plane nodes.
 
 <div class="note">
 

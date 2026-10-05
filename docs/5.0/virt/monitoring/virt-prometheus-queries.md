@@ -475,95 +475,114 @@ The number of successfully completed migrations. Type: Gauge.
 `kubevirt_vmi_migration_failed`
 The number of failed migrations. Type: Gauge.
 
-# Node Memory Overcommit dashboard
+# Virtualization dashboards overview
 
-The Node Memory Overcommit dashboard displays physical and virtual memory utilization across the cluster, focusing on how virtual machines (VMs) affect node memory.
+OpenShift Virtualization includes Perses-based dashboards that give you visibility into virtual machine (VM) inventory, health, resource usage, service levels, and capacity across your cluster.
 
-Use this dashboard to monitor memory capacity, detect memory pressure, identify overcommitment risks, and validate that system processes do not exceed their reserved memory.
+The dashboards are deployed automatically as `PersesDashboard` custom resources by the HyperConverged Cluster Operator (HCO) in the `openshift-cnv` namespace.
 
-You can access this dashboard from the web console in **Observe** → **Dashboards (Perses)**.
+To access these dashboards, click **Observe** → **Dashboards(Perses)** in the web console.
 
-## Dashboard filters
+The dashboards require Cluster Observability Operator (COO) with the monitoring stack enabled.
 
-The dashboard provides two filter variables in the top toolbar:
+The following table describes the available OpenShift Virtualization dashboards:
 
-| Filter   | Description                                                                                                             | Default    |
-|----------|-------------------------------------------------------------------------------------------------------------------------|------------|
-| **Node** | Filters all panels to display information about one or more nodes in the cluster.                                       | **All**    |
-| **role** | Filters all panels to display information about nodes with a specific Kubernetes role, populated from `kube_node_role`. | **worker** |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Dashboard</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtual Machines Inventory</strong></p></td>
+<td style="text-align: left;"><p>Lists all VMs in the cluster with status, instance type, guest operating system, resource allocation, and operational flags such as live-migratable and evictable.</p>
+<p>Use this dashboard to manage your VM fleet and find VMs that match specific criteria.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Virtual Machines Utilization</strong></p></td>
+<td style="text-align: left;"><p>Shows resource usage for each VM, including CPU, memory, swap, storage, network, and filesystem metrics.</p>
+<p>Use this dashboard to monitor resources, right-size VMs, and optimize costs.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtual Machines Service Level</strong></p></td>
+<td style="text-align: left;"><p>Tracks VM uptime and downtime over a defined range of time, showing planned and unplanned breakdowns.</p>
+<p>Use this dashboard to report on service-level agreements (SLAs) and find VMs with unexpected downtime.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Virtual Machines Time in Status</strong></p></td>
+<td style="text-align: left;"><p>Shows how long each VM has been in its current state, with filters for time thresholds.</p>
+<p>Use this dashboard to find stuck VMs or long-stopped VMs that can be cleaned up.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Top Consumers</strong></p></td>
+<td style="text-align: left;"><p>Ranks VMs by resource consumption across memory, CPU, storage, network, vCPU wait time, and swap.</p>
+<p>Use this dashboard to plan capacity and identify resource contention.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Nodes Memory</strong></p></td>
+<td style="text-align: left;"><p>Shows memory usage per node, including overcommit ratios, memory pressure, and system reservations.</p>
+<p>Use this dashboard to plan memory capacity, analyze overcommit, and prevent out-of-memory events.</p></td>
+</tr>
+</tbody>
+</table>
 
-You can also change the time range displayed in the different panels in the top toolbar of the dashboard.
+## Dashboard panel types
 
-## Summary section
+The OpenShift Virtualization dashboards combine the following panel types to display data. Understanding each panel type helps you interpret any dashboard.
 
-The **Summary** section provides a high-level overview of cluster memory health. The panels in this section provide general memory utilization data for the cluster and the nodes. Most of the panels in this section appear in other sections of the dashboard as well. However, the following panels are unique to the **Summary** section:
+Gauge panels
+Display a single percentage value against thresholds that classify the value as healthy, warning, or critical. Each state also has a color: healthy is green, warning is amber, and critical is red.
 
-| Panel                      | Type        | Description                                                                                                                                                                                                                                                   |
-|----------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Node Utilization - max** | Gauge       | Displays the highest node utilization in the cluster. Use this panel together with the **Node Utilization - min** panel to assess scheduling balance. A large gap between minimum and maximum node utilization indicates an imbalanced workload distribution. |
-| **Cluster Utilization**    | Time series | Displays the trend over time of several memory metrics. Use this panel to compare actual utilization and virtual memory plans against total capacity.                                                                                                         |
+Time series panels
+Display multi-line plots over a time range. Use these panels to identify trends and compare entities over time.
 
-## Cluster section
+Stat panels
+Display a single numeric value with unit formatting, such as bytes, percentage, or hours.
 
-The **Cluster** section provides a more detailed view of cluster-wide memory behavior over a range of time. This section includes the following panels:
+Table panels
+Display multi-column, sortable data with filtering and conditional formatting. Most dashboards use table panels as their primary display.
 
-| Panel                                      | Type        | Description                                                                                                                                                                                                                                                                                                                                                                                     |
-|--------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Physical Memory Utilization & Requests** | Time series | Displays the total node memory capacity alongside actual memory utilization split into virtualization and non-virtualization workloads. This panel also shows the memory request plan (system-reserved requests and pod requests) so that you can compare actual usage to the scheduler expectations.                                                                                           |
-| **Cluster Utilization**                    | Gauge       | Displays the aggregated memory utilization of the nodes in the cluster. This panel also appears in the **Summary** section.                                                                                                                                                                                                                                                                     |
-| **Virtual Memory Assignment**              | Time series | This panel displays the worst-case scenario if all virtual memory is used at present. It shows total node capacity, utilization without virtualization, and non-virtualization utilization combined with the total assigned VM memory. If the **VM assigned virtual memory** line nears or exceeds **Node capacity**, the cluster risks out-of-memory conditions under full VM memory pressure. |
-| **Cluster Virtual Committed**              | Gauge       | Displays the percentage of committed virtual memory out of all of the allocatable physical memory. This panel also appears in the **Summary** section.                                                                                                                                                                                                                                          |
-| **Cluster - Memory Pressure**              | Time series | Shows cluster-level memory PSI rates for `Waiting` (processes delayed by memory) and `Stalled` (processes completely blocked).                                                                                                                                                                                                                                                                  |
-| **Cluster - Aggregated Swap**              | Time series | Shows total swap capacity and usage across all the nodes that you select. Rising swap usage indicates memory pressure that has not yet caused PSI stalls.                                                                                                                                                                                                                                       |
+## Nodes Memory dashboard concepts
 
-## Nodes section
+The Nodes Memory dashboard helps you plan memory capacity, analyze overcommit, and prevent out-of-memory events. To use the dashboard effectively, you must understand the following concepts.
 
-The **Nodes** section breaks down memory information per node to help identify imbalances. This section includes the following panels:
+<div class="note">
 
-| Panel                                     | Type        | Description                                                                                                                                                                                         |
-|-------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Utilization - Actual Overcommit Level** | Time series | Displays the per-node allocatable memory utilization minus the system-reserved memory.                                                                                                              |
-| **Node Utilization - min**                | Gauge       | Displays the lowest node utilization in the cluster. This panel also appears in the **Summary** section.                                                                                            |
-| **Plan - Pod Requests per Node**          | Time series | Shows the memory request fill level per node: the sum of all pod memory requests on a node divided by the node’s allocatable memory.                                                                |
-| **Node Requests - min/max**               | Stat        | Displays the minimum and maximum pod request ratios per node. Use this panel to quickly assess the cluster’s remaining capacity to host new workloads.                                              |
-| **Plan - Virtual Memory Commit Level**    | Time series | Displays the virtual memory commit ratio per node. The panel compares total active and assigned VM memory against the node’s available memory.                                                      |
-| **Node Virtual - min/max**                | Stat        | Displays the minimum and maximum virtual commit levels per node.                                                                                                                                    |
-| **Node - Pressure**                       | Time series | Displays the memory PSI waiting rate per node. Each line represents one node to help you identify which nodes experience memory contention.                                                         |
-| **Node PSI - max**                        | Gauge       | Displays the highest PSI value across all nodes. PSI shows the amount of time applications are stalled or delayed waiting for memory resources. This panel also appears in the **Summary** section. |
+The dashboard filters all data by node and by Kubernetes node role. The role filter defaults to `worker`, so the dashboard excludes control plane nodes until you change the filter.
 
-## System Reserved section
+</div>
 
-The **System Reserved** section monitors whether the system (hypervisor) processes stay within their reserved memory budget. This section includes the following panels:
+Memory overcommit
+Overcommit is the practice of assigning more virtual memory to VMs than the physical memory available on a node. The overcommit ratio compares assigned virtual memory to physical memory or to pod memory requests. A higher ratio increases VM density but also increases the risk of memory contention if VMs use their assigned memory at the same time.
 
-| Panel                                    | Type        | Description                                                                                                                                                                                         |
-|------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Utilization - Reserved System Memory** | Time series | Displays the top 5 nodes by system-reserved memory utilization. This metric compares active system process memory against the reserved memory budget.                                               |
-| **Utilization - min/max**                | Time series | Displays the minimum and maximum system-reserved memory utilization across all nodes over time.                                                                                                     |
-| **System Exceeding Reservation**         | Stat        | Displays the percentage or number of nodes out of all monitored nodes that are currently triggering the `SystemMemoryExceedsReservation` alert. This panel also appears in the **Summary** section. |
+Virtual committed memory
+Virtual committed memory is the total memory committed to VMs, including launcher overhead, measured against allocatable physical memory. Comparing committed virtual memory to node capacity shows the worst-case memory demand if all VMs use their full memory allocation at once.
 
-## Workloads section
+Pressure stall information (PSI)
+PSI measures the time that processes are delayed or blocked while waiting for memory. A `Waiting` value indicates processes that are delayed, and a `Stalled` value indicates processes that are completely blocked. Rising PSI values indicate memory contention that can affect workload performance.
 
-The **Workloads** section, which is collapsed by default, focuses on individual VM memory behavior.
+Swap usage
+Rising swap usage indicates memory pressure that has not yet caused PSI stalls. Monitor swap usage as an early warning of memory constraints.
 
-| Panel                                                    | Type        | Description                                                                                                                                                                                                                                                                                                                |
-|----------------------------------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **VM Overcommit Ratio**                                  | Time series | Displays the ratio of assigned virtual memory to pod memory requests for each VM.                                                                                                                                                                                                                                          |
-| **VM Virtual Committed**                                 | Gauge       | Displays the average VM overcommit ratio, which includes launcher overhead. This panel also appears in the **Summary** section.                                                                                                                                                                                            |
-| **VM Virtual Memory Utilization vs Host VM Utilization** | Time series | Displays the 10 VMs with the highest ratio between guest-reported memory usage and host-side container memory usage. Use this panel to identify VMs where guest-reported usage differs significantly from host-side accounting. This difference indicates balloon driver effectiveness or memory accounting discrepancies. |
-| **Number of Running VMs**                                | Time series | Displays the total number of running virtual machine instances (VMIs) on the cluster to provide context for the other workload panels.                                                                                                                                                                                     |
+System reserved memory
+System reserved memory is the memory set aside for system processes on each node. When active system process memory approaches the reserved budget, the node can trigger the `SystemMemoryExceedsReservation` alert.
 
-## Interpreting the dashboard
+Use these metrics together to detect memory pressure before it affects workloads, evaluate overcommit ratios, and plan node scaling decisions. The following thresholds indicate the overall memory health of the cluster:
 
-Monitor the dashboard indicators in the **Summary** section to identify early warning signs of memory pressure and prevent critical out-of-memory events.
+Healthy
+Memory utilization is below 70%, virtual committed memory is below 120%, PSI values are near zero, and no node exceeds its system reserved memory.
 
-Healthy state
-The **Cluster Utilization** panel gauge is green (below 70%), the **Cluster Virtual Committed** panel gauge is below 120%, the **Node PSI - max** values are near zero, and no nodes exceed their system reservation.
+Warning
+Memory utilization is between 80% and 90%, virtual committed memory approaches 150%, or individual nodes diverge significantly from the cluster average, which indicates imbalanced scheduling.
 
-Warning signs
-Utilization gauges turn amber (80% to 90%), the virtual commit approaches 150%, or individual nodes diverge significantly from the cluster average, which suggests imbalanced scheduling.
-
-Critical state
-Utilization gauges turn red (above 90%), PSI values exceed 0.5, system reservation is exceeded on any node, or virtual commit ratios per node exceed 200%. These conditions indicate that the cluster is at risk of out-of-memory events and VM eviction.
+Critical
+Memory utilization is above 90%, PSI values exceed 0.5, a node exceeds its system reserved memory, or the virtual commit ratio on a node exceeds 200%. These conditions indicate that the cluster is at risk of out-of-memory events and VM eviction.
 
 # Additional resources
 

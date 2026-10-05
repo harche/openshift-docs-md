@@ -463,7 +463,9 @@ When you update the `configDaemonNodeSelector` field, the SR-IOV Network Config 
 
 # Configure the SR-IOV Network Operator for single node installations
 
-By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that no workloads are using the virtual functions before the reconfiguration. As a result, you must configure the Operator to not drain workloads from the single node.
+By default, the SR-IOV Network Operator drains workloads from a node before every policy change.
+
+The Operator performs this action to ensure that no workloads are using the virtual functions before the reconfiguration. As a result, you must configure the Operator to not drain workloads from the single node.
 
 For installations on a single node, other nodes do not receive the workloads.
 

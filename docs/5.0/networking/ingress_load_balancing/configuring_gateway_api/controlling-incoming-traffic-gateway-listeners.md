@@ -2,7 +2,9 @@ To control network traffic flow, you can configure Gateway API listeners to defi
 
 # Configuring listener routing and security settings
 
-To ensure that your applications receive only authenticated and authorized traffic, you must specify the allowed protocols and ports for your gateway. If you are routing secure traffic, you must also configure TLS settings. You can define these parameters by configuring the `spec.listeners` field in your `Gateway` custom resource (CR).
+To ensure that your applications receive only authenticated and authorized traffic, you must specify the allowed protocols and ports for your gateway.
+
+If you are routing secure traffic, you must also configure TLS settings. You can define these parameters by configuring the `spec.listeners` field in your `Gateway` custom resource (CR).
 
 <div class="important">
 

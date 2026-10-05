@@ -4,7 +4,9 @@ For example, you might want to pause autoscaling before performing cluster maint
 
 # Pause a custom metrics autoscaler
 
-You can pause the autoscaling of a scaled object by adding the `autoscaling.keda.sh/paused-replicas` annotation to the custom metrics autoscaler for that scaled object. The custom metrics autoscaler scales the replicas for that workload to the specified value and pauses autoscaling until the annotation is removed.
+You can pause the autoscaling of a scaled object by adding the `autoscaling.keda.sh/paused-replicas` annotation to the custom metrics autoscaler for that scaled object.
+
+The custom metrics autoscaler scales the replicas for that workload to the specified value and pauses autoscaling until the annotation is removed.
 
 ``` yaml
 apiVersion: keda.sh/v1alpha1
@@ -37,7 +39,10 @@ metadata:
       uid: f5aec682-acdf-4232-a783-58b5b82f5dd0
     ```
 
-    - Specifies that the Custom Metrics Autoscaler Operator is to scale the replicas to the specified value and stop autoscaling.
+    where:
+
+    `metadata.annotations.autoscaling.keda.sh/paused-replicas`
+    Specifies that the Custom Metrics Autoscaler Operator is to scale the replicas to the specified value and stop autoscaling.
 
 # Restart the custom metrics autoscaler for a scaled object
 
@@ -58,7 +63,7 @@ metadata:
     $ oc edit ScaledObject scaledobject
     ```
 
-2.  Remove the `autoscaling.keda.sh/paused-replicas` annotation.
+2.  Remove the `autoscaling.keda.sh/paused-replicas` annotation to restart a paused custom metrics autoscaler:
 
     ``` yaml
     apiVersion: keda.sh/v1alpha1
@@ -73,5 +78,3 @@ metadata:
       resourceVersion: '65729'
       uid: f5aec682-acdf-4232-a783-58b5b82f5dd0
     ```
-
-    - Remove this annotation to restart a paused custom metrics autoscaler.

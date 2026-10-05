@@ -32,7 +32,7 @@ Enabling network flow collectors might have an impact on the overall performance
 
 # Network object configuration for tracking network flows
 
-The fields for configuring network flows collectors in the Cluster Network Operator (CNO) are shown in the following table:
+Review the fields for configuring network flows collectors in the Cluster Network Operator (CNO).
 
 | Field                                        | Type     | Description                                                          |
 |----------------------------------------------|----------|----------------------------------------------------------------------|

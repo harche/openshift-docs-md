@@ -64,7 +64,7 @@ View details of a user-owned OAuth access token to identify the associated clien
   Labels:                      <none>
   Annotations:                 <none>
   API Version:                 oauth.openshift.io/v1
-  Authorize Token:             sha256~Ksckkug-9Fg_RWn_AUysPoIg-_HqmFI9zUL_CgD8wr8
+  Authorize Token:             sha256~<authorize_token>
   Client Name:                 openshift-browser-client
   Expires In:                  86400
   Inactivity Timeout Seconds:  317

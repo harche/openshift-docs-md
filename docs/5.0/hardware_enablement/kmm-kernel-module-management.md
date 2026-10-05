@@ -2,9 +2,11 @@ The Kernel Module Management (KMM) Operator deploys out-of-tree kernel modules a
 
 # About the Kernel Module Management Operator
 
-The Kernel Module Management (KMM) Operator on OpenShift Container Platform manages the full lifecycle of out-of-tree kernel modules and device plugins, from build and signing through deployment. You can use `Module` custom resources (CRs)to define module loaders, device plugins, and version-specific build instructions across kernel upgrades.
+The Kernel Module Management (KMM) Operator on OpenShift Container Platform manages the full lifecycle of out-of-tree kernel modules and device plugins, from build and signing through deployment.
 
-# Installing the Kernel Module Management Operator
+You can use `Module` custom resources (CRs)to define module loaders, device plugins, and version-specific build instructions across kernel upgrades.
+
+# Install the Kernel Module Management Operator
 
 As a cluster administrator, you can install the Kernel Module Management (KMM) Operator on OpenShift Container Platform by using the OpenShift CLI or web console.
 
@@ -120,7 +122,7 @@ To install the Kernel Module Management (KMM) Operator on OpenShift Container Pl
 
   The Operator is available.
 
-## Installing the Kernel Module Management Operator on earlier versions of OpenShift Container Platform
+## Install the Kernel Module Management Operator on earlier versions of OpenShift Container Platform
 
 As a cluster administrator, you can install the Kernel Module Management (KMM) Operator by using the OpenShift CLI.
 
@@ -1553,7 +1555,7 @@ You can install KMM on the spokes cluster through a RHACM `Policy` object. In ad
   `spec.clusterSelector`
   Specifies that on the `PlacementRule` object entry, this field can be customized to target select clusters only.
 
-# Customizing upgrades for kernel modules
+# Customize upgrades for kernel modules
 
 The Kernel Module Management (KMM) Operator periodically upgrades `Module` resources in the cluster, typically during a cluster upgrade.
 
@@ -1625,7 +1627,9 @@ This procedure requires knowledge of the workload using the kernel module and mu
 
 # Day 1 kernel module loading
 
-Day 1 kernel module loading lets you insert kernel modules during Linux `systemd` initialization on OpenShift Container Platform, before the standard KMM Day 2 loading and a complete initialization of a Linux (RHCOS) server. You can use the Machine Config Operator (MCO) when a module must load earlier than full node initialization.
+Day 1 kernel module loading lets you insert kernel modules during Linux `systemd` initialization on OpenShift Container Platform, before the standard KMM Day 2 loading and a complete initialization of a Linux (RHCOS) server.
+
+You can use the Machine Config Operator (MCO) when a module must load earlier than full node initialization.
 
 - [Machine Config Operator](../machine_configuration/index.xml#machine-config-index)
 

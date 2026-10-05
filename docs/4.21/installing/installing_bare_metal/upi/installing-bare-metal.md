@@ -643,6 +643,12 @@ If you are deploying a three-node cluster with zero compute nodes, the Ingress C
 
 By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge on bare-metal nodes. For advanced networking requirements, you can override this default behavior on bare-metal platforms. To do this, create a `MachineConfig` object that includes an NMState configuration file.
 
+<div class="note">
+
+You can use Butane to create machine configs. For more information, see "Creating a MachineConfig object by using Butane".
+
+</div>
+
 Consider using the customized `br-ex` bridge configuration for any of the following tasks:
 
 - You need to modify the `br-ex` bridge after you installed the cluster.
@@ -845,6 +851,8 @@ The following list of interface names are reserved and you cannot use the names 
 
 <!-- -->
 
+- [Creating a MachineConfig object by using Butane](../../../installing/install_config/installing-customizing.xml#installation-special-config-butane-create_installing-customizing)
+
 - [Converting to a dual-stack cluster network](../../../networking/ovn_kubernetes_network_provider/converting-to-dual-stack.xml#nw-dual-stack-convert_converting-to-dual-stack)
 
 - [Expanding the cluster](../../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#bare-metal-expanding-the-cluster)
@@ -918,7 +926,9 @@ Additionally, you must create a `BareMetalHost` CR that defines information for 
 
 # Enabling OVS balance-slb mode for your cluster
 
-You can enable the Open vSwitch (OVS) `balance-slb` mode so that two or more physical interfaces can share their network traffic. A `balance-slb` mode interface can give source load balancing (SLB) capabilities to a cluster that runs virtualization workloads, without requiring load balancing negotiation with the network switch.
+You can enable the Open vSwitch (OVS) `balance-slb` mode so that two or more physical interfaces can share their network traffic.
+
+A `balance-slb` mode interface can give source load balancing (SLB) capabilities to a cluster that runs virtualization workloads, without requiring load balancing negotiation with the network switch.
 
 Currently, source load balancing runs on a bond interface, where the interface connects to an auxiliary bridge, such as `br-phy`. Source load balancing balances only across different Media Access Control (MAC) address and virtual local area network (VLAN) combinations. Note that all OVN-Kubernetes pod traffic uses the same MAC address and VLAN, so this traffic cannot be load balanced across many physical interfaces.
 
@@ -2641,7 +2651,9 @@ For PXE or ISO boots, you can create the Ignition config and `APPEND` the `ignit
 
 ### Default console configuration
 
-Red Hat Enterprise Linux CoreOS (RHCOS) nodes installed from an OpenShift Container Platform 4.17 boot image use a default console that is meant to accommodate most virtualized and bare metal setups. Different cloud and virtualization platforms may use different default settings depending on the chosen architecture.
+Red Hat Enterprise Linux CoreOS (RHCOS) nodes installed from an OpenShift Container Platform 4.17 boot image use a default console that is meant to accommodate most virtualized and bare metal setups.
+
+Different cloud and virtualization platforms may use different default settings depending on the chosen architecture.
 
 Bare-metal installations use the kernel default settings which typically means the graphical console is the primary console and the serial console is disabled.
 
@@ -4163,7 +4175,9 @@ On a completely diskless machine, the iSCSI target and initiator values can be p
 
 # Waiting for the bootstrap process to complete
 
-The OpenShift Container Platform bootstrap process begins after the cluster nodes first boot into the persistent RHCOS environment that has been installed to disk. The configuration information provided through the Ignition config files is used to initialize the bootstrap process and install OpenShift Container Platform on the machines. You must wait for the bootstrap process to complete.
+After your cluster nodes first boot into the persistent RHCOS environment installed to disk, wait for the OpenShift Container Platform bootstrap process to complete.
+
+The configuration information provided through the Ignition config files is used to initialize the bootstrap process and install OpenShift Container Platform on the machines.
 
 - You have created the Ignition config files for your cluster.
 

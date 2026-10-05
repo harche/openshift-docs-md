@@ -968,6 +968,28 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:71453 - OpenShift Container Platform 4.21.35 bug fix and security update
+
+Issued: 29 September 2026
+
+OpenShift Container Platform release 4.17.35 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:71453](https://access.redhat.com/errata/RHSA-2026:71453) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:71443](https://access.redhat.com/errata/RHSA-2026:71443) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.35 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the Berkeley Packet Filter (BPF) filesystem did not allow dots (".") in filenames. As a consequence, the Ingress Node Firewall could not attach rules to virtual LAN (VLAN) subinterfaces such as `bond0.12`. Attempting to pin a link for an interface containing a dot failed with an `operation not permitted` error. With this release, the Ingress Node Firewall sanitizes pin filenames by converting dots to a placeholder string. For example, `vlan.100` becomes `vlan_dot_100` before writing to the BPF filesystem. As a result, firewall rules can be successfully applied to subinterfaces such as VLANs on top of bonded interfaces. ([OCPBUGS-97799](https://redhat.atlassian.net/browse/OCPBUGS-97799))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:68546 - OpenShift Container Platform 4.17.34 bug fix and security update
 
 Issued: 22 September 2026

@@ -6,7 +6,7 @@ On platforms that do not provide shareable object storage, the OpenShift Image R
 
 After installation, you must edit the Image Registry Operator configuration to switch the `managementState` from `Removed` to `Managed`. When this has completed, you must configure storage.
 
-# Changing the image registry’s management state
+# Change the image registry’s management state
 
 To start the image registry, you must change the Image Registry Operator configuration’s `managementState` from `Removed` to `Managed`.
 

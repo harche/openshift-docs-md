@@ -12,13 +12,15 @@ An update begins when either a cluster administrator or an automatic update cont
 
 <div class="note">
 
-Operators previously installed through Operator Lifecycle Manager (OLM) follow a different process for updates. See [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators) for more information.
+Operators previously installed through Operator Lifecycle Manager (OLM) follow a different process for updates. See "Updating installed Operators" for more information.
 
 </div>
 
 The target release image contains manifest files for all cluster components that form a specific OCP version. When updating the cluster to a new version, the CVO applies manifests in separate stages called Runlevels. Most, but not all, manifests support one of the cluster Operators. As the CVO applies a manifest to a cluster Operator, the Operator might perform update tasks to reconcile itself with its new specified version.
 
 The CVO monitors the state of each applied resource and the states reported by all cluster Operators. The CVO only proceeds with the update when all manifests and cluster Operators in the active Runlevel reach a stable condition. After the CVO updates the entire control plane through this process, the Machine Config Operator (MCO) updates the operating system and configuration of every node in the cluster.
+
+- [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
 
 # Common questions about update availability
 

@@ -81,7 +81,9 @@ The following configuration limitation applies when you set the installation pro
 
 # About edge compute pools
 
-The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations. You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Local Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Local Zones locations.
+The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations.
+
+You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Local Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Local Zones locations.
 
 When deploying a cluster that uses Local Zones, consider the following points:
 

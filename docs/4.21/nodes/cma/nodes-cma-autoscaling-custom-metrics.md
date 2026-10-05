@@ -29,15 +29,11 @@ The Custom Metrics Autoscaler Operator exposes the following metrics, which you 
 
 Custom Metric Autoscaler Operator metrics
 
-<div class="formalpara-title">
-
-**Custom Metrics Autoscaler Admission webhook metrics**
-
-</div>
-
 The Custom Metrics Autoscaler Admission webhook also exposes the following Prometheus metrics.
 
 | Metric name                            | Description                              |
 |----------------------------------------|------------------------------------------|
 | `keda_scaled_object_validation_total`  | The number of scaled object validations. |
 | `keda_scaled_object_validation_errors` | The number of validation errors.         |
+
+Custom Metrics Autoscaler Admission webhook metrics

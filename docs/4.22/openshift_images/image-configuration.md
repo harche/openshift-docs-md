@@ -770,7 +770,7 @@ When you define the `allowedRegistries` parameter, all registries, including `re
     unqualified-search-registries = ['reg1.io', 'reg2.io', 'reg3.io']
     ```
 
-## Configuring additional trust stores for image registry access
+## Configure additional trust stores for image registry access
 
 You can add references to a config map that has additional certificate authorities (CAs) to be trusted during image registry access to the `image.config.openshift.io/cluster` custom resource (CR).
 

@@ -396,7 +396,7 @@ You can create a network node policy and create a Data Plane Development Kit (DP
 
 # Use the TAP CNI to run a rootless DPDK workload with kernel access
 
-DPDK applications can use `virtio-user` as an exception path to inject certain types of packets, such as log messages, into the kernel for processing. For more information about this feature, see [Virtio_user as Exception Path](https://doc.dpdk.org/guides/howto/virtio_user_as_exception_path.html).
+DPDK applications can use `virtio-user` as an exception path to inject certain types of packets, such as log messages, into the kernel for processing.
 
 In OpenShift Container Platform version 4.14 and later, you can use non-privileged pods to run DPDK applications alongside the tap CNI plugin. To enable this functionality, you need to mount the `vhost-net` device by setting the `needVhostNet` parameter to `true` within the `SriovNetworkNodePolicy` object.
 
@@ -660,6 +660,8 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
     ``` terminal
     $ oc create -f dpdk-pod-rootless.yaml
     ```
+
+- [Virtio_user as Exception Path (DPDK documentation)](https://doc.dpdk.org/guides/howto/virtio_user_as_exception_path.html)
 
 - [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 

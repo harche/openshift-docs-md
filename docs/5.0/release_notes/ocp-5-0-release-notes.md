@@ -34,7 +34,17 @@ This release adds improvements related to the following components and concepts:
 
 ## AI applications
 
+Troubleshooting NIDS issues with an AI agent
+You can use the netedge toolset in the MCP server for OpenShift Container Platform to diagnose Network Ingress and DNS (NIDS) issues by describing symptoms to a connected LLM client in natural language.
+
+For more information, see [Troubleshooting NIDS issues with an AI agent](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#ai-driven-networking-troubleshooting_configuring-ingress-cluster-traffic-ingress-controller).
+
 ## Authentication and authorization
+
+Advanced direct authentication fields are now generally available
+Advanced direct authentication fields for OIDC-based authentication are now generally available for standalone and hosted control plane (HCP) clusters. These fields, which include custom OIDC discovery URLs, CEL-based claim mapping and validation rules, and user validation rules, no longer require the `TechPreviewNoUpgrade` feature set.
+
+For more information, see [Advanced direct authentication fields](../authentication/structured-auth-config-fields.xml#structured-auth-config-fields).
 
 ## Autoscaling
 
@@ -69,6 +79,18 @@ New features on IBM Z® and IBM® LinuxONE include:
 ## Insights Operator
 
 ## Installation and update
+
+AI-powered update risk and status assessments
+With this release, you can use the web console to generate AI-powered guidance specific to your cluster to assess the risk of an update path or the status of an in-progress update.
+
+For more information, see [Analyzing update risk and status using AI](../updating/preparing_for_updates/updating-cluster-prepare.xml#update-assessment-ai_updating-cluster-prepare).
+
+Installing a cluster on Amazon Web Services (AWS) with a user-provisioned DNS is generally available
+You can enable a user-provisioned domain name server (DNS) instead of the default cluster-provisioned DNS solution. For example, your organization’s security policies might not allow the use of public DNS services such as Amazon Web Services (AWS) DNS. As a result, you can manage the API and Ingress DNS records in your own system rather than adding the records to the DNS of the cloud. If you use this feature, you must provision the cluster first and then provide your own DNS solution that includes records for `api.<cluster_name>.<base_domain>.` and `*.apps.<cluster_name>.<base_domain>.`.
+
+Installing a cluster on AWS with a user-provisioned DNS was introduced in OpenShift Container Platform 4.21 with Technology Preview status. In OpenShift Container Platform 5.0, it is now generally available.
+
+For more information, see [Enabling a user-managed DNS](../installing/installing_aws/ipi/installing-aws-vpc.xml#installation-aws-enabling-user-managed-DNS_installing-aws-vpc) and [Provisioning your own DNS records](../installing/installing_aws/ipi/installing-aws-vpc.xml#installation-aws-provisioning-own-dns-records_installing-aws-vpc).
 
 ## Machine Config Operator
 
@@ -200,95 +222,87 @@ This section includes several technical changes for OpenShift Container Platform
 
 ## Images deprecated and removed features
 
-| Feature                  | 4.20       | 4.21       | 4.22 |
-|--------------------------|------------|------------|------|
-| Cluster Samples Operator | Deprecated | Deprecated |      |
+| Feature                  | 4.21       | 4.22       | 5.0        |
+|--------------------------|------------|------------|------------|
+| Cluster Samples Operator | Deprecated | Deprecated | Deprecated |
 
 Images deprecated and removed tracker
 
 ## Installation deprecated and removed features
 
-| Feature                                                                                                                | 4.20                 | 4.21                 | 4.22       |
-|------------------------------------------------------------------------------------------------------------------------|----------------------|----------------------|------------|
-| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated           | Deprecated           | Deprecated |
-| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated           | Deprecated           | Deprecated |
-| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated           | Deprecated           | Deprecated |
-| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated           | Deprecated           | Deprecated |
-| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated           | Deprecated           | Deprecated |
-| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated           | Deprecated           | Deprecated |
-| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated           | Deprecated           | Deprecated |
-| Adding kernel modules to nodes with kvc                                                                                | General Availability | General Availability | Deprecated |
-| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | General Availability | Deprecated           | Deprecated |
+| Feature                                                                                                                | 4.21               | 4.22       | 5.0        |
+|------------------------------------------------------------------------------------------------------------------------|--------------------|------------|------------|
+| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated         | Deprecated | Deprecated |
+| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated         | Deprecated | Deprecated |
+| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated         | Deprecated | Deprecated |
+| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated         | Deprecated | Deprecated |
+| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated         | Deprecated | Deprecated |
+| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated         | Deprecated | Deprecated |
+| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated         | Deprecated | Deprecated |
+| Adding kernel modules to nodes with kvc                                                                                | Technology Preview | Deprecated | Deprecated |
+| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | Deprecated         | Deprecated | Deprecated |
 
 Installation deprecated and removed tracker
 
 ## Machine Management deprecated and removed features
 
-| Feature                                                                          | 4.20                 | 4.21       | 4.22       |
-|----------------------------------------------------------------------------------|----------------------|------------|------------|
-| Confidential Computing with AMD Secure Encrypted Virtualization for Google Cloud | Deprecated           | Deprecated | Deprecated |
-| Managing bare-metal machines using Fujitsu iRMC drivers                          | General Availability | Deprecated | Deprecated |
+| Feature                                                                          | 4.21       | 4.22       | 5.0        |
+|----------------------------------------------------------------------------------|------------|------------|------------|
+| Confidential Computing with AMD Secure Encrypted Virtualization for Google Cloud | Deprecated | Deprecated | Deprecated |
+| Managing bare-metal machines using Fujitsu iRMC drivers                          | Deprecated | Deprecated | Deprecated |
 
 Machine management deprecated and removed tracker
 
 ## Networking deprecated and removed features
 
-| Feature  | 4.20       | 4.21       | 4.22 |
-|----------|------------|------------|------|
-| iptables | Deprecated | Deprecated |      |
+| Feature  | 4.21       | 4.22       | 5.0        |
+|----------|------------|------------|------------|
+| iptables | Deprecated | Deprecated | Deprecated |
 
 Networking deprecated and removed tracker
 
 ## Node deprecated and removed features
 
-| Feature                                                              | 4.20                 | 4.21                 | 4.22       |
-|----------------------------------------------------------------------|----------------------|----------------------|------------|
-| `ImageContentSourcePolicy` (ICSP) objects                            | Deprecated           | Deprecated           | Deprecated |
-| Kubernetes topology label `failure-domain.beta.kubernetes.io/zone`   | Deprecated           | Deprecated           | Deprecated |
-| Kubernetes topology label `failure-domain.beta.kubernetes.io/region` | Deprecated           | Deprecated           | Deprecated |
-| Dynamic Accelerator Slicer (DAS) Operator                            | Technology Preview   | Technology Preview   | Removed    |
-| runC container runtime                                               | General Availability | General Availability | Deprecated |
+| Feature                                                              | 4.21                 | 4.22       | 5.0        |
+|----------------------------------------------------------------------|----------------------|------------|------------|
+| `ImageContentSourcePolicy` (ICSP) objects                            | Deprecated           | Deprecated | Deprecated |
+| Kubernetes topology label `failure-domain.beta.kubernetes.io/zone`   | Deprecated           | Deprecated | Deprecated |
+| Kubernetes topology label `failure-domain.beta.kubernetes.io/region` | Deprecated           | Deprecated | Deprecated |
+| Dynamic Accelerator Slicer (DAS) Operator                            | Technology Preview   | Removed    | Removed    |
+| runC container runtime                                               | General Availability | Deprecated | Deprecated |
 
 Node deprecated and removed tracker
 
 ## OpenShift CLI (oc) deprecated and removed features
 
-| Feature                         | 4.20                 | 4.21                 | 4.22       |
-|---------------------------------|----------------------|----------------------|------------|
-| oc-mirror plugin v1             | Deprecated           | Deprecated           |            |
-| Docker v2 registries            | Deprecated           | Deprecated           |            |
-| `oc adm release mirror` command | General Availability | General Availability | Deprecated |
+| Feature                         | 4.21                 | 4.22       | 5.0        |
+|---------------------------------|----------------------|------------|------------|
+| oc-mirror plugin v1             | Deprecated           | Deprecated | Deprecated |
+| Docker v2 registries            | Deprecated           | Deprecated | Deprecated |
+| `oc adm release mirror` command | General Availability | Deprecated | Deprecated |
 
 OpenShift CLI (oc) deprecated and removed tracker
 
 ## Operator lifecycle and development deprecated and removed features
 
-| Feature                                      | 4.20       | 4.21       | 4.22       |
+| Feature                                      | 4.21       | 4.22       | 5.0        |
 |----------------------------------------------|------------|------------|------------|
-| Red Hat Marketplace                          | Deprecated | Deprecated | Removed    |
+| Red Hat Marketplace                          | Deprecated | Removed    | Removed    |
 | SQLite database format for Operator catalogs | Deprecated | Deprecated | Deprecated |
 
 Operator lifecycle and development deprecated and removed tracker
 
-## Red Hat Enterprise Linux CoreOS (RHCOS) deprecated and removed features
-
-| Feature                      | 4.20    | 4.21    | 4.22    |
-|------------------------------|---------|---------|---------|
-| WebAssembly (WASM) extension | Removed | Removed | Removed |
-
-RHCOS deprecated and removed tracker
-
 ## Web console deprecated and removed features
 
-| Feature                                | 4.20       | 4.21       | 4.22 |
-|----------------------------------------|------------|------------|------|
-| `useModal` hook for dynamic plugin SDK | Deprecated | Deprecated |      |
+| Feature                                | 4.21       | 4.22       | 5.0        |
+|----------------------------------------|------------|------------|------------|
+| `useModal` hook for dynamic plugin SDK | Deprecated | Deprecated | Deprecated |
 
 Web console deprecated and removed tracker
 
 ## Workloads deprecated and removed features
 
-| Feature                    | 4.20       | 4.21       | 4.22       |
+| Feature                    | 4.21       | 4.22       | 5.0        |
 |----------------------------|------------|------------|------------|
 | `DeploymentConfig` objects | Deprecated | Deprecated | Deprecated |
 
@@ -388,9 +402,10 @@ AI applications Technology Preview tracker
 
 ## Authentication and authorization Technology Preview features
 
-| Feature                                       | 4.20               | 4.21               | 4.22               |
-|-----------------------------------------------|--------------------|--------------------|--------------------|
-| Pod security admission restricted enforcement | Technology Preview | Technology Preview | Technology Preview |
+| Feature                                       | 4.21               | 4.22               | 5.0                  |
+|-----------------------------------------------|--------------------|--------------------|----------------------|
+| Advanced direct authentication fields         | Technology Preview | Technology Preview | General Availability |
+| Pod security admission restricted enforcement | Technology Preview | Technology Preview | Technology Preview   |
 
 Authentication and authorization Technology Preview tracker
 
@@ -420,7 +435,7 @@ Extensions Technology Preview tracker
 
 ## Installation Technology Preview features
 
-| Feature                                                                                   | 4.20                 | 4.21                 | 4.22                                                         |
+| Feature                                                                                   | 4.21                 | 4.22                 | 5.0                                                          |
 |-------------------------------------------------------------------------------------------|----------------------|----------------------|--------------------------------------------------------------|
 | Installing a cluster on Alibaba Cloud by using Assisted Installer                         | Technology Preview   | Technology Preview   | Technology Preview                                           |
 | Installing a cluster using Red Hat Enterprise Linux (RHEL) 10                             | Not Available        | Not Available        | Technology Preview                                           |
@@ -430,7 +445,7 @@ Extensions Technology Preview tracker
 | Selectable Cluster Inventory                                                              |                      |                      |                                                              |
 | Enabling a user-provisioned DNS on Google Cloud                                           | Technology Preview   | General Availability | General Availability                                         |
 | Enabling a user-provisioned DNS on Microsoft Azure                                        | Not Available        | Technology Preview   | General Availability                                         |
-| Enabling a user-provisioned DNS on Amazon Web Services (AWS)                              | Not Available        | Technology Preview   | Technology Preview                                           |
+| Enabling a user-provisioned DNS on Amazon Web Services (AWS)                              | Technology Preview   | Technology Preview   | General Availability                                         |
 | Installing a cluster using Google Cloud private and restricted API endpoints              | Not Available        | General Availability | General Availability                                         |
 | Installing a cluster on VMware vSphere with multiple network interface controllers        | General Availability | General Availability | General Availability                                         |
 | Red Hat Bare Metal as a Service for OpenShift (formerly known as bare metal as a service) | Technology Preview   | Technology Preview   | General Availability                                         |

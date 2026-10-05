@@ -33,7 +33,9 @@ Any chosen provisioner plugin also requires configuration for the relevant cloud
 
 # Defining a storage class
 
-`StorageClass` objects apply cluster-wide and are available to all namespaces. Only users with cluster-admin or storage-admin privileges can create or modify them. This centralized control ensures consistent storage policies across your cluster while requiring application teams to coordinate with administrators for custom storage configurations.
+`StorageClass` objects apply cluster-wide and are available to all namespaces. Only users with cluster-admin or storage-admin privileges can create or modify them.
+
+This centralized control ensures consistent storage policies across your cluster while requiring application teams to coordinate with administrators for custom storage configurations.
 
 <div class="important">
 
@@ -45,7 +47,9 @@ The following sections describe the basic definition for a `StorageClass` object
 
 ## Basic StorageClass object definition
 
-A `StorageClass` object defines the metadata, provisioner type, and plugin-specific parameters that determine how persistent volumes (PVs) are dynamically created in your cluster. Each storage provisioner type requires different parameters, and annotations control cluster-wide defaults, making this structure the foundation for all dynamic storage provisioning.
+A `StorageClass` object defines the metadata, provisioner type, and plugin-specific parameters that determine how persistent volumes (PVs) are dynamically created in your cluster.
+
+Each storage provisioner type requires different parameters, and annotations control cluster-wide defaults, making this structure the foundation for all dynamic storage provisioning.
 
 <div class="formalpara-title">
 
@@ -111,7 +115,9 @@ parameters:
 
 ## RHOSP Manila Container Storage Interface (CSI) object definition
 
-The OpenStack Manila CSI Driver Operator automatically creates storage classes for all available Manila share types immediately after installation, eliminating manual configuration. This automation ensures you can start provisioning persistent volumes right away without needing to understand Manila share type details or write custom `StorageClass` definitions.
+The OpenStack Manila CSI Driver Operator automatically creates storage classes for all available Manila share types immediately after installation, eliminating manual configuration.
+
+This automation ensures you can start provisioning persistent volumes right away without needing to understand Manila share type details or write custom `StorageClass` definitions.
 
 ## AWS Elastic Block Store (EBS) StorageObject object definition
 
@@ -161,7 +167,9 @@ parameters:
 
 ## Azure Disk StorageClass object definition
 
-This Azure Disk storage class example demonstrates how to configure managed disks with delayed volume binding for optimal zone placement, volume expansion, and performance tiers. Key parameters ensure compatibility with OpenShift nodes, which require managed disks rather than shared or dedicated storage accounts.
+This Azure Disk storage class example demonstrates how to configure managed disks with delayed volume binding for optimal zone placement, volume expansion, and performance tiers.
+
+Key parameters ensure compatibility with OpenShift nodes, which require managed disks rather than shared or dedicated storage accounts.
 
 <div class="formalpara-title">
 
@@ -209,7 +217,9 @@ reclaimPolicy: Delete
 
 ## Azure File object definition
 
-To enable Azure File storage classes to dynamically provision file shares, grant the persistent volume binder permissions to create and manage secrets containing Azure storage credentials. This allows the provisioner to securely store and access the Azure storage account name and key required for file share creation.
+To enable Azure File storage classes to dynamically provision file shares, grant the persistent volume binder permissions to create and manage secrets containing Azure storage credentials.
+
+This allows the provisioner to securely store and access the Azure storage account name and key required for file share creation.
 
 1.  Define a `ClusterRole` object that allows access to create and view secrets as in the following example file:
 
@@ -272,7 +282,9 @@ To enable Azure File storage classes to dynamically provision file shares, grant
 
 ### Considerations when using Azure File
 
-Azure File storage has inherent file system limitations, including lack of support for symlinks, hard links, and sparse files by default, plus ownership mismatches between mounted directories and container processes. Understanding these constraints and using mount options such as uid, gid, and mfsymlinks helps you configure Azure File storage classes that work correctly with your containerized applications.
+Azure File storage has inherent file system limitations, including lack of support for symlinks, hard links, and sparse files by default, plus ownership mismatches between mounted directories and container processes.
+
+Understanding these constraints and using mount options such as uid, gid, and mfsymlinks helps you configure Azure File storage classes that work correctly with your containerized applications.
 
 The following features are not supported:
 
@@ -349,7 +361,9 @@ reclaimPolicy: Delete
 
 ## VMware vSphere object definition
 
-This VMware vSphere storage class example demonstrates the basic structure and Container Storage Interface (CSI) provisioner configuration required to enable dynamic storage provisioning on vSphere infrastructure. This minimal definition provides the foundation for vSphere storage integration, which you can extend with storage policies, datastore preferences, and other vSphere-specific parameters.
+This VMware vSphere storage class example demonstrates the basic structure and Container Storage Interface (CSI) provisioner configuration required to enable dynamic storage provisioning on vSphere infrastructure.
+
+This minimal definition provides the foundation for vSphere storage integration, which you can extend with storage policies, datastore preferences, and other vSphere-specific parameters.
 
 <div class="formalpara-title">
 
@@ -371,7 +385,9 @@ provisioner: csi.vsphere.vmware.com
 
 # Setting the default storage class
 
-A default storage class automatically provisions persistent volumes when you create persistent volume claims (PVCs) without specifying a storage class. This simplifies storage management by removing the need for users to select a storage class for each claim. To designate a storage class as the cluster-wide default, add an annotation to the storage class metadata.
+A default storage class automatically provisions persistent volumes when you create persistent volume claims (PVCs) without specifying a storage class.
+
+This simplifies storage management by removing the need for users to select a storage class for each claim. To designate a storage class as the cluster-wide default, add an annotation to the storage class metadata.
 
 - Logged in to a running OpenShift Container Platform cluster with administrator privileges.
 
@@ -417,7 +433,9 @@ A default storage class automatically provisions persistent volumes when you cre
 
 # Changing the default storage class
 
-Change the default storage class to ensure new persistent volume claims (PVCs) automatically use your preferred storage backend. This helps you optimize costs, align with infrastructure changes, or ensure consistent storage types across new deployments without requiring users to specify a storage class for each claim.
+Change the default storage class to ensure new persistent volume claims (PVCs) automatically use your preferred storage backend.
+
+This helps you optimize costs, align with infrastructure changes, or ensure consistent storage types across new deployments without requiring users to specify a storage class for each claim.
 
 In this example, you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to
 

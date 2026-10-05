@@ -8,6 +8,9 @@ View the overall health of your OpenShift Virtualization environment in the web 
 [OpenShift Container Platform cluster checkup framework](../../virt/monitoring/virt-running-cluster-checkups.xml#virt-running-cluster-checkups)
 Run automated tests with the OpenShift Container Platform cluster checkup framework to ensure that your cluster, including cluster storage, is optimally configured for OpenShift Virtualization.
 
+[Virtualization dashboards overview](../../virt/monitoring/virt-prometheus-queries.xml#virt-about-virtualization-dashboards_virt-prometheus-queries)
+Monitor VM health, resource utilization, and capacity across your cluster with Perses-based dashboards, available in the web console under **Observe** → **Dashboards(Perses)**.
+
 [Prometheus queries for virtual resources](../../virt/monitoring/virt-prometheus-queries.xml#virt-prometheus-queries)
 Query vCPU, network, storage, and guest memory swapping usage and live migration progress.
 

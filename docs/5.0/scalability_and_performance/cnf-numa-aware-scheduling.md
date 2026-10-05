@@ -1282,7 +1282,9 @@ After applying the configuration, verify that the NUMA Resources Operator is cor
 
 # Configure polling operations for NUMA resources updates
 
-As an optional task, you can improve scheduling behavior and troubleshoot suboptimal scheduling decisions by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR). This configuration fine-tunes how daemons poll for available NUMA resources, providing advanced control over your polling operations.
+As an optional task, you can improve scheduling behavior and troubleshoot suboptimal scheduling decisions by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR).
+
+This configuration fine-tunes how daemons poll for available NUMA resources, providing advanced control over your polling operations.
 
 The configuration options are listed as follows:
 
@@ -1371,7 +1373,9 @@ When high availability (HA) mode is enabled, the NUMA Resources Operator deploys
 
 ## Optimization strategies for large-cluster NUMA-aware scheduling
 
-You can optimize the NUMA-aware secondary scheduler for clusters with 200 or more nodes by tuning cache resync intervals, polling configurations, and the scheduler QoS profile. These optimization points help you balance scheduling accuracy, API server load, and control plane resource consumption for your specific cluster size and workload profile.
+You can optimize the NUMA-aware secondary scheduler for clusters with 200 or more nodes by tuning cache resync intervals, polling configurations, and the scheduler QoS profile.
+
+These optimization points help you balance scheduling accuracy, API server load, and control plane resource consumption for your specific cluster size and workload profile.
 
 To get the best performance, coordinate the `NUMAResourcesOperator` and `NUMAResourcesScheduler` settings. The operator controls how frequently topology data is exported, and the scheduler controls how frequently it consumes that data. Aligning these intervals ensures accurate scheduling decisions while minimizing API server traffic.
 
@@ -1639,7 +1643,9 @@ To resolve common problems with NUMA-aware pod scheduling, troubleshoot your clu
 
 ## Report more exact resource availability
 
-To report more exact resource availability and minimize Topology Affinity Errors, enable the `cacheResyncPeriod` specification for the NUMA Resources Operator. This configuration monitors pending resources on nodes and synchronizes them in the scheduler cache, though lower intervals increase network load.
+To report more exact resource availability and minimize Topology Affinity Errors, enable the `cacheResyncPeriod` specification for the NUMA Resources Operator.
+
+This configuration monitors pending resources on nodes and synchronizes them in the scheduler cache, though lower intervals increase network load.
 
 The lower the interval, the greater the network load. The `cacheResyncPeriod` specification is disabled by default.
 

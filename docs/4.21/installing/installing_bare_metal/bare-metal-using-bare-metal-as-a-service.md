@@ -10,7 +10,9 @@ As standalone systems, these hosts operate independently of the OpenShift Contai
 
 # Prerequisites for using Red Hat Bare Metal as a Service for OpenShift
 
-Red Hat Bare Metal as a Service for OpenShift lets you apply cloud-native management practices to bare-metal infrastructure, enabling automated provisioning and lifecycle management for workloads that require physical hardware. To use Red Hat Bare Metal as a Service for OpenShift, complete the following prerequisites:
+Red Hat Bare Metal as a Service for OpenShift lets you apply cloud-native management practices to bare-metal infrastructure, enabling automated provisioning and lifecycle management for workloads that require physical hardware.
+
+To use Red Hat Bare Metal as a Service for OpenShift, complete the following prerequisites:
 
 BareMetalHost Configuration
 All bare-metal hosts must use a Baseboard Management Controller (BMC) configured with the Redfish protocol and virtual media (`redfish-virtualmedia`) driver. Each bare-metal host requires a boot interface with a MAC address configured to receive an IP address lease.
@@ -36,7 +38,9 @@ These prerequisites ensure that you can provision and manage bare-metal hosts ef
 
 # Using the Bare Metal Operator to manage resources across all namespaces
 
-For the Bare Metal Operator (BMO) to manage `BareMetalHost` resources across all namespaces in your OpenShift Container Platform cluster, you must configure the Operator to watch all namespaces. This configuration is important to avoid mixing non-OpenShift Container Platform workloads with other components in the same namespace.
+For the Bare Metal Operator (BMO) to manage `BareMetalHost` resources across all namespaces in your OpenShift Container Platform cluster, you must configure the Operator to watch all namespaces.
+
+This configuration is important to avoid mixing non-OpenShift Container Platform workloads with other components in the same namespace.
 
 - If you are using user-provisioned installation and the Provisioning CR does not exist, you must create it manually. For instructions, see [Configuring a provisioning resource to scale user-provisioned clusters](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/installing_on_bare_metal/index#scaling-a-user-provisioned-cluster-with-the-bare-metal-operator). For installer-provisioned installations, the installation program creates the Provisioning custom resource (CR) automatically.
 
@@ -388,7 +392,9 @@ Configure bare-metal host users and add them to a Kubernetes secret. Then, creat
 
 # Configuring the networkData parameter in the BareMetalHost resource
 
-The `networkData` field in the `BareMetalHost` custom resource (CR) allows you to control the network configuration of the bare-metal host at creation time. For most operating systems, this is achieved using a configuration file encapsulated in a Kubernetes secret. Then, the `cloud-init` service uses it to customize services.
+The `networkData` field in the `BareMetalHost` custom resource (CR) allows you to control the network configuration of the bare-metal host at creation time.
+
+For most operating systems, this is achieved using a configuration file encapsulated in a Kubernetes secret. Then, the `cloud-init` service uses it to customize services.
 
 1.  Create a file named `network-data.yaml` with the following content:
 
@@ -434,7 +440,9 @@ The `networkData` field in the `BareMetalHost` custom resource (CR) allows you t
 
 # Deploying an image to the bare-metal host
 
-To deploy the image to the host, update the `image` field in the `spec` section of the `BareMetalHost` resource. Once you update the `image` field, provisioning begins immediately. Deploying an image transforms bare hardware into a functional system ready to run your workloads, in an automated and repeatable way.
+To deploy the image to the host, update the `image` field in the `spec` section of the `BareMetalHost` resource. Once you update the `image` field, provisioning begins immediately.
+
+Deploying an image transforms bare hardware into a functional system ready to run your workloads, in an automated and repeatable way.
 
 - Update the `image` field in the `BareMetalHost` CR by running the following command:
 

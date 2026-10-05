@@ -85,13 +85,17 @@ OpenShift Container Platform ships with a default seccomp profile that is refere
             seccomp.security.alpha.kubernetes.io/pod: runtime/default
         ```
 
-        - The `restricted-v2` SCC is added by default if your workload does not have access to a different SCC.
+        where:
 
-        - Newly created pods in 4.17 will have the seccomp profile configured to `runtime/default` as mandated by the SCC.
+        `restricted-v2`
+        Specifies the SCC that is added by default if your workload does not have access to a different SCC.
+
+        `runtime/default`
+        Specifies that newly created pods in 4.17 have the seccomp profile configured to `runtime/default` as mandated by the SCC.
 
 ## Upgraded cluster
 
-In clusters upgraded to 4.17 all authenticated users have access to the `restricted` and `restricted-v2` SCC.
+In clusters upgraded to 4.17, all authenticated users have access to the `restricted` and `restricted-v2` SCC.
 
 A workload admitted by the SCC `restricted` for example, on a OpenShift Container Platform v4.10 cluster when upgraded may get admitted by `restricted-v2`. This is because `restricted-v2` is the more restrictive SCC between `restricted` and `restricted-v2`.
 
@@ -159,6 +163,8 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
 
 ## Set up the custom seccomp profile
 
+You can configure a custom seccomp profile for use with your workloads.
+
 - You have cluster administrator permissions.
 
 - You have created a custom security context constraints (SCC). For more information, see "Additional resources".
@@ -174,9 +180,14 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
     - localhost/<custom-name>.json
     ```
 
-    - Provide the name of your custom seccomp profile.
+    where:
+
+    `<custom-name>`
+    Specifies the name of your custom seccomp profile.
 
 ## Apply the custom seccomp profile to the workload
+
+You can apply a custom seccomp profile to your workload to restrict the system calls available to your containers.
 
 - The cluster administrator has set up the custom seccomp profile. For more details, see "Setting up the custom seccomp profile".
 
@@ -184,11 +195,7 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
 
 - Apply the seccomp profile to the workload by setting the `securityContext.seccompProfile.type` field as following:
 
-  <div class="formalpara-title">
-
-  **Example**
-
-  </div>
+  Example:
 
   ``` yaml
   spec:
@@ -198,9 +205,12 @@ Seccomp can restrict system calls (syscalls) within a container, limiting the ac
         localhostProfile: <custom-name>.json
   ```
 
-  - Provide the name of your custom seccomp profile.
+  where:
 
-    Alternatively, you can use the pod annotations `seccomp.security.alpha.kubernetes.io/pod: localhost/<custom-name>.json`. However, this method is deprecated in OpenShift Container Platform 4.17.
+  `<custom-name>`
+  Specifies the name of your custom seccomp profile.
+
+  Alternatively, you can use the pod annotations `seccomp.security.alpha.kubernetes.io/pod: localhost/<custom-name>.json`. However, this method is deprecated in OpenShift Container Platform 4.17.
 
 During deployment, the admission controller validates the following:
 

@@ -433,7 +433,9 @@ Supported gateway modes
 
 # Additional resources
 
-- [FRRouting User Guide: BGP](https://docs.frrouting.org/en/latest/bgp.html)
+- [About user-defined networks](../../../networking/multiple_networks/primary_networks/about-user-defined-networks.xml#about-user-defined-networks)
+
+- [`FRRouting` User Guide: BGP](https://docs.frrouting.org/en/latest/bgp.html)
 
 - [Migrating FRR-K8s resources](../../../networking/advanced_networking/bgp_routing/migrating-frr-k8s-resources.xml#migrating-frr-k8s-resources)
 

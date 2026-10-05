@@ -555,7 +555,7 @@ You can view your Ingress Controller logs.
 
 # View Ingress Controller status
 
-Your can view the status of a particular Ingress Controller.
+You can view the status of a particular Ingress Controller.
 
 - View the status of an Ingress Controller:
 
@@ -565,7 +565,9 @@ Your can view the status of a particular Ingress Controller.
 
 # Create a custom Ingress Controller
 
-As a cluster administrator, you can create a new custom Ingress Controller. Because the default Ingress Controller might change during OpenShift Container Platform updates, creating a custom Ingress Controller can be helpful when maintaining a configuration manually that persists across cluster updates.
+As a cluster administrator, you can create a new custom Ingress Controller.
+
+Because the default Ingress Controller might change during OpenShift Container Platform updates, creating a custom Ingress Controller can be helpful when maintaining a configuration manually that persists across cluster updates.
 
 This example provides a minimal spec for a custom Ingress Controller. To further customize your custom Ingress Controller, see "Configuring the Ingress Controller".
 
@@ -594,13 +596,19 @@ This example provides a minimal spec for a custom Ingress Controller. To further
         domain: <custom_domain>
     ```
 
-    - Specify the a custom `name` for the `IngressController` object.
+    where:
 
-    - Specify the name of the secret with the custom wildcard certificate.
+    `metadata.name`
+    Specifies a custom `name` for the `IngressController` object.
 
-    - Minimum replica needs to be ONE
+    `spec.defaultCertificate.name`
+    Specifies the name of the secret with the custom wildcard certificate.
 
-    - Specify the domain to your domain name. The domain specified on the IngressController object and the domain used for the certificate must match. For example, if the domain value is "custom_domain.mycompany.com", then the certificate must have SAN \*.custom_domain.mycompany.com (with the `*.` added to the domain).
+    `spec.replicas`
+    Specifies the number of replicas. Minimum replica needs to be ONE.
+
+    `spec.domain`
+    Specifies the domain to your domain name. The domain specified on the IngressController object and the domain used for the certificate must match. For example, if the domain value is "custom_domain.mycompany.com", then the certificate must have SAN \*.custom_domain.mycompany.com (with the `*.` added to the domain).
 
 2.  Create the object by running the following command:
 
@@ -613,6 +621,14 @@ This example provides a minimal spec for a custom Ingress Controller. To further
 ## Set a custom default certificate
 
 As an administrator, you can configure an Ingress Controller to use a custom certificate by creating a Secret resource and editing the `IngressController` custom resource (CR).
+
+The following procedure assumes that the custom certificate and key pair are in the `tls.crt` and `tls.key` files in the current working directory. Substitute the actual path names for `tls.crt` and `tls.key`. You also may substitute another name for `custom-certs-default` when creating the Secret resource and referencing it in the IngressController CR.
+
+<div class="note">
+
+The following procedure causes the Ingress Controller to be redeployed, using a rolling deployment strategy.
+
+</div>
 
 - You must have a certificate/key pair in PEM-encoded files, where the certificate is signed by a trusted certificate authority or by a private trusted certificate authority that you configured in a custom PKI.
 
@@ -628,25 +644,11 @@ As an administrator, you can configure an Ingress Controller to use a custom cer
   $ oc --namespace openshift-ingress-operator get ingresscontrollers
   ```
 
-<div class="note">
+  <div class="note">
 
-If you have intermediate certificates, they must be included in the `tls.crt` file of the secret containing a custom default certificate. Order matters when specifying a certificate; list your intermediate certificate(s) after any server certificate(s).
+  If you have intermediate certificates, they must be included in the `tls.crt` file of the secret containing a custom default certificate. Order matters when specifying a certificate; list your intermediate certificate(s) after any server certificate(s).
 
-</div>
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-The following assumes that the custom certificate and key pair are in the `tls.crt` and `tls.key` files in the current working directory. Substitute the actual path names for `tls.crt` and `tls.key`. You also may substitute another name for `custom-certs-default` when creating the Secret resource and referencing it in the IngressController CR.
-
-<div class="note">
-
-This action will cause the Ingress Controller to be redeployed, using a rolling deployment strategy.
-
-</div>
+  </div>
 
 1.  Create a Secret resource containing the custom certificate in the `openshift-ingress` namespace using the `tls.crt` and `tls.key` files.
 
@@ -705,7 +707,7 @@ This action will cause the Ingress Controller to be redeployed, using a rolling 
 
     The certificate secret name should match the value used to update the CR.
 
-Once the IngressController CR has been modified, the Ingress Operator updates the Ingress Controller’s deployment to use the custom certificate.
+    Once the IngressController CR has been modified, the Ingress Operator updates the Ingress Controller’s deployment to use the custom certificate.
 
 ## Remove a custom default certificate
 
@@ -936,21 +938,28 @@ The following procedure provides an example for scaling up the default Ingress C
           name: keda-trigger-auth-prometheus
     ```
 
-    - The custom resource that you are targeting. In this case, the Ingress Controller.
+    where:
 
-    - Optional: The maximum number of replicas. If you omit this field, the default maximum is set to 100 replicas.
+    `spec.scaleTargetRef`
+    Specifies the custom resource that you are targeting. In this case, the Ingress Controller.
 
-    - The Thanos service endpoint in the `openshift-monitoring` namespace.
+    `spec.maxReplicaCount`
+    Specifies the maximum number of replicas. If you omit this field, the default maximum is set to 100 replicas. This field is optional.
 
-    - The Ingress Operator namespace.
+    `spec.triggers.metadata.serverAddress`
+    Specifies the Thanos service endpoint in the `openshift-monitoring` namespace.
 
-    - This expression evaluates to however many worker nodes are present in the deployed cluster.
+    `spec.triggers.metadata.namespace`
+    The Ingress Operator namespace.
 
-      <div class="important">
+    `spec.triggers.metadata.query`
+    This expression evaluates to however many worker nodes are present in the deployed cluster.
 
-      If you are using cross-namespace queries, you must target port 9091 and not port 9092 in the `serverAddress` field. You also must have elevated privileges to read metrics from this port.
+    <div class="important">
 
-      </div>
+    If you are using cross-namespace queries, you must target port 9091 and not port 9092 in the `serverAddress` field. You also must have elevated privileges to read metrics from this port.
+
+    </div>
 
 7.  Apply the custom resource definition by running the following command:
 
@@ -1047,11 +1056,14 @@ Scaling is not an immediate action, as it takes time to create the desired numbe
 
     </div>
 
-    - If you need a different amount of replicas, change the `replicas` value.
+    where:
+
+    `spec.replicas`
+    If you need a different amount of replicas, change the `replicas` value.
 
 ## Configure Ingress access logging
 
-You can configure the Ingress Controller to enable access logs. If you have clusters that do not receive much traffic, then you can log to a sidecar. If you have high traffic clusters, to avoid exceeding the capacity of the logging stack or to integrate with a logging infrastructure outside of OpenShift Container Platform, you can forward logs to a custom syslog endpoint. You can also specify the format for access logs.
+To enable Ingress access logging in OpenShift Container Platform, you can log to a sidecar or forward logs to a custom syslog endpoint and specify the log format.
 
 Container logging is useful to enable access logs on low-traffic clusters when there is no existing Syslog logging infrastructure, or for short-term use while diagnosing problems with the Ingress Controller.
 
@@ -1208,11 +1220,16 @@ The preceding graphic shows the following concepts pertaining to OpenShift Conta
           scope: Internal
     ```
 
-    - Replace `<name>` with a name for the `IngressController` object.
+    where:
 
-    - Specify the `domain` for the application published by the controller.
+    `metadata.name`
+    Specifies a name for the `IngressController` object.
 
-    - Specify a value of `Internal` to use an internal load balancer.
+    `spec.domain`
+    Specifies the `domain` for the application published by the controller.
+
+    `spec.endpointPublishingStrategy.loadBalancer.scope`
+    Specifies a value of `Internal` to use an internal load balancer.
 
 2.  Create the Ingress Controller defined in the previous step by running the following command:
 
@@ -1220,7 +1237,10 @@ The preceding graphic shows the following concepts pertaining to OpenShift Conta
     $ oc create -f <name>-ingress-controller.yaml
     ```
 
-    - Replace `<name>` with the name of the `IngressController` object.
+    where:
+
+    `<name>`
+    Specifies the name of the `IngressController` object.
 
 3.  Optional: Confirm that the Ingress Controller was created by running the following command:
 
@@ -1230,7 +1250,7 @@ The preceding graphic shows the following concepts pertaining to OpenShift Conta
 
 ## Configure global access for an Ingress Controller on Google Cloud
 
-An Ingress Controller created on Google Cloud with an internal load balancer generates an internal IP address for the service. A cluster administrator can specify the global access option, which enables clients in any region within the same VPC network and compute region as the load balancer, to reach the workloads running on your cluster.
+To allow clients in any region of the same VPC to reach workloads behind an internal load balancer on Google Cloud, you can enable global access on an Ingress Controller in OpenShift Container Platform.
 
 For more information, see the Google Cloud documentation for [global access](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#global_access).
 
@@ -1258,7 +1278,7 @@ For more information, see the Google Cloud documentation for [global access](htt
 
         <div class="formalpara-title">
 
-        **Sample `clientAccess` configuration to `Global`**
+        **Sample `clientAccess` configuration set to `Global`**
 
         </div>
 
@@ -1273,8 +1293,6 @@ For more information, see the Google Cloud documentation for [global access](htt
                 scope: Internal
               type: LoadBalancerService
         ```
-
-        - Set `gcp.clientAccess` to `Global`.
 
     3.  Save the file to apply the changes.
 
@@ -1561,7 +1579,7 @@ Special case header configuration options
 
 ## Set or delete HTTP request and response headers in an Ingress Controller
 
-You can set or delete certain HTTP request and response headers for compliance purposes or other reasons. You can set or delete these headers either for all routes served by an Ingress Controller or for specific routes.
+To set or delete HTTP request and response headers on routes in OpenShift Container Platform, you can configure header actions on an Ingress Controller. You can apply the actions to all routes that the controller serves or to specific routes.
 
 For example, you might want to migrate an application running on your cluster to use mutual TLS, which requires that your application checks for an X-Forwarded-Client-Cert request header, but the OpenShift Container Platform default Ingress Controller provides an X-SSL-Client-Der request header.
 
@@ -1599,27 +1617,34 @@ The following procedure modifies the Ingress Controller to set the X-Forwarded-C
               type: Delete
     ```
 
-    - The list of actions you want to perform on the HTTP headers.
+    where:
 
-    - The type of header you want to change. In this case, a request header.
+    `spec.httpHeaders.actions`
+    Specifies the list of actions you want to perform on the HTTP headers.
 
-    - The name of the header you want to change. For a list of available headers you can set or delete, see *HTTP header configuration*.
+    `spec.httpHeaders.actions.request`
+    Specifies the type of header you want to change. In this case, a request header.
 
-    - The type of action being taken on the header. This field can have the value `Set` or `Delete`.
+    `spec.httpHeaders.actions.request.name`
+    Specifies the name of the header you want to change. For a list of available headers you can set or delete, see *HTTP header configuration*.
 
-    - When setting HTTP headers, you must provide a `value`. The value can be a string from a list of available directives for that header, for example `DENY`, or it can be a dynamic value that will be interpreted using HAProxy’s dynamic value syntax. In this case, a dynamic value is added.
+    `spec.httpHeaders.actions.request.action.type`
+    Specifies the type of action being taken on the header. This field can have the value `Set` or `Delete`.
 
-      <div class="note">
+    `spec.httpHeaders.actions.request.action.set.value`
+    Specifies a `value` when setting HTTP headers. The value can be a string from a list of available directives for that header, for example `DENY`, or it can be a dynamic value that will be interpreted using HAProxy’s dynamic value syntax. In this case, a dynamic value is added.
 
-      For setting dynamic header values for HTTP responses, allowed sample fetchers are `res.hdr` and `ssl_c_der`. For setting dynamic header values for HTTP requests, allowed sample fetchers are `req.hdr` and `ssl_c_der`. Both request and response dynamic values can use the `lower` and `base64` converters.
+    <div class="note">
 
-      </div>
+    For setting dynamic header values for HTTP responses, allowed sample fetchers are `res.hdr` and `ssl_c_der`. For setting dynamic header values for HTTP requests, allowed sample fetchers are `req.hdr` and `ssl_c_der`. Both request and response dynamic values can use the `lower` and `base64` converters.
+
+    </div>
 
 3.  Save the file to apply the changes.
 
 ## Use X-Forwarded headers
 
-You configure the HAProxy Ingress Controller to specify a policy for how to handle HTTP headers including `Forwarded` and `X-Forwarded-For`. The Ingress Operator uses the `HTTPHeaders` field to configure the `ROUTER_SET_FORWARDED_HEADERS` environment variable of the Ingress Controller.
+To control how the HAProxy Ingress Controller handles `Forwarded` and `X-Forwarded-For` headers in OpenShift Container Platform, you can set the `HTTPHeaders` policy on an Ingress Controller. The Ingress Operator configures the `ROUTER_SET_FORWARDED_HEADERS` environment variable from that field.
 
 1.  Configure the `HTTPHeaders` field for the Ingress Controller.
 
@@ -1642,7 +1667,9 @@ You configure the HAProxy Ingress Controller to specify a policy for how to hand
             forwardedHeaderPolicy: Append
         ```
 
-### Example use cases
+### Example use cases for X-Forwarded headers
+
+You can use X-Forwarded header policies on an Ingress Controller or route in OpenShift Container Platform to preserve headers from an external proxy or to set headers for internal cluster requests.
 
 **As a cluster administrator, you can:**
 
@@ -1700,7 +1727,7 @@ This sequence of events causes an issue if the client subsequently tries to upgr
 
 ### Enable HTTP/2
 
-You can enable HTTP/2 on a specific Ingress Controller, or you can enable HTTP/2 for the entire cluster.
+To enable HTTP/2 for Ingress Controllers in OpenShift Container Platform, you can annotate a specific Ingress Controller or the cluster Ingress configuration.
 
 - To enable HTTP/2 on a specific Ingress Controller, enter the `oc annotate` command:
 
@@ -1708,7 +1735,7 @@ You can enable HTTP/2 on a specific Ingress Controller, or you can enable HTTP/2
   $ oc -n openshift-ingress-operator annotate ingresscontrollers/<ingresscontroller_name> ingress.operator.openshift.io/default-enable-http2=true
   ```
 
-  - Replace `<ingresscontroller_name>` with the name of an Ingress Controller to enable HTTP/2.
+  Replace `<ingresscontroller_name>` with the name of an Ingress Controller to enable HTTP/2.
 
 - To enable HTTP/2 for the entire cluster, enter the `oc annotate` command:
 
@@ -1716,24 +1743,20 @@ You can enable HTTP/2 on a specific Ingress Controller, or you can enable HTTP/2
   $ oc annotate ingresses.config/cluster ingress.operator.openshift.io/default-enable-http2=true
   ```
 
-<div class="tip">
+- Alternatively, apply the following YAML to enable HTTP/2:
 
-Alternatively, you can apply the following YAML code to enable HTTP/2:
-
-``` yaml
-apiVersion: config.openshift.io/v1
-kind: Ingress
-metadata:
-  name: cluster
-  annotations:
-    ingress.operator.openshift.io/default-enable-http2: "true"
-```
-
-</div>
+  ``` yaml
+  apiVersion: config.openshift.io/v1
+  kind: Ingress
+  metadata:
+    name: cluster
+    annotations:
+      ingress.operator.openshift.io/default-enable-http2: "true"
+  ```
 
 ### Disable HTTP/2
 
-You can disable HTTP/2 on a specific Ingress Controller, or you can disable HTTP/2 for the entire cluster.
+To disable HTTP/2 for Ingress Controllers in OpenShift Container Platform, you can annotate a specific Ingress Controller or the cluster Ingress configuration.
 
 - To disable HTTP/2 on a specific Ingress Controller, enter the `oc annotate` command:
 
@@ -1741,7 +1764,7 @@ You can disable HTTP/2 on a specific Ingress Controller, or you can disable HTTP
   $ oc -n openshift-ingress-operator annotate ingresscontrollers/<ingresscontroller_name> ingress.operator.openshift.io/default-enable-http2=false
   ```
 
-  - Replace `<ingresscontroller_name>` with the name of an Ingress Controller to disable HTTP/2.
+  Replace `<ingresscontroller_name>` with the name of an Ingress Controller to disable HTTP/2.
 
 - To disable HTTP/2 for the entire cluster, enter the `oc annotate` command:
 
@@ -1749,24 +1772,20 @@ You can disable HTTP/2 on a specific Ingress Controller, or you can disable HTTP
   $ oc annotate ingresses.config/cluster ingress.operator.openshift.io/default-enable-http2=false
   ```
 
-<div class="tip">
+- Alternatively, apply the following YAML to disable HTTP/2:
 
-Alternatively, you can apply the following YAML code to disable HTTP/2:
-
-``` yaml
-apiVersion: config.openshift.io/v1
-kind: Ingress
-metadata:
-  name: cluster
-  annotations:
-    ingress.operator.openshift.io/default-enable-http2: "false"
-```
-
-</div>
+  ``` yaml
+  apiVersion: config.openshift.io/v1
+  kind: Ingress
+  metadata:
+    name: cluster
+    annotations:
+      ingress.operator.openshift.io/default-enable-http2: "false"
+  ```
 
 ## Configure the PROXY protocol for an Ingress Controller
 
-A cluster administrator can configure [the PROXY protocol](https://www.haproxy.org/download/2.8/doc/proxy-protocol.txt) when an Ingress Controller uses either the `HostNetwork`, `NodePortService`, or `Private` endpoint publishing strategy types. The PROXY protocol enables the load balancer to preserve the original client addresses for connections that the Ingress Controller receives. The original client addresses are useful for logging, filtering, and injecting HTTP headers. In the default configuration, the connections that the Ingress Controller receives only contain the source address that is associated with the load balancer.
+To preserve original client addresses for connections to an Ingress Controller in OpenShift Container Platform, you can configure the PROXY protocol when you use the HostNetwork, NodePortService, or Private endpoint publishing strategy.
 
 <div class="warning">
 
@@ -1870,7 +1889,9 @@ You must configure both OpenShift Container Platform and the external load balan
 
 ## Specify an alternative cluster domain using the appsDomain option
 
-As a cluster administrator, you can specify an alternative to the default cluster domain for user-created routes by configuring the `appsDomain` field. The `appsDomain` field is an optional domain for OpenShift Container Platform to use instead of the default, which is specified in the `domain` field. If you specify an alternative domain, it overrides the default cluster domain for the purpose of determining the default host for a new route.
+As a cluster administrator, you can specify an alternative to the default cluster domain for user-created routes by configuring the `appsDomain` field.
+
+The `appsDomain` field is an optional domain for OpenShift Container Platform to use instead of the default, which is specified in the `domain` field. If you specify an alternative domain, it overrides the default cluster domain for the purpose of determining the default host for a new route.
 
 For example, you can use the DNS domain for your company as the default domain for routes and ingresses for applications running on your cluster.
 
@@ -1904,9 +1925,13 @@ For example, you can use the DNS domain for your company as the default domain f
           appsDomain: <test.example.com>
         ```
 
-        - Specifies the default domain. You cannot modify the default domain after installation.
+        where:
 
-        - Optional: Domain for OpenShift Container Platform infrastructure to use for application routes. Instead of the default prefix, `apps`, you can use an alternative prefix like `test`.
+        `spec.domain`
+        Specifies the default domain. You cannot modify the default domain after installation.
+
+        `spec.appsDomain`
+        Specifies the domain for OpenShift Container Platform infrastructure to use for application routes. Instead of the default prefix, `apps`, you can use an alternative prefix like `test`. This field is optional.
 
 2.  Verify that an existing route contains the domain name specified in the `appsDomain` field by exposing the route and verifying the route domain change:
 
@@ -1942,7 +1967,7 @@ For example, you can use the DNS domain for your company as the default domain f
 
 ## Convert HTTP header case
 
-HAProxy lowercases HTTP header names by default; for example, changing `Host: xyz.com` to `host: xyz.com`. If legacy applications are sensitive to the capitalization of HTTP header names, use the Ingress Controller `spec.httpHeaders.headerNameCaseAdjustments` API field for a solution to accommodate legacy applications until they can be fixed.
+To keep HTTP header name capitalization for applications that require it in OpenShift Container Platform, you can configure header name case adjustments on an Ingress Controller.
 
 <div class="important">
 
@@ -1985,7 +2010,7 @@ As a cluster administrator, you can convert the HTTP header case by entering the
       # ...
       ```
 
-      - Set `haproxy.router.openshift.io/h1-adjust-case` so that the Ingress Controller can adjust the `host` request header as specified.
+      You must set `haproxy.router.openshift.io/h1-adjust-case` to `true` so that the Ingress Controller can adjust the `host` request header as specified.
 
 - Specify adjustments by configuring the `HeaderNameCaseAdjustments` field in the Ingress Controller YAML configuration file.
 
@@ -2031,11 +2056,13 @@ As a cluster administrator, you can convert the HTTP header case by entering the
           name: my-application
       ```
 
-      - Set `haproxy.router.openshift.io/h1-adjust-case` to true.
+      Set `haproxy.router.openshift.io/h1-adjust-case` to `true`.
 
 ## Use router compression
 
-You configure the HAProxy Ingress Controller to specify router compression globally for specific MIME types. You can use the `mimeTypes` variable to define the formats of MIME types to which compression is applied. The types are: application, image, message, multipart, text, video, or a custom type prefaced by "X-". To see the full notation for MIME types and subtypes, see [RFC1341](https://datatracker.ietf.org/doc/html/rfc1341#page-7).
+You configure the HAProxy Ingress Controller to specify router compression globally for specific MIME types.
+
+You can use the `mimeTypes` variable to define the formats of MIME types to which compression is applied. The types are: application, image, message, multipart, text, video, or a custom type prefaced by "X-". To see the full notation for MIME types and subtypes, see [RFC1341](https://datatracker.ietf.org/doc/html/rfc1341#page-7).
 
 <div class="note">
 
@@ -2173,7 +2200,7 @@ You can expose the HAProxy router metrics by default in Prometheus format on the
 
 ## Customize HAProxy error code response pages
 
-As a cluster administrator, you can specify a custom error code response page for either 503, 404, or both error pages. The HAProxy router serves a 503 error page when the application pod is not running or a 404 error page when the requested URL does not exist. For example, if you customize the 503 error code response page, then the page is served when the application pod is not running, and the default 404 error code HTTP response page is served by the HAProxy router for an incorrect route or a non-existing route.
+To customize HAProxy 503 or 404 error pages for the Ingress router in OpenShift Container Platform, you can provide custom pages in a config map and patch the Ingress Controller.
 
 Custom error code response pages are specified in a config map then patched to the Ingress Controller. The config map keys have two available file names as follows: `error-page-503.http` and `error-page-404.http`.
 
@@ -2224,7 +2251,7 @@ If you use the OpenShift Container Platform default 503 error code page as a tem
         NAME                       DATA   AGE
         default-errorpages         2      25s
 
-    - The example config map name is `default-errorpages` because the `default` Ingress Controller custom resource (CR) was patched.
+    The example config map name is `default-errorpages` because the `default` Ingress Controller custom resource (CR) was patched.
 
 4.  Confirm that the config map containing the custom error response page mounts on the router volume where the config map key is the filename that has the custom HTTP error code response:
 

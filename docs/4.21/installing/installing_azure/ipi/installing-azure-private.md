@@ -485,7 +485,9 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
 
 ## Enabling a user-managed DNS
 
-You can install a cluster with a domain name server (DNS) solution that you manage instead of the default cluster-provisioned DNS solution. As a result, you can manage the API and Ingress DNS records in your own system rather than adding the records to the DNS of the cloud. For example, your organization’s security policies might not allow the use of public DNS services such as Microsoft Azure. In such scenarios, you can use your own DNS service to bypass the public DNS service and manage your own DNS for the IP addresses of the API and Ingress services.
+To manage API and Ingress DNS records in your own system, install your cluster with a DNS solution that you manage.
+
+This solution replaces the default cluster-provisioned DNS solution. For example, your organization’s security policies might not allow the use of public DNS services such as Microsoft Azure. In such scenarios, you can use your own DNS service to bypass the public DNS service and manage your own DNS for the IP addresses of the API and Ingress services.
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
@@ -1167,7 +1169,9 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Optional: Preparing a private Microsoft Azure cluster for a private image registry
 
-By installing a private image registry on a private Microsoft Azure cluster, you can create private storage endpoints. Private storage endpoints disable public facing endpoints to the registry’s storage account, adding an extra layer of security to your OpenShift Container Platform deployment.
+By installing a private image registry on a private Microsoft Azure cluster, you can create private storage endpoints.
+
+Private storage endpoints disable public facing endpoints to the registry’s storage account, adding an extra layer of security to your OpenShift Container Platform deployment.
 
 <div class="important">
 
@@ -1231,17 +1235,22 @@ Use the following guide to prepare your private Microsoft Azure cluster for inst
             type: Internal
     ```
 
-    - Optional. If you have an existing VNet and subnet setup, replace `<vnet_resource_group>` with the resource group name that contains the existing virtual network (VNet).
+    where:
 
-    - Optional. If you have an existing VNet and subnet setup, replace `<subnet_name>` with the name of the existing compute subnet within the specified resource group.
+    `spec.storage.azure.networkAccess.internal.networkResourceGroupName`
+    Specifies the resource group name that contains the existing virtual network (VNet), if you have an existing VNet and subnet setup. This field is optional.
 
-    - Optional. If you have an existing VNet and subnet setup, replace `<vnet_name>` with the name of the existing virtual network (VNet) in the specified resource group.
+    `spec.storage.azure.networkAccess.internal.subnetName`
+    Specifies the name of the existing compute subnet within the specified resource group, if you have an existing VNet and subnet setup. This field is optional.
 
-      <div class="note">
+    `spec.storage.azure.networkAccess.internal.vnetName`
+    Specifies the name of the existing virtual network (VNet) in the specified resource group, if you have an existing VNet and subnet setup. This field is optional.
 
-      The `imageregistry-config.yaml` file is consumed during the installation process. If desired, you must back it up before installation.
+    <div class="note">
 
-      </div>
+    The `imageregistry-config.yaml` file is consumed during the installation process. If desired, you must back it up before installation.
+
+    </div>
 
 3.  Move the `imageregistry-config.yaml` file to the `<installation_directory/manifests>` folder by running the following command:
 
@@ -1367,7 +1376,9 @@ When the cluster deployment completes successfully:
 
 # Provisioning your own DNS records
 
-Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain. Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
+Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
+
+Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
 
 <div class="important">
 

@@ -181,6 +181,7 @@
     - [Preparing to install a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/installing-two-node-fencing.md)
     - [Installing a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/install-tnf.md)
     - [Operating a degraded two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/operating-a-degraded-tnf.md)
+    - [Monitoring a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/monitoring-two-node-fencing.md)
     - [Post-installation troubleshooting and recovery](installing/installing_two_node_cluster/installing_tnf/install-post-tnf.md)
     - [Tuning the fencing parameters for a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/tuning-fencing-parameters-tnf.md)
 - **Installing on bare metal**

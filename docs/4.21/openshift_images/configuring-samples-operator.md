@@ -66,11 +66,11 @@ The Cluster Samples Operator configuration resource includes a finalizer which c
 
 Upon deletion of the samples resource, the Cluster Samples Operator recreates the resource by using the default configuration.
 
-If the Cluster Samples Operator is removed during installation, you can use the Cluster Samples Operator with an alternate registry so that content can be imported. Then you can set the Cluster Samples Operator to `Managed` to get the samples. Use the following instructions:
+If the Cluster Samples Operator is removed during installation, you can use the Cluster Samples Operator with an alternate registry so that content can be imported. Then you can set the Cluster Samples Operator to `Managed` to get the samples. For instructions, see "Using the Cluster Samples Operator with an alternate registry".
+
+For more information about configuring credentials, see "Using image pull secrets".
 
 - [Using the Cluster Samples Operator with an alternate registry](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/samples-operator-alt-registry)
-
-For more information about configuring credentials, see the following link:
 
 - [Using image pull secrets](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/managing-images#using-image-pull-secrets)
 
@@ -86,11 +86,7 @@ Certain circumstances result in the Cluster Samples Operator bootstrapping itsel
 
 - If the Cluster Samples Operator detects that it is on an IPv6 network.
 
-- If the image controller configuration parameters prevent the creation of image streams by using the default image registry, or by using the image registry specified by `samplesRegistry` setting. For more information, see the following links:
-
-  - [Image controller configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/image-configuration-classic#images-configuration-parameters_image-configuration)
-
-  - [Cluster Samples Operator configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/configuring-samples-operator#samples-operator-configuration_configuring-samples-operator)
+- If the image controller configuration parameters prevent the creation of image streams by using the default image registry, or by using the image registry specified by `samplesRegistry` setting. For more information, see "Image controller configuration parameters" and "Cluster Samples Operator configuration parameters".
 
 <div class="note">
 
@@ -105,6 +101,10 @@ However, if the Cluster Samples Operator detects that it is on an IPv6 network a
 IPv6 installations are not currently supported by the registry. The Cluster Samples Operator pulls most of the sample image streams and images from the registry.
 
 </div>
+
+- [Image controller configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/image-configuration-classic#images-configuration-parameters_image-configuration)
+
+- [Cluster Samples Operator configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/configuring-samples-operator#samples-operator-configuration_configuring-samples-operator)
 
 ## Restricted network installation
 

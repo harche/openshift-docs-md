@@ -64,49 +64,12 @@ There are different types of image quality data, including package vulnerabiliti
 
     quality.images.openshift.io/<qualityType>.<providerId>: {}
 
-<table>
-<caption>Annotation key format</caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Component</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Acceptable values</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>qualityType</code></p></td>
-<td style="text-align: left;"><p>Metadata type</p></td>
-<td style="text-align: left;"><p><code>vulnerability</code><br />
-<code>license</code><br />
-<code>operations</code><br />
-<code>policy</code></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>providerId</code></p></td>
-<td style="text-align: left;"><p>Provider ID string</p></td>
-<td style="text-align: left;"><p><code>openscap</code><br />
-<code>redhatcatalog</code><br />
-<code>redhatinsights</code><br />
-<code>blackduck</code><br />
-<code>jfrog</code></p></td>
-</tr>
-</tbody>
-</table>
+| Component     | Description        | Acceptable values                                                   |
+|---------------|--------------------|---------------------------------------------------------------------|
+| `qualityType` | Metadata type      | `vulnerability`, `license`, `operations`, `policy`                  |
+| `providerId`  | Provider ID string | `openscap`, `redhatcatalog`, `redhatinsights`, `blackduck`, `jfrog` |
 
 Annotation key format
-
-### Example annotation keys
-
-    quality.images.openshift.io/vulnerability.blackduck: {}
-    quality.images.openshift.io/vulnerability.jfrog: {}
-    quality.images.openshift.io/license.blackduck: {}
-    quality.images.openshift.io/vulnerability.openscap: {}
 
 The value of the image quality annotation is structured data that must adhere to the following format:
 
@@ -132,6 +95,15 @@ The `summary` field must adhere to the following format:
 | `reference`     | URL of information source or more details. Optional.                                                                     | String  |
 
 Summary field value format
+
+### Example annotation keys
+
+The following are example annotation keys:
+
+    quality.images.openshift.io/vulnerability.blackduck: {}
+    quality.images.openshift.io/vulnerability.jfrog: {}
+    quality.images.openshift.io/license.blackduck: {}
+    quality.images.openshift.io/vulnerability.openscap: {}
 
 ### Example annotation values
 
@@ -208,6 +180,8 @@ $ oc annotate image <image> \
 Use the `images.openshift.io/deny-execution` image policy to programmatically control if an image can be run.
 
 ### Example annotation
+
+The following is an example annotation:
 
 ``` yaml
 annotations:

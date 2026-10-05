@@ -147,14 +147,6 @@ You can implement FlexVolumes by using a list of operations to call and the inst
 
 - All other operations should return JSON with `{"status": "Not supported"}` and exit code `1`.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To install the FlexVolume driver:
-
 1.  Ensure that the executable file exists on all nodes in the cluster.
 
 2.  Place the executable file at the volume plugin path: `/etc/kubernetes/kubelet-plugins/volume/exec/<vendor>~<driver>/<driver>`.
@@ -220,8 +212,8 @@ Each `PersistentVolume` object in OpenShift Container Platform represents one st
 
   "fsType":"\<FS type\>", "readwrite":"\<rw\>", "secret/key1":"\<secret1\>" "secret/keyN":"\<secretN\>"
 
-<div class="note">
+  <div class="note">
 
-Secrets are passed only to mount or unmount call-outs.
+  Secrets are passed only to mount or unmount call-outs.
 
-</div>
+  </div>
