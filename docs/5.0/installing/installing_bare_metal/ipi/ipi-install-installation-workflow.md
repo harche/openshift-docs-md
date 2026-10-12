@@ -2245,7 +2245,7 @@ platform:
           disableCertificateVerification: False
 ```
 
-- [Understanding virtualized control planes](../../../vcp/vcp-overview.xml#vcp-overview)
+- [Virtualized control planes](../../../vcp/vcp-overview.xml#vcp-overview)
 
 - [Editing a BareMetalHost resource](../../../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-editing-a-baremetalhost-resource_bare-metal-postinstallation-configuration)
 
@@ -4108,8 +4108,16 @@ On the provisioner node, the `install-config.yaml` file should use the newly cre
     Replace `registry.example.com` with the registry’s fully qualified domain name.
 
     ``` terminal
-    $ echo "  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev" >> install-config.yaml
+    $ echo "  source: quay.io/openshift-release-dev/ocp-v5.0-art-dev" >> install-config.yaml
     ```
+
+    <div class="important">
+
+    The OpenShift Container Platform release payload references images in the `quay.io/openshift-release-dev/ocp-v5.0-art-dev` repository. You must include a mirror mapping for this repository. If you omit the `ocp-v5.0-art-dev` mapping, bootstrap nodes attempt to pull images from `quay.io` instead of from your mirror registry, and in a disconnected environment the installation fails.
+
+    If you used the `oc-mirror` plugin v2, copy every `imageDigestMirrors` entry from the generated `working-dir/cluster-resources/idms-oc-mirror.yaml` file into the `imageContentSources` section of the `install-config.yaml` file. Do not omit any generated mapping.
+
+    </div>
 
 # Validation checklist for installation
 

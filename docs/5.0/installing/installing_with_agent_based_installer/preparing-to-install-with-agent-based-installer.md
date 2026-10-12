@@ -19,7 +19,7 @@ To deploy clusters with virtualized control planes running on OpenShift Virtuali
 
 Agent-based Installer supported architectures
 
-- [Understanding virtualized control planes](../../vcp/vcp-overview.xml#vcp-overview)
+- [Virtualized control planes](../../vcp/vcp-overview.xml#vcp-overview)
 
 # Understand Agent-based Installer
 

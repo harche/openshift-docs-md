@@ -87,7 +87,7 @@ The following directories are not covered:
 
 # Supply a custom AIDE configuration
 
-Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `database`, and `database_out` are overwritten by the Operator. The Operator adds a prefix to `/hostroot/` before all paths to be watched for integrity changes. As a result, you can reuse existing AIDE configs that might not be tailored for a containerized environment and that start from the root directory.
+The Operator overwrites entries that configure internal AIDE behavior, such as `DBDIR`, `LOGDIR`, `database`, and `database_out`. It prepends `/hostroot/` to all watched paths. You can reuse existing AIDE configs that start from the root directory and are not tailored for containers.
 
 <div class="note">
 
@@ -97,7 +97,9 @@ Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `da
 
 # Define a custom File Integrity Operator configuration
 
-This example focuses on defining a custom configuration for a scanner that runs on the control plane nodes based on the default configuration provided for the `worker-fileintegrity` CR. This workflow might be useful if you are planning to deploy a custom software running as a daemon set and storing its data under `/opt/mydaemon` on the control plane nodes.
+Define a custom configuration for a scanner that runs on the control plane nodes based on the default configuration provided for the `worker-fileintegrity` CR.
+
+This workflow might be useful if you are planning to deploy a custom software running as a daemon set and storing its data under `/opt/mydaemon` on the control plane nodes.
 
 1.  Make a copy of the default configuration.
 

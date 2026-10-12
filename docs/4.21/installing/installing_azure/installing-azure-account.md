@@ -330,9 +330,9 @@ The following options are available to you:
 
   If you set `identity.type` to `None` in the `install-config.yaml` file, you do not need to assign the `User Access Administrator` role to the service principal.
 
-  For more information about assigning roles, see the Azure documentation for [managing access to Azure resources using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+  For more information about assigning roles, see the Azure documentation for "managing access to Azure resources using the Azure portal".
 
-- If the security policies of your organization require a more restrictive set of permissions, you can create a [custom role](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles) with the necessary permissions.
+- If the security policies of your organization require a more restrictive set of permissions, you can create a "custom role" with the necessary permissions.
 
 The following permissions are required for creating an OpenShift Container Platform cluster on Microsoft Azure.
 
@@ -739,6 +739,12 @@ To install OpenShift Container Platform on Azure, you must scope the permissions
 You can scope all the permissions to your subscription when deleting an OpenShift Container Platform cluster.
 
 </div>
+
+- [Managing access to Azure resources using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
+
+- [Custom roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles)
+
+<!-- -->
 
 - [Managing access to Azure resources using the Azure portal (Azure documentation)](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
 

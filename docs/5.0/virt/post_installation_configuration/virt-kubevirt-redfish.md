@@ -2,14 +2,6 @@ KubeVirt Redfish exposes OpenShift Virtualization virtual machines (VMs) through
 
 Use KubeVirt Redfish when you need programmatic control over VMs using Redfish, such as deploying virtualized control planes or automating VM lifecycle management.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # About KubeVirt Redfish
 
 KubeVirt Redfish is a Redfish-compatible API that exposes virtual machines (VMs) managed by OpenShift Virtualization on OpenShift Container Platform.
@@ -222,7 +214,7 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
         Specifies the username and password required to validate requests to the Redfish API. Replace `<bcrypt_password>` with the `bcrypt` hashed password that you generated.
 
         `datavolume`
-        Specifies storage for VirtualMedia operations. Replace `<storage_class>` with a storage class available on your cluster, such as `lvms-vg1` or `ocs-storagecluster-ceph-rbd-virtualization`. For more information about storage options, see *Storage requirements* in "Prerequisites for virtualized control planes".
+        Specifies storage for virtual media operations. KubeVirt Redfish uses this storage to create a data volume, download the installation ISO into that volume, and attach the volume to the VM as virtual media. Replace `<storage_class>` with a storage class that points to a shared storage location accessible from all nodes in the hosting cluster. Do not use a node-local storage class such as LVM Storage for this volume. For more information about storage options, see *Storage requirements* in "Prerequisites for virtualized control planes".
 
 10. Apply the resource by running the following command:
 

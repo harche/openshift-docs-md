@@ -46,7 +46,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # About installations in restricted networks
 
-You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+You can install OpenShift Container Platform 4.17 in a restricted network that lacks an active internet connection. These restricted installations use installer-provisioned or user-provisioned infrastructure, depending on your cloud platform.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, such as Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare-metal hardware, Nutanix, or on VMware vSphere.
 
@@ -1643,20 +1643,20 @@ You must configure the network connectivity between machines to allow OpenShift 
 
 This section provides details about the ports that are required.
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| `22623`         | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -1884,7 +1884,9 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/gcp/
 
 # Creating firewall rules in Google Cloud
 
-You must create firewall rules in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Deployment Manager template.
+You must create firewall rules and IAM roles in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Infrastructure Manager template.
+
+If you are installing a cluster into a shared VPC and the host project already has the necessary firewall rules and IAM roles, you can skip creating these resources.
 
 <div class="note">
 

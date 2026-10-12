@@ -968,6 +968,34 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:74383 - OpenShift Container Platform 4.17.36 bug fix and security update
+
+Issued: 06 October 2026
+
+OpenShift Container Platform release 4.17.36 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:74383](https://access.redhat.com/errata/RHSA-2026:74383) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:74378](https://access.redhat.com/errata/RHBA-2026:74378) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.36 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the `kube-apiserver-to-kubelet` client signer certificate was being refreshed every 30 days despite having a 365-day validity period. With this release, the refresh interval is corrected to 292 days, 80% of validity, which is consistent with other signers. As a result, certificate rotations are prevented and the signer behavior is aligned with the intended configuration. ([OCPBUGS-88326](https://issues.redhat.com/browse/OCPBUGS-88326))
+
+- Before this update, the `IngressNodeFirewall` custom resource (CR) could not apply rules on sub-interfaces with dotted names because the Berkeley Packet Filter (BPF) file system did not allow dots (".") in the filenames. With this release, the dots in the interface names are replaced by a placeholder before writing to the BPF file system. As a result, the `IngressNodeFirewall` CR can apply rules on the sub-interfaces. ([OCPBUGS-97799](https://issues.redhat.com/browse/OCPBUGS-97799))
+
+- Before this update, the machine controller in the Hosted Cluster Config Operator (HCCO) included non-routable OVN-Kubernetes routes in the node network configuration. As a consequence, it caused networking conflicts and routing issues. With this release, non-routable routes are filtered out during configuration. As a result, networking conflicts are resolved. ([OCPBUGS-98327](https://issues.redhat.com/browse/OCPBUGS-98327))
+
+- Before this update, when you removed a `MachineConfig` resource that required a revert to a `MachineOSBuild` in a terminal state, the digested image push configuration was not changed. As a consequence, the associated `MachineConfigPool` resource was stuck in an `Updating` state. With this release, terminal builds update correctly when the digested image push configuration changes, enabling image reuse for a new build. As a result, you can successfully delete `MachineConfig` resources in an image mode cluster. ([OCPBUGS-127254](https://issues.redhat.com/browse/OCPBUGS-127254))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:71453 - OpenShift Container Platform 4.21.35 bug fix and security update
 
 Issued: 29 September 2026

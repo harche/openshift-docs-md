@@ -53,9 +53,8 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
      └── argocd
           └── example
                ├── acmpolicygenerator
-               │     ├── {policy-prefix}common-ranGen.yaml
-               │     ├── {policy-prefix}example-sno-site.yaml
-               │     ├── {policy-prefix}group-du-sno-ranGen.yaml
+               │     ├── ran-common.yaml
+               │     ├── ran-group-du-sno-templated.yaml
                │     ├── ...
                │     ├── kustomization.yaml
                │     └── ns.yaml
@@ -124,14 +123,15 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
           - name: sno-extra-manifest-configmap
         extraLabels:
           ManagedCluster:
-            # These example cluster labels correspond to the bindingRules in the PolicyGenTemplate examples
+            # These example cluster labels correspond to the bindingRules in the PolicyGenerator or PolicyGenTemplate examples
             du-profile: "latest"
-            # These example cluster labels correspond to the bindingRules in the PolicyGenTemplate examples in ../policygentemplates:
-            # ../policygentemplates/common-ranGen.yaml will apply to all clusters with 'common: true'
+            # These example cluster labels correspond to the bindingRules in the PolicyGenerator examples in ../acmpolicygenerator
+            # or the PolicyGenTemplate examples in ../policygentemplates:
+            # ran-common.yaml (PolicyGenerator) or common-ranGen.yaml (PolicyGenTemplate) will apply to all clusters with 'common: true'
             common: "true"
-            # ../policygentemplates/group-du-sno-ranGen.yaml will apply to all clusters with 'group-du-sno: ""'
+            # ran-group-du-sno-templated.yaml (PolicyGenerator) or group-du-sno-ranGen-templated.yaml (PolicyGenTemplate) will apply to all clusters with 'group-du-sno: ""'
             group-du-sno: ""
-            # ../policygentemplates/example-sno-site.yaml will apply to all clusters with 'sites: "example-sno"'
+            # The 'sites' label is used for site-specific values in template-values/ ConfigMaps
             # Normally this should match or contain the cluster name so it only applies to a single cluster
             sites : "example-sno"
         clusterNetwork:
@@ -245,7 +245,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
 
       </div>
 
-5.  Optional: Generate Day 2 configuration CRs from the reference `PolicyGenerator` CRs:
+5.  Optional: Generate Day 2 configuration CRs from the reference `PolicyGenTemplate` CRs:
 
     1.  Create an output folder for the configuration CRs by running the following command:
 
@@ -263,7 +263,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
 
 # Create the managed bare-metal host secrets
 
-Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a secret for the assisted installer service to pull cluster installation images from the registry.
+Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a pull secret for the Assisted Installer service.
 
 <div class="note">
 

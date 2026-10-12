@@ -881,7 +881,7 @@ Before running this procedure, carefully review the preceding "Consequences of d
 
 # Adding bare-metal nodes
 
-Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported. However, if you add bare-metal nodes, you must remove the vSphere CSI Driver, otherwise the cluster is marked as degraded. For information about how to remove the driver and the consequences of doing this, see Section "Disabling and enabling storage on vSphere".
+Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported. However, you must remove the vSphere CSI Driver before adding bare-metal nodes, otherwise the cluster is marked as degraded.
 
 <div class="important">
 

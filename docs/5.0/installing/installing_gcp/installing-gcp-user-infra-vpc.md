@@ -415,15 +415,19 @@ Minimum resource requirements
 
 <div class="note">
 
-In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- ppc64le architecture requires IBM® Power9 ISA
+- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+
+- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
 
 - s390x architecture requires IBM® z14 ISA
+
+If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
 
 For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
@@ -1208,20 +1212,20 @@ In connected OpenShift Container Platform environments, all nodes are required t
 
 </div>
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| `22623`         | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -1460,7 +1464,9 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/
 
 # Creating firewall rules and IAM roles in Google Cloud
 
-You must create firewall rules and IAM roles in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Infrastructure Manager template. If you are installing a cluster into a shared VPC and the host project already has the necessary firewall rules and IAM roles, you can skip creating these resources.
+You must create firewall rules and IAM roles in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Infrastructure Manager template.
+
+If you are installing a cluster into a shared VPC and the host project already has the necessary firewall rules and IAM roles, you can skip creating these resources.
 
 <div class="note">
 
@@ -2196,9 +2202,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -2319,11 +2325,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">

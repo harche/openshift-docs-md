@@ -8,7 +8,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-# Installing the External Secrets Management Console Plug-in
+# Installing the External Secrets Management Console Plug-in by using the web console
 
 You can use the web console to install the External Secrets Management Console Plug-in.
 

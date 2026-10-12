@@ -44,7 +44,7 @@ Before you install a OpenShift Container Platform cluster on IBM Power® Virtual
 
 # About installations in restricted networks
 
-You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+You can install OpenShift Container Platform 4.17 in a restricted network that lacks an active internet connection. These restricted installations use installer-provisioned or user-provisioned infrastructure, depending on your cloud platform.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, such as Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare-metal hardware, Nutanix, or on VMware vSphere.
 
@@ -126,7 +126,7 @@ You must have internet access to perform the following actions:
 
 # Generating a key pair for cluster node SSH access
 
-During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is added to `~/.ssh/authorized_keys` for the `core` user on each node.
 
 The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
@@ -367,15 +367,19 @@ Minimum resource requirements
 
 <div class="note">
 
-In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- ppc64le architecture requires IBM® Power9 ISA
+- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+
+- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
 
 - s390x architecture requires IBM® z14 ISA
+
+If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
 
 For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
@@ -608,12 +612,6 @@ You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the
 - You have an existing `install-config.yaml` file.
 
 1.  Edit the `install-config.yaml` configuration file so that the file includes the `credentialsMode` parameter set to `Manual`.
-
-    <div class="formalpara-title">
-
-    **Example `install-config.yaml` configuration file**
-
-    </div>
 
     ``` yaml
     apiVersion: v1

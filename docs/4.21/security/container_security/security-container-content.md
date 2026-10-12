@@ -190,7 +190,7 @@ annotations:
 
 ## Integration reference
 
-In most cases, external tools such as vulnerability scanners develop a script or plugin that watches for image updates, performs scanning, and annotates the associated image object with the results. Typically this automation calls the OpenShift Container Platform 4.17 REST APIs to write the annotation. See OpenShift Container Platform REST APIs for general information about the REST APIs.
+External tools such as vulnerability scanners typically develop a script or plugin that watches for image updates, performs scanning, and annotates the associated image object with the results by using OpenShift Container Platform REST APIs.
 
 ### Example REST API call
 

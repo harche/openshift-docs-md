@@ -44,7 +44,11 @@ Using the `PolicyGentemplate` CRD is the recommended method for automatic policy
 
 For policies that update an Operator subscription with manual approval, TALM provides additional functionality that approves the installation of the updated Operator.
 
-For more information about managed policies, see [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview) in the RHACM documentation.
+For more information about managed policies, "Policy Overview" in the RHACM documentation.
+
+- [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
+
+<!-- -->
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 
@@ -1070,7 +1074,11 @@ spec:
   remediationAction: inform
 ```
 
-For more information about RHACM policies, see [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview).
+For more information about RHACM policies, see "Policy overview" in the RHACM documentation.
+
+- [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
+
+<!-- -->
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 

@@ -16,7 +16,7 @@ Using *network policies*, you can isolate pods from each other in the same proje
 
 # Use multiple pod networks
 
-Each running container has only one network interface by default. You can use the Multus CNI plugin to create multiple CNI networks, and then attach any of those networks to a pod. In that way, you can do things such as separate private data onto a more restricted network and have multiple network interfaces on each node.
+Each running container has only one network interface by default. You can use the Multus CNI plugin to create multiple CNI networks and attach any of those networks to a pod to separate private data onto a more restricted network.
 
 - [Using multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)
 

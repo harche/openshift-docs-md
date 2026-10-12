@@ -583,7 +583,7 @@ You must configure and deploy the hosted cluster on AWS.
 
 # About the SR-IOV network metrics exporter
 
-The Single Root I/O Virtualization (SR-IOV) network metrics exporter reads the metrics for SR-IOV virtual functions (VFs) and exposes these VF metrics in Prometheus format. When the SR-IOV network metrics exporter is enabled, you can query the SR-IOV VF metrics by using the OpenShift Container Platform web console to monitor the networking activity of the SR-IOV pods.
+The SR-IOV network metrics exporter reads metrics for SR-IOV virtual functions (VFs) and exposes them in Prometheus format. You can query these metrics by using the OpenShift Container Platform web console to monitor SR-IOV pod networking activity.
 
 When you query the SR-IOV VF metrics by using the web console, the SR-IOV network metrics exporter fetches and returns the VF network statistics along with the name and namespace of the pod that the VF is attached to.
 

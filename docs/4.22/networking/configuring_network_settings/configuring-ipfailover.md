@@ -536,7 +536,7 @@ When you deploy multiple IP failover configurations, ensure that the configured 
 
 # Configure IP failover for more than 254 addresses
 
-To configure IP failover for more than 254 Virtual IP addresses in OpenShift Container Platform, you can use the `OPENSHIFT_HA_VIP_GROUPS` variable to group multiple addresses together. By using the `OPENSHIFT_HA_VIP_GROUPS` variable, you can change the number of VIPs per VRRP instance and define the number of VIP groups available for each VRRP instance when configuring IP failover.
+You can use the `OPENSHIFT_HA_VIP_GROUPS` variable to configure IP failover for more than 254 addresses by grouping multiple VIPs per VRRP instance.
 
 Grouping VIPs creates a wider range of allocation of VIPs per VRRP in the case of VRRP failover events, and is useful when all hosts in the cluster have access to a service locally. For example, when a service is being exposed with an `ExternalIP`.
 

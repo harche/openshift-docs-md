@@ -370,7 +370,7 @@ Use this procedure when many `BGPAdvertisement` resources reference the same `IP
 
 # Advertise an IP address pool from a subset of nodes
 
-To advertise an IP address from an IP addresses pool, from a specific set of nodes only, use the `.spec.nodeSelector` specification in the `BGPAdvertisement` custom resource (CR). This specification associates a pool of IP addresses with a set of nodes in the cluster. This is useful when you have nodes on different subnets in a cluster and you want to advertise an IP addresses from an address pool from a specific subnet, for example a public-facing subnet only.
+You can use the `.spec.nodeSelector` field in the `BGPAdvertisement` CR to advertise IP addresses from a pool on a specific set of nodes, such as nodes on a public-facing subnet.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -559,7 +559,7 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
 
 # Configure MetalLB with an L2 advertisement and labels
 
-You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` custom resource definition to associate the `IPAddressPool` with the advertisement based on the label assigned to the pool instead of the pool name. The example configures MetalLB to advertise the pool over Layer 2 by using `ipAddressPoolSelectors`.
+You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` CR to associate the `IPAddressPool` with the advertisement based on the label assigned to the pool instead of the pool name.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -617,7 +617,7 @@ You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` custom r
 
 # Apply different Layer 2 advertisement policies on a shared IP address pool
 
-Use this procedure when many `L2Advertisement` resources reference the same `IPAddressPool` and each advertisement must apply different Layer 2 settings to a different group of `LoadBalancer` services. You match services with `spec.serviceSelectors` so each advertisement applies only where its selectors match.
+You can configure multiple `L2Advertisement` resources that reference the same `IPAddressPool` and use `spec.serviceSelectors` to apply different Layer 2 settings to different groups of `LoadBalancer` services.
 
 - You created the `IPAddressPool` that your advertisements reference (for example, `doc-example-l2-label`).
 

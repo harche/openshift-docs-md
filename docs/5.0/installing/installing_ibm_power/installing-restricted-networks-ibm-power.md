@@ -48,7 +48,7 @@ Before you install a OpenShift Container Platform cluster on IBM Power® in a re
 
 # About installations in restricted networks
 
-You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+You can install OpenShift Container Platform 4.17 in a restricted network that lacks an active internet connection. These restricted installations use installer-provisioned or user-provisioned infrastructure, depending on your cloud platform.
 
 To complete a restricted network installation, you must create a registry that mirrors the contents of the OpenShift image registry and contains the installation media. You can create this registry on a mirror host, which can access both the internet and your closed network, or by using other methods that meet your restrictions.
 
@@ -130,15 +130,19 @@ Minimum resource requirements
 
 <div class="note">
 
-In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- ppc64le architecture requires IBM® Power9 ISA
+- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+
+- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
 
 - s390x architecture requires IBM® z14 ISA
+
+If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
 
 For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
@@ -152,7 +156,9 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 Before you install OpenShift Container Platform on IBM Power®, verify that your hardware meets the minimum system requirements for processor, disk storage, network, and memory.
 
-- IBM Power®9, IBM Power®10 or IBM Power®11 processor-based systems
+- IBM Power®9, IBM Power®10 or IBM Power®11 processor-based systems for RHEL9 based RHCOS nodes
+
+- IBM Power®10 or IBM Power®11 processor-based systems for RHEL10 based RHCOS nodes
 
 ### Hardware requirements
 
@@ -200,7 +206,9 @@ OpenShift Container Platform on IBM Power® requires a minimum of six LPARs acro
 
 ### Operating system requirements
 
-- One instance of an IBM Power®9, IBM Power®10 or IBM Power®11 processor-based system
+- One IBM Power®9, IBM Power®10, or IBM Power®11 processor-based system for RHEL9 based RHCOS nodes
+
+- One IBM Power®10 or IBM Power®11 processor-based system for RHEL10 based RHCOS nodes
 
 On your IBM Power® instance, set up:
 
@@ -264,20 +272,20 @@ You must configure the network connectivity between machines to allow OpenShift 
 
 This section provides details about the ports that are required.
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| `22623`         | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -908,7 +916,7 @@ The validation steps detailed in this section must succeed before you install yo
 
 # Generating a key pair for cluster node SSH access
 
-During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is added to `~/.ssh/authorized_keys` for the `core` user on each node.
 
 The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
@@ -1083,7 +1091,7 @@ imageContentSources:
   source: quay.io/openshift-release-dev/ocp-release
 - mirrors:
   - <local_registry>/<local_repository_name>/release
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+  source: quay.io/openshift-release-dev/ocp-v5.0-art-dev
 ```
 
 where:
@@ -1175,7 +1183,9 @@ Specifies the `imageContentSources` section according to the output of the comma
 
 - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
 
-- When using `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+- When using the `oc-mirror` plugin v1, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+
+- When using the `oc-mirror` plugin v2, copy every `imageDigestMirrors` entry from the generated `working-dir/cluster-resources/idms-oc-mirror.yaml` file into the `imageContentSources` section. Do not omit any generated mapping.
 
 - `ImageContentSourcePolicy` is deprecated. For more information see *Configuring image registry repository mirroring*.
 
@@ -2497,7 +2507,7 @@ The configuration information provided through the Ignition config files is used
 
     ``` terminal
     INFO Waiting up to 20m0s for the Kubernetes API at https://api.test.example.com:6443...
-    INFO API v1.35.4 up
+    INFO API v1.36.3 up
     INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
@@ -2575,9 +2585,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -2698,11 +2708,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">

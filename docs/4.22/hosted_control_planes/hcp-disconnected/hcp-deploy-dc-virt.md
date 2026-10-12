@@ -297,7 +297,9 @@ To ensure that the data plane compute nodes in the hosted cluster can retrieve i
 
 # Creating a hosted cluster on OpenShift Virtualization in a disconnected environment
 
-As part of the process to deploy hosted control planes on OpenShift Virtualization in a disconnected environment, you need to create a hosted cluster. A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
+As part of the process to deploy hosted control planes on OpenShift Virtualization in a disconnected environment, you need to create a hosted cluster. A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster.
+
+The hosted cluster includes the control plane and its corresponding data plane.
 
 ## Prerequisites to deploy hosted control planes on OpenShift Virtualization
 

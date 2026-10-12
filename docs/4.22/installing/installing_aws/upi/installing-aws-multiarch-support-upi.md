@@ -18,7 +18,7 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 </div>
 
-# Installing a cluster with multi-architecture support
+# Install a cluster with multi-architecture support
 
 You can install a cluster with multi-architecture support to use compute machines with different Central Processing Unit (CPU) architectures. Modifying your configuration file helps ensure your control plane and worker nodes deploy with the correct architecture.
 

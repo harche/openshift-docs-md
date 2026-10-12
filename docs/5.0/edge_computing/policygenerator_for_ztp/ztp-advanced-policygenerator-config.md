@@ -25,7 +25,7 @@ Providing additional source CRs or modifying existing source CRs can significant
 
 `PolicyGenerator` custom resources (CRs) allow you to overlay additional configuration details on top of the base source CRs provided with the GitOps plugin in the `ztp-site-generate` container. You can think of `PolicyGenerator` CRs as a logical merge or patch to the base CR. Use `PolicyGenerator` CRs to update a single field of the base CR, or overlay the entire contents of the base CR. You can update values and insert fields that are not in the base CR.
 
-The following example procedure describes how to update fields in the generated `PerformanceProfile` CR for the reference configuration based on the `PolicyGenerator` CR in the `acm-group-du-sno-ranGen.yaml` file. Use the procedure as a basis for modifying other parts of the `PolicyGenerator` based on your requirements.
+The following example procedure describes how to update fields in the generated `PerformanceProfile` CR for the reference configuration based on the `PolicyGenerator` CR in the `ran-group-du-sno-templated.yaml` file. Use the procedure as a basis for modifying other parts of the `PolicyGenerator` based on your requirements.
 
 - Create a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for Argo CD.
 
@@ -83,7 +83,7 @@ The following example procedure describes how to update fields in the generated 
 
     </div>
 
-3.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `acm-group-du-sno-ranGen.yaml` reference file. The following example `PolicyGenerator` CR stanza supplies appropriate CPU specifications, sets the `hugepages` configuration, and adds a new field that sets `globallyDisableIrqLoadBalancing` to false.
+3.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `ran-group-du-sno-templated.yaml` reference file. The following example `PolicyGenerator` CR stanza supplies appropriate CPU specifications, sets the `hugepages` configuration, and adds a new field that sets `globallyDisableIrqLoadBalancing` to false.
 
     ``` yaml
     - path: source-crs/PerformanceProfile.yaml
@@ -139,7 +139,7 @@ The following example procedure describes how to update fields in the generated 
 
     In the `/source-crs` folder that you extract from the `ztp-site-generate` container, the `$` syntax is not used for template substitution as implied by the syntax. Rather, if the `policyGen` tool sees the `$` prefix for a string and you do not specify a value for that field in the related `PolicyGenerator` CR, the field is omitted from the output CR entirely.
 
-    An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenerator` CR. For example, in `example/acmpolicygenerator/acm-group-du-standard-ranGen.yaml`, the value for `mcp` is `worker`:
+    An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenerator` CR. For example, in `example/acmpolicygenerator/ran-group-du-standard-templated.yaml`, the value for `mcp` is `worker`:
 
     ``` yaml
     spec:
@@ -407,7 +407,7 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
 
 1.  Create a standalone `PolicyGenerator` custom resource (CR) that contains the source file `validatorCRs/informDuValidator.yaml`. You only need one standalone `PolicyGenerator` CR for each cluster type. For example, this CR applies a validator inform policy for single-node OpenShift clusters:
 
-    Example single-node cluster validator inform policy CR (acm-group-du-sno-validator-ranGen.yaml):
+    Example single-node cluster validator inform policy CR (ran-group-du-sno-validator.yaml):
 
     ``` yaml
     apiVersion: policy.open-cluster-management.io/v1
@@ -471,7 +471,7 @@ The default configuration is for a low latency, performance mode.
 
 `PolicyGenerator` custom resources (CRs) allow you to overlay additional configuration details onto the base source CRs provided with the GitOps plugin in the `ztp-site-generate` container.
 
-Configure the power states by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `acm-group-du-sno-ranGen.yaml`.
+Configure the power states by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `ran-group-du-sno-templated.yaml`.
 
 The following common prerequisites apply to configuring all three power states:
 
@@ -485,13 +485,13 @@ The following common prerequisites apply to configuring all three power states:
 
 ## Configuring performance mode using PolicyGenerator CRs
 
-Follow this example to set performance mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `acm-group-du-sno-ranGen.yaml`.
+Follow this example to set performance mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `ran-group-du-sno-templated.yaml`.
 
 Performance mode provides low latency at a relatively high power consumption.
 
 - You have configured the BIOS with performance related settings by following the guidance in "Configuring host firmware for low latency and high performance".
 
-1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `acm-group-du-sno-ranGen.yaml` reference file in `out/argocd/example/acmpolicygenerator//` as follows to set performance mode.
+1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `ran-group-du-sno-templated.yaml` reference file in `out/argocd/example/acmpolicygenerator//` as follows to set performance mode.
 
     ``` yaml
     - path: source-crs/PerformanceProfile.yaml
@@ -507,13 +507,13 @@ Performance mode provides low latency at a relatively high power consumption.
 
 ## Configuring high-performance mode using PolicyGenerator CRs
 
-Follow this example to set high performance mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `acm-group-du-sno-ranGen.yaml`.
+Follow this example to set high performance mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `ran-group-du-sno-templated.yaml`.
 
 High performance mode provides ultra low latency at the highest power consumption.
 
 - You have configured the BIOS with performance related settings by following the guidance in "Configuring host firmware for low latency and high performance".
 
-1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `acm-group-du-sno-ranGen.yaml` reference file in `out/argocd/example/acmpolicygenerator/` as follows to set high-performance mode.
+1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `ran-group-du-sno-templated.yaml` reference file in `out/argocd/example/acmpolicygenerator/` as follows to set high-performance mode.
 
     ``` yaml
     - path: source-crs/PerformanceProfile.yaml
@@ -529,13 +529,13 @@ High performance mode provides ultra low latency at the highest power consumptio
 
 ## Configuring power saving mode using PolicyGenerator CRs
 
-Follow this example to set power saving mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `acm-group-du-sno-ranGen.yaml`.
+Follow this example to set power saving mode by updating the `workloadHints` fields in the generated `PerformanceProfile` CR for the reference configuration, based on the `PolicyGenerator` CR in the `ran-group-du-sno-templated.yaml`.
 
 The power saving mode balances reduced power consumption with increased latency.
 
 - You enabled C-states and OS-controlled P-states in the BIOS.
 
-1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `acm-group-du-sno-ranGen.yaml` reference file in `out/argocd/example/acmpolicygenerator/` as follows to configure power saving mode. It is recommended to configure the CPU governor for the power saving mode through the additional kernel arguments object.
+1.  Update the `PolicyGenerator` entry for `PerformanceProfile` in the `ran-group-du-sno-templated.yaml` reference file in `out/argocd/example/acmpolicygenerator/` as follows to configure power saving mode. Configure the CPU governor for the power saving mode by using the additional kernel arguments object.
 
     ``` yaml
     - path: source-crs/PerformanceProfile.yaml
@@ -594,15 +594,15 @@ The power saving mode balances reduced power consumption with increased latency.
 
 ## Maximizing power savings
 
-Limiting the maximum CPU frequency is recommended to achieve maximum power savings.
+Limit the maximum CPU frequency to achieve maximum power savings.
 
 Enabling C-states on the non-critical workload CPUs without restricting the maximum CPU frequency negates much of the power savings by boosting the frequency of the critical CPUs.
 
-Maximize power savings by updating the `sysfs` plugin fields, setting an appropriate value for `max_perf_pct` in the `TunedPerformancePatch` CR for the reference configuration. This example based on the `acm-group-du-sno-ranGen.yaml` describes the procedure to follow to restrict the maximum CPU frequency.
+Maximize power savings by updating the `sysfs` plugin fields, setting an appropriate value for `max_perf_pct` in the `TunedPerformancePatch` CR for the reference configuration. This example based on the `ran-group-du-sno-templated.yaml` describes the procedure to follow to restrict the maximum CPU frequency.
 
 - You have configured power savings mode as described in "Using PolicyGenerator CRs to configure power savings mode".
 
-1.  Update the `PolicyGenerator` entry for `TunedPerformancePatch` in the `acm-group-du-sno-ranGen.yaml` reference file in `out/argocd/example/acmpolicygenerator/`. To maximize power savings, add `max_perf_pct` as shown in the following example:
+1.  Update the `PolicyGenerator` entry for `TunedPerformancePatch` in the `ran-group-du-sno-templated.yaml` reference file in `out/argocd/example/acmpolicygenerator/`. To maximize power savings, add `max_perf_pct` as shown in the following example:
 
     ``` yaml
     - path: source-crs/TunedPerformancePatch.yaml
@@ -644,7 +644,7 @@ Use the Local Storage Operator for persistent storage that uses local volumes in
 
 - Create a Git repository where you manage your custom site configuration data.
 
-1.  To configure LVM Storage for new managed clusters, add the following YAML to `policies.manifests` in the `acm-common-ranGen.yaml` file:
+1.  To configure LVM Storage for new managed clusters, add the following YAML to `policies.manifests` in the `ran-common.yaml` file:
 
     ``` yaml
     - name: subscription-policies
@@ -663,7 +663,7 @@ Use the Local Storage Operator for persistent storage that uses local volumes in
 
     The Storage LVMO subscription is deprecated. In future releases of OpenShift Container Platform, the storage LVMO subscription will not be available. Instead, you must use the Storage LVMS subscription.
 
-    In OpenShift Container Platform 4.17, you can use the Storage LVMS subscription instead of the LVMO subscription. The LVMS subscription does not require manual overrides in the `acm-common-ranGen.yaml` file. Add the following YAML to `policies.manifests` in the `acm-common-ranGen.yaml` file to use the Storage LVMS subscription:
+    In OpenShift Container Platform 4.17, you can use the Storage LVMS subscription instead of the LVMO subscription. The LVMS subscription does not require manual overrides in the `ran-common.yaml` file. Add the following YAML to `policies.manifests` in the `ran-common.yaml` file to use the Storage LVMS subscription:
 
     ``` yaml
     - path: source-crs/StorageLVMSubscriptionNS.yaml
@@ -673,7 +673,7 @@ Use the Local Storage Operator for persistent storage that uses local volumes in
 
     </div>
 
-2.  Add the `LVMCluster` CR to `policies.manifests` in your specific group or individual site configuration file. For example, in the `acm-group-du-sno-ranGen.yaml` file, add the following:
+2.  Add the `LVMCluster` CR to `policies.manifests` in your group configuration file. For example, in the `ran-group-du-sno-templated.yaml` file, add the following:
 
     ``` yaml
     - fileName: StorageLVMCluster.yaml
@@ -710,7 +710,7 @@ You can configure PTP events that use HTTP transport on managed clusters that yo
 
 - You have created a Git repository where you manage your custom site configuration data.
 
-1.  Apply the following `PolicyGenerator` changes to `acm-group-du-3node-ranGen.yaml`, `acm-group-du-sno-ranGen.yaml`, or `acm-group-du-standard-ranGen.yaml` files according to your requirements:
+1.  Apply the following `PolicyGenerator` changes to `ran-group-du-3node-templated.yaml`, `ran-group-du-sno-templated.yaml`, or `ran-group-du-standard-templated.yaml` files according to your requirements:
 
     1.  In `policies.manifests`, add the `PtpOperatorConfig` CR file that configures the transport host:
 
@@ -870,7 +870,7 @@ You can configure PTP events that use HTTP transport on managed clusters that yo
         where:
 
         `path`
-        Specifies `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `acm-group-du-sno-ranGen.yaml` or `acm-group-du-3node-ranGen.yaml`, use `PtpConfigSlave.yaml`.
+        Specifies `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `ran-group-du-sno-templated.yaml` or `ran-group-du-3node-templated.yaml`, use `PtpConfigSlave.yaml`.
 
         `patches.spec.profile.interface`
         Specifies the device specific interface name.
@@ -1117,7 +1117,7 @@ Use `PolicyGenerator` (PGT) CRs to apply the CRs required to configure the image
 
 - You have created a Git repository where you manage your custom site configuration data for use with GitOps Zero Touch Provisioning (ZTP).
 
-1.  Configure the storage class, persistent volume claim, persistent volume, and image registry configuration in the appropriate `PolicyGenerator` CR. For example, to configure an individual site, add the following YAML to the file `acm-example-sno-site.yaml`:
+1.  Configure the storage class, persistent volume claim, persistent volume, and image registry configuration in the appropriate `PolicyGenerator` CR. For example, to configure settings that apply to multiple clusters, add the following YAML to the file `ran-group-du-sno-templated.yaml`. Group or site-specific values are provided using `ConfigMap` resources in the `template-values/` directory:
 
     ``` yaml
     sourceFiles:

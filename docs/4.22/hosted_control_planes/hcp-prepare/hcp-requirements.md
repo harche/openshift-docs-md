@@ -16,7 +16,7 @@ The following requirements apply to hosted control planes:
 
 # Support matrix for hosted control planes
 
-Because multicluster engine for Kubernetes Operator includes the HyperShift Operator, releases of hosted control planes align with releases of multicluster engine Operator. The support matrix includes details about supported clusters, platforms, and architectures, as well as information about updates and technology preview features.
+ecause multicluster engine for Kubernetes Operator includes the HyperShift Operator, hosted control planes releases align with multicluster engine Operator. The support matrix covers supported clusters, platforms, architectures, updates, and technology preview features.
 
 For more information, see "OpenShift Operator Life Cycles".
 

@@ -136,7 +136,7 @@ See the following tables to understand the differences between OpenShift Contain
 
 # Relationship between hosted control planes, multicluster engine Operator, and RHACM
 
-You can configure hosted control planes by using the multicluster engine for Kubernetes Operator. The multicluster engine Operator cluster lifecycle defines the process of creating, importing, managing, and destroying Kubernetes clusters across various infrastructure cloud providers, private clouds, and on-premise data centers.
+Configure hosted control planes by using the multicluster engine for Kubernetes Operator. The multicluster engine Operator cluster lifecycle defines the process that creates, imports, manages, and destroys Kubernetes clusters across cloud providers, private clouds, and on-premises data centers.
 
 <div class="note">
 

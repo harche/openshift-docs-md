@@ -115,9 +115,9 @@ Mapping of vSphere concepts to their closest OpenShift Virtualization counterpar
 
 # Supported cluster versions for OpenShift Virtualization
 
-OpenShift Virtualization 4.22 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
+OpenShift Virtualization 5.0 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
 
-The latest stable release of OpenShift Virtualization 4.22 is 4.22.0.
+The latest stable release of OpenShift Virtualization 5.0 is 5.0.0.
 
 # About volume and access modes for virtual machine disks
 

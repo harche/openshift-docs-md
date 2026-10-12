@@ -1743,7 +1743,9 @@ Deploying the registry pod on an infrastructure node can reduce your OpenShift C
 
 ## Move the monitoring solution
 
-Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes. The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
+Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes.
+
+The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 

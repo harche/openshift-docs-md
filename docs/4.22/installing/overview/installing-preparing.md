@@ -90,7 +90,7 @@ When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreO
 
 </div>
 
-# Preparing your cluster for users after installation
+# Prepare your cluster for users after installation
 
 Configure a production cluster for users before they access it.
 
@@ -104,7 +104,7 @@ For a production cluster, you must configure the following integrations:
 
 - [Monitoring core OpenShift Container Platform components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/getting_started/core-platform-monitoring-first-steps)
 
-# Preparing your cluster for workloads
+# Prepare your cluster for workloads
 
 Take extra steps to prepare your cluster before deploying applications, depending on your workload needs.
 

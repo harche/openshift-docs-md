@@ -40,7 +40,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # About installations in restricted networks
 
-You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+You can install OpenShift Container Platform 4.17 in a restricted network that lacks an active internet connection. These restricted installations use installer-provisioned or user-provisioned infrastructure, depending on your cloud platform.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, such as Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare-metal hardware, Nutanix, or on VMware vSphere.
 
@@ -1067,7 +1067,7 @@ The configuration information provided through the Ignition config files is used
 
     ``` terminal
     INFO Waiting up to 20m0s for the Kubernetes API at https://api.test.example.com:6443...
-    INFO API v1.35.4 up
+    INFO API v1.36.3 up
     INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
@@ -1145,9 +1145,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -1268,11 +1268,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">
@@ -1692,7 +1692,7 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
 # Configuring vSphere DRS anti-affinity rules for control plane nodes
 
-vSphere Distributed Resource Scheduler (DRS) anti-affinity rules can be configured to support higher availability of OpenShift Container Platform Control Plane nodes. Anti-affinity rules ensure that the vSphere Virtual Machines for the OpenShift Container Platform Control Plane nodes are not scheduled to the same vSphere Host.
+vSphere Distributed Resource Scheduler (DRS) anti-affinity rules ensure that OpenShift Container Platform control plane node VMs are not scheduled to the same vSphere host, supporting higher availability.
 
 <div class="important">
 

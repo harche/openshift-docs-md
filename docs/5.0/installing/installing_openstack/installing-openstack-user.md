@@ -319,7 +319,7 @@ Before you install OpenShift Container Platform, download the installation file 
 
 # Generating a key pair for cluster node SSH access
 
-During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is added to `~/.ssh/authorized_keys` for the `core` user on each node.
 
 The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
@@ -1614,7 +1614,7 @@ Create three control plane machines by using the Ignition config files that you 
     You will see messages that confirm that the control plane machines are running and have joined the cluster.
 
     ``` terminal
-    INFO API v1.35.4 up
+    INFO API v1.36.3 up
     INFO Waiting up to 45m0s for bootstrapping to complete...
     ...
     INFO It is now safe to remove the bootstrap resources
@@ -1737,9 +1737,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -1860,11 +1860,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">

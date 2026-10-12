@@ -212,7 +212,7 @@ To precisely manage external access across a specific VLAN, configure MetalLB ad
 
 # Example address pool configurations
 
-To precisely allocate IP address ranges for cluster services, configure MetalLB address pools by using Classless Inter-Domain Routing (CIDR) notation or hyphenated bounds. Defining these specific ranges ensures that application workloads receive valid IP assignments that align with your existing network infrastructure requirements.
+Configure MetalLB address pools by using Classless Inter-Domain Routing (CIDR) notation or hyphenated bounds to allocate IP address ranges for cluster services.
 
 Example of IPv4 and CIDR ranges
 You can specify a range of IP addresses in classless inter-domain routing (CIDR) notation. You can combine CIDR notation with the notation that uses a hyphen to separate lower and upper bounds.

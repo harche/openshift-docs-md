@@ -21,7 +21,9 @@ Telco RAN DU managed cluster validated software components
 
 # Recommended hub cluster specifications and managed cluster limits for GitOps ZTP
 
-With GitOps Zero Touch Provisioning (ZTP), you can manage thousands of clusters in geographically dispersed regions and networks. The Red Hat Performance and Scale lab successfully created and managed 3500 virtual single-node OpenShift clusters with a reduced DU profile from a single Red Hat Advanced Cluster Management (RHACM) hub cluster in a lab environment.
+With GitOps Zero Touch Provisioning (ZTP), you can manage thousands of clusters in geographically dispersed regions and networks.
+
+The Red Hat Performance and Scale lab successfully created and managed 3500 virtual single-node OpenShift clusters with a reduced DU profile from a single Red Hat Advanced Cluster Management (RHACM) hub cluster in a lab environment.
 
 In real-world situations, the scaling limits for the number of clusters that you can manage will vary depending on various factors affecting the hub cluster. For example:
 
@@ -212,7 +214,9 @@ The RHCOS images might not change with every release of OpenShift Container Plat
 
 # Enable the assisted service
 
-Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy OpenShift Container Platform clusters. The assisted service is deployed automatically when you enable the MultiClusterHub Operator on Red Hat Advanced Cluster Management (RHACM). After that, you need to configure the `Provisioning` resource to watch all namespaces and to update the `AgentServiceConfig` custom resource (CR) with references to the ISO and RootFS images that are hosted on the mirror registry HTTP server.
+Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy OpenShift Container Platform clusters. The assisted service is deployed automatically when you enable the MultiClusterHub Operator on RHACM.
+
+After enabling the MultiClusterHub Operator, configure the `Provisioning` resource to watch all namespaces and update the `AgentServiceConfig` CR with references to the ISO and RootFS images hosted on the mirror registry HTTP server.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -642,10 +646,9 @@ Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need t
       ``` text
       example/
         ├── acmpolicygenerator
-        │   ├── acm-common-ranGen.yaml
-        │   ├── acm-example-sno-site.yaml
-        │   ├── acm-group-du-sno-ranGen.yaml
-        │   ├── group-du-sno-validator-ranGen.yaml
+        │   ├── ran-common.yaml
+        │   ├── ran-group-du-sno-templated.yaml
+        │   ├── ran-group-du-sno-validator.yaml
         │   ├── kustomization.yaml
         │   ├── source-crs/
         │   └── ns.yaml
@@ -667,9 +670,11 @@ Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need t
 
 <div class="important">
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
 For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+
+For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
 </div>
 
@@ -709,9 +714,9 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
     ├── acmpolicygenerator
     │   ├── kustomization.yaml
     │   ├── version_4.13
-    │   │   ├── common-ranGen.yaml
-    │   │   ├── group-du-sno-ranGen.yaml
-    │   │   ├── group-du-sno-validator-ranGen.yaml
+    │   │   ├── ran-common.yaml
+    │   │   ├── ran-group-du-sno-templated.yaml
+    │   │   ├── ran-group-du-sno-validator.yaml
     │   │   ├── helix56-v413.yaml
     │   │   ├── kustomization.yaml
     │   │   ├── ns.yaml
@@ -719,9 +724,9 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
     │   │      └── reference-crs/
     │   │      └── custom-crs/
     │   └── version_4.14
-    │       ├── common-ranGen.yaml
-    │       ├── group-du-sno-ranGen.yaml
-    │       ├── group-du-sno-validator-ranGen.yaml
+    │       ├── ran-common.yaml
+    │       ├── ran-group-du-sno-templated.yaml
+    │       ├── ran-group-du-sno-validator.yaml
     │       ├── helix56-v414.yaml
     │       ├── kustomization.yaml
     │       ├── ns.yaml

@@ -12,9 +12,11 @@ The `PolicyGenerator` API is a part of the [Open Cluster Management](https://ope
 
 <div class="important">
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
 For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+
+For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
 </div>
 
@@ -34,11 +36,11 @@ Comparison of RHACM PolicyGenerator and PolicyGenTemplate patching
 
 The `PolicyGenerator` custom resource definition (CRD) tells the `PolicyGen` policy generator what custom resources (CRs) to include in the cluster configuration, how to combine the CRs into the generated policies, and what items in those CRs need to be updated with overlay content.
 
-The following example shows a `PolicyGenerator` CR (`acm-common-du-ranGen.yaml`) extracted from the `ztp-site-generate` reference container. The `acm-common-du-ranGen.yaml` file defines two Red Hat Advanced Cluster Management (RHACM) policies. The policies manage a collection of configuration CRs, one for each unique value of `policyName` in the CR. `acm-common-du-ranGen.yaml` creates a single placement binding and a placement rule to bind the policies to clusters based on the labels listed in the `policyDefaults.placement.labelSelector` section.
+The following example shows a `PolicyGenerator` CR (`ran-common.yaml`) extracted from the `ztp-site-generate` reference container. The `ran-common.yaml` file defines two Red Hat Advanced Cluster Management (RHACM) policies. The policies manage a collection of configuration CRs, one for each unique value of `policyName` in the CR. `ran-common.yaml` creates a single placement binding and a placement to bind the policies to clusters based on the labels listed in the `policyDefaults.placement.labelSelector` section.
 
 <div class="formalpara-title">
 
-**Example PolicyGenerator CR - acm-common-ranGen.yaml**
+**Example PolicyGenerator CR - ran-common.yaml**
 
 </div>
 
@@ -355,7 +357,7 @@ Consider the following best practices when customizing site configuration `Polic
 
 When managing large numbers of spoke clusters on the hub cluster, minimize the number of policies to reduce resource consumption.
 
-Grouping multiple configuration CRs into a single or limited number of policies is one way to reduce the overall number of policies on the hub cluster. When using the common, group, and site hierarchy of policies for managing site configuration, it is especially important to combine site-specific configuration into a single policy.
+Grouping multiple configuration CRs into a single or limited number of policies is one way to reduce the overall number of policies on the hub cluster. When using common and group configuration categories with hub-side templating, it is especially important to combine site-specific configuration into a single policy.
 
 </div>
 
@@ -367,22 +369,20 @@ The reference configuration, obtained from the GitOps ZTP container, is designed
 
 The baseline `PolicyGenerator` CRs that are defined for RAN DU cluster configuration can be extracted from the GitOps ZTP `ztp-site-generate` container. See "Preparing the GitOps ZTP site configuration repository" for further details.
 
-The `PolicyGenerator` CRs can be found in the `./out/argocd/example/acmpolicygenerator/` folder. The reference architecture has common, group, and site-specific configuration CRs. Each `PolicyGenerator` CR refers to other CRs that can be found in the `./out/source-crs` folder.
+The `PolicyGenerator` CRs can be found in the `./out/argocd/example/acmpolicygenerator/` folder. The reference architecture organizes configuration into categories such as common policies and group policies by cluster type. Each `PolicyGenerator` CR refers to other CRs that can be found in the `./out/source-crs` folder.
 
-The `PolicyGenerator` CRs relevant to RAN cluster configuration are described below. Variants are provided for the group `PolicyGenerator` CRs to account for differences in single-node, three-node compact, and standard cluster configurations. Similarly, site-specific configuration variants are provided for single-node clusters and multi-node (compact or standard) clusters. Use the group and site-specific configuration variants that are relevant for your deployment.
+The `PolicyGenerator` CRs relevant to RAN cluster configuration are described below. Variants are provided for the group `PolicyGenerator` CRs to account for differences in single-node, three-node compact, and standard cluster configurations. Group or site-specific values are provided using `ConfigMap` resources in the `template-values/` directory and hub-side templating in the `PolicyGenerator` CRs.
 
-| PolicyGenerator CR                            | Description                                                                                                                                                                                 |
-|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `acm-example-multinode-site.yaml`             | Contains a set of CRs that get applied to multi-node clusters. These CRs configure SR-IOV features typical for RAN installations.                                                           |
-| `acm-example-sno-site.yaml`                   | Contains a set of CRs that get applied to single-node OpenShift clusters. These CRs configure SR-IOV features typical for RAN installations.                                                |
-| `acm-common-mno-ranGen.yaml`                  | Contains a set of common RAN policy configuration that get applied to multi-node clusters.                                                                                                  |
-| `acm-common-ranGen.yaml`                      | Contains a set of common RAN CRs that get applied to all clusters. These CRs subscribe to a set of operators providing cluster features typical for RAN as well as baseline cluster tuning. |
-| `acm-group-du-3node-ranGen.yaml`              | Contains the RAN policies for three-node clusters only.                                                                                                                                     |
-| `acm-group-du-sno-ranGen.yaml`                | Contains the RAN policies for single-node clusters only.                                                                                                                                    |
-| `acm-group-du-standard-ranGen.yaml`           | Contains the RAN policies for standard three control-plane clusters.                                                                                                                        |
-| `acm-group-du-3node-validator-ranGen.yaml`    | `PolicyGenerator` CR used to generate the various policies required for three-node clusters.                                                                                                |
-| `acm-group-du-standard-validator-ranGen.yaml` | `PolicyGenerator` CR used to generate the various policies required for standard clusters.                                                                                                  |
-| `acm-group-du-sno-validator-ranGen.yaml`      | `PolicyGenerator` CR used to generate the various policies required for single-node OpenShift clusters.                                                                                     |
+| PolicyGenerator CR                     | Description                                                                                                                                                                                 |
+|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ran-common-mno.yaml`                  | Contains a set of common RAN policy configuration that get applied to multi-node clusters.                                                                                                  |
+| `ran-common.yaml`                      | Contains a set of common RAN CRs that get applied to all clusters. These CRs subscribe to a set of operators providing cluster features typical for RAN as well as baseline cluster tuning. |
+| `ran-group-du-3node-templated.yaml`    | Contains the RAN policies for three-node clusters only.                                                                                                                                     |
+| `ran-group-du-sno-templated.yaml`      | Contains the RAN policies for single-node clusters only.                                                                                                                                    |
+| `ran-group-du-standard-templated.yaml` | Contains the RAN policies for standard three control-plane clusters.                                                                                                                        |
+| `ran-group-du-3node-validator.yaml`    | `PolicyGenerator` CR used to generate the various policies required for three-node clusters.                                                                                                |
+| `ran-group-du-standard-validator.yaml` | `PolicyGenerator` CR used to generate the various policies required for standard clusters.                                                                                                  |
+| `ran-group-du-sno-validator.yaml`      | `PolicyGenerator` CR used to generate the various policies required for single-node OpenShift clusters.                                                                                     |
 
 PolicyGenerator CRs for RAN deployments
 
@@ -400,27 +400,25 @@ Use the following procedure to customize the policies that get applied to the ma
 
 - You created a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
 
-1.  Create a `PolicyGenerator` CR for site-specific configuration CRs.
+1.  Choose the appropriate example `PolicyGenerator` CR for your configuration category from the `out/argocd/example/acmpolicygenerator/` folder, for example, `ran-group-du-sno-templated.yaml`, `ran-group-du-3node-templated.yaml`, or `ran-group-du-standard-templated.yaml`.
 
-    1.  Choose the appropriate example for your CR from the `out/argocd/example/acmpolicygenerator/` folder, for example, `acm-example-sno-site.yaml` or `acm-example-multinode-site.yaml`.
+2.  Configure group or site-specific values in the `ConfigMap` resources in the `template-values/` directory. `PolicyGenerator` CRs use hub-side templating to substitute these values into the generated policies. For more information, see "Using hub templates in PolicyGenerator or PolicyGenTemplate CRs".
 
-    2.  Change the `policyDefaults.placement.labelSelector` field in the example file to match the site-specific label included in the `ClusterInstance` CR. In the example `ClusterInstance` file, the site-specific label is `sites: example-sno`.
+3.  Ensure the `policyDefaults.placement.labelSelector` field in the `PolicyGenerator` CR matches the labels defined in the related `ClusterInstance` CR. For example, the single-node OpenShift group example binds on `group-du-sno: ""`.
 
-        <div class="note">
+    <div class="note">
 
-        Ensure that the labels defined in your `PolicyGenerator` `policyDefaults.placement.labelSelector` field correspond to the labels that are defined in the related managed clusters `ClusterInstance` CR.
+    Ensure that the labels defined in your `PolicyGenerator` `policyDefaults.placement.labelSelector` field correspond to the labels that are defined in the related managed clusters `ClusterInstance` CR.
 
-        </div>
+    </div>
 
-    3.  Change the content in the example file to match the desired configuration.
+4.  Optional: Create a `PolicyGenerator` CR for any common configuration CRs that apply to the entire fleet of clusters.
 
-2.  Optional: Create a `PolicyGenerator` CR for any common configuration CRs that apply to the entire fleet of clusters.
-
-    1.  Select the appropriate example for your CR from the `out/argocd/example/acmpolicygenerator/` folder, for example, `acm-common-ranGen.yaml`.
+    1.  Select the appropriate example for your CR from the `out/argocd/example/acmpolicygenerator/` folder, for example, `ran-common.yaml`.
 
     2.  Change the content in the example file to match the required configuration.
 
-3.  Optional: Create a `PolicyGenerator` CR for any group configuration CRs that apply to the certain groups of clusters in the fleet.
+5.  Optional: Create a `PolicyGenerator` CR for any group configuration CRs that apply to the certain groups of clusters in the fleet.
 
     Ensure that the content of the overlaid spec files matches your required end state. As a reference, the `out/source-crs` directory contains the full list of source-crs available to be included and overlaid by your PolicyGenerator templates.
 
@@ -430,13 +428,13 @@ Use the following procedure to customize the policies that get applied to the ma
 
     </div>
 
-    1.  Select the appropriate example for your CR from the `out/argocd/example/acmpolicygenerator/` folder, for example, `acm-group-du-sno-ranGen.yaml`.
+    1.  Select the appropriate example for your CR from the `out/argocd/example/acmpolicygenerator/` folder, for example, `ran-group-du-sno-templated.yaml`.
 
     2.  Change the content in the example file to match the required configuration.
 
-4.  Optional. Create a validator inform policy `PolicyGenerator` CR to signal when the GitOps ZTP installation and configuration of the deployed cluster is complete. For more information, see "Creating a validator inform policy".
+6.  Optional. Create a validator inform policy `PolicyGenerator` CR to signal when the GitOps ZTP installation and configuration of the deployed cluster is complete. For more information, see "Creating a validator inform policy".
 
-5.  Define all the policy namespaces in a YAML file similar to the example `out/argocd/example/acmpolicygenerator//ns.yaml` file.
+7.  Define all the policy namespaces in a YAML file similar to the example `out/argocd/example/acmpolicygenerator//ns.yaml` file.
 
     <div class="important">
 
@@ -444,13 +442,15 @@ Use the following procedure to customize the policies that get applied to the ma
 
     </div>
 
-6.  Add the `PolicyGenerator` CRs and `Namespace` CR to the `kustomization.yaml` file in the generators section, similar to the example shown in `out/argocd/example/acmpolicygenerator/kustomization.yaml`.
+8.  Add the `PolicyGenerator` CRs and `Namespace` CR to the `kustomization.yaml` file in the generators section, similar to the example shown in `out/argocd/example/acmpolicygenerator/kustomization.yaml`.
 
-7.  Commit the `PolicyGenerator` CRs, `Namespace` CR, and associated `kustomization.yaml` file in your Git repository and push the changes.
+9.  Commit the `PolicyGenerator` CRs, `Namespace` CR, and associated `kustomization.yaml` file in your Git repository and push the changes.
 
     The ArgoCD pipeline detects the changes and begins the managed cluster deployment. You can push the changes to the `ClusterInstance` CR and the `PolicyGenerator` CR simultaneously.
 
 - [Signalling GitOps ZTP cluster deployment completion with validator inform policies](../../edge_computing/policygenerator_for_ztp/ztp-advanced-policygenerator-config.xml#ztp-creating-a-validator-inform-policy_ztp-advanced-policy-config)
+
+- [Using hub templates in PolicyGenerator or PolicyGenTemplate CRs](../../edge_computing/ztp-using-hub-cluster-templates.xml#ztp-using-hub-cluster-templates-pgt)
 
 # Monitoring managed cluster policy deployment progress
 
@@ -542,11 +542,9 @@ Instead of rebooting nodes after each individual change, you can apply all confi
 
 - You have deployed and configured TALM.
 
-1.  Generate the configuration policies by creating a `PolicyGenerator` custom resource (CR). You can use one of the following sample manifests:
+1.  Generate the configuration policies by creating a `PolicyGenerator` custom resource (CR). You can use the following sample manifest:
 
-    - `out/argocd/example/acmpolicygenerator/acm-example-sno-reboot`
-
-    - `out/argocd/example/acmpolicygenerator/acm-example-multinode-reboot`
+    - `out/argocd/example/acmpolicygenerator/ran-example-reboot.yaml`
 
 2.  Update the `policyDefaults.placement.labelSelector` field in the `PolicyGenerator` CR to target the clusters that you want to reboot. Modify other fields as necessary for your use case.
 
@@ -811,7 +809,7 @@ With the `complianceType` field to `mustonlyhave`, the policy ensures that the C
       enableOperatorWebhook: true
     ```
 
-2.  Change the `complianceType` of the affected policies to `mustonlyhave` in the `acm-group-du-sno-ranGen.yaml` file.
+2.  Change the `complianceType` of the affected policies to `mustonlyhave` in the `ran-group-du-sno-templated.yaml` file.
 
     <div class="formalpara-title">
 

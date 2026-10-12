@@ -703,7 +703,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><pre><code>platform:
   aws:
     userProvisionedDNS:</code></pre></td>
-<td style="text-align: left;"><p>Enables user-provisioned DNS instead of the default cluster-provisioned DNS solution. If you use this feature, you must provide your own DNS solution that includes records for <code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code> and <code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code>. <code>userProvisionedDNS</code> is a Technology Preview feature.</p>
+<td style="text-align: left;"><p>Enables user-provisioned DNS instead of the default cluster-provisioned DNS solution. If you use this feature, you must provide your own DNS solution that includes records for <code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code> and <code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code>.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default value is <code>Disabled</code>.</p></td>
 </tr>
 <tr class="even">

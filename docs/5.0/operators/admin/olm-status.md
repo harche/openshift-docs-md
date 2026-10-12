@@ -22,7 +22,7 @@ Default OpenShift Container Platform cluster Operators are managed by the Cluste
 
 - [Refreshing failing subscriptions](../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-refresh-subs_olm-deleting-operators-from-a-cluster)
 
-# Viewing Operator subscription status by using the CLI
+# View Operator subscription status by using the CLI
 
 You can view Operator subscription status by using the CLI.
 
@@ -73,7 +73,7 @@ You can view Operator subscription status by using the CLI.
 
     </div>
 
-# Viewing Operator catalog source status by using the CLI
+# View Operator catalog source status by using the CLI
 
 You can view the status of an Operator catalog source by using the CLI.
 

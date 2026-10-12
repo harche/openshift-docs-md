@@ -38,9 +38,9 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
     ``` terminal
     NAME                    STATUS   ROLES    AGE   VERSION
-    control-plane-node-0    Ready    master   75m   v1.35.4
-    control-plane-node-1    Ready    master   75m   v1.35.4
-    control-plane-node-2    Ready    master   75m   v1.35.4
+    control-plane-node-0    Ready    master   75m   v1.36.3
+    control-plane-node-1    Ready    master   75m   v1.36.3
+    control-plane-node-2    Ready    master   75m   v1.36.3
     ```
 
     Note the names of your control plane nodes.
@@ -101,9 +101,9 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
     ``` terminal
     NAME              STATUS   ROLES    AGE   VERSION
-    compute-node-0    Ready    worker   30m   v1.35.4
-    compute-node-1    Ready    worker   30m   v1.35.4
-    compute-node-2    Ready    worker   30m   v1.35.4
+    compute-node-0    Ready    worker   30m   v1.36.3
+    compute-node-1    Ready    worker   30m   v1.36.3
+    compute-node-2    Ready    worker   30m   v1.36.3
     ```
 
     Note the names of your compute nodes.
@@ -178,6 +178,8 @@ You can update the virtual hardware for templates on vSphere.
 
 # Scheduled updates for virtual hardware on vSphere
 
-Virtual hardware updates can be scheduled to occur when a virtual machine is powered on or rebooted. You can schedule your virtual hardware updates exclusively in vCenter by following [Schedule a Compatibility Upgrade for a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-96C06236-C271-4CFE-857E-22D1FDEECC95.html) (VMware vSphere documentation).
+Virtual hardware updates can be scheduled to occur when a virtual machine is powered on or rebooted. You can schedule your virtual hardware updates exclusively in vCenter by following "Schedule a Compatibility Upgrade for a Virtual Machine" in the VMware vSphere documentation.
 
 When scheduling an update prior to performing an update of OpenShift Container Platform, the virtual hardware update occurs when the nodes are rebooted during the course of the OpenShift Container Platform update.
+
+- [Schedule a Compatibility Upgrade for a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-96C06236-C271-4CFE-857E-22D1FDEECC95.html)

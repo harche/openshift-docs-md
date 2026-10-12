@@ -1,28 +1,8 @@
 After preparing your environment, install the virtualized control plane cluster by using your preferred installation method. The agent-based installer and GitOps Zero Touch Provisioning (ZTP) are the recommended methods for virtualized control plane deployments.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Deploying a virtualized control plane with the Agent-based installer
 
 Use the Agent-based Installer to deploy a virtualized control plane cluster. This method generates a bootable ISO containing all required configuration. You must mount the ISO to both the virtualized control plane nodes, by using KubeVirt Redfish, and the baremetal worker nodes, by using the Redfish API.
-
-<div class="important">
-
-When configuring the Agent-based Installer, the `platform` parameter in `install-config.yaml` determines the level of hardware management:
-
-`platform: baremetal`
-Enables full hardware awareness. The cluster installs the Bare Metal Operator, and uses it to manage node lifecycle, power states, and automatic remediation through the Redfish API.
-
-`platform: none`
-Treats infrastructure as generic compute. The cluster cannot control power states or boot orders. Requires external DNS and load balancing.
-
-</div>
 
 - KubeVirt Redfish is installed and configured on the hosting cluster.
 
@@ -73,7 +53,7 @@ Treats infrastructure as generic compute. The cluster cannot control power state
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-0
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-0
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -96,7 +76,7 @@ Treats infrastructure as generic compute. The cluster cannot control power state
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-1
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-1
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -119,7 +99,7 @@ Treats infrastructure as generic compute. The cluster cannot control power state
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-2
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-2
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -142,7 +122,7 @@ Treats infrastructure as generic compute. The cluster cannot control power state
           rootDeviceHints:
             deviceName: /dev/nvme0n1
           bmc:
-            address: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+            address: redfish-virtualmedia+https://<worker_0_bmc_ip>/redfish/v1/Systems/System.Embedded.1
             username: <bmc_username>
             password: <bmc_password>
             disableCertificateVerification: false
@@ -165,7 +145,7 @@ Treats infrastructure as generic compute. The cluster cannot control power state
           rootDeviceHints:
             deviceName: /dev/nvme0n1
           bmc:
-            address: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+            address: redfish-virtualmedia+https://<worker_1_bmc_ip>/redfish/v1/Systems/System.Embedded.1
             username: <bmc_username>
             password: <bmc_password>
             disableCertificateVerification: false
@@ -187,27 +167,13 @@ Treats infrastructure as generic compute. The cluster cannot control power state
 
     where:
 
-    - `replicas` specifies the number of worker node replicas to match the number of baremetal worker hosts defined in the `hosts` section.
-
-    - `platform: baremetal` specifies full hardware lifecycle management. Set to `none` for infrastructure-agnostic installation.
-
-    - `provisioningNetwork: Disabled` specifies that the provisioning network is disabled for agent-based installations on virtual media. Nodes boot from the agent ISO, not PXE.
+    - `platform: baremetal` enables the installer to manage the control plane VMs through KubeVirt Redfish endpoints.
 
     - `apiVIPs` and `ingressVIPs` specifies the virtual IP addresses that must be allocated from the machine network. The `apiVIPs` must reside on the same L2 network segment as the control plane VMs, and the `ingressVIPs` must reside on the same L2 network segment as the worker nodes.
 
-    - `bootMACAddress` specifies the MAC address used for network boot. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
-
-    - `deviceName: /dev/vda` specifies the installation disk for virtualized control plane nodes.
+    - `bootMACAddress` must match the MAC address of the network interface on the corresponding control plane VM. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
 
     - `bmc.address` for control plane nodes specifies the KubeVirt Redfish route. The `<vm_namespace>.<vm_name>` format corresponds to the enhanced system ID convention configured in KubeVirt Redfish. Replace `<kubevirt_redfish_route>` with your route hostname and `<vm_namespace>` with the namespace containing your VMs.
-
-    - `disableCertificateVerification` specifies whether to skip TLS certificate validation. For production deployments, configure properly signed TLS certificates and set to `false`. Set to `true` only for lab or development environments.
-
-    - `networkConfig` specifies the host network configuration for each node. This example uses DHCP.
-
-    - `deviceName: /dev/nvme0n1` specifies the installation disk for baremetal worker nodes.
-
-    - `bmc.address` for worker nodes specifies the real Redfish endpoint of the physical server. Replace `<worker_bmc_ip>` with the BMC IP address.
 
 2.  Create an `agent-config.yaml` YAML file similar to the following example:
 
@@ -319,7 +285,7 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
       nodes:
         - hostName: master-0.my-vcp-cluster.example.com
           role: master
-          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-0
+          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-0
           bmcCredentialsName:
             name: master-0-bmc-secret
           bootMACAddress: 52:54:00:00:00:01
@@ -332,7 +298,7 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
               namespace: open-cluster-management
         - hostName: master-1.my-vcp-cluster.example.com
           role: master
-          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-1
+          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-1
           bmcCredentialsName:
             name: master-1-bmc-secret
           bootMACAddress: 52:54:00:00:00:02
@@ -345,7 +311,7 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
               namespace: open-cluster-management
         - hostName: master-2.my-vcp-cluster.example.com
           role: master
-          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-2
+          bmcAddress: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-2
           bmcCredentialsName:
             name: master-2-bmc-secret
           bootMACAddress: 52:54:00:00:00:03
@@ -358,7 +324,7 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
               namespace: open-cluster-management
         - hostName: worker-0.my-vcp-cluster.example.com
           role: worker
-          bmcAddress: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+          bmcAddress: redfish-virtualmedia+https://<worker_0_bmc_ip>/redfish/v1/Systems/System.Embedded.1
           bmcCredentialsName:
             name: worker-0-bmc-secret
           bootMACAddress: e4:43:4b:00:00:01
@@ -371,7 +337,7 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
               namespace: open-cluster-management
         - hostName: worker-1.my-vcp-cluster.example.com
           role: worker
-          bmcAddress: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+          bmcAddress: redfish-virtualmedia+https://<worker_1_bmc_ip>/redfish/v1/Systems/System.Embedded.1
           bmcCredentialsName:
             name: worker-1-bmc-secret
           bootMACAddress: e4:43:4b:00:00:02
@@ -386,19 +352,13 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
 
     where:
 
+    - `platformType: BareMetal` enables the installer to manage the control plane VMs through KubeVirt Redfish endpoints.
+
     - `apiVIPs` and `ingressVIPs` specifies the virtual IP addresses that must be allocated from the machine network. The `apiVIPs` must reside on the same L2 network segment as the control plane VMs, and the `ingressVIPs` must reside on the same L2 network segment as the worker nodes.
 
     - `bmcAddress` for control plane nodes specifies the KubeVirt Redfish route. The `<vm_namespace>.<vm_name>` format corresponds to the enhanced system ID convention configured in KubeVirt Redfish. Replace `<kubevirt_redfish_route>` with your route hostname and `<vm_namespace>` with the namespace containing your VMs.
 
-    - `bmcCredentialsName` specifies a reference to a `Secret` containing BMC credentials.
-
-    - `bootMACAddress` specifies the MAC address used for network boot. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
-
-    - `deviceName: /dev/vda` specifies the installation disk for virtualized control plane nodes.
-
-    - `bmcAddress` for worker nodes specifies the real Redfish endpoint of the physical server. Replace `<worker_bmc_ip>` with the BMC IP address.
-
-    - `deviceName: /dev/nvme0n1` specifies the installation disk for baremetal worker nodes.
+    - `bootMACAddress` must match the MAC address assigned to the network interface on the corresponding control plane VM. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
 
 3.  Commit the manifests to your Git repository.
 
@@ -419,7 +379,7 @@ Use installer-provisioned infrastructure to deploy a virtualized control plane c
 
 <div class="note">
 
-Installer-provisioned infrastructure for virtualized control planes requires a provisioning network or a RHEL 9 provisioner node. Verify Installer-provisioned infrastructure support for virtualized control plane deployments with your Red Hat representative, as this combination may have additional requirements.
+Installer-provisioned infrastructure for virtualized control planes requires a provisioning network or a RHEL 9 provisioner node. Verify Installer-provisioned infrastructure support for virtualized control plane deployments with your Red Hat representative, as this combination may have additional requirements.
 
 </div>
 
@@ -476,7 +436,7 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-0
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-0
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -499,7 +459,7 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-1
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-1
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -522,7 +482,7 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
           rootDeviceHints:
             deviceName: /dev/vda
           bmc:
-            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.master-2
+            address: redfish-virtualmedia+https://<kubevirt_redfish_route>/redfish/v1/Systems/<vm_namespace>.control-plane-2
             username: admin
             password: <password>
             disableCertificateVerification: false
@@ -545,7 +505,7 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
           rootDeviceHints:
             deviceName: /dev/nvme0n1
           bmc:
-            address: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+            address: redfish-virtualmedia+https://<worker_0_bmc_ip>/redfish/v1/Systems/System.Embedded.1
             username: <bmc_username>
             password: <bmc_password>
             disableCertificateVerification: false
@@ -568,7 +528,7 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
           rootDeviceHints:
             deviceName: /dev/nvme0n1
           bmc:
-            address: redfish-virtualmedia+https://<worker_bmc_ip>/redfish/v1/Systems/System.Embedded.1
+            address: redfish-virtualmedia+https://<worker_1_bmc_ip>/redfish/v1/Systems/System.Embedded.1
             username: <bmc_username>
             password: <bmc_password>
             disableCertificateVerification: false
@@ -590,25 +550,13 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
 
     where:
 
-    - `replicas` specifies the number of worker node replicas to match the number of baremetal worker hosts defined in the `hosts` section.
+    - `platform: baremetal` enables the installer to manage the control plane VMs through KubeVirt Redfish endpoints.
 
     - `apiVIPs` and `ingressVIPs` specifies the virtual IP addresses that must be allocated from the machine network. The `apiVIPs` must reside on the same L2 network segment as the control plane VMs, and the `ingressVIPs` must reside on the same L2 network segment as the worker nodes.
 
-    - `provisioningNetwork: Disabled` specifies that the provisioning network is disabled when using virtual media.
-
-    - `bootMACAddress` specifies the MAC address used for network boot. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
-
-    - `deviceName: /dev/vda` specifies the installation disk for virtualized control plane nodes.
+    - `bootMACAddress` must match the MAC address of the network interface on the corresponding control plane VM. When using DHCP, ensure this MAC has a reserved IP address configured in your DHCP server.
 
     - `bmc.address` for control plane nodes specifies the KubeVirt Redfish route. The `<vm_namespace>.<vm_name>` format corresponds to the enhanced system ID convention configured in KubeVirt Redfish. Replace `<kubevirt_redfish_route>` with your route hostname and `<vm_namespace>` with the namespace containing your VMs.
-
-    - `disableCertificateVerification` specifies whether to skip TLS certificate validation. For production deployments, configure properly signed TLS certificates and set to `false`. Set to `true` only for lab or development environments.
-
-    - `networkConfig` specifies the host network configuration for each node. This example uses DHCP.
-
-    - `deviceName: /dev/nvme0n1` specifies the installation disk for baremetal worker nodes.
-
-    - `bmc.address` for worker nodes specifies the real Redfish endpoint of the physical server. Replace `<worker_bmc_ip>` with the BMC IP address.
 
 2.  Run the installation by running the following command:
 

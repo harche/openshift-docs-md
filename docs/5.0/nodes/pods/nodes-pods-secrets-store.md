@@ -2,7 +2,7 @@ As an alternative to using `secret` objects to provide sensitive information, su
 
 # About the Secrets Store CSI Driver Operator
 
-To store and manage your secrets securely, configure the Secrets Store CSI Driver Operator to mount secrets from an external secret management system, such as Azure Key Vault, by using a provider plugin. Applications can then use the secret, but the secret does not persist on the system after pod termination.
+The Secrets Store CSI Driver Operator mounts secrets from external secret management systems, such as Azure Key Vault, into pods by using a provider plugin. The secrets do not persist on the system after pod termination.
 
 Secret objects are stored with Base64 encoding. etcd provides encryption at rest for these secrets, but when secrets are retrieved, they are decrypted and presented to the user. If role-based access control is not configured properly on your cluster, anyone with API or etcd access can retrieve or modify a secret. Additionally, anyone who is authorized to create a pod in a namespace can use that access to read any secret in that namespace.
 
@@ -20,7 +20,7 @@ Familiarity with persistent storage and configuring CSI volumes is recommended w
 
 ## Secrets store providers
 
-You can store sensitive information needed by your applications in an external secret management system and use the Secrets Store CSI Driver Operator to mount the secret content as a pod volume. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+You can store sensitive application data in an external secret management system and use the Secrets Store CSI Driver Operator to mount the secret content as a pod volume.
 
 The Secrets Store CSI Driver Operator has been tested with the following secrets store providers:
 
@@ -121,7 +121,7 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 ## Mount secrets from AWS Secrets Manager
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secrets Manager external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secrets Manager to a CSI volume in OpenShift Container Platform. An external secret store can be more secure than `secret` objects.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -481,7 +481,7 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
 
 ## Mount secrets from AWS Systems Manager Parameter Store
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Systems Manager Parameter Store external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Systems Manager Parameter Store to a CSI volume in OpenShift Container Platform. An external secret store can be more secure than `secret` objects.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 

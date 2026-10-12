@@ -398,7 +398,7 @@ The following procedure adds a default cluster-wide node selector.
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.35.4
+          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.36.3
           ```
 
     - Add labels directly to a node:
@@ -451,7 +451,7 @@ The following procedure adds a default cluster-wide node selector.
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.35.4
+          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.36.3
           ```
 
 # Improving cluster stability in high latency environments using worker latency profiles
@@ -1684,7 +1684,7 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
 
       ``` terminal
       NAME                          STATUS  ROLES         AGE   VERSION
-      ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.35.4
+      ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.36.3
       ```
 
       Because the role list includes `infra`, the pod is running on the correct node.
@@ -1743,7 +1743,9 @@ Deploying the registry pod on an infrastructure node can reduce your OpenShift C
 
 ## Move the monitoring solution
 
-Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes. The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
+Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes.
+
+The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
@@ -2157,8 +2159,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `AutomatedEtcdBackup`
 
   - `AWSClusterHostedDNS`
-
-  - `AWSClusterHostedDNSInstall`
 
   - `AWSDedicatedHosts`
 

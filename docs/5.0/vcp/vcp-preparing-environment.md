@@ -1,13 +1,5 @@
 Prepare your hosting cluster environment before deploying a virtualized control plane cluster. This includes installing and configuring KubeVirt Redfish and creating the control plane VMs.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Install KubeVirt Redfish
 
 Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a series of custom resources (CRs). These CRs create the namespace, permissions, configuration, and deployment required to expose VMs through the Redfish API.
@@ -194,7 +186,7 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
         Specifies the username and password required to validate requests to the Redfish API. Replace `<bcrypt_password>` with the `bcrypt` hashed password that you generated.
 
         `datavolume`
-        Specifies storage for VirtualMedia operations. Replace `<storage_class>` with a storage class available on your cluster, such as `lvms-vg1` or `ocs-storagecluster-ceph-rbd-virtualization`. For more information about storage options, see *Storage requirements* in "Prerequisites for virtualized control planes".
+        Specifies storage for virtual media operations. KubeVirt Redfish uses this storage to create a data volume, download the installation ISO into that volume, and attach the volume to the VM as virtual media. Replace `<storage_class>` with a storage class that points to a shared storage location accessible from all nodes in the hosting cluster. Do not use a node-local storage class such as LVM Storage for this volume. For more information about storage options, see *Storage requirements* in "Prerequisites for virtualized control planes".
 
 10. Apply the resource by running the following command:
 
@@ -405,36 +397,56 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
 - The hosting cluster has a network configured to provide Layer 2 connectivity between VMs.
 
-1.  Enable the `RebootPolicy` feature gate on the hosting cluster by running the following command:
+- Logical Volume Manager (LVM) Storage is installed on the hosting cluster.
 
-    ``` terminal
-    $ oc annotate --overwrite -n openshift-cnv hyperconverged kubevirt-hyperconverged \
-        kubevirt.kubevirt.io/jsonpatch='[{"op":"add","path":"/spec/configuration/developerConfiguration/featureGates/-","value":"RebootPolicy"}]'
-    ```
-
-    <div class="note">
-
-    The `RebootPolicy` feature gate enables the `rebootPolicy` field in `VirtualMachine` specifications. This configuration is required when using KubeVirt Redfish for cluster installation. The feature gate is enabled through an annotation on the `HyperConverged` resource, which propagates the configuration to the underlying `KubeVirt` CR.
-
-    </div>
-
-2.  Create a `VirtualMachine` CR for each control plane node by creating a YAML file with content such as the following example:
+1.  Create a `VirtualMachine` CR for each control plane node by creating a YAML file with content such as the following example:
 
     ``` yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
-      name: master-0
+      name: control-plane-0
       namespace: <vm_namespace>
       labels:
         redfish-enabled: "true"
+        vcp-cluster: <cluster_name>
     spec:
       runStrategy: Halted
+      dataVolumeTemplates:
+        - metadata:
+            name: control-plane-0-disk
+          spec:
+            source:
+              blank: {}
+            storage:
+              accessModes:
+                - ReadWriteOnce
+              volumeMode: Block
+              resources:
+                requests:
+                  storage: 120Gi
+              storageClassName: <storage_class>
       template:
         metadata:
           labels:
             redfish-enabled: "true"
+            vcp-cluster: <cluster_name>
         spec:
+          evictionStrategy: None
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      vcp-cluster: <cluster_name>
+                  topologyKey: kubernetes.io/hostname
+          readinessProbe:
+            guestAgentPing: {}
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 3
           domain:
             rebootPolicy: Terminate
             cpu:
@@ -451,6 +463,7 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
                     bus: virtio
               interfaces:
                 - name: default
+                  macAddress: "52:54:00:00:00:01"
                   bridge: {}
           networks:
             - name: default
@@ -459,12 +472,12 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
           volumes:
             - name: rootdisk
               dataVolume:
-                name: master-0-disk
+                name: control-plane-0-disk
             - name: cloudinitdisk
               cloudInitNoCloud:
                 userData: |
                   #cloud-config
-                  hostname: master-0
+                  hostname: control-plane-0
                   user: core
     ```
 
@@ -472,57 +485,102 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
     - `<vm_namespace>` specifies the namespace for the VMs. Must match the namespace specified in the KubeVirt Redfish chassis configuration.
 
-    - `redfish-enabled: "true"` specifies the label that must match the `vm_selector` labels in the KubeVirt Redfish configuration so the VM is exposed through the Redfish API.
+    - `redfish-enabled: "true"` is an example label. The label must match the `vm_selector` labels in the KubeVirt Redfish configuration so the VM is exposed through the Redfish API. You can use any label key and value, as long as both the VM and the KubeVirt Redfish configuration use the same label.
+
+    - `vcp-cluster: <cluster_name>` identifies which target cluster a VM belongs to. Replace `<cluster_name>` with the name of your target cluster. This label is used by anti-affinity rules and the pod disruption budget to scope operations to a single target cluster. This is important when a hosting cluster runs VMs for multiple target clusters.
+
+    - `evictionStrategy: None` prevents the hosting cluster from attempting to live-migrate control plane VMs during node drain operations. Live migration is not supported for virtualized control plane VMs.
+
+    - `affinity.podAntiAffinity` distributes control plane VMs across different physical nodes so that a single node failure affects only one VM. The label selector uses the `vcp-cluster` label to scope anti-affinity to VMs belonging to the same target cluster.
+
+    - `readinessProbe.guestAgentPing` verifies that the QEMU guest agent inside the VM is responsive. The hosting cluster uses this probe to determine whether the VM is healthy before allowing operations that affect other VMs.
 
     - `runStrategy: Halted` specifies that VMs must be powered off initially. The installation powers them on by using the Redfish API.
 
     - `rebootPolicy: Terminate` specifies the reboot behavior required for Redfish API boot override operations. Ensures the VM terminates cleanly when boot media changes.
 
-    - `cores: 8` and `guest: 16Gi` specify the minimum recommended resources for control plane nodes.
+      <div class="note">
 
-    - `<network_attachment_definition>` specifies the name of a `NetworkAttachmentDefinition` configured on your hosting cluster. All control plane VMs must share the same L2 network segment. Common options include localnet, Linux bridge, or OVN Layer 2 networks.
+      The `RebootPolicy` feature gate enables the `rebootPolicy` field in `VirtualMachine` CR specifications. In OpenShift Virtualization 5.0, this feature gate is enabled by default.
 
-      <div class="important">
-
-      For production deployments, configure anti-affinity rules to ensure control plane VMs are distributed across different physical nodes. This prevents a single node failure from affecting multiple control plane VMs simultaneously. Add pod anti-affinity rules or topology spread constraints to the VM specification based on your environment requirements.
+      The `rebootPolicy: Terminate` configuration is required when deploying a virtualized control plane cluster.
 
       </div>
 
-3.  Apply the resource by running the following command:
+    - `cores: 8` and `guest: 16Gi` specify the minimum recommended resources for control plane nodes.
+
+    - `dataVolumeTemplates` creates a blank root disk for the VM. The `120Gi` value matches the control plane VM storage requirements.
+
+    - `<storage_class>` specifies the LVM Storage `StorageClass` on the hosting cluster, for example `lvms-vg1`.
+
+    - `macAddress` specifies a fixed MAC address for the VM network interface. Use this same address for the `bootMACAddress` field in the installation configuration. Assign a unique MAC address to each control plane VM.
+
+    - `<network_attachment_definition>` specifies the name of a `NetworkAttachmentDefinition` configured on your hosting cluster. All control plane VMs must share the same L2 network segment. Common options include localnet, Linux bridge, or OVN Layer 2 networks.
+
+2.  Apply the resource by running the following command:
 
     ``` terminal
-    $ oc apply -f master-0.yaml
+    $ oc apply -f control-plane-0.yaml
     ```
 
-If required, create further VMs for `master-1` and `master-2`, for example.
+    Create further VMs for `control-plane-1` and `control-plane-2` using the same specification, adjusting the `metadata.name`, `dataVolumeTemplates[].metadata.name`, `macAddress`, and cloud-init `hostname` for each VM.
 
-- Verify that the VMs are created and powered off by running the following command:
+3.  Create a `PodDisruptionBudget` to prevent the hosting cluster from evicting more than one control plane VM at a time:
 
-  ``` terminal
-  $ oc get vm -n <vm_namespace>
-  ```
+    ``` yaml
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: vcp-control-plane-pdb
+      namespace: <vm_namespace>
+    spec:
+      minAvailable: 2
+      selector:
+        matchLabels:
+          vcp-cluster: <cluster_name>
+    ```
 
-- `vm_namespace` is the namespace of the VMs.
+    where:
 
-  <div class="formalpara-title">
+    - `minAvailable: 2` ensures that at least two control plane VMs remain running during node drain operations, which preserves `etcd` quorum. You must use `minAvailable` instead of `maxUnavailable` because the `VirtualMachineInstance` controller does not implement the Kubernetes scale subresource. A PDB with `maxUnavailable` cannot determine the expected pod count for VMs, which causes it to block all evictions.
 
-  **Example output**
+    - The label selector uses the `vcp-cluster` label to scope the budget to VMs belonging to the same target cluster.
 
-  </div>
+4.  Apply the resource by running the following command:
 
-  ``` terminal
-  NAME       AGE   STATUS    READY
-  master-0   1m    Stopped   False
-  master-1   1m    Stopped   False
-  master-2   1m    Stopped   False
-  ```
+    ``` terminal
+    $ oc apply -f vcp-control-plane-pdb.yaml
+    ```
 
-- Verify that KubeVirt Redfish can discover the VMs by querying the Redfish API:
+<!-- -->
 
-  ``` terminal
-  $ curl -sk -u "<username>:<password>" \
-      https://<kubevirt_redfish_route>/redfish/v1/Systems
-  ```
+1.  Verify that the VMs are created and powered off by running the following command:
+
+    ``` terminal
+    $ oc get vm -n <vm_namespace>
+    ```
+
+    - `<vm_namespace>` is the namespace of the VMs.
+
+      <div class="formalpara-title">
+
+      **Example output**
+
+      </div>
+
+      ``` terminal
+      NAME               AGE   STATUS    READY
+      control-plane-0    1m    Stopped   False
+      control-plane-1    1m    Stopped   False
+      control-plane-2    1m    Stopped   False
+      ```
+
+2.  Verify that KubeVirt Redfish can discover the VMs by querying the Redfish API:
+
+    ``` terminal
+    $ curl -sk -u "<username>:<password>" \
+        https://<kubevirt_redfish_route>/redfish/v1/Systems
+    ```
 
 # Additional resources
 

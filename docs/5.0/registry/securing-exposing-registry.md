@@ -2,7 +2,7 @@ By default, the OpenShift image registry is secured during cluster installation 
 
 # Expose a default registry manually
 
-Instead of logging in to the default OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
+You can gain external access to the default OpenShift image registry by exposing it with a route. External access lets you log in from outside the cluster and tag and push images to an existing project by using the route host.
 
 - The following prerequisites are automatically performed:
 
@@ -50,7 +50,7 @@ Instead of logging in to the default OpenShift image registry from within the cl
 
 # Expose a secure registry manually
 
-Instead of logging in to the OpenShift image registry from within the cluster, you can gain external access to the OpenShift image registry by exposing the registry with a route. With this external access, you can log in to the registry from outside the cluster by using the route address. You can then tag and push images to an existing project by using the route host.
+You can gain external access to the OpenShift image registry by exposing it with a route. External access lets you log in from outside the cluster and tag and push images to an existing project by using the route host.
 
 You can expose the route by using `DefaultRoute` parameter in the `configs.imageregistry.operator.openshift.io` resource or by using custom routes.
 

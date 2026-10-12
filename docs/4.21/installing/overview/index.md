@@ -157,7 +157,7 @@ If you do not use infrastructure that the installation program provisioned, you 
 
 - [Red Hat OpenShift Network Calculator](https://access.redhat.com/labs/ocpnc/)
 
-## Verifying node state after installation
+## Verify node state after installation
 
 The OpenShift Container Platform installation completes when the following installation health checks are successful:
 

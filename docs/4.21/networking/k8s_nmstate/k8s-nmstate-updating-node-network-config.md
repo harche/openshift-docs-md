@@ -1013,7 +1013,7 @@ Specifies a stable link in that if a policy changes the `route-table-id` paramet
 
 # Create an IP over InfiniBand interface on nodes
 
-On the OpenShift Container Platform web console, you can install a Red Hat certified third-party Operator, such as the NVIDIA Network Operator, that supports IP over InfiniBand (IPoIB) mode. Typically, you would use the third-party Operator with other vendor infrastructure to manage resources in an OpenShift Container Platform cluster.
+You can install a Red Hat certified third-party Operator, such as the NVIDIA Network Operator, that supports IP over InfiniBand (IPoIB) mode to manage InfiniBand resources in your OpenShift Container Platform cluster.
 
 To create an IPoIB interface on nodes in your cluster, you must define an InfiniBand (IPoIB) interface in a `NodeNetworkConfigurationPolicy` (NNCP) manifest file.
 

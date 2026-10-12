@@ -65,7 +65,9 @@ Ingress, or router, sharding should be used to serve more routes towards applica
 
 # Configuring Ingress Controller liveness, readiness, and startup probes
 
-As a cluster administrator, you can configure the timeout values for the kubelet liveness, readiness, and startup probes for router deployments that are managed by the OpenShift Container Platform Ingress Controller (router). The ability to set larger timeout values can reduce the risk of unnecessary and unwanted restarts.
+As a cluster administrator, you can configure the timeout values for the kubelet liveness, readiness, and startup probes for router deployments that are managed by the OpenShift Container Platform Ingress Controller (router).
+
+The ability to set larger timeout values can reduce the risk of unnecessary and unwanted restarts.
 
 The liveness and readiness probes of the router use the default timeout value of 1 second, which is too brief when networking or runtime performance is severely degraded. Probe timeouts can cause unwanted router restarts that interrupt application connections.
 

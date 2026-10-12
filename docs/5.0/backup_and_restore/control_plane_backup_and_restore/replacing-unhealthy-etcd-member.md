@@ -113,7 +113,7 @@ If the machine is not running or the node is not ready, you might expect either 
         </div>
 
         ``` terminal
-        ip-10-0-131-183.ec2.internal   NotReady   master   122m   v1.35.4
+        ip-10-0-131-183.ec2.internal   NotReady   master   122m   v1.36.3
         ```
 
         If the node is listed as `NotReady`, then the node is not ready.
@@ -138,9 +138,9 @@ If the machine is not running or the node is not ready, you might expect either 
 
         ``` terminal
         NAME                           STATUS   ROLES    AGE     VERSION
-        ip-10-0-131-183.ec2.internal   Ready    master   6h13m   v1.35.4
-        ip-10-0-164-97.ec2.internal    Ready    master   6h13m   v1.35.4
-        ip-10-0-154-204.ec2.internal   Ready    master   6h13m   v1.35.4
+        ip-10-0-131-183.ec2.internal   Ready    master   6h13m   v1.36.3
+        ip-10-0-164-97.ec2.internal    Ready    master   6h13m   v1.36.3
+        ip-10-0-154-204.ec2.internal   Ready    master   6h13m   v1.36.3
         ```
 
     2.  Check whether the status of an etcd pod is either `Error` or `CrashloopBackoff` by running the following command:
@@ -1275,10 +1275,10 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     ``` terminal
     NAME                     STATUS ROLES   AGE   VERSION
-    openshift-control-plane-0 Ready master 3h24m v1.35.4
-    openshift-control-plane-1 Ready master 3h24m v1.35.4
-    openshift-compute-0       Ready worker 176m v1.35.4
-    openshift-compute-1       Ready worker 176m v1.35.4
+    openshift-control-plane-0 Ready master 3h24m v1.36.3
+    openshift-control-plane-1 Ready master 3h24m v1.36.3
+    openshift-compute-0       Ready worker 176m v1.36.3
+    openshift-compute-1       Ready worker 176m v1.36.3
     ```
 
 10. Create the new `BareMetalHost` object and the secret to store the Baseboard Management Controller (BMC) credentials by running the following command:
@@ -1396,11 +1396,11 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
         ``` terminal
         NAME                     STATUS ROLES   AGE   VERSION
-        openshift-control-plane-0 Ready master 4h26m v1.35.4
-        openshift-control-plane-1 Ready master 4h26m v1.35.4
-        openshift-control-plane-2 Ready master 12m   v1.35.4
-        openshift-compute-0       Ready worker 3h58m v1.35.4
-        openshift-compute-1       Ready worker 3h58m v1.35.4
+        openshift-control-plane-0 Ready master 4h26m v1.36.3
+        openshift-control-plane-1 Ready master 4h26m v1.36.3
+        openshift-control-plane-2 Ready master 12m   v1.36.3
+        openshift-compute-0       Ready worker 3h58m v1.36.3
+        openshift-compute-1       Ready worker 3h58m v1.36.3
         ```
 
 12. Turn the quorum guard back on by running the following command:

@@ -498,8 +498,8 @@ You can add worker nodes to clusters by writing command-line commands against th
 
   ``` terminal
   NAME                           STATUS   ROLES           AGE   VERSION
-  control-plane-1.example.com    Ready    master,worker   56m   v1.35.4
-  compute-1.example.com          Ready    worker          11m   v1.35.4
+  control-plane-1.example.com    Ready    master,worker   56m   v1.36.3
+  compute-1.example.com          Ready    worker          11m   v1.36.3
   ```
 
 # Adding worker nodes to single-node OpenShift clusters manually
@@ -705,8 +705,8 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 
   ``` terminal
   NAME                           STATUS   ROLES           AGE   VERSION
-  control-plane-1.example.com    Ready    master,worker   56m   v1.35.4
-  compute-1.example.com          Ready    worker          11m   v1.35.4
+  control-plane-1.example.com    Ready    master,worker   56m   v1.36.3
+  compute-1.example.com          Ready    worker          11m   v1.36.3
   ```
 
 # Approve the certificate signing requests for your machines
@@ -729,9 +729,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -852,11 +852,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">

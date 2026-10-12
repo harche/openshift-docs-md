@@ -548,9 +548,7 @@ Ingress Controller sharding is useful when balancing incoming traffic load among
 
 ## Creating a route for Ingress Controller sharding
 
-You can use a route to host your application at a URL. Ingress Controller sharding helps balance incoming traffic load among a set of Ingress Controllers. Ingress Controller sharding can also isolate traffic to a specific Ingress Controller. For example, company A goes to one Ingress Controller and company B to another.
-
-The following procedure describes how to create a route for Ingress Controller sharding, using the `hello-openshift` application as an example.
+Ingress Controller sharding balances incoming traffic among a set of Ingress Controllers and can isolate traffic to a specific Ingress Controller. You create a route to direct traffic to the appropriate shard.
 
 - You installed the OpenShift CLI (`oc`).
 

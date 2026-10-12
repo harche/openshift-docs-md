@@ -108,7 +108,7 @@ To ensure traffic is routed to the correct application when multiple services sh
 
 ## Supported HTTPRoute match types
 
-Matches define conditions used for matching the rule against incoming HTTP requests. If no match is specified, then all HTTP requests are matched, depending on the hostname. Each match is independent, i.e. this rule will be matched if any single match of the type is satisfied. A rule may have up to 64 matches, but most rules don’t need to be this complex. You may combine multiple match types (path and headers, for example), all of which must be true in order for the HTTP request to match.
+Matches define conditions for matching rules against incoming HTTP requests. Each match is independent, meaning that any single satisfied match triggers the rule. You can combine multiple match types, all of which must be true for the request to match.
 
 You can configure the following match types:
 
@@ -210,7 +210,7 @@ Configuring these filters allows you to automatically redirect traffic, modify h
 
 ## Supported HTTPRoute filters
 
-Filters apply processing directions to the HTTP request, such as header modification or redirect to another URL. You can specify up to 16 filters in a rule. Filters may usually be combined for advanced filtering results, except for the `urlRewrite` and `requestRedirect` filters, which may not be combined.
+Filters apply processing directions to the HTTP request, such as header modification or redirect to another URL. You can specify up to 16 filters in a rule and combine most filter types except `urlRewrite` and `requestRedirect`.
 
 You can apply the following filter types to a rule:
 
@@ -350,7 +350,9 @@ To route traffic to your backends, you must define service destinations and traf
 
 ## HTTPRoute backendRef configuration
 
-BackendRefs are the service destinations of requests that meet your matches rules, and are composed of group, kind, name, namespace, port, and weight. Name and port are the only required fields and refer to the service name and the service port number Weight is relevant when there is more than one backendRef, and specifies the proportion of requests forwarded to that specific backendRef. Without a backendRef, the rule doesn’t do any request forwarding and may return an error.
+BackendRefs are the service destinations of requests that meet your matches rules, and are composed of group, kind, name, namespace, port, and weight.
+
+Name and port are the only required fields and refer to the service name and the service port number Weight is relevant when there is more than one backendRef, and specifies the proportion of requests forwarded to that specific backendRef. Without a backendRef, the rule doesn’t do any request forwarding and may return an error.
 
 This example shows a BackendRef where there is a single backend destination, a service named `<service_v1>`:
 
@@ -499,7 +501,7 @@ spec:
 
 # OpenShift Container Platform routes and HTTPRoutes comparison
 
-When you migrate from standard networking to the Gateway API, you can compare OpenShift Container Platform routes with `HTTPRoute` custom resources (CRs) to understand which features are supported and how your configuration must change.
+When you migrate from standard networking to Gateway API, you can compare OpenShift Container Platform routes with `HTTPRoute` custom resources (CRs) to understand which features are supported and how your configuration must change.
 
 While both resources handle ingress traffic, they have distinct feature sets and implementation differences.
 

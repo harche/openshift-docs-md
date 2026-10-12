@@ -965,21 +965,33 @@ ReadWriteOnce (RWO) and ReadWriteMany (RWX) volumes use recursive relabeling by 
 
 <div class="important">
 
-In a future OpenShift Container Platform version, RWO and RWX volumes will use **mount option by default**.
+RWO and RWX volumes using **mount option by default** is targeted for OpenShift Container Platform 5.1.
 
 </div>
 
-To assist you with the upcoming move to the mount option default, OpenShift Container Platform 4.20 reports SELinux-related conflicts when creating pods, and on running pods, to make you aware of potential conflicts, and to help you resolve them. For more information about this reporting, see the Red Hat Knowledgebase article "OpenShift reports SELinux-related conflicts when creating Pods".
+Some pods might not start when SELinux mount option behavior is applied.
 
-If you are unable to resolve the SELinux-related conflicts, you can proactively opt-out of the future move to mount option as default for selected pods or namespaces. To opt out, see "Opting out of the SELinux mount option default".
+To prepare for a future upgrade to 5.1, cluster administrators **must** do one of the following or the upgrade will be blocked:
 
-- [OpenShift reports SELinux-related conflicts when creating Pods (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7131398)
+- Fix your applications, so that the upgrade is safe.
+
+  OpenShift Container Platform reports SELinux-related conflicts when creating pods, and on running pods, to make you aware of potential conflicts, and to help you resolve them. For more information about this reporting, see the Red Hat Knowledgebase article "OpenShift reports alert SELinuxMountGAReadinessWorkloadsDetected and the cluster is not upgradeable". Also, for more information about testing your applications, see "Testing the RWO and RWX and SELinux mount option feature".
+
+- Opt-out from the new default behavior, per pod or namespace.
+
+  If you are unable to resolve the SELinux-related conflicts, you can proactively opt-out of the future move to mount option as default for selected pods or namespaces. To opt out, see "Opting out of the SELinux mount option default".
+
+<!-- -->
+
+- [OpenShift reports alert SELinuxMountGAReadinessWorkloadsDetected and the cluster is not upgradeable (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7146569)
+
+- [Testing the RWO and RWX and SELinux mount option feature](../storage/understanding-persistent-storage.xml#using_selinuxChangePolicy_testing-mountoption-rwo-rwx_understanding-persistent-storage)
 
 - [Opting out of the SELinux mount option default](../storage/understanding-persistent-storage.xml#using_selinuxChangePolicy_pod-opt-out_understanding-persistent-storage)
 
 ## Testing the RWO and RWX and SELinux mount option feature
 
-The SELinux mount option applies the correct security context during mount without recursive relabeling, reducing pod startup times on volumes with many files. In OpenShift Container Platform 4.21, you can evaluate the mount option feature for RWO and RWX volumes as a Technology Preview feature.
+The SELinux mount option applies the correct security context during mount without recursive relabeling, reducing pod startup times on volumes with many files. In OpenShift Container Platform 4.21, and later, you can evaluate the mount option feature for RWO and RWX volumes as a Technology Preview feature.
 
 <div class="important">
 
@@ -999,15 +1011,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-Carefully test your applications and observe how they are using storage. For more information, see the Red Hat Knowledgebase article "OpenShift reports SELinux-related conflicts when creating Pods", and consider opting out from using mount option if you are experiencing issues. For more information, see "Opting out of the SELinux mount option default".
+Carefully test your applications and observe how they are using storage. For more information, see the Red Hat Knowledgebase article "OpenShift reports alert SELinuxMountGAReadinessWorkloadsDetected and the cluster is not upgradeable", and consider opting out from using mount option if you are experiencing issues. For more information, see "Opting out of the SELinux mount option default".
 
-- [OpenShift reports SELinux-related conflicts when creating Pods (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7131398)
+- [OpenShift reports alert SELinuxMountGAReadinessWorkloadsDetected and the cluster is not upgradeable (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7146569)
 
 - [Opting out of the SELinux mount option default](../storage/understanding-persistent-storage.xml#using_selinuxChangePolicy_pod-opt-out_understanding-persistent-storage)
 
 ## Opting out of the SELinux mount option default
 
-If you want to opt out of the future move to mount option as default, you can affirmatively set the `seLinuxChangePolicy` parameter to `Recursive` at either the individual pod or namespace level.
+To opt out of the mount option as default, you can affirmatively set the `seLinuxChangePolicy` parameter to `Recursive` at either the individual pod or namespace level.
 
 ### Changing seLinuxChangePolicy at the namespace level
 

@@ -188,7 +188,7 @@ The SPIRE Agent operand exposes metrics by default on port `9402` at the `/metri
 
 # Configure metrics collection for the Operator by using a ServiceMonitor
 
-The Zero Trust Workload Identity Manager exposes metrics by default on port 8443 at the `/metrics` service endpoint. You can configure metrics collection for the Operator by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
+The Zero Trust Workload Identity Manager exposes metrics by default on port 8443 at the `/metrics` service endpoint. You can configure metrics collection by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics.
 
 The SPIRE Server operand exposes metrics by default on port `9402` at the `/metrics` endpoint. You can configure metrics collection for the SPIRE Server by creating a `ServiceMonitor` custom resource (CR) that enables the Prometheus Operator to collect custom metrics.
 

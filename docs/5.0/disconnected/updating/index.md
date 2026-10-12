@@ -20,7 +20,7 @@ For more information about performing a cluster update in a disconnected environ
 
 - [Updating a cluster in a disconnected environment without the OpenShift Update Service](../../disconnected/updating/disconnected-update.xml#updating-disconnected-cluster)
 
-# Uninstalling the OpenShift Update Service from a cluster
+# Uninstall the OpenShift Update Service from a cluster
 
 You can uninstall a local copy of the OpenShift Update Service (OSUS) from your OpenShift Container Platform cluster when you no longer need to manage updates locally:
 

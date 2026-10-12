@@ -218,7 +218,7 @@ The fields for the Ingress Node Firewall configuration object are described in t
 <td style="text-align: left;"><p><code>spec.ebpfProgramManagerMode</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specifies if the Node Ingress Firewall Operator uses the eBPF Manager Operator or not to manage eBPF programs. This capability is a Technology Preview feature.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p></td>
+<p>For more information about the support scope of Red Hat Technology Preview features, see "Technology Preview Features Support Scope".</p></td>
 </tr>
 </tbody>
 </table>
@@ -259,6 +259,8 @@ EOF
 The Operator consumes the CR object and creates an ingress node firewall daemon set on all the nodes that match the `nodeSelector`.
 
 </div>
+
+- [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/)
 
 ## Ingress Node Firewall rules object
 
@@ -422,7 +424,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 Learn when to use eBPF Manager to load and manage Ingress Node Firewall programs.
 
-The Ingress Node Firewall uses [eBPF](https://www.kernel.org/doc/html/latest/bpf/index.html) programs to implement some of its key firewall functionality. By default these eBPF programs are loaded into the kernel using a mechanism specific to the Ingress Node Firewall. You can configure the Ingress Node Firewall Operator to use the eBPF Manager Operator for loading and managing these programs instead.
+The Ingress Node Firewall uses "eBPF" programs to implement some of its key firewall functionality. By default these eBPF programs are loaded into the kernel using a mechanism specific to the Ingress Node Firewall. You can configure the Ingress Node Firewall Operator to use the eBPF Manager Operator for loading and managing these programs instead.
 
 When this integration is enabled, the following limitations apply:
 
@@ -431,6 +433,10 @@ When this integration is enabled, the following limitations apply:
 - The Ingress Node Firewall Operator daemon set pods remain in the `ContainerCreating` state until the firewall rules are applied.
 
 - The Ingress Node Firewall Operator daemon set pods run as privileged.
+
+<!-- -->
+
+- [eBPF](https://www.kernel.org/doc/html/latest/bpf/index.html)
 
 # Configure Ingress Node Firewall Operator to use the eBPF Manager Operator
 

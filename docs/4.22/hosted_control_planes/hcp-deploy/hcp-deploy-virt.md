@@ -117,7 +117,9 @@ Ensure that you meet the firewall and port requirements so that ports can commun
 
 # Live migration for compute nodes
 
-While the management cluster for hosted cluster virtual machines (VMs) is undergoing updates or maintenance, the hosted cluster VMs can be automatically live migrated to prevent disrupting hosted cluster workloads. As a result, the management cluster can be updated without affecting the availability and operation of the KubeVirt platform hosted clusters.
+While the management cluster for hosted cluster virtual machines (VMs) is undergoing updates or maintenance, the hosted cluster VMs can be automatically live migrated to prevent disrupting hosted cluster workloads.
+
+As a result, the management cluster can be updated without affecting the availability and operation of the KubeVirt platform hosted clusters.
 
 <div class="important">
 

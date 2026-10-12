@@ -409,15 +409,19 @@ Minimum resource requirements
 
 <div class="note">
 
-In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- ppc64le architecture requires IBM® Power9 ISA
+- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+
+- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
 
 - s390x architecture requires IBM® z14 ISA
+
+If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
 
 For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
@@ -467,24 +471,11 @@ For example, your organization’s security policies might not allow the use of 
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
-<div class="important">
-
-User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 - Before you deploy your cluster, use a text editor to open the `install-config.yaml` file and add the following stanza:
 
   - To enable user-managed DNS:
 
     ``` yaml
-    featureSet: CustomNoUpgrade
-    featureGates: ["AWSClusterHostedDNSInstall=true"]
-
-    # ...
-
     platform:
       aws:
         userProvisionedDNS: Enabled
@@ -704,9 +695,7 @@ You can also limit subnet selection for a load balancer by using subnet roles. S
 
 ### Allocating API and Ingress load balancers to specific subnets on AWS
 
-You can control the network placement of OpenShift Container Platform load balancers on AWS, including load balancers for the Ingress Controller, by explicitly defining your subnets from the virtual private cloud (VPC). You can then assign the subnets specific roles directly within the `platform.aws.vpc.subnets` section of the `install-config.yaml` file.
-
-By using this method, you have granular control of subnets that are used for resources, such as the Ingress Controller and other cluster components.
+You can control the network placement of OpenShift Container Platform load balancers on AWS by defining subnets from the virtual private cloud (VPC) and assigning them roles in the `platform.aws.vpc.subnets` section of `install-config.yaml`.
 
 ### Specifying AWS subnets for OpenShift API and ingress load balancers at installation
 
@@ -1569,15 +1558,7 @@ When the cluster deployment completes successfully:
 
 # Provisioning your own DNS records
 
-Use your cluster name and base cluster domain to configure a CNAME record for the API service `api.<cluster_name>.<base_domain>.` with the API load balancer DNS name. Similarly, use the load balancer DNS name of the Ingress service to provision a CNAME record for the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
-
-<div class="important">
-
-User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+Use your cluster name and base cluster domain to configure a CNAME record for the API service `api.<cluster_name>.<base_domain>.` with the API load balancer DNS name, and provision a CNAME record for the Ingress hostname `*.apps.<cluster_name>.<base_domain>.` with the Ingress load balancer DNS name.
 
 - You have installed the AWS CLI.
 

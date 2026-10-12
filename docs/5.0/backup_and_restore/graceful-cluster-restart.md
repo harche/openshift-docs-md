@@ -62,9 +62,9 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
     ``` terminal
     NAME                           STATUS   ROLES                  AGE   VERSION
-    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   75m   v1.35.0
-    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   75m   v1.35.0
-    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   75m   v1.35.0
+    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   75m   v1.36.3
+    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   75m   v1.36.3
+    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   75m   v1.36.3
     ```
 
 5.  If the control plane nodes are not ready, then check whether there are any pending CSRs that must be approved.
@@ -127,9 +127,9 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
     ``` terminal
     NAME                           STATUS   ROLES    AGE   VERSION
-    ip-10-0-179-95.ec2.internal    Ready    worker   64m   v1.35.0
-    ip-10-0-182-134.ec2.internal   Ready    worker   64m   v1.35.0
-    ip-10-0-250-100.ec2.internal   Ready    worker   64m   v1.35.0
+    ip-10-0-179-95.ec2.internal    Ready    worker   64m   v1.36.3
+    ip-10-0-182-134.ec2.internal   Ready    worker   64m   v1.36.3
+    ip-10-0-250-100.ec2.internal   Ready    worker   64m   v1.36.3
     ```
 
 7.  If the compute nodes are not ready, then check whether there are any pending CSRs that must be approved.
@@ -233,12 +233,12 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
     ``` terminal
     NAME                           STATUS   ROLES                  AGE   VERSION
-    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   82m   v1.35.0
-    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   82m   v1.35.0
-    ip-10-0-179-95.ec2.internal    Ready    worker                 70m   v1.35.0
-    ip-10-0-182-134.ec2.internal   Ready    worker                 70m   v1.35.0
-    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.35.0
-    ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.35.0
+    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   82m   v1.36.3
+    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   82m   v1.36.3
+    ip-10-0-179-95.ec2.internal    Ready    worker                 70m   v1.36.3
+    ip-10-0-182-134.ec2.internal   Ready    worker                 70m   v1.36.3
+    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.36.3
+    ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.36.3
     ```
 
     If the cluster did not start properly, you might need to restore your cluster by using an etcd backup. For more information, see "Restoring to an earlier cluster state".

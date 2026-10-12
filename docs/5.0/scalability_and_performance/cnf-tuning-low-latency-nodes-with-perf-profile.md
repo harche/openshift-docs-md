@@ -260,6 +260,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
           --mcp-name string                   MCP name corresponding to the target machines (required)
           --must-gather-dir-path string       Must gather directory path (default "must-gather")
           --offlined-cpu-count int            Number of offlined CPUs
+          --ovs-dpdk-cpu-count int            Number of OVS-DPDK CPUs
           --per-pod-power-management          Enable Per Pod Power Management
           --power-consumption-mode string     The power consumption mode.  [Valid values: default, low-latency, ultra-low-latency] (default "default")
           --profile-name string               Name of the performance profile to be created (default "performance")
@@ -563,6 +564,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
           --mcp-name string                   MCP name corresponding to the target machines (required)
           --must-gather-dir-path string       Must gather directory path (default "must-gather")
           --offlined-cpu-count int            Number of offlined CPUs
+          --ovs-dpdk-cpu-count int            Number of OVS-DPDK CPUs
           --per-pod-power-management          Enable Per Pod Power Management
           --power-consumption-mode string     The power consumption mode.  [Valid values: default, low-latency, ultra-low-latency] (default "default")
           --profile-name string               Name of the performance profile to be created (default "performance")
@@ -767,6 +769,12 @@ Required Performance Profile Creator arguments
 </div></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>ovs-dpdk-cpu-count</code></p></td>
+<td style="text-align: left;"><p>Number of CPUs to reserve for OVS-DPDK PMD threads. When you specify this argument, the PPC tool populates <code>spec.cpu.ovsDpdk</code> in the generated performance profile with the specified number of CPUs.</p>
+<p>The PPC tool selects OVS-DPDK CPUs after reserved and offlined CPUs are allocated. The selected CPUs are excluded from the isolated CPU set. If Hyper-Threading is enabled, the tool allocates whole sibling groups, requiring an even count.</p>
+<p>Default: <code>0</code> (no OVS-DPDK CPUs reserved).</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>power-consumption-mode</code></p></td>
 <td style="text-align: left;"><p>The power consumption mode.</p>
 <p>Possible values:</p>
@@ -777,24 +785,24 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>default</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>per-pod-power-management</code></p></td>
 <td style="text-align: left;"><p>Enable per pod power management. You cannot use this argument if you configured <code>ultra-low-latency</code> as the power consumption mode.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>profile-name</code></p></td>
 <td style="text-align: left;"><p>Name of the performance profile to create.</p>
 <p>Default: <code>performance</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>split-reserved-cpus-across-numa</code></p></td>
 <td style="text-align: left;"><p>Split the reserved CPUs across NUMA nodes.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>topology-manager-policy</code></p></td>
 <td style="text-align: left;"><p>Kubelet Topology Manager policy of the performance profile to be created.</p>
 <p>Possible values:</p>
@@ -805,7 +813,7 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>restricted</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>user-level-networking</code></p></td>
 <td style="text-align: left;"><p>Run with user level networking (DPDK) enabled.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
@@ -823,6 +831,8 @@ Use the following reference performance profiles as the basis to develop your ow
 ## Performance profile template for clusters that use OVS-DPDK on OpenStack
 
 To maximize machine performance in a cluster that uses Open vSwitch with the Data Plane Development Kit (OVS-DPDK) on Red Hat OpenStack Platform (RHOSP), you can use a performance profile.
+
+You can create a performance profile manually using the template provided in this section, or you can use the Performance Profile Creator (PPC) tool with the `--ovs-dpdk-cpu-count` argument to automatically generate a profile. For more information about using the PPC tool, see "Creating a performance profile".
 
 You can use the following performance profile template to create a profile for your deployment.
 
@@ -850,6 +860,7 @@ spec:
     - intel_iommu=on
   cpu:
     isolated: <CPU_ISOLATED>
+    ovsDpdk: <CPU_OVS_DPDK> # Optional
     reserved: <CPU_RESERVED>
   hugepages:
     defaultHugepagesSize: 1G
@@ -864,7 +875,9 @@ spec:
     globallyDisableIrqLoadBalancing: true
 ```
 
-Insert values that are appropriate for your configuration for the `CPU_ISOLATED`, `CPU_RESERVED`, and `HUGEPAGES_COUNT` keys.
+Insert values that are appropriate for your configuration for the `CPU_ISOLATED`, `CPU_RESERVED`, `HUGEPAGES_COUNT`, and `CPU_OVS_DPDK` keys.
+
+Optional: You can specify CPUs to reserve for OVS-DPDK PMD threads in the `spec.cpu.ovsDpdk` field. For example, `"2-3"` to allocate CPUs 2 and 3. Ensure these CPUs are on the same NUMA node as the OVS-DPDK NICs.
 
 ## Telco RAN DU reference design performance profile
 
@@ -1086,6 +1099,8 @@ When the `realTime` workload hint flag is set to `true` in a performance profile
 For more information how combinations of power consumption and real-time settings impact latency, see "Understanding workload hints".
 
 - [Understanding workload hints](https://access.redhat.com/articles/7081587)
+
+- [Reserving CPUs for OVS-DPDK](../scalability_and_performance/cnf-reserving-cpus-for-ovs-dpdk.xml#cnf-reserving-cpus-for-ovs-dpdk)
 
 # Configure power saving for nodes that run colocated high and low priority workloads
 
@@ -1556,17 +1571,20 @@ The exact partitioning pattern to use depends on many factors like hardware, wor
 
 The decision regarding which specific CPUs should be used for reserved and isolated partitions requires detailed analysis and measurements. Factors like NUMA affinity of devices and memory play a role. The selection also depends on the workload architecture and the specific use case.
 
+To ensure that housekeeping tasks and workloads do not interfere with each other, specify two groups of CPUs in the `spec` section of the performance profile.
+
 <div class="important">
 
 The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
 
 </div>
 
-To ensure that housekeeping tasks and workloads do not interfere with each other, specify two groups of CPUs in the `spec` section of the performance profile.
+| Partition type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `reserved`     | Specifies the CPUs for cluster and operating system housekeeping duties. Kernel processes and operating system services are pinned to these CPUs. When workload partitioning is enabled, platform pods are also pinned to these CPUs. Threads in the `reserved` group are often busy. The kubelet does not place `Guaranteed` pods that request exclusive CPUs on these CPUs. Do not run latency-sensitive applications in the `reserved` group. |
+| `isolated`     | Specifies the CPUs for application container workloads. These CPUs have the lowest latency. Device interrupts can still be processed on this set unless you disable IRQ load balancing. The kubelet places `Guaranteed` pods that request exclusive CPUs on this set.                                                                                                                                                                            |
 
-- `isolated` - Specifies the CPUs for the application container workloads. These CPUs have the lowest latency. Processes in this group have no interruptions and can, for example, reach much higher DPDK zero packet loss bandwidth.
-
-- `reserved` - Specifies the CPUs for the cluster and operating system housekeeping duties. Threads in the `reserved` group are often busy. Do not run latency-sensitive applications in the `reserved` group. Latency-sensitive applications run in the `isolated` group.
+CPU partition types
 
 # Partition CPUs for infra and application containers
 

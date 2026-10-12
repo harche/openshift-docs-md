@@ -251,8 +251,8 @@ A two-node OpenShift cluster with fencing (TNF) running on a single node indefin
       ``` terminal
       oc get nodes
       NAME                                                   STATUS   ROLES                         AGE    VERSION
-      e920t-01.cluster1.metal-platform.eng.rdu2.redhat.com   Ready    control-plane,master,worker   5d1h   v1.35.4
-      e920t-02.cluster1.metal-platform.eng.rdu2.redhat.com   Ready    control-plane,master,worker   5d1h   v1.35.4
+      e920t-01.cluster1.metal-platform.eng.rdu2.redhat.com   Ready    control-plane,master,worker   5d1h   v1.36.3
+      e920t-02.cluster1.metal-platform.eng.rdu2.redhat.com   Ready    control-plane,master,worker   5d1h   v1.36.3
       ```
 
     - Verify that the etcd Operator no longer reports `Degraded=True` by running the following command:

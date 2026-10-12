@@ -1673,7 +1673,7 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
 
       ``` terminal
       NAME                          STATUS  ROLES         AGE   VERSION
-      ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.35.4
+      ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.36.3
       ```
 
       Because the role list includes `infra`, the pod is running on the correct node.
@@ -1732,7 +1732,9 @@ Deploying the registry pod on an infrastructure node can reduce your OpenShift C
 
 ## Move the monitoring solution
 
-Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes. The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
+Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes.
+
+The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
@@ -2054,15 +2056,15 @@ The following example shows that the Cluster Resource Override Operator pod is d
 
 ``` terminal
 NAME                                        STATUS   ROLES                  AGE   VERSION
-ip-10-0-14-183.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
-ip-10-0-2-39.us-west-2.compute.internal     Ready    worker                 58m   v1.35.4
-ip-10-0-20-140.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
-ip-10-0-23-244.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
-ip-10-0-77-153.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
-ip-10-0-99-108.us-west-2.compute.internal   Ready    worker                 24m   v1.35.4
-ip-10-0-24-233.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
-ip-10-0-88-109.us-west-2.compute.internal   Ready    worker                 24m   v1.35.4
-ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
+ip-10-0-14-183.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.36.3
+ip-10-0-2-39.us-west-2.compute.internal     Ready    worker                 58m   v1.36.3
+ip-10-0-20-140.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.36.3
+ip-10-0-23-244.us-west-2.compute.internal   Ready    infra                  55m   v1.36.3
+ip-10-0-77-153.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.36.3
+ip-10-0-99-108.us-west-2.compute.internal   Ready    worker                 24m   v1.36.3
+ip-10-0-24-233.us-west-2.compute.internal   Ready    infra                  55m   v1.36.3
+ip-10-0-88-109.us-west-2.compute.internal   Ready    worker                 24m   v1.36.3
+ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m   v1.36.3
 ```
 
 1.  Move the Cluster Resource Override Operator pod by adding a node selector to the `Subscription` custom resource (CR) for the Cluster Resource Override Operator.

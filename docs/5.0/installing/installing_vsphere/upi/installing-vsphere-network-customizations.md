@@ -500,7 +500,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
 ## Specifying multiple subnets for your network
 
-Before you install an OpenShift Container Platform cluster on a vSphere host, you can specify multiple subnets for a networking implementation so that the vSphere cloud controller manager (CCM) can select the appropriate subnet for a given networking situation. vSphere can use the subnet for managing pods and services on your cluster.
+Before you install an OpenShift Container Platform cluster on a vSphere host, you can specify multiple subnets so that the vSphere cloud controller manager (CCM) can select the appropriate subnet for managing pods and services.
 
 For this configuration, you must specify internal and external Classless Inter-Domain Routing (CIDR) implementations in the vSphere CCM configuration. Each CIDR implementation lists an IP address range that the CCM uses to decide what subnets interact with traffic from internal and external networks.
 
@@ -1563,7 +1563,7 @@ The configuration information provided through the Ignition config files is used
 
     ``` terminal
     INFO Waiting up to 20m0s for the Kubernetes API at https://api.test.example.com:6443...
-    INFO API v1.35.4 up
+    INFO API v1.36.3 up
     INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
@@ -1641,9 +1641,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -1764,11 +1764,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">
@@ -2052,7 +2052,7 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
 # Configuring vSphere DRS anti-affinity rules for control plane nodes
 
-vSphere Distributed Resource Scheduler (DRS) anti-affinity rules can be configured to support higher availability of OpenShift Container Platform Control Plane nodes. Anti-affinity rules ensure that the vSphere Virtual Machines for the OpenShift Container Platform Control Plane nodes are not scheduled to the same vSphere Host.
+vSphere Distributed Resource Scheduler (DRS) anti-affinity rules ensure that OpenShift Container Platform control plane node VMs are not scheduled to the same vSphere host, supporting higher availability.
 
 <div class="important">
 

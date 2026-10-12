@@ -330,9 +330,9 @@ The following options are available to you:
 
   If you set `identity.type` to `None` in the `install-config.yaml` file, you do not need to assign the `User Access Administrator` role to the service principal.
 
-  For more information about assigning roles, see the Azure documentation for [managing access to Azure resources using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+  For more information about assigning roles, see the Azure documentation for "managing access to Azure resources using the Azure portal".
 
-- If the security policies of your organization require a more restrictive set of permissions, you can create a [custom role](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles) with the necessary permissions.
+- If the security policies of your organization require a more restrictive set of permissions, you can create a "custom role" with the necessary permissions.
 
 The following permissions are required for creating an OpenShift Container Platform cluster on Microsoft Azure.
 
@@ -567,6 +567,18 @@ Required permissions for creating storage resources
 
 - `Microsoft.Storage/storageAccounts/write`
 
+<div class="important">
+
+The installation program creates the bootstrap ignition storage account with shared key access disabled, `allowSharedKeyAccess: false`, to align with security best practices from Microsoft.
+
+To provide this authorization, assign the `Storage Blob Data Contributor` role to the installing identity at the subscription or resource group scope. Without this role, installation fails during the bootstrap phase with an `AuthorizationPermissionMismatch` error.
+
+As a fallback, if you cannot grant the `Storage Blob Data Contributor` role, you can set `platform.azure.allowSharedKeyAccess` to `true` in the `install-config.yaml` file. This re-enables shared key authorization on the ignition storage account, allowing the existing management-plane permissions to complete the upload.
+
+Enabling shared key access allows any client with the storage account keys to access data without Azure Active Directory authentication; this approach weakens the access control posture of the storage account. Only enable shared key access when the data-plane role cannot be granted.
+
+</div>
+
 Optional permissions for creating a private storage endpoint for the image registry
 - `Microsoft.Network/privateEndpoints/write`
 
@@ -739,6 +751,12 @@ To install OpenShift Container Platform on Azure, you must scope the permissions
 You can scope all the permissions to your subscription when deleting an OpenShift Container Platform cluster.
 
 </div>
+
+- [Managing access to Azure resources using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
+
+- [Custom roles](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles)
+
+<!-- -->
 
 - [Managing access to Azure resources using the Azure portal (Azure documentation)](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
 

@@ -337,11 +337,11 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
 
     ``` terminal
     NAME               STATUS     ROLES                         AGE     VERSION
-    host-worker1       NotReady   worker                        68s     v1.35.6
-    host-worker2       NotReady   worker                        75s     v1.35.6
-    master-0           Ready      control-plane,master,worker   4d22h   v1.35.6
-    master-1           Ready      control-plane,master,worker   4d21h   v1.35.6
-    master-2           Ready      control-plane,master,worker   4d22h   v1.35.6
+    host-worker1       NotReady   worker                        68s     v1.36.3
+    host-worker2       NotReady   worker                        75s     v1.36.3
+    master-0           Ready      control-plane,master,worker   4d22h   v1.36.3
+    master-1           Ready      control-plane,master,worker   4d21h   v1.36.3
+    master-2           Ready      control-plane,master,worker   4d22h   v1.36.3
     ```
 
     <div class="note">
@@ -518,11 +518,11 @@ After the DPU provisioning process completes, you can verify that all worker nod
 
     ``` terminal
     NAME               STATUS   ROLES                         AGE     VERSION
-    host-worker1       Ready    worker                        57m     v1.35.6
-    host-worker2       Ready    worker                        57m     v1.35.6
-    master-0           Ready    control-plane,master,worker   4d23h   v1.35.6
-    master-1           Ready    control-plane,master,worker   4d22h   v1.35.6
-    master-2           Ready    control-plane,master,worker   4d23h   v1.35.6
+    host-worker1       Ready    worker                        57m     v1.36.3
+    host-worker2       Ready    worker                        57m     v1.36.3
+    master-0           Ready    control-plane,master,worker   4d23h   v1.36.3
+    master-1           Ready    control-plane,master,worker   4d22h   v1.36.3
+    master-2           Ready    control-plane,master,worker   4d23h   v1.36.3
     ```
 
 3.  Verify that SR-IOV virtual functions are registered as Kubernetes node resources on the worker nodes:

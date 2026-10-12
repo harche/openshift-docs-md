@@ -2,7 +2,7 @@ You can convert your OpenShift Container Platform cluster from a connected clust
 
 A disconnected cluster, also known as a restricted cluster, does not have an active connection to the internet. As such, you must mirror the contents of your registries and installation media. You can create this mirror registry on a host that can access both the internet and your closed network, or copy images to a device that you can move across network boundaries.
 
-# About the mirror registry
+# Mirror registry
 
 You must have access to the internet to obtain the necessary container images. Using an alternative registry means that you place the mirror registry on a mirror host that has access to both your network and the internet.
 
@@ -505,12 +505,12 @@ Before disconnecting the cluster from the network, ensure that your cluster is w
 
       ``` terminal
       NAME                                       STATUS   ROLES    AGE   VERSION
-      ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.35.4
-      ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.35.4
-      ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.35.4
-      ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.35.4
-      ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.35.4
-      ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.36.3
+      ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.36.3
+      ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.36.3
+      ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.36.3
+      ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.36.3
+      ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.36.3
       ```
 
 # Disconnect the cluster from the network

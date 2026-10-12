@@ -7,7 +7,7 @@ The Red Hat telco RAN DU 4.17 solution has been validated using the following Re
 | Component                                | Software version |
 |------------------------------------------|------------------|
 | OpenShift Container Platform             | 4.22             |
-| Cluster Logging Operator                 | 6.5              |
+| Cluster Logging Operator                 | 6.6              |
 | Local Storage Operator                   | 4.22             |
 | OpenShift API for Data Protection (OADP) | 1.6              |
 | PTP Operator                             | 4.22             |
@@ -17,11 +17,11 @@ The Red Hat telco RAN DU 4.17 solution has been validated using the following Re
 
 Telco RAN DU managed cluster validated software components
 
-- Cluster Logging Operator will be updated to 6.6 when the aligned Cluster Logging Operator version is released.
-
 # Recommended hub cluster specifications and managed cluster limits for GitOps ZTP
 
-With GitOps Zero Touch Provisioning (ZTP), you can manage thousands of clusters in geographically dispersed regions and networks. The Red Hat Performance and Scale lab successfully created and managed 3500 virtual single-node OpenShift clusters with a reduced DU profile from a single Red Hat Advanced Cluster Management (RHACM) hub cluster in a lab environment.
+With GitOps Zero Touch Provisioning (ZTP), you can manage thousands of clusters in geographically dispersed regions and networks.
+
+The Red Hat Performance and Scale lab successfully created and managed 3500 virtual single-node OpenShift clusters with a reduced DU profile from a single Red Hat Advanced Cluster Management (RHACM) hub cluster in a lab environment.
 
 In real-world situations, the scaling limits for the number of clusters that you can manage will vary depending on various factors affecting the hub cluster. For example:
 
@@ -212,7 +212,9 @@ The RHCOS images might not change with every release of OpenShift Container Plat
 
 # Enable the assisted service
 
-Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy OpenShift Container Platform clusters. The assisted service is deployed automatically when you enable the MultiClusterHub Operator on Red Hat Advanced Cluster Management (RHACM). After that, you need to configure the `Provisioning` resource to watch all namespaces and to update the `AgentServiceConfig` custom resource (CR) with references to the ISO and RootFS images that are hosted on the mirror registry HTTP server.
+Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy OpenShift Container Platform clusters. The assisted service is deployed automatically when you enable the MultiClusterHub Operator on RHACM.
+
+After enabling the MultiClusterHub Operator, configure the `Provisioning` resource to watch all namespaces and update the `AgentServiceConfig` CR with references to the ISO and RootFS images hosted on the mirror registry HTTP server.
 
 - You have installed the OpenShift CLI (`oc`).
 

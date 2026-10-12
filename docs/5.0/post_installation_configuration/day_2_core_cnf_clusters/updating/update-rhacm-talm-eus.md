@@ -245,9 +245,9 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 
     ``` terminal
     NAME                   STATUS   ROLES                  AGE   VERSION
-    master-0.example.com   Ready    control-plane,master   60d   v1.35.0
-    master-1.example.com   Ready    control-plane,master   60d   v1.35.0
-    master-2.example.com   Ready    control-plane,master   60d   v1.35.0
+    master-0.example.com   Ready    control-plane,master   60d   v1.36.3
+    master-1.example.com   Ready    control-plane,master   60d   v1.36.3
+    master-2.example.com   Ready    control-plane,master   60d   v1.36.3
     ```
 
     Control plane nodes must show the new kubelet version, 4.22. All Operators must be healthy before updating worker nodes.

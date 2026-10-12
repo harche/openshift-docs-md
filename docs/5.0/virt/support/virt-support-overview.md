@@ -30,9 +30,9 @@ You can submit a support case to Red Hat Support by using the Customer Support 
 
 # Creating a Jira issue
 
-To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
+To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
 
-1.  Access the RHIR.
+1.  Access the [RHIR](https://access.redhat.com/labs/rhir/?product=cnv).
 
 2.  In the list of all OpenShift Virtualization components, find the component for which you want to report an issue.
 
@@ -107,15 +107,50 @@ Monitor cluster and virtual machine (VM) health with the OpenShift Container Pla
 
 The OpenShift Container Platform web console displays resource usage, alerts, events, and trends for your cluster and for OpenShift Virtualization components and resources.
 
-| Page                                                                                                               | Description                                                    |
-|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| **Virtualization** → **VirtualMachines** → **Overview** page                                                       | Cluster details, status, alerts, inventory, and resource usage |
-| **Virtualization** → **VirtualMachines** → **Overview** → **Overview** tab                                         | OpenShift Virtualization resources, usage, alerts, and status  |
-| **Virtualization** → **Migrations** page                                                                           | Progress of live migrations                                    |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** tab                                                | CPU, memory, and storage usage summary                         |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
+<table>
+<caption>Web console pages for monitoring and troubleshooting</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Page</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Overview</strong> page</p></td>
+<td style="text-align: left;"><p>Cluster details, status, alerts, inventory, and resource usage</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Overview</strong> → <strong>Overview</strong> tab</p></td>
+<td style="text-align: left;"><p>OpenShift Virtualization resources, usage, alerts, and status</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>Migrations</strong> page</p></td>
+<td style="text-align: left;"><p>Progress of live migrations</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Virtual machines</strong> tab</p></td>
+<td style="text-align: left;"><p>CPU, memory, and storage usage summary</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Virtual machines</strong> → <strong>VirtualMachine details</strong> → <strong>Metrics</strong> tab</p></td>
+<td style="text-align: left;"><p>VM resource usage, storage, network, and migration</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Virtual machines</strong> → <strong>VirtualMachine details</strong> → <strong>Events</strong> tab</p></td>
+<td style="text-align: left;"><p>List of VM events</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><strong>Virtualization</strong> → <strong>VirtualMachines</strong> → <strong>Virtual machines</strong> → <strong>VirtualMachine details</strong> → <strong>Diagnostics</strong> tab</p></td>
+<td style="text-align: left;"><p>VM status conditions (<strong>Critical</strong>, <strong>Warning</strong>, or <strong>Healthy</strong>) and volume snapshot status</p>
+<p>If <strong>Critical</strong> or <strong>Warning</strong> conditions are present, the <strong>Diagnostics</strong> tab displays a badge with their number.</p></td>
+</tr>
+</tbody>
+</table>
 
 Web console pages for monitoring and troubleshooting
 
@@ -126,7 +161,5 @@ Web console pages for monitoring and troubleshooting
 - [Collecting data about your environment](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-data-about-your-environment_virt-collecting-virt-data)
 
 - [Using the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
-
-- [Red Hat Issue Router](https://access.redhat.com/labs/rhir/?product=cnv)
 
 - [Red Hat Jira account](https://redhat.atlassian.net/jira)

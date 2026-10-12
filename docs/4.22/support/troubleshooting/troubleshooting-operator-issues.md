@@ -32,7 +32,7 @@ Default OpenShift Container Platform cluster Operators are managed by the Cluste
 
 - [Catalog health requirements](../../operators/understanding/olm/olm-understanding-olm.xml#olm-cs-health_olm-understanding-olm)
 
-# Viewing Operator subscription status by using the CLI
+# View Operator subscription status by using the CLI
 
 You can view Operator subscription status by using the CLI.
 
@@ -83,7 +83,7 @@ You can view Operator subscription status by using the CLI.
 
     </div>
 
-# Viewing Operator catalog source status by using the CLI
+# View Operator catalog source status by using the CLI
 
 You can view the status of an Operator catalog source by using the CLI.
 
@@ -211,7 +211,7 @@ You can view the status of an Operator catalog source by using the CLI.
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 
-# Querying Operator pod status
+# Query Operator pod status
 
 You can list Operator pods within a cluster and their status. You can also collect a detailed Operator pod summary.
 
@@ -273,7 +273,7 @@ You can list Operator pods within a cluster and their status. You can also colle
 
     5.  Exit from the debug shell.
 
-# Gathering Operator logs
+# Gather Operator logs
 
 If you experience Operator issues, you can gather detailed diagnostic information from Operator pod logs.
 

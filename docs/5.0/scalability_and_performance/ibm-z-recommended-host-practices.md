@@ -10,7 +10,7 @@ Unless stated otherwise, the host practices apply to both z/VM and Red Hat Ente
 
 # Manage CPU overcommitment
 
-To optimize infrastructure sizing in a highly virtualized IBM Z environment, manage CPU overcommitment. By adopting this strategy, you can allocate more resources to virtual machines than are physically available at the hypervisor level. This capability requires that you plan carefully for specific workload dependencies.
+Manage CPU overcommitment to optimize infrastructure sizing in a virtualized IBM Z environment. This strategy allocates more resources to virtual machines than are physically available, but requires careful workload planning.
 
 Depending on your setup, consider the following best practices regarding CPU overcommitment:
 
@@ -127,7 +127,7 @@ Depending on your setup, consider these best practices:
 
 # Ensure high disk performance with HyperPAV on z/VM
 
-To improve I/O performance for Direct Access Storage Devices (DASD) disks in z/VM environments, configure HyperPAV alias devices. To increase throughput for both control plane nodes and compute nodes, add YAML configurations with full-pack minidisks to the Machine Config Operator (MCO) profiles for IBM Z clusters.
+To improve I/O performance for Direct Access Storage Devices (DASD) disks in z/VM, configure HyperPAV alias devices. To increase control plane and compute node throughput, add YAML configurations with full-pack minidisks to Machine Config Operator (MCO) profiles for IBM Z clusters.
 
 DASD and Extended Count Key Data (ECKD) devices are commonly used disk types in IBM Z® environments. In a typical OpenShift Container Platform setup in z/VM environments, DASD disks are commonly used to support the local storage for the nodes. You can set up HyperPAV alias devices to provide more throughput and overall better I/O performance for the DASD disks that support the z/VM guests.
 

@@ -1,10 +1,17 @@
-These release notes describe new features and enhancements, Technology Preview features, deprecated and removed features, fixed issues, and known issues for OpenShift Virtualization 4.22.
+These release notes describe new features and enhancements, Technology Preview features, deprecated and removed features, fixed issues, and known issues for OpenShift Virtualization 5.0.
 
 # Supported guest operating systems
 
 To view the supported guest operating systems for OpenShift Virtualization, see [Certified Guest Operating Systems in Red Hat OpenStack Platform, Red Hat Virtualization, OpenShift Virtualization and Red Hat Enterprise Linux with KVM](https://access.redhat.com/articles/973163#ocpvirt).
 
 # New features and enhancements
+
+The v1 version of the `HyperConverged` API is the default
+The `v1` API version of the `HyperConverged` custom resource (CR) is the default version. The `v1beta1` version is deprecated and will be removed in a future release. OpenShift Virtualization adds new API fields only to the `v1` version. Updates from earlier versions require no manual action.
+
+[CNV-79504](https://issues.redhat.com/browse/CNV-79504)
+
+<!-- -->
 
 Boot source image support for heterogeneous clusters is generally available
 After you enable the `enableMultiArchBootImageImport` feature gate, OpenShift Virtualization creates architecture-specific boot sources for each supported architecture, such as `rhel9-amd64` and `rhel9-arm64`. You can also specify the architecture for standalone data volumes and virtual machines. For more information, see [Heterogeneous cluster support](../../virt/storage/virt-boot-source-image-heterogeneous-clusters.xml#virt-boot-source-image-heterogeneous-clusters).
@@ -27,6 +34,19 @@ For more information, see [Technical Supportability Review with AI tool](https:/
 
 <!-- -->
 
+`VirtualMachineTemplate` custom resource definitions are generally available
+The `template.kubevirt.io/v1beta1` API group and the `VirtualMachineTemplate` custom resource definition (CRD) are generally available. You can define a virtual machine (VM) blueprint as a cluster-native `VirtualMachineTemplate` object and then create VMs from that object. You can use the `VirtualMachineTemplateRequest` CRD to create a `VirtualMachineTemplate` from an existing `VirtualMachine`. This release updates the API group from `v1alpha1` to `v1beta1`.
+
+<div class="note">
+
+You cannot create a `VirtualMachineTemplate` from a `VirtualMachine` that you have never started.
+
+</div>
+
+[CNV-84116](https://issues.redhat.com/browse/CNV-84116)
+
+<!-- -->
+
 Custom video device types are generally available
 You can configure a custom video device type when you create a virtual machine (VM). Configuring a custom device type overrides the default video configuration. You can specify different video devices, based on your guest operating system requirements and performance needs.
 
@@ -41,10 +61,63 @@ The `virt-platform-autopilot` controller replaces the `wasp-agent` component for
 
 <!-- -->
 
+Default network for new virtual machines in a project
+If you have cluster administrator permissions, you can configure a default network for a project so that new virtual machines (VMs) in that project use it automatically. The default can be the pod network or a network attachment definition (NAD) that is available in the project. This setting applies only to VMs that you create after you configure it, and it does not change existing VMs.
+
+For more information, see [Configuring project-level default networks](../../virt/creating_vm/virt-creating-vms-web.xml#virt-vm-configuring-default-network-per-project_virt-creating-vms-web).
+
+[CNV-92410](https://issues.redhat.com/browse/CNV-92410)
+
+<!-- -->
+
+Network hot swap for running virtual machines
+You can change the network that a running virtual machine (VM) interface uses. In the OpenShift Container Platform web console, open the **Configuration** \> **Network** tab, edit the existing interface, and select a different network.
+
+[CNV-82742](https://issues.redhat.com/browse/CNV-82742)
+
+<!-- -->
+
+Declarative hot plug volumes and CD-ROM media changes are enabled by default
+The `DeclarativeHotplugVolumes` feature gate is enabled by default in the `HyperConverged` custom resource (CR). You can insert and eject CD-ROM storage in a running virtual machine (VM) without restarting the VM and without changing the default configuration. In earlier releases, you enabled the feature gate manually because it was incompatible with ephemeral hot plug volumes.
+
+[CNV-81481](https://issues.redhat.com/browse/CNV-81481)
+
+<!-- -->
+
+Bulk storage class migration for offline VMs
+Administrators can bulk migrate storage classes of stopped virtual machines (VMs) in the OpenShift Container Platform web console. This functionality supports storage class migration for VMs in any state. You can select both running and stopped VMs in a single migration plan.
+
+[CNV-73500](https://redhat.atlassian.net/browse/CNV-73500)
+
+<!-- -->
+
 Automatic cleanup of source PVCs after storage migration
 You can clear the option to keep source persistent volume claims (PVCs) after a storage migration. If you clear this option in the web console, OpenShift Virtualization cleans up the original PVCs after the storage migration completes. By default, OpenShift Virtualization retains the source PVCs after a storage migration, and you clean up the PVCs manually.
 
 [CNV-73509](https://issues.redhat.com/browse/CNV-73509)
+
+<!-- -->
+
+Categories for virtual machine templates
+You can assign a category to a virtual machine (VM) template and then filter the template catalog by category. You set the category when you create a template from an existing VM, and you can change it later. A category is optional, and a template can have only one category.
+
+[CNV-92485](https://issues.redhat.com/browse/CNV-92485)
+
+<!-- -->
+
+Network names on the virtual machine Network tab link to their resources
+On the **Configuration** \> **Network** tab of a virtual machine (VM), each network name is a link. The link opens the detail page of the underlying network attachment definition (NAD), user-defined network (UDN), or cluster user-defined network (CUDN). Entries for **Pod networking** and for deleted networks remain plain text.
+
+[CNV-89211](https://issues.redhat.com/browse/CNV-89211)
+
+<!-- -->
+
+New search language for building complex virtual machine queries
+You can build and save complex virtual machine (VM) queries directly in the search field, without opening the **Advanced search** dialog. You can combine multiple parameters and their multiple values in the search.
+
+For more information, see [Searching for virtual machines by using the web console](../../virt/managing_vms/virt-list-vms.xml#virt-searching-vms-web_virt-list-vms).
+
+[CNV-74170](https://issues.redhat.com/browse/CNV-74170)
 
 <!-- -->
 
@@ -59,6 +132,20 @@ Virtual machine filtering by group
 You can filter virtual machines by group in the OpenShift Container Platform web console. The **Group** filter is available in the advanced search dialog and as a drop-down filter in the main virtual machine list view.
 
 [CNV-94093](https://issues.redhat.com/browse/CNV-94093)
+
+<!-- -->
+
+Metrics for GPUs attached to virtual machines
+OpenShift Virtualization exposes metrics that identify the GPUs attached to a virtual machine instance (VMI). You can correlate these metrics with the GPU metrics that the NVIDIA Data Center GPU Manager (DCGM) exporter provides to track GPU allocation and usage. Recording rules simplify the use of these metrics in OpenShift Virtualization dashboards.
+
+[CNV-51516](https://issues.redhat.com/browse/CNV-51516)
+
+<!-- -->
+
+Perses-based virtualization dashboards
+OpenShift Virtualization provides Perses-based dashboards that show virtual machine (VM) inventory, resource usage, service levels, time in status, top resource consumers, and node memory. OpenShift Virtualization deploys the dashboards automatically as `PersesDashboard` custom resources in the `openshift-cnv` namespace. To view the dashboards, click **Observe** \> **Dashboards(Perses)** in the OpenShift Container Platform web console. The dashboards require Cluster Observability Operator (COO) with the monitoring stack enabled. For more information, see [Virtualization dashboards overview](../../virt/monitoring/virt-prometheus-queries.xml#virt-about-virtualization-dashboards_virt-prometheus-queries).
+
+[CNV-42730](https://issues.redhat.com/browse/CNV-42730)
 
 <!-- -->
 
@@ -84,6 +171,13 @@ The `HotplugVolume` feature gate, which allows you to add storage without restar
 
 [CNV-73301](https://issues.redhat.com/browse/CNV-73301)
 
+<!-- -->
+
+The `pc-q35-rhel7.x.0` and `pc-q35-rhel8.x.0` machine types are deprecated
+The `pc-q35-rhel7.x.0` and `pc-q35-rhel8.x.0` machine types have been deprecated since OpenShift Virtualization 4.13. They will be removed in a future release as part of the move to Red Hat Enterprise Linux (RHEL) 10 user space. Update your virtual machines (VMs) to the `pc-q35-rhel9.x.0` machine type. Updating the machine type requires a VM restart, so plan for downtime.
+
+[CNV-98500](https://issues.redhat.com/browse/CNV-98500)
+
 # Removed features
 
 Removed features are no longer supported in OpenShift Virtualization.
@@ -92,6 +186,13 @@ The `wasp-agent` component is removed
 The `wasp-agent` component, which configured higher VM workload density, is removed and is no longer supported. You configure higher VM workload density by using the `virt-platform-autopilot` controller. For more information, see [Configuring higher VM workload density](../../virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.xml#virt-configuring-higher-vm-workload-density).
 
 [CNV-83420](https://issues.redhat.com/browse/CNV-83420)
+
+<!-- -->
+
+Ephemeral hot plug telemetry is removed
+Telemetry for ephemeral hot plug volumes is removed and is no longer supported. The `DeclarativeHotplugVolumes` feature gate replaces the deprecated `HotplugVolume` feature gate.
+
+[CNV-81481](https://issues.redhat.com/browse/CNV-81481)
 
 # Technology Preview features
 
@@ -118,47 +219,23 @@ The label for organizing and grouping virtual machines (VMs) in the web console 
 
 [CNV-91926](https://redhat.atlassian.net/browse/CNV-91926)
 
+<!-- -->
+
+Model Context Protocol server tools for storage and virtual machine templates (Technology Preview)
+You can use the Model Context Protocol (MCP) server to manage OpenShift Virtualization resources through high-level workflows. This release adds tools for persistent storage, virtual machine (VM) templates, and HyperConverged Operator status and configuration. The kubevirt toolset is not enabled by default. To use these tools, add kubevirt to the toolsets setting in the OpenShift Container Platform MCP server configuration file. This capability is a Technology Preview feature.
+
+[CNV-77676](https://issues.redhat.com/browse/CNV-77676)
+
 # Fixed issues
+
+Detached disks are no longer deleted together with the original virtual machine
+Before this update, when you detached a disk from a virtual machine (VM), the `DataVolume` object retained a stale owner reference to the original VM. As a consequence, if you deleted the original VM, garbage collection deleted the `DataVolume` object and its underlying persistent volume claim (PVC). This caused data loss even when the disk was attached to a different VM. With this release, OpenShift Virtualization updates the owner reference when you detach a disk, so the `DataVolume` object no longer references the original VM. As a result, a detached disk and its PVC are preserved when you delete the VM that the disk was originally attached to.
+
+[CNV-71659](https://redhat.atlassian.net/browse/CNV-71659)
 
 # Known issues
 
 Some linked Jira tickets are accessible only with Red Hat credentials.
-
-Detaching a disk from a virtual machine does not remove the owner reference from the data volume
-When you detach a disk from a virtual machine (VM), the `DataVolume` object retains a stale owner reference to the original VM. If you then delete the original VM, garbage collection deletes the `DataVolume` object and its underlying persistent volume claim (PVC), even if the disk is attached to a different VM. As a consequence, data loss can occur.
-
-To work around this problem, after detaching a disk from a VM, manually remove the `ownerReference` entry from the `DataVolume` object before deleting the original VM. As a result, the disk is not deleted when the original VM is removed.
-
-[CNV-71659](https://redhat.atlassian.net/browse/CNV-71659)
-
-<!-- -->
-
-Non-versioned HyperConverged commands default to v1 API
-In this release, the v1 API for the `HyperConverged` custom resource (CR) is introduced, in preparation for a future migration from v1beta1 to v1. Due to the way Kubernetes selects default API versions, non-versioned commands such as `oc get hco`, `oc edit hyperconverged`, and `oc patch hyperconverged` now default to the v1 API. As a consequence, these commands can behave unexpectedly or fail because the v1 API is not yet ready for production use.
-
-To work around this problem, use the fully versioned type name `hyperconvergeds.v1beta1.hco.kubevirt.io` when running commands against the `HyperConverged` CR. For example, use `oc get hyperconvergeds.v1beta1.hco.kubevirt.io` instead of `oc get hco`. For the `oc explain` command, use the `--api-version` flag: `oc explain --api-version=hco.kubevirt.io/v1beta1 hco.spec`. As a result, commands target the v1beta1 API as intended.
-
-[CNV-78892](https://redhat.atlassian.net/browse/CNV-78892)
-
-<!-- -->
-
-VMs using the cnv-bridge CNI fail to live migrate after updates from 4.12
-When you update from OpenShift Container Platform 4.12 to a newer minor version, virtual machines that use the `cnv-bridge` Container Network Interface (CNI) fail to live migrate. As a consequence, live migration fails for affected VMs.
-
-To work around this problem, change the `spec.config.type` field in your `NetworkAttachmentDefinition` manifest from `cnv-bridge` to `bridge` before you perform the update. As a result, live migration succeeds for VMs that use the updated network attachment definitions.
-
-[Known issue when migrating VMs that use the cnv-bridge CNI](https://access.redhat.com/solutions/7069807)
-
-<!-- -->
-
-Red Hat OpenShift Service Mesh 3.1.1 and Istio 1.25 and later are incompatible with OpenShift Virtualization
-Red Hat OpenShift Service Mesh 3.1.1 and Istio versions 1.25 and later are incompatible with OpenShift Virtualization 4.22 because the `traffic.sidecar.istio.io/kubevirtInterfaces` annotation is deprecated. As a consequence, service mesh integration with OpenShift Virtualization can fail when you use these versions.
-
-To work around this problem, when you install Service Mesh for integration with OpenShift Virtualization, select Red Hat OpenShift Service Mesh version 3.0.4 and Istio 1.24.4 instead of the default versions that are displayed in the web console.
-
-[OSSM-10883](https://issues.redhat.com/browse/OSSM-10883)
-
-<!-- -->
 
 Node labels remain after uninstalling OpenShift Virtualization
 Uninstalling OpenShift Virtualization does not remove the `feature.node.kubevirt.io` node labels that OpenShift Virtualization creates. As a consequence, nodes can still appear as if they are configured for virtualization workloads.
@@ -178,20 +255,9 @@ To work around this problem, use VM names that are 47 characters or fewer when y
 
 <!-- -->
 
-Service account volume becomes invalid after VM migration
-OpenShift Virtualization links a service account token in use by a pod to that specific pod by creating a disk image that contains the token. If you migrate a VM, the service account volume becomes invalid for the migrated VM. As a consequence, workloads that rely on that service account token can fail after migration.
+Duplicate boot sources remain after you enable multi-architecture boot image import
+If you enable the `spec.featureGates.enableMultiArchBootImageImport` feature gate after boot sources are imported, OpenShift Virtualization recreates the boot source import resources by using architecture-suffixed names. The names depend on the architectures that the cluster supports, for example `fedora-amd64`, `fedora-arm64`, and `fedora-s390x`. The earlier resources, which have no architecture suffix, remain in the `openshift-virtualization-os-images` namespace. As a consequence, duplicate boot sources are displayed in the web console and in the CLI. Storage usage can also increase, because the extra persistent volume claims (PVCs) and volume snapshots are still present.
 
-To work around this problem, use user accounts instead of service accounts, because user account tokens are not bound to a specific pod.
+To work around this problem, delete the leftover boot source resources. First, identify the active `DataSource` objects, which are the objects that resolve to the PVC or volume snapshot that you want to keep. Then, delete the stale `DataSource` objects and the PVCs and volume snapshots that they reference. As a result, only the architecture-suffixed boot sources remain.
 
-[CNV-33835](https://issues.redhat.com/browse/CNV-33835)
-
-Upgrading to OpenShift Virtualization 4.21 when using wasp-agent
-If you are upgrading OpenShift Virtualization from version 4.20 to 4.21 and using `wasp-agent` to increase VM workload density, you must perform the following steps after you begin the upgrade:
-
-1.  Wait for the Machine Configuration Pool (MCP) to complete the updating of the infra nodes.
-
-2.  Edit the `KubeletConfig` file to remove the `failSwapOn: false` key-value pair.
-
-3.  Wait for the MCP to finish updating the worker nodes.
-
-[CNV-75837](https://issues.redhat.com/browse/CNV-75837)
+[CNV-68996](https://issues.redhat.com/browse/CNV-68996)

@@ -8,9 +8,11 @@ You can update the Red Hat OpenShift GitOps Operator when new versions become a
 
 <div class="important">
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
 For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+
+For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
 </div>
 
@@ -149,9 +151,9 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
   │   ├── site2-ns.yaml
   │   ├── site2.yaml
   │   ├── common-ns.yaml
-  │   ├── common-ranGen.yaml
-  │   ├── group-du-sno-ranGen-ns.yaml
-  │   ├── group-du-sno-ranGen.yaml
+  │   ├── ran-common.yaml
+  │   ├── ran-group-du-sno-templated-ns.yaml
+  │   ├── ran-group-du-sno-templated.yaml
   │   └── kustomization.yaml
   └── clusterinstance
       ├── site1.yaml
@@ -172,14 +174,14 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
   kind: Kustomization
 
   generators:
-  - acm-common-ranGen.yaml
-  - acm-group-du-sno-ranGen.yaml
+  - ran-common.yaml
+  - ran-group-du-sno-templated.yaml
   - site1.yaml
   - site2.yaml
 
   resources:
   - common-ns.yaml
-  - acm-group-du-sno-ranGen-ns.yaml
+  - ran-group-du-sno-templated-ns.yaml
   - site1-ns.yaml
   - site2-ns.yaml
   ```

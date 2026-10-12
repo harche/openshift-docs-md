@@ -303,7 +303,7 @@ The following procedure shows how to mark a pod as critical.
 
 # Reduce pod timeouts when using persistent volumes with high file counts
 
-You can prevent pod startup timeouts in clusters with high file counts, by configuring how the cluster manages volume ownership and permissions. Using security context constraints or runtime classes, you can ensure that large storage volumes mount efficiently without the delays associated with recursive permission changes.
+You can prevent pod startup timeouts in clusters with high file counts by configuring how the cluster manages volume ownership and permissions to avoid delays from recursive permission changes.
 
 If a storage volume contains many files (~1,000,000 or greater), you might experience pod timeouts.
 

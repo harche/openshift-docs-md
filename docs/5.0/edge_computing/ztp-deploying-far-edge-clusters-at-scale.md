@@ -48,7 +48,7 @@ Installing and deploying the clusters is a two-stage process, involving an initi
 
 # Install managed clusters with ClusterInstance resources and RHACM
 
-GitOps Zero Touch Provisioning (ZTP) uses `ClusterInstance` custom resources (CRs) in a Git repository to manage the processes that install OpenShift Container Platform clusters. The `ClusterInstance` CR contains cluster-specific parameters required for installation. It has options for applying select configuration CRs during installation including user defined extra manifests.
+GitOps Zero Touch Provisioning (ZTP) uses `ClusterInstance` custom resources (CRs) in a Git repository to manage the installation of OpenShift Container Platform clusters. The `ClusterInstance` CR contains cluster-specific parameters and options for applying configuration CRs during installation.
 
 The GitOps ZTP plugin processes `ClusterInstance` CRs to generate a collection of CRs on the hub cluster. This triggers the assisted service in Red Hat Advanced Cluster Management (RHACM) to install OpenShift Container Platform on the bare-metal host. You can find installation status and error messages in these CRs on the hub cluster. You can provision single clusters manually or in batches with GitOps ZTP:
 
@@ -72,7 +72,7 @@ For scalability and to reduce the complexity of managing configurations across t
 
 - The next preference is to create logical groupings of clusters to manage as much of the remaining configurations as possible under a group policy.
 
-- When a configuration is unique to an individual site, use RHACM templating on the hub cluster to inject the site-specific data into a common or group policy. Alternatively, apply an individual site policy for the site.
+- When a configuration is unique to an individual site, use hub-side templating with `ConfigMap` resources to inject group or site-specific data into the common or group policy.
 
 </div>
 
@@ -96,15 +96,17 @@ The following recommended structuring of policies combines configuration CRs to 
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Common          | A policy that exists in the common category is applied to all clusters in the fleet. Use common `PolicyGenerator` CRs to apply common installation settings across all cluster types.                                                                                                           |
 | Groups          | A policy that exists in the groups category is applied to a group of clusters in the fleet. Use group `PolicyGenerator` CRs to manage specific aspects of single-node, three-node, and standard cluster installations. Cluster groups can also follow geographic region, hardware variant, etc. |
-| Sites           | A policy that exists in the sites category is applied to a specific cluster site. Any cluster can have its own specific policies maintained.                                                                                                                                                    |
+| Sites           | Site-specific values that differ for each cluster are supplied through `ConfigMap` resources and hub-side templating in common or group `PolicyGenerator` CRs, rather than through separate site-specific `Policy` CR files.                                                                    |
 
 Recommended PolicyGenerator policy categories
 
 <div class="important">
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
 For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+
+For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
 </div>
 

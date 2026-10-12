@@ -1,13 +1,5 @@
 Before deploying a virtualized control plane cluster, ensure your environment meets the following requirements.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Hosting cluster requirements
 
 The hosting cluster runs the virtualized control plane VMs and manages their lifecycle through KubeVirt Redfish.
@@ -26,17 +18,15 @@ The hosting cluster requires the following components:
 
 The hosting cluster must have a storage solution that supports VM disk images and meets the latency requirements of `etcd`.
 
-The hosting cluster must have one of the following storage solutions:
+Use Logical Volume Manager (LVM) Storage backed by NVMe drives for virtualized control plane storage. LVM Storage writes directly to local disks, providing the consistent low latency that `etcd` requires. Use dedicated NVMe drives for control plane VM disks to ensure predictable performance.
 
-- Red Hat OpenShift Data Foundation (ODF) provides VM live migration. When you install ODF on a cluster where OpenShift Virtualization is running, the `ocs-storagecluster-ceph-rbd-virtualization` storage class is created automatically. This storage class is optimized for KubeVirt workloads.
+<div class="important">
 
-- Logical Volume Manager (LVM) Storage, backed by NVMe drives, provides predictable, low-latency disk I/O but does not support VM live migration.
+Do not use Red Hat OpenShift Data Foundation (ODF) for control plane VM disk storage. ODF replicates data across multiple storage nodes, which can cause unpredictable latency spikes during synchronization that affect `etcd` performance.
 
-Consider the following when choosing a storage solution:
+</div>
 
-- ODF replicates data across multiple storage nodes for durability. This replication can cause unpredictable latency spikes during synchronization, which might affect `etcd` performance. Monitor `etcd` disk latency in production and ensure the underlying storage nodes use NVMe disks.
-
-- LVM Storage writes directly to local disks without replication, providing consistent low latency. However, data is not replicated across nodes.
+During installation of the virtualized control plane, KubeVirt Redfish requires a shared storage location for the installation ISO. When the installer mounts boot media through the Redfish API, KubeVirt Redfish creates a data volume, downloads the installation ISO into that volume, and attaches the volume to the VM as virtual media. Because control plane VMs can be scheduled on any worker node in the hosting cluster, the storage location for the installation ISO must be accessible from all nodes. Do not use a node-local storage class such as LVM Storage for this volume.
 
 # Network requirements
 
@@ -44,7 +34,9 @@ Virtualized control plane deployments require specific network connectivity betw
 
 Configure networking to meet the following requirements:
 
-- L2 network connectivity between control plane VMs. The OpenShift Container Platform installation program requires all control plane nodes to share the same L2 network segment.
+- L2 network connectivity between control plane VMs. The OpenShift Container Platform installation program requires all control plane nodes to share the same L2 network segment. The `apiVIPs` must reside on this L2 segment.
+
+- A separate L2 network segment for worker nodes. The `ingressVIPs` must reside on the same L2 segment.
 
 - L3 connectivity without network address translation (NAT) between the control plane VMs and worker nodes. Worker nodes must be able to route traffic directly to the control plane VMs. During installation, the bootstrap VM also requires L3 connectivity to the control plane.
 
@@ -72,6 +64,12 @@ Each control plane VM requires the following minimum resources:
 
 - 120 GiB storage
 
+  <div class="note">
+
+  Use Logical Volume Manager (LVM) Storage backed by NVMe drives for virtualized control plane storage.
+
+  </div>
+
 # KubeVirt Redfish requirements
 
 KubeVirt Redfish exposes VMs through the Redfish API.
@@ -83,6 +81,8 @@ You need the following to use KubeVirt Redfish:
 - Credentials configured in KubeVirt Redfish for API authentication.
 
 - VMs labeled to be exposed through the Redfish API.
+
+- A shared storage location for the installation ISO. During installation of the virtualized control plane, KubeVirt Redfish uses this location to create a data volume, download the installation ISO into that volume, and attach the volume to the VM as virtual media. Because VMs can be scheduled on any worker node in the hosting cluster, this storage location must be accessible from all nodes. Do not use a node-local storage class such as LVM Storage.
 
 # Additional resources
 

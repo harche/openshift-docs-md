@@ -393,12 +393,12 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
         ``` terminal
         NAME                           STATUS                     ROLES    AGE  VERSION
-        worker-1.compute.local         Ready                      worker   7m   v1.35.4
-        master-1.compute.local         Ready                      master   11m  v1.35.4
-        master-2.compute.local         Ready                      master   11m  v1.35.4
-        worker-2.compute.local         Ready                      worker   7m   v1.35.4
-        worker-3.compute.local         Ready                      worker   7m   v1.35.4
-        master-3.compute.local         Ready                      master   11m  v1.35.4
+        worker-1.compute.local         Ready                      worker   7m   v1.36.3
+        master-1.compute.local         Ready                      master   11m  v1.36.3
+        master-2.compute.local         Ready                      master   11m  v1.36.3
+        worker-2.compute.local         Ready                      worker   7m   v1.36.3
+        worker-3.compute.local         Ready                      worker   7m   v1.36.3
+        master-3.compute.local         Ready                      master   11m  v1.36.3
         ```
 
     2.  Start the debugging process to access the node:

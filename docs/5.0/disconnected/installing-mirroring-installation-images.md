@@ -16,7 +16,7 @@ When using the `oc adm release mirror` command, release image signatures are not
 
 </div>
 
-# Prerequisites
+# Prerequisites for mirroring images with the oc adm command
 
 You must meet several prerequisites before you can mirror images using the `oc adm release mirror` command.
 
@@ -36,7 +36,7 @@ You must meet the following prerequisites:
 
 - If you do not already have an existing solution for a container image registry, subscribers of OpenShift Container Platform are provided a [mirror registry for Red Hat OpenShift](../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry). The *mirror registry for Red Hat OpenShift* is included with your subscription and is a small-scale container registry that can be used to mirror the required container images of OpenShift Container Platform in disconnected installations.
 
-# About the mirror registry
+# Mirror registry
 
 You must have access to the internet to obtain the necessary container images. Using an alternative registry means that you place the mirror registry on a mirror host that has access to both your network and the internet.
 
@@ -576,7 +576,7 @@ The following prerequisites must be met:
 
 ## Extracting and mirroring catalog contents
 
-The `oc adm catalog mirror` command extracts the contents of an index image to generate the manifests required for mirroring. The default behavior of the command generates manifests, then automatically mirrors all of the image content from the index image, as well as the index image itself, to your mirror registry.
+The `oc adm catalog mirror` command extracts the contents of an index image to generate mirroring manifests, then automatically mirrors all image content and the index image itself to your mirror registry.
 
 Alternatively, if your mirror registry is on a completely disconnected, or *airgapped*, host, you can first mirror the content to removable media, move the media to the disconnected environment, then mirror the content from the media to the registry.
 
@@ -623,12 +623,6 @@ If your mirror registry is co-located on the same network as your workstation wi
 
     `--manifests-only`
     Specifies the `--manifests-only` flag. This flag is optional. Generates only the manifests required for mirroring without actually mirroring the image content to a registry. This option can be useful for reviewing what will be mirrored, and lets you make any changes to the mapping list, if you require only a subset of packages. You can then use the `mapping.txt` file with the `oc image mirror` command to mirror the modified list of images in a later step. This flag is intended for only advanced selective mirroring of content from the catalog.
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     src image has index label for database path: /database/index.db
@@ -685,12 +679,6 @@ If your mirror registry is on a completely disconnected, or airgapped, host, tak
 
     `<platform>/<arch>`
     Specifies which platform and architecture of the index image to select when multiple variants are available. This is optional. Images are specified as `'<platform>/<arch>[/<variant>]'`. This does not apply to images referenced by the index. Valid values are `linux/amd64`, `linux/ppc64le`, `linux/s390x`, `linux/arm64`, and `.*`
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     ...
@@ -825,7 +813,7 @@ The manifests directory contains the following files, some of which might requir
 
 ## Postinstallation requirements
 
-After you mirror the catalog, you can continue with the remainder of your cluster installation. After your cluster installation has finished successfully, you must specify the manifests directory from this procedure to create the `ImageContentSourcePolicy` and `CatalogSource` objects. These objects are required to populate and enable installation of Operators from the software catalog.
+After mirroring the catalog and completing the cluster installation, you must create `ImageContentSourcePolicy` and `CatalogSource` objects from the manifests directory to enable installation of Operators from the software catalog.
 
 - [Populating the software catalog from mirrored Operator catalogs](../post_installation_configuration/preparing-for-users.xml#post-install-mirrored-catalogs_post-install-preparing-for-users)
 

@@ -2,9 +2,11 @@ You can use the Topology Aware Lifecycle Manager (TALM) to manage the software l
 
 <div class="important">
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
 For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+
+For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
 </div>
 
@@ -437,7 +439,7 @@ You can perform an Operator update with the TALM.
 
         - `du-upgrade-operator-catsrc-policy` is needed by the image precaching feature to retrieve the Operator images from the catalog source.
 
-        - `common-subscriptions-policy` contains Operator subscriptions. If you have followed the structure and content of the reference `PolicyGenTemplates`, all Operator subscriptions are grouped into the `common-subscriptions-policy` policy.
+        - `common-subscriptions-policy` contains Operator subscriptions. If you have followed the structure and content of the reference `PolicyGenTemplate` CRs, all Operator subscriptions are grouped into the `common-subscriptions-policy` policy.
 
         <div class="note">
 
@@ -710,7 +712,7 @@ You can perform a platform and an Operator update at the same time.
 
         The CRs for the platform and Operator updates can be created from the beginning by configuring the setting to `spec.enable: true`. In this case, the update starts immediately after precaching completes and there is no need to manually enable the CR.
 
-        Both precaching and the update create extra resources, such as policies, placement bindings, placement rules, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
+        Both precaching and the update create extra resources, such as policies, placement bindings, placements, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
 
         </div>
 

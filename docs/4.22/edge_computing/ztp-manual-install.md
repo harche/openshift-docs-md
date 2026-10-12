@@ -263,7 +263,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
 
 # Create the managed bare-metal host secrets
 
-Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a secret for the assisted installer service to pull cluster installation images from the registry.
+Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a pull secret for the Assisted Installer service.
 
 <div class="note">
 

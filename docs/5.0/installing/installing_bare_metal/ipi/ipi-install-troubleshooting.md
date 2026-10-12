@@ -1247,10 +1247,10 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
 
     ``` terminal
     NAME                         STATUS   ROLES    AGE   VERSION
-    master-0.cloud.example.com   Ready    master   145m   v1.35.4
-    master-1.cloud.example.com   Ready    master   135m   v1.35.4
-    master-2.cloud.example.com   Ready    master   145m   v1.35.4
-    worker-2.cloud.example.com   Ready    worker   100m   v1.35.4
+    master-0.cloud.example.com   Ready    master   145m   v1.36.3
+    master-1.cloud.example.com   Ready    master   135m   v1.36.3
+    master-2.cloud.example.com   Ready    master   145m   v1.36.3
+    worker-2.cloud.example.com   Ready    worker   100m   v1.36.3
     ```
 
 2.  Check for inconsistent timing delays due to clock drift by running the following command:
@@ -1400,9 +1400,9 @@ After installation, ensure the installation program deployed the nodes and pods 
 
     ``` terminal
     NAME                   STATUS   ROLES           AGE  VERSION
-    master-0.example.com   Ready    master,worker   4h   v1.35.4
-    master-1.example.com   Ready    master,worker   4h   v1.35.4
-    master-2.example.com   Ready    master,worker   4h   v1.35.4
+    master-0.example.com   Ready    master,worker   4h   v1.36.3
+    master-1.example.com   Ready    master,worker   4h   v1.36.3
+    master-2.example.com   Ready    master,worker   4h   v1.36.3
     ```
 
 2.  Confirm the installation program deployed all pods successfully. Remove any pods that are still running or have completed as part of the output by running the following command:

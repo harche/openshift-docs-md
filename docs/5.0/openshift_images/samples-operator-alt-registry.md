@@ -1,6 +1,6 @@
 You can use the Cluster Samples Operator with an alternate registry by preparing a mirror host and creating a mirror registry.
 
-# About the mirror registry
+# Mirror registry
 
 You must have access to the internet to obtain the necessary container images. Using an alternative registry means that you place the mirror registry on a mirror host that has access to both your network and the internet.
 

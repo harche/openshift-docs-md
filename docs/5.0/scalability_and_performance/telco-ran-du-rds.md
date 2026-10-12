@@ -70,7 +70,7 @@ Red Hat prioritizes the servicing of requests for deviations based on partner en
 
 # Engineering considerations for the RAN DU use model
 
-The RAN DU use model configures an OpenShift Container Platform cluster running on commodity hardware for hosting RAN distributed unit (DU) workloads. Model and system level considerations are described below. Specific limits, requirements and engineering considerations for individual components are detailed in later sections.
+The RAN DU use model configures an OpenShift Container Platform cluster running on commodity hardware for hosting RAN distributed unit (DU) workloads.
 
 <div class="note">
 

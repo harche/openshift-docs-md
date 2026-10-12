@@ -828,7 +828,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
 ## Specifying multiple subnets for your network
 
-Before you install an OpenShift Container Platform cluster on a vSphere host, you can specify multiple subnets for a networking implementation so that the vSphere cloud controller manager (CCM) can select the appropriate subnet for a given networking situation. vSphere can use the subnet for managing pods and services on your cluster.
+Before you install an OpenShift Container Platform cluster on a vSphere host, you can specify multiple subnets so that the vSphere cloud controller manager (CCM) can select the appropriate subnet for managing pods and services.
 
 For this configuration, you must specify internal and external Classless Inter-Domain Routing (CIDR) implementations in the vSphere CCM configuration. Each CIDR implementation lists an IP address range that the CCM uses to decide what subnets interact with traffic from internal and external networks.
 

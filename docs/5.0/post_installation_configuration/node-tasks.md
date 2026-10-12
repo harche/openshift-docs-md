@@ -227,9 +227,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.35.4
-    master-1  Ready     master  63m  v1.35.4
-    master-2  Ready     master  64m  v1.35.4
+    master-0  Ready     master  63m  v1.36.3
+    master-1  Ready     master  63m  v1.36.3
+    master-2  Ready     master  64m  v1.36.3
     ```
 
     The output lists all of the machines that you created.
@@ -350,11 +350,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.35.4
-    master-1  Ready     master  73m  v1.35.4
-    master-2  Ready     master  74m  v1.35.4
-    worker-0  Ready     worker  11m  v1.35.4
-    worker-1  Ready     worker  11m  v1.35.4
+    master-0  Ready     master  73m  v1.36.3
+    master-1  Ready     master  73m  v1.36.3
+    master-2  Ready     master  74m  v1.36.3
+    worker-0  Ready     worker  11m  v1.36.3
+    worker-1  Ready     worker  11m  v1.36.3
     ```
 
     <div class="note">
@@ -618,13 +618,13 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
 
         ``` terminal
         NAME                           STATUS   ROLES    AGE     VERSION
-        ip-10-0-128-78.ec2.internal    Ready    worker   117m    v1.35.4
-        ip-10-0-146-113.ec2.internal   Ready    master   127m    v1.35.4
-        ip-10-0-153-35.ec2.internal    Ready    worker   118m    v1.35.4
-        ip-10-0-176-58.ec2.internal    Ready    master   126m    v1.35.4
-        ip-10-0-217-135.ec2.internal   Ready    worker   2m57s   v1.35.4
-        ip-10-0-225-248.ec2.internal   Ready    master   127m    v1.35.4
-        ip-10-0-245-59.ec2.internal    Ready    worker   116m    v1.35.4
+        ip-10-0-128-78.ec2.internal    Ready    worker   117m    v1.36.3
+        ip-10-0-146-113.ec2.internal   Ready    master   127m    v1.36.3
+        ip-10-0-153-35.ec2.internal    Ready    worker   118m    v1.36.3
+        ip-10-0-176-58.ec2.internal    Ready    master   126m    v1.36.3
+        ip-10-0-217-135.ec2.internal   Ready    worker   2m57s   v1.36.3
+        ip-10-0-225-248.ec2.internal   Ready    master   127m    v1.36.3
+        ip-10-0-245-59.ec2.internal    Ready    worker   116m    v1.36.3
         ```
 
         The `ip-10-0-217-135.ec2.internal` node is the new node.
@@ -4118,7 +4118,7 @@ The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCO
 
 # Configure the maximum number of pods per node
 
-You can use the `podsPerCore` and `maxPods` parameters in a kubelet configuration to control the maximum number of pods that can be scheduled to a node. If you use both options, the lower of the two limits the number of pods on a node. Setting an appropriate maximum can help ensure your nodes run efficiently.
+You can use the `podsPerCore` and `maxPods` parameters in a kubelet configuration to control the maximum number of pods scheduled to a node. If you use both options, the lower of the two limits the number of pods on a node.
 
 For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be 40.
 

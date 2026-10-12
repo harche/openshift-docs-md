@@ -48,7 +48,7 @@ Installing and deploying the clusters is a two-stage process, involving an initi
 
 # Install managed clusters with ClusterInstance resources and RHACM
 
-GitOps Zero Touch Provisioning (ZTP) uses `ClusterInstance` custom resources (CRs) in a Git repository to manage the processes that install OpenShift Container Platform clusters. The `ClusterInstance` CR contains cluster-specific parameters required for installation. It has options for applying select configuration CRs during installation including user defined extra manifests.
+GitOps Zero Touch Provisioning (ZTP) uses `ClusterInstance` custom resources (CRs) in a Git repository to manage the installation of OpenShift Container Platform clusters. The `ClusterInstance` CR contains cluster-specific parameters and options for applying configuration CRs during installation.
 
 The GitOps ZTP plugin processes `ClusterInstance` CRs to generate a collection of CRs on the hub cluster. This triggers the assisted service in Red Hat Advanced Cluster Management (RHACM) to install OpenShift Container Platform on the bare-metal host. You can find installation status and error messages in these CRs on the hub cluster. You can provision single clusters manually or in batches with GitOps ZTP:
 

@@ -187,12 +187,12 @@ The following procedure shows you how to create a new custom machine config pool
 
     ``` terminal
     NAME                                        STATUS   ROLES                    AGE   VERSION
-    ci-ln-i61xqwb-72292-hz2mw-custom-9r496      Ready    custom,worker             9m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-master-0          Ready    control-plane,master     42m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-master-1          Ready    control-plane,master     44m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-master-2          Ready    control-plane,master     43m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-worker-c-2lhcl    Ready    worker                   36m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7    Ready    worker                   36m   v1.35.3
+    ci-ln-i61xqwb-72292-hz2mw-custom-9r496      Ready    custom,worker             9m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-master-0          Ready    control-plane,master     42m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-master-1          Ready    control-plane,master     44m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-master-2          Ready    control-plane,master     43m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-worker-c-2lhcl    Ready    worker                   36m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7    Ready    worker                   36m   v1.36.3
     ```
 
     In this example, the `ci-ln-i61xqwb-72292—​hz2mw-custom-9r496` is a new node that was added to the `custom` machine config pool.
@@ -293,12 +293,12 @@ The following procedure shows you how to create a new custom machine config pool
 
     ``` terminal
     NAME                                       STATUS   ROLES                  AGE   VERSION
-    ci-ln-i61xqwb-72292-ftjn8-master-0         Ready    control-plane,master   42m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-master-1         Ready    control-plane,master   44m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-master-2         Ready    control-plane,master   43m   v1.35.3
-    ci-ln-g5tpp5k-72292-hz2mw-worker-b-ps8xh   Ready    custom,worker          36m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-worker-c-2lhcl   Ready    worker                 36m   v1.35.3
-    ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7   Ready    worker                 36m   v1.35.3
+    ci-ln-i61xqwb-72292-ftjn8-master-0         Ready    control-plane,master   42m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-master-1         Ready    control-plane,master   44m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-master-2         Ready    control-plane,master   43m   v1.36.3
+    ci-ln-g5tpp5k-72292-hz2mw-worker-b-ps8xh   Ready    custom,worker          36m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-worker-c-2lhcl   Ready    worker                 36m   v1.36.3
+    ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7   Ready    worker                 36m   v1.36.3
     ```
 
     In this example, the `ci-ln-g5tpp5k-72292-hz2mw-worker-b-ps8xh` node is an existing node that was moved to the `custom` machine config pool.

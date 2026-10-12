@@ -256,15 +256,19 @@ Minimum resource requirements
 
 <div class="note">
 
-In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- ppc64le architecture requires IBM® Power9 ISA
+- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+
+- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
 
 - s390x architecture requires IBM® z14 ISA
+
+If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
 
 For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
@@ -1039,7 +1043,9 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 ## CloudFormation template for the VPC Carrier Gateway
 
-Use the CloudFormation template to deploy the Carrier Gateway on Amazon Web Services (AWS) Wavelength infrastructure. The template automates the creation of an AWS Carrier Gateway for OpenShift Container Platform. The template provisions an `AWS::EC2::CarrierGateway` and associates it with the cluster VPC to enable traffic routing to provide direct internet connectivity for resources in Wavelength Zones that use carrier networks.
+Use the CloudFormation template to deploy the Carrier Gateway on Amazon Web Services (AWS) Wavelength infrastructure. The template automates the creation of an AWS Carrier Gateway for OpenShift Container Platform.
+
+The template provisions an `AWS::EC2::CarrierGateway` and associates it with the cluster VPC to enable traffic routing to provide direct internet connectivity for resources in Wavelength Zones that use carrier networks.
 
 <div class="formalpara-title">
 

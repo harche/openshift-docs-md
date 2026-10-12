@@ -236,7 +236,9 @@ You can attach an Open vSwitch (OVS) hardware offloading network to your cluster
 
 # Enabling IPv6 connectivity to pods on RHOSP
 
-To enable IPv6 connectivity between pods that have additional networks that are on different nodes, disable port security for the IPv6 port of the server. Disabling port security obviates the need to create allowed address pairs for each IPv6 address that is assigned to pods and enables traffic on the security group.
+To enable IPv6 connectivity between pods on additional networks across different nodes, disable port security for the IPv6 port of the server.
+
+Disabling port security removes the need to create allowed address pairs for each IPv6 address assigned to pods and enables traffic on the security group.
 
 <div class="important">
 

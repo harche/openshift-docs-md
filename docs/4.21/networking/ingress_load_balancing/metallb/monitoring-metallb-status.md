@@ -428,7 +428,7 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
 
 # Verify BGP session state
 
-Once you configure MetalLB for border gateway protocol (BGP) mode, you can verify that the system has established BGP sessions and is advertising routes. You can examine the `BGPSessionState` custom resource (CR) and the `FRRNodeState` CR to troubleshoot BGP connectivity and confirm proper route advertisement.
+After you configure MetalLB for BGP mode, you can examine the `BGPSessionState` and `FRRNodeState` custom resources (CRs) to verify that BGP sessions are established and routes are advertised.
 
 <div class="note">
 

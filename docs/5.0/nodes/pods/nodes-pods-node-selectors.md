@@ -174,7 +174,7 @@ metadata:
 
           ``` terminal
           NAME                          STATUS   ROLES    AGE   VERSION
-          ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.35.4
+          ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.36.3
           ```
 
 2.  Add the matching node selector to a pod:

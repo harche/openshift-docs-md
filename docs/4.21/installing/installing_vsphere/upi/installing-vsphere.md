@@ -1574,7 +1574,7 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
 # Configuring vSphere DRS anti-affinity rules for control plane nodes
 
-vSphere Distributed Resource Scheduler (DRS) anti-affinity rules can be configured to support higher availability of OpenShift Container Platform Control Plane nodes. Anti-affinity rules ensure that the vSphere Virtual Machines for the OpenShift Container Platform Control Plane nodes are not scheduled to the same vSphere Host.
+vSphere Distributed Resource Scheduler (DRS) anti-affinity rules ensure that OpenShift Container Platform control plane node VMs are not scheduled to the same vSphere host, supporting higher availability.
 
 <div class="important">
 

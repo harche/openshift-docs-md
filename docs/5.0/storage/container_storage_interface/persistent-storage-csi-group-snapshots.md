@@ -4,15 +4,7 @@ Volume group snapshots capture point-in-time copies of multiple volumes simultan
 
 Volume group snapshots capture point-in-time copies of multiple persistent volume claims using label selectors. Three API objects manage snapshots: VolumeGroupSnapshot, VolumeGroupSnapshotContent, and VolumeGroupSnapshotClass.
 
-<div class="important">
-
-CSI volume group snapshots is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-To use this Technology Preview feature, you must enable it by using feature gates. For information about using feature gates, see "Enabling features using feature gates".
+Volume group snapshots need to be supported by the Container Storage Interface (CSI) driver. OpenShift Data Foundation supports volume group snapshots.
 
 Snapshot
 A snapshot represents the state of the storage volume in a cluster at a particular point in time. Volume snapshots can be used to provision a new volume.
@@ -33,7 +25,7 @@ Created by the snapshot controller for a dynamically created volumeGroupSnapshot
 `VolumeGroupSnapshotClass`
 Created by cluster administrators to describe how volume group snapshots should be created, including the driver information, the deletion policy, etc.
 
-These three API kinds are defined as `CustomResourceDefinitions` (CRDs). These CRDs must be installed in a OpenShift Container Platform cluster for a CSI driver to support volume group snapshots.
+These three API kinds are defined as `CustomResourceDefinitions` (CRDs). These CRDs are installed by default in the OpenShift Container Platform cluster so that CSI drivers can support volume group snapshots.
 
 # CSI volume group snapshots limitations
 
@@ -57,8 +49,6 @@ Create a `VolumeGroupSnapshotClass` to define how volume group snapshots are pro
 
 - Logged in to a running OpenShift Container Platform cluster with administrator privileges.
 
-- Enabled this feature using feature gates. For information about how to use feature gates, see "Enabling features sets by using feature gates".
-
 1.  Create a `VolumeGroupSnapshotClass` YAML file using the following example file:
 
     <div class="formalpara-title">
@@ -68,7 +58,7 @@ Create a `VolumeGroupSnapshotClass` to define how volume group snapshots are pro
     </div>
 
     ``` yaml
-    apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+    apiVersion: groupsnapshot.storage.k8s.io/v1
     kind: VolumeGroupSnapshotClass
     metadata:
       name: csi-hostpath-groupsnapclass
@@ -94,8 +84,6 @@ Create a VolumeGroupSnapshot object to capture point-in-time copies of multiple 
 When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform creates a volume group snapshot.
 
 - Logged in to a running OpenShift Container Platform cluster.
-
-- Enabled this feature using feature gates. For information about how to use feature gates, see "Enabling features sets by using feature gates".
 
 - The persistent volume claims (PVCs) that you want to group for the snapshot have been created using a CSI driver that supports `VolumeGroupSnapshot` objects.
 
@@ -176,7 +164,7 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         </div>
 
         ``` yaml
-        apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+        apiVersion: groupsnapshot.storage.k8s.io/v1
         kind: VolumeGroupSnapshot
         metadata:
           name: <volume-group-snapshot-name>
@@ -222,7 +210,7 @@ metadata:
   name: snapshot-4dc1c53a29538b36e85003503a4bcac5dbde4cff59e81f1e3bb80b6c18c3fd03
   namespace: default
   ownerReferences:
-  - apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+  - apiVersion: groupsnapshot.storage.k8s.io/v1
     kind: VolumeGroupSnapshot
     name: my-groupsnapshot
     uid: ba2d60c5-5082-4279-80c2-daa85f0af354
@@ -312,7 +300,5 @@ Restore volumes from a volume group snapshot by creating new persistent volume c
 # Additional resources
 
 - [Understanding persistent volumes](../../storage/understanding-persistent-storage.xml#persistent-volumes_understanding-persistent-storage)
-
-- [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 - [CSI volume snapshots](../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots)

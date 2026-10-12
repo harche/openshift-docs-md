@@ -28,14 +28,12 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 You can configure the additional worker node with a DU profile.
 
-You can apply a RAN distributed unit (DU) profile to the worker node cluster using the GitOps Zero Touch Provisioning (ZTP) common, group, and site-specific `PolicyGenerator` or `PolicyGenTemplate` resources. The GitOps ZTP pipeline that is linked to the ArgoCD `policies` application includes the following CRs that you can find in the relevant `out/argocd/example` folder when you extract the `ztp-site-generate` container:
+You can apply a RAN distributed unit (DU) profile to the worker node cluster using the GitOps Zero Touch Provisioning (ZTP) common and group `PolicyGenerator` or `PolicyGenTemplate` resources. The GitOps ZTP pipeline that is linked to the ArgoCD `policies` application includes the following CRs that you can find in the relevant `out/argocd/example` folder when you extract the `ztp-site-generate` container:
 
 /acmpolicygenerator resources
-- `acm-common-ranGen.yaml`
+- `ran-common.yaml`
 
-- `acm-group-du-sno-ranGen.yaml`
-
-- `acm-example-sno-site.yaml`
+- `ran-group-du-sno-templated.yaml`
 
 - `ns.yaml`
 
@@ -44,9 +42,7 @@ You can apply a RAN distributed unit (DU) profile to the worker node cluster usi
 /policygentemplates resources
 - `common-ranGen.yaml`
 
-- `group-du-sno-ranGen.yaml`
-
-- `example-sno-site.yaml`
+- `group-du-sno-ranGen-templated.yaml`
 
 - `ns.yaml`
 

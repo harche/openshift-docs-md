@@ -12,7 +12,7 @@ This early access program exists so that customers can provide feedback on the u
 
 # Red Hat OpenShift Pipelines in the web console
 
-Red Hat OpenShift Pipelines is a cloud-native, continuous integration and continuous delivery (CI/CD) solution based on Kubernetes resources. Install the Red Hat OpenShift Pipelines Operator by using the software catalog in the OpenShift Container Platform web console. Once the Operator is installed, you can create and modify pipeline objects on **Pipelines** page.
+Red Hat OpenShift Pipelines is a cloud-native, continuous integration and continuous delivery (CI/CD) solution based on Kubernetes resources. After installing the Red Hat OpenShift Pipelines Operator, you can create and modify pipeline objects on the **Pipelines** page.
 
 # Red Hat OpenShift Serverless in the web console
 
@@ -20,7 +20,7 @@ Red Hat OpenShift Serverless enables developers to create and deploy serverless,
 
 # Red Hat Developer Hub in the OpenShift Container Platform web console
 
-The Red Hat Developer Hub is a platform you can use to experience a streamlined development environment. Red Hat Developer Hub is driven by a centralized software catalog, providing efficiency to your microservices and infrastructure. It enables your product team to deliver quality code without any compromises. A quick start is available for you to learn more about how to install the developer hub.
+Red Hat Developer Hub provides a streamlined development environment driven by a centralized software catalog. A quick start is available to help you install the developer hub.
 
 ## Install the Red Hat Developer Hub using the OpenShift Container Platform web console
 

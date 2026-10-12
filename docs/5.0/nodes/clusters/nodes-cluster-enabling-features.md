@@ -24,8 +24,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `AWSClusterHostedDNS`
 
-  - `AWSClusterHostedDNSInstall`
-
   - `AWSDedicatedHosts`
 
   - `AWSDualStackInstall`

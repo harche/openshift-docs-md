@@ -651,7 +651,7 @@ When you define the `allowedRegistries` parameter, all registries, including `re
     insecure = true
   ```
 
-# About adding registries that allow image short names
+# Configure short-name search registries
 
 With an image short name, you can search for images without including the fully qualified domain name in the pull `spec` parameter.
 
@@ -663,7 +663,7 @@ When pulling or pushing images, the container runtime searches the registries li
 
 ## When not to use image short names
 
-To avoid deployment failures and security risks when using public registries in OpenShift Container Platform, use fully-qualified image names instead of short names. Short names work with Red Hat internal or private registries, but public registries that require authentication might not deploy images with short names.
+To avoid deployment failures and security risks in OpenShift Container Platform, use fully-qualified image names instead of short names. Short names work with Red Hat internal registries, but public registries that require authentication might fail to deploy them.
 
 You cannot list multiple public registries under the `containerRuntimeSearchRegistries` parameter if each public registry requires different credentials and a cluster does not list the public registry in the global pull secret.
 

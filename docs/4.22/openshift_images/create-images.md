@@ -2,7 +2,9 @@ You can create your own container images based on pre-built base images. This pr
 
 # Learn container best practices
 
-When creating container images to run on OpenShift Container Platform there are a number of best practices to consider as an image author to ensure a good experience for consumers of those images. Because images are intended to be immutable and used as-is, the following guidelines help ensure that your images are highly consumable and easy to use on OpenShift Container Platform.
+When creating container images to run on OpenShift Container Platform there are a number of best practices to consider as an image author to ensure a good experience for consumers of those images.
+
+Because images are intended to be immutable and used as-is, the following guidelines ensure that your images are highly consumable and easy to use on OpenShift Container Platform.
 
 ## General container image guidelines
 

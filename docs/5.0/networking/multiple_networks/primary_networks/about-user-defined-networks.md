@@ -2,7 +2,7 @@ User-defined networks (UDNs) extend OVN-Kubernetes to enable custom layer 2 and 
 
 # Overview of user-defined networks
 
-To secure and improve network segmentation and isolation, cluster administrators can create primary or secondary networks that span namespaces at the cluster level using the `ClusterUserDefinedNetwork` custom resource (CR) while a developer can define secondary networks at the namespace level using the `UserDefinedNetwork` CR.
+Cluster administrators can create primary or secondary networks that span namespaces by using the `ClusterUserDefinedNetwork` CR, while developers can define secondary networks at the namespace level by using the `UserDefinedNetwork` CR.
 
 Before the implementation of user-defined networks (UDN), the OVN-Kubernetes CNI plugin for OpenShift Container Platform only supported a layer 3 topology on the primary or *main* network. Due to Kubernetes design principles: all pods are attached to the main network, all pods communicate with each other by their IP addresses, and inter-pod traffic is restricted according to network policy.
 
@@ -52,7 +52,7 @@ Developers and administrators can create a user-defined network that is namespac
 
 # Limitations of a user-defined network
 
-To deploy a successful user-defined networks (UDN), you must consider their limitations including DNS resolution behavior, restricted access to default network services such as the image registry, network policy constraints between isolated networks, and the requirement to create namespaces and networks before pods.
+User-defined networks (UDNs) have limitations including DNS resolution behavior, restricted access to default network services, network policy constraints between isolated networks, and the requirement to create namespaces and networks before pods.
 
 Consider the following limitations before implementing a UDN.
 
@@ -88,7 +88,7 @@ Consider the following limitations before implementing a UDN.
 
 # Layer 2 and layer 3 topologies
 
-A layer 2 topology creates a distributed virtual switch across cluster nodes, this network topology provides a smooth live migration of virtual machine (VM) within the same subnet. A layer 3 topology creates unique segments per node with routing between them, this network topology effectively manages large broadcast domains.
+A layer 2 topology creates a distributed virtual switch across cluster nodes for live migration of virtual machines (VMs) within the same subnet. A layer 3 topology creates unique segments per node with routing between them.
 
 In a flat layer 2 topology, virtual machines and pods connect to the virtual switch so that all these components can communicate with each other within the same subnet. This topology is useful for the live migration of VMs across nodes in the cluster. The following diagram shows a flat layer 2 topology with two nodes that use the virtual switch for live migration purposes:
 
@@ -383,7 +383,7 @@ Based upon your use case, create your request by using either the `cluster-layer
 
 ## Create a ClusterUserDefinedNetwork CR for a Localnet topology
 
-You deploy a `Localnet` topology to connect the secondary network to the physical underlay. This enables both east-west cluster traffic and access to services running outside the cluster. This topology type requires the additional configuration of the underlying Open vSwitch (OVS) system on cluster nodes.
+You deploy a `Localnet` topology to connect the secondary network to the physical underlay, enabling both east-west cluster traffic and access to services running outside the cluster.
 
 - You are logged in as a user with `cluster-admin` privileges.
 

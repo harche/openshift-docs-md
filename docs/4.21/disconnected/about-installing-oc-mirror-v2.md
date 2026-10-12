@@ -2,7 +2,7 @@ You can run your cluster in a disconnected environment if you install the cluste
 
 You can use oc-mirror plugin v2 to mirror images to a mirror registry in your fully or partially disconnected environments. To download the required images from the official Red Hat registries, you must run oc-mirror plugin v2 from a system with internet connectivity.
 
-# About oc-mirror plugin v2
+# oc-mirror plugin v2
 
 The oc-mirror OpenShift CLI (`oc`) plugin is a single tool that mirrors all required OpenShift Container Platform content and other images to your mirror registry.
 
@@ -54,7 +54,7 @@ On `aarch64`, `ppc64le`, and `s390x` architectures the oc-mirror plugin v2 is su
 
 Use the latest available version of the oc-mirror plugin v2 regardless of which versions of OpenShift Container Platform you need to mirror.
 
-# Prerequisites
+# Prerequisites for mirroring images with oc-mirror plugin v2
 
 Before you can mirror images with the oc-mirror plugin v2, you must meet several prerequisites.
 
@@ -385,7 +385,9 @@ The following high-level workflow describes the mirroring process:
 
 ### Mirroring from mirror to disk
 
-You can use the oc-mirror plugin v2 to generate an image set and save the content to disk. Afterwards, you can transfer the generated image set to the disconnected environment and mirror it to the target registry.
+You can use the oc-mirror plugin v2 to generate an image set and save the content to disk. The plugin retrieves images from the source specified in the image set configuration and packs them into a tar archive.
+
+Transfer the generated image set to the disconnected environment and mirror it to the target registry.
 
 oc-mirror plugin v2 retrieves the container images from the source specified in the image set configuration file and packs them into a tar archive in a local directory.
 
@@ -1125,7 +1127,7 @@ For more details on configuration formats, see "containers-registries.d(5) manua
 
 ## Disabling signature mirroring for oc-mirror plugin v2
 
-You can disable signature mirroring for all images by providing the `--remove-signatures` flag for the `oc mirror` command. You can disable signature mirroring when your destination registry does not support signature storage or when you need to bypass failures caused by invalid or expired signatures at the source.
+You can disable signature mirroring for all images by providing the `--remove-signatures` flag for the `oc mirror` command when the destination registry does not support signature storage or when you need to bypass invalid or expired source signatures.
 
 1.  If you want to disable signature mirroring for all images, add `remove-signatures` flag while mirroring images. For example:
 

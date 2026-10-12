@@ -231,7 +231,9 @@ To pull images from private registries that delegate authentication to a separat
 
 # Update the global cluster pull secret
 
-To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret*. To do this, you can use the `oc set data secret/additional-pull-secret -n kube-system` command. Hypershift manages the new credential propagation among the HostedCluster nodes.
+To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret* by using the `oc set data secret/additional-pull-secret -n kube-system` command.
+
+Hypershift manages the new credential propagation among the HostedCluster nodes.
 
 <div class="important">
 

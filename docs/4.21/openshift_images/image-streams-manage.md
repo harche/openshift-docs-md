@@ -324,7 +324,7 @@ The following default projects are considered highly privileged: `default`, `kub
 
 ## Get information about image streams
 
-To efficiently manage and monitor your image streams in OpenShift Container Platform, retrieve information about their versions. You can get general information about the image stream and detailed information about all the tags it is pointing to, ensuring your deployed applications rely on the correct image versions.
+To efficiently manage and monitor your image streams in OpenShift Container Platform, you can get general information about the image stream and detailed information about all the tags it is pointing to, ensuring your deployed applications rely on the correct image versions.
 
 - To get general information about the image stream and detailed information about all the tags it is pointing to, enter the following command:
 
@@ -620,7 +620,9 @@ The following sections describe how to import, and work with, image streams.
 
 ## Import images and image streams from private registries
 
-To securely manage content from external sources, configure your image streams to import tag and image metadata from private registries requiring authentication. This procedure is essential if you change the registry that the Cluster Samples Operator uses for pulling content to something other than the default [registry.redhat.io](https://registry.redhat.io).
+To securely manage content from external sources, configure your image streams to import tag and image metadata from private registries requiring authentication.
+
+This procedure is essential if you change the registry that the Cluster Samples Operator uses for pulling content to something other than the default [registry.redhat.io](https://registry.redhat.io).
 
 <div class="note">
 
@@ -644,7 +646,7 @@ When importing from insecure or secure registries, the registry URL defined in t
 
 ## Working with manifest lists
 
-To precisely manage multi-architecture or variant images contained within a manifest list, use the `--import-mode` flag with `oc import-image` or `oc tag` CLI commands. This functionality allows you to import a single sub-manifest, or all manifests, of a manifest list, providing fine-grained control over your image stream content.
+To manage multi-architecture images in a manifest list, use the `--import-mode` flag with `oc import-image` or `oc tag`. Importing a single sub-manifest or all manifests provides fine-grained control over your image stream content.
 
 In some cases, users might want to use sub-manifests directly. When `oc adm prune images` is run, or the `CronJob` pruner runs, they cannot detect when a sub-manifest list is used. As a result, an administrator using `oc adm prune images`, or the `CronJob` pruner, might delete entire manifest lists, including sub-manifests.
 
@@ -698,7 +700,9 @@ To maintain up-to-date image references for complex, multi-architecture images, 
 
 ### Configure SSL/TLS when importing manifest lists
 
-To control connection security and access policies for manifest lists sourced from external repositories, configure SSL/TLS settings during image importing. To configure SSL/TLS when importing a manifest list, you can use the `--insecure` flag to bypass standard certificate validation requirements if necessary.
+To control connection security and access policies for manifest lists sourced from external repositories, configure SSL/TLS settings during image importing.
+
+To configure SSL/TLS when importing a manifest list, you can use the `--insecure` flag to bypass standard certificate validation requirements if necessary.
 
 - Set `--insecure=true` so that importing a manifest list skips SSL/TLS verification. For example:
 

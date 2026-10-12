@@ -249,7 +249,7 @@ Configure MetalLB to advertise an advanced address pool by using the BGP.
 
 # Advertise an IP address pool from a subset of nodes
 
-To advertise an IP address from an IP addresses pool, from a specific set of nodes only, use the `.spec.nodeSelector` specification in the `BGPAdvertisement` custom resource (CR). This specification associates a pool of IP addresses with a set of nodes in the cluster. This is useful when you have nodes on different subnets in a cluster and you want to advertise an IP addresses from an address pool from a specific subnet, for example a public-facing subnet only.
+You can use the `.spec.nodeSelector` field in the `BGPAdvertisement` CR to advertise IP addresses from a pool on a specific set of nodes, such as nodes on a public-facing subnet.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -433,9 +433,7 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
 
 # Configure MetalLB with an L2 advertisement and labels
 
-You can use the `ipAddressPoolSelectors` field in the `BGPAdvertisement` and `L2Advertisement` custom resource definitions to associate the `IPAddressPool` to the advertisement. This association is based on the label assigned to the `IPAddressPool` instead of the name itself.
-
-The example in the procedure shows how to configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol by configuring the `ipAddressPoolSelectors` field.
+You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` CR to associate the `IPAddressPool` with the advertisement based on the label assigned to the pool instead of the pool name.
 
 - Install the OpenShift CLI (`oc`).
 

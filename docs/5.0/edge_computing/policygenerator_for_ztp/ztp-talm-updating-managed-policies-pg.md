@@ -476,7 +476,7 @@ You can perform an Operator update with the TALM.
 
         - `du-upgrade-operator-catsrc-policy` is needed by the image precaching feature to retrieve the Operator images from the catalog source.
 
-        - `common-subscriptions-policy` contains Operator subscriptions. If you have followed the structure and content of the reference `PolicyGenTemplates`, all Operator subscriptions are grouped into the `common-subscriptions-policy` policy.
+        - `common-subscriptions-policy` contains Operator subscriptions. If you have followed the structure and content of the reference `PolicyGenerator` CRs, all Operator subscriptions are grouped into the `common-subscriptions-policy` policy.
 
         <div class="note">
 
@@ -748,7 +748,7 @@ You can perform a platform and an Operator update at the same time.
 
         The CRs for the platform and Operator updates can be created from the beginning by configuring the setting to `spec.enable: true`. In this case, the update starts immediately after precaching completes and there is no need to manually enable the CR.
 
-        Both precaching and the update create extra resources, such as policies, placement bindings, placement rules, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
+        Both precaching and the update create extra resources, such as policies, placement bindings, placements, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
 
         </div>
 
@@ -764,7 +764,7 @@ You need to remove any policies that create Performance Addon Operator subscript
 
 </div>
 
-The reference DU profile includes the Performance Addon Operator in the `PolicyGenerator` CR `acm-common-ranGen.yaml`. To remove the subscription from deployed managed clusters, you must update `acm-common-ranGen.yaml`.
+The reference DU profile includes the Performance Addon Operator in the `PolicyGenerator` CR `ran-common.yaml`. To remove the subscription from deployed managed clusters, you must update `ran-common.yaml`.
 
 <div class="note">
 
@@ -778,7 +778,7 @@ If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Contain
 
 - Log in as a user with `cluster-admin` privileges.
 
-1.  Change the `complianceType` to `mustnothave` for the Performance Addon Operator namespace, Operator group, and subscription in the `acm-common-ranGen.yaml` file.
+1.  Change the `complianceType` to `mustnothave` for the Performance Addon Operator namespace, Operator group, and subscription in the `ran-common.yaml` file.
 
     ``` yaml
     - name: group-du-sno-pg-subscriptions-policy
@@ -800,7 +800,7 @@ If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Contain
     $ oc get policy -n ztp-common common-subscriptions-policy
     ```
 
-5.  Delete the Performance Addon Operator namespace, Operator group and subscription CRs from `policies.manifests` in the `acm-common-ranGen.yaml` file.
+5.  Delete the Performance Addon Operator namespace, Operator group and subscription CRs from `policies.manifests` in the `ran-common.yaml` file.
 
 6.  Merge the changes with your custom site repository and wait for the ArgoCD application to synchronize the change to the hub cluster. The policy remains compliant.
 

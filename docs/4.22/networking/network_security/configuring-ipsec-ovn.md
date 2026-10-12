@@ -80,7 +80,9 @@ Ports used for all-machine to all-machine communications
 
 # IPsec encryption for pod-to-pod traffic
 
-For IPsec encryption of pod-to-pod traffic, the following sections describe which specific pod-to-pod traffic is encrypted, what kind of encryption protocol is used, and how X.509 certificates are handled. These sections do not apply to IPsec encryption between the cluster and external hosts, which you must configure manually for your specific external network infrastructure.
+IPsec encryption of pod-to-pod traffic covers which traffic is encrypted, which protocol is used, and how X.509 certificates are handled.
+
+IPsec encryption between the cluster and external hosts requires manual configuration for your specific external network infrastructure.
 
 ## Types of network traffic flows encrypted by pod-to-pod IPsec
 
@@ -102,7 +104,9 @@ The encrypted and unencrypted flows are illustrated in the following diagram:
 
 ## Encryption protocol and IPsec mode
 
-Pod-to-pod IPsec in OpenShift Container Platform uses `AES-GCM-16-256` in transport mode with a 256-bit key and a 16-byte integrity check value. *Transport mode* encrypts end-to-end communication by adding an Encapsulated Security Payload (ESP) header to the IP header of the original packet and encrypts the packet data.
+Pod-to-pod IPsec in OpenShift Container Platform uses `AES-GCM-16-256` in transport mode with a 256-bit key and a 16-byte integrity check value (ICV).
+
+*Transport mode* encrypts end-to-end communication by adding an Encapsulated Security Payload (ESP) header to the IP header of the original packet and encrypts the packet data.
 
 OpenShift Container Platform does not currently use or support IPsec *Tunnel mode* for pod-to-pod communication.
 

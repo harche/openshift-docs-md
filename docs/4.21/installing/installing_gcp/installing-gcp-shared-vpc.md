@@ -64,7 +64,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Generating a key pair for cluster node SSH access
 
-During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is added to `~/.ssh/authorized_keys` for the `core` user on each node.
 
 The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
@@ -1435,7 +1435,7 @@ When the cluster deployment completes successfully:
 
 # Provisioning your own DNS records
 
-Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain. Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
+Use your cluster name and base domain to provision your DNS records. Point `api.<cluster_name>.<base_domain>.` to the API server IP address, and point `*.apps.<cluster_name>.<base_domain>.` to the Ingress service IP address.
 
 <div class="important">
 

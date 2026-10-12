@@ -10,7 +10,7 @@ The *mirror registry for Red Hat OpenShift* is not intended to be a substitute 
 
 </div>
 
-# Prerequisites
+# Prerequisites for creating a mirror registry
 
 There are several prerequisites that you must meet before you can create a mirror registry.
 

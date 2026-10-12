@@ -133,6 +133,7 @@
   - [Installing a cluster on Google Cloud into an existing VPC](installing/installing_gcp/installing-gcp-vpc.md)
   - [Installing a cluster on Google Cloud into a shared VPC](installing/installing_gcp/installing-gcp-shared-vpc.md)
   - [Installing a private cluster on Google Cloud](installing/installing_gcp/installing-gcp-private.md)
+  - [Installing a cluster on Google Cloud Dedicated](installing/installing_gcp/installing-gcp-dedicated.md)
   - [Installing a cluster on Google Cloud using Infrastructure Manager templates](installing/installing_gcp/installing-gcp-user-infra.md)
   - [Installing a cluster into a shared VPC on Google Cloud using Infrastructure Manager templates](installing/installing_gcp/installing-gcp-user-infra-vpc.md)
   - [Installing a cluster on Google Cloud in a disconnected environment with user-provisioned infrastructure](installing/installing_gcp/installing-restricted-networks-gcp.md)
@@ -885,6 +886,7 @@
   - [Volume populators](storage/container_storage_interface/persistent-storage-csi-vol-populators.md)
   - [Managing the default storage class](storage/container_storage_interface/persistent-storage-csi-sc-manage.md)
   - [CSI automatic migration](storage/container_storage_interface/persistent-storage-csi-migration.md)
+  - [Overview of Changed block tracking](storage/container_storage_interface/persistent-storage-csi-changed-block-tracking.md)
   - [AWS Elastic Block Store CSI Driver Operator](storage/container_storage_interface/persistent-storage-csi-ebs.md)
   - [AWS Elastic File Service CSI Driver Operator](storage/container_storage_interface/persistent-storage-csi-aws-efs.md)
   - [Azure Disk CSI Driver Operator](storage/container_storage_interface/persistent-storage-csi-azure.md)
@@ -1098,7 +1100,7 @@
 - [Creating custom machine config pools](machine_configuration/machine-config-custom-mcp.md)
 - [Managing unused rendered machine configs](machine_configuration/machine-configs-garbage-collection.md)
 - [Image mode for OpenShift](machine_configuration/mco-coreos-layering.md)
-- [Setting the RHCOS version in a cluster](machine_configuration/mco-image-streams.md)
+- [Updating the cluster to RHCOS 10.x](machine_configuration/mco-image-streams.md)
 - [Machine Config Daemon metrics](machine_configuration/machine-config-daemon-metrics.md)
 
 ### Machine management
@@ -1186,10 +1188,11 @@
 
 ### Virtualized control planes
 
-- [Understanding virtualized control planes](vcp/vcp-overview.md)
-- [Prerequisites for virtualized control planes](vcp/vcp-prerequisites.md)
+- [Virtualized control planes](vcp/vcp-overview.md)
+- [Requirements for virtualized control planes](vcp/vcp-prerequisites.md)
 - [Preparing the environment for virtualized control planes](vcp/vcp-preparing-environment.md)
 - [Deploying a virtualized control plane](vcp/vcp-installing-cluster.md)
+- [Managing the hosting cluster for virtualized control planes](vcp/vcp-managing.md)
 
 ### Nodes
 
@@ -2028,6 +2031,7 @@
 - **Creating virtual machines**
   - [Create virtual machines by using the web console](virt/creating_vm/virt-creating-vms-web.md)
   - [Creating virtual machines by using the CLI](virt/creating_vm/virt-creating-vms-from-cli.md)
+  - [Create virtual machines from native VM templates](virt/creating_vm/virt-create-vms-from-native-vm-templates.md)
   - [Configuring IBM Secure Execution virtual machines on IBM Z and IBM LinuxONE](virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.md)
   - [Creating AWS EC2 Windows License Included (LI) compliant VMs](virt/creating_vm/virt-creating-vms-aws-li-windows.md)
   - [Instance types](virt/creating_vm/virt-creating-vms-from-instance-types.md)
@@ -2040,6 +2044,7 @@
   - [Install VirtIO drivers on Windows VMs](virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.md)
   - [Update VirtIO drivers](virt/managing_vms/virt-update-virtio-drivers.md)
   - [Connecting to VM consoles](virt/managing_vms/virt-accessing-vm-consoles.md)
+  - [Virtual machine management with the MCP server for OpenShift](virt/managing_vms/virt-machine-management-with-the-mcp-server-for-openshift.md)
   - **SSH access**
     - [SSH access for virtual machines](virt/managing_vms/ssh/virt-accessing-vm-ssh.md)
     - [Configure SSH with the virtctl CLI tool](virt/managing_vms/ssh/virt-using-virtctl-ssh.md)
@@ -2056,6 +2061,7 @@
   - [Using virtual Trusted Platform Module devices](virt/managing_vms/virt-using-vtpm-devices.md)
   - [Managing virtual machines with OpenShift Pipelines](virt/managing_vms/virt-managing-vms-openshift-pipelines.md)
   - [Migrating VM storage](virt/managing_vms/virt-migrating-vm-storage.md)
+  - [Virtual machine labels and annotations](virt/managing_vms/virt-vm-labels-annotations.md)
   - **Advanced virtual machine management**
     - [Working with resource quotas for virtual machines](virt/managing_vms/advanced_vm_management/virt-working-with-resource-quotas-for-vms.md)
     - [Configuring the Application-Aware Quota Operator](virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md)

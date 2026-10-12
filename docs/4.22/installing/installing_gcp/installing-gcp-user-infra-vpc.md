@@ -1208,20 +1208,20 @@ In connected OpenShift Container Platform environments, all nodes are required t
 
 </div>
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| `22623`              | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| `22623`         | The port handles traffic from the Machine Config Server and directs the traffic to the control plane machines.             |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If an external NTP time server is configured, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -1460,7 +1460,9 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/
 
 # Creating firewall rules and IAM roles in Google Cloud
 
-You must create firewall rules and IAM roles in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Infrastructure Manager template. If you are installing a cluster into a shared VPC and the host project already has the necessary firewall rules and IAM roles, you can skip creating these resources.
+You must create firewall rules and IAM roles in Google Cloud for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Infrastructure Manager template.
+
+If you are installing a cluster into a shared VPC and the host project already has the necessary firewall rules and IAM roles, you can skip creating these resources.
 
 <div class="note">
 

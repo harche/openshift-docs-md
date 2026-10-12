@@ -283,12 +283,12 @@ You can find information about available OpenShift Container Platform advisories
 
     ``` terminal
     NAME                           STATUS   ROLES    AGE   VERSION
-    ip-10-0-168-251.ec2.internal   Ready    master   82m   v1.35.4
-    ip-10-0-170-223.ec2.internal   Ready    master   82m   v1.35.4
-    ip-10-0-179-95.ec2.internal    Ready    worker   70m   v1.35.4
-    ip-10-0-182-134.ec2.internal   Ready    worker   70m   v1.35.4
-    ip-10-0-211-16.ec2.internal    Ready    master   82m   v1.35.4
-    ip-10-0-250-100.ec2.internal   Ready    worker   69m   v1.35.4
+    ip-10-0-168-251.ec2.internal   Ready    master   82m   v1.36.3
+    ip-10-0-170-223.ec2.internal   Ready    master   82m   v1.36.3
+    ip-10-0-179-95.ec2.internal    Ready    worker   70m   v1.36.3
+    ip-10-0-182-134.ec2.internal   Ready    worker   70m   v1.36.3
+    ip-10-0-211-16.ec2.internal    Ready    master   82m   v1.36.3
+    ip-10-0-250-100.ec2.internal   Ready    worker   69m   v1.36.3
     ```
 
 - [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
@@ -297,7 +297,7 @@ You can find information about available OpenShift Container Platform advisories
 
 # Cluster update status using oc adm upgrade status
 
-When updating your cluster, the `oc adm upgrade` command returns limited information about the status of your update. The cluster administrator can use the `oc adm upgrade status` command to return specific information regarding a cluster update, including the status of the control plane and worker node updates. Worker is also known as compute.
+You can use the `oc adm upgrade status` command to get detailed cluster update information, including control plane and worker node status, beyond what the standard `oc adm upgrade` command provides.
 
 The `oc adm upgrade status` command is read-only and does not alter any state in your cluster.
 

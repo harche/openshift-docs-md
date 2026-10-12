@@ -38,13 +38,17 @@ TALM can be used to manage the rollout of any policy CR where the `remediationAc
 
 <div class="note">
 
-Using the `PolicyGentemplate` CRD is the recommended method for automatic policy generation.
+Using the `PolicyGenerator` CRD with RHACM is the recommended method for automatic policy generation. The `PolicyGenTemplate` CRD is deprecated.
 
 </div>
 
 For policies that update an Operator subscription with manual approval, TALM provides additional functionality that approves the installation of the updated Operator.
 
-For more information about managed policies, see [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview) in the RHACM documentation.
+For more information about managed policies, "Policy Overview" in the RHACM documentation.
+
+- [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
+
+<!-- -->
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 
@@ -1009,9 +1013,15 @@ One `ClusterGroupUpgrade` CR can have multiple blocking CRs. In this case, all t
 
 The Topology Aware Lifecycle Manager (TALM) remediates a set of `inform` policies for the clusters specified in the `ClusterGroupUpgrade` custom resource (CR).
 
-TALM remediates `inform` policies by controlling the `remediationAction` specification in a `Policy` CR through the `bindingOverrides.remediationAction` and `subFilter` specifications in the `PlacementBinding` CR. Each policy has its own corresponding RHACM placement rule and RHACM placement binding.
+TALM remediates `inform` policies by controlling the `remediationAction` specification in a `Policy` CR through the `bindingOverrides.remediationAction` and `subFilter` specifications in the `PlacementBinding` CR. Each policy has its own corresponding Red Hat Advanced Cluster Management (RHACM) placement and RHACM placement binding.
 
-One by one, TALM adds each cluster from the current batch to the placement rule that corresponds with the applicable managed policy. If a cluster is already compliant with a policy, TALM skips applying that policy on the compliant cluster. TALM then moves on to applying the next policy to the non-compliant cluster. After TALM completes the updates in a batch, all clusters are removed from the placement rules associated with the policies. Then, the update of the next batch starts.
+<div class="note">
+
+TALM uses the RHACM `Placement` CR for cluster selection during policy remediation. The `Placement` CR requires a `ManagedClusterSetBinding` CR in each policy namespace. If you are using a deprecated `PolicyGenTemplate` CR, you must create a `ManagedClusterSetBinding` in each policy namespace. For more information, see the Knowledgebase solution [TALM Placement API Migration - Mitigation Plan](https://access.redhat.com/articles/7147283).
+
+</div>
+
+In sequence, TALM adds each cluster from the current batch to the placement that corresponds with the applicable managed policy. If a cluster is already compliant with a policy, TALM does not apply that policy to the cluster. TALM then applies the next policy to the next non-compliant cluster. After TALM completes the updates for a batch, it removes all clusters from the placements associated with the policies. The update of the next batch then starts.
 
 If a spoke cluster does not report any compliant state to RHACM, the managed policies on the hub cluster can be missing status information that TALM needs. TALM handles these cases in the following ways:
 
@@ -1070,7 +1080,11 @@ spec:
   remediationAction: inform
 ```
 
-For more information about RHACM policies, see [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview).
+For more information about RHACM policies, see "Policy overview" in the RHACM documentation.
+
+- [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
+
+<!-- -->
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 
@@ -1247,7 +1261,7 @@ You can update your managed clusters by applying your policies.
             "cgu-policy3-common-ptp-sub-policy",
             "cgu-policy4-common-sriov-sub-policy"
           ],
-          "placementRules": [
+          "placements": [
             "cgu-policy1-common-cluster-version-policy",
             "cgu-policy2-common-nto-sub-policy",
             "cgu-policy3-common-ptp-sub-policy",
@@ -1352,7 +1366,7 @@ You can update your managed clusters by applying your policies.
         "cgu-policy3-common-ptp-sub-policy",
         "cgu-policy4-common-sriov-sub-policy"
       ],
-      "placementRules": [
+      "placements": [
         "cgu-policy1-common-cluster-version-policy",
         "cgu-policy2-common-nto-sub-policy",
         "cgu-policy3-common-ptp-sub-policy",
@@ -2228,7 +2242,7 @@ To ensure that the `ClusterGroupUpgrade` configuration is functional, you can do
 
     <div class="warning">
 
-    After you set the `spec.enable` field to `true` in the `ClusterUpgradeGroup` CR, the update procedure starts and you cannot edit the CR’s `spec` fields anymore.
+    After you set the `spec.enable` field to `true` in the `ClusterUpgradeGroup` CR, the update procedure starts and you can no longer edit the CR’s `spec` fields.
 
     </div>
 

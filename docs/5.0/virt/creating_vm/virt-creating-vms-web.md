@@ -309,3 +309,38 @@ The optional **Customization** step groups advanced settings into tabs. The foll
 | Labels and annotations         | Metadata    | **Labels** are key-value pairs that you can query to organize and select VMs. **Annotations** store arbitrary metadata that cannot be queried.                                                                                                                              |
 
 Key customization settings
+
+# Configuring project-level default networks
+
+As a cluster administrator, you can configure project-level network defaults for virtual machine (VM) creation and network interface selection, using namespace annotations in the OpenShift Container Platform project, `kubevirt.io/allow-pod-network` and `kubevirt.io/default-network`.
+
+<div class="formalpara-title">
+
+**Prerequisites**
+
+</div>
+
+You have logged in to the OpenShift Container Platform web console as a user with `cluster-admin` privileges.
+
+1.  Navigate to **Projects**.
+
+2.  Select the project you want to configure and open the **YAML** tab.
+
+3.  Edit the annotations as follows:
+
+    - To disable the pod network when you create a new VM or when you add a new network interface to an existing VM, set the `kubevirt.io/allow-pod-network` annotation to `false`.
+
+      By default, the pod network is allowed even if the `kubevirt.io/allow-pod-network` is absent or not set.
+
+    - To choose a network attachment definition (NAD) as a default when you create a new VM, set the `kubevirt.io/allow-pod-network` annotation to `false` and the `kubevirt.io/default-network` annotation to the NAD name.
+
+      Note that choosing a specific NAD affects only the creation of a new VM but not the addition of a new network interface to an existing VM. If you add a new network interface to a VM instead of the pod network, the system auto-selects the first available NAD from the list of the project’s NADs.
+
+      The following matrix shows the results of various setting combinations.
+
+      | Pod network                             | Default NAD annotation | VM creation default                | Addition of a new network interface (auto-select) |
+      |-----------------------------------------|------------------------|------------------------------------|---------------------------------------------------|
+      | Allowed (default)                       | Not set                | Pod network                        | Pod network                                       |
+      | Not allowed (`allow-pod-network:false`) | Not set                | First available NAD in the project | First available NAD in the project                |
+      | Allowed (default)                       | Set to NAD name        | Configured NAD                     | Pod network                                       |
+      | Not allowed (`allow-pod-network:false`) | Set to NAD name        | Configured NAD                     | First available NAD in the project                |

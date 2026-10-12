@@ -39,8 +39,8 @@ The output lists the worker nodes that NFD has labeled for DPU provisioning. For
 
 ``` terminal
 NAME           STATUS     ROLES               AGE   VERSION
-host-worker1   NotReady   worker,worker-dpu   62s   v1.35.6
-host-worker2   NotReady   worker,worker-dpu   66s   v1.35.6
+host-worker1   NotReady   worker,worker-dpu   62s   v1.36.3
+host-worker2   NotReady   worker,worker-dpu   66s   v1.36.3
 ```
 
 Check BFB object status
@@ -327,8 +327,8 @@ You can diagnose and resolve DPU hosted cluster issues, including CSR approval f
 
     ``` terminal
     NAME                 STATUS   ROLES    AGE   VERSION
-    dpu-worker1          Ready    worker   5m    v1.35.6
-    dpu-worker2          Ready    worker   5m    v1.35.6
+    dpu-worker1          Ready    worker   5m    v1.36.3
+    dpu-worker2          Ready    worker   5m    v1.36.3
     ```
 
 7.  If nodes are not joining, check whether the bootstrap token is still valid by running the following command on the hosted cluster:

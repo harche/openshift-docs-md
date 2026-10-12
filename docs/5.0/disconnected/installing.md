@@ -10,7 +10,7 @@ For example, if you plan to install a cluster on AWS with installer-provisioned 
 
 </div>
 
-# Installing a cluster with the Agent-based Installer
+# Install a cluster with the Agent-based Installer
 
 You can install an OpenShift Container Platform cluster in a disconnected environment with the Agent-based Installer.
 

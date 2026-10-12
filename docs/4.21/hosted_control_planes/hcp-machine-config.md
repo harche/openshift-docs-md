@@ -732,7 +732,9 @@ To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` 
 
 # Autoscaling to and from zero on hosted control planes node pools
 
-You can configure hosted control planes node pools to autoscale down to zero compute nodes when no schedulable workloads remain on the pool and to provision nodes on-demand when pending pods require capacity. This capability reduces idle compute costs for variable workloads while the hosted control plane stays available.
+You can configure hosted control planes node pools to autoscale down to zero compute nodes when no schedulable workloads remain on the pool and to provision nodes on-demand when pending pods require capacity.
+
+This capability reduces idle compute costs for variable workloads while the hosted control plane stays available.
 
 <div class="note">
 

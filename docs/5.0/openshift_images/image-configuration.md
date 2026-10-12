@@ -208,12 +208,12 @@ You can configure image registry settings by editing the `image.config.openshift
 
   ``` terminal
   NAME                                         STATUS                     ROLES                  AGE   VERSION
-  ip-10-0-137-182.us-east-2.compute.internal   Ready,SchedulingDisabled   worker                 65m   v1.35.4
-  ip-10-0-139-120.us-east-2.compute.internal   Ready,SchedulingDisabled   control-plane          74m   v1.35.4
-  ip-10-0-176-102.us-east-2.compute.internal   Ready                      control-plane          75m   v1.35.4
-  ip-10-0-188-96.us-east-2.compute.internal    Ready                      worker                 65m   v1.35.4
-  ip-10-0-200-59.us-east-2.compute.internal    Ready                      worker                 63m   v1.35.4
-  ip-10-0-223-123.us-east-2.compute.internal   Ready                      control-plane          73m   v1.35.4
+  ip-10-0-137-182.us-east-2.compute.internal   Ready,SchedulingDisabled   worker                 65m   v1.36.3
+  ip-10-0-139-120.us-east-2.compute.internal   Ready,SchedulingDisabled   control-plane          74m   v1.36.3
+  ip-10-0-176-102.us-east-2.compute.internal   Ready                      control-plane          75m   v1.36.3
+  ip-10-0-188-96.us-east-2.compute.internal    Ready                      worker                 65m   v1.36.3
+  ip-10-0-200-59.us-east-2.compute.internal    Ready                      worker                 63m   v1.36.3
+  ip-10-0-223-123.us-east-2.compute.internal   Ready                      control-plane          73m   v1.36.3
   ```
 
 ## Adding specific registries to an allowlist
@@ -651,7 +651,7 @@ When you define the `allowedRegistries` parameter, all registries, including `re
     insecure = true
   ```
 
-# About adding registries that allow image short names
+# Configure short-name search registries
 
 With an image short name, you can search for images without including the fully qualified domain name in the pull `spec` parameter.
 
@@ -663,7 +663,7 @@ When pulling or pushing images, the container runtime searches the registries li
 
 ## When not to use image short names
 
-To avoid deployment failures and security risks when using public registries in OpenShift Container Platform, use fully-qualified image names instead of short names. Short names work with Red Hat internal or private registries, but public registries that require authentication might not deploy images with short names.
+To avoid deployment failures and security risks in OpenShift Container Platform, use fully-qualified image names instead of short names. Short names work with Red Hat internal registries, but public registries that require authentication might fail to deploy them.
 
 You cannot list multiple public registries under the `containerRuntimeSearchRegistries` parameter if each public registry requires different credentials and a cluster does not list the public registry in the global pull secret.
 
@@ -922,7 +922,9 @@ However, you can configure a cluster-wide `CRIOCredentialProviderConfig` object 
 
 ## Configuring project-scoped image pull secrets for mirrored registries
 
-As a cluster administrator, you can edit the cluster-wide `CRIOCredentialProviderConfig` object, named `cluster`, to enable project-scoped image pull secrets that you can use with mirrored repositories. By using project-scoped secrets, you can maintain security isolation between projects without exposing credentials in a global pull secret.
+As a cluster administrator, you can edit the cluster-wide `CRIOCredentialProviderConfig` object, named `cluster`, to enable project-scoped image pull secrets that you can use with mirrored repositories.
+
+By using project-scoped secrets, you can maintain security isolation between projects without exposing credentials in a global pull secret.
 
 By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project. However, you can use the cluster-wide `CRIOCredentialProviderConfig` object to configure the kubelet to trigger the CRI-O credential provider, which enables project-scoped image pull secrets.
 
@@ -1259,12 +1261,12 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
         ``` terminal
         NAME                           STATUS                     ROLES    AGE  VERSION
-        worker-1.compute.local         Ready                      worker   7m   v1.35.4
-        master-1.compute.local         Ready                      master   11m  v1.35.4
-        master-2.compute.local         Ready                      master   11m  v1.35.4
-        worker-2.compute.local         Ready                      worker   7m   v1.35.4
-        worker-3.compute.local         Ready                      worker   7m   v1.35.4
-        master-3.compute.local         Ready                      master   11m  v1.35.4
+        worker-1.compute.local         Ready                      worker   7m   v1.36.3
+        master-1.compute.local         Ready                      master   11m  v1.36.3
+        master-2.compute.local         Ready                      master   11m  v1.36.3
+        worker-2.compute.local         Ready                      worker   7m   v1.36.3
+        worker-3.compute.local         Ready                      worker   7m   v1.36.3
+        master-3.compute.local         Ready                      master   11m  v1.36.3
         ```
 
     2.  Start the debugging process to access the node:
