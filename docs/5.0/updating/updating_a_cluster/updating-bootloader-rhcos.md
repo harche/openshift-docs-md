@@ -8,6 +8,8 @@ For example, you can use `bootupd` to update the boot loader to protect against 
 
 On clusters that use the `x86_64` or ARM CPU architecture, RHCOS automatically updates the boot loader when a node gets upgraded to a new operating system image. For UEFI systems, the `bootloader-update.service` updates the boot loader inside the EFI System Partition. For Legacy BIOS systems, the `bootloader-update.service` writes the boot loader directly to the boot sectors. With these clusters, there is no need to manually update the boot loader.
 
+On the `ppc64le` architecture, `bootupd` support exists, but RAID setups are not currently supported. On the `s390x` architecture, `bootupd` has no boot loader to update.
+
 </div>
 
 # Updating the boot loader manually
@@ -111,18 +113,8 @@ This configuration is not enabled by default because unexpected interruptions of
         machineconfiguration.openshift.io/role: worker
     systemd:
       units:
-      - name: bootupctl-update.service
+      - name: bootloader-update.service
         enabled: true
-        contents: |
-          [Unit]
-          Description=Bootupd automatic update
-
-          [Service]
-          ExecStart=/usr/bin/bootupctl update
-          RemainAfterExit=yes
-
-          [Install]
-          WantedBy=multi-user.target
     ```
 
     On control plane nodes, substitute `master` for `worker` in `metadata.name` and `metadata.labels.machineconfiguration.openshift.io/role`.
@@ -142,3 +134,68 @@ This configuration is not enabled by default because unexpected interruptions of
       ``` terminal
       $ oc apply -f ./99-worker-bootupctl-update.yaml
       ```
+
+<!-- -->
+
+1.  Check that the `99-worker-chrony` machine config object was created by running the following command:
+
+    ``` terminal
+    $ oc describe mc 99-worker-chrony
+    ```
+
+    <div class="formalpara-title">
+
+    **Expected output**
+
+    </div>
+
+    ``` yaml
+    Name:         99-worker-chrony
+    Namespace:
+    Labels:       machineconfiguration.openshift.io/role=worker
+    Annotations:  <none>
+    API Version:  machineconfiguration.openshift.io/v1
+    Kind:         MachineConfig
+    Metadata:
+      Creation Timestamp:  2026-10-01T19:09:36Z
+      Generation:          1
+      Resource Version:    54580
+      UID:                 cde98e8e-9b9c-4b9c-bad9-5608fbe8af74
+    Spec:
+      Config:
+        Ignition:
+          Version:  3.5.0
+        Systemd:
+          Units:
+            Enabled:  true
+            Name:     bootloader-update.service
+    Events:           <none>
+    ```
+
+    - Check that the `bootloader-update.service` systemd unit is enabled on the nodes in the machine config pool specified in the machine config object:
+
+      1.  Log in to a node:
+
+          ``` terminal
+          $ oc debug node/<node_name>
+          ```
+
+      2.  Set `/host` as the root directory within the debug shell:
+
+          ``` terminal
+          sh-5.1# chroot /host
+          ```
+
+      3.  Verify that the unit is enabled by running the following command:
+
+              $ sh-5.2# systemctl is-enabled bootloader-update.service
+
+          <div class="formalpara-title">
+
+          **Expected output**
+
+          </div>
+
+          ``` terminal
+          enabled
+          ```

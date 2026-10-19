@@ -6,6 +6,13 @@ To view the supported guest operating systems for OpenShift Virtualization, see 
 
 # New features and enhancements
 
+Dual stream support for OpenShift Virtualization clusters
+You can provision OpenShift Virtualization clusters that run Red Hat Enterprise Linux CoreOS (RHCOS) version 9.8 and version 10.2. RHCOS 10.2 is the default operating system. RHCOS 9.8 is also supported. Live migration of virtual machines (VMs) between RHCOS 9.x and RHCOS 10.x worker nodes is supported.
+
+[CNV-84749](https://issues.redhat.com/browse/CNV-84749)
+
+<!-- -->
+
 The v1 version of the `HyperConverged` API is the default
 The `v1` API version of the `HyperConverged` custom resource (CR) is the default version. The `v1beta1` version is deprecated and will be removed in a future release. OpenShift Virtualization adds new API fields only to the `v1` version. Updates from earlier versions require no manual action.
 
@@ -27,10 +34,24 @@ The `virt-platform-autopilot` controller lowers deployment complexity by automat
 
 <!-- -->
 
+Load-aware rebalancing is enabled by default on clusters
+On clusters where the Kube Descheduler Operator is installed, OpenShift Virtualization automatically configures the descheduler to run in load-aware balancing mode, which accounts for both CPU and memory usage when it rebalances virtual machine (VM) workloads across nodes. The descheduler is an optional component that OpenShift Virtualization does not install for you. If the Kube Descheduler Operator is not installed, no rebalancing occurs. You can disable load-aware rebalancing in the OpenShift Container Platform web console. For more information, see [How automated postinstallation configuration works](../../virt/post_installation_configuration/virt-platform-autopilot.xml#virt-about-platform-autopilot_virt-platform-autopilot).
+
+[CNV-80073](https://issues.redhat.com/browse/CNV-80073)
+
+<!-- -->
+
 Self-service Technical Supportability Review
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices. The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization, and coverage is continually expanding.
 
 For more information, see [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze) and [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255).
+
+<!-- -->
+
+Support for IBM Z Fusion Access for SAN on IBM Z and IBM LinuxONE is generally available
+On IBM Z® and IBM® LinuxONE, you can deploy IBM® Fusion Access for SAN. IBM® Fusion Access for SAN is a cloud-native solution that helps you manage existing Storage Area Network (SAN) infrastructure for workloads on OpenShift Virtualization. For more information, see [Fusion Access for SAN](https://www.ibm.com/docs/en/fusion-software/2.14.0?topic=fusion-access-san).
+
+[CNV-98210](https://issues.redhat.com/browse/CNV-98210)
 
 <!-- -->
 
@@ -58,6 +79,47 @@ The `virt-platform-autopilot` controller replaces the `wasp-agent` component
 The `virt-platform-autopilot` controller replaces the `wasp-agent` component for configuring higher VM workload density. When you enable memory overcommitment in the `HyperConverged` custom resource, the controller automatically deploys the necessary node-level configurations, which simplifies the setup process. You must manually provision swap storage on worker nodes by creating a `MachineConfig` object. For more information, see [Configuring higher VM workload density](../../virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.xml#virt-configuring-higher-vm-workload-density).
 
 [CNV-83420](https://issues.redhat.com/browse/CNV-83420)
+
+<!-- -->
+
+KubeVirt Redfish for VM management is generally available
+With this release, KubeVirt Redfish is generally available. KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This update also adds `bcrypt` hashed passwords for more secure authentication to the KubeVirt Redfish API.
+
+For more information, see [Configuring KubeVirt Redfish for VM management](../post_installation_configuration/virt-kubevirt-redfish.xml#virt-kubevirt-redfish).
+
+<!-- -->
+
+Configuring PCI passthrough for the RoCE and ISM devices on IBM Z and IBM LinuxONE is generally available
+On IBM Z® and IBM® LinuxONE, you can configure PCI passthrough for Network Express RoCE adapters and IBM® Internal Shared Memory (ISM) virtual PCI devices.
+
+For more information, see [PCI passthrough on IBM Z](https://docs.redhat.com/en/documentation/openshift_container_platform/5.0/html/virtualization/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.html#virt-configuring-pci-passthrough-ibm-z_virt-configuring-pci-passthrough).
+
+[CNV-96643](https://issues.redhat.com/browse/CNV-96643)
+
+<!-- -->
+
+Confidential computing with CCRV on IBM Z and IBM LinuxONE
+You can deploy confidential computing workloads by using IBM® Confidential Computing Container Runtime for Red Hat Virtualization Solutions (CCRV). This integration enables CCRV workloads to use OpenShift Virtualization functionalities while maintaining confidential computing capabilities.
+
+[CNV-96593](https://issues.redhat.com/browse/CNV-96593)
+
+<!-- -->
+
+Configure VM node placement on IBM Z mixed-node clusters
+On IBM Z® and IBM® LinuxONE clusters, OpenShift Virtualization only supports VMs on bare metal LPAR nodes. You can restrict both OpenShift Virtualization infrastructure components and VM workloads to bare metal LPAR nodes by applying a node placement rule.
+
+For more information, see [Configuring node placement for OpenShift Virtualization components on IBM Z](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/virtualization/index#virt-configuring-node-placement-ibm-z_virt-node-placement-virt-components).
+
+[CNV-95482](https://issues.redhat.com/browse/CNV-95482)
+
+<!-- -->
+
+Simplified IBM Secure Execution deployment by using a bootable image
+You can upload an IBM® Secure Execution bootable image and associate it with a predefined preference. Virtual machines (VMs) that you create from the image automatically enable the `launchSecurity` setting.
+
+For more information, see [Upload and use an IBM Secure Execution bootable image on IBM Z and IBM LinuxONE](../../virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.xml#virt-upload-ibm-secure-execution-bootable-image-ibm-z_virt-configuring-ibm-secure-execution-vms-ibm-z).
+
+[CNV-97316](https://issues.redhat.com/browse/CNV-97316)
 
 <!-- -->
 
@@ -135,6 +197,13 @@ You can filter virtual machines by group in the OpenShift Container Platform web
 
 <!-- -->
 
+Auto-hidden navigation menu on virtualization pages
+The left navigation menu now collapses when you go to OpenShift Virtualization pages, such as the virtual machine (VM) list and VM detail pages. This gives you more space to view and manage your VMs. If you expand the navigation menu, it stays open while you remain on virtualization pages. To turn off this behavior, go to **Settings** \> **User** \> **General** and clear the **Auto-hide navigation menu** toggle.
+
+[CNV-86441](https://issues.redhat.com/browse/CNV-86441)
+
+<!-- -->
+
 Metrics for GPUs attached to virtual machines
 OpenShift Virtualization exposes metrics that identify the GPUs attached to a virtual machine instance (VMI). You can correlate these metrics with the GPU metrics that the NVIDIA Data Center GPU Manager (DCGM) exporter provides to track GPU allocation and usage. Recording rules simplify the use of these metrics in OpenShift Virtualization dashboards.
 
@@ -174,7 +243,7 @@ The `HotplugVolume` feature gate, which allows you to add storage without restar
 <!-- -->
 
 The `pc-q35-rhel7.x.0` and `pc-q35-rhel8.x.0` machine types are deprecated
-The `pc-q35-rhel7.x.0` and `pc-q35-rhel8.x.0` machine types have been deprecated since OpenShift Virtualization 4.13. They will be removed in a future release as part of the move to Red Hat Enterprise Linux (RHEL) 10 user space. Update your virtual machines (VMs) to the `pc-q35-rhel9.x.0` machine type. Updating the machine type requires a VM restart, so plan for downtime.
+These machine types have been deprecated since OpenShift Virtualization 4.13 and will be removed in a future release as part of the move to Red Hat Enterprise Linux (RHEL) 10 user space. Update the machine type of your virtual machines (VMs) to `pc-q35-rhel9.8.0`. Updating the machine type requires a VM restart, so plan for downtime. For more information about updating multiple VMs at the same time, see [Updating multiple virtual machines](../../virt/managing_vms/virt-edit-vms.xml#virt-updating-multiple-vms_virt-edit-vms).
 
 [CNV-98500](https://issues.redhat.com/browse/CNV-98500)
 
@@ -225,6 +294,13 @@ Model Context Protocol server tools for storage and virtual machine templates (T
 You can use the Model Context Protocol (MCP) server to manage OpenShift Virtualization resources through high-level workflows. This release adds tools for persistent storage, virtual machine (VM) templates, and HyperConverged Operator status and configuration. The kubevirt toolset is not enabled by default. To use these tools, add kubevirt to the toolsets setting in the OpenShift Container Platform MCP server configuration file. This capability is a Technology Preview feature.
 
 [CNV-77676](https://issues.redhat.com/browse/CNV-77676)
+
+<!-- -->
+
+Opt out of virtualization role aggregation for users (Technology Preview)
+Cluster administrators can set the `.spec.roleAggregationStrategy` field in the `HyperConverged` custom resource (CR) to `Manual` to stop aggregating the virtualization cluster roles `admin`, `edit`, and `view` to users. After an administrator selects `Manual`, regular users cannot interact with virtualization resources such as virtual machines (VMs) in their projects, either from the command-line interface (CLI) or the web console. To grant a user these permissions, the administrator creates a `RoleBinding` object. This capability is a Technology Preview feature.
+
+[CNV-87048](https://issues.redhat.com/browse/CNV-87048)
 
 # Fixed issues
 

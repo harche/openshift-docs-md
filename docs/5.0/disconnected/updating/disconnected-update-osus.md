@@ -30,7 +30,7 @@ The following sections describe how to install an OSUS instance and configure it
 
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
 
-# Configuring access to a secured registry for the OpenShift Update Service
+# Configure access to a secured registry for the OpenShift Update Service
 
 If your release images are contained in a registry whose HTTPS X.509 certificate is signed by a custom certificate authority, you must configure additional trust stores for image registry access for the update service.
 
@@ -174,7 +174,7 @@ Use this procedure when you need a separate registry to store images than the re
 
 - [Transferring cluster ownership](https://docs.redhat.com/en/documentation/openshift_cluster_manager/1-latest/html-single/managing_clusters/index#transferring-cluster-ownership_downloading-and-updating-pull-secrets)
 
-# Installing the OpenShift Update Service Operator
+# Install the OpenShift Update Service Operator
 
 To install the OpenShift Update Service, you must first install the OpenShift Update Service Operator by using the OpenShift Container Platform web console or CLI.
 
@@ -184,7 +184,7 @@ For clusters that are installed in disconnected environments, also known as disc
 
 </div>
 
-## Installing the OpenShift Update Service Operator by using the web console
+## Install the OpenShift Update Service Operator by using the web console
 
 You can use the web console to install the OpenShift Update Service Operator.
 
@@ -218,7 +218,7 @@ You can use the web console to install the OpenShift Update Service Operator.
 
 4.  Ensure that **OpenShift Update Service** is listed in the correct namespace with a **Status** of **Succeeded**.
 
-## Installing the OpenShift Update Service Operator by using the CLI
+## Install the OpenShift Update Service Operator by using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the OpenShift Update Service Operator.
 
@@ -343,7 +343,7 @@ You can use the OpenShift CLI (`oc`) to install the OpenShift Update Service Ope
 
 - [Installing Operators in your namespace](../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-operators-in-namespace)
 
-# Creating the OpenShift Update Service graph data container image
+# Create the OpenShift Update Service graph data container image
 
 The OpenShift Update Service requires a graph data container image, from which the OpenShift Update Service retrieves information about channel membership and blocked update edges. Graph data is typically fetched directly from the update graph data repository. In environments where an internet connection is unavailable, loading this information from an init container is another way to make the graph data available to the OpenShift Update Service.
 
@@ -385,11 +385,11 @@ The oc-mirror OpenShift CLI (`oc`) plugin creates this graph data container imag
 
     </div>
 
-# Creating an OpenShift Update Service application
+# Create an OpenShift Update Service application
 
 You can create an OpenShift Update Service application by using the OpenShift Container Platform web console or CLI.
 
-## Creating an OpenShift Update Service application by using the web console
+## Create an OpenShift Update Service application by using the web console
 
 You can use the OpenShift Container Platform web console to create an OpenShift Update Service application by using the OpenShift Update Service Operator.
 
@@ -425,7 +425,7 @@ You can use the OpenShift Container Platform web console to create an OpenShift 
 
     - Verify each application resource has a status of **Created**.
 
-## Creating an OpenShift Update Service application by using the CLI
+## Create an OpenShift Update Service application by using the CLI
 
 You can use the OpenShift CLI (`oc`) to create an OpenShift Update Service application.
 
@@ -500,7 +500,7 @@ You can use the OpenShift CLI (`oc`) to create an OpenShift Update Service appli
 
     </div>
 
-# Configuring the Cluster Version Operator (CVO)
+# Configure the Cluster Version Operator (CVO)
 
 After the OpenShift Update Service Operator has been installed and the OpenShift Update Service application has been created, the Cluster Version Operator (CVO) can be updated to pull graph data from the OpenShift Update Service installed in your environment.
 

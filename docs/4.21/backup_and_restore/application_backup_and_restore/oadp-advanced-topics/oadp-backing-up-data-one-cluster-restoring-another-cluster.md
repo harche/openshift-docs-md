@@ -62,7 +62,7 @@ Before starting a File System Backup (FSB), you must specify which pod volumes t
 
 - FSB expects volumes to be mounted under `<hostPath>/<pod UID>`, with `<hostPath>` being configurable. Some Kubernetes systems, for example, vCluster, do not mount volumes under the `<pod UID>` subdirectory, and VFSB does not work with them as expected.
 
-## Backing up pod volumes by using the opt-in method
+## Back up pod volumes by using the opt-in method
 
 Use the opt-in method to specify the exact pod volumes you want to back up using File System Backup (FSB). By applying specific annotations, you can selectively include only the volumes you need, which helps you to manage storage and backup efficiency.
 
@@ -78,7 +78,7 @@ Use the opt-in method to specify the exact pod volumes you want to back up using
   `<your_volume_name_x>`
   specifies the name of the xth volume in the pod specification.
 
-## Backing up pod volumes by using the opt-out method
+## Back up pod volumes by using the opt-out method
 
 Use the opt-out method to exclude specific pod volumes from your default File System Backup (FSB). While this approach automatically backs up all pod volumes, to customize your backup operations you can use annotations to skip specific ones.
 
@@ -155,7 +155,7 @@ For an in-depth discussion of UID and GID ranges in OpenShift Container Platform
 
 - [Resolving overlapping UID ranges in OpenShift namespaces after migration](https://access.redhat.com/articles/6844071)
 
-# Backing up data from one cluster and restoring it to another cluster
+# Back up data from one cluster and restore it to another cluster
 
 Review the specific prerequisites and procedure differences to successfully back up data on one cluster and restore it to another. This helps you adapt standard OADP tasks for cross-cluster data recovery.
 

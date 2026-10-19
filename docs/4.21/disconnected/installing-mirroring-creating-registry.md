@@ -78,7 +78,7 @@ The following limitations apply to the *mirror registry for Red Hat OpenShift*:
 
 - [Self-managed Red Hat OpenShift sizing and subscription guide](https://www.redhat.com/en/resources/self-managed-openshift-sizing-subscription-guide)
 
-# Configuring rootless Podman networking
+# Configure rootless Podman networking
 
 To restore rootless Podman networking when the default `pasta` stack fails on OpenShift Container Platform mirror or install hosts, you can set the default rootless network back to `slirp4netns` in the `/etc/containers/containers.conf` file, or in the user’s `~/.config/containers/container.conf` file.
 
@@ -120,7 +120,7 @@ External interface not usable
     $ podman system migrate
     ```
 
-# Mirroring on a local host with mirror registry for Red Hat OpenShift
+# Mirror on a local host with mirror registry for Red Hat OpenShift
 
 You can install the *mirror registry for Red Hat OpenShift* on a local host by using the `mirror-registry` installer tool. By doing so, users can create a local host registry running on port 443 for the purpose of storing a mirror of OpenShift Container Platform images.
 
@@ -251,7 +251,7 @@ When upgrading from version 1 to version 2, be aware of the following constraint
     registry.redhat.io/quay/quay-rhel8:v3.12.10
     ```
 
-# Mirroring on a remote host with mirror registry for Red Hat OpenShift
+# Mirror on a remote host with mirror registry for Red Hat OpenShift
 
 You can install the *mirror registry for Red Hat OpenShift* on a remote host by using the `mirror-registry` tool. By doing so, users can create a registry to hold a mirror of OpenShift Container Platform images.
 

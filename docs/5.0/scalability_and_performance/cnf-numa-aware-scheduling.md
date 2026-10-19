@@ -805,6 +805,116 @@ To optimize the placement of high-performance workloads, deploy the NUMA-aware s
 
 - [Configuring image registry repository mirroring](../disconnected/updating/disconnected-update.xml#images-configuration-registry-mirror_updating-disconnected-cluster)
 
+## Scheduling critical workloads with preemption
+
+You can configure the NUMA Resources Operator scheduler to use the default Kubernetes scheduler preemption feature. Priority-based preemption enables the scheduler to preempt lower-priority pods so that higher-priority pods can be scheduled when cluster resources are constrained. This helps ensure critical workloads get the resources they need while making better use of available capacity.
+
+When you enable preemption for the NUMA Resources Operator scheduler, the scheduler uses the standard `DefaultPreemption` plugin from Kubernetes, not a separate NUMA-aware preemption mechanism.
+
+Preemption works with the standard Kubernetes `PriorityClass` resources. When a high-priority pod cannot be scheduled because of insufficient resources, the scheduler identifies lower-priority pods that can be preempted to make room for the pending pod. The scheduler then preempts those pods and schedules the high-priority pod in their place.
+
+Benefits of enabling preemption include:
+
+- Critical workloads are guaranteed resources even on heavily utilized clusters
+
+- Cluster resources are used more efficiently by allowing important pods to displace less important ones
+
+- Service degradation is reduced by ensuring that infrastructure and high-priority application pods are always prioritized
+
+### NodeResourceTopology cache timing considerations
+
+When a pod cannot be scheduled, it enters the unschedulable queue and waits for either node resource events or the unschedulable timeout period (5 minutes by default). If the NodeResourceTopology (NRT) plugin rejects a pod because of stale cache information, the pod remains in this queue. Even after the NRT cache refreshes, the pod does not immediately retry scheduling — it continues to wait for node events or the timeout to trigger a new scheduling attempt.
+
+When a pod fails the NRT filter plugin, the scheduler initiates default preemption and evaluates sets of pods for eviction. If the NRT cache updates during this evaluation to show sufficient free resources, the preemption plugin might evict pods unnecessarily. To mitigate this, ensure all pods are managed by controllers such as ReplicaSets or DaemonSets. This allows evicted pods to respawn automatically, although scheduling order is not guaranteed.
+
+<div class="note">
+
+Preemption handles priority-based scheduling decisions. Quality of Service (QoS) based eviction, which evicts pods based on resource pressure on a node, is handled separately by the kubelet’s node-pressure eviction feature and is not affected by this configuration.
+
+</div>
+
+- [Understanding pod priority](../nodes/pods/nodes-pods-priority.xml#nodes-pods-priority-preempt-about_nodes-pods-priority)
+
+### Enabling preemption for the NUMA-aware scheduler
+
+To enable priority-based preemption for the NUMA Resources Operator scheduler, configure the `NUMAResourcesScheduler` custom resource. Preemption is disabled by default. When enabled, the scheduler can preempt lower-priority pods to make room for higher-priority pods on constrained cluster nodes.
+
+- The NUMA Resources Operator is installed.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+1.  Edit the `NUMAResourcesScheduler` custom resource by running the following command:
+
+    ``` terminal
+    $ oc edit numaresourcesscheduler numaresourcesscheduler
+    ```
+
+2.  Add the `preemptionMode` field to enable preemption:
+
+    ``` yaml
+    apiVersion: nodetopology.openshift.io/v1
+    kind: NUMAResourcesScheduler
+    metadata:
+      name: numaresourcesscheduler
+    spec:
+      preemptionMode: Enabled
+    # ...
+    ```
+
+3.  Save and exit the editor.
+
+    The NUMA Resources Operator automatically restarts the scheduler pod to apply the new configuration.
+
+<!-- -->
+
+1.  Verify that the scheduler pod has restarted with the new configuration by running the following command:
+
+    ``` terminal
+    $ oc get pods -n openshift-numaresources -l app=secondary-scheduler
+    ```
+
+    The output shows a new pod with a recent `AGE` value.
+
+2.  Verify that the `NUMAResourcesScheduler` custom resource shows the updated configuration:
+
+    ``` terminal
+    $ oc get numaresourcesscheduler numaresourcesscheduler -o jsonpath='{.spec.preemptionMode}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    Enabled
+    ```
+
+3.  Optional: To test that preemption is working, create workloads with different `PriorityClass` values and verify that higher-priority pods preempt lower-priority pods when resources are constrained.
+
+### NUMA Resources Operator scheduler preemption configuration
+
+You can configure preemption for the NUMA Resources Operator scheduler by using the `preemptionMode` field in the `NUMAResourcesScheduler` custom resource. Preemption is disabled by default. This field controls whether the scheduler uses the `DefaultPreemption` plugin to preempt lower-priority pods.
+
+| Field                 | Type     | Description                                                                                                                                                                                                                                                                                                                                                                         |
+|-----------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spec.preemptionMode` | `string` | Enables preemption functionality for the NUMA-aware scheduler. The scheduler includes the `DefaultPreemption` plugin, but preemption is inactive until this field is set. When set to `Enabled`, the scheduler can preempt lower-priority pods to schedule higher-priority pods. When not set or set to `Disabled`, preemption is disabled. Accepted values: `Enabled`, `Disabled`. |
+
+NUMAResourcesScheduler preemption configuration
+
+The following example shows a `NUMAResourcesScheduler` custom resource with preemption enabled:
+
+``` yaml
+apiVersion: nodetopology.openshift.io/v1
+kind: NUMAResourcesScheduler
+metadata:
+  name: numaresourcesscheduler
+spec:
+  imageSpec: "registry.redhat.io/openshift5/noderesourcetopology-scheduler-rhel9:v{product-version}"
+  preemptionMode: Enabled
+```
+
 ## Schedule workloads with the NUMA-aware scheduler
 
 To schedule workloads with the NUMA-aware scheduler, use deployment CRs that specify the minimum required resources. This ensures your cluster processes the workloads efficiently.

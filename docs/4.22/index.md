@@ -802,6 +802,7 @@
     - [Enabling Gateway API](networking/ingress_load_balancing/configuring_gateway_api/enable-gateway-api.md)
     - [Controlling incoming traffic with Gateway listeners](networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md)
     - [Assigning network addresses to gateways](networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md)
+    - [Configure DNS for gateways](networking/ingress_load_balancing/configuring_gateway_api/configure-dns-for-gateways.md)
     - [Routing HTTP requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md)
     - [Routing gRPC requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md)
     - [Securing HTTPRoutes](networking/ingress_load_balancing/configuring_gateway_api/securing-httproutes.md)

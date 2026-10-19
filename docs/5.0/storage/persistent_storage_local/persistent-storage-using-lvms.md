@@ -1876,6 +1876,408 @@ To create a PVC, you must create a `PersistentVolumeClaim` object.
   lvm-block-1   Bound    pvc-e90169a8-fd71-4eea-93b8-817155f60e47   1Gi        RWO            lvms-vg1       5s
   ```
 
+# About software RAID configuration in LVMS
+
+Logical Volume Manager (LVM) Storage supports software RAID configuration through the `LVMCluster` custom resource (CR). This capability enables data redundancy and protection against single disk failures.
+
+RAID configuration is defined in the `raidConfig` section within a `deviceClass` in the `LVMCluster` CR.
+
+Software RAID in LVM Storage provides the following benefits:
+
+- Increases data redundancy across multiple disks on a node
+
+- Protects against data loss from single disk failures
+
+- Provides declarative management of resilient local storage
+
+- Suitable for read-intensive applications (RAID1) or balanced workloads (RAID5)
+
+LVM Storage uses LVM RAID to create redundant storage arrays on local devices. When you configure a `deviceClass` with `raidConfig`, the Logical Volume Manager (LVM) Storage Operator creates an LVM volume group with RAID levels such as RAID1, RAID5, RAID6, or RAID10 across the specified devices.
+
+After you create a device class with RAID configuration, persistent volume claims (PVCs) created by using that device class are automatically backed by the RAID array.
+
+<div class="important">
+
+The `raidConfig` fields are immutable after the device class is created. You cannot change the RAID type, number of stripes, or number of mirrors after the initial configuration. The `deviceSelector.paths` and `optionalPaths` fields can be modified to replace failed disks.
+
+</div>
+
+You can use software RAID in LVM Storage for the following use cases:
+
+Read-heavy databases requiring redundancy
+Use RAID1 for high read performance and protection against single disk failures.
+
+Balanced performance, capacity, and redundancy needs
+Use RAID5 for general-purpose workloads where you need a balance between storage capacity and data protection.
+
+Critical data requiring dual-disk failure protection
+Use RAID6 when you need protection against two simultaneous disk failures.
+
+High-performance I/O intensive workloads
+Use RAID10 for applications that require both high read and write performance with redundancy.
+
+Software RAID is particularly useful in single-node OpenShift Container Platform and edge computing environments where local storage resilience is critical but external storage arrays are not available.
+
+## RAID configuration parameters
+
+You can learn how to configure RAID levels in LVM Storage by using the `raidConfig` field in the `LVMCluster` custom resource (CR) to protect your data and optimize storage performance for your workloads.
+
+Use the available RAID configuration parameters to choose the right balance of redundancy, capacity, and performance for your specific use case.
+
+| Field        | Type              | Description                                                                                                                                                        | Required                                                                                 |
+|--------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| `type`       | string            | RAID level (`raid1`, `raid4`, `raid5`, `raid6`, `raid10`)                                                                                                          | Yes                                                                                      |
+| `stripes`    | integer           | Number of stripes for RAID configuration. The number should always be a power of 2. Valid for `raid4`, `raid5`, `raid6`, and `raid10` only. Not valid for `raid1`. | Depends on RAID type                                                                     |
+| `stripeSize` | string (quantity) | Size of each stripe chunk. Must be a power of 2 (for example, `64Ki`, `128Ki`, `256Ki`, `512Ki`). Default is `64Ki`.                                               | Optional. Valid for `raid4`, `raid5`, `raid6`, and `raid10` only. Not valid for `raid1`. |
+| `mirrors`    | integer           | Number of mirrors for RAID1 and RAID10 configuration                                                                                                               | For RAID1: typically 1. For RAID10: required with stripes.                               |
+
+raidConfig fields in LVMCluster CR
+
+| RAID level | Minimum disks | Capacity overhead          | Performance characteristics                                                                                          | Recommended use cases                                        |
+|------------|---------------|----------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| RAID1      | 2             | 50% (mirroring)            | High read performance, redundancy for 1 disk failure                                                                 | Read-intensive databases, high-availability applications     |
+| RAID4      | 3             | 50% (mirroring)            | High read performance, redundancy for 1 disk failure                                                                 | Read-intensive databases, high-availability applications     |
+| RAID5      | 3             | 1 disk (parity)            | Balanced read/write, redundancy for 1 disk failure                                                                   | General-purpose workloads, balanced performance and capacity |
+| RAID6      | 5             | 2 disks (dual parity)      | Good read, slower write, redundancy for 2 disk failures                                                              | Critical data requiring dual-disk failure protection         |
+| RAID10     | 4             | 50% (mirroring + striping) | High read/write performance, redundancy for multiple disk failures if the disk failures affect different mirror sets | High-performance databases, I/O intensive workloads          |
+
+Supported RAID levels and characteristics
+
+<div class="note">
+
+- All RAID configurations require thick provisioning mode.
+
+- After you create a RAID array, you cannot modify the RAID parameters such as type, stripes, or mirrors. Only device paths can be changed for disk replacement.
+
+</div>
+
+## Configuring a software RAID array
+
+You can configure a software RAID array for LVM Storage by creating or editing the `LVMCluster` custom resource (CR) with RAID configuration parameters.
+
+- The LVM Storage Operator is installed on the cluster.
+
+- You have sufficient unused block devices available on target nodes. The minimum number of devices depends on the RAID level.
+
+- Nodes have physical disks attached and recognized by the system.
+
+1.  Identify available block devices on the target node:
+
+    ``` terminal
+    $ oc debug node/<node_name> -- lsblk
+    ```
+
+    Note the device paths, such as `/dev/disk/by-id` and `/dev/disk/by-path`.
+
+2.  Create the `LVMCluster` CR with RAID configuration.
+
+    1.  Navigate to the `deviceClasses` section.
+
+    2.  Add the `raidConfig` section within a device class.
+
+    3.  Omit `thinPoolConfig` entirely. RAID configurations require thick provisioning.
+
+        <div class="note">
+
+        The LVM Storage Operator validates RAID configurations. For example, RAID5 requires at least 3 disks. Configurations that do not meet minimum requirements are rejected.
+
+        </div>
+
+        <div class="formalpara-title">
+
+        **Example RAID1 configuration**
+
+        </div>
+
+        ``` yaml
+        apiVersion: lvm.topolvm.io/v1alpha1
+        kind: LVMCluster
+        metadata:
+          name: lvmcluster-sample
+          namespace: openshift-lvm-storage
+        spec:
+          storage:
+            deviceClasses:
+            - name: raid1-vg
+              deviceSelector:
+                paths:
+                - /dev/sdb
+                - /dev/sdc
+              raidConfig:
+                type: raid1
+                mirrors: 1
+        ```
+
+        <div class="formalpara-title">
+
+        **Example RAID5 configuration**
+
+        </div>
+
+        ``` yaml
+        apiVersion: lvm.topolvm.io/v1alpha1
+        kind: LVMCluster
+        metadata:
+          name: lvmcluster-sample
+          namespace: openshift-lvm-storage
+        spec:
+          storage:
+            deviceClasses:
+            - name: raid5-vg
+              deviceSelector:
+                paths:
+                - /dev/sdb
+                - /dev/sdc
+                - /dev/sdd
+              raidConfig:
+                type: raid5
+                stripes: 2
+        ```
+
+        For RAID5, `raidConfig.stripes` equals the number of data disks. With 3 total disks, you have 2 data disks and 1 parity disk.
+
+3.  Apply the `LVMCluster` CR by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage apply -f lvmcluster.yaml
+    ```
+
+- Verify that the device class is ready by running the following command:
+
+  ``` terminal
+  $ oc -n openshift-lvm-storage get lvmcluster -o yaml
+  ```
+
+  Successful output shows the device class status as `Ready`.
+
+- Verify that the device class appears in the `LVMCluster` status by running the following command:
+
+  ``` terminal
+  $ oc -n openshift-lvm-storage get lvmcluster lvmcluster-sample -o json | jq '.status.deviceClassStatuses'
+  ```
+
+- Verify that the storage class is automatically created for the RAID device class by running the following command:
+
+  ``` terminal
+  $ oc get storageclass
+  ```
+
+  For information about configuring StorageClass options for LVMS device classes, see "StorageClass options for LVMS device classes".
+
+## Replacing a failed disk in a RAID array
+
+You can replace a failed disk in an LVM Storage software RAID array to restore data redundancy. LVM Storage uses LVM RAID `device-mapper`, which allows data to remain readable and writable while the array is in a degraded state.
+
+Manual repair steps on the node are required before updating the `LVMCluster` CR.
+
+- You have a running LVM Storage software RAID array with redundancy (RAID level greater than 0).
+
+- A failed disk is identified in the array.
+
+- A replacement physical disk is available and installed on the node.
+
+- The RAID array still has redundancy and is operational. Not all disks in the array have failed.
+
+1.  Check the `LVMCluster` status for the affected device class by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage get lvmcluster -o jsonpath='{.status.state}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    Degraded
+    ```
+
+    Data remains readable and writable while the RAID array is in a degraded state.
+
+2.  Access the node for debugging by running the following command:
+
+    ``` terminal
+    $ oc debug node/<node_name>
+    ```
+
+3.  Change to the host root by running the following command:
+
+    ``` terminal
+    sh-4.4# chroot /host
+    ```
+
+4.  List available block devices by running the following command:
+
+    ``` terminal
+    sh-4.4# lsblk
+    ```
+
+    Note the replacement device path, such as `/dev/sde`. Ensure that the disk is unused and has capacity equal to or greater than the failed disk.
+
+5.  Perform the manual LVM repair on the node:
+
+    1.  Prepare the replacement disk:
+
+        ``` terminal
+        sh-4.4# pvcreate <replacement>
+        ```
+
+        Replace `<replacement>` with the replacement disk path.
+
+    2.  Extend the volume group with the replacement disk:
+
+        ``` terminal
+        sh-4.4# vgextend <vg> <replacement>
+        ```
+
+        Replace `<vg>` with the volume group name and `<replacement>` with the replacement disk path.
+
+    3.  Repair the RAID logical volume:
+
+        ``` terminal
+        sh-4.4# lvconvert --repair -y <vg>/<lv> <replacement>
+        ```
+
+    4.  Remove the missing disk from the volume group:
+
+        ``` terminal
+        sh-4.4# vgreduce --removemissing <vg>
+        ```
+
+    5.  Exit the debug session:
+
+        ``` terminal
+        sh-4.4# exit
+        sh-4.4# exit
+        ```
+
+6.  Patch the `deviceSelector.paths` to swap the failed disk path with the replacement disk path by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage patch lvmcluster <lvmcluster_name> --type='json' -p='[
+      {"op": "replace", "path": "/spec/storage/deviceClasses/0/deviceSelector/paths", "value": ["/dev/sdc", "/dev/sdd"]}
+    ]'
+    ```
+
+    Replace the array index and device paths with your specific configuration.
+
+7.  Wait for the device class to return to the `Ready` state:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage get lvmcluster -o jsonpath='{.status.deviceClassStatuses[].nodeStatus[].status}'
+    ```
+
+    Optionally you can use the following command:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage get lvmcluster -o jsonpath='{.nodeStatus[].raidStatus.status}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    Ready
+    ```
+
+8.  Wait for the RAID resync to complete:
+
+    1.  Access the node again:
+
+        ``` terminal
+        $ oc debug node/<node_name>
+        ```
+
+    2.  Change to the host root and check the sync percentage:
+
+        ``` terminal
+        sh-4.4# chroot /host
+        sh-4.4# lvs -o lv_name,sync_percent --select 'segtype=~raid' <vg>
+        ```
+
+        <div class="formalpara-title">
+
+        **Example output showing resync in progress**
+
+        </div>
+
+        ``` terminal
+          LV       Cpy%Sync
+          raid1-lv 45.67
+        ```
+
+        Wait until the `Cpy%Sync` column shows `100.00`. Redundancy is not fully restored until the resync reaches 100%.
+
+<!-- -->
+
+1.  Verify that the device class status is `Ready` in the `LVMCluster`:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage get lvmcluster -o json | jq '.status.deviceClassStatuses'
+    ```
+
+2.  Verify that the RAID logical volume shows all disks as active with 100% sync:
+
+    ``` terminal
+    $ oc debug node/<node_name>
+    sh-4.4# chroot /host
+    sh-4.4# lvs -a -o lv_name,segtype,sync_percent,devices <vg>
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output showing fully synced RAID1**
+
+    </div>
+
+    ``` terminal
+      LV             Type   Cpy%Sync Devices
+      raid1-lv       raid1  100.00   raid1-lv_rimage_0(0),raid1-lv_rimage_1(0)
+      [raid1-lv_rimage_0] linear       /dev/sdc(0)
+      [raid1-lv_rimage_1] linear       /dev/sde(0)
+    ```
+
+3.  Check the LVMS Operator logs for errors:
+
+    ``` terminal
+    $ oc logs -n openshift-lvm-storage
+    ```
+
+4.  Verify that running persistent volume claims (PVCs) continue to function without interruption.
+
+<div class="important">
+
+- The RAID resync process can take a significant amount of time depending on disk size and I/O load on the system.
+
+- Do not perform multiple disk replacements simultaneously. Wait for the resync to complete before replacing another disk.
+
+- Ensure that the replacement disk has equal or greater capacity than the failed disk to maintain the same storage capacity.
+
+- Do not edit `deviceSelector.paths` before performing the manual LVM repair on the node. The Operator does not automatically rebuild the RAID array from a CR edit.
+
+</div>
+
+## Limitations of software RAID in LVM Storage
+
+You can encounter some performance related limitations when enabling software RAID in LVM Storage.
+
+Thick provisioning only
+You can only use thick volume provisioning for software RAID configurations. Thin provisioning features are not available.
+
+No RAID parameter modifications
+After you create a RAID array, you cannot modify the RAID parameters such as type, stripes, or mirrors. Only device paths can be changed for disk replacement.
+
+Performance impact with snapshots or clones
+Snapshots and clones of RAID-backed PVCs are unavailable because of thick provisioning.
+
+Configuration requirement
+You must omit the `thinPoolConfig` field entirely when configuring RAID for a device class.
+
 # StorageClass customization for LVMS device classes
 
 You can customize the StorageClass for each device class by specifying reclaim policy, volume binding mode, parameters, and labels in the LVMCluster custom resource (CR).

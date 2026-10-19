@@ -10,7 +10,7 @@ Velero plugins are started as separate processes. After a Velero operation has c
 
 </div>
 
-# Restoring Knative resources
+# Restore Knative resources
 
 Resolve issues with restoring Knative resources that use admission webhooks by restoring the top-level `service.serving.knative.dev` service resource with Velero. This helps you to ensure that Knative resources are restored successfully without admission webhook errors.
 
@@ -22,7 +22,7 @@ Resolve issues with restoring Knative resources that use admission webhooks by r
     service.serving.knative.dev
   ```
 
-# Restoring IBM AppConnect resources
+# Restore IBM AppConnect resources
 
 Troubleshoot Velero restore failures for IBM® AppConnect resources that use admission webhooks. Verify your webhook rules and check that the installed Operator supports the backup’s version to successfully complete the restore.
 
@@ -36,7 +36,7 @@ Troubleshoot Velero restore failures for IBM® AppConnect resources that use adm
 
 3.  Check that any `spec.version` in `type: Configuration.appconnect.ibm.com/v1beta1` used at backup time is supported by the installed Operator.
 
-# Avoiding the Velero plugin panic error
+# Avoid the Velero plugin panic error
 
 Label a custom Backup Storage Location (BSL) to resolve Velero plugin panic errors during `imagestream` backups. This helps you to ensure the OADP controller creates the required registry secret when you manage the BSL outside the `DataProtectionApplication` (DPA) CR.
 

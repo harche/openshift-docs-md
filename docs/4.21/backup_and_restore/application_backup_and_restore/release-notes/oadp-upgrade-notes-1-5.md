@@ -27,7 +27,7 @@ A `restorePVC` resource is an intermediate PVC that is used to write data during
 
 You can configure `restorePVC` in the DPA by using the `ignoreDelayBinding` field.
 
-# Backing up the DPA configuration
+# Back up the DPA configuration
 
 You must back up your current `DataProtectionApplication` (DPA) configuration.
 
@@ -69,7 +69,7 @@ Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
 
 3.  Wait for the Operator and containers to update and restart.
 
-# Converting DPA to the new version for OADP 1.5.0
+# Convert DPA to the new version for OADP 1.5.0
 
 The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19. You can convert Data Protection Application (DPA) to the new OADP 1.5 version by using the new `spec.configuration.nodeAgent` field and its sub-fields.
 
@@ -115,7 +115,7 @@ The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4
     ...
     ```
 
-# Verifying the upgrade
+# Verify the upgrade
 
 You can verify the OpenShift API for Data Protection (OADP) upgrade by using the following procedure.
 

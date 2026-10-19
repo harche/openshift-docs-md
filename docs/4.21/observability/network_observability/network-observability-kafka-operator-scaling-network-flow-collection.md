@@ -26,7 +26,7 @@ To uninstall Kafka, refer to the uninstallation process that corresponds with th
 
 </div>
 
-# Reducing network bandwidth for flow telemetry
+# Kafka compression benefits for network flow telemetry
 
 Enable Kafka compression for flow records to optimize network traffic. This configuration reduces network bandwidth consumption while increasing the CPU load on the eBPF agent.
 

@@ -57,11 +57,11 @@ You can use the OpenShift CLI (`oc`) to delete an OpenShift Update Service appli
     updateservice.updateservice.operator.openshift.io "service" deleted
     ```
 
-# Uninstalling the OpenShift Update Service Operator
+# Uninstall the OpenShift Update Service Operator
 
 You can uninstall the OpenShift Update Service Operator by using the OpenShift Container Platform web console or CLI.
 
-## Uninstalling the OpenShift Update Service Operator by using the web console
+## Uninstall the OpenShift Update Service Operator by using the web console
 
 You can use the OpenShift Container Platform web console to uninstall the OpenShift Update Service Operator.
 
@@ -73,7 +73,7 @@ You can use the OpenShift Container Platform web console to uninstall the OpenSh
 
 3.  From the **Uninstall Operator?** confirmation dialog, click **Uninstall** to confirm the uninstallation.
 
-## Uninstalling the OpenShift Update Service Operator by using the CLI
+## Uninstall the OpenShift Update Service Operator by using the CLI
 
 You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service Operator.
 

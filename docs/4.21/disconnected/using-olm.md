@@ -63,7 +63,7 @@ To use only trusted or locally available Operator catalogs, disable the default 
 
   </div>
 
-# Mirroring an Operator catalog
+# Mirror an Operator catalog
 
 For instructions about mirroring Operator catalogs for use with disconnected clusters, see "Mirroring Operator catalogs for use with disconnected clusters".
 
@@ -85,7 +85,7 @@ Many of the `opm` subcommands and flags for working with the SQLite database for
 
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
-# Adding a catalog source to a cluster
+# Add a catalog source to a cluster
 
 To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
 

@@ -193,7 +193,9 @@ OpenShift Container Platform can create containers by using images from third-pa
 
 # Red Hat Quay registries
 
-If you need an enterprise-quality container image registry, Red Hat Quay is available both as a hosted service and as software that you can install in your own data center or cloud environment. Advanced features in Red Hat Quay include geo-replication, image scanning, and the ability to roll back images.
+If you need an enterprise-quality container image registry, Red Hat Quay is available both as a hosted service and as software that you can install in your own data center or cloud environment.
+
+Advanced features in Red Hat Quay include geo-replication, image scanning, and the ability to roll back images.
 
 Visit the Quay.io site to set up your own hosted Quay registry account. After that, follow the Quay Tutorial to log in to the Quay registry and start managing your images.
 

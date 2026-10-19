@@ -1017,7 +1017,7 @@ TALM remediates `inform` policies by controlling the `remediationAction` specifi
 
 <div class="note">
 
-TALM uses the RHACM `Placement` CR for cluster selection during policy remediation. The `Placement` CR requires a `ManagedClusterSetBinding` CR in each policy namespace. If you are using a deprecated `PolicyGenTemplate` CR, you must create a `ManagedClusterSetBinding` in each policy namespace. For more information, see the Knowledgebase solution [TALM Placement API Migration - Mitigation Plan](https://access.redhat.com/articles/7147283).
+TALM uses the RHACM `Placement` CR for cluster selection during policy remediation. The `Placement` CR requires a `ManagedClusterSetBinding` CR in each policy namespace. If you are using a deprecated `PolicyGenTemplate` CR, you must create a `ManagedClusterSetBinding` in each policy namespace. For more information, see the Knowledgebase solution "TALM Placement API Migration - Mitigation Plan".
 
 </div>
 
@@ -1083,6 +1083,8 @@ spec:
 For more information about RHACM policies, see "Policy overview" in the RHACM documentation.
 
 - [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
+
+- [TALM Placement API Migration - Mitigation Plan](https://access.redhat.com/articles/7147283)
 
 <!-- -->
 

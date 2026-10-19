@@ -12,7 +12,7 @@ requests:
 
 - [Velero CPU and memory requirements based on collected data](../../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#oadp-velero-cpu-memory-requirements_about-installing-oadp)
 
-# Setting resource requests for a Velero pod
+# Set resource requests for a Velero pod
 
 Use the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.
 
@@ -33,7 +33,7 @@ Use the `configuration.velero.podConfig.resourceAllocations` specification field
 
   The `resourceAllocations` listed are for average usage.
 
-# Setting resource requests for a Restic pod
+# Set resource requests for a Restic pod
 
 Use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.
 
@@ -60,7 +60,7 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
 
   The `resourceAllocations` listed are for average usage.
 
-# Setting resource requests for a nodeAgent pod
+# Set resource requests for a nodeAgent pod
 
 Use the `configuration.nodeAgent.podConfig.resourceAllocations` specification field to set specific resource requests for a `nodeAgent` pod.
 

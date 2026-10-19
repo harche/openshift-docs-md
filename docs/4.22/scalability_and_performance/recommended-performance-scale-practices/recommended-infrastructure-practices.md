@@ -31,7 +31,9 @@ In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now 
 
 # Scaling the Cluster Monitoring Operator
 
-OpenShift Container Platform exposes metrics that the Cluster Monitoring Operator (CMO) collects and stores in the Prometheus-based monitoring stack. As an administrator, you can view dashboards for system resources, containers, and components metrics in the OpenShift Container Platform web console by navigating to **Observe** → **Dashboards**.
+OpenShift Container Platform exposes metrics that the Cluster Monitoring Operator (CMO) collects and stores in the Prometheus-based monitoring stack.
+
+As an administrator, you can view dashboards for system resources, containers, and components metrics in the OpenShift Container Platform web console by navigating to **Observe** → **Dashboards**.
 
 ## Prometheus database storage requirements
 

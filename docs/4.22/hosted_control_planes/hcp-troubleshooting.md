@@ -1,6 +1,6 @@
 If you encounter an issue with hosted control planes, you can gather information about the hosted cluster, OpenShift Container Platform, or other components so that you can determine the root cause and take steps to resolve it.
 
-# Gathering information to troubleshoot hosted control planes
+# Gather information to troubleshoot hosted control planes
 
 When you need to troubleshoot an issue with hosted clusters, you can gather information by running the `must-gather` command. The command generates output for the management cluster and the hosted cluster.
 
@@ -140,7 +140,7 @@ When you need to troubleshoot an issue in a disconnected environment, you can ga
 
 - [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#install-on-disconnected-networks)
 
-# Troubleshooting hosted clusters on OpenShift Virtualization
+# Troubleshoot hosted clusters on OpenShift Virtualization
 
 When you troubleshoot a hosted cluster on OpenShift Virtualization, start with the top-level `HostedCluster` and `NodePool` resources and then work down the stack until you find the root cause. The following steps can help you discover the root cause of common issues.
 

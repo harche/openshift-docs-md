@@ -470,7 +470,9 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
 
 ### Configuring mutual TLS authentication
 
-You can configure the Ingress Controller to enable mutual TLS (mTLS) authentication by setting a `spec.clientTLS` value. The `clientTLS` value configures the Ingress Controller to verify client certificates. This configuration includes setting a `clientCA` value, which is a reference to a config map. The config map contains the PEM-encoded CA certificate bundle that is used to verify a client’s certificate. Optionally, you can also configure a list of certificate subject filters.
+You can configure the Ingress Controller to enable mutual TLS (mTLS) authentication by setting a `spec.clientTLS` value.
+
+The `clientTLS` value configures the Ingress Controller to verify client certificates. This configuration includes setting a `clientCA` value, which is a reference to a config map. The config map contains the PEM-encoded CA certificate bundle that is used to verify a client’s certificate. Optionally, you can also configure a list of certificate subject filters.
 
 If the `clientCA` value specifies an X509v3 certificate revocation list (CRL) distribution point, the Ingress Operator downloads and manages a CRL config map based on the HTTP URI X509v3 `CRL Distribution Point` specified in each provided certificate. The Ingress Controller uses this config map during mTLS/TLS negotiation. Requests that do not provide valid certificates are rejected.
 
@@ -491,12 +493,12 @@ If the `clientCA` value specifies an X509v3 certificate revocation list (CRL) di
 
     ``` terminal
     $ oc create configmap \
-       router-ca-certs-default \
-       --from-file=ca-bundle.pem=client-ca.crt \
-       -n openshift-config
+      router-ca-certs-default \
+      --from-file=ca-bundle.pem=client-ca.crt \//
+      -n openshift-config
     ```
 
-    - The config map data key must be `ca-bundle.pem`, and the data value must be a CA certificate in PEM format.
+    The config map data key must be `ca-bundle.pem`, and the data value must be a CA certificate in PEM format.
 
 2.  Edit the `IngressController` resource in the `openshift-ingress-operator` project:
 
@@ -558,7 +560,7 @@ You can view and inspect the status of your Ingress Operator.
 
 # View Ingress Controller logs
 
-You can view your Ingress Controller logs.
+You can view your Ingress Controller logs by using the `oc logs` command.
 
 - View your Ingress Controller logs:
 
@@ -1007,7 +1009,64 @@ The following procedure provides an example for scaling up the default Ingress C
     router-default-7b5df44ff-wwsth   2/2     Running   0          66s
     ```
 
-<!-- -->
+## Ingress Controller router timeout variables
+
+Reference the router timeout configurations on the Ingress Controller. These settings control how long the router waits for client, server, and tunnel connections during normal traffic.
+
+<div class="note">
+
+Do not modify environment variables directly on the router deployment. Instead, configure timeouts through the `IngressController` custom resource (CR) or through annotations on individual `Route` resources. The Ingress Operator automatically sets the corresponding environment variables on the Ingress Controller deployment.
+
+</div>
+
+A `TimeUnits` value uses a number and a unit: `us` (microseconds), `ms` (milliseconds, default), `s` (seconds), `m` (minutes), `h` (hours), `d` (days).
+
+The regular expression is: \[1-9\]\[0-9\]\*(`us`\|`ms`\|`s`\|`m`\|`h`\|`d`).
+
+The following table lists `IngressController` CR fields and router environment variables:
+
+| Field                                            | Environment variable                | Default  | Description                                                                                                                                                                                                                                                                                             |
+|--------------------------------------------------|-------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spec.tuningOptions.backendCheckInterval`        | `ROUTER_BACKEND_CHECK_INTERVAL`     | `5000ms` | Length of time from one liveness check to the next on backends. The `healthCheckInterval` field can override the `backendCheckInterval` field.                                                                                                                                                          |
+| `spec.tuningOptions.clientFinTimeout`            | `ROUTER_CLIENT_FIN_TIMEOUT`         | `1s`     | Controls the TCP finish (FIN) timeout period for the client connecting to the route. If the FIN sent to close the connection does not answer within the given time, HAProxy closes the connection.                                                                                                      |
+| `spec.tuningOptions.clientTimeout`               | `ROUTER_DEFAULT_CLIENT_TIMEOUT`     | `30s`    | Length of time that a client has to acknowledge or send data.                                                                                                                                                                                                                                           |
+| `spec.tuningOptions.connectTimeout`              | `ROUTER_DEFAULT_CONNECT_TIMEOUT`    | `5s`     | The maximum connection time allowed to establish a connection to the backend pool.                                                                                                                                                                                                                      |
+| `spec.tuningOptions.serverFinTimeout`            | `ROUTER_DEFAULT_SERVER_FIN_TIMEOUT` | `1s`     | Controls the TCP finish (FIN) timeout from the router to the pod backing the route.                                                                                                                                                                                                                     |
+| `spec.tuningOptions.serverTimeout`               | `ROUTER_DEFAULT_SERVER_TIMEOUT`     | `30s`    | Length of time that a server has to acknowledge or send data.                                                                                                                                                                                                                                           |
+| `spec.tuningOptions.tunnelTimeout`               | `ROUTER_DEFAULT_TUNNEL_TIMEOUT`     | `1h`     | Maximum time that idle TCP or WebSocket tunnel connections can remain open. Router reloads start a new HAProxy process for new connections while the prior process drains existing ones.                                                                                                                |
+| `spec.tuningOptions.headerBufferMaxRewriteBytes` | `ROUTER_SLOWLORIS_HTTP_KEEPALIVE`   | `300s`   | Sets the maximum time to wait for a new HTTP request on an idle connection. If a timeout occurs, HAProxy closes the connection by sending a TCP finish (FIN) to both the client and server. Standard browsers and applications handle this closure transparently by opening a new connection as needed. |
+| `spec.tuningOptions.slowlorisTimeout`            | `ROUTER_SLOWLORIS_TIMEOUT`          | `10s`    | Length of time the transmission of an HTTP request can take.                                                                                                                                                                                                                                            |
+| `spec.tuningOptions.reloadInterval`              | `RELOAD_INTERVAL`                   | `5s`     | Minimum frequency for the router to reload and apply configuration changes that require a reload.                                                                                                                                                                                                       |
+| `spec.tuningOptions.healthCheckInterval`         | `ROUTER_METRICS_HAPROXY_TIMEOUT`    | `5s`     | Timeout for the gathering of HAProxy metrics.                                                                                                                                                                                                                                                           |
+
+<div class="note">
+
+Different timeout settings govern distinct phases of a connection rather than accumulating together. On SSL passthrough routes, `tcp-request inspect-delay` is the maximum time a new connection has to provide the payload HAProxy requires to select a backend. If a client fails to send this payload within that limit, HAProxy closes the connection immediately. This initial connection limit operates independently from HTTP keep-alive timers controlled by `ROUTER_SLOWLORIS_HTTP_KEEPALIVE` (`timeout http-keep-alive`).
+
+</div>
+
+<div class="formalpara-title">
+
+**Example of a route setting custom timeout**
+
+</div>
+
+``` yaml
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 5500ms
+...
+```
+
+<div class="note">
+
+Setting a server-side timeout value for passthrough routes too low can cause WebSocket connections to time out often on that route.
+
+</div>
+
+- [Configuring the HAProxy reload interval](../../scalability_and_performance/optimization/routing-optimization.xml#configuring-haproxy-interval_routing-optimization)
 
 - [Installing the custom metrics autoscaler](../../nodes/cma/nodes-cma-autoscaling-custom-install.xml#nodes-cma-autoscaling-custom-install_nodes-cma-autoscaling-custom-install)
 

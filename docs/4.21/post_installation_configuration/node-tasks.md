@@ -998,6 +998,16 @@ As the fields in the `kubeletConfig` object are passed directly to the kubelet f
 
 </div>
 
+You can set most kubelet configuration options. You cannot overwrite the following options:
+
+- `CgroupDriver`
+
+- `ClusterDNS`
+
+- `ClusterDomain`
+
+- `StaticPodPath`
+
 Consider the following guidance:
 
 - Edit an existing `KubeletConfig` CR to modify existing settings or add new settings, instead of creating a CR for each change. It is recommended that you create a CR only to modify a different machine config pool, or for changes that are intended to be temporary, so that you can revert the changes.
@@ -1183,6 +1193,8 @@ The following procedure is an example to show how to configure the maximum numbe
         - Use `containerLogMaxSize` to set the maximum size of the container log file before it is rotated.
 
         - Use `maxPods` to set the maximum pods per node.
+
+        - Use `nodeStatusMaxImages` to set how many images the node reports. If a node contains more than 50 images, pod scheduling might be imbalanced because the image list is shortened to 50 by default. Set `nodeStatusMaxImages` to `-1` to disable that limit.
 
           <div class="note">
 
@@ -3454,7 +3466,7 @@ Alternatively, you can disable overcommitment for specific projects.
 
 ## Disable overcommitment for a project
 
-If overcommitment is enabled on a project, you can disable overcommitment for that projects. This allows infrastructure components to be configured independently of overcommitment.
+If overcommitment is enabled on a project, you can disable overcommitment for that project. This allows infrastructure components to be configured independently of overcommitment.
 
 1.  Create or edit the namespace object file.
 
@@ -3762,9 +3774,13 @@ Understand and use the Node Tuning Operator to manage node-level performance tun
 
 ## Node Tuning Operator
 
-The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller. The majority of high-performance applications require some level of kernel tuning. The Node Tuning Operator provides a unified management interface to users of node-level sysctls and more flexibility to add custom tuning specified by user needs.
+The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller.
 
-The Operator manages the containerized TuneD daemon for OpenShift Container Platform as a Kubernetes daemon set. It ensures the custom tuning specification is passed to all containerized TuneD daemons running in the cluster in the format that the daemons understand. The daemons run on all nodes in the cluster, one per node.
+The majority of high-performance applications require some level of kernel tuning. The Node Tuning Operator provides a unified management interface to users of node-level sysctls and more flexibility to add custom tuning specified by user needs.
+
+The Operator manages the containerized TuneD daemon for OpenShift Container Platform as a Kubernetes daemon set. It ensures the custom tuning specification is passed to all containerized TuneD daemons running in the cluster in the format that the daemons understand.
+
+The daemons run on all nodes in the cluster, one per node.
 
 Node-level settings applied by the containerized TuneD daemon are rolled back on an event that triggers a profile change or when the containerized TuneD daemon is terminated gracefully by receiving and handling a termination signal.
 

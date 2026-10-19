@@ -103,3 +103,7 @@ For all other configurations, you must estimate your total node count and use th
 In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now reserved by the system by default compared to OpenShift Container Platform 3.11 and previous versions. The sizes are determined taking that into consideration.
 
 </div>
+
+To accommodate for a large number of objects in the cluster, you might want to increase the etcd database size. Increasing the etcd database size can also increase memory requirements. For more information about control plane memory planning, see "Selectable etcd database size for large clusters".
+
+- [Selectable etcd database size for large clusters](../../etcd/etcd-performance.xml#etcd-selectable-db_etcd-performance)

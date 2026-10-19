@@ -2,6 +2,8 @@ After successfully deploying a bare-metal cluster, you can perform post installa
 
 # About the cluster API
 
+You can use the Cluster API to perform compute node provisioning management actions after the cluster installation finishes. The Cluster API allows dynamic management of compute node machine sets and machines. However, there is no support for control plane machines.
+
 OpenShift Container Platform 4.19 and later releases can manage machines by using the Cluster API.
 
 <div class="important">
@@ -11,8 +13,6 @@ Managing machines with the Cluster API is a Technology Preview feature only. Tec
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-You can use the Cluster API to perform compute node provisioning management actions after the cluster installation finishes. The Cluster API allows dynamic management of compute node machine sets and machines. However, there is no support for control plane machines.
 
 - [About the Cluster API](../../machine_management/cluster_api_machine_management/cluster-api-about.xml#luster-api-about)
 

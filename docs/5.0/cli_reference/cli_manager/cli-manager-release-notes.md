@@ -24,18 +24,6 @@ The following advisory is available for the CLI Manager Operator 0.2.0:
 
 - The `readOnlyRootFilesystem` flag is set to `true` for additional hardening of OpenShift Container Platform pods.
 
-# CLI Manager Operator 0.1.1 (Technology Preview)
-
-Review the features, enhancements, and advisory for the Technology Preview release of CLI Manager Operator 0.1.1.
-
-Issued: 12 March 2025
-
-The following advisory is available for the CLI Manager Operator 0.1.1:
-
-- [RHEA-2025:2680](https://access.redhat.com/errata/RHEA-2025:2680)
-
-## New features and enhancements
-
-This release of the CLI Manager updates the Kubernetes version to 1.32.
+<!-- -->
 
 - [About the CLI Manager Operator](../../cli_reference/cli_manager/index.xml#cli-manager-overview)

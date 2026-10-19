@@ -151,6 +151,18 @@ The `must-gather` tool uses `oc adm inspect` internally. You can specify what to
   $ oc adm must-gather -- REDUCE_LOGS=skip_rotated_logs /usr/bin/gather
   ```
 
+- To compress every uncompressed diagnostic log file that is larger than 10 MB, set the `REDUCE_LOGS` environment variable by running the following command:
+
+  ``` terminal
+  $ oc adm must-gather -- REDUCE_LOGS=compress_logs /usr/bin/gather
+  ```
+
+- To compress service logs, set the `REDUCE_LOGS` environment variable by running the following command:
+
+  ``` terminal
+  $ oc adm must-gather -- REDUCE_LOGS=compress_service_logs /usr/bin/gather
+  ```
+
 - To exclude logs entirely and significantly reduce the size of the `must-gather` archive, add a double dash (`--`) after `oc adm must-gather` command and add the `--no-logs` argument:
 
   ``` terminal
@@ -790,7 +802,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     </div>
 
     ``` yaml
-    apiVersion: operator.openshift.io/v1alpha1
+    apiVersion: operator.openshift.io/v1
     kind: MustGather
     metadata:
       name: example-mg
@@ -888,7 +900,8 @@ Large `must-gather` logs can take a significant amount of time to upload to supp
 
 The following examples demonstrate different methods for reducing the must-gather log size:
 
-**Skipping rotated logs** You can exclude older, rotated log files, such as `*.gz` or `*.1` files, from the collection by setting the shell variable `REDUCE_LOGS=skip_rotated_logs` before running the `gather` script.
+Skip rotated logs
+You can exclude older, rotated log files, such as `*.gz` or `*.1` files, from the collection by setting the shell variable `REDUCE_LOGS=skip_rotated_logs` before running the `gather` script.
 
 <div class="formalpara-title">
 
@@ -897,12 +910,12 @@ The following examples demonstrate different methods for reducing the must-gathe
 </div>
 
 ``` yaml
-apiVersion: operator.openshift.io/v1alpha1
+apiVersion: operator.openshift.io/v1
 kind: MustGather
 metadata:
   name: full-mustgather
 spec:
-  serviceAccountName: must-gather-operator
+  serviceAccountName: must-gather-admin
   gatherSpec:
     command:
       - /bin/sh
@@ -919,7 +932,75 @@ spec:
 ```
 
 `REDUCE_LOGS=skip_rotated_logs gather`
-Sets the `REDUCE_LOGS` shell variable and executes the `gather` script. As a result, the script excludes the collection of rotated log files.
+Sets the `REDUCE_LOGS` shell variable and executes the `gather` script to exclude the collection of rotated log files.
+
+Compress all uncompressed logs
+You can configure the `gather` script to compress uncompressed diagnostic log files larger than 10 MB. Set the `REDUCE_LOGS` shell variable to `compress_logs` when you run the `gather` script.
+
+<div class="formalpara-title">
+
+**Example `MustGather` CR configured to compress logs**
+
+</div>
+
+``` yaml
+apiVersion: operator.openshift.io/v1
+kind: MustGather
+metadata:
+  name: full-mustgather
+spec:
+  serviceAccountName: must-gather-admin
+  gatherSpec:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        REDUCE_LOGS=compress_logs gather
+  uploadTarget:
+    type: SFTP
+    sftp:
+      caseID: '02527285'
+      caseManagementAccountSecretRef:
+        name: sftp-access-rh-creds
+      internalUser: true
+```
+
+`REDUCE_LOGS=compress_logs gather`
+Sets the `REDUCE_LOGS` and executes the `gather` script to compress the uncompressed diagnostic log files.
+
+Compress service logs
+You can compress all the collected service logs into a `.tar.gz` archive by setting the `REDUCE_LOGS` shell variable to `compress_service_logs` when you run the `gather` script.
+
+<div class="formalpara-title">
+
+**Example `MustGather` CR configured to compress service logs**
+
+</div>
+
+``` yaml
+apiVersion: operator.openshift.io/v1
+kind: MustGather
+metadata:
+  name: full-mustgather
+spec:
+  serviceAccountName: must-gather-admin
+  gatherSpec:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        REDUCE_LOGS=compress_service_logs gather
+  uploadTarget:
+    type: SFTP
+    sftp:
+      caseID: '02527285'
+      caseManagementAccountSecretRef:
+        name: sftp-access-rh-creds
+      internalUser: true
+```
+
+`REDUCE_LOGS=compress_service_logs gather`
+Sets the `REDUCE_LOGS` and executes the `gather` script to compress the service logs.
 
 - [Understanding and creating service accounts](../authentication/understanding-and-creating-service-accounts.xml#understanding-and-creating-service-accounts)
 
@@ -1172,13 +1253,19 @@ When providing information to Red Hat Support, it is helpful to provide the uniq
 
 # About sosreport
 
-`sosreport` is a tool that collects configuration details, system information, and diagnostic data from Red Hat Enterprise Linux (RHEL) and Red Hat Enterprise Linux CoreOS (RHCOS) systems. `sosreport` provides a standardized way to collect diagnostic information relating to a node, which can then be provided to Red Hat Support for issue diagnosis.
+`sosreport` is a tool that collects configuration details, system information, and diagnostic data from Red Hat Enterprise Linux (RHEL) and Red Hat Enterprise Linux CoreOS (RHCOS) systems.
+
+`sosreport` provides a standardized way to collect diagnostic information relating to a node, which can then be provided to Red Hat Support for issue diagnosis.
 
 In some support interactions, Red Hat Support may ask you to collect a `sosreport` archive for a specific OpenShift Container Platform node. For example, it might sometimes be necessary to review system logs or other node-specific data that is not included within the output of `oc adm must-gather`.
 
-# Generating a sosreport archive for an OpenShift Container Platform cluster node
+How you use `sosreort` is different in RHCOS 9.x and 10.x, as described in the following sections.
+
+## Generating a sosreport archive for an OpenShift Container Platform cluster node in RHCOS 10.x
 
 The recommended way to generate a `sosreport` for an OpenShift Container Platform 4.17 cluster node is through a debug pod.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 10.x.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -1268,6 +1355,131 @@ The recommended way to generate a `sosreport` for an OpenShift Container Platfor
 
           ``` terminal
           $ oc debug node/my-cluster-node -- bash -c 'cat /var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz' > /tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
+          ```
+
+          where
+
+    - The debug container mounts the host’s root directory at `/host`. Reference the absolute path from the debug container’s root directory, including `/host`, when specifying target files for concatenation.
+
+      <div class="note">
+
+      OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Transferring a `sosreport` archive from a cluster node by using `scp` is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to copy a `sosreport` archive from a node by running `scp core@<node>.<cluster_name>.<base_domain>:<file_path> <local_path>`.
+
+      </div>
+
+      1.  Navigate to an existing support case within [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
+
+      2.  Select **Attach files** and follow the prompts to upload the file.
+
+## Generating a sosreport archive for an OpenShift Container Platform cluster node in RHCOS 9.x
+
+The recommended way to generate a `sosreport` for an OpenShift Container Platform 4.17 cluster node is through a debug pod.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 9.x.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You have SSH access to your hosts.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have a Red Hat standard or premium Subscription.
+
+- You have a Red Hat Customer Portal account.
+
+- You have an existing Red Hat Support case ID.
+
+1.  Obtain a list of cluster nodes:
+
+    ``` terminal
+    $ oc get nodes
+    ```
+
+2.  Enter into a debug session on the target node. This step instantiates a debug pod called `<node_name>-debug`:
+
+    ``` terminal
+    $ oc debug node/my-cluster-node
+    ```
+
+    To enter into a debug session on the target node that is tainted with the `NoExecute` effect, add a toleration to a dummy namespace, and start the debug pod in the dummy namespace:
+
+    ``` terminal
+    $ oc new-project dummy
+    ```
+
+    ``` terminal
+    $ oc patch namespace dummy --type=merge -p '{"metadata": {"annotations": { "scheduler.alpha.kubernetes.io/defaultTolerations": "[{\"operator\": \"Exists\"}]"}}}'
+    ```
+
+    ``` terminal
+    $ oc debug node/my-cluster-node
+    ```
+
+3.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+
+    ``` terminal
+    # chroot /host
+    ```
+
+    <div class="note">
+
+    OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+    </div>
+
+4.  Start a `toolbox` container, which includes the required binaries and plugins to run `sosreport`:
+
+    ``` terminal
+    # toolbox
+    ```
+
+    <div class="note">
+
+    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. Remove the running toolbox container with `podman rm toolbox-` and spawn a new toolbox container, to avoid issues with `sosreport` plugins.
+
+    </div>
+
+5.  Collect a `sosreport` archive.
+
+    1.  Run the `sos report` command to collect necessary troubleshooting data on `crio` and `podman`:
+
+        ``` terminal
+        # sos report -k crio.all=on -k crio.logs=on  -k podman.all=on -k podman.logs=on
+        ```
+
+        where
+        - `-k` enables you to define `sosreport` plugin parameters outside of the defaults.
+
+    2.  Optional: To include information on OVN-Kubernetes networking configurations from a node in your report, run the following command:
+
+        ``` terminal
+        # sos report --all-logs
+        ```
+
+    3.  Press **Enter** when prompted, to continue.
+
+    4.  Provide the Red Hat Support case ID. `sosreport` adds the ID to the archive’s file name.
+
+    5.  The `sosreport` output provides the archive’s location and checksum. The following sample output references support case ID `01234567`:
+
+        ``` terminal
+        Your sosreport has been generated and saved in:
+          /host/var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
+
+        The checksum is: 382ffc167510fd71b4f12a4f40b97a4e
+        ```
+
+        where
+        - The `sosreport` archive’s file path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
+
+6.  Provide the `sosreport` archive to Red Hat Support for analysis, using one of the following methods.
+
+    - Upload the file to an existing Red Hat support case.
+
+      1.  Concatenate the `sosreport` archive by running the `oc debug node/<node_name>` command and redirect the output to a file. This command assumes you have exited the previous `oc debug` session:
+
+          ``` terminal
+          $ oc debug node/my-cluster-node -- bash -c 'cat /host/var/tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz' > /tmp/sosreport-my-cluster-node-01234567-2020-05-28-eyjknxt.tar.xz
           ```
 
           where
@@ -1474,6 +1686,14 @@ The sample command in the following procedure demonstrates performing a packet c
 
 When investigating potential network-related OpenShift Container Platform issues, Red Hat Support might request a network packet trace from a specific OpenShift Container Platform cluster node or from a specific container. The recommended method to capture a network trace in OpenShift Container Platform is through a debug pod.
 
+How you collect a network trace from OpenShift Container Platform is different in RHCOS 9.x and 10.x, as described in the following sections.
+
+## Collecting a network trace from an OpenShift Container Platform node or container in RHCOS 10.x
+
+You can use a debug pod to capture a network trace in OpenShift Container Platform. Red Hat Support might request a network packet trace from a specific OpenShift Container Platform cluster node or from a specific container to help investigate potential network-related OpenShift Container Platform issues.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 10.x.
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -1508,47 +1728,28 @@ When investigating potential network-related OpenShift Container Platform issues
 
     - Optionally, start a `tcpdump` capture for the node by running the following commands:
 
-      1.  Set `/host` as the root directory within the debug shell by running the following command. The debug pod mounts the host’s root file system in the `/host` directory within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths.
+      1.  Access the host namespaces by using the following command:
 
           ``` terminal
-          # chroot /host
+          sh-5.1# nsenter -a -t 1
           ```
 
-      2.  Start a Toolbx container by running the following command:
+      2.  Enter a Toolbx container to execute commands by running the following command:
 
           ``` terminal
-          # toolbox create
+          -sh-5.2# toolbox enter -y
           ```
 
-          <div class="note">
-
-          If an existing `toolbox` container is already running, Toolbx outputs an error. Remove the existing Toolbx container by using the `toolbox rm <name>` or `toolbox rm --force <name>` command, where `<name>` is the name of the container. Then spawn a new toolbox container.
-
-          </div>
-
-      3.  If prompted, download the Toolbx image by entering `y` at the prompt:
+      3.  Obtain the node’s interface names by running the following command:
 
           ``` terminal
-          Image required to create Toolbx container.
-          Download registry.access.redhat.com/ubi10/toolbox:10.2 (345MB)? [y/N]
+          ⬢ [root@toolbx /]# ip ad
           ```
 
-      4.  Enter the Toolbx container to execute commands by running the following command:
+      4.  Initiate a `tcpdump` session on the cluster node and redirect output to a capture file. This example uses `ens5` as the interface name:
 
           ``` terminal
-          # toolbox enter
-          ```
-
-      5.  Obtain the node’s interface names by running the following command:
-
-          ``` terminal
-          # ip ad
-          ```
-
-      6.  Initiate a `tcpdump` session on the cluster node and redirect output to a capture file. This example uses `ens5` as the interface name:
-
-          ``` terminal
-          $ tcpdump -nn -s 0 -i ens5 -w /host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+          ⬢ [root@toolbx /]# tcpdump -nn -s 0 -i ens5 -w /host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
           ```
 
           where:
@@ -1561,25 +1762,25 @@ When investigating potential network-related OpenShift Container Platform issues
       1.  Determine the target container ID by running the following commandin:
 
           ``` terminal
-          # chroot /host crictl ps
+          sh-5.1# chroot /host crictl ps
           ```
 
       2.  Determine the container’s process ID. In this example, the container ID is `a7fe32346b120`:
 
           ``` terminal
-          # chroot /host crictl inspect --output yaml a7fe32346b120 | grep 'pid' | awk '{print $2}'
+          sh-5.1# chroot /host crictl inspect --output yaml a7fe32346b120 | grep 'pid' | awk '{print $2}'
           ```
 
       3.  Obtain the node’s interface names by running the following command:
 
           ``` terminal
-          # ip ad
+          sh-5.1# ip ad
           ```
 
       4.  Initiate a `tcpdump` session on the container and redirect output to a capture file. This example uses `49628` as the container’s process ID and `ens5` as the interface name. The `nsenter` command enters the namespace of a target process and runs a command in its namespace. because the target process in this example is a container’s process ID, the `tcpdump` command is run in the container’s namespace from the host:
 
           ``` terminal
-          # nsenter -n -t 49628 -- tcpdump -nn -i ens5 -w /host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+          sh-5.1# nsenter -n -t 49628 -- tcpdump -nn -i ens5 -w /host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
           ```
 
           where:
@@ -1588,6 +1789,127 @@ When investigating potential network-related OpenShift Container Platform issues
           The `tcpdump` capture file path is outside of the `chroot` environment.
 
 4.  Provide the `tcpdump` capture file to Red Hat Support for analysis, using one of the following methods.
+
+    - Upload the file to an existing Red Hat support case.
+
+      1.  Concatenate the `sosreport` archive by running the `oc debug node/<node_name>` command and redirect the output to a file. This command assumes you have exited the previous `oc debug` session:
+
+          ``` terminal
+          $ oc debug node/my-cluster-node -- bash -c 'cat /host/var/tmp/my-tcpdump-capture-file.pcap' > /tmp/my-tcpdump-capture-file.pcap
+          ```
+
+          where:
+
+          `/host/var/tmp/my-tcpdump-capture-file.pcap`
+          The debug container mounts the host’s root directory at `/host`. Reference the absolute path from the debug container’s root directory, including `/host`, when specifying target files for concatenation.
+
+          <div class="note">
+
+          OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Transferring a `tcpdump` capture file from a cluster node by using `scp` is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to copy a `tcpdump` capture file from a node by running `scp core@<node>.<cluster_name>.<base_domain>:<file_path> <local_path>`.
+
+          </div>
+
+      2.  Navigate to an existing support case within [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
+
+      3.  Select **Attach files** and follow the prompts to upload the file.
+
+## Collecting a network trace from an OpenShift Container Platform node or container in RHCOS 9.x
+
+You can use a debug pod to capture a network trace in OpenShift Container Platform. Red Hat Support might request a network packet trace from a specific OpenShift Container Platform cluster node or from a specific container to help investigate potential network-related OpenShift Container Platform issues.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 9.x.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have an existing Red Hat Support case ID.
+
+- You have a Red Hat standard or premium Subscription.
+
+- You have a Red Hat Customer Portal account.
+
+- You have SSH access to your hosts.
+
+1.  Obtain a list of cluster nodes:
+
+    ``` terminal
+    $ oc get nodes
+    ```
+
+2.  Enter into a debug session on the target node. This step instantiates a debug pod called `<node_name>-debug`:
+
+    ``` terminal
+    $ oc debug node/my-cluster-node
+    ```
+
+3.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+
+    ``` terminal
+    # chroot /host
+    ```
+
+    <div class="note">
+
+    OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
+
+    </div>
+
+4.  From within the `chroot` environment console, obtain the node’s interface names:
+
+    ``` terminal
+    # ip ad
+    ```
+
+5.  Start a `toolbox` container, which includes the required binaries and plugins to run `sosreport`:
+
+    ``` terminal
+    # toolbox
+    ```
+
+    <div class="note">
+
+    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. To avoid `tcpdump` issues, remove the running toolbox container with `podman rm toolbox-` and spawn a new toolbox container.
+
+    </div>
+
+6.  Initiate a `tcpdump` session on the cluster node and redirect output to a capture file. This example uses `ens5` as the interface name:
+
+    ``` terminal
+    $ tcpdump -nn -s 0 -i ens5 -w /host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+    ```
+
+    where:
+
+    `/host/var/tmp/my-cluster-node_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
+    The `tcpdump` capture file’s path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
+
+7.  If a `tcpdump` capture is required for a specific container on the node, follow these steps.
+
+    1.  Determine the target container ID. The `chroot host` command precedes the `crictl` command in this step because the toolbox container mounts the host’s root directory at `/host`:
+
+        ``` terminal
+        # chroot /host crictl ps
+        ```
+
+    2.  Determine the container’s process ID. In this example, the container ID is `a7fe32346b120`:
+
+        ``` terminal
+        # chroot /host crictl inspect --output yaml a7fe32346b120 | grep 'pid' | awk '{print $2}'
+        ```
+
+    3.  Initiate a `tcpdump` session on the container and redirect output to a capture file. This example uses `49628` as the container’s process ID and `ens5` as the interface name. The `nsenter` command enters the namespace of a target process and runs a command in its namespace. because the target process in this example is a container’s process ID, the `tcpdump` command is run in the container’s namespace from the host:
+
+        ``` terminal
+        # nsenter -n -t 49628 -- tcpdump -nn -i ens5 -w /host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap
+        ```
+
+        where:
+
+        `/host/var/tmp/my-cluster-node-my-container_$(date +%d_%m_%Y-%H_%M_%S-%Z).pcap`
+        The `tcpdump` capture file’s path is outside of the `chroot` environment because the toolbox container mounts the host’s root directory at `/host`.
+
+8.  Provide the `tcpdump` capture file to Red Hat Support for analysis, using one of the following methods.
 
     - Upload the file to an existing Red Hat support case.
 
@@ -1657,13 +1979,15 @@ When investigating OpenShift Container Platform issues, Red Hat Support might as
 
 Toolbx is a tool for creating persistent containers on a Red Hat Enterprise Linux CoreOS (RHCOS) system. Because RHCOS is immutable, you can use Toolbx containers to install and run your favorite debugging or administration tools, even if they are not included in the RHCOS base image.
 
-You can use Toolbx to gather diagnostic information and provide it to Red Hat Support.
+You can use Toolbx to gather diagnostic information and provide it to Red Hat Support. How you use Toolbx is different in RHCOS 9.x and 10.x, as described in the following sections. How you use Toolbx is different in RHCOS 9.x and 10.x, as described in the following sections.
 
-## Installing packages to a Toolbx container
+## Installing packages to a Toolbx container in RHCOS 10.x
 
 You can collect node-specific data that requires a support tool that is not part of the image by using Toolbx to install additional packages.
 
 By default, running the `toolbox create` command starts a Toolbx container with the default Red Hat Universal Base Image (UBI) for the matching Red Hat Enterprise Linux (RHEL) version, for example, `registry.access.redhat.com/ubi10/toolbox:10.2`. If the package you need is not in that base image, you can launch a Toolbx container and install that package.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 10.x.
 
 - You can access your system as a user with root privileges.
 
@@ -1716,7 +2040,35 @@ By default, running the `toolbox create` command starts a Toolbx container with 
 
     Replace `<package_name>` with the name of the additional package.
 
-## Starting an alternative image with Toolbx
+## Installing packages to a `toolbox` container in RHCOS 9.x
+
+By default, running the `toolbox` command starts a container with the `registry.redhat.io/rhel9/support-tools:latest` image. This image contains the most frequently used support tools. If you need to collect node-specific data that requires a support tool that is not part of the image, you can install additional packages.
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 9.x.
+
+- You have accessed a node with the `oc debug node/<node_name>` command.
+
+- You can access your system as a user with root privileges.
+
+1.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+
+    ``` terminal
+    # chroot /host
+    ```
+
+2.  Start the toolbox container:
+
+    ``` terminal
+    # toolbox
+    ```
+
+3.  Install the additional package, such as `wget`:
+
+    ``` terminal
+    # dnf install -y <package_name>
+    ```
+
+## Starting an alternative image with Toolbx in RHCOS 10.x
 
 The `toolbox create` command creates a container from the default Red Hat Universal Base Image (UBI) Toolbx image for the matching Red Hat Enterprise Linux (RHEL) version. You can create a container from an alternative image by running the command with the path to the image you want to run.
 
@@ -1725,6 +2077,8 @@ The `toolbox create` command creates a container from the default Red Hat Univer
 Running older RHEL-based images is not supported on OpenShift Container Platform 4.17.
 
 </div>
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 10.x.
 
 - You can access your system as a user with root privileges.
 
@@ -1792,10 +2146,55 @@ Running older RHEL-based images is not supported on OpenShift Container Platform
 
     Replace `<container_name>` with the name of the container.
 
-# Additional resources
+## Starting an alternative image with `toolbox` in RHCOS 9.x
 
-- [Gathering data about your cluster for Red Hat Support](../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
+By default, running the `toolbox` command starts a container with the `registry.redhat.io/rhel9/support-tools:latest` image.
 
-- [Obtaining your cluster ID](../support/gathering-cluster-data.xml#support-get-cluster-id_gathering-cluster-data)
+<div class="note">
 
-- [Self-service Technical Supportability Review](../support/gathering-cluster-data.xml#about-self-service-tsr_gathering-cluster-data)
+You can start an alternative image by creating a `.toolboxrc` file and specifying the image to run. However, running an older version of the `support-tools` image, such as `registry.redhat.io/rhel8/support-tools:latest`, is not supported on OpenShift Container Platform 4.17.
+
+</div>
+
+- Your cluster is running Red Hat Enterprise Linux CoreOS (RHCOS) 9.x.
+
+- You have accessed a node with the `oc debug node/<node_name>` command.
+
+- You can access your system as a user with root privileges.
+
+1.  Set `/host` as the root directory within the debug shell. The debug pod mounts the host’s root file system in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+
+    ``` terminal
+    # chroot /host
+    ```
+
+2.  Optional: If you need to use an alternative image instead of the default image, create a `.toolboxrc` file in the home directory for the root user ID, and specify the image metadata:
+
+    ``` text
+    REGISTRY=quay.io
+    IMAGE=fedora/fedora:latest
+    TOOLBOX_NAME=toolbox-fedora-latest
+    ```
+
+    where:
+
+    `REGISTRY=quay.io`
+    Optional: Specify an alternative container registry.
+
+    `IMAGE=fedora/fedora:latest`
+    Specify an alternative image to start.
+
+    `TOOLBOX_NAME=toolbox-fedora-latest`
+    Optional: Specify an alternative name for the toolbox container.
+
+3.  Start a toolbox container by entering the following command:
+
+    ``` terminal
+    # toolbox
+    ```
+
+    <div class="note">
+
+    If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. To avoid issues with `sosreport` plugins, remove the running toolbox container with `podman rm toolbox-` and then spawn a new toolbox container.
+
+    </div>

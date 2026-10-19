@@ -48,6 +48,7 @@
 - [About disconnected installation mirroring](disconnected/index.md)
 - [Creating a mirror registry with mirror registry for Red Hat OpenShift](disconnected/installing-mirroring-creating-registry.md)
 - **Mirroring images by using oc-mirror plugin**
+  - [oc-mirror release notes](disconnected/oc_mirror_v2/oc-mirror-v2-release-notes.md)
   - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.md)
   - [Migrating from oc-mirror plugin v1 to v2](disconnected/oc_mirror_v2/oc-mirror-migration-v1-to-v2.md)
 - [Mirroring images for a disconnected installation by using the oc adm command](disconnected/installing-mirroring-installation-images.md)
@@ -804,6 +805,7 @@
     - [Enabling Gateway API](networking/ingress_load_balancing/configuring_gateway_api/enable-gateway-api.md)
     - [Controlling incoming traffic with Gateway listeners](networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md)
     - [Assigning network addresses to gateways](networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md)
+    - [Configure DNS for gateways](networking/ingress_load_balancing/configuring_gateway_api/configure-dns-for-gateways.md)
     - [Routing HTTP requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md)
     - [Routing gRPC requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md)
     - [Securing HTTPRoutes](networking/ingress_load_balancing/configuring_gateway_api/securing-httproutes.md)
@@ -1486,6 +1488,20 @@
   - [Understand single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-understanding-sno-ip-configuration.md)
   - [Perform single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-configuring-sno-ip-configuration.md)
   - [Troubleshoot single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-troubleshooting-sno-ip-configuration.md)
+
+### Infrastructure and cluster lifecycle management
+
+- [Infrastructure and cluster lifecycle management with the O-Cloud Manager](infrastructure_lifecycle_management/ocloud-understanding-the-ocloud-manager.md)
+- [Prepare the O-Cloud Manager environment](infrastructure_lifecycle_management/ocloud-preparing-to-deploy-clusters.md)
+- [Define cluster templates and onboard bare-metal servers](infrastructure_lifecycle_management/ocloud-defining-templates-and-onboarding-servers.md)
+- [Discover O-Cloud resources with O-Cloud Manager APIs](infrastructure_lifecycle_management/ocloud-discovering-resources-with-ocloud-manager-apis.md)
+- [Provision clusters with the O-Cloud Manager](infrastructure_lifecycle_management/ocloud-provisioning-clusters.md)
+- [Scale worker nodes with the O-Cloud Manager](infrastructure_lifecycle_management/ocloud-scaling-worker-nodes.md)
+- [Configure advanced hardware management](infrastructure_lifecycle_management/ocloud-configuring-advanced-hardware-management.md)
+- [Update cluster configuration with the O-Cloud Manager](infrastructure_lifecycle_management/ocloud-updating-cluster-configuration.md)
+- [Upgrade clusters deployed with the O-Cloud Manager](infrastructure_lifecycle_management/ocloud-upgrading-clusters.md)
+- [Monitor infrastructure health with the Alarms API](infrastructure_lifecycle_management/ocloud-monitoring-alarms-with-the-alarms-api.md)
+- [O-Cloud Manager REST API reference](infrastructure_lifecycle_management/ocloud-rest-api-reference.md)
 
 ### Specialized hardware and driver enablement
 

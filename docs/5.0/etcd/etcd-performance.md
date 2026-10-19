@@ -873,33 +873,81 @@ You can determine the size of an etcd database by using the OpenShift Container 
       https://198.18.111.14:2379, 3.5.6, 1.1 GB
       ```
 
-# Increase the database size for etcd
+# Selectable etcd database size for large clusters
 
-Increase the etcd disk quota when low space or excessive growth alerts appear. Expanding the quota before etcd runs out of space prevents write failures and cluster instability.
+As a cluster administrator, you can increase the etcd backend database quota when large or high-churn workloads approach the default 8 GiB limit. Large and high-churn OpenShift Container Platform clusters can exhaust the default 8 GiB etcd backend quota, causing write failures and control plane instability.
 
-You can set the disk quota in gibibytes (GiB) for each etcd instance. If you set a disk quota for your etcd instance, you can specify integer values from 8 to 32. The default value is 8. You can specify only increasing values.
-
-You might want to increase the disk quota if you encounter a `low space` alert. This alert indicates that the cluster is too large to fit in etcd despite automatic compaction and defragmentation. If you see this alert, you need to increase the disk quota immediately because after etcd runs out of space, writes fail.
-
-Another scenario where you might want to increase the disk quota is if you encounter an `excessive database growth` alert. This alert is a warning that the database might grow too large in the next four hours. In this scenario, consider increasing the disk quota so that you do not eventually encounter a `low space` alert and possible write fails.
-
-If you increase the disk quota, the disk space that you specify is not immediately reserved. Instead, etcd can grow to that size if needed. Ensure that etcd is running on a dedicated disk that is larger than the value that you specify for the disk quota.
-
-For large etcd databases, the control plane nodes must have additional memory and storage. Because you must account for the API server cache, the minimum memory required is at least three times the configured size of the etcd database.
+Starting in OpenShift Container Platform 5.0, you can increase the supported quota through the `.spec.backendQuotaGiB` field on the cluster `etcd` custom resource without enabling a feature gate.
 
 <div class="important">
 
-Increasing the database size for etcd is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Do not use this feature unless you are near the 8 GiB limit. In your planning to use this feature, ensure that the nodes are sized appropriately. In addition, do not use this feature unless you are sure you will not eventually need to decrease the database quota. You cannot decrease the `backendQuotaGiB` setting. The API rejects any attempt to set a value lower than the current configuration with the following error: `etcd backendQuotaGiB may not be decreased`.
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+The only way to run at a lower quota after an increase is to restore the cluster from an etcd backup taken before the change. Be aware that any changes made since the backup was taken might be lost.
 
 </div>
 
-1.  Check the current value of the disk quota for each etcd instance by entering the following command:
+The `backendQuotaGiB` field accepts integer values from 8 GiB through 16 GiB. The default value is 8 GiB, which matches the historical etcd backend quota for OpenShift Container Platform.
+
+## Disk and growth behavior
+
+Increasing the `backendQuotaGiB` value raises the limit etcd enforces; it does not immediately assign or reserve disk space. The database grows toward the new limit as cluster state changes. Dedicated etcd disk capacity on control plane nodes must exceed the configured quota.
+
+If the database reaches the configured quota, etcd enters a `NOSPACE` state, and write operations fail. You must delete enough Kubernetes objects so that after compaction removes their historical revisions, the freed space exceeds 45% of the on-disk database size, triggering automatic defragmentation to reclaim disk space.
+
+## Control plane memory sizing
+
+etcd memory-maps the database file. Larger quotas allow higher resident memory during normal operation, startup, write-ahead log (WAL) replay, snapshot recovery, and defragmentation.
+
+Minimum
+Allocate control plane node memory at least 4 times the configured database size.
+
+Workloads at 16 GiB quota
+Plan for up to 10 times the database size, which is about 64–160 GiB per control plane node depending on churn and object count.
+
+| Configured `backendQuotaGiB` value | Minimum memory | Recommended range | Notes                                          |
+|------------------------------------|----------------|-------------------|------------------------------------------------|
+| 8 GiB (default)                    | 32 GiB         | Up to 80 GiB      | Baseline for most clusters                     |
+| 12 GiB                             | 48 GiB         | Up to 120 GiB     | Common intermediate setting for large clusters |
+| 16 GiB (maximum)                   | 64 GiB         | Up to 160 GiB     | Validated GA maximum; highest memory demand    |
+
+Control plane memory planning
+
+For more information about memory planning, see "Control plane node sizing".
+
+## Defragmentation and operational impact
+
+The `cluster-etcd-operator` defragmentation controller triggers when on-disk fragmentation reaches about 45%, which is the gap between `etcd_mvcc_db_total_size_in_bytes` and in-use size after compaction. This fragmentation threshold is not derived from the `backendQuotaGiB` value. Defragmentation timing depends on compaction and object churn, not quota use.
+
+Defragmentation is not considered when on-disk size is below 100 MiB. Defragmentation is rolling, blocking, and performed one etcd member at a time. Duration and transient memory pressure scale with database size. Larger databases also extend write-blocking during defragmentation and increase snapshot sync times during member recovery. Brief write latency during defragmentation is expected.
+
+- [Control plane node sizing](../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#master-node-sizing_recommended-control-plane-practices)
+
+## Changing the etcd database size
+
+To increase etcd backend quota, set the `backendQuotaGiB` value.
+
+<div class="important">
+
+Do not use this feature unless you are near the 8 GiB limit. In your planning to use this feature, make sure that the nodes are sized appropriately. In addition, do not use this feature unless you are sure that you will not eventually need to decrease the database quota. You cannot decrease the `backendQuotaGiB` setting. The API rejects any attempt to set a value lower than the current configuration with the following error: `etcd backendQuotaGiB may not be decreased`.
+
+The only way to run at a lower quota after an increase is to restore the cluster from an etcd backup taken before the change. Be aware that any changes made since the backup was taken might be lost.
+
+</div>
+
+- You have cluster administrator access.
+
+- The control plane memory and disk meet the requirements for the target quota. For more information, see "Selectable etcd database size for large clusters".
+
+Before you begin this procedure, it is useful to have a current etcd backup, but it is not required.
+
+1.  Patch the `backendQuotaGiB` setting with an integer from `8` through `16`:
 
     ``` terminal
-    $ oc describe etcd/cluster | grep "Backend Quota"
+    $ oc patch etcd/cluster --type=merge -p '{"spec":{"backendQuotaGiB": <quota_gib>}}'
     ```
+
+    Replace `<quota_gib>` with your target value.
 
     <div class="formalpara-title">
 
@@ -907,186 +955,127 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     </div>
 
-    ``` terminal
-    Backend Quota Gi B: <value>
-    ```
-
-2.  Change the value of the disk quota by entering the following command:
-
-    ``` terminal
-    $ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": <value>}}'
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
+    ``` text
     etcd.operator.openshift.io/cluster patched
     ```
 
+2.  Monitor etcd pod rollout and quota metrics by entering the following command:
+
+    ``` terminal
+    $ oc adm wait-for-stable-cluster
+    ```
+
+3.  To monitor only the etcd cluster Operator, enter the following command:
+
+    ``` terminal
+    $ oc get clusteroperator etcd -w
+    ```
+
+- Ensure that the `etcd_server_quota_backend_bytes` value reflects the new quota by entering the following commands:
+
+  ``` terminal
+  $ oc get etcd/cluster -o 'jsonpath={.spec.backendQuotaGiB}{"\n"}'
+  ```
+
+  ``` terminal
+  $ oc -n openshift-etcd get pod -l app=etcd -o yaml | grep -A1 ETCD_QUOTA_BACKEND_BYTES
+  ```
+
+## Recovering etcd from CrashLoopBackOff after increasing backend quota
+
+If you increase the `backendQuotaGiB` setting and the etcd pods enter a `CrashLoopBackOff` state, verify whether the failure is memory-related, confirm control plane sizing, and follow supported member recovery steps.
+
+- You have cluster administrator access.
+
+- Control plane node memory meets sizing guidance for the configured `backendQuotaGiB` setting, or you can increase node memory before recovery.
+
+Before you begin this procedure, it is useful to have a current etcd backup, but it is not required.
+
+1.  Verify whether etcd containers were out-of-memory by entering the following command:
+
+    ``` terminal
+    $ oc get pods -n openshift-etcd -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .status.containerStatuses[*]}{": "}{.lastState.terminated.reason}{" "}{end}{"\n"}{end}'
+    ```
+
+    If the reason is `OOMKilled`, insufficient memory is the likely cause.
+
+2.  Check the node memory and the etcd resident memory by entering the following command:
+
+    ``` terminal
+    $ oc adm top nodes --selector=node-role.kubernetes.io/control-plane=
+    ```
+
+    In the OpenShift Container Platform web console, in the **Observe** → **Metrics** view, query `process_resident_memory_bytes{job="etcd"}` and compare results to the sizing table in "Selectable etcd database size for large clusters".
+
+3.  If control plane memory is below the recommended range for your configured quota, increase memory on all control plane nodes before proceeding. Recovery attempts fail if nodes remain undersized.
+
+4.  Take a restorable etcd snapshot before member-level recovery by running `cluster-backup.sh` on a control plane node. For more information, see "Backing up and restoring etcd data". Save the snapshot and static pod resources to a secure location outside the cluster.
+
+    Optionally, collect supplemental diagnostics by entering the following command:
+
+    ``` terminal
+    $ oc adm inspect co/etcd
+    ```
+
+5.  For a single crash-looping etcd member with sufficient memory and no data corruption, complete the following steps:
+
+    1.  Follow the steps in "Replacing an unhealthy etcd member whose etcd pod is crashlooping" to replace the unhealthy member.
+
+    2.  Verify etcd cluster health by entering the following commands:
+
+        ``` terminal
+        $ oc get etcd cluster -o yaml
+        ```
+
+        ``` terminal
+        $ oc get pods -n openshift-etcd
+        ```
+
+6.  If recovery fails after memory correction and member replacement, collect must-gather logs and contact Red Hat Support. Do not attempt unsupported quota decreases.
+
+7.  If you must run at a lower `backendQuotaGiB`, restore the cluster from an etcd backup taken before the quota increase.
+
+- All etcd pods in `openshift-etcd` are `Running` and ready.
+
+- The `oc get etcd cluster -o jsonpath='{.items[0].status.conditions[?(@.type=="EtcdMembersAvailable")].status}'` command returns `True`.
+
+- No recurring `OOMKilled` terminations occur on etcd containers.
+
 <!-- -->
 
-1.  Verify that the new value for the disk quota is set by entering the following command:
+- [Backing up and restoring etcd data](../etcd/etcd-backup-restore/etcd-backup.xml#etcd-backup)
 
-    ``` terminal
-    $ oc describe etcd/cluster | grep "Backend Quota"
+## Troubleshooting etcd quota alerts after quota change
+
+After you change the `backendQuotaGiB` setting, if you see `etcdDatabaseQuotaLowSpace` alerts, verify database use and determine mitigation steps.
+
+- You configured the `backendQuotaGiB` setting.
+
+- You have access to cluster metrics or the **Observe** → **Metrics** view in the OpenShift Container Platform web console.
+
+1.  Confirm current usage by entering the following command:
+
+    ``` promql
+    etcd_mvcc_db_total_size_in_bytes / etcd_server_quota_backend_bytes
     ```
 
-    The etcd Operator automatically rolls out the etcd instances with the new values.
+2.  Compare absolute database size to the alert thresholds in the `etcdDatabaseQuotaLowSpace` alert thresholds.
 
-2.  Verify that the etcd pods are up and running by entering the following command:
+3.  Mitigate elevated usage by using one or more of the following approaches:
 
-    ``` terminal
-    $ oc get pods -n openshift-etcd
-    ```
+    - Run or wait for automatic defragmentation.
 
-    The following output shows the expected entries.
+    - Delete unnecessary Kubernetes objects to reduce churn and size.
 
-    <div class="formalpara-title">
+    - Increase `backendQuotaGiB` within the 16 GiB maximum if sustained growth is expected.
 
-    **Example output**
+    - Silence alerts temporarily when growth is expected and documented, following your change management process.
 
-    </div>
+4.  If critical alerts persist near 85% usage, increase the quota or perform object cleanup before write failures occur.
 
-    ``` terminal
-    NAME                                                   READY   STATUS      RESTARTS   AGE
-    etcd-ci-ln-b6kfsw2-72292-mzwbq-master-0                4/4     Running     0          39m
-    etcd-ci-ln-b6kfsw2-72292-mzwbq-master-1                4/4     Running     0          37m
-    etcd-ci-ln-b6kfsw2-72292-mzwbq-master-2                4/4     Running     0          41m
-    etcd-guard-ci-ln-b6kfsw2-72292-mzwbq-master-0          1/1     Running     0          51m
-    etcd-guard-ci-ln-b6kfsw2-72292-mzwbq-master-1          1/1     Running     0          49m
-    etcd-guard-ci-ln-b6kfsw2-72292-mzwbq-master-2          1/1     Running     0          54m
-    installer-5-ci-ln-b6kfsw2-72292-mzwbq-master-1         0/1     Completed   0          51m
-    installer-7-ci-ln-b6kfsw2-72292-mzwbq-master-0         0/1     Completed   0          46m
-    installer-7-ci-ln-b6kfsw2-72292-mzwbq-master-1         0/1     Completed   0          44m
-    installer-7-ci-ln-b6kfsw2-72292-mzwbq-master-2         0/1     Completed   0          49m
-    installer-8-ci-ln-b6kfsw2-72292-mzwbq-master-0         0/1     Completed   0          40m
-    installer-8-ci-ln-b6kfsw2-72292-mzwbq-master-1         0/1     Completed   0          38m
-    installer-8-ci-ln-b6kfsw2-72292-mzwbq-master-2         0/1     Completed   0          42m
-    revision-pruner-7-ci-ln-b6kfsw2-72292-mzwbq-master-0   0/1     Completed   0          43m
-    revision-pruner-7-ci-ln-b6kfsw2-72292-mzwbq-master-1   0/1     Completed   0          43m
-    revision-pruner-7-ci-ln-b6kfsw2-72292-mzwbq-master-2   0/1     Completed   0          43m
-    revision-pruner-8-ci-ln-b6kfsw2-72292-mzwbq-master-0   0/1     Completed   0          42m
-    revision-pruner-8-ci-ln-b6kfsw2-72292-mzwbq-master-1   0/1     Completed   0          42m
-    revision-pruner-8-ci-ln-b6kfsw2-72292-mzwbq-master-2   0/1     Completed   0          42m
-    ```
+- The usage ratio is stable or decreasing.
 
-3.  Verify that the disk quota value is updated for the etcd pod by entering the following command:
-
-    ``` terminal
-    $ oc describe -n openshift-etcd pod/<etcd_podname> | grep "ETCD_QUOTA_BACKEND_BYTES"
-    ```
-
-    The value might not have changed from the default value of `8`.
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    ETCD_QUOTA_BACKEND_BYTES:                               8589934592
-    ```
-
-    <div class="note">
-
-    While the value that you set is an integer in GiB, the value shown in the output is converted to bytes.
-
-    </div>
-
-# Troubleshooting etcd database size increases
-
-Resolve common errors when increasing the etcd disk quota, including values that are too small, too large, or lower than the current setting.
-
-If you encounter issues when you try to increase the database size for etcd, the following examples might help.
-
-## Value is too small
-
-If the value that you specify is less than `8`, you see an error message. For example, if you enter the following command:
-
-``` terminal
-$ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 5}}'
-```
-
-The following error message is displayed:
-
-<div class="formalpara-title">
-
-**Example error message**
-
-</div>
-
-``` terminal
-The Etcd "cluster" is invalid:
-* spec.backendQuotaGiB: Invalid value: 5: spec.backendQuotaGiB in body should be greater than or equal to 8
-* spec.backendQuotaGiB: Invalid value: "integer": etcd backendQuotaGiB may not be decreased
-```
-
-To resolve this issue, specify an integer between `8` and `32`.
-
-## Value is too large
-
-If the value that you specify is greater than `32`, you see an error message. For example, if you enter the following command:
-
-``` terminal
-$ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 64}}'
-```
-
-The following error message is displayed:
-
-<div class="formalpara-title">
-
-**Example error message**
-
-</div>
-
-``` terminal
-The Etcd "cluster" is invalid: spec.backendQuotaGiB: Invalid value: 64: spec.backendQuotaGiB in body should be less than or equal to 32
-```
-
-To resolve this issue, specify an integer between `8` and `32`.
-
-## Value is decreasing
-
-If the value is set to a valid value between `8` and `32`, you cannot decrease the value. Otherwise, you see an error message.
-
-For example, check the current value by entering the following command:
-
-``` terminal
-$ oc describe etcd/cluster | grep "Backend Quota"
-```
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
-
-``` terminal
-Backend Quota Gi B: 10
-```
-
-If you decrease the disk quota value by entering the following command, an error message is displayed.
-
-``` terminal
-$ oc patch etcd/cluster --type=merge -p '{"spec": {"backendQuotaGiB": 8}}'
-```
-
-<div class="formalpara-title">
-
-**Example error message**
-
-</div>
-
-``` terminal
-The Etcd "cluster" is invalid: spec.backendQuotaGiB: Invalid value: "integer": etcd backendQuotaGiB may not be decreased
-```
-
-To resolve this issue, specify an integer greater than `10`.
+- Alerts are cleared or are acknowledged according to the operations policy.
 
 # Measure network jitter between control plane nodes
 

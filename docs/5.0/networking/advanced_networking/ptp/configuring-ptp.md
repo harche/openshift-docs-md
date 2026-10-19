@@ -3205,6 +3205,8 @@ For more information about `MachineConfig` custom resource, see *Additional reso
 
 - [Machine Configuration documentation](../../../machine_configuration/index.xml#machine-config-index)
 
+- [Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform](../../../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc-gnrd_configuring-ptp)
+
 # Configuring dynamic leap seconds handling for PTP grandmaster clocks
 
 The PTP Operator container image includes the latest `leap-seconds.list` file that is available at the time of release.
@@ -3873,6 +3875,8 @@ You can configure a Precision Time Protocol (PTP) Telecom Boundary Clock (T-BC) 
 
 The configuration uses two profiles: one for the time receiver (TR) ports that synchronize from an upstream source, and one for the time transmitter (TT) port that distributes time downstream on a separate PTP domain.
 
+This procedure applies to Intel Westport Channel E810-XXVDA4T NICs.
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in as a user with `cluster-admin` privileges.
@@ -4300,7 +4304,680 @@ phc2sys flags for dual time receiver port high availability
 
 - [High availability for PTP boundary clocks with dual time receiver ports](../../../networking/advanced_networking/ptp/about-ptp.xml#ptp-dual-ports-bc_about-ptp)
 
+- [Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform](../../../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc-gnrd_configuring-ptp)
+
 - [Configuring linuxptp services as a boundary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-boundary-clock_configuring-ptp)
+
+## Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform
+
+You can configure dual time receiver ports for Precision Time Protocol (PTP) Telecom Boundary Clock (T-BC) high availability on a Dell XR8720t Granite Rapids-D (GNR-D) platform by creating `PtpConfig` and `HardwareConfig` custom resources (CRs).
+
+<div class="important">
+
+Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+The Alternate Best Master Clock Algorithm (A-BMCA) provides automatic failover between upstream timing paths. The configuration uses two profiles: one for the time receiver (TR) ports that synchronize from an upstream source, and one for the time transmitter (TT) ports that distribute time downstream.
+
+This configuration requires path-based network interface naming so that the system can consistently identify Network Acceleration Complex (NAC) and Carter Flat interfaces. The configuration uses the following custom resources:
+
+- `MachineConfig`: Configures path-based network interface naming for NAC and Carter Flat devices.
+
+- `PtpConfig`: Configures the dual time receiver T-BC profiles, including the TR and TT `ptp4l` instances.
+
+- `HardwareConfig`: Configures the digital phase-locked loop (DPLL) clock chain and holdover thresholds for the Dell XR8720t platform and Intel E830 network interface controllers (NICs).
+
+The example interface names are hardware-specific. Replace them with the interface names from your qualified Dell XR8720t layout.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You are logged in as a user with `cluster-admin` privileges.
+
+- You have installed the PTP Operator.
+
+- You have deployed a Dell XR8720t GNR-D platform with supported Intel E830 NICs.
+
+- You have identified the interface names for the two time receiver ports and the time transmitter ports for your hardware layout.
+
+1.  Save the following `MachineConfig` custom resource (CR) in the `gnrd-interface-names.yaml` file:
+
+    ``` yaml
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      name: 10-rename-gnrd-interfaces-master
+      labels:
+        machineconfiguration.openshift.io/role: master
+    spec:
+      config:
+        ignition:
+          version: 3.2.0
+        storage:
+          files:
+            - path: /etc/systemd/network/10-interface-8086-12d3.link
+              # [Match]
+              # Property=ID_VENDOR_ID=0x8086
+              # Property=ID_MODEL_ID=0x12d3
+              # [Link]
+              # NamePolicy=path
+              mode: 420
+              overwrite: true
+              contents:
+                source: data:text/plain,%5BMatch%5D%0AProperty%3DID_VENDOR_ID%3D0x8086%0AProperty%3DID_MODEL_ID%3D0x12d3%0A%0A%5BLink%5D%0ANamePolicy%3Dpath%0A
+    ```
+
+    This configuration sets `NamePolicy=path` so that network interfaces use stable path-based names.
+
+2.  Apply the `MachineConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc apply -f gnrd-interface-names.yaml
+    ```
+
+3.  Save the following `PtpConfig` CR definition in the `dual-port-tbc-ptp-config-gnrd.yaml` file:
+
+    ``` yaml
+    apiVersion: ptp.openshift.io/v1
+    kind: PtpConfig
+    metadata:
+      name: t-bc
+      namespace: openshift-ptp
+    spec:
+      profile:
+      - name: 00-tbc-tt
+        ptp4lConf: |
+          [eno8503]
+          masterOnly 1
+          [enp108s0f0]
+          masterOnly 1
+          [enp108s0f1]
+          masterOnly 1
+          [enp110s0f0]
+          masterOnly 1
+          [enp110s0f1]
+          masterOnly 1
+          [global]
+          #
+          # Default Data Set
+          #
+          twoStepFlag 1
+          slaveOnly 0
+          priority1 128
+          priority2 128
+          domainNumber 24
+          clockClass 248
+          clockAccuracy 0xFE
+          offsetScaledLogVariance 0xFFFF
+          free_running 0
+          freq_est_interval 1
+          dscp_event 0
+          dscp_general 0
+          dataset_comparison G.8275.x
+          G.8275.defaultDS.localPriority 128
+          #
+          # Port Data Set
+          #
+          logAnnounceInterval -3
+          logSyncInterval -4
+          logMinDelayReqInterval -4
+          logMinPdelayReqInterval -4
+          announceReceiptTimeout 3
+          syncReceiptTimeout 0
+          delayAsymmetry 0
+          fault_reset_interval -4
+          neighborPropDelayThresh 20000000
+          masterOnly 0
+          G.8275.portDS.localPriority 128
+          #
+          # Run time options
+          #
+          assume_two_step 0
+          logging_level 6
+          path_trace_enabled 0
+          follow_up_info 0
+          hybrid_e2e 0
+          inhibit_multicast_service 0
+          net_sync_monitor 0
+          tc_spanning_tree 0
+          tx_timestamp_timeout 50
+          unicast_listen 0
+          unicast_master_table 0
+          unicast_req_duration 3600
+          use_syslog 1
+          verbose 0
+          summary_interval 0
+          kernel_leap 1
+          check_fup_sync 0
+          clock_class_threshold 135
+          #
+          # Servo Options
+          #
+          pi_proportional_const 0.60
+          pi_integral_const 0.001
+          pi_proportional_scale 0.0
+          pi_proportional_exponent -0.3
+          pi_proportional_norm_max 0.7
+          pi_integral_scale 0.0
+          pi_integral_exponent 0.4
+          pi_integral_norm_max 0.3
+          step_threshold 2.0
+          first_step_threshold 0.00002
+          max_frequency 900000000
+          clock_servo pi
+          sanity_freq_limit 200000000
+          ntpshm_segment 0
+          #
+          # Transport options
+          #
+          transportSpecific 0x0
+          ptp_dst_mac 01:1B:19:00:00:00
+          p2p_dst_mac 01:80:C2:00:00:0E
+          udp_ttl 1
+          udp6_scope 0x0E
+          uds_address /var/run/ptp4l
+          #
+          # Default interface options
+          #
+          clock_type BC
+          network_transport L2
+          delay_mechanism E2E
+          time_stamping hardware
+          tsproc_mode filter
+          delay_filter moving_median
+          delay_filter_length 10
+          egressLatency 0
+          ingressLatency 0
+          boundary_clock_jbod 1
+          #
+          # Clock description
+          #
+          productDescription ;;
+          revisionData ;;
+          manufacturerIdentity 00:00:00
+          userDescription ;
+          timeSource 0xA0
+        ptp4lOpts: -2 --summary_interval -4
+        ptpSchedulingPolicy: SCHED_FIFO
+        ptpSchedulingPriority: 10
+        ptpSettings:
+          controllingProfile: 01-tbc-tr
+          logReduce: "false"
+      - name: 01-tbc-tr
+        phc2sysOpts: -r -w -n 24 -N 8 -R 16 -u 0 -m -s eno8703
+        ptp4lConf: |
+          # The interface name is hardware-specific
+          [eno8303]
+          masterOnly 0
+          [eno8403]
+          masterOnly 0
+          [global]
+          #
+          # Default Data Set
+          #
+          twoStepFlag 1
+          slaveOnly 0
+          priority1 128
+          priority2 128
+          domainNumber 24
+          clockClass 248
+          clockAccuracy 0xFE
+          offsetScaledLogVariance 0xFFFF
+          free_running 0
+          freq_est_interval 1
+          dscp_event 0
+          dscp_general 0
+          dataset_comparison G.8275.x
+          G.8275.defaultDS.localPriority 128
+          #
+          # Port Data Set
+          #
+          logAnnounceInterval -3
+          logSyncInterval -4
+          logMinDelayReqInterval -4
+          logMinPdelayReqInterval -4
+          announceReceiptTimeout 3
+          syncReceiptTimeout 0
+          delayAsymmetry 0
+          fault_reset_interval -4
+          neighborPropDelayThresh 20000000
+          masterOnly 0
+          G.8275.portDS.localPriority 128
+          #
+          # Run time options
+          #
+          assume_two_step 0
+          logging_level 6
+          path_trace_enabled 0
+          follow_up_info 0
+          hybrid_e2e 0
+          inhibit_multicast_service 0
+          net_sync_monitor 0
+          tc_spanning_tree 0
+          tx_timestamp_timeout 50
+          unicast_listen 0
+          unicast_master_table 0
+          unicast_req_duration 3600
+          use_syslog 1
+          verbose 0
+          summary_interval 0
+          kernel_leap 1
+          check_fup_sync 0
+          clock_class_threshold 135
+          #
+          # Servo Options
+          #
+          pi_proportional_const 0.60
+          pi_integral_const 0.001
+          pi_proportional_scale 0.0
+          pi_proportional_exponent -0.3
+          pi_proportional_norm_max 0.7
+          pi_integral_scale 0.0
+          pi_integral_exponent 0.4
+          pi_integral_norm_max 0.3
+          step_threshold 2.0
+          first_step_threshold 0.00002
+          max_frequency 900000000
+          clock_servo pi
+          sanity_freq_limit 200000000
+          ntpshm_segment 0
+          #
+          # Transport options
+          #
+          transportSpecific 0x0
+          ptp_dst_mac 01:1B:19:00:00:00
+          p2p_dst_mac 01:80:C2:00:00:0E
+          udp_ttl 1
+          udp6_scope 0x0E
+          uds_address /var/run/ptp4l
+          #
+          # Default interface options
+          #
+          clock_type OC
+          network_transport L2
+          delay_mechanism E2E
+          time_stamping hardware
+          tsproc_mode filter
+          delay_filter moving_median
+          delay_filter_length 10
+          egressLatency 0
+          ingressLatency 0
+          boundary_clock_jbod 1
+          #
+          # Clock description
+          #
+          productDescription ;;
+          revisionData ;;
+          manufacturerIdentity 00:00:00
+          userDescription ;
+          timeSource 0xA0
+        ptp4lOpts: -2 --summary_interval -4
+        ptpSchedulingPolicy: SCHED_FIFO
+        ptpSchedulingPriority: 10
+        ptpSettings:
+          clockType: T-BC
+          inSyncConditionThreshold: "10"
+          inSyncConditionTimes: "12"
+          logReduce: "false"
+        ts2phcConf: |
+          [global]
+          use_syslog  0
+          verbose 1
+          logging_level 7
+          ts2phc.pulsewidth 500000000
+          leapfile  /usr/share/zoneinfo/leap-seconds.list
+          domainNumber 24
+          uds_address /var/run/ptp4l.1.socket
+          [eno8703]
+          ts2phc.extts_correction 0
+          ts2phc.master 0
+          ts2phc.channel 0
+          ts2phc.pin_index 1
+          [enp108s0f0]
+          ts2phc.extts_correction 0
+          ts2phc.master 0
+          ts2phc.channel 0
+          ts2phc.pin_index 1
+          [enp110s0f0]
+          ts2phc.extts_polarity rising
+          ts2phc.extts_correction 0
+          ts2phc.master 0
+          ts2phc.channel 0
+          ts2phc.pin_index 1
+        ts2phcOpts: -s generic -a --ts2phc.rh_external_pps 1
+      recommend:
+      - match:
+        - nodeLabel: node-role.kubernetes.io/master
+        priority: 4
+        profile: 00-tbc-tt
+      - match:
+        - nodeLabel: node-role.kubernetes.io/master
+        priority: 4
+        profile: 01-tbc-tr
+    ```
+
+    where:
+
+    `00-tbc-tt`
+    Specifies the time transmitter (TT) profile. Downstream-facing ports use `clock_type BC` and `masterOnly 1`.
+
+    `01-tbc-tr`
+    Specifies the time receiver (TR) profile. Both upstream-facing ports use `clock_type OC` and `masterOnly 0` so that A-BMCA can select either port as `SLAVE`.
+
+    `controllingProfile`
+    Specifies that the TT profile is controlled by the TR profile.
+
+    `clockType: T-BC`
+    Specifies that the node operates as a Telecom Boundary Clock.
+
+    `phc2sysOpts`
+    Specifies the `phc2sys` options. The `-s` flag sets the global navigation satellite system (GNSS) 1 pulse per second (1PPS) interface as the clock source. For example, `eno8703`.
+
+4.  Apply the `PtpConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc apply -f dual-port-tbc-ptp-config-gnrd.yaml
+    ```
+
+5.  Save the following `HardwareConfig` CR in the `t-bc-e830-hardwareconfig.yaml` file:
+
+    ``` yaml
+    apiVersion: ptp.openshift.io/v2alpha1
+    kind: HardwareConfig
+    metadata:
+      name: t-bc-e830
+    spec:
+      profile:
+        name: GNR-D-T-BC-E830
+        clockType: T-BC
+        clockChain:
+          structure:
+          - name: leader
+            hardwareSpecificDefinitions: dell/XR8720t
+            dpll:
+              holdoverParameters:
+                maxInSpecOffset: 40
+                localMaxHoldoverOffset: 1500
+                localHoldoverTimeout: 14400
+          - name: cf1
+            hardwareSpecificDefinitions: intel/e830
+            dpll:
+              networkInterface: enp108s0f0
+          - name: cf2
+            hardwareSpecificDefinitions: intel/e830
+            dpll:
+              networkInterface: enp110s0f0
+      relatedPtpProfileName: 01-tbc-tr
+    ```
+
+    where:
+
+    `hardwareSpecificDefinitions: dell/XR8720t`
+    Specifies Dell XR8720t platform behavior for the leader DPLL.
+
+    `cf1` and `cf2`
+    Specifies the Intel E830 Carter Flat NICs associated with the DPLL clock chain.
+
+    `holdoverParameters`
+    Specifies the DPLL holdover thresholds.
+
+    `relatedPtpProfileName`
+    Specifies the TR `PtpConfig` profile that this hardware profile is linked to.
+
+6.  Apply the `HardwareConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc apply -f t-bc-e830-hardwareconfig.yaml
+    ```
+
+<!-- -->
+
+1.  Verify that the `PtpConfig` resource is deployed by running the following command:
+
+    ``` terminal
+    $ oc get ptpconfig -n openshift-ptp
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME   AGE
+    t-bc   10s
+    ```
+
+2.  Verify that the `HardwareConfig` resource is deployed by running the following command:
+
+    ``` terminal
+    $ oc get hardwareconfig
+    ```
+
+3.  Check the T-BC status in the `linuxptp-daemon` logs by running the following command:
+
+    ``` terminal
+    $ oc logs ds/linuxptp-daemon -n openshift-ptp -c linuxptp-daemon-container --since=1s -f | grep T-BC
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    T-BC[1760525446]:[ts2phc.1.config] eno8703 offset 1 T-BC-STATUS s2
+    ```
+
+    The status is reported every second:
+
+    - `s2`: Locked. Synchronized with the upstream clock.
+
+    - `s1`: Holdover. Upstream source lost; internal oscillator maintaining timing.
+
+    - `s0`: Unlocked. Holdover limits exceeded or no valid holdover data available.
+
+## Verifying the dual-port PTP boundary clock failover configuration on a GNR-D platform
+
+After configuring a dual time receiver port Precision Time Protocol (PTP) boundary clock on a Dell XR8720t Granite Rapids-D (GNR-D) platform, you can verify that automatic failover works correctly by checking port states and simulating a failure on the active upstream path.
+
+<div class="important">
+
+Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- You have configured a dual time receiver port boundary clock as described in "Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform".
+
+- The PTP boundary clock is running and synchronized to an upstream timing source.
+
+1.  Identify the `linuxptp-daemon` pod on the target node by running the following command:
+
+    ``` terminal
+    $ oc get pods -n openshift-ptp -o wide
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                            READY   STATUS    RESTARTS   AGE   IP               NODE
+    linuxptp-daemon-4xkbb           3/3     Running   0          43m   10.1.196.24      compute-0.example.com
+    ptp-operator-657bbb64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
+    ```
+
+2.  Check the interface role metric to identify which port is active and which is in standby by running the following command:
+
+    ``` terminal
+    $ oc rsh -n openshift-ptp -c linuxptp-daemon-container <linuxptp_daemon_pod> \
+      curl -s localhost:9091/metrics | grep -E "eno8303|eno8403|HELP openshift_ptp_interface_role"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    # HELP openshift_ptp_interface_role 0 = PASSIVE, 1 = SLAVE, 2 = MASTER, 3 = FAULTY, 4 = UNKNOWN, 5 = LISTENING
+    openshift_ptp_interface_role{iface="eno8303",process="ptp4l"} 1
+    openshift_ptp_interface_role{iface="eno8403",process="ptp4l"} 2
+    ```
+
+    In this example, `eno8303` is the active time receiver port in the `SLAVE` state, and `eno8403` is the standby port in the `MASTER` state. Replace the interface names with the time receiver ports from your hardware layout.
+
+    where:
+
+    `<linuxptp_daemon_pod>`
+    Specifies the name of the `linuxptp-daemon` pod on the target node.
+
+3.  Simulate a failure on the active path by shutting down the active time receiver port. Run the following command:
+
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host ip link set <active_interface> down
+    ```
+
+    where:
+
+    `<node_name>`
+    Specifies the name of the target node.
+
+    `<active_interface>`
+    Specifies the active time receiver port. For example, `eno8303`.
+
+4.  Query the interface role metric again to verify that the standby port transitions to active by running the following command:
+
+    ``` terminal
+    $ oc rsh -n openshift-ptp -c linuxptp-daemon-container <linuxptp_daemon_pod> \
+      curl -s localhost:9091/metrics | grep -E "eno8303|eno8403"
+    ```
+
+    The former standby port reports `1` (`SLAVE`). The failed port reports `3` (`FAULTY`) or `5` (`LISTENING`) during the Alternate Best Master Clock Algorithm (A-BMCA) transition. The output confirms that the active port is no longer `SLAVE` and that the standby port has taken over as the active time receiver.
+
+5.  Restore the original active port by running the following command:
+
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host ip link set <active_interface> up
+    ```
+
+6.  Verify that the boundary clock reselects a time receiver port and returns to the locked state by running the following command:
+
+    ``` terminal
+    $ oc logs <linuxptp_daemon_pod> -n openshift-ptp -c linuxptp-daemon-container --since=1m | grep T-BC
+    ```
+
+    A Telecom Boundary Clock (T-BC) status value of `s2` indicates that the clock is locked to the upstream source.
+
+## PtpConfig CR parameters for dual-port boundary clock high availability on a GNR-D platform
+
+The following tables describe the `PtpConfig` and `HardwareConfig` custom resource (CR) parameters for Precision Time Protocol (PTP) dual time receiver port high availability on Dell XR8720t Granite Rapids-D (GNR-D) Telecom Boundary Clock (T-BC) platforms.
+
+<div class="important">
+
+Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+The T-BC configuration uses two profiles: a time receiver (TR) profile that synchronizes from upstream sources, and a time transmitter (TT) profile that distributes time downstream.
+
+Do not use the Intel Westport Channel E810 `plugins.e810` dual-port parameters for this GNR-D configuration.
+
+### Time receiver profile parameters
+
+The following table describes the time receiver (TR) profile parameters used in the dual-port high availability configuration on a GNR-D platform.
+
+| Parameter                      | Value                                                       | Description                                                                                                                                                                                                                          |
+|--------------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ptp4lConf` interface sections | `[<interface>]` entries with `masterOnly 0`                 | Specifies two time receiver ports. Set `masterOnly 0` for each time receiver port so that the Alternate Best Master Clock Algorithm (A-BMCA) can select either port as `SLAVE`. Interface names are hardware-specific.               |
+| `clock_type`                   | `OC`                                                        | Runs the upstream `ptp4l` instance as an ordinary clock (OC) so that either time receiver port can become `SLAVE`.                                                                                                                   |
+| `boundary_clock_jbod`          | `1`                                                         | Enables `ptp4l` to manage clocks across multiple network interface controllers (NICs) in the GNR-D layout.                                                                                                                           |
+| `dataset_comparison`           | `G.8275.x`                                                  | Specifies the data set comparison algorithm. The `G.8275.x` value enables A-BMCA for selecting the best time source among the receiver ports.                                                                                        |
+| `ptpSettings.clockType`        | `"T-BC"`                                                    | Specifies that the node operates as a Telecom Boundary Clock.                                                                                                                                                                        |
+| `phc2sysOpts`                  | `"-r -w -n 24 -N 8 -R 16 -u 0 -m -s <gnss_1pps_interface>"` | Specifies the `phc2sys` options for system clock synchronization. The `-s` flag sets the global navigation satellite system (GNSS) 1 pulse per second (1PPS) interface as the clock source. The interface name is hardware-specific. |
+| `ts2phcOpts`                   | `"-s generic -a --ts2phc.rh_external_pps 1"`                | Identifies the TR profile as a T-BC profile that uses an external 1PPS source.                                                                                                                                                       |
+
+Time receiver (TR) profile parameters for dual-port high availability on GNR-D
+
+### Time transmitter profile parameters
+
+The following table describes the time transmitter (TT) profile parameters used in the dual-port high availability configuration on a GNR-D platform.
+
+| Parameter                        | Value                   | Description                                                                                                            |
+|----------------------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `clock_type`                     | `BC`                    | Runs the downstream `ptp4l` instance as a boundary clock (BC) that serves time transmitter ports.                      |
+| `masterOnly`                     | `1` (interface section) | Configures each TT interface to transmit time only.                                                                    |
+| `slaveOnly`                      | `0`                     | Enables the TT profile to operate as a time transmitter, distributing time to downstream devices.                      |
+| `ptpSettings.controllingProfile` | `01-tbc-tr`             | Specifies the TR profile name that controls this TT profile. The TT profile follows the clock state of the TR profile. |
+
+Time transmitter (TT) profile parameters
+
+### phc2sysOpts parameter reference
+
+The following table describes the individual `phc2sys` flags used in the dual time receiver port configuration on a GNR-D platform.
+
+| Flag                       | Description                                                                                                                                                              |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-r`                       | Synchronizes the system clock from the PTP hardware clock.                                                                                                               |
+| `-w`                       | Waits until `ptp4l` is in a synchronized state before starting `phc2sys`.                                                                                                |
+| `-n 24`                    | Specifies the PTP domain number. This value must match the `domainNumber` in the TR profile `ptp4lConf` section.                                                         |
+| `-N 8`                     | Specifies the number of controller updates per clock update for the servo filter.                                                                                        |
+| `-R 16`                    | Specifies the rate of system clock synchronization updates per second.                                                                                                   |
+| `-u 0`                     | Specifies the number of clock updates for which the servo must remain in a locked state before the clock is considered synchronized. A value of `0` disables this check. |
+| `-m`                       | Prints messages to `stdout`. This flag enables log output for monitoring the `phc2sys` process.                                                                          |
+| `-s <gnss_1pps_interface>` | Specifies the GNSS 1PPS interface as the clock source for `phc2sys`. The interface name is hardware-specific. For example, `eno8703`.                                    |
+
+phc2sys flags for dual time receiver port high availability on GNR-D
+
+### HardwareConfig parameters
+
+The following table describes the `HardwareConfig` CR parameters used for dual time receiver port high availability on a GNR-D platform.
+
+| Parameter                              | Value                                | Description                                                                                                                 |
+|----------------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `profile.name`                         | `GNR-D-T-BC-E830`                    | Specifies the dual time receiver T-BC hardware profile that includes Intel E830 Carter Flat NICs.                           |
+| `hardwareSpecificDefinitions` (leader) | `dell/XR8720t`                       | Applies Dell XR8720t platform behavior to the leader digital phase-locked loop (DPLL).                                      |
+| `maxInSpecOffset`                      | `40`                                 | Specifies the maximum offset in nanoseconds that the clock tolerates while in the locked state.                             |
+| `localMaxHoldoverOffset`               | `1500`                               | Specifies the maximum acceptable offset in nanoseconds during holdover before the clock is considered out of specification. |
+| `localHoldoverTimeout`                 | `14400`                              | Specifies the holdover timeout in seconds.                                                                                  |
+| `cf1` and `cf2`                        | `intel/e830` with `networkInterface` | Associates each Intel E830 NIC with the DPLL clock chain.                                                                   |
+| `relatedPtpProfileName`                | `01-tbc-tr`                          | Links the `HardwareConfig` CR to the TR `PtpConfig` profile.                                                                |
+
+HardwareConfig parameters for dual-port high availability on GNR-D
+
+### Interface role metric values
+
+The following table describes the `openshift_ptp_interface_role` metric values that you use to identify active and standby time receiver ports on a GNR-D platform.
+
+| Value | Role        | Description                                                                                  |
+|-------|-------------|----------------------------------------------------------------------------------------------|
+| `0`   | `PASSIVE`   | The port is blocked by the Best Master Clock Algorithm (BMCA) as an alternate path.          |
+| `1`   | `SLAVE`     | The port is the active upstream reference.                                                   |
+| `2`   | `MASTER`    | The port is serving downstream clocks or acting as the local standby reference.              |
+| `3`   | `FAULTY`    | The port has a hardware or protocol fault.                                                   |
+| `4`   | `UNKNOWN`   | The role cannot be determined.                                                               |
+| `5`   | `LISTENING` | The port is listening for Announce messages, including during the BMCA `UNCALIBRATED` phase. |
+
+openshift_ptp_interface_role metric values
+
+- [Machine Configuration documentation](../../../machine_configuration/index.xml#machine-config-index)
+
+- [High availability for PTP boundary clocks with dual time receiver ports](../../../networking/advanced_networking/ptp/about-ptp.xml#ptp-dual-ports-bc_about-ptp)
+
+- [Configuring PTP boundary clock high availability with dual time receiver ports](../../../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc_configuring-ptp)
+
+- [Configuring GNR-D T-BC holdover on a GNR-D platform](../../../networking/advanced_networking/ptp/configuring-ptp.xml#nw-ptp-gnrd-t-bc-holdover_configuring-ptp)
 
 ## Boundary clocks without holdover on Intel Granite Rapids-D hardware
 

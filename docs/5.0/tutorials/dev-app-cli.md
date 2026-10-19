@@ -42,7 +42,7 @@ Before you start this tutorial, ensure that you have the following required prer
 
 - You have [logged in to your cluster by using the OpenShift CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-logging-in_cli-developer-commands).
 
-# Creating a project
+# Create a project
 
 Create a new project to contain all required resources and application components for the tutorial.
 
@@ -83,7 +83,7 @@ If you are using Developer Sandbox to complete this tutorial, skip this procedur
 
 - [oc new-project](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-new-project)
 
-# Granting view permissions
+# Grant view permissions
 
 Configure the necessary permissions for the application to access the required cluster resources.
 
@@ -119,7 +119,7 @@ As a requirement of the application, you must assign the `view` role to the `def
 
 - [oc adm policy add-role-to-user](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-policy-add-role-to-user)
 
-# Deploying the front-end application
+# Deploy the front-end application
 
 Deploy the front-end application that provides the external-facing web component for the tutorial.
 
@@ -164,7 +164,7 @@ The following procedure deploys `parksmap`, which is the front-end component of 
 
 - [oc new-app](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-new-app)
 
-## Exposing the front-end service
+## Expose the front-end service
 
 By default, services running on OpenShift Container Platform are not accessible externally. To expose your service so that external clients can access it, you can create a *route*.
 
@@ -209,7 +209,7 @@ Optionally, you can define security, such as TLS, for the route.
 
 - [oc get](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-get)
 
-## Viewing pod details
+## View pod details
 
 Retrieve detailed pod information to confirm the running status and resource configuration of the applications in this tutorial.
 
@@ -295,7 +295,7 @@ You can view the pods in your cluster and to determine the health of those pods 
 
 - [Viewing pod logs](../cli_reference/openshift_cli/getting-started-cli.xml#viewing-pod-logs)
 
-## Scaling up the deployment
+## Scale up the deployment
 
 Scale the application deployment up or down to meet workload demands.
 
@@ -361,7 +361,7 @@ The following procedure scales the `parksmap` deployment to use two instances.
 
 - [oc scale](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-scale)
 
-# Deploying the back-end application
+# Deploy the back-end application
 
 Deploy the back-end application that provides the service that queries the database to return the national park data required for your application.
 
@@ -402,7 +402,7 @@ The following procedure deploys `nationalparks`, which is the back-end component
       Run 'oc status' to view your app.
   ```
 
-## Exposing the back-end service
+## Expose the back-end service
 
 To expose the back-end service so that it is accessible externally, create a route.
 
@@ -426,7 +426,7 @@ To expose the back-end service so that it is accessible externally, create a rou
 
 - [oc label](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-label)
 
-# Deploying the database application
+# Deploy the database application
 
 Deploy a MongoDB database application to contain the information that your application requires. For this tutorial, you will deploy a database application called `mongodb-nationalparks` that holds the national park location information.
 
@@ -463,7 +463,7 @@ Deploy a MongoDB database application to contain the information that your appli
       Run 'oc status' to view your app.
   ```
 
-## Providing access to the database by creating a secret
+## Provide access to the database by creating a secret
 
 Create a `Secret` resource to securely provide the back-end application with the sensitive database connection credentials.
 
@@ -515,7 +515,7 @@ The following procedure creates the `nationalparks-mongodb-parameters` secret an
 
 - [oc rollout status](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-rollout-status)
 
-## Loading data into the database
+## Load data into the database
 
 After you have deployed the `mongodb-nationalparks` database application, load the national park location information into the database.
 
@@ -564,7 +564,7 @@ After you have deployed the `mongodb-nationalparks` database application, load t
 
 - [oc exec](../cli_reference/openshift_cli/developer-cli-commands.xml#oc-exec)
 
-# Viewing the application in a web browser
+# View the application in a web browser
 
 After you have deployed the necessary applications and loaded data into the database, you are now ready view your application through a browser. You can get the URL for the application by retrieving the route information for the front-end application.
 

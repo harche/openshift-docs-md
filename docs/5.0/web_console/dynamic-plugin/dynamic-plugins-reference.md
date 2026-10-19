@@ -2,6 +2,10 @@ You can add extensions that allow you to customize your plugin. Those extensions
 
 # Dynamic plugin extension types
 
+Dynamic plugin extension types define the contracts for extending the OpenShift Container Platform web console with custom actions, navigation, pages, dashboards, topology views, and catalog items.
+
+You can declare these extension types in your plugin to contribute new functionality that loads into the console at runtime.
+
 ## `console.action/filter`
 
 `ActionFilter` can be used to filter an action.
@@ -873,6 +877,8 @@ Deprecated: Use `console.tab/horizontalNav` instead. Adds a new resource tab pag
 - [JavaScript Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type)
 
 # Dynamic plugin API
+
+The dynamic plugin API provides hooks, components, and utilities for extending the OpenShift Container Platform web console. You can use these APIs to manage cluster resources, perform access control checks, build customized list pages and overlays, query Prometheus, and make authenticated console requests.
 
 ## `useActivePerspective`
 

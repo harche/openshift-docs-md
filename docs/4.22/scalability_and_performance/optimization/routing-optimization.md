@@ -1,4 +1,4 @@
-You can scale or configure the OpenShift Container Platform HAProxy router to optimize routing performance.
+Scale the router tier or adjust HAProxy reload behavior so that you can match routing behavior to your applications and cluster capacity.
 
 # Baseline Ingress Controller (router) performance
 
@@ -105,13 +105,19 @@ $ oc -n openshift-ingress describe deploy/router-default | grep -e Liveness: -e 
 
 # Configure HAProxy reload interval
 
-You can configure the HAProxy reload interval, so that when HAProxy reloads it generates a new process that handles new connections by using the updated configuration.
+To reduce how often the router reloads HAProxy, change the minimum reload interval on the Ingress Controller. By doing this task, you can spread reload work over time and limit resource use from long-lived connections.
 
-When you update a route or an endpoint associated with a route, the OpenShift Container Platform router updates the configuration for HAProxy. The HAProxy then reloads the updated configuration for those changes to take effect.
+<div class="note">
 
-HAProxy keeps the old process running to handle existing connections until those connections are all closed. When old processes have long-lived connections, these processes can accumulate and consume resources.
+The higher the reload interval, the longer a route update takes.
 
-The default minimum HAProxy reload interval is 5 seconds. You can configure an Ingress Controller using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
+</div>
+
+When you update a route or an endpoint associated with a route, the OpenShift Container Platform router updates the configuration for HAProxy and reloads it so those changes take effect. Each reload starts a new HAProxy process for new connections while the old process handles existing connections until they close.
+
+When connections last a long time, old processes can accumulate and consume resources.
+
+The default minimum HAProxy reload interval is 5 seconds. You can configure an Ingress Controller by using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
 
 <div class="warning">
 

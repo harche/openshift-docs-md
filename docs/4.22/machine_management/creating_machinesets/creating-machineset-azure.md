@@ -521,7 +521,9 @@ You can save on costs by creating a compute machine set that deploys machines as
 
 # Machine sets that deploy machines on Ephemeral OS disks
 
-You can create a compute machine set running on Microsoft Azure that deploys machines on Ephemeral OS disks. Ephemeral OS disks use local VM capacity rather than remote Microsoft Azure Storage. The configuration, therefore, incurs no additional cost and provides lower latency for reading, writing, and reimaging.
+You can create a compute machine set running on Microsoft Azure that deploys machines on Ephemeral OS disks. Ephemeral OS disks use local VM capacity rather than remote Microsoft Azure Storage.
+
+The configuration, therefore, incurs no additional cost and provides lower latency for reading, writing, and reimaging.
 
 - [Ephemeral OS disks for Azure VMs (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks)
 

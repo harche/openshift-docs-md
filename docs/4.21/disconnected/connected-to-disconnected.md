@@ -70,7 +70,7 @@ The following prerequisites must be met:
 
 - [Red Hat Quay documentation on organizations](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html-single/use_red_hat_quay/index#user-org-intro_use-quay)
 
-# Preparing the cluster for mirroring
+# Prepare the cluster for mirroring
 
 Before disconnecting your cluster, you must mirror, or copy, the images to a mirror registry that is reachable by every node in your disconnected cluster.
 
@@ -145,7 +145,7 @@ To mirror the images, you must prepare your cluster by:
         "registry.svc.ci.openshift.org":{"auth":"dXNlcjpyWjAwWVFjSEJiT2RKVW1pSmg4dW92dGp1SXRxQ3RGN1pwajJhN1ZXeTRV"},"my-registry:5000/my-namespace/":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}
         ```
 
-# Mirroring the images
+# Mirror the images
 
 After the cluster is properly configured, you can mirror the images from your external repositories to the mirror repository.
 
@@ -258,7 +258,7 @@ After the cluster is properly configured, you can mirror the images from your ex
 
 - [OpenShift CLI administrator command reference](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-catalog-mirror)
 
-# Configuring the cluster for the mirror registry
+# Configure the cluster for the mirror registry
 
 After creating and mirroring the images to the mirror registry, you must modify your cluster so that pods can pull images from the mirror registry.
 

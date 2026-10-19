@@ -1,12 +1,12 @@
 Resolve common installation issues with the Data Protection Application (DPA), such as invalid backup storage directories and incorrect cloud provider credentials. This helps you successfully install and configure OADP in your environment.
 
-# Resolving invalid directories in backup storage
+# Resolve invalid directories in backup storage
 
 Resolve the `Backup storage contains invalid top-level directories` error that occurs when object storage contains non-Velero directories. This helps you configure the correct bucket prefix for shared object storage.
 
 - If the object storage is not dedicated to Velero, you must specify a prefix for the bucket by setting the `spec.backupLocations.velero.objectStorage.prefix` parameter in the `DataProtectionApplication` manifest.
 
-# Resolving incorrect AWS credentials
+# Resolve incorrect AWS credentials
 
 Resolve credential errors such as `InvalidAccessKeyId` or `NoCredentialProviders` that occur when the `credentials-velero` file is incorrectly formatted. This helps you configure valid AWS credentials for OADP backup operations.
 

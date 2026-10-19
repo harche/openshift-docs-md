@@ -68,8 +68,6 @@ The setup command automatically detects whether you have cluster-wide administra
 
 You can use the OADP command-line interface (CLI) to view and modify client configuration settings. Configuration is stored in `~/.config/velero/config.json`.
 
-## Prerequisites
-
 - The OADP CLI plugin is installed.
 
 ## Current configuration viewing command
@@ -164,8 +162,6 @@ You can use the OADP command-line interface (CLI) to generate and install shell 
 # Backup management commands
 
 You can use the OADP command-line interface (CLI) to create, view, describe, download, and delete backups.
-
-## Prerequisites
 
 - The OADP CLI plugin is installed and configured in admin mode.
 
@@ -275,8 +271,6 @@ Flags for the `oc oadp backup delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete restores.
 
-## Prerequisites
-
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
@@ -375,8 +369,6 @@ Flags for the `oc oadp restore delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete backup schedules. Schedules automate the creation of backups at specified intervals by using a cron expression.
 
-## Prerequisites
-
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
@@ -461,8 +453,6 @@ Flags for the `oc oadp schedule delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, set, and delete backup storage locations (BSLs). Backup storage locations define where backup data is stored, such as an object storage bucket.
 
-## Prerequisites
-
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
@@ -541,8 +531,6 @@ Flags for the `oc oadp backup-location delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, set, and delete volume snapshot locations (VSLs). Volume snapshot locations define where persistent volume (PV) snapshots are stored.
 
-## Prerequisites
-
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
@@ -614,8 +602,6 @@ Flags for the `oc oadp snapshot-location delete` command
 # NonAdminBackupStorageLocation approval request commands
 
 When the OADP Operator is configured with `nonAdmin.requireApprovalForBSL: true`, non-admin users who create a `NonAdminBackupStorageLocation` (NABSL) object trigger an approval request. You can use the OADP command-line interface (CLI) to view, describe, approve, and reject these requests.
-
-## Prerequisites
 
 - The OADP CLI plugin is installed and configured in admin mode.
 
@@ -765,7 +751,11 @@ You can use OADP self-service to complete the following tasks:
 
 - Backup and restore logs by using a `NonAdminDownloadRequest` object are not supported for default backup storage locations (BSLs). To access logs, you must create a `NonAdminBackupStorageLocation` object.
 
-## Prerequisites for non-administrator users
+<div class="formalpara-title">
+
+**Prerequisites**
+
+</div>
 
 Before you use OADP self-service, a cluster administrator must complete the following tasks:
 
@@ -788,8 +778,6 @@ Before you use OADP self-service, a cluster administrator must complete the foll
 # Non-admin backup management commands
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete non-admin backups in your namespace.
-
-## Prerequisites
 
 - The OADP CLI plugin is installed and configured in non-admin mode.
 
@@ -927,8 +915,6 @@ $ oc oadp nonadmin backup delete my-backup --confirm
 # Non-administrator restore management commands
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete non-administrator restores in your namespace.
-
-## Prerequisites
 
 - The OADP CLI plugin is installed and configured in non-administrator mode.
 
@@ -1080,8 +1066,6 @@ You can use the OADP command-line interface (CLI) to create and view `NonAdminBa
 Updating or deleting NABSLs after creation is not supported for non-administrator users.
 
 </div>
-
-## Prerequisites
 
 - The OADP CLI plugin is installed and configured in non-administrator mode.
 

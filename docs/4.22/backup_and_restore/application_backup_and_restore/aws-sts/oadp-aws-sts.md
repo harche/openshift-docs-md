@@ -14,7 +14,7 @@ This process is performed in the following two stages:
 
 2.  Install the OADP Operator and give it an IAM role.
 
-# Preparing AWS STS credentials for OADP
+# Prepare AWS STS credentials for OADP
 
 Configure an Amazon Web Services account to install the OpenShift API for Data Protection (OADP). Prepare the AWS credentials by using the following procedure.
 
@@ -190,7 +190,7 @@ Configure an Amazon Web Services account to install the OpenShift API for Data P
     $ aws iam attach-role-policy --role-name "${ROLE_NAME}" --policy-arn ${POLICY_ARN}
     ```
 
-# Installing the OADP Operator and providing the IAM role
+# Install the OADP Operator and provide the IAM role
 
 Install OpenShift API for Data Protection (OADP) on an AWS STS cluster. AWS Security Token Service (AWS STS) is a global web service that provides short-term credentials for IAM or federated users.
 
@@ -469,7 +469,7 @@ In an AWS cluster that uses STS authentication, restoring backed-up data in a di
 
 - [Backing up applications](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
-# Performing a backup with OADP and AWS STS
+# Perform a backup with OADP and AWS STS
 
 Perform a backup by using OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) (AWS STS). The following `hello-world` example application has no persistent volumes (PVs) attached.
 
@@ -605,7 +605,7 @@ Either Data Protection Application (DPA) configuration will work.
 
     </div>
 
-## Cleaning up a cluster after a backup with OADP and AWS STS
+## Clean up a cluster after a backup with OADP and AWS STS
 
 Uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from the `hello-world` example.
 

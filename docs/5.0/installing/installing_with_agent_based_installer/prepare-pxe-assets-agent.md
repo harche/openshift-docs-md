@@ -417,9 +417,7 @@ If you are using an OSA network device in Processor Resource/Systems Manager (PR
 
 ## Adding IBM Z agents with z/VM
 
-You can manually add IBM Z® agents with z/VM.
-
-Only use this procedure for IBM Z® clusters with z/VM.
+You can manually add IBM Z® agents with z/VM. Only use this procedure for IBM Z® clusters with z/VM.
 
 - You have a running file server with access to the guest virtual machines (VMs).
 
@@ -498,9 +496,7 @@ Only use this procedure for IBM Z® clusters with z/VM.
 
 ## Adding IBM Z agents with RHEL KVM
 
-You can manually add IBM Z® agents with RHEL KVM.
-
-Only use this procedure for IBM Z® clusters with RHEL KVM.
+You can manually add IBM Z® agents with RHEL KVM. Only use this procedure for IBM Z® clusters with RHEL KVM.
 
 <div class="note">
 

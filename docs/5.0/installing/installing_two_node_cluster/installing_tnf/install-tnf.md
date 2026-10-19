@@ -47,7 +47,7 @@ controlPlane:
         username: <username>
         password: <password>
         certificateVerification: Disabled
-      - hostname: <control_1_hostname>
+      - macAddress: <control_1_mac_address>
         address: https://<redfish-api-url>
         username: <username>
         password: <password>
@@ -79,11 +79,13 @@ pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
 
-- `compute.replicas`: Set this field to `0` because a two-node OpenShift Container Platform cluster with fencing does not include worker nodes.
+- `compute.replicas`: Set this field to `0` because a two-node OpenShift Container Platform cluster with fencing does not include compute nodes.
 
 - `controlPlane.replicas`: Set this field to `2` for a two-node OpenShift Container Platform cluster with fencing deployment.
 
-- `fencing.credentials.hostname`: Provide the Baseboard Management Console (BMC) credentials for each control plane node. These credentials are required for node fencing and prevent split-brain scenarios.
+- `fencing.credentials.hostname`: The hostname of the control plane node. You must specify at least one of `hostname` or `macAddress` for each credential entry. If both are specified, `hostname` takes precedence for credential identification.
+
+- `fencing.credentials.macAddress`: The MAC address of an operating system visible network interface on the control plane node. You can use this field as an alternative to `hostname` for identifying the node. This must be a MAC address from a non-loopback network interface on the host (for example, the boot NIC), not the BMC management interface MAC. MAC addresses are stable hardware identifiers that do not change if the hostname is modified after installation.
 
 - `fencing.credentials.certificateVerification`: Set this field to `Disabled` if your Redfish URL uses self-signed certificates, which is common for internally-hosted endpoints. Set this field to `Enabled` for URLs with valid CA-signed certificates.
 
@@ -126,7 +128,7 @@ controlPlane:
         address: https://<redfish-api-url>
         username: <username>
         password: <password>
-      - hostname: <control_1_hostname>
+      - macAddress: <control_1_mac_address>
         address: https://<redfish-api-url>
         username: <username>
         password: <password>
@@ -142,7 +144,9 @@ sshKey: '<ssh_public_key>'
 
 - `controlPlane.replicas`: Set this field to `2` for a two-node fencing deployment.
 
-- `fencing.credentials.hostname`: Provide BMC credentials for each control plane node.
+- `fencing.credentials.hostname`: The hostname of the control plane node. You must specify at least one of `hostname` or `macAddress` for each credential entry. If both are specified, `hostname` takes precedence for credential identification.
+
+- `fencing.credentials.macAddress`: The MAC address of an OS-visible network interface on the control plane node. You can use this field as an alternative to `hostname` for identifying the node. This must be a MAC address from a non-loopback network interface on the host (for example, the boot NIC), not the BMC management interface MAC. MAC addresses are stable hardware identifiers that do not change if the hostname is modified after installation.
 
 - `metadata.name`: Cluster name is used as a prefix for hostnames and DNS records.
 
@@ -171,7 +175,7 @@ controlPlane:
       username: <bmc_username>
       password: <bmc_password>
       certificateVerification: Disabled
-    - hostname: master-1
+    - macAddress: <mac_address_1>
       address: redfish+https://<bmc_ip_1>:<bmc_port>/redfish/v1/Systems/<system_id_1>
       username: <bmc_username>
       password: <bmc_password>
@@ -221,7 +225,7 @@ controlPlane:
       username: <bmc_username>
       password: <bmc_password>
       certificateVerification: Disabled
-    - hostname: master-1
+    - macAddress: <mac_address_1>
       address: redfish+https://<bmc_ip_1>:<bmc_port>/redfish/v1/Systems/<system_id_1>
       username: <bmc_username>
       password: <bmc_password>
@@ -252,7 +256,9 @@ sshKey: '<ssh_public_key>'
 
 - `controlPlane.fencing.credentials`: Exactly 2 entries required, one per control plane node.
 
-- `fencing.credentials[].hostname`: The hostname of the control plane node. Must be unique across credentials.
+- `fencing.credentials[].hostname`: The hostname of the control plane node. You must specify at least one of `hostname` or `macAddress` for each credential entry. If both are specified, `hostname` takes precedence for credential identification. Whichever identifiers are provided must be unique across credentials.
+
+- `fencing.credentials[].macAddress`: The MAC address of an OS-visible network interface on the control plane node. You can use this field as an alternative to `hostname` for identifying the node. This must be a MAC address from a non-loopback network interface on the host (for example, the boot NIC), not the BMC management interface MAC. For the Agent-based Installer, this value must match one of the corresponding `hosts[].interfaces[].macAddress` values in the `agent-config.yaml` file. MAC addresses are stable hardware identifiers that do not change if the hostname is modified after installation.
 
 - `fencing.credentials[].address`: The Redfish BMC URL. Must use the `redfish+https://` scheme (for example, `redfish+[https://192.168.1.10:443/redfish/v1/Systems/1](https://192.168.1.10:443/redfish/v1/Systems/1))`. IPMI addresses are not supported. Vendor-specific Redfish schemes such as `idrac-redfish+https://` and `ilo5-redfish+https://` are also accepted.
 
@@ -275,13 +281,22 @@ metadata:
 rendezvousIP: <rendezvous_ip>
 ```
 
-- `rendezvousIP`: Specifies the IP address of the node that will act as the rendezvous host during installation. This node runs the Assisted Service and coordinates the installation of both nodes.
+where:
+
+`rendezvousIP`
+Specifies the IP address of the node that acts as the rendezvous host during installation. This node runs the Assisted Service and coordinates the installation of both nodes.
 
 See the following sample `agent-config.yaml` file with host configuration and static networking:
 
 <div class="note">
 
-The `hostname` values in the `agent-config.yaml` file must match the `hostname` values in the fencing credentials section of the `install-config.yaml`.
+If your fencing credentials in the `install-config.yaml` use `hostname` to identify nodes, the `hostname` values in the `agent-config.yaml` file must match the `hostname` values in the fencing credentials. If your fencing credentials use `macAddress` instead, the MAC address is matched against the host interfaces and hostname matching is not required.
+
+</div>
+
+<div class="caution">
+
+To prevent installation failures, ensure every `macAddress` in your fencing credentials matches a `hosts[].interfaces[].macAddress` in your `agent-config.yaml` file. The installation program does not flag mismatches. Instead, the installation program creates incomplete host entries that break the installation.
 
 </div>
 

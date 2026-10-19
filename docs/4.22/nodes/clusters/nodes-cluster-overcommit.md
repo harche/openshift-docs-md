@@ -880,7 +880,7 @@ Alternatively, you can disable overcommitment for specific projects.
 
 ## Disable overcommitment for a project
 
-If overcommitment is enabled on a project, you can disable overcommitment for that projects. This allows infrastructure components to be configured independently of overcommitment.
+If overcommitment is enabled on a project, you can disable overcommitment for that project. This allows infrastructure components to be configured independently of overcommitment.
 
 1.  Create or edit the namespace object file.
 

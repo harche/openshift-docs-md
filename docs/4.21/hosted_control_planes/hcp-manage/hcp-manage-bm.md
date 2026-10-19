@@ -344,7 +344,7 @@ When you need more capacity in your hosted cluster and spare agents are availabl
 
 ## Disabling node auto-scaling for the hosted cluster
 
-If needed, you can disable node auto-scaling.
+If needed, you can disable node auto-scaling for the hosted cluster.
 
 - Enter the following command to disable node auto-scaling for the hosted cluster:
 

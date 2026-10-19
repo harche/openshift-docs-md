@@ -12,7 +12,7 @@ Additionally, modifying the reference config, such as the Ignition config that i
 
 The following sections describe features that you might want to configure on your nodes.
 
-# Creating machine configs with Butane
+# Create machine configs with Butane
 
 Machine configs are used to configure control plane and compute machines by instructing machines how to create users and file systems, set up the network, install systemd units, and more.
 

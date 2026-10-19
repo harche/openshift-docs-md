@@ -536,7 +536,7 @@ UDNs enable a wide range of network architectures and topologies, enhancing netw
 
 When the `UDNMapping` feature is enabled with Network Observability, the **Traffic** flow table has a **UDN labels** column. You can filter on **Source Network Name** and **Destination Network Name**.
 
-## Working with user-defined networks
+## Work with user-defined networks
 
 Configure the `FlowCollector` custom resource to enable user-defined network (UDN) mapping, providing visibility into traffic across custom network interfaces within the web console.
 
@@ -750,7 +750,7 @@ Export network flow data from the **Traffic flows** view to a CSV file for exter
 
 3.  Click **Export**.
 
-## Configuring IPsec with the FlowCollector custom resource
+## Configure IPsec with the FlowCollector custom resource
 
 Enable IPsec tracking in the `FlowCollector` resource to monitor encrypted traffic, adding an IPsec status column to the traffic flow view and generating a dedicated encryption dashboard.
 
@@ -866,7 +866,7 @@ As an administrator, you can group network flows that are part of the same conve
 
 7.  Next you can filter on a specific conversation ID or switch between the **Conversation** and **Flow** log type options from the side panel.
 
-## Working with the eBPF Manager Operator
+## Work with the eBPF Manager Operator
 
 Integrate the eBPF Manager Operator with Network Observability to manage eBPF programs and reduce the need for privileged agent permissions.
 
@@ -994,7 +994,7 @@ As network packets are processed, the eBPF hook enriches flow logs with metadata
 
 - Conntrack Zone ID
 
-## Working with endpoint translation (xlat)
+## Work with endpoint translation (xlat)
 
 Enable endpoint translation (xlat) in the `FlowCollector` resource to enrich network flows with translated packet information. You can use this information to identify the specific pods and objects serving service traffic through dedicated xlat columns.
 

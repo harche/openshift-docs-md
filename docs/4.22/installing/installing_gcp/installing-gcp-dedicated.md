@@ -71,6 +71,7 @@ The following GCD sovereign cloud regions are supported for OpenShift Container 
 | Region          | Identifier             | Zones                                                                        |
 |-----------------|------------------------|------------------------------------------------------------------------------|
 | Berlin, Germany | `u-germany-northeast1` | `u-germany-northeast1-a`, `u-germany-northeast1-b`, `u-germany-northeast1-c` |
+| Eastern France  | `u-france-east1`       | `u-france-east1-a`, `u-france-east1-b`, `u-france-east1-c`                   |
 
 GCD regions
 

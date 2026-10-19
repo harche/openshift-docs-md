@@ -6,7 +6,7 @@ In OpenShift Container Platform, you must enable cluster-level overcommit. Node 
 
 </div>
 
-In an *overcommitted* state, the sum of the container compute resource requestsand limits exceeds the resources available on the system. For example, you might want to use overcommitment in development environments where a trade-off of guaranteed performance for capacity is acceptable.
+In an *overcommitted* state, the sum of the container compute resource requests and limits exceeds the resources available on the system. For example, you might want to use overcommitment in development environments where a trade-off of guaranteed performance for capacity is acceptable.
 
 Containers can specify compute resource requests and limits. Requests are used for scheduling your container and provide a minimum service guarantee. Limits constrain the amount of compute resource that can be consumed on your node.
 
@@ -880,7 +880,7 @@ Alternatively, you can disable overcommitment for specific projects.
 
 ## Disable overcommitment for a project
 
-If overcommitment is enabled on a project, you can disable overcommitment for that projects. This allows infrastructure components to be configured independently of overcommitment.
+If overcommitment is enabled on a project, you can disable overcommitment for that project. This allows infrastructure components to be configured independently of overcommitment.
 
 1.  Create or edit the namespace object file.
 

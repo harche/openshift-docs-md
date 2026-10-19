@@ -400,3 +400,297 @@ By using a `ClusterInstance` custom resource (CR), you can delete and reprovisio
 </div>
 
 To reprovision a node, add the node definition back to the `spec.nodes` section in the `ClusterInstance` CR, push the changes to the Git repository, and wait for the synchronization to complete. This regenerates the `BareMetalHost` CR of the worker node and triggers the re-install of the node.
+
+# Replacing a failed control plane node by using the ClusterInstance CR
+
+You can replace a failed control plane node on a OpenShift Container Platform cluster by removing the failed node from the `ClusterInstance` custom resource (CR) and then adding a replacement node. Complete the replacement before a second control plane failure can lose quorum.
+
+<div class="warning">
+
+If you reuse the same hostname for the replacement node, you must remove the failed node before you add the replacement. If you use a different hostname, the failed node can be removed before or after the replacement is added. Replace only one control plane node at a time. Replacing two control plane nodes in parallel can lose `etcd` quorum and make the cluster unrecoverable.
+
+</div>
+
+- You have deployed the managed cluster by using a `ClusterInstance` CR.
+
+- At least two of the three control plane nodes are in the `Ready` state so that `etcd` still has a quorum.
+
+- You have a replacement bare-metal host with baseboard management controller (BMC) credentials. If you reuse the same hardware, you can keep the existing BMC secret.
+
+- Control plane nodes do not host OpenShift Data Foundation object storage daemons (OSDs) or monitors.
+
+- You have the `kubeconfig` file for the hub cluster and the `kubeconfig` file for the managed cluster.
+
+1.  Identify the failed control plane node on the managed cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> get nodes
+    ```
+
+    where:
+
+    `<managed_cluster_kubeconfig>`
+    Specifies the `kubeconfig` file for the managed cluster.
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                           STATUS     ROLES                  AGE   VERSION
+    control-plane-0.example.com    Ready      control-plane,master   10d   v1.33.0
+    control-plane-1.example.com    Ready      control-plane,master   10d   v1.33.0
+    control-plane-2.example.com    NotReady   control-plane,master   10d   v1.33.0
+    compute-1.example.com          Ready      worker                 10d   v1.33.0
+    ```
+
+    The failed node reports `NotReady` or is missing from the list. Note the `hostName` value that matches that node in the `ClusterInstance` CR.
+
+2.  In the `ClusterInstance` CR, add the `bmac.agent-install.openshift.io/remove-agent-and-node-on-delete` annotation to the failed node and apply the updated CR to the hub cluster:
+
+    ``` yaml
+    apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+    kind: ClusterInstance
+    metadata:
+      name: "example-cluster"
+      namespace: "example-cluster"
+    spec:
+      # ...
+      nodes:
+        - hostName: "control-plane-2.example.com"
+          role: "master"
+          extraAnnotations:
+            BareMetalHost:
+              bmac.agent-install.openshift.io/remove-agent-and-node-on-delete: "true"
+    # ...
+    ```
+
+3.  Verify that the `BareMetalHost` resource on the hub cluster has the annotation by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <hub_cluster_kubeconfig> get bmh -n <cluster_namespace> <bmh_name> \
+      -o jsonpath='{.metadata.annotations.bmac\.agent-install\.openshift.io/remove-agent-and-node-on-delete}{"\n"}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    true
+    ```
+
+    where:
+
+    `<cluster_namespace>`
+    Specifies the namespace of the `ClusterInstance` CR.
+
+    `<bmh_name>`
+    Specifies the name of the `BareMetalHost` resource, which matches the node `hostName` value.
+
+4.  Configure the `pruneManifests` field for the failed node so that the `BareMetalHost` resource is deleted. Keep the deletion annotation and apply the updated CR to the hub cluster:
+
+    ``` yaml
+    apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+    kind: ClusterInstance
+    metadata:
+      name: "example-cluster"
+      namespace: "example-cluster"
+    spec:
+      # ...
+      nodes:
+        - hostName: "control-plane-2.example.com"
+          role: "master"
+          extraAnnotations:
+            BareMetalHost:
+              bmac.agent-install.openshift.io/remove-agent-and-node-on-delete: "true"
+          pruneManifests:
+            - apiVersion: metal3.io/v1alpha1
+              kind: BareMetalHost
+    # ...
+    ```
+
+    The status of the `BareMetalHost` resource changes to `deprovisioning`. If the BMC is unreachable, deprovisioning can take significantly longer than a graceful removal. Wait until the `BareMetalHost` resource is fully deleted.
+
+5.  Verify that the `BareMetalHost` resource is deleted from the hub cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <hub_cluster_kubeconfig> get bmh -n <cluster_namespace>
+    ```
+
+    where:
+
+    `<hub_cluster_kubeconfig>`
+    Specifies the `kubeconfig` file for the hub cluster.
+
+    `<cluster_namespace>`
+    Specifies the namespace of the `ClusterInstance` CR.
+
+6.  Verify that the `Agent` resource for the failed node is deleted from the hub cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <hub_cluster_kubeconfig> get agent -n <cluster_namespace> \
+      -o jsonpath='{range .items[*]}{.spec.hostname}{"\n"}{end}' | grep <failed_hostname>
+    ```
+
+    where:
+
+    `<failed_hostname>`
+    Specifies the `hostName` value of the failed node, for example `control-plane-2.example.com`.
+
+    If the command returns no output, the `Agent` resource for the failed node has been deleted. If other `Agent` resources remain in the namespace for other nodes, that is expected.
+
+    <div class="important">
+
+    Wait for the `Agent` resource for the failed node to be deleted before adding the replacement node.
+
+    </div>
+
+7.  Verify that the failed node is no longer listed on the managed cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> get nodes
+    ```
+
+8.  Configure the replacement node in `spec.nodes`. Remove the `pruneManifests` field and the deletion annotation. Then complete one of the following actions:
+
+    - To reuse the same hardware, keep the existing node entry and the same `hostName` value. Leave the BMC address, boot MAC address, and node network configuration unchanged.
+
+    - To install replacement hardware, update at least the BMC address, BMC secret name, boot MAC address, and node network configuration. If the replacement uses a different `hostName` value, delete the failed node entry and add a new entry.
+
+      The following example reuses the `control-plane-2.example.com` hostname on replacement hardware:
+
+      ``` yaml
+      apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+      kind: ClusterInstance
+      metadata:
+        name: "example-cluster"
+        namespace: "example-cluster"
+      spec:
+        # ...
+        nodes:
+          - hostName: "control-plane-2.example.com"
+            role: "master"
+            bmcAddress: "redfish-virtualmedia+https://192.0.2.22/redfish/v1/Systems/System.Embedded.1"
+            bmcCredentialsName:
+              name: "control-plane-2-bmc-secret"
+            bootMACAddress: "AA:BB:CC:DD:EE:22"
+            bootMode: "UEFI"
+            nodeNetwork:
+              interfaces:
+                - name: eno1
+                  macAddress: "AA:BB:CC:DD:EE:22"
+              config:
+                interfaces:
+                  - name: eno1
+                    type: ethernet
+                    state: up
+                    macAddress: "AA:BB:CC:DD:EE:22"
+                    ipv4:
+                      enabled: true
+                      address:
+                        - ip: 192.0.2.12
+                          prefix-length: 24
+                    ipv6:
+                      enabled: false
+      # ...
+      ```
+
+9.  Create the BMC secret for the replacement node in the same namespace as the `ClusterInstance` CR. The `BareMetalHost` finalizer deletes the referenced `bmcSecret` when the old `BareMetalHost` resource is removed, so this step is required for both same-hardware and new-hardware replacements.
+
+    ``` yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "control-plane-2-bmc-secret"
+      namespace: example-cluster
+    stringData:
+      username: "username"
+      password: "password"
+    type: Opaque
+    ```
+
+10. Apply the updated `ClusterInstance` CR and any new secret to the hub cluster. The SiteConfig Operator creates a new `BareMetalHost` resource. The Assisted Installer provisions the host and joins it to the cluster.
+
+11. Monitor provisioning on the hub cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <hub_cluster_kubeconfig> get bmh -n <cluster_namespace>
+    ```
+
+    where:
+
+    `<hub_cluster_kubeconfig>`
+    Specifies the `kubeconfig` file for the hub cluster.
+
+    `<cluster_namespace>`
+    Specifies the namespace of the `ClusterInstance` CR.
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                           STATE          CONSUMER   ONLINE   ERROR   AGE
+    control-plane-0.example.com    provisioned               true             10d
+    control-plane-1.example.com    provisioned               true             10d
+    control-plane-2.example.com    provisioning              true             5m
+    ```
+
+<!-- -->
+
+1.  Verify that the replacement node is `Ready` on the managed cluster by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> get nodes -l node-role.kubernetes.io/control-plane
+    ```
+
+    where:
+
+    `<managed_cluster_kubeconfig>`
+    Specifies the `kubeconfig` file for the managed cluster.
+
+2.  Identify an `etcd` pod on a control plane node by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> get pods -n openshift-etcd
+    ```
+
+3.  Verify that `etcd` has three healthy members by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> rsh -n openshift-etcd <etcd_pod> \
+      etcdctl member list -w table
+    ```
+
+    where:
+
+    `<etcd_pod>`
+    Specifies the name of an `etcd` pod on a control plane node.
+
+4.  Verify that every `etcd` endpoint is healthy by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> rsh -n openshift-etcd <etcd_pod> \
+      etcdctl endpoint health --cluster
+    ```
+
+5.  Verify that the `etcd` and `kube-apiserver` Operators have finished reconciling by running the following command:
+
+    ``` terminal
+    $ oc --kubeconfig <managed_cluster_kubeconfig> get clusteroperators etcd kube-apiserver
+    ```
+
+    Wait until both Operators report `True` in the `AVAILABLE` column and `False` in the `PROGRESSING` column.
+
+- [Migrating from SiteConfig CRs to ClusterInstance CRs](../edge_computing/ztp-migrate-clusterinstance.xml#ztp-migrate-clusterinstance)
+
+- [SiteConfig Operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/siteconfig-intro)
+
+- [ClusterInstance API](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/apis/index#clusterinstance-api)

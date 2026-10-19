@@ -457,7 +457,9 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
 
 ### Configuring mutual TLS authentication
 
-You can configure the Ingress Controller to enable mutual TLS (mTLS) authentication by setting a `spec.clientTLS` value. The `clientTLS` value configures the Ingress Controller to verify client certificates. This configuration includes setting a `clientCA` value, which is a reference to a config map. The config map contains the PEM-encoded CA certificate bundle that is used to verify a client’s certificate. Optionally, you can also configure a list of certificate subject filters.
+You can configure the Ingress Controller to enable mutual TLS (mTLS) authentication by setting a `spec.clientTLS` value.
+
+The `clientTLS` value configures the Ingress Controller to verify client certificates. This configuration includes setting a `clientCA` value, which is a reference to a config map. The config map contains the PEM-encoded CA certificate bundle that is used to verify a client’s certificate. Optionally, you can also configure a list of certificate subject filters.
 
 If the `clientCA` value specifies an X509v3 certificate revocation list (CRL) distribution point, the Ingress Operator downloads and manages a CRL config map based on the HTTP URI X509v3 `CRL Distribution Point` specified in each provided certificate. The Ingress Controller uses this config map during mTLS/TLS negotiation. Requests that do not provide valid certificates are rejected.
 
@@ -994,7 +996,64 @@ The following procedure provides an example for scaling up the default Ingress C
     router-default-7b5df44ff-wwsth   2/2     Running   0          66s
     ```
 
-<!-- -->
+## Ingress Controller router timeout variables
+
+Reference the router timeout configurations on the Ingress Controller. These settings control how long the router waits for client, server, and tunnel connections during normal traffic.
+
+<div class="note">
+
+Do not modify environment variables directly on the router deployment. Instead, configure timeouts through the `IngressController` custom resource (CR) or through annotations on individual `Route` resources. The Ingress Operator automatically sets the corresponding environment variables on the Ingress Controller deployment.
+
+</div>
+
+A `TimeUnits` value uses a number and a unit: `us` (microseconds), `ms` (milliseconds, default), `s` (seconds), `m` (minutes), `h` (hours), `d` (days).
+
+The regular expression is: \[1-9\]\[0-9\]\*(`us`\|`ms`\|`s`\|`m`\|`h`\|`d`).
+
+The following table lists `IngressController` CR fields and router environment variables:
+
+| Field                                            | Environment variable                | Default  | Description                                                                                                                                                                                                                                                                                             |
+|--------------------------------------------------|-------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spec.tuningOptions.backendCheckInterval`        | `ROUTER_BACKEND_CHECK_INTERVAL`     | `5000ms` | Length of time from one liveness check to the next on backends. The `healthCheckInterval` field can override the `backendCheckInterval` field.                                                                                                                                                          |
+| `spec.tuningOptions.clientFinTimeout`            | `ROUTER_CLIENT_FIN_TIMEOUT`         | `1s`     | Controls the TCP finish (FIN) timeout period for the client connecting to the route. If the FIN sent to close the connection does not answer within the given time, HAProxy closes the connection.                                                                                                      |
+| `spec.tuningOptions.clientTimeout`               | `ROUTER_DEFAULT_CLIENT_TIMEOUT`     | `30s`    | Length of time that a client has to acknowledge or send data.                                                                                                                                                                                                                                           |
+| `spec.tuningOptions.connectTimeout`              | `ROUTER_DEFAULT_CONNECT_TIMEOUT`    | `5s`     | The maximum connection time allowed to establish a connection to the backend pool.                                                                                                                                                                                                                      |
+| `spec.tuningOptions.serverFinTimeout`            | `ROUTER_DEFAULT_SERVER_FIN_TIMEOUT` | `1s`     | Controls the TCP finish (FIN) timeout from the router to the pod backing the route.                                                                                                                                                                                                                     |
+| `spec.tuningOptions.serverTimeout`               | `ROUTER_DEFAULT_SERVER_TIMEOUT`     | `30s`    | Length of time that a server has to acknowledge or send data.                                                                                                                                                                                                                                           |
+| `spec.tuningOptions.tunnelTimeout`               | `ROUTER_DEFAULT_TUNNEL_TIMEOUT`     | `1h`     | Maximum time that idle TCP or WebSocket tunnel connections can remain open. Router reloads start a new HAProxy process for new connections while the prior process drains existing ones.                                                                                                                |
+| `spec.tuningOptions.headerBufferMaxRewriteBytes` | `ROUTER_SLOWLORIS_HTTP_KEEPALIVE`   | `300s`   | Sets the maximum time to wait for a new HTTP request on an idle connection. If a timeout occurs, HAProxy closes the connection by sending a TCP finish (FIN) to both the client and server. Standard browsers and applications handle this closure transparently by opening a new connection as needed. |
+| `spec.tuningOptions.slowlorisTimeout`            | `ROUTER_SLOWLORIS_TIMEOUT`          | `10s`    | Length of time the transmission of an HTTP request can take.                                                                                                                                                                                                                                            |
+| `spec.tuningOptions.reloadInterval`              | `RELOAD_INTERVAL`                   | `5s`     | Minimum frequency for the router to reload and apply configuration changes that require a reload.                                                                                                                                                                                                       |
+| `spec.tuningOptions.healthCheckInterval`         | `ROUTER_METRICS_HAPROXY_TIMEOUT`    | `5s`     | Timeout for the gathering of HAProxy metrics.                                                                                                                                                                                                                                                           |
+
+<div class="note">
+
+Different timeout settings govern distinct phases of a connection rather than accumulating together. On SSL passthrough routes, `tcp-request inspect-delay` is the maximum time a new connection has to provide the payload HAProxy requires to select a backend. If a client fails to send this payload within that limit, HAProxy closes the connection immediately. This initial connection limit operates independently from HTTP keep-alive timers controlled by `ROUTER_SLOWLORIS_HTTP_KEEPALIVE` (`timeout http-keep-alive`).
+
+</div>
+
+<div class="formalpara-title">
+
+**Example of a route setting custom timeout**
+
+</div>
+
+``` yaml
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 5500ms
+...
+```
+
+<div class="note">
+
+Setting a server-side timeout value for passthrough routes too low can cause WebSocket connections to time out often on that route.
+
+</div>
+
+- [Configuring the HAProxy reload interval](../../scalability_and_performance/optimization/routing-optimization.xml#configuring-haproxy-interval_routing-optimization)
 
 - [Installing the custom metrics autoscaler](../../nodes/cma/nodes-cma-autoscaling-custom-install.xml#nodes-cma-autoscaling-custom-install_nodes-cma-autoscaling-custom-install)
 
@@ -1278,7 +1337,7 @@ For more information, see the Google Cloud documentation for [global access](htt
 
         <div class="formalpara-title">
 
-        **Sample `clientAccess` configuration to `Global`**
+        **Sample `clientAccess` configuration set to `Global`**
 
         </div>
 
@@ -1293,8 +1352,6 @@ For more information, see the Google Cloud documentation for [global access](htt
                 scope: Internal
               type: LoadBalancerService
         ```
-
-        - Set `gcp.clientAccess` to `Global`.
 
     3.  Save the file to apply the changes.
 
@@ -1619,21 +1676,28 @@ The following procedure modifies the Ingress Controller to set the X-Forwarded-C
               type: Delete
     ```
 
-    - The list of actions you want to perform on the HTTP headers.
+    where:
 
-    - The type of header you want to change. In this case, a request header.
+    `spec.httpHeaders.actions`
+    Specifies the list of actions you want to perform on the HTTP headers.
 
-    - The name of the header you want to change. For a list of available headers you can set or delete, see *HTTP header configuration*.
+    `spec.httpHeaders.actions.request`
+    Specifies the type of header you want to change. In this case, a request header.
 
-    - The type of action being taken on the header. This field can have the value `Set` or `Delete`.
+    `spec.httpHeaders.actions.request.name`
+    Specifies the name of the header you want to change. For a list of available headers you can set or delete, see *HTTP header configuration*.
 
-    - When setting HTTP headers, you must provide a `value`. The value can be a string from a list of available directives for that header, for example `DENY`, or it can be a dynamic value that will be interpreted using HAProxy’s dynamic value syntax. In this case, a dynamic value is added.
+    `spec.httpHeaders.actions.request.action.type`
+    Specifies the type of action being taken on the header. This field can have the value `Set` or `Delete`.
 
-      <div class="note">
+    `spec.httpHeaders.actions.request.action.set.value`
+    Specifies a `value` when setting HTTP headers. The value can be a string from a list of available directives for that header, for example `DENY`, or it can be a dynamic value that will be interpreted using HAProxy’s dynamic value syntax. In this case, a dynamic value is added.
 
-      For setting dynamic header values for HTTP responses, allowed sample fetchers are `res.hdr` and `ssl_c_der`. For setting dynamic header values for HTTP requests, allowed sample fetchers are `req.hdr` and `ssl_c_der`. Both request and response dynamic values can use the `lower` and `base64` converters.
+    <div class="note">
 
-      </div>
+    For setting dynamic header values for HTTP responses, allowed sample fetchers are `res.hdr` and `ssl_c_der`. For setting dynamic header values for HTTP requests, allowed sample fetchers are `req.hdr` and `ssl_c_der`. Both request and response dynamic values can use the `lower` and `base64` converters.
+
+    </div>
 
 3.  Save the file to apply the changes.
 
@@ -1730,7 +1794,7 @@ To enable HTTP/2 for Ingress Controllers in OpenShift Container Platform, you ca
   $ oc -n openshift-ingress-operator annotate ingresscontrollers/<ingresscontroller_name> ingress.operator.openshift.io/default-enable-http2=true
   ```
 
-  - Replace `<ingresscontroller_name>` with the name of an Ingress Controller to enable HTTP/2.
+  Replace `<ingresscontroller_name>` with the name of an Ingress Controller to enable HTTP/2.
 
 - To enable HTTP/2 for the entire cluster, enter the `oc annotate` command:
 
@@ -1759,7 +1823,7 @@ To disable HTTP/2 for Ingress Controllers in OpenShift Container Platform, you c
   $ oc -n openshift-ingress-operator annotate ingresscontrollers/<ingresscontroller_name> ingress.operator.openshift.io/default-enable-http2=false
   ```
 
-  - Replace `<ingresscontroller_name>` with the name of an Ingress Controller to disable HTTP/2.
+  Replace `<ingresscontroller_name>` with the name of an Ingress Controller to disable HTTP/2.
 
 - To disable HTTP/2 for the entire cluster, enter the `oc annotate` command:
 
@@ -2005,7 +2069,7 @@ As a cluster administrator, you can convert the HTTP header case by entering the
       # ...
       ```
 
-      - Set `haproxy.router.openshift.io/h1-adjust-case` so that the Ingress Controller can adjust the `host` request header as specified.
+      You must set `haproxy.router.openshift.io/h1-adjust-case` to `true` so that the Ingress Controller can adjust the `host` request header as specified.
 
 - Specify adjustments by configuring the `HeaderNameCaseAdjustments` field in the Ingress Controller YAML configuration file.
 
@@ -2051,7 +2115,7 @@ As a cluster administrator, you can convert the HTTP header case by entering the
           name: my-application
       ```
 
-      - Set `haproxy.router.openshift.io/h1-adjust-case` to true.
+      Set `haproxy.router.openshift.io/h1-adjust-case` to `true`.
 
 ## Use router compression
 
@@ -2228,7 +2292,7 @@ If you use the OpenShift Container Platform default 503 error code page as a tem
         NAME                       DATA   AGE
         default-errorpages         2      25s
 
-    - The example config map name is `default-errorpages` because the `default` Ingress Controller custom resource (CR) was patched.
+    The example config map name is `default-errorpages` because the `default` Ingress Controller custom resource (CR) was patched.
 
 4.  Confirm that the config map containing the custom error response page mounts on the router volume where the config map key is the filename that has the custom HTTP error code response:
 

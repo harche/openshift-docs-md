@@ -38,7 +38,7 @@ Do not give Velero write access to the `.snapshot` directory, and disable client
 
 </div>
 
-# Previewing resources before running backup and restore
+# Preview resources before running backup and restore
 
 Preview the backup and restore resources in advance by doing a dry run of the backup and restore operations. This helps you to verify which resources will be included before committing to a full backup or restore.
 

@@ -918,7 +918,7 @@ If your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageCo
 
 </div>
 
-## Configuring image registry repository mirroring
+## Configure image registry repository mirroring
 
 You can create postinstallation mirror configuration custom resources (CR) to redirect image pull requests from a source image registry to a mirrored image registry.
 
@@ -1197,7 +1197,7 @@ You can use the following table for information about parameters when configurin
 | `source: registry.example.com/example`                | Pulls the image `registry.example.com/example/image@sha256:…​` in the source registry namespace from the mirror `mirror.example.net/image@sha256:…​`.                                                                                                                                                    |
 | `source: registry.example.com`                        | Pulls the image `registry.example.com/myimage@sha256` from the mirror registry `example.net/registry-example-com/myimage@sha256:…​`.                                                                                                                                                                    |
 
-## Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring
+## Convert ImageContentSourcePolicy (ICSP) files for image registry repository mirroring
 
 You can convert existing `ImageContentSourcePolicy` (ICSP) files to `ImageDigestMirrorSet` files to configure image registry repository mirroring.
 

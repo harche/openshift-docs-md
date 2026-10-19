@@ -746,7 +746,7 @@ The SQLite database catalog format is deprecated, but still supported by Red Hat
 
     - Apply the pod security admission `pod-security.kubernetes.io/enforce` label. Set the label to `baseline` or `privileged`. Use the `baseline` pod security profile unless other workloads in the namespace require a `privileged` profile.
 
-# Adding a catalog source to a cluster
+# Add a catalog source to a cluster
 
 To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
 

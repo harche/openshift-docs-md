@@ -2409,7 +2409,7 @@ Use the `06_workers.json` Azure Resource Manager (ARM) template to deploy worker
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/06_workers.json[role=include]
 ```
 
-# Installing the OpenShift CLI on Linux
+# Install the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
@@ -2449,7 +2449,7 @@ Download and install the new version of `oc`.
   $ oc <command>
   ```
 
-# Installing the OpenShift CLI on Windows
+# Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
@@ -2483,7 +2483,7 @@ Download and install the new version of `oc`.
   C:\> oc <command>
   ```
 
-# Installing the OpenShift CLI on macOS
+# Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 

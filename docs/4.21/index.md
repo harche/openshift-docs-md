@@ -778,6 +778,7 @@
     - [Patching existing ingress objects](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md)
     - [Configuring the Ingress Controller for manual DNS management](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md)
     - [Gateway API with OpenShift Container Platform networking](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.md)
+    - [Configure DNS for gateways](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configure-dns-for-gateways.md)
   - [Load balancing on OpenStack](networking/ingress_load_balancing/load-balancing-openstack.md)
   - **Load balancing with MetalLB**
     - [Configuring MetalLB address pools](networking/ingress_load_balancing/metallb/metallb-configure-address-pools.md)

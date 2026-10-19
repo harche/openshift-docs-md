@@ -459,7 +459,9 @@ Public tenancy is the default tenancy. Instances with public tenancy run on shar
 
 # Machine sets that place machines on Dedicated Hosts
 
-You can configure machine sets to place machines on Amazon Web Services (AWS) Dedicated Hosts. Dedicated Hosts are physical servers with instance capacity that is fully dedicated to your use. You can use Dedicated Hosts with your existing per-socket, per-core, or per-VM software licenses. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
+You can configure machine sets to place machines on Amazon Web Services (AWS) Dedicated Hosts. Dedicated Hosts are physical servers with instance capacity that is fully dedicated to your use.
+
+You can use Dedicated Hosts with your existing per-socket, per-core, or per-VM software licenses. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
 
 <div class="important">
 

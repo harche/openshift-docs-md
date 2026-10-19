@@ -1,6 +1,6 @@
 Resolve common errors and issues when using OADP Self-Service by following troubleshooting procedures for backup storage locations and backup operations. This helps you quickly identify and fix problems independently.
 
-# Resolving error NonAdminBackupStorageLocation not found in the namespace
+# Resolve error NonAdminBackupStorageLocation not found in the namespace
 
 Resolve the `NonAdminBackupStorageLocation not found in the namespace` error by using a backup storage location that belongs to the same namespace as your backup. This helps ensure successful backup operations.
 
@@ -31,7 +31,7 @@ status:
 
   In this scenario, you must use `nabsl-1` in the NAB CR to back up `namespace-1`.
 
-# Resolving error NonAdminBackupStorageLocation cannot be set as default
+# Resolve error NonAdminBackupStorageLocation cannot be set as default
 
 Resolve the error that occurs when you set a `NonAdminBackupStorageLocation` (NABSL) custom resource (CR) as the default backup storage location. This helps you resolve validation errors and configure backup storage locations correctly.
 

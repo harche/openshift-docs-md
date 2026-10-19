@@ -262,7 +262,7 @@ Specifies the value used to divide the metric. Because the Round-trip time (RTT)
 `spec.buckets`
 Specifies custom buckets for RTT precision. The optimal precision ranges between 5ms and 250ms.
 
-# Create metrics from nested or array fields in the Traffic flows table
+# Create metrics from nested fields in Traffic flows
 
 Create a `FlowMetric` custom resource to generate metrics for nested or array fields in the **Traffic flows** table, such as **Network events** or **Interfaces**.
 

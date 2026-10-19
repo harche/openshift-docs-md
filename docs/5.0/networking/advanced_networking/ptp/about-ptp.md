@@ -204,11 +204,11 @@ For AArch64 architecture nodes, you can use the following dual-port NICs only:
 
 # High availability for PTP boundary clocks with dual time receiver ports
 
-OpenShift Container Platform supports configuring two time receiver (TR) ports on the same network interface controller (NIC) for Precision Time Protocol (PTP) Telecom Boundary Clocks (T-BC), providing high availability by eliminating single points of failure in the upstream timing path.
+OpenShift Container Platform supports configuring two time receiver (TR) ports for Precision Time Protocol (PTP) Telecom Boundary Clocks (T-BC), providing high availability by eliminating single points of failure in the upstream timing path.
 
 The dual time receiver port configuration uses the Alternate Best Master Clock Algorithm (A-BMCA) to manage port selection and failover. In normal operation, one TR port synchronizes to the upstream timing source while the second port remains in standby. If the active port fails or signal quality degrades, A-BMCA dynamically selects the best available path, ensuring continuous timing synchronization for downstream devices.
 
-The `PtpConfig` custom resource (CR) uses a two-profile architecture: one profile for the time receiver (TR) ports that synchronize from an upstream source, and a separate profile for the time transmitter (TT) port that distributes time downstream on a different PTP domain. Both TR ports share the same Physical Hardware Clock (PHC) on the NIC, so failover relies on A-BMCA reselection rather than switching between separate clock servos.
+The `PtpConfig` custom resource (CR) uses a two-profile architecture: one profile for the time receiver (TR) ports that synchronize from an upstream source, and a separate profile for the time transmitter (TT) ports that distribute time downstream. On Intel Westport Channel E810 hardware, both TR ports share the same Physical Hardware Clock (PHC) on the network interface controller (NIC), so failover relies on A-BMCA reselection rather than switching between separate clock servos. The TT profile distributes time on a different PTP domain. On Intel Granite Rapids-D (GNR-D) hardware, the PTP Operator uses a `HardwareConfig` custom resource (CR) to manage the digital phase-locked loop (DPLL) clock chain during failover.
 
 ## Failover and recovery scenarios
 
@@ -228,17 +228,29 @@ When any upstream path returns and its clock quality is better than the local cl
 
 ## Hardware requirements
 
-You can configure high availability for dual time receiver (TR) ports on nodes with Intel Westport Channel E810-XXVDA4T NICs for T-BC configurations.
+You can configure high availability for dual time receiver (TR) ports on the following hardware:
+
+- Intel Westport Channel E810-XXVDA4T NICs for T-BC configurations.
+
+- Intel Granite Rapids-D (GNR-D) on Dell XR8720t platforms as a Technology Preview feature.
 
 ## Limitations
 
 The dual time receiver port configuration has the following limitations:
 
-- Both receiver ports must belong to the same NIC. Configurations where dual receiver ports span across different NICs are not supported for this feature.
+- On Intel Westport Channel E810 hardware, both receiver ports must belong to the same NIC.
+
+  Configurations where dual receiver ports span across different NICs are not supported for this feature.
 
 - The G.8275.2 profile is not supported with dual time receiver ports.
 
 - Using a PTP port as a backup for a global navigation satellite system (GNSS) feed is not supported with this configuration.
+
+<!-- -->
+
+- [Configuring PTP boundary clock high availability with dual time receiver ports](../../../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc_configuring-ptp)
+
+- [Configuring PTP boundary clock high availability with dual time receiver ports on a GNR-D platform](../../../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc-gnrd_configuring-ptp)
 
 # 3-card Intel E810 PTP grandmaster clock
 

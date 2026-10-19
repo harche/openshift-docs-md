@@ -34,6 +34,8 @@ For more information, see [Hosted cluster and node pool version skew policy](../
 
 # Fixed issues
 
+This section lists the fixed issues in the Hosted Control Plane release.
+
 The following issues are fixed for this release:
 
 - Before this update, deploying a hosted control plane on OpenShift Virtualization with IPv4 or IPv6 dual-stack networking failed because the Cluster Network Operator did not recognize KubeVirt as a supported platform for dual-stack. As a consequence, hosted clusters could not be deployed on OpenShift Virtualization with dual-stack networking. With this release, support is added for deploying a hosted control plane on OpenShift Virtualization with KubeVirt. The Cluster Network Operator (CNO) now recognizes KubeVirt as a supported platform for dual-stack, which enables the successful deployment of hosted control planes with IPv4/IPv6 dual-stack networking. This enhancement ensures a smoother deployment process for dual-stack networking configurations. ([OCPBUGS-69941](https://issues.redhat.com/browse/OCPBUGS-69941))

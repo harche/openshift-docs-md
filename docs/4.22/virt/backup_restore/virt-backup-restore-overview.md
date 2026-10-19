@@ -8,7 +8,7 @@ OADP versions earlier than 1.3.0 are not supported for back up and restore of Op
 
 </div>
 
-# Installing and configuring OADP with OpenShift Virtualization
+# Install and configure OADP with OpenShift Virtualization
 
 As a cluster administrator, you can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. You can then install the Data Protection Application.
 
@@ -52,7 +52,7 @@ Red Hat support is limited to only the following options:
 
     You restore the `Backup` CR by creating a `Restore` CR.
 
-# Installing the Data Protection Application
+# Install the Data Protection Application
 
 You install the Data Protection Application (DPA) by creating an instance of the `DataProtectionApplication` API.
 

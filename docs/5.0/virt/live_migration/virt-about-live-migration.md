@@ -158,21 +158,11 @@ Post copy mode should not be used for critical data, or with unstable networks.
 
 # VM migration support for RHCOS 10.x
 
-<div class="important">
-
-Live migration support for RHCOS 10.x is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-OpenShift Virtualization 4.22 and later versions supports live migration with RHCOS 10.x worker nodes as a Technology Preview feature.
+OpenShift Virtualization 5.0 and later versions supports live migration with RHCOS 10.x worker nodes.
 
 For information on configuring your cluster to use RHCOS 10.x, refer to the OpenShift Container Platform documentation.
 
-When performing live migration on a cluster using RHCOS 10.x, the migration does not complete successfully when the migration policy uses the attribute `allowPostCopy: true`. This is a known limitation.
-
-Live migration is supported across both RHCOS 9.x and 10.x worker nodes when both versions are present in a cluster. Any VM live migration from RHCOS 10.x to RHCOS 9.x and from RHCOS 9.x to RHCOS 10.x worker nodes, is a Technology Preview feature in OpenShift Container Platform 4.22.
+Live migration is supported across both RHCOS 9.x and 10.x worker nodes when both versions are present in a cluster.
 
 # Additional resources
 

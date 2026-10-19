@@ -409,7 +409,7 @@ The IDMS and ITMS objects must be created before you can add Windows nodes using
 
 </div>
 
-## Configuring image registry repository mirroring
+## Configure image registry repository mirroring
 
 You can create postinstallation mirror configuration custom resources (CR) to redirect image pull requests from a source image registry to a mirrored image registry.
 

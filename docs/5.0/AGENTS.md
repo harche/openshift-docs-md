@@ -33,7 +33,7 @@ Root: ./
 ### Disconnected environments
 
 |disconnected:{about.md,connected-to-disconnected.md,index.md,installing-mirroring-creating-registry.md,installing-mirroring-installation-images.md,installing.md,using-olm.md}
-|disconnected/oc_mirror_v2:{about-installing-oc-mirror-v2.md,oc-mirror-migration-v1-to-v2.md}
+|disconnected/oc_mirror_v2:{oc-mirror-v2-release-notes.md,about-installing-oc-mirror-v2.md,oc-mirror-migration-v1-to-v2.md}
 |disconnected/updating:{index.md,mirroring-image-repository.md,disconnected-update-osus.md,disconnected-update.md,uninstalling-osus.md}
 
 ### Installing
@@ -164,7 +164,7 @@ Root: ./
 |networking/ingress_load_balancing:{load-balancing-openstack.md}
 |networking/ingress_load_balancing/routes:{creating-basic-routes.md,securing-routes.md,nw-configuring-routes.md,creating-advanced-routes.md}
 |networking/ingress_load_balancing/configuring_ingress_cluster_traffic:{overview-traffic.md,configuring-externalip.md,configuring-ingress-cluster-traffic-ingress-controller.md,nw-configuring-ingress-controller-endpoint-publishing-strategy.md,configuring-ingress-cluster-traffic-load-balancer.md,configuring-ingress-cluster-traffic-aws.md,configuring-ingress-cluster-traffic-service-external-ip.md,configuring-ingress-cluster-traffic-nodeport.md,configuring-ingress-cluster-traffic-load-balancer-allowed-source-ranges.md,configuring-ingress-cluster-patch-fields.md,ingress-controller-dnsmgt.md}
-|networking/ingress_load_balancing/configuring_gateway_api:{understand-gateway-api.md,enable-gateway-api.md,controlling-incoming-traffic-gateway-listeners.md,assigning-network-addresses-gateways.md,routing-http-requests-to-services.md,routing-grpc-requests-to-services.md,securing-httproutes.md,verifying-gateway-infrastructure-status.md}
+|networking/ingress_load_balancing/configuring_gateway_api:{understand-gateway-api.md,enable-gateway-api.md,controlling-incoming-traffic-gateway-listeners.md,assigning-network-addresses-gateways.md,configure-dns-for-gateways.md,routing-http-requests-to-services.md,routing-grpc-requests-to-services.md,securing-httproutes.md,verifying-gateway-infrastructure-status.md}
 |networking/ingress_load_balancing/metallb:{metallb-configure-address-pools.md,about-advertising-ipaddresspool.md,metallb-configure-bgp-peers.md,metallb-configure-community-alias.md,metallb-configure-bfd-profiles.md,metallb-configure-services.md,metallb-configure-return-traffic.md,metallb-frr-k8s.md,monitoring-metallb-status.md,metallb-troubleshoot-support.md}
 |networking/configuring_network_settings:{configure-syscontrols-interface-tuning-cni.md,configuring-node-port-service-range.md,configuring-cluster-network-range.md,configuring-ipfailover.md,enable-cluster-wide-proxy.md,configuring-a-custom-pki.md}
 |networking/advanced_networking:{verifying-connectivity-endpoint.md,changing-cluster-network-mtu.md,network-bonding-considerations.md,using-sctp.md,associating-secondary-interfaces-metrics-to-network-attachments.md}
@@ -323,6 +323,10 @@ Root: ./
 |edge_computing/image_base_install:{ibi-understanding-image-based-install.md,ibi-preparing-for-image-based-install.md,ibi-factory-image-based-install.md}
 |edge_computing/image_base_install/ibi_deploying_sno_clusters:{ibi-edge-image-based-install.md,ibi-edge-image-based-install-standalone.md}
 |edge_computing/sno_ip_configuration:{cnf-understanding-sno-ip-configuration.md,cnf-configuring-sno-ip-configuration.md,cnf-troubleshooting-sno-ip-configuration.md}
+
+### Infrastructure and cluster lifecycle management
+
+|infrastructure_lifecycle_management:{ocloud-understanding-the-ocloud-manager.md,ocloud-preparing-to-deploy-clusters.md,ocloud-defining-templates-and-onboarding-servers.md,ocloud-discovering-resources-with-ocloud-manager-apis.md,ocloud-provisioning-clusters.md,ocloud-scaling-worker-nodes.md,ocloud-configuring-advanced-hardware-management.md,ocloud-updating-cluster-configuration.md,ocloud-upgrading-clusters.md,ocloud-monitoring-alarms-with-the-alarms-api.md,ocloud-rest-api-reference.md}
 
 ### Specialized hardware and driver enablement
 

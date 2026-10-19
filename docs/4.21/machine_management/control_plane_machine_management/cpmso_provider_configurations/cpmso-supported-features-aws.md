@@ -4,7 +4,9 @@ When you save an update to the control plane machine set, the Control Plane Mach
 
 # Restrict the API server to private for an Amazon Web Services cluster
 
-If the security posture of your organization does not allow clusters to use an open API endpoint, you can restrict the API server to use only internal load balancers. To implement this API server restriction, use the Amazon Web Services (AWS) console and OpenShift CLI (`oc`) to delete the external load balancer components.
+If the security posture of your organization does not allow clusters to use an open API endpoint, you can restrict the API server to use only internal load balancers.
+
+To implement this API server restriction, use the Amazon Web Services (AWS) console and OpenShift CLI (`oc`) to delete the external load balancer components.
 
 - You have installed an OpenShift Container Platform cluster on AWS.
 

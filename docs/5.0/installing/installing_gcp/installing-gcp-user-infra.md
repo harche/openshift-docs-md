@@ -2519,7 +2519,7 @@ After the bootstrap process completes on your Google Cloud infrastructure, you c
 
         Specify the name of the bootstrap deployment you created for `<bootstrap_deployment_name>`.
 
-# Installing the OpenShift CLI on Linux
+# Install the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
@@ -2559,7 +2559,7 @@ Download and install the new version of `oc`.
   $ oc <command>
   ```
 
-# Installing the OpenShift CLI on Windows
+# Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
@@ -2593,7 +2593,7 @@ Download and install the new version of `oc`.
   C:\> oc <command>
   ```
 
-# Installing the OpenShift CLI on macOS
+# Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
