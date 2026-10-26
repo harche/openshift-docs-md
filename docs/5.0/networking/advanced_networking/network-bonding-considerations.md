@@ -49,13 +49,29 @@ You can integrate the `balance-slb` mode interface into primary or secondary net
 
 - Natively supports `balance-slb` mode.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have more than one physical interface attached to your primary network and you defined the interfaces in a `MachineConfig` file.
 
 - You created a manifest object and defined a customized `br-ex` bridge in the object configuration file.
 
 - You have more than one physical interfaces attached to your primary network and you defined the interfaces in a NAD CRD file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  For each bare-metal host that exists in a cluster, in the `install-config.yaml` file for your cluster define a `networkConfig` section similar to the following example:
 
@@ -108,9 +124,11 @@ You can integrate the `balance-slb` mode interface into primary or secondary net
 
 2.  Define each network interface in an NMState configuration file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example NMState configuration file that defines many network interfaces**
+    <div class="title">
+
+    Example NMState configuration file that defines many network interfaces
 
     </div>
 
@@ -194,6 +212,8 @@ You can integrate the `balance-slb` mode interface into primary or secondary net
     # ...
     ```
 
+    </div>
+
     where:
 
     `mtu`
@@ -243,6 +263,8 @@ You can integrate the `balance-slb` mode interface into primary or secondary net
 5.  Save each `MachineConfig` manifest file to the `./<installation_directory>/manifests` directory, where `<installation_directory>` is the directory in which the installation program creates files.
 
     The Machine Config Operator (MCO) takes the content from each manifest file and consistently applies the content to all selected nodes during a rolling update.
+
+</div>
 
 # Kernel bonding
 

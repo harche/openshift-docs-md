@@ -26,11 +26,8 @@ The role scope allows you to have the same level of access as a given role filte
 
 - `role:<cluster-role name>:<namespace or * for all>` - Limits the scope to the rules specified by the cluster-role, but only in the specified namespace .
 
-  <div class="note">
-
-  Caveat: This prevents escalating access. Even if the role allows access to resources like secrets, rolebindings, and roles, this scope will deny access to those resources. This helps prevent unexpected escalations. Many people do not think of a role like `edit` as being an escalating role, but with access to a secret it is.
-
-  </div>
+  > [!NOTE]
+  > Caveat: This prevents escalating access. Even if the role allows access to resources like secrets, rolebindings, and roles, this scope will deny access to those resources. This helps prevent unexpected escalations. Many people do not think of a role like `edit` as being an escalating role, but with access to a secret it is.
 
 - `role:<cluster-role name>:<namespace or * for all>:!` - This is similar to the example above, except that including the bang causes this scope to allow escalating access.
 
@@ -48,15 +45,30 @@ You can add unauthenticated users to the following cluster roles:
 
 - `self-access-reviewer`
 
-<div class="important">
+> [!IMPORTANT]
+> Always verify compliance with your organization’s security standards when modifying unauthenticated access.
 
-Always verify compliance with your organization’s security standards when modifying unauthenticated access.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file named `add-<cluster_role>-unauth.yaml` and add the following content:
 
@@ -82,3 +94,5 @@ Always verify compliance with your organization’s security standards when modi
     ``` terminal
     $ oc apply -f add-<cluster_role>.yaml
     ```
+
+</div>

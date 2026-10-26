@@ -18,9 +18,14 @@ INFO Login to the console with user: kubeadmin, password: <provided>
 
 After you define an identity provider and create a new `cluster-admin` user, you can remove the `kubeadmin` to improve cluster security.
 
-<div class="warning">
+> [!WARNING]
+> If you follow this procedure before another user is a `cluster-admin`, then OpenShift Container Platform must be reinstalled. It is not possible to undo this command.
 
-If you follow this procedure before another user is a `cluster-admin`, then OpenShift Container Platform must be reinstalled. It is not possible to undo this command.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -30,10 +35,20 @@ If you follow this procedure before another user is a `cluster-admin`, then Open
 
 - You must be logged in as an administrator.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Remove the `kubeadmin` secrets:
 
   ``` terminal
   $ oc delete secrets kubeadmin -n kube-system
   ```
+
+</div>

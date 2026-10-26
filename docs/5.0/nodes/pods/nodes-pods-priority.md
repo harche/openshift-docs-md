@@ -16,9 +16,11 @@ A priority class object can take any 32-bit integer value smaller than or equal 
 $ oc get priorityclasses
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -29,6 +31,8 @@ system-cluster-critical   2000000000   false            72m
 openshift-user-critical   1000000000   false            3d13h
 cluster-logging           1000000      false            29s
 ```
+
+</div>
 
 - **system-node-critical** - This priority class has a value of 2000001000 and is used for all pods that should never be evicted from a node. Examples of pods that have this priority class are `ovnkube-node`, and so forth. A number of critical components include the `system-node-critical` priority class by default, for example:
 
@@ -102,9 +106,14 @@ To minimize this gap, configure a small graceful termination period for lower-pr
 
 Configure pod priority and preemption by creating priority class objects with assigned values and referencing them in pod specifications through the `priorityClassName` field.
 
-<div class="note">
+> [!NOTE]
+> You cannot add a priority class directly to an existing scheduled pod.
 
-You cannot add a priority class directly to an existing scheduled pod.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -185,3 +194,5 @@ You cannot add a priority class directly to an existing scheduled pod.
         ```
 
     You can add the priority name directly to the pod configuration or to a pod template.
+
+</div>

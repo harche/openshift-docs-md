@@ -4,11 +4,29 @@ To update network settings or change network parameters for a secondary network 
 
 To update network settings or change network parameters for a secondary network in OpenShift Container Platform, you can modify the `NetworkAttachmentDefinition` custom resource. Edit the Cluster Network Operator CR to apply your changes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured a secondary network for your cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Cluster Network Operator (CNO) CR in your default text editor by running the following command:
 
@@ -36,6 +54,8 @@ To update network settings or change network parameters for a secondary network 
     "ipam":       {"type":"static","routes":[{"dst":"0.0.0.0/0","gw":"10.128.2.1"}],"addresses":[{"address":"10.128.2.100/23","gateway":"10.128.2.1"}],"dns":{"nameservers":["172.30.0.10"],"domain":"us-west-2.compute.internal","search":["us-west-2.compute.internal"]}} }
     ```
 
+</div>
+
 # Use an OVN-Kubernetes localnet topology to map VLANs to a secondary interface
 
 You can use OVN-Kubernetes localnet topology in a `NetworkAttachmentDefinition` (NAD) to map a specific VLAN ID from the physical network to the secondary interface of a pod.
@@ -52,7 +72,13 @@ The example in the procedure demonstrates the following configurations:
 
 - Pods or virtual machines (VMs) attach to the NAD CRs for the purposes of improved network connectivity.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -62,11 +88,23 @@ The example in the procedure demonstrates the following configurations:
 
 - You configured the `br-ex` bridge interface during cluster installation.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an `NetworkAttachmentDefinition` CR for each VLAN, such as `nad-cvlan100.yaml`. OVN-Kubernetes uses the NAD files to tag and untag Ethernet frames for pods or VMs.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration**
+    <div class="title">
+
+    Example configuration
 
     </div>
 
@@ -91,11 +129,15 @@ The example in the procedure demonstrates the following configurations:
     # ...
     ```
 
+    </div>
+
 2.  Attach pods or VMs to the VLANs by referencing the NAD in the configuration for the pod or VM:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod configuration**
+    <div class="title">
+
+    Example pod configuration
 
     </div>
 
@@ -108,9 +150,13 @@ The example in the procedure demonstrates the following configurations:
     # ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example VM configuration**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example VM configuration
 
     </div>
 
@@ -126,3 +172,7 @@ The example in the procedure demonstrates the following configurations:
                 name: secondary-vlan
     # ...
     ```
+
+    </div>
+
+</div>

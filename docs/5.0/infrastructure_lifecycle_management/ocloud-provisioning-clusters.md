@@ -2,17 +2,22 @@ After you define cluster templates and onboard bare-metal servers, you can provi
 
 You can perform these operations by editing the `ProvisioningRequest` CR directly or through the Provisioning REST API. For more information about using the Provisioning API, see "Manage provisioning requests with the Provisioning API ".
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Provision a cluster using a ProvisioningRequest
 
 You can provision a cluster by creating a `ProvisioningRequest` custom resource that references a validated `ClusterTemplate` CR and supplies site-specific parameters. The O-Cloud Manager validates the request, allocates hardware from resource pools, and orchestrates the end-to-end provisioning flow.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have `cluster-admin` permissions on the hub cluster.
 
@@ -21,6 +26,16 @@ You can provision a cluster by creating a `ProvisioningRequest` custom resource 
 - You defined and applied a valid `ClusterTemplate` CR on the hub cluster.
 
 - You onboarded bare-metal servers with resource selector labels matching the `ClusterTemplate` CR requirements.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ProvisioningRequest` CR that references the `ClusterTemplate` CR and supplies site-specific parameters:
 
@@ -69,19 +84,23 @@ You can provision a cluster by creating a `ProvisioningRequest` custom resource 
 
     - `spec.templateParameters.policyTemplateParameters` provides site-specific values for Day 2 configuration policies. These values take precedence over the defaults. Specify only values that differ from the defaults.
 
-      <div class="note">
-
-      You cannot override `extraLabels` and `extraAnnotations` keys that are already defined in the `clusterinstance-defaults` `ConfigMap` CR at the group or node level. You can only append new keys. All other fields follow standard merge rules where site-specific values take precedence over defaults.
-
-      </div>
+      > [!NOTE]
+      > You cannot override `extraLabels` and `extraAnnotations` keys that are already defined in the `clusterinstance-defaults` `ConfigMap` CR at the group or node level. You can only append new keys. All other fields follow standard merge rules where site-specific values take precedence over defaults.
 
 2.  Apply the `ProvisioningRequest` resource to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
 
-    <div class="note">
+    > [!NOTE]
+    > Each provisioning stage has a default timeout: 90 minutes for hardware provisioning, 90 minutes for cluster installation, and 30 minutes for cluster configuration. You can override these timeouts in the `ClusterTemplate` by setting `hardwareProvisioningTimeout` in `hwMgmtDefaults`, `clusterInstallationTimeout` in the `clusterinstance-defaults` ConfigMap, or `clusterConfigurationTimeout` in the `policytemplates-defaults` ConfigMap.
 
-    Each provisioning stage has a default timeout: 90 minutes for hardware provisioning, 90 minutes for cluster installation, and 30 minutes for cluster configuration. You can override these timeouts in the `ClusterTemplate` by setting `hardwareProvisioningTimeout` in `hwMgmtDefaults`, `clusterInstallationTimeout` in the `clusterinstance-defaults` ConfigMap, or `clusterConfigurationTimeout` in the `policytemplates-defaults` ConfigMap.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that provisioning completes successfully by running the following command:
 
@@ -89,9 +108,11 @@ You can provision a cluster by creating a `ProvisioningRequest` custom resource 
   $ oc get provisioningrequests.clcm.openshift.io 123e4567-e89b-12d3-a456-426614174000
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -100,15 +121,37 @@ You can provision a cluster by creating a `ProvisioningRequest` custom resource 
   123e4567-e89b-12d3-a456-426614174000   sno1-request   71m   fulfilled        The cluster provisioning has completed successfully
   ```
 
+  </div>
+
   A `provisioningPhase` of `fulfilled` indicates that hardware allocation, cluster installation, and configuration are all complete.
+
+</div>
 
 # Delete a provisioned cluster
 
 You can delete a cluster provisioned by the O-Cloud Manager by deleting its `ProvisioningRequest` custom resource (CR). The O-Cloud Manager initiates a cleanup flow that removes the cluster, releases the allocated hardware, and returns the bare-metal servers to the resource pool for re-use.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The cluster was provisioned using a `ProvisioningRequest` CR.
 
 - You have `cluster-admin` permissions on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the `ProvisioningRequest` CR by running the following command:
 
@@ -118,11 +161,8 @@ You can delete a cluster provisioned by the O-Cloud Manager by deleting its `Pro
 
     - Replace `<uuid>` with the UUID of the `ProvisioningRequest` CR.
 
-      <div class="note">
-
-      Cluster deprovisioning and resource cleanup typically takes several minutes.
-
-      </div>
+      > [!NOTE]
+      > Cluster deprovisioning and resource cleanup typically takes several minutes.
 
 2.  Monitor the deletion progress by running the following command, replacing `<uuid>` with the UUID of the `ProvisioningRequest` CR:
 
@@ -134,6 +174,16 @@ You can delete a cluster provisioned by the O-Cloud Manager by deleting its `Pro
 
       The resource is removed from the cluster after all cleanup operations complete.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `BareMetalHost` CR returns to the `Available` provisioning state:
 
   ``` terminal
@@ -142,15 +192,35 @@ You can delete a cluster provisioned by the O-Cloud Manager by deleting its `Pro
 
   Servers in the `Available` state are ready to be allocated by a new `ProvisioningRequest` CR.
 
+</div>
+
 # Manage provisioning requests with the Provisioning API
 
 You can create, monitor, update, and delete provisioning requests through the O-Cloud Manager Provisioning API. This interface is designed for Service Management and Orchestration (SMO) frameworks and external automation systems. The Provisioning API accepts the same parameters as the `ProvisioningRequest` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables. For more information, see "Prepare the O-Cloud Manager environment".
 
 - A validated `ClusterTemplate` CR exists on the hub cluster.
 
 - Bare-metal servers with resource selector labels matching the `ClusterTemplate` CR requirements are onboarded.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the Provisioning API base URL by running the following command:
 
@@ -207,11 +277,8 @@ You can create, monitor, update, and delete provisioning requests through the O-
 
     - The `templateParameters` structure is identical to the `spec.templateParameters` field of the `ProvisioningRequest` CR. For details on each parameter, see *Provision a cluster using a ProvisioningRequest*.
 
-      <div class="note">
-
-      For advanced templating strategies and to configure hardware selection overrides for specific sites, see "Configure advanced hardware management".
-
-      </div>
+      > [!NOTE]
+      > For advanced templating strategies and to configure hardware selection overrides for specific sites, see "Configure advanced hardware management".
 
 3.  Check provisioning status by running the following command:
 
@@ -227,4 +294,16 @@ You can create, monitor, update, and delete provisioning requests through the O-
       "${PROV_URL}/provisioningRequests/123e4567-e89b-12d3-a456-426614174000"
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After creating a provisioning request, query its status and verify that the `provisioningPhase` progresses from `pending` to `progressing` to `fulfilled`.
+
+</div>

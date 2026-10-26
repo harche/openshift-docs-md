@@ -4,11 +4,29 @@ As a cluster administrator, you can remove an egress firewall from a project to 
 
 As a cluster administrator, you can remove an egress firewall from a project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A cluster using the OVN-Kubernetes network plugin.
 
 - Install the OpenShift CLI (`oc`).
 
 - You must log in to the cluster as a cluster administrator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Find the name of the `EgressFirewall` CR for the project. Replace `<project>` with the name of the project.
 
@@ -21,3 +39,5 @@ As a cluster administrator, you can remove an egress firewall from a project.
     ``` terminal
     $ oc delete -n <project> egressfirewall <name>
     ```
+
+</div>

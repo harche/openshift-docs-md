@@ -8,31 +8,48 @@ The **Overview** view shows aggregate network traffic in your OpenShift Containe
 
 As an administrator, you can troubleshoot connectivity issues, detect unusual traffic patterns, and optimize application performance. It provides a quick overview of network behavior, making it easier to prioritize actions and ensure efficient resource usage.
 
-## Work with the Overview view
-
-Navigate to the network traffic **Overview** view in the OpenShift Container Platform console to visualize flow rate statistics and customize the display scope for monitoring cluster network activity.
-
-- Access to the cluster with administrator rights.
-
-1.  Navigate to **Observe** → **Network Traffic**.
-
-2.  In the **Network Traffic** page, click the **Overview** tab.
-
-3.  Click the menu icon to configure the scope of each flow rate data.
-
-## Configure advanced options for the Overview view
+## Advanced options for the Overview view
 
 Customize the network traffic **Overview** view by configuring advanced options, such as graph scope, label truncation, and panel management, to refine the display of flow rate statistics and traffic data.
 
 To access the advanced options, click **Show advanced options**. You can configure the details in the graph by using the **Display options** drop-down menu. The options available are as follows:
 
-- **Scope**: Select to view the components that network traffic flows between. You can set the scope to **Node**, **Namespace**, **Owner**, **Zones**, **Cluster** or **Resource**. **Owner** is an aggregation of resources. **Resource** can be a pod, service, node, in case of host-network traffic, or an unknown IP address. The default value is **Namespace**.
+- **Scope**: Select to view the components that network traffic flows between. You can set the scope to **Node**, **Namespace**, **Owner**, **Zones**, **Cluster**, or **Resource**. **Owner** is an aggregation of resources. **Resource** can be a pod, service, node, in case of host-network traffic, or an unknown IP address. The default value is **Namespace**.
 
 - **Truncate labels**: Select the required width of the label from the drop-down list. The default value is **M**.
 
-### Managing panels and display
+### Accessing feature-specific data with preconfigured views
+
+When specific network observability features are enabled, you can select preconfigured feature views that automatically display relevant panels and columns for that feature.
+
+Feature views reduce the number of clicks required to access feature-specific data.
+
+The following feature views are available when their corresponding features are enabled:
+
+- **Packet Drops**:: Displays packet drop panels and columns for analyzing network packet loss when packet drop tracking is enabled.
+
+- **DNS**:: Displays DNS tracking panels such as DNS response codes, DNS latencies, and DNS-specific columns when DNS tracking is enabled.
+
+- **Flow RTT**:: Displays round-trip time (RTT) metrics and related panels when RTT tracking is enabled.
+
+- **TLS Tracking**:: Displays TLS monitoring panels and TLS-specific columns when TLS tracking is enabled.
+
+- **UDN**:: Displays user-defined network mapping panels and columns when UDN is enabled.
+
+- **Network Events**:: Displays network events panels and columns when network events are enabled.
+
+- **Packet Translation**:: Displays packet translation analysis panels and columns when packet translation is enabled.
+
+When you change columns or panels in a feature view, the view name changes to **Custom** to indicate customization. To restore the default feature view configuration, click **Restore defaults** in the **Manage columns** or **Manage panels** dialog.
+
+> [!NOTE]
+> Preconfigured feature views are only available when the corresponding feature is enabled in the `FlowCollector` custom resource.
+
+### Panels and display management
 
 You can select the required panels to be displayed, reorder them, and focus on a specific panel. To add or remove panels, click **Manage panels**.
+
+When using a preconfigured feature view, the panels displayed by default are specific to that feature. Changing the panel configuration changes the view to **Custom**.
 
 The following panels are shown by default:
 
@@ -48,6 +65,40 @@ Other panels can be added in **Manage panels**:
 
 **Query options** allows you to choose whether to show the **Top 5**, **Top 10**, or **Top 15** rates.
 
+## Work with the Overview view
+
+Navigate to the network traffic **Overview** view in the OpenShift Container Platform console to visualize flow rate statistics and customize the display scope for monitoring cluster network activity.
+
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
+- Access to the cluster with administrator rights.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Navigate to **Observe** → **Network Traffic**.
+
+2.  In the **Network Traffic** page, click the **Overview** tab.
+
+3.  Optional: When analyzing specific network features, select a preconfigured feature view from the view selector to instantly display feature-specific panels and columns.
+
+4.  Click the menu icon to configure the scope of each flow rate data.
+
+</div>
+
 ## Packet drop tracking
 
 Monitor and analyze network packet loss by using eBPF-based packet drop tracking, which identifies drop locations, detects host or OVS-specific drop reasons, and provides dedicated graphical panels in the **Overview** view.
@@ -59,6 +110,10 @@ You can configure graphical representation of network flow records with packet l
 - Root cause analysis: Examine the data collected by the eBPF program to understand the causes of packet drops. For example, are they a result of congestion, buffer issues, or specific network events?
 
 - Performance optimization: With a clearer picture of packet drops, you can take steps to optimize network performance, such as adjust buffer sizes, reconfigure routing paths, or implement Quality of Service (QoS) measures.
+
+### Packet Drops feature view
+
+When packet-drop tracking is enabled, you can select the **Packet Drops** preconfigured feature view from the view selector in the **Network Traffic** page. This view automatically displays packet drop-specific panels and columns, simplifying packet drop analysis without manual configuration.
 
 When packet drop tracking is enabled, you can see the following panels in the **Overview** by default:
 
@@ -78,7 +133,9 @@ Other packet drop panels are available to add in **Manage panels**:
 
 ### Types of packet drops
 
-Two kinds of packet drops are detected by network observability: host drops and OVS drops. Host drops are prefixed with `SKB_DROP` and OVS drops are prefixed with `OVS_DROP`. Dropped flows are shown in the side panel of the **Traffic flows** table along with a link to a description of each drop type. Examples of host drop reasons are as follows:
+Two kinds of packet drops are detected by network observability: host drops and OVS drops. Host drops are prefixed with `SKB_DROP` and OVS drops are prefixed with `OVS_DROP`. Dropped flows are shown in the side panel of the **Traffic flows** table along with a link to a description of each drop type.
+
+Examples of host drop reasons are as follows:
 
 - `SKB_DROP_REASON_NO_SOCKET`: the packet dropped due to a missing socket.
 
@@ -90,7 +147,7 @@ Examples of OVS drops reasons are as follows:
 
 - `OVS_DROP_IP_TTL`: OVS packets dropped due to an expired IP TTL.
 
-See the *Additional resources* of this section for more information about enabling and working with packet drop tracking.
+See the "Additional resources" of this section for more information about enabling and working with packet drop tracking.
 
 ## Work with packet drops
 
@@ -98,9 +155,14 @@ Enable packet drop tracking in the Network Observability Operator by configuring
 
 Packet loss occurs when one or more packets of network flow data fail to reach their destination. You can track these drops by editing the `FlowCollector` to the specifications in the following YAML example.
 
-<div class="important">
+> [!IMPORTANT]
+> CPU and memory usage increases when this feature is enabled.
 
-CPU and memory usage increases when this feature is enabled.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -112,9 +174,11 @@ CPU and memory usage increases when this feature is enabled.
 
 4.  Configure the `FlowCollector` custom resource for packet drops, for example:
 
-    <div class="formalpara-title">
+    <div id="network-observability-flowcollector-configuring-pkt-drop_nw-observe-network-traffic" class="formalpara">
 
-    **Example `FlowCollector` configuration**
+    <div class="title">
+
+    Example `FlowCollector` configuration
 
     </div>
 
@@ -133,6 +197,8 @@ CPU and memory usage increases when this feature is enabled.
           privileged: true
     ```
 
+    </div>
+
     where:
 
     `spec.agent.ebpf.features`
@@ -141,19 +207,39 @@ CPU and memory usage increases when this feature is enabled.
     `spec.agent.ebpf.privileged`
     Specifies whether privileged mode is enabled. Must be set to `true` for packet drop tracking.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - When you refresh the **Network Traffic** page, the **Overview**, **Traffic Flow**, and **Topology** views display new information about packet drops:
 
-  1.  Select new choices in **Manage panels** to choose which graphical visualizations of packet drops to display in the **Overview**.
+  1.  Select the **Packet Drops** feature view from the view selector to display preconfigured packet drop panels and columns, or select new choices in **Manage panels** to select which graphical visualizations of packet drops to display in the **Overview**.
 
-  2.  Select new choices in **Manage columns** to choose which packet drop information to display in the **Traffic flows** table.
+  2.  Select new choices in **Manage columns** to select which packet drop information to display in the **Traffic flows** table.
 
       1.  In the **Traffic Flows** view, you can also expand the side panel to view more information about packet drops. Host drops are prefixed with `SKB_DROP` and OVS drops are prefixed with `OVS_DROP`.
 
-  3.  In the **Topology** view, red lines are displayed where drops are present.
+  3.  In the **Topology** view, connections with packet drops are displayed with red lines.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Network Observability metrics](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-metrics_metrics-dashboards-alerts)
+
+</div>
 
 ## DNS tracking
 
@@ -166,6 +252,10 @@ You can configure graphical representation of Domain Name System (DNS) tracking 
 - Security Analysis: Detect suspicious DNS activities, such as domain name generation algorithms (DGA) used by malware, or identify unauthorized DNS resolutions that might indicate a security breach.
 
 - Troubleshooting: Debug DNS-related issues by tracing DNS resolution steps, tracking latency, and identifying misconfigurations.
+
+### DNS feature view
+
+When DNS tracking is enabled, you can select the **DNS** preconfigured feature view from the view selector in the **Network Traffic** page. This view automatically displays DNS-specific panels and columns, providing faster access to DNS metrics without manual configuration.
 
 By default, when DNS tracking is enabled, you can see the following non-empty metrics represented in a donut or line chart in the **Overview**:
 
@@ -185,7 +275,7 @@ Other DNS tracking panels can be added in **Manage panels**:
 
 This feature is supported for IPv4 and IPv6 UDP and TCP protocols.
 
-See the *Additional resources* in this section for more information about enabling and working with this view.
+See the "Additional resources" in this section for more information about enabling and working with this view.
 
 ## Work with DNS tracking
 
@@ -193,9 +283,14 @@ Configure the `FlowCollector` custom resource to enable DNS tracking for monitor
 
 You can track DNS by editing the `FlowCollector` to the specifications in the following YAML example.
 
-<div class="important">
+> [!IMPORTANT]
+> CPU and memory usage increases are observed in the eBPF agent when this feature is enabled.
 
-CPU and memory usage increases are observed in the eBPF agent when this feature is enabled.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -207,9 +302,11 @@ CPU and memory usage increases are observed in the eBPF agent when this feature 
 
 4.  Configure the `FlowCollector` custom resource. A sample configuration is as follows:
 
-    <div class="formalpara-title">
+    <div id="network-observability-flowcollector-configuring-dns_nw-observe-network-traffic" class="formalpara">
 
-    **Configure `FlowCollector` for DNS tracking**
+    <div class="title">
+
+    Configure `FlowCollector` for DNS tracking
 
     </div>
 
@@ -228,25 +325,36 @@ CPU and memory usage increases are observed in the eBPF agent when this feature 
           sampling: 1
     ```
 
+    </div>
+
     - You can set the `spec.agent.ebpf.features` parameter list to enable DNS tracking of each network flow in the web console.
 
     - You can set `sampling` to a value of `1` for more accurate metrics and to capture **DNS latency**. For a `sampling` value greater than 1, you can observe flows with **DNS Response Code** and **DNS Id**, and it is unlikely that **DNS Latency** can be observed.
 
-5.  When you refresh the **Network Traffic** page, there are new DNS representations you can choose to view in the **Overview** and **Traffic Flow** views and new filters you can apply.
+5.  When you refresh the **Network Traffic** page, there are new DNS representations you can select to view in the **Overview** and **Traffic Flow** views and new filters you can apply.
 
-    1.  Select new DNS choices in **Manage panels** to display graphical visualizations and DNS metrics in the **Overview**.
+    1.  Select the **DNS** feature view from the view selector to display preconfigured DNS panels and columns, or select new DNS choices in **Manage panels** to display graphical visualizations and DNS metrics in the **Overview**.
 
     2.  Select new choices in **Manage columns** to add DNS columns to the **Traffic Flows** view.
 
-    3.  Filter on specific DNS metrics, such as **DNS Id**, **DNS Error** **DNS Latency** and **DNS Response Code**, and see more information from the side panel. The **DNS Latency** and **DNS Response Code** columns are shown by default.
+    3.  Filter on specific DNS metrics, such as **DNS Id**, **DNS Error** **DNS** and **DNS Response Code**, and see more information from the side panel. The **DNS** and **DNS Response Code** columns are shown by default.
 
-        <div class="note">
+        > [!NOTE]
+        > TCP handshake packets do not have DNS headers. TCP protocol flows without DNS headers are shown in the traffic flow data with **DNS**, **ID**, and **Response code** values of "N/A". You can filter out flow data to view only flows that have DNS headers by using the **Common** filter "DNSError" equal to "0".
 
-        TCP handshake packets do not have DNS headers. TCP protocol flows without DNS headers are shown in the traffic flow data with **DNS Latency**, **ID**, and **Response code** values of "n/a". You can filter out flow data to view only flows that have DNS headers using the **Common** filter "DNSError" equal to "0".
+</div>
 
-        </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Network Observability metrics](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-metrics_metrics-dashboards-alerts)
+
+</div>
 
 ## Round-Trip Time
 
@@ -280,6 +388,14 @@ Enable Round Trip Time (RTT) tracing by configuring the `FlowCollector` custom r
 
 You can track RTT by editing the `FlowCollector` to the specifications in the following YAML example.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
 2.  In the **Provided APIs** heading for the **NetObserv Operator**, select **Flow Collector**.
@@ -288,9 +404,11 @@ You can track RTT by editing the `FlowCollector` to the specifications in the fo
 
 4.  Configure the `FlowCollector` custom resource for RTT tracing, for example:
 
-    <div class="formalpara-title">
+    <div id="network-observability-flowcollector-configuring-RTT_nw-observe-network-traffic" class="formalpara">
 
-    **Example `FlowCollector` configuration**
+    <div class="title">
+
+    Example `FlowCollector` configuration
 
     </div>
 
@@ -308,18 +426,26 @@ You can track RTT by editing the `FlowCollector` to the specifications in the fo
            - FlowRTT
     ```
 
+    </div>
+
     where:
 
     `spec.agent.ebpf.features`
     Specifies the list of eBPF features to enable. Add `FlowRTT` to this list to start tracing Round-trip time (RTT) network flows.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 After the **Network Traffic** page is refreshed, the **Overview**, **Traffic flows**, and **Topology** views display RTT information.
+
+</div>
 
 1.  In the **Overview** view, click **Manage panels** to select the RTT graphical visualizations to display.
 
@@ -366,21 +492,21 @@ Reference the required and optional parameters for configuring flow filter rules
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>enable</code></p></td>
 <td style="text-align: left;"><p>Set <code>enable</code> to <code>true</code> to enable the eBPF flow filtering feature.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>cidr</code></p></td>
 <td style="text-align: left;"><p>Provides the IP address and CIDR mask for the flow filter rule. Supports both IPv4 and IPv6 address format. If you want to match against any IP, you can use <code>0.0.0.0/0</code> for IPv4 or <code>::/0</code> for IPv6.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>action</code></p></td>
 <td style="text-align: left;"><p>Describes the action that is taken for the flow filter rule. The possible values are <code>Accept</code> or <code>Reject</code>.</p>
 <ul>
@@ -392,19 +518,17 @@ Reference the required and optional parameters for configuring flow filter rules
 </tbody>
 </table>
 
-Required configuration parameters
-
-| Parameter     | Description                                                                                                                                                                                                                                                                                       |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `direction`   | Defines the direction of the flow filter rule. Possible values are `Ingress` or `Egress`.                                                                                                                                                                                                         |
-| `protocol`    | Defines the protocol of the flow filter rule. Possible values are `TCP`, `UDP`, `SCTP`, `ICMP`, and `ICMPv6`.                                                                                                                                                                                     |
-| `tcpFlags`    | Defines the TCP flags to filter flows. Possible values are `SYN`, `SYN-ACK`, `ACK`, `FIN`, `RST`, `PSH`, `URG`, `ECE`, `CWR`, `FIN-ACK`, and `RST-ACK`.                                                                                                                                           |
-| `ports`       | Defines the ports to use for filtering flows. It can be used for either source or destination ports. To filter a single port, set a single port as an integer value. For example `ports: 80`. To filter a range of ports, use a "start-end" range in string format. For example `ports: "80-100"` |
-| `sourcePorts` | Defines the source port to use for filtering flows. To filter a single port, set a single port as an integer value, for example `sourcePorts: 80`. To filter a range of ports, use a "start-end" range, string format, for example `sourcePorts: "80-100"`.                                       |
-| `destPorts`   | DestPorts defines the destination ports to use for filtering flows. To filter a single port, set a single port as an integer value, for example `destPorts: 80`. To filter a range of ports, use a "start-end" range in string format, for example `destPorts: "80-100"`.                         |
-| `icmpType`    | Defines the ICMP type to use for filtering flows.                                                                                                                                                                                                                                                 |
-| `icmpCode`    | Defines the ICMP code to use for filtering flows.                                                                                                                                                                                                                                                 |
-| `peerIP`      | Defines the IP address to use for filtering flows, for example: `10.10.10.10`.                                                                                                                                                                                                                    |
+| Parameter | Description |
+|----|----|
+| `direction` | Defines the direction of the flow filter rule. Possible values are `Ingress` or `Egress`. |
+| `protocol` | Defines the protocol of the flow filter rule. Possible values are `TCP`, `UDP`, `SCTP`, `ICMP`, and `ICMPv6`. |
+| `tcpFlags` | Defines the TCP flags to filter flows. Possible values are `SYN`, `SYN-ACK`, `ACK`, `FIN`, `RST`, `PSH`, `URG`, `ECE`, `CWR`, `FIN-ACK`, and `RST-ACK`. |
+| `ports` | Defines the ports to use for filtering flows. It can be used for either source or destination ports. To filter a single port, set a single port as an integer value. For example `ports: 80`. To filter a range of ports, use a "start-end" range in string format. For example `ports: "80-100"` |
+| `sourcePorts` | Defines the source port to use for filtering flows. To filter a single port, set a single port as an integer value, for example `sourcePorts: 80`. To filter a range of ports, use a "start-end" range, string format, for example `sourcePorts: "80-100"`. |
+| `destPorts` | DestPorts defines the destination ports to use for filtering flows. To filter a single port, set a single port as an integer value, for example `destPorts: 80`. To filter a range of ports, use a "start-end" range in string format, for example `destPorts: "80-100"`. |
+| `icmpType` | Defines the ICMP type to use for filtering flows. |
+| `icmpCode` | Defines the ICMP code to use for filtering flows. |
+| `peerIP` | Defines the IP address to use for filtering flows, for example: `10.10.10.10`. |
 
 Optional configuration parameters
 
@@ -414,9 +538,21 @@ Configure multiple filtering rules in the `FlowCollector` custom resource to ref
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - You cannot use duplicate Classless Inter-Domain Routing (CIDRs) in filter rules.
 
 - When an IP address matches multiple filter rules, the rule with the most specific CIDR prefix (longest prefix) takes precedence.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -427,6 +563,8 @@ Configure multiple filtering rules in the `FlowCollector` custom resource to ref
 3.  Select **cluster**, then select the **YAML** tab.
 
 4.  Configure the `FlowCollector` custom resource.
+
+</div>
 
 ## eBPF flow data filtering examples
 
@@ -522,9 +660,19 @@ Specifies the action for the flow filter rule. Valid values are `Accept` or `Rej
 `spec.agent.ebpf.flowFilter.rules.pktDrops`
 Specifies whether to filter for flows that contain packet drops.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Network Observability metrics](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-metrics_metrics-dashboards-alerts)
 
 - [Health dashboards](../../observability/network_observability/network-observability-operator-monitoring.xml#network-observability-health-dashboard-overview_network_observability)
+
+</div>
 
 ## User-defined networks
 
@@ -542,7 +690,25 @@ Configure the `FlowCollector` custom resource to enable user-defined network (UD
 
 You can enable user-defined networks (UDN) in network observability resources. The following example shows the configuration for the `FlowCollector` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
 - You have configured UDN in Red Hat OpenShift Networking. For more information, see "Creating a UserDefinedNetwork by using the CLI" or "Creating a UserDefinedNetwork by using the web console."
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the network observability `FlowCollector` resource by running the following command:
 
@@ -574,13 +740,31 @@ You can enable user-defined networks (UDN) in network observability resources. T
     `spec.agent.ebpf.privileged`
     Specifies whether privileged mode is enabled. Must be set to `true` for user-defined network mapping.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Refresh the **Network Traffic** page to view updated UDN information in the **Traffic Flow** and **Topology** views:
 
   - In **Network Traffic** \> **Traffic flows**, you can view UDNs under the `SrcK8S_NetworkName` and `DstK8S_NetworkName` fields.
 
   - In the **Topology** view, you can set **Network** as **Scope** or **Group**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About user-defined networks](../../networking/multiple_networks/primary_networks/about-user-defined-networks.xml#about-user-defined-networks)
 
@@ -588,17 +772,16 @@ You can enable user-defined networks (UDN) in network observability resources. T
 
 - [Creating a UserDefinedNetwork by using the web console](../../networking/multiple_networks/primary_networks/about-user-defined-networks.xml#nw-udn-cr-ui_about-user-defined-networks)
 
+</div>
+
 ## OVN-Kubernetes networking events
 
 Use OVN-Kubernetes network event tracking to monitor and audit network policies, admin network policies, and egress firewall rules in your cluster.
 
-<div class="important">
-
-OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 You can use the insights from tracking network events to help with the following tasks:
 
@@ -606,19 +789,22 @@ You can use the insights from tracking network events to help with the following
 
 - Network security: You can track outbound traffic and see whether it adheres to egress firewall rules. Detect unauthorized outbound connections and flag outbound traffic that violates egress rules.
 
-See the *Additional resources* in this section for more information about enabling and working with this view.
+### Network Events feature view
+
+When OVN-Kubernetes network event tracking is enabled, you can select the **Network Events** preconfigured feature view from the view selector in the **Network Traffic** page.
+
+This view automatically displays network event-specific panels and columns, providing faster access to network event data without manual configuration.
+
+See the "Additional resources" for more information about enabling and working with this view.
 
 ## View network events
 
 Configure the `FlowCollector` custom resource to enable network event tracking for auditing how security policies, firewalls, and isolation rules affect traffic flows in the web console.
 
-<div class="important">
-
-OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OVN-Kubernetes networking events tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 You can edit the `FlowCollector` to view information about network traffic events, such as network flows that are dropped or allowed by the following resources:
 
@@ -634,11 +820,27 @@ You can edit the `FlowCollector` to view information about network traffic event
 
 - Multicast ACLs
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have `OVNObservability` enabled by setting the `TechPreviewNoUpgrade` feature set in the `FeatureGate` custom resource (CR) named `cluster`. For more information, see "Enabling feature sets using the CLI" and "Checking OVN-Kubernetes network traffic with OVS sampling using the CLI".
 
 - You have created at least one of the following network APIs: `NetworkPolicy`, `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `UserDefinedNetwork` isolation, multicast, or `EgressFirewall`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -648,9 +850,11 @@ You can edit the `FlowCollector` to view information about network traffic event
 
 4.  Configure the `FlowCollector` CR to enable viewing `NetworkEvents`, for example:
 
-    <div class="formalpara-title">
+    <div id="network-observability-flowcollector-configuring-networkevents_nw-observe-network-traffic" class="formalpara">
 
-    **Example `FlowCollector` configuration**
+    <div class="title">
+
+    Example `FlowCollector` configuration
 
     </div>
 
@@ -669,6 +873,8 @@ You can edit the `FlowCollector` to view information about network traffic event
            - "NetworkEvents"
     ```
 
+    </div>
+
     where:
 
     `spec.agent.ebpf.sampling`
@@ -677,17 +883,29 @@ You can edit the `FlowCollector` to view information about network traffic event
     `spec.agent.ebpf.privileged`
     Specifies whether the eBPF agent runs in privileged mode. Set to `true` because the OVN observability library needs to access local Open vSwitch (OVS) socket and Open Virtual Network (OVN) databases.
 
-<!-- -->
+</div>
 
-1.  Navigate to the **Network Traffic** view and select the **Traffic flows** table.
+<div>
 
-2.  You should see the new column, **Network Events**, where you can view information about impacts of one of the following network APIs you have enabled: `NetworkPolicy`, `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `UserDefinedNetwork` isolation, multicast, or egress firewalls.
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Navigate to the **Network Traffic** view.
+
+2.  Select the **Network Events** feature view from the view selector to display preconfigured network event panels and columns, or select the **Traffic flows** table to manually view network event columns.
+
+3.  The **Network Events** column displays information about impacts of one of the following network APIs you have enabled: `NetworkPolicy`, `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `UserDefinedNetwork` isolation, multicast, or egress firewalls.
 
     An example of the kind of events you could see in this column is as follows:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of Network Events output**
+    <div class="title">
+
+    Example of Network Events output
 
     </div>
 
@@ -695,9 +913,23 @@ You can edit the `FlowCollector` to view information about network traffic event
     <Dropped_or_Allowed> by <network_event_and_event_name>, direction <Ingress_or_Egress>
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling feature sets using the CLI](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-cli_nodes-cluster-enabling-features)
 
 - [Checking OVN-Kubernetes network traffic with OVS sampling using the CLI](../../networking/ovn_kubernetes_network_provider/ovn-kubernetes-troubleshooting-sources.xml#nw-ovn-kubernetes-observability_ovn-kubernetes-sources-of-troubleshooting-information)
+
+</div>
 
 # Observe the network traffic from the Traffic flows view
 
@@ -715,13 +947,33 @@ View and analyze detailed network flow information in the **Traffic flows** tabl
 
 As an administrator, you can navigate to **Traffic flows** table to see network flow information.
 
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
 - You have administrator access.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Observe** → **Network Traffic**.
 
 2.  In the **Network Traffic** page, click the **Traffic flows** tab.
 
 3.  Click on each row to get the corresponding flow information.
+
+</div>
 
 ## Traffic flow display settings
 
@@ -744,11 +996,21 @@ Specifies a dialog to select and reorder the columns displayed in the **Traffic 
 
 Export network flow data from the **Traffic flows** view to a CSV file for external analysis or reporting.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Click **Export data**.
 
 2.  In the window, select the **Export all data** checkbox to export all the data, and clear the checkbox to select the required fields to be exported.
 
 3.  Click **Export**.
+
+</div>
 
 ## Configure IPsec with the FlowCollector custom resource
 
@@ -756,7 +1018,25 @@ Enable IPsec tracking in the `FlowCollector` resource to monitor encrypted traff
 
 In OpenShift Container Platform, IPsec is disabled by default. You can enable IPsec by following the instructions in "Configuring IPsec encryption".
 
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
 - You have enabled IPsec encryption on OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -766,9 +1046,11 @@ In OpenShift Container Platform, IPsec is disabled by default. You can enable IP
 
 4.  Configure the `FlowCollector` custom resource for IPsec:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration of `FlowCollector` for IPsec**
+    <div class="title">
+
+    Example configuration of `FlowCollector` for IPsec
 
     </div>
 
@@ -786,21 +1068,37 @@ In OpenShift Container Platform, IPsec is disabled by default. You can enable IP
           - "IPSec"
     ```
 
-<div class="formalpara-title">
+    </div>
 
-**Verification**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 When IPsec is enabled:
 
+</div>
+
 - A new column named **IPsec Status** is displayed in the network observability **Traffic flows** view to show whether a flow was successfully IPsec-encrypted or if there was an error during encryption/decryption.
 
 - A new dashboard showing the percent of encrypted traffic is generated.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring IPsec encryption](../../networking/network_security/configuring-ipsec-ovn.xml#configuring-ipsec-ovn)
+
+</div>
 
 ## Work with conversation tracking
 
@@ -816,6 +1114,14 @@ As an administrator, you can group network flows that are part of the same conve
 
 - **Flow**: This is the network traffic flow that occurs within the specified interval.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Under the **Provided APIs** heading for the **NetObserv Operator**, select **Flow Collector**.
@@ -824,9 +1130,11 @@ As an administrator, you can group network flows that are part of the same conve
 
 4.  Configure the `FlowCollector` custom resource so that `spec.processor.logTypes`, `conversationEndTimeout`, and `conversationHeartbeatInterval` parameters are set according to your observation needs. A sample configuration is as follows:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Configure `FlowCollector` for conversation tracking**
+    <div class="title">
+
+    Configure `FlowCollector` for conversation tracking
 
     </div>
 
@@ -843,6 +1151,8 @@ As an administrator, you can group network flows that are part of the same conve
        conversationHeartbeatInterval: 30s
     ```
 
+    </div>
+
     where:
 
     `spec.processor.logTypes`
@@ -854,11 +1164,8 @@ As an administrator, you can group network flows that are part of the same conve
     `spec.processor.advanced.conversationHeartbeatInterval`
     Specifies the interval for the **Conversation tick** event while the network connection is active.
 
-    <div class="note">
-
-    If you update the `logType` option, the flows from the previous selection do not clear from the console plugin. For example, if you initially set `logType` to `Conversations` for a span of time until 10 AM and then move to `EndedConversations`, the console plugin shows all conversation events before 10 AM and only ended conversations after 10 AM.
-
-    </div>
+    > [!NOTE]
+    > If you update the `logType` option, the flows from the previous selection do not clear from the console plugin. For example, if you initially set `logType` to `Conversations` for a span of time until 10 AM and then move to `EndedConversations`, the console plugin shows all conversation events before 10 AM and only ended conversations after 10 AM.
 
 5.  Refresh the **Network Traffic** page on the **Traffic flows** tab. Notice there are two new columns, **Event/Type** and **Conversation Id**. All the **Event/Type** fields are `Flow` when **Flow** is the selected query option.
 
@@ -866,17 +1173,24 @@ As an administrator, you can group network flows that are part of the same conve
 
 7.  Next you can filter on a specific conversation ID or switch between the **Conversation** and **Flow** log type options from the side panel.
 
+</div>
+
 ## Work with the eBPF Manager Operator
 
 Integrate the eBPF Manager Operator with Network Observability to manage eBPF programs and reduce the need for privileged agent permissions.
 
 The eBPF Manager Operator reduces the attack surface and ensures compliance, security, and conflict prevention by managing all eBPF programs. Network observability can use the eBPF Manager Operator to load hooks. As a result, you no longer need to provide the eBPF Agent with privileged mode or additional Linux capabilities such as `CAP_BPF` and `CAP_PERFMON`. The eBPF Manager Operator with network observability is only supported on 64-bit AMD architecture.
 
-<div class="important">
+> [!IMPORTANT]
+> eBPF Manager Operator with network observability is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-eBPF Manager Operator with network observability is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -888,9 +1202,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 4.  Configure the `FlowCollector` custom resource to use the eBPF Manager Operator:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `FlowCollector` configuration**
+    <div class="title">
+
+    Example `FlowCollector` configuration
 
     </div>
 
@@ -906,7 +1222,17 @@ For more information about the support scope of Red Hat Technology Preview featu
             - EbpfManager
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -914,7 +1240,19 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     For each node, verify that a `BpfApplication` named `netobserv` and a pair of `BpfProgram` objects, one for Traffic Control (TCx) ingress and another for TCx egress, exist. If you enable other eBPF Agent features, you might have more objects.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing the eBPF Manager Operator](../../networking/networking_operators/ebpf_manager/ebpf-manager-operator-install.xml)
+
+</div>
 
 ## Use the histogram
 
@@ -928,6 +1266,14 @@ Configure the `FlowCollector` custom resource to collect availability zone data,
 
 You can configure the `FlowCollector` to collect information about the cluster availability zones. This allows you to enrich network flow data with the [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) label value applied to the nodes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, go to **Ecosystem** → **Installed Operators**.
 
 2.  Under the **Provided APIs** heading for the **NetObserv Operator**, select **Flow Collector**.
@@ -936,9 +1282,11 @@ You can configure the `FlowCollector` to collect information about the cluster a
 
 4.  Configure the `FlowCollector` custom resource so that the `spec.processor.addZone` parameter is set to `true`. A sample configuration is as follows:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Configure `FlowCollector` for availability zones collection**
+    <div class="title">
+
+    Configure `FlowCollector` for availability zones collection
 
     </div>
 
@@ -954,13 +1302,21 @@ You can configure the `FlowCollector` to collect information about the cluster a
     # ...
     ```
 
-<div class="formalpara-title">
+    </div>
 
-**Verification**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 When you refresh the **Network Traffic** page, the **Overview**, **Traffic Flow**, and **Topology** views display new information about availability zones:
+
+</div>
 
 1.  In the **Overview** tab, you can see **Zones** as an available **Scope**.
 
@@ -968,7 +1324,17 @@ When you refresh the **Network Traffic** page, the **Overview**, **Traffic Flow*
 
 3.  In the **Topology** view, you can set **Zones** as **Scope** or **Group**.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Conntrack Zone ID](https://lwn.net/Articles/370152/#:~:text=A%20zone%20is%20simply%20a,to%20seperate%20conntrack%20defragmentation%20queues.)
+
+</div>
 
 ## Endpoint translation (xlat)
 
@@ -1000,6 +1366,14 @@ Enable endpoint translation (xlat) in the `FlowCollector` resource to enrich net
 
 You can use network observability and eBPF to enrich network flows from a Kubernetes service with translated endpoint information, gaining insight into the endpoints serving traffic.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
 2.  In the **Provided APIs** heading for the **NetObserv Operator**, select **Flow Collector**.
@@ -1008,9 +1382,11 @@ You can use network observability and eBPF to enrich network flows from a Kubern
 
 4.  Configure the `FlowCollector` custom resource for `PacketTranslation`, for example:
 
-    <div class="formalpara-title">
+    <div id="network-observability-flowcollector-configuring-packet-translation_nw-observe-network-traffic" class="formalpara">
 
-    **Example `FlowCollector` configuration**
+    <div class="title">
+
+    Example `FlowCollector` configuration
 
     </div>
 
@@ -1028,6 +1404,8 @@ You can use network observability and eBPF to enrich network flows from a Kubern
            - PacketTranslation
     ```
 
+    </div>
+
     - You can start enriching network flows with translated packet information by listing the `PacketTranslation` parameter in the `spec.agent.ebpf.features` specification list.
 
 5.  Refresh the **Network Traffic** page to filter for information about translated packets:
@@ -1043,6 +1421,8 @@ You can use network observability and eBPF to enrich network flows from a Kubern
         - **Xlat Dst Kubernetes Object**
 
     3.  You can manage the display of additional **xlat** columns in **Manage columns**.
+
+</div>
 
 # Observe the network traffic from the Topology view
 
@@ -1060,13 +1440,33 @@ Access the **Topology** view to visually inspect cluster network relationships a
 
 As an administrator, you can navigate to the **Topology** view to see the details and metrics of the component.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have administrator access.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Observe** → **Network Traffic**.
 
 2.  In the **Network Traffic** page, click the **Topology** tab.
 
 3.  Click each component in the **Topology** tab to view its details and metrics.
+
+</div>
 
 ## Configure the advanced options for the Topology view
 
@@ -1135,12 +1535,19 @@ You can toggle between ![arrow up long solid](data:image/png;base64,iVBORw0KGgoA
 
 You can click **Reset defaults** to remove the existing filters, and apply the filter defined in `FlowCollector` configuration.
 
-<div class="note">
+> [!NOTE]
+> To understand the rules of specifying the text value, click **Learn More**.
 
-To understand the rules of specifying the text value, click **Learn More**.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Configuring Quick Filters](../../observability/network_observability/configuring-operator.xml#network-observability-config-quick-filters_network_observability)
 
 - [Flow Collector sample resource](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-view_network_observability)
+
+</div>

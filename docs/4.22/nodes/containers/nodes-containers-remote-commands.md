@@ -4,6 +4,14 @@ You can use the `oc exec` command to execute remote commands in OpenShift Contai
 
 You can use the OpenShift CLI (`oc`) to execute remote commands in OpenShift Container Platform containers. By running commands in a container, you can perform troubleshooting, inspect logs, run scripts, and other tasks.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Use a command similar to the following to run a command in a container:
 
   ``` terminal
@@ -16,9 +24,11 @@ You can use the OpenShift CLI (`oc`) to execute remote commands in OpenShift Con
   $ oc exec mypod date
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -26,11 +36,12 @@ You can use the OpenShift CLI (`oc`) to execute remote commands in OpenShift Con
   Thu Apr  9 02:21:53 UTC 2015
   ```
 
-  <div class="important">
-
-  [For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
-
   </div>
+
+  > [!IMPORTANT]
+  > [For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
+
+</div>
 
 # Protocol for initiating a remote command from a client
 
@@ -59,15 +70,19 @@ Specifies the name of the target container.
 `<command>`
 Specifies the desired command to be executed.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example request**
+<div class="title">
+
+Example request
 
 </div>
 
 ``` terminal
 /proxy/nodes/node123.openshift.com/exec/myns/mypod/mycontainer?command=date
 ```
+
+</div>
 
 Additionally, the client can add parameters to the request to indicate any of the following conditions:
 

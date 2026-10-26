@@ -6,7 +6,25 @@ The Lifecycle Agent does not delete images that are pinned in CRI-O or are curre
 
 Configure the minimum threshold for available storage space through annotations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created an `ImageBasedUpgrade` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Increase the threshold to 65% by running the following command:
 
@@ -20,9 +38,19 @@ Configure the minimum threshold for available storage space through annotations.
     $ oc -n  openshift-lifecycle-agent annotate ibu upgrade image-cleanup.lca.openshift.io/disk-usage-threshold-percent-
     ```
 
+</div>
+
 # Disable the automatic image cleanup of the container storage disk
 
 Disable the automatic image cleanup threshold.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Disable the automatic image cleanup by running the following command:
 
@@ -35,3 +63,5 @@ Disable the automatic image cleanup threshold.
     ``` terminal
     $ oc -n  openshift-lifecycle-agent annotate ibu upgrade image-cleanup.lca.openshift.io/on-prep-
     ```
+
+</div>

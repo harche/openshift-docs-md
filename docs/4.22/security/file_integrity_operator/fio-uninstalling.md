@@ -4,9 +4,27 @@ You can remove the File Integrity Operator from your cluster by using the OpenSh
 
 To remove the File Integrity Operator, you must first delete the `FileIntegrity` objects in all namespaces. After the objects are removed, you can then remove the Operator and its namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster that uses an account with `cluster-admin` permissions.
 
 - The File Integrity Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** → **File Integrity Operator** page.
 
@@ -32,6 +50,18 @@ To remove the File Integrity Operator, you must first delete the `FileIntegrity`
 
 12. Select **Delete Project**. A **Delete Project** dialog box opens on the web console.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Type `openshift-file-integrity` in the **Delete Project** dialog box.
 
 - Click the **Delete** button.
+
+</div>

@@ -6,11 +6,8 @@ The kubelet configuration is currently serialized as an Ignition configuration, 
 
 You can use a `KubeletConfig` custom resource (CR) to edit a kubelet parameters without modifing the kubelet configuration directly.
 
-<div class="note">
-
-As the fields in the `kubeletConfig` object are passed directly to the kubelet from upstream Kubernetes, the kubelet validates those values directly. Invalid values in the `kubeletConfig` object might cause cluster nodes to become unavailable. For valid values, see the [Kubernetes documentation](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/).
-
-</div>
+> [!NOTE]
+> As the fields in the `kubeletConfig` object are passed directly to the kubelet from upstream Kubernetes, the kubelet validates those values directly. Invalid values in the `kubeletConfig` object might cause cluster nodes to become unavailable. For valid values, see the [Kubernetes documentation](https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/).
 
 You can set most kubelet configuration options. You cannot overwrite the following options:
 
@@ -30,41 +27,32 @@ Consider the following guidance:
 
 - As needed, create multiple `KubeletConfig` CRs with a limit of 10 per cluster. For the first `KubeletConfig` CR, the Machine Config Operator (MCO) creates a machine config appended with `kubelet`. With each subsequent CR, the controller creates another `kubelet` machine config with a numeric suffix. For example, if you have a `kubelet` machine config with a `-2` suffix, the next `kubelet` machine config is appended with `-3`.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > The Machine Config Operator does not merge multiple `KubeletConfig` CRs that target the same machine config pool. Each CR generates a separate machine config that writes the kubelet configuration. The most recently created `KubeletConfig` CR takes precedence and overrides the kubelet settings from earlier CRs for that pool.
+  >
+  > To apply multiple kubelet settings to the same pool, include all of the settings in a single `KubeletConfig` CR.
 
-  The Machine Config Operator does not merge multiple `KubeletConfig` CRs that target the same machine config pool. Each CR generates a separate machine config that writes the kubelet configuration. The most recently created `KubeletConfig` CR takes precedence and overrides the kubelet settings from earlier CRs for that pool.
-
-  To apply multiple kubelet settings to the same pool, include all of the settings in a single `KubeletConfig` CR.
-
-  </div>
-
-<div class="note">
-
-If you are applying a kubelet or container runtime config to a custom machine config pool, the custom role in the `machineConfigSelector` must match the name of the custom machine config pool.
-
-For example, because the following custom machine config pool is named `infra`, the custom role must also be `infra`:
-
-``` yaml
-apiVersion: machineconfiguration.openshift.io/v1
-kind: MachineConfigPool
-metadata:
-  name: infra
-spec:
-  machineConfigSelector:
-    matchExpressions:
-      - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,infra]}
-# ...
-```
-
-</div>
+> [!NOTE]
+> If you are applying a kubelet or container runtime config to a custom machine config pool, the custom role in the `machineConfigSelector` must match the name of the custom machine config pool.
+>
+> For example, because the following custom machine config pool is named `infra`, the custom role must also be `infra`:
+>
+> ``` yaml
+> apiVersion: machineconfiguration.openshift.io/v1
+> kind: MachineConfigPool
+> metadata:
+>   name: infra
+> spec:
+>   machineConfigSelector:
+>     matchExpressions:
+>       - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,infra]}
+> # ...
+> ```
 
 If you want to delete the machine configs, delete them in reverse order to avoid exceeding the limit. For example, you delete the `kubelet-3` machine config before deleting the `kubelet-2` machine config.
 
-<div class="note">
-
-If you have a machine config with a `kubelet-9` suffix, and you create another `KubeletConfig` CR, a new machine config is not created, even if there are fewer than 10 `kubelet` machine configs.
-
-</div>
+> [!NOTE]
+> If you have a machine config with a `kubelet-9` suffix, and you create another `KubeletConfig` CR, a new machine config is not created, even if there are fewer than 10 `kubelet` machine configs.
 
 The following example command and output show a `KubeletConfig` CR:
 
@@ -91,6 +79,14 @@ $ oc get mc | grep kubelet
 
 The following procedure is an example to show how to configure the maximum number of pods per node, the maximum PIDs per node, and the maximum container log size size on the worker nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 1.  Obtain the label associated with the static `MachineConfigPool` CR for the type of node you want to configure. Perform one of the following steps:
 
     1.  View the machine config pool:
@@ -105,9 +101,11 @@ The following procedure is an example to show how to configure the maximum numbe
         $ oc describe machineconfigpool worker
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -121,6 +119,8 @@ The following procedure is an example to show how to configure the maximum numbe
             custom-kubelet: set-kubelet-config
         ```
 
+        </div>
+
         The `metadata.labels` parameter specifies labels you can use with a `KubeletConfig` CR.
 
     2.  If the label is not present, add a key/value pair:
@@ -129,7 +129,15 @@ The following procedure is an example to show how to configure the maximum numbe
         $ oc label machineconfigpool worker custom-kubelet=set-kubelet-config
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the available machine configuration objects that you can select:
 
@@ -153,9 +161,11 @@ The following procedure is an example to show how to configure the maximum numbe
 
     Look for `value: pods: <value>` in the `Allocatable` stanza:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -169,15 +179,14 @@ The following procedure is an example to show how to configure the maximum numbe
      pods:                        250
     ```
 
+    </div>
+
 3.  Configure the worker nodes as needed:
 
     1.  Create a YAML file similar to the following that contains the kubelet configuration:
 
-        <div class="important">
-
-        Kubelet configurations that target a specific machine config pool also affect any dependent pools. For example, creating a kubelet configuration for the pool containing worker nodes will also apply to any subset pools, including the pool containing infrastructure nodes. To avoid this, you must create a new machine config pool with a selection expression that only includes worker nodes, and have your kubelet configuration target this new pool.
-
-        </div>
+        > [!IMPORTANT]
+        > Kubelet configurations that target a specific machine config pool also affect any dependent pools. For example, creating a kubelet configuration for the pool containing worker nodes will also apply to any subset pools, including the pool containing infrastructure nodes. To avoid this, you must create a new machine config pool with a selection expression that only includes worker nodes, and have your kubelet configuration target this new pool.
 
         ``` yaml
         apiVersion: machineconfiguration.openshift.io/v1
@@ -210,26 +219,23 @@ The following procedure is an example to show how to configure the maximum numbe
 
         - Use `nodeStatusMaxImages` to set how many images the node reports. If a node contains more than 50 images, pod scheduling might be imbalanced because the image list is shortened to 50 by default. Set `nodeStatusMaxImages` to `-1` to disable that limit.
 
-          <div class="note">
-
-          The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
-
-          ``` yaml
-          apiVersion: machineconfiguration.openshift.io/v1
-          kind: KubeletConfig
-          metadata:
-            name: set-kubelet-config
-          spec:
-            machineConfigPoolSelector:
-              matchLabels:
-                custom-kubelet: set-kubelet-config
-            kubeletConfig:
-              maxPods: <pod_count>
-              kubeAPIBurst: <burst_rate>
-              kubeAPIQPS: <QPS>
-          ```
-
-          </div>
+          > [!NOTE]
+          > The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
+          >
+          > ``` yaml
+          > apiVersion: machineconfiguration.openshift.io/v1
+          > kind: KubeletConfig
+          > metadata:
+          >   name: set-kubelet-config
+          > spec:
+          >   machineConfigPoolSelector:
+          >     matchLabels:
+          >       custom-kubelet: set-kubelet-config
+          >   kubeletConfig:
+          >     maxPods: <pod_count>
+          >     kubeAPIBurst: <burst_rate>
+          >     kubeAPIQPS: <QPS>
+          > ```
 
     2.  Update the machine config pool for workers with the label:
 
@@ -243,7 +249,15 @@ The following procedure is an example to show how to configure the maximum numbe
         $ oc create -f change-maxPods-cr.yaml
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `KubeletConfig` object is created:
 
@@ -251,9 +265,11 @@ The following procedure is an example to show how to configure the maximum numbe
     $ oc get kubeletconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -261,6 +277,8 @@ The following procedure is an example to show how to configure the maximum numbe
     NAME                      AGE
     set-kubelet-config        15m
     ```
+
+    </div>
 
     Depending on the number of worker nodes in the cluster, wait for the worker nodes to be rebooted one by one. For a cluster with 3 worker nodes, this could take about 10 to 15 minutes.
 
@@ -314,17 +332,16 @@ The following procedure is an example to show how to configure the maximum numbe
         type: Success
     ```
 
+</div>
+
 # Create a ContainerRuntimeConfig CR to edit CRI-O parameters
 
 You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP) by using a `ContainerRuntimeConfig` custom resource (CR).
 
 With a `ContainerRuntimeConfig` CR, you set the configuration values and add a label to match the MCP. The MCO then rebuilds the `crio.conf` and `storage.conf` configuration files on the associated nodes with the updated values.
 
-<div class="note">
-
-To revert the changes implemented by using a `ContainerRuntimeConfig` CR, you must delete the CR. Removing the label from the machine config pool does not revert the changes.
-
-</div>
+> [!NOTE]
+> To revert the changes implemented by using a `ContainerRuntimeConfig` CR, you must delete the CR. Removing the label from the machine config pool does not revert the changes.
 
 You can modify the following settings by using a `ContainerRuntimeConfig` CR:
 
@@ -342,11 +359,8 @@ You can create multiple `ContainerRuntimeConfig` CRs, as needed, with a limit of
 
 If you want to delete the machine configs, you should delete them in reverse order to avoid exceeding the limit. For example, you should delete the `containerruntime-3` machine config before deleting the `containerruntime-2` machine config.
 
-<div class="note">
-
-If you have a machine config with a `containerruntime-9` suffix, and you create another `ContainerRuntimeConfig` CR, a new machine config is not created, even if there are fewer than 10 `containerruntime` machine configs.
-
-</div>
+> [!NOTE]
+> If you have a machine config with a `containerruntime-9` suffix, and you create another `ContainerRuntimeConfig` CR, a new machine config is not created, even if there are fewer than 10 `containerruntime` machine configs.
 
 The following example command and output show multiple `ContainerRuntimeConfig` CRs:
 
@@ -411,6 +425,14 @@ Specifies the container runtime to deploy to new containers, either `crun` or `r
 
 The following procedure shows how to change CRI-O settings by using a `ContainerRuntimeConfig` CR.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file for the `ContainerRuntimeConfig` CR:
 
     ``` yaml
@@ -448,9 +470,11 @@ The following procedure shows how to change CRI-O settings by using a `Container
     $ oc get ContainerRuntimeConfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -459,15 +483,19 @@ The following procedure shows how to change CRI-O settings by using a `Container
     overlay-size   3m19s
     ```
 
+    </div>
+
 4.  Check that a new `containerruntime` machine config is created:
 
     ``` terminal
     $ oc get machineconfigs | grep containerrun
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -475,15 +503,19 @@ The following procedure shows how to change CRI-O settings by using a `Container
     99-worker-generated-containerruntime   2c9371fbb673b97a6fe8b1c52691999ed3a1bfc2  3.5.0  31s
     ```
 
+    </div>
+
 5.  Monitor the machine config pool until all are shown as ready:
 
     ``` terminal
     $ oc get mcp worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -491,6 +523,8 @@ The following procedure shows how to change CRI-O settings by using a `Container
     NAME    CONFIG               UPDATED  UPDATING  DEGRADED  MACHINECOUNT  READYMACHINECOUNT  UPDATEDMACHINECOUNT  DEGRADEDMACHINECOUNT  AGE
     worker  rendered-worker-169  False    True      False     3             1                  1                    0                     9h
     ```
+
+    </div>
 
 6.  Verify that the settings were applied in CRI-O:
 
@@ -510,9 +544,11 @@ The following procedure shows how to change CRI-O settings by using a `Container
         sh-4.4# crio config | grep 'log_level'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -520,15 +556,19 @@ The following procedure shows how to change CRI-O settings by using a `Container
         log_level = "debug"
         ```
 
+        </div>
+
     3.  Verify the changes in the `storage.conf` file:
 
         ``` terminal
         sh-4.4# head -n 7 /etc/containers/storage.conf
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -542,15 +582,19 @@ The following procedure shows how to change CRI-O settings by using a `Container
             size = "8G"
         ```
 
+        </div>
+
     4.  Verify the changes in the `crio/crio.conf.d/01-ctrcfg-defaultRuntime` file:
 
         ``` terminal
         sh-5.1# cat /etc/crio/crio.conf.d/01-ctrcfg-defaultRuntime
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -559,6 +603,10 @@ The following procedure shows how to change CRI-O settings by using a `Container
           [crio.runtime]
             default_runtime = "runc"
         ```
+
+        </div>
+
+</div>
 
 # Configuring the container runtime
 
@@ -569,6 +617,14 @@ For information on crun and runc, see "About the container engine and container 
 Starting in OpenShift Container Platform 4.18, crun is the default container runtime for new installations. You can change between the runtimes by using a `ContainerRuntimeConfig` object, as described in the following procedure. Changing the container runtime affects new workloads only. Existing workloads continue to use their existing container runtime.
 
 If you updated your cluster from OpenShift Container Platform 4.17, the runc container runtime remains unchanged as the default. During the upgrade, two `MachineConfig` objects, one for the control plane nodes and one for the worker nodes, were created to override the new default runtime. You can migrate the container runtime to crun, on a schedule of your choosing, by removing either or both of the `MachineConfig` objects.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If your cluster is updated from OpenShift Container Platform 4.17, you can use the crun container runtime by deleting the following `MachineConfig` objects:
 
@@ -613,6 +669,16 @@ If you updated your cluster from OpenShift Container Platform 4.17, the runc con
       $ oc create -f <file_name>.yaml
       ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  After the nodes return to a ready state, open an `oc debug` session to a node by running the following command:
 
     ``` terminal
@@ -631,9 +697,11 @@ If you updated your cluster from OpenShift Container Platform 4.17, the runc con
     sh-5.1# crio status config | grep default_runtime
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -642,7 +710,11 @@ If you updated your cluster from OpenShift Container Platform 4.17, the runc con
         default_runtime = "runc"
     ```
 
+    </div>
+
     The `default_runtime` parameter specifies the container runtime that OpenShift Container Platform uses for new workloads on this node, either `crun` or `runc`, depending on what you have configured.
+
+</div>
 
 # Setting the default maximum container root partition size for Overlay with CRI-O
 
@@ -665,6 +737,14 @@ spec:
    logLevel: debug
    overlaySize: 8G
 ```
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the configuration object:
 
@@ -699,9 +779,11 @@ spec:
 
     New `99-worker-generated-containerruntime` and `rendered-worker-xyz` objects are created:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -709,6 +791,8 @@ spec:
     99-worker-generated-containerruntime  4173030d89fbf4a7a0976d1665491a4d9a6e54f1   3.5.0             7m42s
     rendered-worker-xyz                   4173030d89fbf4a7a0976d1665491a4d9a6e54f1   3.5.0             7m36s
     ```
+
+    </div>
 
 5.  After those objects are created, monitor the machine config pool for the changes to be applied:
 
@@ -718,9 +802,11 @@ spec:
 
     The worker nodes show `UPDATING` as `True`, as well as the number of machines, the number updated, and other details:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -729,11 +815,15 @@ spec:
     worker rendered-worker-xyz False True False     3             2                   2                    0                      20h
     ```
 
+    </div>
+
     When complete, the worker nodes transition back to `UPDATING` as `False`, and the `UPDATEDMACHINECOUNT` number matches the `MACHINECOUNT`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -742,11 +832,15 @@ spec:
     worker   rendered-worker-xyz   True      False      False      3         3            3             0           20h
     ```
 
+    </div>
+
     Looking at a worker machine, you see that the new 8 GB max size configuration is applied to all of the workers:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -761,11 +855,15 @@ spec:
         size = "8G"
     ```
 
+    </div>
+
     Looking inside a container, you see that the root partition is now 8 GB:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -774,6 +872,10 @@ spec:
     Filesystem                Size      Used Available Use% Mounted on
     overlay                   8.0G      8.0K      8.0G   0% /
     ```
+
+    </div>
+
+</div>
 
 # Creating a drop-in file for the default CRI-O capabilities
 
@@ -787,15 +889,14 @@ You can create multiple `ContainerRuntimeConfig` CRs, as needed, with a limit of
 
 If you want to delete the machine configs, delete them in reverse order to avoid exceeding the limit. For example, delete the `containerruntime-3` machine config before you delete the `containerruntime-2` machine config.
 
-<div class="note">
+> [!NOTE]
+> If you have a machine config with a `containerruntime-9` suffix and you create another `ContainerRuntimeConfig` CR, a new machine config is not created, even if there are fewer than 10 `containerruntime` machine configs.
 
-If you have a machine config with a `containerruntime-9` suffix and you create another `ContainerRuntimeConfig` CR, a new machine config is not created, even if there are fewer than 10 `containerruntime` machine configs.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example of multiple ContainerRuntimeConfig CRs**
+Example of multiple ContainerRuntimeConfig CRs
 
 </div>
 
@@ -803,9 +904,13 @@ If you have a machine config with a `containerruntime-9` suffix and you create a
 $ oc get ctrcfg
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example output**
+<div class="formalpara">
+
+<div class="title">
+
+Example output
 
 </div>
 
@@ -815,15 +920,21 @@ ctr-overlay  15m
 ctr-level    5m45s
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example showing multiple containerruntime related system configs**
+<div class="formalpara">
+
+<div class="title">
+
+Example showing multiple containerruntime related system configs
 
 </div>
 
 ``` terminal
 $ cat /proc/1/status | grep Cap
 ```
+
+</div>
 
 ``` terminal
 $ capsh --decode=<decode_CapBnd_value>

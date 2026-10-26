@@ -6,9 +6,11 @@ Builds that use the docker or source-to-image (S2I) strategy result in the creat
 
 If the output kind is `ImageStreamTag`, then the image will be pushed to the integrated OpenShift image registry and tagged in the specified imagestream. If the output is of type `DockerImage`, then the name of the output reference will be used as a docker push specification. The specification may contain a registry or will default to DockerHub if no registry is specified. If the output section of the build specification is empty, then the image will not be pushed at the end of the build.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Output to an ImageStreamTag**
+<div class="title">
+
+Output to an ImageStreamTag
 
 </div>
 
@@ -20,9 +22,13 @@ spec:
       name: "sample-image:latest"
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Output to a docker Push Specification**
+<div class="formalpara">
+
+<div class="title">
+
+Output to a docker Push Specification
 
 </div>
 
@@ -33,6 +39,8 @@ spec:
       kind: "DockerImage"
       name: "my-registry.mycompany.com:5000/myimages/myimage:tag"
 ```
+
+</div>
 
 # Output image environment variables
 
@@ -52,20 +60,22 @@ Additionally, any user-defined environment variable, for example those configure
 
 docker and source-to-image (S2I) builds set the following labels on output images:
 
-| Label                                | Description                                    |
-|--------------------------------------|------------------------------------------------|
-| `io.openshift.build.commit.author`   | Author of the source commit used in the build  |
-| `io.openshift.build.commit.date`     | Date of the source commit used in the build    |
-| `io.openshift.build.commit.id`       | Hash of the source commit used in the build    |
-| `io.openshift.build.commit.message`  | Message of the source commit used in the build |
-| `io.openshift.build.commit.ref`      | Branch or reference specified in the source    |
-| `io.openshift.build.source-location` | Source URL for the build                       |
+| Label | Description |
+|----|----|
+| `io.openshift.build.commit.author` | Author of the source commit used in the build |
+| `io.openshift.build.commit.date` | Date of the source commit used in the build |
+| `io.openshift.build.commit.id` | Hash of the source commit used in the build |
+| `io.openshift.build.commit.message` | Message of the source commit used in the build |
+| `io.openshift.build.commit.ref` | Branch or reference specified in the source |
+| `io.openshift.build.source-location` | Source URL for the build |
 
 You can also use the `BuildConfig.spec.output.imageLabels` field to specify a list of custom labels that will be applied to each image built from the build configuration.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Custom labels for built images**
+<div class="title">
+
+Custom labels for built images
 
 </div>
 
@@ -81,3 +91,5 @@ spec:
     - name: "authoritative-source-url"
       value: "registry.mycompany.com"
 ```
+
+</div>

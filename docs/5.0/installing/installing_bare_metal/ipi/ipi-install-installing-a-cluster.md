@@ -4,6 +4,14 @@ You can install a cluster after setting up the environment for an OpenShift Cont
 
 You must remove the artifacts from any failed deployment attempt before trying to deploy OpenShift Container Platform again.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster by running the following command:
 
     ``` terminal
@@ -37,9 +45,19 @@ You must remove the artifacts from any failed deployment attempt before trying t
     $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
     ```
 
+</div>
+
 # Deploying the cluster via the OpenShift Container Platform installer
 
 You can deploy the cluster by running the OpenShift Container Platform installer.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the OpenShift Container Platform installer:
 
@@ -47,15 +65,27 @@ You can deploy the cluster by running the OpenShift Container Platform installer
   $ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
   ```
 
+</div>
+
 # Following the progress of the installation
 
 During the deployment process, you can check the installation’s overall status by issuing the `tail` command to the `.openshift_install.log` log file in the install directory folder.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Track installation progress by running the following command:
 
   ``` terminal
   $ tail -f /path/to/install-dir/.openshift_install.log
   ```
+
+</div>
 
 # Verifying static IP address configuration
 
@@ -65,15 +95,22 @@ If the DHCP reservation for a cluster node specifies an infinite lease, after th
 
 If the script determines that the network configuration contains an infinite DHCP lease, it creates a new connection by using the IP address of the DHCP lease as a static IP address.
 
-<div class="note">
+> [!NOTE]
+> The dispatcher script might run on successfully provisioned nodes while the provisioning of other nodes in the cluster is ongoing.
 
-The dispatcher script might run on successfully provisioned nodes while the provisioning of other nodes in the cluster is ongoing.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Check the network interface configuration on the node.
 
 2.  Turn off the DHCP server and reboot the OpenShift Container Platform node and ensure that the network configuration works properly.
+
+</div>
 
 # Additional resources
 

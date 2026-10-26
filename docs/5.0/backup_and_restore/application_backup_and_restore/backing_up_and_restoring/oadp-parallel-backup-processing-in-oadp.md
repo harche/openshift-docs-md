@@ -10,10 +10,10 @@ The following considerations apply for enabling parallel backups in OADP:
 
 - Namespace partitioning: To keep data integrity, OADP uses namespace-level isolation when processing parallel backups. Two backups cannot run simultaneously if they share any included namespaces.
 
-  | Scenario                  | Included namespaces             | Processing behavior                                                                     |
-  |---------------------------|---------------------------------|-----------------------------------------------------------------------------------------|
-  | Backup A and Backup B     | `namespace1` and `namespace2`   | Parallel: The namespaces are isolated.                                                  |
-  | Backup A and Backup B     | `namespace1` and `namespace1`   | Serialized: The shared namespace creates a lock.                                        |
+  | Scenario | Included namespaces | Processing behavior |
+  |----|----|----|
+  | Backup A and Backup B | `namespace1` and `namespace2` | Parallel: The namespaces are isolated. |
+  | Backup A and Backup B | `namespace1` and `namespace1` | Serialized: The shared namespace creates a lock. |
   | Full cluster and Backup A | All namespaces and `namespace1` | Serialized: A cluster-wide backup includes all namespaces and locks the entire cluster. |
 
   Parallel backup execution examples

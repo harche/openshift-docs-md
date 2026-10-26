@@ -13,7 +13,17 @@ For all other platforms, the MCO does not automatically update the boot image wi
 
 For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
+
+</div>
 
 # About boot image management
 
@@ -23,22 +33,19 @@ This means that the MCO updates the boot image whenever you update your cluster.
 
 New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
 
-<div class="note">
-
-The following table lists the platforms on which boot image management is available:
-
-| Platform                  | Worker machine sets | Control plane machine sets |
-|---------------------------|---------------------|----------------------------|
-| Google Cloud              | Enabled by default  | Disabled by default        |
-| Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
-
-For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
-
-For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
-
-</div>
+> [!NOTE]
+> The following table lists the platforms on which boot image management is available:
+>
+> | Platform                  | Worker machine sets | Control plane machine sets |
+> |---------------------------|---------------------|----------------------------|
+> | Google Cloud              | Enabled by default  | Disabled by default        |
+> | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
+> | Microsoft Azure           | Enabled by default  | Disabled by default        |
+> | VMware vSphere            | Enabled by default  | Not supported              |
+>
+> For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
+>
+> For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 For example, with the feature disabled, if your cluster was originally created with OpenShift Container Platform 4.16, the boot image that the MCO would use to create new nodes is the same RHCOS version that was installed for the cluster, even if your cluster is currently at a later OpenShift Container Platform version.
 
@@ -74,17 +81,16 @@ How the cluster behaves after disabling or re-enabling the feature, depends upon
 
   - When you scale up nodes, the new nodes use the current OpenShift Container Platform version in the cluster.
 
-<div class="note">
-
-Because a boot image is used only when a node is scaled up, this feature has no effect on existing nodes.
-
-</div>
+> [!NOTE]
+> Because a boot image is used only when a node is scaled up, this feature has no effect on existing nodes.
 
 To view the current Red Hat Enterprise Linux CoreOS (RHCOS) boot image version used in your cluster, you can view the `/sysroot/.coreos-aleph-version.json` file on that node.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example coreos-aleph-version.json file with an older boot image**
+<div class="title">
+
+Example coreos-aleph-version.json file with an older boot image
 
 </div>
 
@@ -96,20 +102,27 @@ To view the current Red Hat Enterprise Linux CoreOS (RHCOS) boot image version 
 }
 ```
 
+</div>
+
 where:
 
 `<version>`
 Specifies the Red Hat Enterprise Linux CoreOS (RHCOS) boot image version. In this example, the boot image is from the originally-installed OpenShift Container Platform 4.18 version, regardless of the current version of the cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> If any of the machine sets for which you want to enable boot image management use a `*-user-data` secret that is based on Ignition version 2.2.0, the Machine Config Operator converts the Ignition version to 3.4.0 when you enable the feature. OpenShift Container Platform versions 4.5 and lower use Ignition version 2.2.0. If this conversion fails, the MCO or your cluster could degrade. An error message that includes *err: converting ignition stub failed: failed to parse Ignition config* is added to the output of the `oc get ClusterOperator machine-config` command. You can use the following general steps to correct the problem:
+>
+> 1.  Disable the boot image management feature. For information, see "Disabling boot image management".
+>
+> 2.  Manually update the `*-user-data` secret to use Ignition version to 3.2.0.
+>
+> 3.  Enable the boot image management feature. For information, see "Enabling boot image management".
 
-If any of the machine sets for which you want to enable boot image management use a `*-user-data` secret that is based on Ignition version 2.2.0, the Machine Config Operator converts the Ignition version to 3.4.0 when you enable the feature. OpenShift Container Platform versions 4.5 and lower use Ignition version 2.2.0. If this conversion fails, the MCO or your cluster could degrade. An error message that includes *err: converting ignition stub failed: failed to parse Ignition config* is added to the output of the `oc get ClusterOperator machine-config` command. You can use the following general steps to correct the problem:
+<div>
 
-1.  Disable the boot image management feature. For information, see "Disabling boot image management".
+<div class="title">
 
-2.  Manually update the `*-user-data` secret to use Ignition version to 3.2.0.
-
-3.  Enable the boot image management feature. For information, see "Enabling boot image management".
+Additional resources
 
 </div>
 
@@ -117,38 +130,42 @@ If any of the machine sets for which you want to enable boot image management us
 
 - [Enable boot image management](../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-configuring_machine-configs-configure)
 
+</div>
+
 # Enable boot image management
 
 For supported platforms, the Machine Config Operator (MCO) can manage and update the boot image on each node to ensure the Red Hat Enterprise Linux CoreOS (RHCOS) version of the boot image matches the Red Hat Enterprise Linux CoreOS (RHCOS) version appropriate for your cluster.
 
-<div class="note">
-
-The following table lists the platforms on which boot image management is available:
-
-| Platform                  | Worker machine sets | Control plane machine sets |
-|---------------------------|---------------------|----------------------------|
-| Google Cloud              | Enabled by default  | Disabled by default        |
-| Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
-
-For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
-
-For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
-
-</div>
+> [!NOTE]
+> The following table lists the platforms on which boot image management is available:
+>
+> | Platform                  | Worker machine sets | Control plane machine sets |
+> |---------------------------|---------------------|----------------------------|
+> | Google Cloud              | Enabled by default  | Disabled by default        |
+> | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
+> | Microsoft Azure           | Enabled by default  | Disabled by default        |
+> | VMware vSphere            | Enabled by default  | Not supported              |
+>
+> For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
+>
+> For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 To enable the boot image management feature for control plane machine sets or to re-enable the boot image management feature for worker machine sets where it was disabled, edit the `MachineConfiguration` object. You can enable the feature for all of the machine sets in the cluster or specific machine sets.
 
-<div class="note">
-
-Because the boot image management feature for worker nodes is default for the Google Cloud and AWS platforms, the `managedBootImages` configuration does not appear in the machine configuration object. To enable the feature for control plane machine sets without disabling the feature for worker machine sets, you must expressly add the configuration for both the control plane and worker machine sets, as shown in the following procedure. If you add only the configuration for control plane machine sets, due to default behavior, the Machine Config Operator (MCO) overwrites the configuration for the worker machine sets.
-
-</div>
+> [!NOTE]
+> Because the boot image management feature for worker nodes is default for the Google Cloud and AWS platforms, the `managedBootImages` configuration does not appear in the machine configuration object. To enable the feature for control plane machine sets without disabling the feature for worker machine sets, you must expressly add the configuration for both the control plane and worker machine sets, as shown in the following procedure. If you add only the configuration for control plane machine sets, due to default behavior, the Machine Config Operator (MCO) overwrites the configuration for the worker machine sets.
 
 Enabling the feature updates the boot image to the Red Hat Enterprise Linux CoreOS (RHCOS) boot image version appropriate for your cluster. If the cluster is again updated to a new OpenShift Container Platform version in the future, the boot image is updated again. New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
 
 When boot image management is enabled, the MCO automatically enables boot image skew enforcement to ensure that the boot image version is compliant for your cluster. For more information, see "Boot image skew enforcement".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `MachineConfiguration` object, named `cluster`, by using the following command:
 
@@ -235,7 +252,15 @@ When boot image management is enabled, the MCO automatically enables boot image 
       `spec.managedBootImages.machineManagers.selection.partial`
       Specifies that the feature is enabled for machine sets with the specified label in their `MachineSet` object.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the current state of the boot image management feature by using the following command to view the machine configuration object:
 
@@ -243,9 +268,11 @@ When boot image management is enabled, the MCO automatically enables boot image 
     $ oc get machineconfiguration cluster -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example machine set with the boot image reference**
+    <div class="title">
+
+    Example machine set with the boot image reference
 
     </div>
 
@@ -279,6 +306,8 @@ When boot image management is enabled, the MCO automatically enables boot image 
             mode: All
     ```
 
+    </div>
+
     where:
 
     `status.managedBootImagesStatus.machineManagers.selection.mode`
@@ -310,9 +339,11 @@ When boot image management is enabled, the MCO automatically enables boot image 
         sh-5.1# cat /sysroot/.coreos-aleph-version.json
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -324,57 +355,73 @@ When boot image management is enabled, the MCO automatically enables boot image 
         }
         ```
 
+        </div>
+
         where:
 
         `<version>`
         Specifies the boot image version.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Obtaining the installation program](../installing/installing_aws/ipi/ipi-aws-preparing-to-install.xml#installation-obtaining-installer_ipi-aws-preparing-to-install)
+
+</div>
 
 # Disable boot image management
 
 You can disable the boot image management feature so that the Machine Config Operator (MCO) no longer manages or updates the boot image in the affected machine sets. For example, you could disable this feature for the worker nodes in order to use a custom boot image that you do not want changed.
 
-<div class="note">
-
-If you are updating an Microsoft Azure or VMware vSphere cluster from OpenShift Container Platform 4.21 to 4.22, and you have not configured the `managedBootImages` parameter, the update is blocked with the message: `This cluster is Azure or vSphere but lacks a boot image configuration`. The update is intentionally blocked on Azure or vSphere clusters in order to alert you that the default boot image management behavior is changing between version 4.21 and 4.22 in order to enable boot images management by default on those platforms.
-
-To allow the update, perform one of the following tasks:
-
-- If you want to allow the feature to be enabled, acknowledge that you are aware of the change in the default behavior by patching the `admin-acks` config map by running the following command:
-
-  ``` terminal
-  $ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.21-boot-image-opt-out-in-4.22":"true"}}' --type=merge
-  ```
-
-- If you do not want the boot image management feature enabled, explicitly disable the feature for worker machine sets by using the following procedure.
-
-</div>
+> [!NOTE]
+> If you are updating an Microsoft Azure or VMware vSphere cluster from OpenShift Container Platform 4.21 to 4.22, and you have not configured the `managedBootImages` parameter, the update is blocked with the message: `This cluster is Azure or vSphere but lacks a boot image configuration`. The update is intentionally blocked on Azure or vSphere clusters in order to alert you that the default boot image management behavior is changing between version 4.21 and 4.22 in order to enable boot images management by default on those platforms.
+>
+> To allow the update, perform one of the following tasks:
+>
+> - If you want to allow the feature to be enabled, acknowledge that you are aware of the change in the default behavior by patching the `admin-acks` config map by running the following command:
+>
+>   ``` terminal
+>   $ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.21-boot-image-opt-out-in-4.22":"true"}}' --type=merge
+>   ```
+>
+> - If you do not want the boot image management feature enabled, explicitly disable the feature for worker machine sets by using the following procedure.
 
 You disable the boot image management feature for the control plane or worker machine sets in your cluster by editing the `MachineConfiguration` object.
 
-<div class="note">
-
-The following table lists the platforms on which boot image management is available:
-
-| Platform                  | Worker machine sets | Control plane machine sets |
-|---------------------------|---------------------|----------------------------|
-| Google Cloud              | Enabled by default  | Disabled by default        |
-| Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
-
-For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
-
-For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
-
-</div>
+> [!NOTE]
+> The following table lists the platforms on which boot image management is available:
+>
+> | Platform                  | Worker machine sets | Control plane machine sets |
+> |---------------------------|---------------------|----------------------------|
+> | Google Cloud              | Enabled by default  | Disabled by default        |
+> | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
+> | Microsoft Azure           | Enabled by default  | Disabled by default        |
+> | VMware vSphere            | Enabled by default  | Not supported              |
+>
+> For all other platforms, the MCO does not automatically update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
+>
+> For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 Disabling this feature does not rollback the nodes or machine sets to the originally-installed boot image. The machine sets retain the boot image version that was present when the feature was disabled and is not updated if the cluster is upgraded to a new OpenShift Container Platform version in the future. This feature has no effect on existing nodes.
 
 If boot image management is disabled, you must update the boot image version that is used by the boot image skew enforcement feature to ensure that the boot image is current for your cluster. For more information, see "Boot image skew enforcement".
 
 After disabling the feature, you can re-enable the feature at any time. For more information, see "Enabling updated boot images".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `MachineConfiguration` object, named `cluster`, by using the following command::
 
@@ -446,15 +493,27 @@ After disabling the feature, you can re-enable the feature at any time. For more
       `spec.managedBootImages.machineManagers.selection.mode`
       When `None`, specifies that the feature is disabled for the specified machine sets.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - View the current state of the boot image management feature by using the following command to view the machine configuration object:
 
   ``` terminal
   $ oc get machineconfiguration cluster -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example machine set with the boot image reference**
+  <div class="title">
+
+  Example machine set with the boot image reference
 
   </div>
 
@@ -488,7 +547,11 @@ After disabling the feature, you can re-enable the feature at any time. For more
           mode: All
   ```
 
+  </div>
+
   where:
 
   `status.managedBootImagesStatus.machineManagers.selection.mode`
   Specifies that the boot image management feature is disabled when set to `None`. In this example, the boot image management feature is disabled for control plane machine sets and enabled for worker machine sets.
+
+</div>

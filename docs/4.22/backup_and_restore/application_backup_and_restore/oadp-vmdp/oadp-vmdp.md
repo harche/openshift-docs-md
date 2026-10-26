@@ -67,27 +67,24 @@ Review the backend storage options for OpenShift API for Data Protection virtual
 
 ## S3-compatible storage
 
-| Option                       | Description                              | Default            |
-|------------------------------|------------------------------------------|--------------------|
-| `--bucket`                   | Name of the S3 bucket.                   | (required)         |
-| `--access-key`               | Access key ID.                           | (required)         |
-| `--secret-access-key`        | Secret access key.                       | (required)         |
-| `--endpoint`                 | S3 endpoint URL.                         | `s3.amazonaws.com` |
-| `--region`                   | S3 region.                               | Auto-detect        |
-| `--prefix`                   | Object prefix in the bucket.             | None               |
-| `--session-token`            | Session token for temporary credentials. | None               |
-| `--disable-tls`              | Disable HTTPS.                           | `false`            |
-| `--disable-tls-verification` | Skip TLS certificate verification.       | `false`            |
-| `--root-ca-pem-path`         | Path to a custom CA certificate file.    | None               |
-| `--root-ca-pem-base64`       | Base64-encoded CA certificate.           | None               |
+| Option | Description | Default |
+|----|----|----|
+| `--bucket` | Name of the S3 bucket. | (required) |
+| `--access-key` | Access key ID. | (required) |
+| `--secret-access-key` | Secret access key. | (required) |
+| `--endpoint` | S3 endpoint URL. | `s3.amazonaws.com` |
+| `--region` | S3 region. | Auto-detect |
+| `--prefix` | Object prefix in the bucket. | None |
+| `--session-token` | Session token for temporary credentials. | None |
+| `--disable-tls` | Disable HTTPS. | `false` |
+| `--disable-tls-verification` | Skip TLS certificate verification. | `false` |
+| `--root-ca-pem-path` | Path to a custom CA certificate file. | None |
+| `--root-ca-pem-base64` | Base64-encoded CA certificate. | None |
 
 S3 storage options
 
-<div class="note">
-
-VMDP automatically prepends `oadp-vmdp/` to your prefix.
-
-</div>
+> [!NOTE]
+> VMDP automatically prepends `oadp-vmdp/` to your prefix.
 
 ## Filesystem storage
 
@@ -107,29 +104,29 @@ Review the environment variables and file locations for the OpenShift API for Da
 
 ## Environment variables
 
-| Variable                | Description                                                              |
-|-------------------------|--------------------------------------------------------------------------|
-| `BSLS_PASSWORD`         | BSL encryption password. Set this variable to avoid interactive prompts. |
-| `AWS_ACCESS_KEY_ID`     | Access key for S3 storage                                                |
-| `AWS_SECRET_ACCESS_KEY` | Secret key for S3 storage                                                |
-| `AWS_SESSION_TOKEN`     | Session token for temporary credentials                                  |
+| Variable | Description |
+|----|----|
+| `BSLS_PASSWORD` | BSL encryption password. Set this variable to avoid interactive prompts. |
+| `AWS_ACCESS_KEY_ID` | Access key for S3 storage |
+| `AWS_SECRET_ACCESS_KEY` | Secret key for S3 storage |
+| `AWS_SESSION_TOKEN` | Session token for temporary credentials |
 
 Credential environment variables
 
-| Variable               | Description                    | Default                            |
-|------------------------|--------------------------------|------------------------------------|
-| `OADP_CONFIG_PATH`     | Path to the configuration file | `~/.config/oadp/repository.config` |
-| `OADP_CACHE_DIRECTORY` | Path to the cache directory    | System-dependent                   |
-| `OADP_LOG_DIR`         | Directory for log files        | `~/.cache/oadp/`                   |
+| Variable | Description | Default |
+|----|----|----|
+| `OADP_CONFIG_PATH` | Path to the configuration file | `~/.config/oadp/repository.config` |
+| `OADP_CACHE_DIRECTORY` | Path to the cache directory | System-dependent |
+| `OADP_LOG_DIR` | Directory for log files | `~/.cache/oadp/` |
 
 Configuration environment variables
 
-| Variable                              | Description                                 | Default |
-|---------------------------------------|---------------------------------------------|---------|
-| `OADP_CHECK_FOR_UPDATES`              | Enable or disable update checks             | `true`  |
-| `OADP_PERSIST_CREDENTIALS_ON_CONNECT` | Save credentials after connecting           | `true`  |
-| `OADP_USE_KEYRING`                    | Use the system keyring for password storage | `false` |
-| `OADP_BACKUP_FAIL_FAST`               | Fail immediately on the first error         | `false` |
+| Variable | Description | Default |
+|----|----|----|
+| `OADP_CHECK_FOR_UPDATES` | Enable or disable update checks | `true` |
+| `OADP_PERSIST_CREDENTIALS_ON_CONNECT` | Save credentials after connecting | `true` |
+| `OADP_USE_KEYRING` | Use the system keyring for password storage | `false` |
+| `OADP_BACKUP_FAIL_FAST` | Fail immediately on the first error | `false` |
 
 Behavior environment variables
 
@@ -143,10 +140,10 @@ Logging environment variables
 
 ## File locations
 
-| Type          | Linux                              | Windows                            |
-|---------------|------------------------------------|------------------------------------|
+| Type | Linux | Windows |
+|----|----|----|
 | Configuration | `~/.config/oadp/repository.config` | `%APPDATA%\oadp\repository.config` |
-| Logs          | `~/.cache/oadp/`                   | `%LOCALAPPDATA%\oadp\`             |
+| Logs | `~/.cache/oadp/` | `%LOCALAPPDATA%\oadp\` |
 
 Default file locations
 

@@ -2,11 +2,8 @@ To reduce the rebooting of non-control plane hosts during cluster updates, you c
 
 Due to fundamental Kubernetes design, all OpenShift Container Platform updates between minor versions must be serialized. You must update from OpenShift Container Platform \<4.y\> to \<4.y+1\>, and then to \<4.y+2\>. You cannot update from OpenShift Container Platform \<4.y\> to \<4.y+2\> directly. However, administrators who want to update between two even-numbered minor versions can do so incurring only a single reboot of non-control plane hosts.
 
-<div class="important">
-
-This update was previously known as an **EUS-to-EUS** update and is now referred to as a **Control Plane Only** update. These updates are only viable between **even-numbered minor versions** of OpenShift Container Platform.
-
-</div>
+> [!IMPORTANT]
+> This update was previously known as an **EUS-to-EUS** update and is now referred to as a **Control Plane Only** update. These updates are only viable between **even-numbered minor versions** of OpenShift Container Platform.
 
 There are several caveats to consider when attempting a Control Plane Only update.
 
@@ -36,23 +33,46 @@ Before performing a Control Plane Only update, ensure that you meet the followin
 
 - If your cluster uses in-tree vSphere volumes, you updated vSphere to version 7.0u3L+ or 8.0u2+.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > If you do not update vSphere to 7.0u3L+ or 8.0u2+ before initiating an OpenShift Container Platform update, known issues might occur with your cluster after the update. For more information, see "Known Issues with OpenShift 4.12 to 4.13 or 4.13 to 4.14 vSphere CSI Storage Migration".
 
-  If you do not update vSphere to 7.0u3L+ or 8.0u2+ before initiating an OpenShift Container Platform update, known issues might occur with your cluster after the update. For more information, see "Known Issues with OpenShift 4.12 to 4.13 or 4.13 to 4.14 vSphere CSI Storage Migration".
+<div>
 
-  </div>
+<div class="title">
 
-<!-- -->
+Additional resources
+
+</div>
 
 - [Known Issues with OpenShift 4.12 to 4.13 or 4.13 to 4.14 vSphere CSI Storage Migration](https://access.redhat.com/node/7011683)
+
+</div>
 
 ## Control Plane Only update using the web console
 
 You can perform a Control Plane Only update by using the web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You verified that machine config pools are unpaused.
 
 - You have access to the web console as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Using the web console, update any Operator Lifecycle Manager (OLM) Operators to the versions that are compatible with your intended updated version. For more information, see "Updating installed Operators".
 
@@ -60,11 +80,8 @@ You can perform a Control Plane Only update by using the web console.
 
     To view the status of all machine config pools, click **Compute** → **MachineConfigPools** and review the contents of the **Update status** column.
 
-    <div class="note">
-
-    If your machine config pools have an `Updating` status, wait for this status to change to `Up to date`. This process could take several minutes.
-
-    </div>
+    > [!NOTE]
+    > If your machine config pools have an `Updating` status, wait for this status to change to `Up to date`. This process could take several minutes.
 
 3.  Set your channel to `eus-<4.y+2>`.
 
@@ -84,31 +101,45 @@ You can perform a Control Plane Only update by using the web console.
 
 10. Unpause all previously paused machine config pools. You can perform this action on the **MachineConfigPools** tab under the **Compute** page. Select the vertical ellipses next to the machine config pool you’d like to unpause and click **Unpause updates**.
 
-    <div class="important">
-
-    If pools are paused, the cluster is not permitted to upgrade to any future minor versions, and some maintenance tasks are inhibited. This puts the cluster at risk for future degradation.
-
-    </div>
+    > [!IMPORTANT]
+    > If pools are paused, the cluster is not permitted to upgrade to any future minor versions, and some maintenance tasks are inhibited. This puts the cluster at risk for future degradation.
 
 11. Verify that your previously paused pools are updated and that your cluster has completed the update to version \<4.y+2\>.
 
     You can verify that your pools have updated on the **MachineConfigPools** tab under the **Compute** page by confirming that the **Update status** has a value of **Up to date**.
 
-    <div class="important">
-
-    When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines".
-
-    </div>
+    > [!IMPORTANT]
+    > When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines".
 
     You can verify that your cluster has completed the update by viewing the **Last completed version** of your cluster. You can find this information on the **Cluster Settings** page under the **Details** tab.
+
+</div>
+
+<div id="additional-resources_updating-control-plane-only-update-console">
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
 
 - [Updating a cluster by using the web console](../../updating/updating_a_cluster/updating-cluster-web-console.xml#update-upgrading-web_updating-cluster-web-console)
 
+</div>
+
 ## Control Plane Only update using the CLI
 
 You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You verified that machine config pools are unpaused.
 
@@ -116,11 +147,18 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
 
 - You updated the OpenShift CLI (`oc`) to the target version before each update.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > It is highly discouraged to skip this prerequisite. If the OpenShift CLI (`oc`) is not updated to the target version before your update, unexpected issues may occur.
 
-  It is highly discouraged to skip this prerequisite. If the OpenShift CLI (`oc`) is not updated to the target version before your update, unexpected issues may occur.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Using the web console, update any Operator Lifecycle Manager (OLM) Operators to the versions that are compatible with your intended updated version. For more information on how to perform this action, see "Updating installed Operators".
 
@@ -130,9 +168,11 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -142,17 +182,16 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     worker   rendered-worker-00a3f0c68ae94e747193156b491553d5       True      False
     ```
 
+    </div>
+
 3.  Your current version is \<4.y\>, and your intended version to update is \<4.y+2\>. Change to the `eus-<4.y+2>` channel by running the following command:
 
     ``` terminal
     $ oc adm upgrade channel eus-<4.y+2>
     ```
 
-    <div class="note">
-
-    If you receive an error message indicating that `eus-<4.y+2>` is not one of the available channels, this indicates that Red Hat is still rolling out EUS version updates. This rollout process generally takes 45-90 days starting at the GA date.
-
-    </div>
+    > [!NOTE]
+    > If you receive an error message indicating that `eus-<4.y+2>` is not one of the available channels, this indicates that Red Hat is still rolling out EUS version updates. This rollout process generally takes 45-90 days starting at the GA date.
 
 4.  Pause all worker machine pools except for the master pool by running the following command:
 
@@ -160,11 +199,8 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     $ oc patch mcp/worker --type merge --patch '{"spec":{"paused":true}}'
     ```
 
-    <div class="note">
-
-    You cannot pause the master pool.
-
-    </div>
+    > [!NOTE]
+    > You cannot pause the master pool.
 
 5.  Update to the latest version by running the following command:
 
@@ -172,9 +208,11 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     $ oc adm upgrade --to-latest
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -182,15 +220,19 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     Updating to latest version <4.y+1.z>
     ```
 
+    </div>
+
 6.  Review the cluster version to ensure that the updates are complete by running the following command:
 
     ``` terminal
     $ oc adm upgrade
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -198,6 +240,8 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     Cluster version is <4.y+1.z>
     ...
     ```
+
+    </div>
 
 7.  Update to version \<4.y+2\> by running the following command:
 
@@ -211,9 +255,11 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     $ oc adm upgrade
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -222,17 +268,16 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     ...
     ```
 
+    </div>
+
 9.  To update your worker nodes to \<4.y+2\>, unpause all previously paused machine config pools by running the following command:
 
     ``` terminal
     $ oc patch mcp/worker --type merge --patch '{"spec":{"paused":false}}'
     ```
 
-    <div class="important">
-
-    If pools are not unpaused, the cluster is not permitted to update to any future minor versions, and some maintenance tasks are inhibited. This puts the cluster at risk for future degradation.
-
-    </div>
+    > [!IMPORTANT]
+    > If pools are not unpaused, the cluster is not permitted to update to any future minor versions, and some maintenance tasks are inhibited. This puts the cluster at risk for future degradation.
 
 10. Verify that your previously paused pools are updated and that the update to version \<4.y+2\> is complete by running the following command:
 
@@ -240,15 +285,14 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     $ oc get mcp
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines" in the additional resources section.
 
-    When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines" in the additional resources section.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example output**
+    Example output
 
     </div>
 
@@ -258,7 +302,21 @@ You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
     worker   rendered-worker-4756f60eccae96fb9dcb4c392c69d497    True    False
     ```
 
+    </div>
+
+</div>
+
+<div id="additional-resources_updating-control-plane-only-update-cli">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
+
+</div>
 
 ## Control Plane Only updates for layered products and Operators installed through Operator Lifecycle Manager
 
@@ -286,9 +344,14 @@ For example, the following high level steps describe how to perform a Control Pl
 
 6.  Unpause the worker machine pools.
 
-<div class="note">
+> [!NOTE]
+> The update to ODF \<4.y+2\> can happen before or after worker machine pools have been unpaused.
 
-The update to ODF \<4.y+2\> can happen before or after worker machine pools have been unpaused.
+<div id="additional-resources_updating-control-plane-only-layered-products">
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -302,4 +365,6 @@ The update to ODF \<4.y+2\> can happen before or after worker machine pools have
 
 - [Performing a Control Plane Only update using the CLI](../../updating/updating_a_cluster/control-plane-only-update.xml#updating-control-plane-only-update-cli_control-plane-only-update)
 
-- [Preventing workload updates during a Control Plane Only update](../../virt/updating/upgrading-virt.xml#virt-preventing-workload-updates-during-control-plane-only-update_upgrading-virt)
+- [Prevent workload updates during a Control Plane Only update](../../virt/updating/upgrading-virt.xml#virt-preventing-workload-updates-during-control-plane-only-update_upgrading-virt)
+
+</div>

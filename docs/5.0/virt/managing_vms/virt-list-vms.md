@@ -2,11 +2,27 @@ Use the web console or OpenShift CLI (`oc`) to list your virtual machines (VMs).
 
 # List virtual machines by using the CLI
 
-You can either list all of the virtual machines (VMs) in your cluster or limit the list to VMs in a specified namespace by using the OpenShift CLI (`oc`).
+You can list all of the virtual machines (VMs) in your cluster by using the OpenShift CLI (`oc`), or limit the list to a single namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - List all of the VMs in your cluster by running the following command:
 
@@ -20,9 +36,19 @@ You can either list all of the virtual machines (VMs) in your cluster or limit t
   $ oc get vms -n <namespace>
   ```
 
+</div>
+
 # List virtual machines by using the web console
 
-You can list all the virtual machines (VMs) in your cluster by using the web console.
+You can list all the virtual machines (VMs) in your cluster by using the OpenShift Container Platform web console. The tree view lets you filter the list by project or cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu to access the tree view of all projects and VMs in your cluster.
 
@@ -32,9 +58,19 @@ You can list all the virtual machines (VMs) in your cluster by using the web con
 
 4.  Click the **Virtual machines** tab.
 
-# Searching for virtual machines by using the web console
+</div>
 
-You can search for virtual machines (VMs) by using the search bar on the **VirtualMachines** page and applying various filters.
+# Search for virtual machines by using the web console
+
+You can search for virtual machines (VMs) from the search bar on the **VirtualMachines** page of the OpenShift Container Platform web console. Filters narrow the list by name, project, status, and other attributes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines** from the side menu. Open the **Virtual machines** tab.
 
@@ -56,78 +92,78 @@ You can search for virtual machines (VMs) by using the search bar on the **Virtu
       <col style="width: 50%" />
       </colgroup>
       <thead>
-      <tr class="header">
+      <tr>
       <th style="text-align: left;">Filter</th>
       <th style="text-align: left;">Description</th>
       </tr>
       </thead>
       <tbody>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Name</p></td>
       <td style="text-align: left;"><p>The virtual machine name.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Project</p></td>
       <td style="text-align: left;"><p>A project that is part of your deployment.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Group</p></td>
       <td style="text-align: left;"><p>The group to which the VM belongs.</p>
       <p>Groups are a preview feature. To use this filter, you need to enable this feature in <strong>Virtualization</strong> → <strong>Settings</strong> → <strong>Preview features</strong>.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Description</p></td>
       <td style="text-align: left;"><p>Text in the description of the virtual machine.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Status</p></td>
       <td style="text-align: left;"><p>The status of the virtual machine.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Operating system</p></td>
       <td style="text-align: left;"><p>The operating system of the virtual machine.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>vCPU</p></td>
       <td style="text-align: left;"><p>The number of vCPUs allotted to the virtual machine. Select a modifying expression and enter a value to search on.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Memory</p></td>
       <td style="text-align: left;"><p>The amount of memory allotted to the virtual machine. Select a modifying expression, enter a value to search on, and select the unit of measurement.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Storage class</p></td>
       <td style="text-align: left;"><p>The storage class the virtual machine uses.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Hardware devices</p></td>
       <td style="text-align: left;"><p>The type of hardware device associated with the virtual machine.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Date created</p></td>
       <td style="text-align: left;"><p>The date range the virtual machine was created in.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Labels</p></td>
       <td style="text-align: left;"><p>The labels associated with the virtual machine.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Scheduling</p></td>
       <td style="text-align: left;"><p>The scheduling logic associated with the virtual machine.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>Guest agent</p></td>
       <td style="text-align: left;"><p>The status of the Quick Emulator (QEMU) Guest Agent daemon. The possible values are <strong>Reporting</strong> (communicating) and <strong>Not reporting</strong> (not installed, not running, or has lost its connection). This filter applies only to running VMs.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Nodes</p></td>
       <td style="text-align: left;"><p>The nodes associated with the virtual machine.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
       <td style="text-align: left;"><p>IP address</p></td>
       <td style="text-align: left;"><p>The IP address of the virtual machine.</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
       <td style="text-align: left;"><p>Network Attachment Definitions</p></td>
       <td style="text-align: left;"><p>Select the appropriate definition.</p></td>
       </tr>
@@ -152,21 +188,25 @@ You can search for virtual machines (VMs) by using the search bar on the **Virtu
 
 7.  You might find it useful to see and run some search examples. To see the examples, click the **Help** icon next to the search bar. You can run any example search by selecting it from the **Search tips** dropdown menu.
 
-# Organize virtual machines by using the web console
-
-In addition to creating virtual machines (VMs) in different projects, you can use the tree view to further organize them in groups.
-
-<div class="important">
-
-Enabling groups in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
 </div>
 
-<div class="note">
+# Organize virtual machines by using the web console
 
-OpenShift Virtualization does not enable groups in the virtual machine tree by default. To enable groups, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable groups in VirtualMachines tree view**.
+You can move virtual machines (VMs) into groups in the tree view of the OpenShift Container Platform web console. Groups give you finer organization than projects alone.
+
+> [!IMPORTANT]
+> Enabling groups in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+> [!NOTE]
+> OpenShift Virtualization does not enable groups in the virtual machine tree by default. To enable groups, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable groups in VirtualMachines tree view**.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -193,3 +233,5 @@ OpenShift Virtualization does not enable groups in the virtual machine tree by d
     - To move the VM from a group to the project:
 
       - Click the name of the VM in the tree view and drag it on the project name. A highlight is displayed on the group for permitted operations.
+
+</div>

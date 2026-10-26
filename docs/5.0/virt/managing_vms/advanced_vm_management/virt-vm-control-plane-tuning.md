@@ -1,12 +1,30 @@
 You can configure how the control plane handles concurrency when you create or migrate virtual machines (VMs). For example, set the `QPS` or `burst` rates to batch create virtual machines (VMs) in a batch, or tune migration settings in the `HyperConverged` custom resource (CR).
 
-# Tune the rate limit
+# Tune the API request rate limit
 
-You can tune the rate limit when creating and maintaining a large number of virtual machines (VMs) in one cluster.
+The rate limit controls how many API requests OpenShift Virtualization sends to the API server. Tune it when you create and maintain a large number of virtual machines (VMs) in one cluster, so that bulk operations are not throttled.
 
 The `hco.kubevirt.io/tuningPolicy` annotation is used to configure the rate limit. The annotation is only taken into account if the `annotation` tuning policy is applied to the HyperConverged CR.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Annotate the HyperConverged CR with the `hco.kubevirt.io/tuningPolicy` annotation, and a value of a json object with the following fields:
 
@@ -28,6 +46,16 @@ The `hco.kubevirt.io/tuningPolicy` annotation is used to configure the rate limi
       "value": "annotation"}]'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Run the following command to verify the rate limit tuning:
 
   ``` terminal
@@ -37,3 +65,5 @@ The `hco.kubevirt.io/tuningPolicy` annotation is used to configure the rate limi
     "webhookConfiguration" "controllerConfiguration" "handlerConfiguration"}} \
     {{"\n"}} {{$config}} = {{$value}} {{end}} {{end}} {{"\n"}}
   ```
+
+</div>

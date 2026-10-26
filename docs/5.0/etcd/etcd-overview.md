@@ -10,11 +10,8 @@ By using etcd, you can benefit in several ways:
 
 - Distribute configuration data to offer redundancy and resiliency for the configuration of nodes
 
-<div class="important">
-
-The default etcd configuration optimizes container orchestration. Use it as designed for the best results.
-
-</div>
+> [!IMPORTANT]
+> The default etcd configuration optimizes container orchestration. Use it as designed for the best results.
 
 # How etcd works
 
@@ -30,13 +27,20 @@ Additionally, you can use the etcd Operator to deploy and manage the etcd cluste
 
 - Corrects the differences through the etcd cluster management APIs, the Kubernetes API, or both
 
-<div class="note">
+> [!NOTE]
+> etcd holds the cluster state, which is constantly updated. This state is continuously persisted, which leads to a high number of small changes at high frequency. As a result, it is critical to back up the etcd cluster member with fast, low-latency I/O. For more information about best practices for etcd, see "Recommended etcd practices".
 
-etcd holds the cluster state, which is constantly updated. This state is continuously persisted, which leads to a high number of small changes at high frequency. As a result, it is critical to back up the etcd cluster member with fast, low-latency I/O. For more information about best practices for etcd, see "Recommended etcd practices".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Recommended etcd practices](../etcd/etcd-practices.xml#etcd-practices)
+
+</div>
 
 # Factors that affect etcd performance
 
@@ -52,9 +56,11 @@ When the etcd client requests an action from the leader that requires a quorum, 
 
 OpenShift Container Platform maintains etcd timers that are optimized for each platform. OpenShift Container Platform has prescribed validated values that are optimized for each platform provider. The default `etcd timers` parameters with `platform=none` or `platform=metal` values are as follows:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**OpenShift Container Platform timer conditions for etcd**
+<div class="title">
+
+OpenShift Container Platform timer conditions for etcd
 
 </div>
 
@@ -66,6 +72,8 @@ OpenShift Container Platform maintains etcd timers that are optimized for each p
   value: "100"
 ```
 
+</div>
+
 - `ETCD_ELECTION_TIMEOUT` specifies how long a follower node waits without hearing a heartbeat before it attempts to become the leader.
 
 - `ETCD_HEARTBEAT_INTERVAL` specifies the frequency that the leader notifies followers that it is still the leader.
@@ -76,11 +84,8 @@ These parameters do not provide all of the information for the control plane or 
 
 An etcd cluster is sensitive to disk latencies. To understand the disk latency that etcd experiences by etcd in your control plane environment, run the Flexible I/O Tester (fio) tests or suite, to check etcd disk performance in OpenShift Container Platform.
 
-<div class="important">
-
-Use only the `fio` test to measure disk latency at a specific point in time. This test does not account for long-term disk behavior and other disk workloads that occur with etcd in a production environment.
-
-</div>
+> [!IMPORTANT]
+> Use only the `fio` test to measure disk latency at a specific point in time. This test does not account for long-term disk behavior and other disk workloads that occur with etcd in a production environment.
 
 Ensure that the final report classifies the disk as appropriate for etcd, as shown in the following example:
 
@@ -146,9 +151,11 @@ In OpenShift Container Platform, the etcd dashboard has a plot that reports the 
 # oc get pods -n openshift-etcd -l app=etcd
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -159,13 +166,17 @@ etcd-m1   4/4     Running   4          22h
 etcd-m2   4/4     Running   4          22h
 ```
 
+</div>
+
 ``` terminal
 # oc exec -t etcd-m0 -- etcdctl endpoint status -w simple | cut -d, -f 1,3,4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -174,6 +185,8 @@ https://198.18.111.12:2379, 3.5.6, 1.1 GB
 https://198.18.111.13:2379, 3.5.6, 1.1 GB
 https://198.18.111.14:2379, 3.5.6, 1.1 GB
 ```
+
+</div>
 
 ## Effects of the Kubernetes API transaction rate on etcd
 

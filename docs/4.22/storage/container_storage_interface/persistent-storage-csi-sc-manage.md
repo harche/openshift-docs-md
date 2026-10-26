@@ -40,9 +40,27 @@ Managing the default storage classes is supported by the following Container Sto
 
 Manage storage class behavior using the web console by configuring the `ClusterCSIDriver` object’s `storageClassState` field. Set the state to Managed for operator control, Unmanaged for manual control, or Removed to delete the storage class, determining how default storage classes are handled.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - Access to the cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the web console.
 
@@ -56,9 +74,11 @@ Manage storage class behavior using the web console by configuring the `ClusterC
 
 6.  Add the `spec.storageClassState` field with a value of `Managed`, `Unmanaged`, or `Removed`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -75,17 +95,37 @@ Manage storage class behavior using the web console by configuring the `ClusterC
     ...
     ```
 
+    </div>
+
     For this example, `spec.storageClassState` field is set to "Unmanaged".
 
 7.  Click **Save**.
+
+</div>
 
 # Managing the default storage class using the CLI
 
 Manage storage class behavior using the CLI by configuring the `ClusterCSIDriver` object’s `storageClassState` field. Set the state to Managed for operator control, Unmanaged for manual control, or Removed to delete the storage class, determining how default storage classes are handled.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster with cluster-admin privileges.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To manage the storage class using the CLI, run the following command:
 
@@ -96,6 +136,8 @@ Manage storage class behavior using the CLI by configuring the `ClusterCSIDriver
   - Where `${STATE}` is "Removed" or "Managed" or "Unmanaged".
 
   - Where `$DRIVERNAME` is the provisioner name. You can find the provisioner name by running the command `oc get sc`.
+
+</div>
 
 # Absent or multiple default storage classes
 
@@ -123,7 +165,25 @@ This helps you optimize costs, align with infrastructure changes, or ensure cons
 
 In this example, you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to `standard`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the storage classes by running the following command:
 
@@ -131,9 +191,11 @@ In this example, you have two defined storage classes, `gp3` and `standard`, and
     $ oc get storageclass
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -142,6 +204,8 @@ In this example, you have two defined storage classes, `gp3` and `standard`, and
     gp3 (default)        ebs.csi.aws.com
     standard             ebs.csi.aws.com
     ```
+
+    </div>
 
     The text `(default)` indicates the default storage class. In this example `gp3` is the current default storage class.
 
@@ -153,13 +217,10 @@ In this example, you have two defined storage classes, `gp3` and `standard`, and
     $ oc patch storageclass standard -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
     ```
 
-    <div class="note">
-
-    You can have many default storage classes for a short time. However, you must ensure that only one default storage class exists eventually.
-
-    With many default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class. The administrator receives an alert in the alerts dashboard that there are many default storage classes, `MultipleDefaultStorageClasses`.
-
-    </div>
+    > [!NOTE]
+    > You can have many default storage classes for a short time. However, you must ensure that only one default storage class exists eventually.
+    >
+    > With many default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class. The administrator receives an alert in the alerts dashboard that there are many default storage classes, `MultipleDefaultStorageClasses`.
 
 3.  Remove the default storage class setting from the old default storage class.
 
@@ -175,9 +236,11 @@ In this example, you have two defined storage classes, `gp3` and `standard`, and
     $ oc get storageclass
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -187,4 +250,8 @@ In this example, you have two defined storage classes, `gp3` and `standard`, and
     standard (default)   ebs.csi.aws.com
     ```
 
+    </div>
+
     The `standard` storage class is now the default.
+
+</div>

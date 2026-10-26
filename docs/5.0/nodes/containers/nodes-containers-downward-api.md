@@ -6,20 +6,20 @@ You can review the following tables to learn what information the Downward API c
 
 Fields within the pod are selected using the `FieldRef` API type. `FieldRef` has two fields:
 
-| Field        | Description                                                   |
-|--------------|---------------------------------------------------------------|
-| `fieldPath`  | The path of the field to select, relative to the pod.         |
+| Field | Description |
+|----|----|
+| `fieldPath` | The path of the field to select, relative to the pod. |
 | `apiVersion` | The API version to interpret the `fieldPath` selector within. |
 
 Currently, the valid selectors in the v1 API include:
 
-| Selector               | Description                                                                                |
-|------------------------|--------------------------------------------------------------------------------------------|
-| `metadata.name`        | The pod’s name. This is supported in both environment variables and volumes.               |
-| `metadata.namespace`   | The pod’s namespace.This is supported in both environment variables and volumes.           |
-| `metadata.labels`      | The pod’s labels. This is only supported in volumes and not in environment variables.      |
+| Selector | Description |
+|----|----|
+| `metadata.name` | The pod’s name. This is supported in both environment variables and volumes. |
+| `metadata.namespace` | The pod’s namespace.This is supported in both environment variables and volumes. |
+| `metadata.labels` | The pod’s labels. This is only supported in volumes and not in environment variables. |
 | `metadata.annotations` | The pod’s annotations. This is only supported in volumes and not in environment variables. |
-| `status.podIP`         | The pod’s IP. This is only supported in environment variables and not volumes.             |
+| `status.podIP` | The pod’s IP. This is only supported in environment variables and not volumes. |
 
 The `apiVersion` field, if not specified, defaults to the API version of the enclosing pod template.
 
@@ -48,6 +48,14 @@ Only constant attributes of the pod can be consumed this way, because environmen
 - Pod name
 
 - Pod project/namespace
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new pod spec that contains the environment variables you want the container to consume:
 
@@ -95,11 +103,23 @@ Only constant attributes of the pod can be consumed this way, because environmen
         $ oc create -f pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container logs for the `MY_POD_NAME` and `MY_POD_NAMESPACE` values:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
   ```
+
+</div>
 
 ## Consuming container values using a volume plugin
 
@@ -116,6 +136,14 @@ Containers can consume the following values:
 - Pod labels
 
 The following procedure show how to use the volume plugin.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new pod spec that contains the environment variables you want the container to consume:
 
@@ -177,15 +205,27 @@ The following procedure show how to use the volume plugin.
         $ oc create -f volume-pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container logs and verify the presence of the configured fields by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-volume-test-pod
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -198,6 +238,10 @@ The following procedure show how to use the volume plugin.
   kubernetes.io/config.source=api
   ```
 
+  </div>
+
+</div>
+
 # Understanding how to consume container resources using the Downward API
 
 When creating pods, you can use the Downward API to inject information about computing resource requests and limits so that image and application authors can correctly create an image for specific environments.
@@ -208,9 +252,14 @@ You can do this using environment variable or a volume plugin.
 
 When creating pods, you can use the Downward API to inject information about computing resource requests and limits by using environment variables that correspond to the contents of the `resources` field in the `spec.container` field.
 
-<div class="note">
+> [!NOTE]
+> If the resource limits are not included in the container configuration, the downward API defaults to the node’s CPU and memory allocatable values.
 
-If the resource limits are not included in the container configuration, the downward API defaults to the node’s CPU and memory allocatable values.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -261,13 +310,20 @@ If the resource limits are not included in the container configuration, the down
         $ oc create -f pod.yaml
         ```
 
+</div>
+
 ## Consuming container resources using a volume plugin
 
 When creating pods, you can use the Downward API to inject information about computing resource requests and limits by using a volume plugin to describe the desired resources that correspond to the `spec.resources` field.
 
-<div class="note">
+> [!NOTE]
+> If the resource limits are not included in the container configuration, the Downward API defaults to the node’s CPU and memory allocatable values.
 
-If the resource limits are not included in the container configuration, the Downward API defaults to the node’s CPU and memory allocatable values.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -325,9 +381,19 @@ If the resource limits are not included in the container configuration, the Down
         $ oc create -f volume-pod.yaml
         ```
 
+</div>
+
 # Consuming secrets using the Downward API
 
 When creating pods, you can use the downward API to inject secrets so image and application authors can create an image for specific environments.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a secret to inject:
 
@@ -388,15 +454,35 @@ When creating pods, you can use the downward API to inject secrets so image and 
         $ oc create -f pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container logs for the `MY_SECRET_USERNAME` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
   ```
 
+</div>
+
 # Consuming configuration maps using the Downward API
 
 When creating pods, you can use the Downward API to inject configuration map values so that image and application authors can create an image for specific environments.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a config map with the values to inject:
 
@@ -455,17 +541,37 @@ When creating pods, you can use the Downward API to inject configuration map val
         $ oc create -f pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container’s logs for the `MY_CONFIGMAP_VALUE` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
   ```
 
+</div>
+
 # Referencing environment variables
 
 When creating pods, you can reference the value of a previously defined environment variable by using the `$()` syntax. By using this syntax, you can reference variables that you define within a pod configuration elsewhere in that configuration.
 
 If the environment variable reference cannot be resolved, the value will be left as the provided string.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a pod that references an existing environment variable:
 
@@ -504,15 +610,35 @@ If the environment variable reference cannot be resolved, the value will be left
         $ oc create -f pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container’s logs for the `MY_ENV_VAR_REF_ENV` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
   ```
 
+</div>
+
 # Escaping environment variable references
 
 When creating a pod, you can escape an environment variable reference by using a double dollar sign. The value will then be set to a single dollar sign version of the provided value.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a pod that references an existing environment variable:
 
@@ -549,8 +675,20 @@ When creating a pod, you can escape an environment variable reference by using a
         $ oc create -f pod.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the container’s logs for the `MY_NEW_ENV` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
   ```
+
+</div>

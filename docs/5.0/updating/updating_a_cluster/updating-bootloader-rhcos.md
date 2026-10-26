@@ -4,17 +4,22 @@ Unlike `grubby` or other boot loader tools, `bootupd` does not manage kernel spa
 
 For example, you can use `bootupd` to update the boot loader to protect against the BootHole vulnerability.
 
-<div class="note">
-
-On clusters that use the `x86_64` or ARM CPU architecture, RHCOS automatically updates the boot loader when a node gets upgraded to a new operating system image. For UEFI systems, the `bootloader-update.service` updates the boot loader inside the EFI System Partition. For Legacy BIOS systems, the `bootloader-update.service` writes the boot loader directly to the boot sectors. With these clusters, there is no need to manually update the boot loader.
-
-On the `ppc64le` architecture, `bootupd` support exists, but RAID setups are not currently supported. On the `s390x` architecture, `bootupd` has no boot loader to update.
-
-</div>
+> [!NOTE]
+> On clusters that use the `x86_64` or ARM CPU architecture, RHCOS automatically updates the boot loader when a node gets upgraded to a new operating system image. For UEFI systems, the `bootloader-update.service` updates the boot loader inside the EFI System Partition. For Legacy BIOS systems, the `bootloader-update.service` writes the boot loader directly to the boot sectors. With these clusters, there is no need to manually update the boot loader.
+>
+> On the `ppc64le` architecture, `bootupd` support exists, but RAID setups are not currently supported. On the `s390x` architecture, `bootupd` has no boot loader to update.
 
 # Updating the boot loader manually
 
 You can manually inspect the status of the system and update the boot loader by using the `bootupctl` command-line tool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Inspect the system status by running the following command:
 
@@ -22,9 +27,11 @@ You can manually inspect the status of the system and update the boot loader by 
     # bootupctl status
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for `x86_64`**
+    <div class="title">
+
+    Example output for `x86_64`
 
     </div>
 
@@ -34,9 +41,13 @@ You can manually inspect the status of the system and update the boot loader by 
       Update: At latest version
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output for `aarch64`**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output for `aarch64`
 
     </div>
 
@@ -46,6 +57,8 @@ You can manually inspect the status of the system and update the boot loader by 
       Update: At latest version
     ```
 
+    </div>
+
 2.  OpenShift Container Platform clusters initially installed on version 4.4 and older require an explicit adoption phase.
 
     If the system status is `Adoptable`, perform the adoption by running the following command:
@@ -54,15 +67,19 @@ You can manually inspect the status of the system and update the boot loader by 
     # bootupctl adopt-and-update
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
+
+    </div>
 
 3.  If an update is available, apply the update so that the changes take effect on the next reboot by running the following command:
 
@@ -70,9 +87,11 @@ You can manually inspect the status of the system and update the boot loader by 
     # bootupctl update
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -80,27 +99,35 @@ You can manually inspect the status of the system and update the boot loader by 
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
 
+    </div>
+
+</div>
+
 # Updating the boot loader automatically by using a machine config
 
 You can automatically update the boot loader with `bootupd` by creating a systemd service unit that will update the boot loader as needed on every boot. This unit will run the `bootupctl update` command during the boot process and will be installed on the nodes via a machine config.
 
-<div class="note">
+> [!NOTE]
+> This configuration is not enabled by default because unexpected interruptions of the update operation might lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the boot loader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
 
-This configuration is not enabled by default because unexpected interruptions of the update operation might lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the boot loader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a Butane config file, `99-worker-bootupctl-update.bu`, including the contents of the `bootupctl-update.service` systemd unit.
 
-    <div class="note">
+    > [!NOTE]
+    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
 
-    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example output**
+    Example output
 
     </div>
 
@@ -116,6 +143,8 @@ This configuration is not enabled by default because unexpected interruptions of
       - name: bootloader-update.service
         enabled: true
     ```
+
+    </div>
 
     On control plane nodes, substitute `master` for `worker` in `metadata.name` and `metadata.labels.machineconfiguration.openshift.io/role`.
 
@@ -135,7 +164,15 @@ This configuration is not enabled by default because unexpected interruptions of
       $ oc apply -f ./99-worker-bootupctl-update.yaml
       ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check that the `99-worker-chrony` machine config object was created by running the following command:
 
@@ -143,9 +180,11 @@ This configuration is not enabled by default because unexpected interruptions of
     $ oc describe mc 99-worker-chrony
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
@@ -172,6 +211,8 @@ This configuration is not enabled by default because unexpected interruptions of
     Events:           <none>
     ```
 
+    </div>
+
     - Check that the `bootloader-update.service` systemd unit is enabled on the nodes in the machine config pool specified in the machine config object:
 
       1.  Log in to a node:
@@ -190,12 +231,18 @@ This configuration is not enabled by default because unexpected interruptions of
 
               $ sh-5.2# systemctl is-enabled bootloader-update.service
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Expected output**
+          <div class="title">
+
+          Expected output
 
           </div>
 
           ``` terminal
           enabled
           ```
+
+          </div>
+
+</div>

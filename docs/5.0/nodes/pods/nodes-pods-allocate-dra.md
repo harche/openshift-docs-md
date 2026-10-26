@@ -37,9 +37,11 @@ A device class is a category of devices that pods can claim. Some device drivers
 
 The following example `DeviceClass` object selects any device that is managed by the `driver.example.com` device driver:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example device class object**
+<div class="title">
+
+Example device class object
 
 </div>
 
@@ -54,6 +56,8 @@ spec:
       expression: |-
         device.driver == "driver.example.com"
 ```
+
+</div>
 
 where:
 
@@ -77,9 +81,11 @@ To allow multiple resource claims to share one device, you can share that device
 
   In the following example, the `resource-driver.example.com` DRA driver is sharing 40Gi of memory through the `gpu-0-counter-set` counter set in the `counter-slice` object. The `device-slice` object makes this memory available as a full device named *gpu-0* or either of two partitioned devices named *gpu-0-partition-0* and *gpu-0-partition-1*. Each device has a capacity and declares how much it consumes from the counter when allocated, either 40Gi for the full device or 20Gi of memory for each partition. You can allocate the memory by using either the full device or the partitions, but not both, enforcing mutual exclusivity between a full device and its partitions. When *gpu-0* is allocated, the GPU consumes all 40Gi from the counter set, leaving 0Gi for the partitions.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource slice object for a partitionable device**
+  <div class="title">
+
+  Example resource slice object for a partitionable device
 
   </div>
 
@@ -142,6 +148,8 @@ To allow multiple resource claims to share one device, you can share that device
             value: 20Gi
   ```
 
+  </div>
+
   where:
 
   `spec.driver`
@@ -165,9 +173,11 @@ To allow multiple resource claims to share one device, you can share that device
 
   The following example resource slice configures consumable capacity to allow multiple resource claims to consume memory capacity from the same GPU device.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource slice for a device that allows multiple allocations and has consumable capacity**
+  <div class="title">
+
+  Example resource slice for a device that allows multiple allocations and has consumable capacity
 
   </div>
 
@@ -199,6 +209,8 @@ To allow multiple resource claims to share one device, you can share that device
               step: 2Gi
           value: 10Gi
   ```
+
+  </div>
 
   where:
 
@@ -234,9 +246,11 @@ You must specify either a request for a specific device that the scheduler must 
 
   The following example resource claim template contains two sub-requests. Of these sub-requests, only one is selected by the scheduler. The scheduler tries to satisfy the sub-requests in the order in which they are listed. A CEL expression is used inside the sub-request for selecting a device.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim template object**
+  <div class="title">
+
+  Example resource claim template object
 
   </div>
 
@@ -264,6 +278,8 @@ You must specify either a request for a specific device that the scheduler must 
                 expression: "device.attributes['driver.example.com'].profile == '3g.20gb'"
   ```
 
+  </div>
+
   where:
 
   `spec.spec.devices.requests`
@@ -283,9 +299,11 @@ You must specify either a request for a specific device that the scheduler must 
 
   The following example resource claim uses a CEL expression to request one device in the `example-device-class` device class. Here, the `exactly` parameter indicates that a node with the specific requested device must be available before the scheduler can create the pod.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim object**
+  <div class="title">
+
+  Example resource claim object
 
   </div>
 
@@ -307,13 +325,17 @@ You must specify either a request for a specific device that the scheduler must 
               expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
   ```
 
+  </div>
+
 - **Resource claim template for consumable capacity**
 
   The following example resource claim template requests consumable capacity. This example includes one device request that the scheduler must satisfy for the claim to succeed.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim template object for consumable capacity**
+  <div class="title">
+
+  Example resource claim template object for consumable capacity
 
   </div>
 
@@ -334,13 +356,17 @@ You must specify either a request for a specific device that the scheduler must 
                 memory: 4Gi
   ```
 
+  </div>
+
 - **Resource claim for consumable capacity**
 
   The following example resource claim requests a specific portion (4Gi) of that shared device’s consumable capacity.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim object**
+  <div class="title">
+
+  Example resource claim object
 
   </div>
 
@@ -360,15 +386,19 @@ You must specify either a request for a specific device that the scheduler must 
                 memory: 4Gi
   ```
 
+  </div>
+
 ## About DRA admin access
 
 When working with Dynamic Resource Allocation (DRA), as a cluster administrator you can gain privileged access to a device that is in use by other users, so that you can perform tasks such as monitoring the health and status of the device while ensuring that users can continue to use the device.
 
 To gain admin access, an administrator must create a resource claim or resource claim template with the `adminAccess: true` parameter in a namespace that includes the `resource.kubernetes.io/admin-access: "true"` label. Non-administrator users cannot access namespaces with this label.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example namespace with admin access label**
+<div class="title">
+
+Example namespace with admin access label
 
 </div>
 
@@ -381,11 +411,15 @@ metadata:
 # ...
 ```
 
+</div>
+
 In the following example, the administrator is granted access to the `2g-10gb` device:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource claim object with admin access**
+<div class="title">
+
+Example resource claim object with admin access
 
 </div>
 
@@ -407,6 +441,8 @@ spec:
             expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
 ```
 
+</div>
+
 where:
 
 `spec.devices.requests.exactly.adminAccess.true` or `spec.devices.requests.firstAvailable.adminAccess.true`
@@ -414,7 +450,17 @@ Specifies that the admin access mode is enabled for the specified device.
 
 For information on adding a resource claim to a pod, see "Adding resource claims to pods".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding resource claims to pods](../../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra-configure_nodes-pods-allocate-dra)
+
+</div>
 
 ## About DRA device binding conditions
 
@@ -566,15 +612,25 @@ Resource claims can be used with multiple pods, but resource claim templates can
 
 The example in the following procedure creates a resource claim to schedule a pod on a node with the assign a specific GPU to and a resource claim to share a GPU between `container1` and `container2`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A Dynamic Resource Allocation (DRA) driver is installed. For more information on DRA, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
 - A resource slice has been created.
 
 - A resource claim and/or resource claim template has been created.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim object**
+  <div class="title">
+
+  Example resource claim object
 
   </div>
 
@@ -596,9 +652,13 @@ The example in the following procedure creates a resource claim to schedule a po
               expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example resource claim template object**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example resource claim template object
 
   </div>
 
@@ -626,11 +686,25 @@ The example in the following procedure creates a resource claim to schedule a po
                 expression: "device.attributes['driver.example.com'].profile == '3g.20gb'"
   ```
 
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a pod by creating a YAML file similar to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod that is requesting resources**
+    <div class="title">
+
+    Example pod that is requesting resources
 
     </div>
 
@@ -670,6 +744,8 @@ The example in the following procedure creates a resource claim to schedule a po
         resourceClaimName: gpu-devices
     ```
 
+    </div>
+
     where:
 
     `spec.container.resource.claims`
@@ -686,7 +762,15 @@ The example in the following procedure creates a resource claim to schedule a po
 
     For more information on configuring pod resource requests, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Examine the pod status to confirm that the resource claim was used by running the following command:
 
@@ -696,9 +780,11 @@ The example in the following procedure creates a resource claim to schedule a po
 
     Replace `<pod_name>` with the name of your pod and `<namespace_name>` with the name of your namespace.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -716,6 +802,8 @@ The example in the following procedure creates a resource claim to schedule a po
     # ...
     ```
 
+    </div>
+
 2.  Examine the resource claim object by running the following command:
 
     ``` terminal
@@ -724,9 +812,11 @@ The example in the following procedure creates a resource claim to schedule a po
 
     Replace `<resourceclaim_name>` with the name of your claim and `<namespace_name>` with the name of your namespace.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -752,7 +842,11 @@ The example in the following procedure creates a resource claim to schedule a po
     # ...
     ```
 
+    </div>
+
     In this example, the scheduler allocated a share of the `gpu-0` device from the `dra.example.com` DRA driver. The `consumedCapacity` field shows how much of the device’s memory this claim consumed. The `shareID` field identifies this allocation share.
+
+</div>
 
 # Additional resources
 

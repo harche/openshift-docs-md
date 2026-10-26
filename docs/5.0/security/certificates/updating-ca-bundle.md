@@ -25,6 +25,14 @@ data:
 
 To trust a custom certificate authority for egress connections in OpenShift Container Platform, you can replace the CA bundle by creating a config map with your root CA certificate and updating the cluster proxy configuration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a config map that includes the root CA certificate used to sign the wildcard certificate:
 
     ``` terminal
@@ -42,6 +50,8 @@ To trust a custom certificate authority for egress connections in OpenShift Cont
          --type=merge \
          --patch='{"spec":{"trustedCA":{"name":"custom-ca"}}}'
     ```
+
+</div>
 
 # Additional resources
 

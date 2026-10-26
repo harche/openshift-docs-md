@@ -10,9 +10,11 @@ You can specify your Kiali configuration in either of two ways:
 
 - Configure and deploy a Kiali instance and specify the name of the Kiali resource as the value for `spec.addons.kiali.name` in the `ServiceMeshControlPlane` resource. You must create the CR in the same namespace as the Service Mesh control plane, for example, `istio-system`. If a Kiali resource matching the value of `name` exists, the control plane will configure that Kiali resource for use with the control plane. This approach lets you fully customize your Kiali configuration in the Kiali resource. Note that with this approach, various fields in the Kiali resource are overwritten by the Service Mesh Operator, specifically, the `accessible_namespaces` list, as well as the endpoints for Grafana, Prometheus, and tracing.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example SMCP parameters for Kiali**
+<div class="title">
+
+Example SMCP parameters for Kiali
 
 </div>
 
@@ -37,6 +39,8 @@ spec:
             contextPath: /kiali
 ```
 
+</div>
+
 <table>
 <caption><code>ServiceMeshControlPlane</code> Kiali parameters</caption>
 <colgroup>
@@ -46,7 +50,7 @@ spec:
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
@@ -54,7 +58,7 @@ spec:
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>spec:
   addons:
     kiali:
@@ -63,21 +67,21 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p><code>kiali</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   enabled:</code></pre></td>
 <td style="text-align: left;"><p>This parameter enables or disables Kiali. Kiali is enabled by default.</p></td>
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:</code></pre></td>
 <td style="text-align: left;"><p>Install a Kiali resource if the named Kiali resource is not present. The <code>install</code> section is ignored if <code>addons.kiali.enabled</code> is set to <code>false</code>.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     dashboard:</code></pre></td>
@@ -85,7 +89,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     dashboard:
@@ -94,7 +98,7 @@ spec:
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>false</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     dashboard:
@@ -103,7 +107,7 @@ spec:
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     dashboard:
@@ -112,7 +116,7 @@ spec:
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     dashboard:
@@ -121,7 +125,7 @@ spec:
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:</code></pre></td>
@@ -129,7 +133,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -138,7 +142,7 @@ spec:
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -148,7 +152,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -158,7 +162,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -167,7 +171,7 @@ spec:
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -178,7 +182,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -189,7 +193,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -199,7 +203,7 @@ spec:
 <td style="text-align: left;"><p><code>true</code>/<code>false</code></p></td>
 <td style="text-align: left;"><p><code>true</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -209,7 +213,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>install:
   service:
     ingress:
@@ -218,7 +222,7 @@ spec:
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>install:
   service:
     ingress:
@@ -227,7 +231,7 @@ spec:
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>kiali:
   install:
     service:
@@ -239,16 +243,11 @@ spec:
 </tbody>
 </table>
 
-`ServiceMeshControlPlane` Kiali parameters
-
 # Specifying Kiali configuration in a Kiali custom resource
 
 You can fully customize your Kiali deployment by configuring Kiali in the Kiali custom resource (CR) rather than in the `ServiceMeshControlPlane` (SMCP) resource. This configuration is sometimes called an "external Kiali" since the configuration is specified outside of the SMCP.
 
-<div class="note">
-
-You must deploy the `ServiceMeshControlPlane` and Kiali custom resources in the same namespace. For example, `istio-system`.
-
-</div>
+> [!NOTE]
+> You must deploy the `ServiceMeshControlPlane` and Kiali custom resources in the same namespace. For example, `istio-system`.
 
 You can configure and deploy a Kiali instance and then specify the `name` of the Kiali resource as the value for `spec.addons.kiali.name` in the SMCP resource. If a Kiali CR matching the value of `name` exists, the Service Mesh control plane will use the existing installation. This approach lets you fully customize your Kiali configuration.

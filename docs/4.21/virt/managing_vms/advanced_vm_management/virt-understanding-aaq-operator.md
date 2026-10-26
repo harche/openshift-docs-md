@@ -1,12 +1,12 @@
 You can use the Application-Aware Quota (AAQ) Operator to customize and manage resource quotas for individual components in an OpenShift Container Platform cluster.
 
-# About the AAQ Operator
+# The AAQ Operator
 
-The Application-Aware Quota (AAQ) Operator provides more flexible and extensible quota management compared to the native `ResourceQuota` object in the OpenShift Container Platform platform.
+The Application Aware Quota (AAQ) Operator manages quotas for clusters that run virtual machines (VMs). Unlike the native `ResourceQuota` object, AAQ accounts for the resources that live migration and VM infrastructure consume, so a quota does not block a VM migration or an upgrade.
 
-In a multi-tenant cluster environment, where multiple workloads operate on shared infrastructure and resources, using the Kubernetes native `ResourceQuota` object to limit aggregate CPU and memory consumption presents infrastructure overhead and live migration challenges for OpenShift Virtualization workloads.
+In a multitenant cluster environment, where multiple workloads operate on shared infrastructure and resources, using the Kubernetes native `ResourceQuota` object to limit aggregate CPU and memory consumption creates live migration challenges for OpenShift Virtualization workloads, because the quota also counts the resources that VM infrastructure consumes.
 
-OpenShift Virtualization requires significant compute resource allocation to handle virtual machine (VM) live migrations and manage VM infrastructure overhead. When upgrading OpenShift Virtualization, you must migrate VMs to upgrade the `virt-launcher` pod. However, migrating a VM in the presence of a resource quota can cause the migration, and subsequently the upgrade, to fail.
+OpenShift Virtualization requires significant compute resource allocation to handle virtual machine (VM) live migrations and to run the VM infrastructure itself. When upgrading OpenShift Virtualization, you must migrate VMs to upgrade the `virt-launcher` pod. However, migrating a VM in the presence of a resource quota can cause the migration, and subsequently the upgrade, to fail.
 
 With AAQ, you can allocate resources for VMs without interfering with cluster-level activities such as upgrades and node maintenance. The AAQ Operator also supports non-compute resources which eliminates the need to manage both the native resource quota and AAQ API objects separately.
 
@@ -60,31 +60,41 @@ The AAQ Operator introduces two new API objects defined as custom resource defin
   # ...
   ```
 
-  <div class="note">
-
-  If both `spec.selector.labels` and `spec.selector.annotations` fields are set, only namespaces that match both are selected.
-
-  </div>
+  > [!NOTE]
+  > If both `spec.selector.labels` and `spec.selector.annotations` fields are set, only namespaces that match both are selected.
 
 The AAQ controller uses a scheduling gate mechanism to evaluate whether there is enough of a resource available to run a workload. If so, the scheduling gate is removed from the pod and it is considered ready for scheduling. The quota usage status is updated to indicate how much of the quota is used.
 
 If the CPU and memory requests and limits for the workload exceed the enforced quota usage limit, the pod remains in `SchedulingGated` status until there is enough quota available. The AAQ controller creates an event of type `Warning` with details on why the quota was exceeded. You can view the event details by using the `oc get events` command.
 
-<div class="important">
+> [!IMPORTANT]
+> Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.namespaceSelector` labels defined in the `HyperConverged` CR.
 
-Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.namespaceSelector` labels defined in the `HyperConverged` CR.
+# Enable the AAQ Operator by using the CLI
+
+Deploy the Application Aware Quota (AAQ) Operator so that you can apply resource quotas to virtual machines (VMs). You enable the Operator by patching the `HyperConverged` custom resource (CR) from the command line.
+
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
-
-# Enabling the AAQ Operator
-
-To deploy the AAQ Operator, set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` custom resource (CR).
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` CR by running the following command:
 
@@ -93,15 +103,33 @@ To deploy the AAQ Operator, set the `enableApplicationAwareQuota` field value to
    --type json -p '[{"op": "add", "path": "/spec/enableApplicationAwareQuota", "value": true}]'
   ```
 
-# Configuring the AAQ Operator by using the CLI
+</div>
 
-You can configure the AAQ Operator by specifying the fields of the `spec.applicationAwareConfig` object in the `HyperConverged` custom resource (CR).
+# Configure the AAQ Operator by using the CLI
+
+Configure the Application Aware Quota (AAQ) Operator to control how AAQ counts virtual machine (VM) resources and which namespaces it applies to, so that quota enforcement matches how your teams use the cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the `HyperConverged` CR by running the following command:
 
@@ -137,6 +165,8 @@ You can configure the AAQ Operator by specifying the fields of the `spec.applica
 
   `allowApplicationAwareClusterResourceQuota`
   If set to `true`, you can create and manage the `ApplicationAwareClusterResourceQuota` object. Setting this attribute to `true` can increase scheduling time.
+
+</div>
 
 # Additional resources
 

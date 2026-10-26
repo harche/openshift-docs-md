@@ -43,10 +43,10 @@ Use OADP virtual machine file restore (VMFR) custom resources to discover VM bac
 
 The OADP VMFR feature uses the following custom resources (CRs) to perform file-level restore operations:
 
-| **CR**                                  | **Description**                                                                                                                |
-|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| **CR** | **Description** |
+|----|----|
 | `VirtualMachineBackupsDiscovery` (VMBD) | Identifies which Velero backups contain a specified virtual machine. Returns categorized results of valid and invalid backups. |
-| `VirtualMachineFileRestore` (VMFR)      | Orchestrates the workflow for making discovered backup files accessible through web or SSH access methods.                     |
+| `VirtualMachineFileRestore` (VMFR) | Orchestrates the workflow for making discovered backup files accessible through web or SSH access methods. |
 
 Custom resources
 
@@ -233,35 +233,35 @@ VMFR supports multi-tenancy through namespace isolation:
 
 Review the status phases of `VirtualMachineBackupsDiscovery` (VMBD) and `VirtualMachineFileRestore` (VMFR) custom resources (CRs) to track the progress of file-level restore operations. This helps you monitor and troubleshoot VMFR requests.
 
-| **Value**         | **Description**                                                                    |
-|-------------------|------------------------------------------------------------------------------------|
-| `New`             | The VMBD CR creation request is accepted but discovery has not yet started.        |
-| `InProgress`      | The controller is actively validating candidate backups and verifying VM presence. |
-| `Completed`       | All candidate backups are processed and results are available in the VMBD status.  |
-| `PartiallyFailed` | Some candidate backups were validated but others failed verification.              |
-| `Failed`          | The discovery process failed. Check the VMBD status conditions for error details.  |
+| **Value** | **Description** |
+|----|----|
+| `New` | The VMBD CR creation request is accepted but discovery has not yet started. |
+| `InProgress` | The controller is actively validating candidate backups and verifying VM presence. |
+| `Completed` | All candidate backups are processed and results are available in the VMBD status. |
+| `PartiallyFailed` | Some candidate backups were validated but others failed verification. |
+| `Failed` | The discovery process failed. Check the VMBD status conditions for error details. |
 
 VirtualMachineBackupsDiscovery phases
 
-| **Value**         | **Description**                                                                                                                       |
-|-------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| `New`             | The VMFR CR creation request is accepted but the restore process has not yet started.                                                 |
-| `InProgress`      | The controller is restoring PVCs and creating file-serving resources.                                                                 |
-| `Completed`       | All PVCs are restored and file-serving endpoints are available.                                                                       |
-| `PartiallyFailed` | Some PVCs were restored but others failed. Partial file access might be available.                                                    |
-| `Failed`          | The restore process failed. Check the VMFR status conditions for error details.                                                       |
-| `Deleting`        | The VMFR CR is marked for deletion. The controller is cleaning up file-serving resources, restored PVCs, and the temporary namespace. |
+| **Value** | **Description** |
+|----|----|
+| `New` | The VMFR CR creation request is accepted but the restore process has not yet started. |
+| `InProgress` | The controller is restoring PVCs and creating file-serving resources. |
+| `Completed` | All PVCs are restored and file-serving endpoints are available. |
+| `PartiallyFailed` | Some PVCs were restored but others failed. Partial file access might be available. |
+| `Failed` | The restore process failed. Check the VMFR status conditions for error details. |
+| `Deleting` | The VMFR CR is marked for deletion. The controller is cleaning up file-serving resources, restored PVCs, and the temporary namespace. |
 
 VirtualMachineFileRestore phases
 
-| **Value**            | **Description**                                                    |
-|----------------------|--------------------------------------------------------------------|
-| `available`          | The PVC is restored and the file system is mounted and accessible. |
-| `processing`         | The PVC restore is in progress.                                    |
-| `failed`             | The PVC restore failed.                                            |
-| `backup-deleted`     | The source backup for this PVC has been deleted.                   |
-| `backup-missing`     | The source backup for this PVC cannot be found.                    |
-| `unsupported-plugin` | The backup was created with an unsupported plugin format.          |
-| `extraction-failed`  | The file system extraction from the disk image failed.             |
+| **Value** | **Description** |
+|----|----|
+| `available` | The PVC is restored and the file system is mounted and accessible. |
+| `processing` | The PVC restore is in progress. |
+| `failed` | The PVC restore failed. |
+| `backup-deleted` | The source backup for this PVC has been deleted. |
+| `backup-missing` | The source backup for this PVC cannot be found. |
+| `unsupported-plugin` | The backup was created with an unsupported plugin format. |
+| `extraction-failed` | The file system extraction from the disk image failed. |
 
 PVC restore state values

@@ -2,6 +2,10 @@ You can configure the Cluster Samples Operator to manage the installation and up
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - The Cluster Samples Operator is deprecated. No new templates, samples, or non-Source-to-Image (Non-S2I) image streams are added to the Cluster Samples Operator. However, the existing S2I builder image streams and templates will continue to receive updates until the Cluster Samples Operator is removed in a future release. S2I image streams and templates include:
 
   - Ruby
@@ -38,21 +42,15 @@ You can configure the Cluster Samples Operator to manage the installation and up
 
 During installation, the Operator creates the default configuration object for itself and then creates the sample image streams and templates, including quick start templates.
 
-<div class="note">
-
-To facilitate image stream imports from other registries that require credentials, a cluster administrator can create any additional secrets that contain the content of a Docker `config.json` file in the `openshift` namespace needed for image import.
-
-</div>
+> [!NOTE]
+> To facilitate image stream imports from other registries that require credentials, a cluster administrator can create any additional secrets that contain the content of a Docker `config.json` file in the `openshift` namespace needed for image import.
 
 The Cluster Samples Operator configuration is a cluster-wide resource. The deployment of the Operator is within the `openshift-cluster-samples-operator` namespace.
 
 The image for the Cluster Samples Operator has image stream and template definitions for the associated OpenShift Container Platform release. When each sample is created or updated, the Cluster Samples Operator includes an annotation that denotes the version of OpenShift Container Platform. The Operator uses this annotation to ensure that each sample matches the release version. Samples outside of its inventory are ignored, as are skipped samples. Modifications to any samples that are managed by the Operator, where that version annotation is modified or deleted, are reverted automatically.
 
-<div class="note">
-
-The Jenkins images are part of the image payload from installation and are tagged into the image streams directly.
-
-</div>
+> [!NOTE]
+> The Jenkins images are part of the image payload from installation and are tagged into the image streams directly.
 
 The Cluster Samples Operator configuration resource includes a finalizer which cleans up the following upon deletion:
 
@@ -70,9 +68,19 @@ If the Cluster Samples Operator is removed during installation, you can use the 
 
 For more information about configuring credentials, see "Using image pull secrets".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using the Cluster Samples Operator with an alternate registry](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/samples-operator-alt-registry)
 
 - [Using image pull secrets](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/managing-images#using-image-pull-secrets)
+
+</div>
 
 # Cluster Samples Operator use of management state
 
@@ -88,23 +96,27 @@ Certain circumstances result in the Cluster Samples Operator bootstrapping itsel
 
 - If the image controller configuration parameters prevent the creation of image streams by using the default image registry, or by using the image registry specified by `samplesRegistry` setting. For more information, see "Image controller configuration parameters" and "Cluster Samples Operator configuration parameters".
 
-<div class="note">
-
-For OpenShift Container Platform, the default image registry is `registry.redhat.io`.
-
-</div>
+> [!NOTE]
+> For OpenShift Container Platform, the default image registry is `registry.redhat.io`.
 
 However, if the Cluster Samples Operator detects that it is on an IPv6 network and an OpenShift Container Platform global proxy is configured, then the IPv6 check supersedes all the checks. As a result, the Cluster Samples Operator bootstraps itself as `Removed`.
 
-<div class="important">
+> [!IMPORTANT]
+> IPv6 installations are not currently supported by the registry. The Cluster Samples Operator pulls most of the sample image streams and images from the registry.
 
-IPv6 installations are not currently supported by the registry. The Cluster Samples Operator pulls most of the sample image streams and images from the registry.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Image controller configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/image-configuration-classic#images-configuration-parameters_image-configuration)
 
 - [Cluster Samples Operator configuration parameters](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/images/configuring-samples-operator#samples-operator-configuration_configuring-samples-operator)
+
+</div>
 
 ## Restricted network installation
 
@@ -128,9 +140,11 @@ To host samples in your restricted environment, use the following instructions:
 
 You must also put the following additional YAML file in the `openshift` directory created by the `openshift-install create manifest` process:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example Cluster Samples Operator YAML file with `managementState: Removed`**
+<div class="title">
+
+Example Cluster Samples Operator YAML file with `managementState: Removed`
 
 </div>
 
@@ -144,6 +158,8 @@ spec:
   - x86_64
   managementState: Removed
 ```
+
+</div>
 
 # Cluster Samples Operator tracking and error recovery of image stream imports
 
@@ -165,11 +181,8 @@ The format of the key for each entry in the data field in the config map is `<im
 
 During a disconnected installation of OpenShift Container Platform, the status of the Cluster Samples Operator is set to `Removed`. If you choose to change it to `Managed`, it installs samples.
 
-<div class="note">
-
-The use of samples in a network-restricted or discontinued environment might require access to services external to your network. Some example services include: Github, Maven Central, npm, RubyGems, PyPi and others. There might be additional steps to take that allow the Cluster Samples Operators objects to reach the services they require.
-
-</div>
+> [!NOTE]
+> The use of samples in a network-restricted or discontinued environment might require access to services external to your network. Some example services include: Github, Maven Central, npm, RubyGems, PyPi and others. There might be additional steps to take that allow the Cluster Samples Operators objects to reach the services they require.
 
 Use the following principles to determine which images you need to mirror for your image streams to import:
 
@@ -193,35 +206,37 @@ The samples resource offers the following configuration fields:
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>managementState</code></p></td>
 <td style="text-align: left;"><p><code>Managed</code>: The Cluster Samples Operator updates the samples as the configuration dictates.</p>
 <p><code>Unmanaged</code>: The Cluster Samples Operator ignores updates to its configuration resource object and any image streams or templates in the <code>openshift</code> namespace.</p>
 <p><code>Removed</code>: The Cluster Samples Operator removes the set of <code>Managed</code> image streams and templates in the <code>openshift</code> namespace. It ignores new samples created by the cluster administrator or any samples in the skipped lists. After the removals are complete, the Cluster Samples Operator works like it is in the <code>Unmanaged</code> state and ignores any watch events on the sample resources, image streams, or templates.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>samplesRegistry</code></p></td>
 <td style="text-align: left;"><p>Allows you to specify which registry is accessed by image streams for their image content. <code>samplesRegistry</code> defaults to <code>registry.redhat.io</code> for OpenShift Container Platform.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>Creation or update of RHEL content does not commence if the secret for pull access is not in place when either <code>Samples Registry</code> is not explicitly set, leaving an empty string, or when it is set to registry.redhat.io. In both cases, image imports work off of registry.redhat.io, which requires credentials.</p>
 <p>Creation or update of RHEL content is not gated by the existence of the pull secret if the <code>Samples Registry</code> is overridden to a value other than the empty string or registry.redhat.io.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>architectures</code></p></td>
 <td style="text-align: left;"><p>Placeholder to choose an architecture type.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>skippedImagestreams</code></p></td>
 <td style="text-align: left;"><p>Image streams that are in the Cluster Samples Operator’s inventory but that the cluster administrator wants the Operator to ignore or not manage. You can add a list of image stream names to this parameter. For example, <code>["httpd","perl"]</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>skippedTemplates</code></p></td>
 <td style="text-align: left;"><p>Templates that are in the Cluster Samples Operator’s inventory, but that the cluster administrator wants the Operator to ignore or not manage.</p></td>
 </tr>
@@ -252,36 +267,36 @@ The samples resource maintains the following conditions in its status:
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Condition</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>SamplesExists</code></p></td>
 <td style="text-align: left;"><p>Indicates the samples are created in the <code>openshift</code> namespace.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ImageChangesInProgress</code></p></td>
 <td style="text-align: left;"><p><code>True</code> when image streams are created or updated, but not all of the tag spec generations and tag status generations match.</p>
 <p><code>False</code> when all of the generations match, or unrecoverable errors occurred during import, the last seen error is in the message field. The list of pending image streams is in the reason field.</p>
 <p>This condition is deprecated in OpenShift Container Platform.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ConfigurationValid</code></p></td>
 <td style="text-align: left;"><p><code>True</code> or <code>False</code> based on whether any of the restricted changes noted previously are submitted.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>RemovePending</code></p></td>
 <td style="text-align: left;"><p>Indicator that there is a <code>Management State: Removed</code> setting pending, but the Cluster Samples Operator is waiting for the deletions to complete.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ImportImageErrorsExist</code></p></td>
 <td style="text-align: left;"><p>Indicator of which image streams had errors during the image import phase for one of their tags.</p>
 <p><code>True</code> when an error has occurred. The list of image streams with an error is in the reason field. The details of each error reported are in the message field.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>MigrationInProgress</code></p></td>
 <td style="text-align: left;"><p><code>True</code> when the Cluster Samples Operator detects that the version is different from the Cluster Samples Operator version with which the current samples set are installed.</p>
 <p>This condition is deprecated in OpenShift Container Platform.</p></td>
@@ -293,9 +308,25 @@ The samples resource maintains the following conditions in its status:
 
 You can configure the Cluster Samples Operator by editing the file with the provided parameters.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Access the Cluster Samples Operator configuration by running the following command:
 
@@ -311,21 +342,36 @@ You can configure the Cluster Samples Operator by editing the file with the prov
   # ...
   ```
 
+</div>
+
 # Remove deprecated image stream tags from the Cluster Samples Operator
 
 The Cluster Samples Operator leaves deprecated image stream tags in an image stream because users can have deployments that use the deprecated image stream tags.
 
 You can remove deprecated image stream tags by editing the image stream with the `oc tag` command.
 
-<div class="note">
+> [!NOTE]
+> Deprecated image stream tags that the samples providers have removed from their image streams are not included on initial installations.
 
-Deprecated image stream tags that the samples providers have removed from their image streams are not included on initial installations.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Remove deprecated image stream tags by editing the image stream with the following `oc tag` command:
 
@@ -333,12 +379,18 @@ Deprecated image stream tags that the samples providers have removed from their 
   $ oc tag -d <image_stream_name:tag>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Deleted tag default/<image_stream_name:tag>.
   ```
+
+  </div>
+
+</div>

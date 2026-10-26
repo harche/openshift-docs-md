@@ -2,21 +2,36 @@ You can configure network policies to isolate network traffic between projects i
 
 As a cluster administrator, you can configure your network policies to provide multitenant network isolation.
 
-<div class="note">
-
-Configuring network policies as described in this section provides network isolation similar to the multitenant mode of OpenShift SDN in previous versions of OpenShift Container Platform.
-
-</div>
+> [!NOTE]
+> Configuring network policies as described in this section provides network isolation similar to the multitenant mode of OpenShift SDN in previous versions of OpenShift Container Platform.
 
 # Configure multitenant isolation by using network policy
 
 You can configure network policies to isolate workloads in a project from pods and services in other namespaces. This isolation helps control network traffic between projects and improves multitenant security in your cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your cluster uses a network plugin that supports `NetworkPolicy` objects, such as the OVN-Kubernetes network plugin, with `mode: NetworkPolicy` set.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the following `NetworkPolicy` objects:
 
@@ -40,11 +55,8 @@ You can configure network policies to isolate workloads in a project from pods a
         EOF
         ```
 
-        <div class="note">
-
-        `policy-group.network.openshift.io/ingress: ""` is the preferred namespace selector label for OVN-Kubernetes.
-
-        </div>
+        > [!NOTE]
+        > `policy-group.network.openshift.io/ingress: ""` is the preferred namespace selector label for OVN-Kubernetes.
 
     2.  A policy named `allow-from-openshift-monitoring`:
 
@@ -112,9 +124,11 @@ You can configure network policies to isolate workloads in a project from pods a
     $ oc describe networkpolicy
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -147,6 +161,10 @@ You can configure network policies to isolate workloads in a project from pods a
       Not affecting egress traffic
       Policy Types: Ingress
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

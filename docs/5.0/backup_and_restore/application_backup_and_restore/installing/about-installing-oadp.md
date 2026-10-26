@@ -16,13 +16,10 @@ To back up Kubernetes resources and internal images, you must have object storag
 
 You can configure multiple backup storage locations within the same namespace for each individual OADP deployment.
 
-<div class="note">
-
-Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
-
-For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
-
-</div>
+> [!NOTE]
+> Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
+>
+> For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
 
 You can back up persistent volumes (PVs) by using snapshots or a File System Backup (FSB).
 
@@ -36,13 +33,10 @@ To back up PVs with snapshots, you must have a cloud provider that supports eith
 
 - CSI snapshot-enabled cloud provider, such as [OpenShift Data Foundation](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#installing-oadp-ocs)
 
-<div class="note">
-
-If you want to use CSI backup on OCP 4.11 and later, install OADP 1.1.*x*.
-
-OADP 1.0.*x* does not support CSI backup on OCP 4.11 and later. OADP 1.0.*x* includes Velero 1.7.*x* and expects the API group `snapshot.storage.k8s.io/v1beta1`, which is not present on OCP 4.11 and later.
-
-</div>
+> [!NOTE]
+> If you want to use CSI backup on OCP 4.11 and later, install OADP 1.1.*x*.
+>
+> OADP 1.0.*x* does not support CSI backup on OCP 4.11 and later. OADP 1.0.*x* includes Velero 1.7.*x* and expects the API group `snapshot.storage.k8s.io/v1beta1`, which is not present on OCP 4.11 and later.
 
 If your cloud provider does not support snapshots or if your storage is NFS, you can back up applications with [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#backing-up-applications) on object storage.
 
@@ -52,11 +46,8 @@ You create a default `Secret` and then you install the Data Protection Applicati
 
 OADP works with many S3-compatible object storage providers. Several object storage providers are certified and tested with every release of OADP. Various S3 providers are known to work with OADP but are not specifically tested and certified. These providers will be supported on a best-effort basis. Additionally, there are a few S3 object storage providers with known issues and limitations that are listed in this documentation.
 
-<div class="note">
-
-Red Hat will provide support for OADP on any S3-compatible storage, but support will stop if the S3 endpoint is determined to be the root cause of an issue.
-
-</div>
+> [!NOTE]
+> Red Hat will provide support for OADP on any S3-compatible storage, but support will stop if the S3 endpoint is determined to be the root cause of an issue.
 
 ## Certified backup storage providers
 
@@ -80,15 +71,12 @@ The following AWS S3 compatible object storage providers are fully supported by 
 
 - Scality ARTESCA S3 object storage
 
-<div class="note">
-
-The following compatible object storage providers are supported and have their own Velero object store plugins:
-
-- Google Cloud
-
-- Microsoft Azure
-
-</div>
+> [!NOTE]
+> The following compatible object storage providers are supported and have their own Velero object store plugins:
+>
+> - Google Cloud
+>
+> - Microsoft Azure
 
 ## Unsupported backup storage providers
 
@@ -108,13 +96,10 @@ The following AWS S3 compatible object storage providers, are known to work with
 
 - Cloudian HyperStore
 
-<div class="note">
-
-Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
-
-For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
-
-</div>
+> [!NOTE]
+> Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
+>
+> For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
 
 ## Backup storage providers with known limitations
 
@@ -122,33 +107,53 @@ The following AWS S3 compatible object storage providers are known to work with 
 
 - Swift - It works for use as a backup storage location for backup storage, but is not compatible with Restic for filesystem-based volume backup and restore.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Scality ARTESCA S3 object storage (Scality documentation)](https://downloads.scality.com/artesca-ova/doc/general_introduction.html#)
+
+</div>
 
 # Configure Multicloud Object Gateway (MCG) for disaster recovery on OpenShift Data Foundation
 
 If you use cluster storage for your MCG bucket `backupStorageLocation` on OpenShift Data Foundation, configure MCG as an external object store.
 
-<div class="warning">
+> [!WARNING]
+> Failure to configure MCG as an external object store might lead to backups not being available.
 
-Failure to configure MCG as an external object store might lead to backups not being available.
+> [!NOTE]
+> Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
+>
+> For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-Unless specified otherwise, "NooBaa" refers to the open source project that provides lightweight object storage, while "Multicloud Object Gateway (MCG)" refers to the Red Hat distribution of NooBaa.
-
-For more information on the MCG, see [Accessing the Multicloud Object Gateway with your applications](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html-single/managing_hybrid_and_multicloud_resources/index#accessing-the-multicloud-object-gateway-with-your-applications_rhodf).
+Procedure
 
 </div>
 
 - Configure MCG as an external object store as described in [Adding storage resources for hybrid or Multicloud](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html/managing_hybrid_and_multicloud_resources/adding-storage-resources-for-hybrid-or-multicloud_rhodf#doc-wrapper).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Overview of backup and snapshot locations in the Velero documentation](https://velero.io/docs/v1.16/locations/)
+
+</div>
 
 # About OADP update channels
 
@@ -178,13 +183,20 @@ For more information, see *OpenShift Operator Life Cycles*.
 
 - If you have OADP 1.y installed, with *y* greater than 0, and want to switch to OADP 1.0, you must uninstall your OADP Operator and then reinstall it using the **stable-1.0** update channel. You will then receive all z-stream patches for version 1.0.z.
 
-<div class="note">
+> [!NOTE]
+> You cannot switch from OADP 1.y to OADP 1.0 by switching update channels. You must uninstall the Operator and then reinstall it.
 
-You cannot switch from OADP 1.y to OADP 1.0 by switching update channels. You must uninstall the Operator and then reinstall it.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
+
+</div>
 
 # Installation of OADP on multiple namespaces
 
@@ -222,7 +234,17 @@ Depending on your storage provider, the immutability options are called differen
 
 The primary reason for the absence of support for other S3-compatible object storage is that OADP initially saves the state of a backup as *finalizing* and then verifies whether any asynchronous operations are in progress.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Cluster service version](../../../operators/understanding/olm/olm-understanding-olm.xml#olm-csv_olm-understanding-olm)
+
+</div>
 
 # Velero CPU and memory requirements based on collected data
 
@@ -238,7 +260,7 @@ The following recommendations are based on observations of performance made in t
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Configuration types</th>
 <th style="text-align: left;"><sup>[1]</sup> Average usage</th>
 <th style="text-align: left;"><sup>[2]</sup> Large usage</th>
@@ -246,7 +268,7 @@ The following recommendations are based on observations of performance made in t
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>CSI</p></td>
 <td style="text-align: left;"><p>Velero:</p>
 <p>CPU- Request 200m, Limits 1000m</p>
@@ -256,7 +278,7 @@ The following recommendations are based on observations of performance made in t
 <p>Memory- Request 256Mi, Limits 2048Mi</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Restic</p></td>
 <td style="text-align: left;"><p><sup>[3]</sup> Restic:</p>
 <p>CPU- Request 1000m, Limits 2000m</p>
@@ -266,7 +288,7 @@ The following recommendations are based on observations of performance made in t
 <p>Memory - Request 16Gi, Limits 40Gi</p></td>
 <td style="text-align: left;"><p>900m</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><sup>[5]</sup> Data Mover</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>N/A</p></td>
@@ -286,11 +308,8 @@ The following recommendations are based on observations of performance made in t
 
 5.  Data Mover - Data Mover default resourceTimeout is 10m. Our tests show that for restoring a large PV (500GB usage), it is required to increase the resourceTimeout to 60m.
 
-<div class="note">
-
-The resource requirements listed throughout the guide are for average usage only. For large usage, adjust the settings as described in the table above.
-
-</div>
+> [!NOTE]
+> The resource requirements listed throughout the guide are for average usage only. For large usage, adjust the settings as described in the table above.
 
 ## Additional resources
 
@@ -300,18 +319,25 @@ The resource requirements listed throughout the guide are for average usage only
 
 Testing shows that increasing `NodeAgent` CPU can significantly improve backup and restore times when using OpenShift API for Data Protection (OADP).
 
-<div class="important">
-
-You can tune your OpenShift Container Platform environment based on your performance analysis and preference. Use CPU limits in the workloads when you use Kopia for file system backups.
-
-If you do not use CPU limits on the pods, the pods can use excess CPU when it is available. If you specify CPU limits, the pods might be throttled if they exceed their limits. Therefore, the use of CPU limits on the pods is considered an anti-pattern.
-
-Ensure that you are accurately specifying CPU requests so that pods can take advantage of excess CPU. Resource allocation is guaranteed based on CPU requests rather than CPU limits.
-
-Testing showed that running Kopia with 20 cores and 32 Gi memory supported backup and restore operations of over 100 GB of data, multiple namespaces, or over 2000 pods in a single namespace. Testing detected no CPU limiting or memory saturation with these resource specifications.
-
-</div>
+> [!IMPORTANT]
+> You can tune your OpenShift Container Platform environment based on your performance analysis and preference. Use CPU limits in the workloads when you use Kopia for file system backups.
+>
+> If you do not use CPU limits on the pods, the pods can use excess CPU when it is available. If you specify CPU limits, the pods might be throttled if they exceed their limits. Therefore, the use of CPU limits on the pods is considered an anti-pattern.
+>
+> Ensure that you are accurately specifying CPU requests so that pods can take advantage of excess CPU. Resource allocation is guaranteed based on CPU requests rather than CPU limits.
+>
+> Testing showed that running Kopia with 20 cores and 32 Gi memory supported backup and restore operations of over 100 GB of data, multiple namespaces, or over 2000 pods in a single namespace. Testing detected no CPU limiting or memory saturation with these resource specifications.
 
 In some environments, you might need to adjust Ceph MDS pod resources to avoid pod restarts, which occur when default settings cause resource saturation.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Changing the CPU and memory resources on the rook-ceph pods](https://docs.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html/troubleshooting_openshift_data_foundation/changing-resources-for-the-openshift-data-foundation-components_rhodf#changing_the_cpu_and_memory_resources_on_the_rook_ceph_pods)
+
+</div>

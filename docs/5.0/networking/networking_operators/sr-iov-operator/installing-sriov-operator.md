@@ -6,11 +6,29 @@ As a cluster administrator, you can install the Single Root I/O Virtualization (
 
 You can use the CLI to install the SR-IOV Network Operator. By using the CLI, you can deploy the Operator directly from your terminal to manage SR-IOV network devices and attachments without navigating the web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You have an account with `cluster-admin` privileges.
 
 - You installed a cluster on bare-metal hardware, and you ensured that cluster nodes have hardware that supports SR-IOV.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `openshift-sriov-network-operator` namespace by entering the following command:
 
@@ -74,27 +92,34 @@ You can use the CLI to install the SR-IOV Network Operator. By using the CLI, yo
     EOF
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > The following configuration applies only to IBM Z `s390x` systems and is required: The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+    >
+    > **Option 1** — Add the following to the `spec` block of the `SriovOperatorConfig` create command above before running it:
+    >
+    > ``` yaml
+    > disablePlugins:
+    >   - mellanox
+    > ```
+    >
+    > **Option 2** — If the `SriovOperatorConfig` resource is already created, patch it by entering the following command:
+    >
+    > ``` terminal
+    > $ oc patch sriovoperatorconfig default \
+    >   -n openshift-sriov-network-operator \
+    >   --type=merge \
+    >   -p '{"spec":{"disablePlugins":["mellanox"]}}'
+    > ```
 
-    The following configuration applies only to IBM Z `s390x` systems and is required: The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+</div>
 
-    **Option 1** — Add the following to the `spec` block of the `SriovOperatorConfig` create command above before running it:
+<div>
 
-    ``` yaml
-    disablePlugins:
-      - mellanox
-    ```
+<div class="title">
 
-    **Option 2** — If the `SriovOperatorConfig` resource is already created, patch it by entering the following command:
+Verification
 
-    ``` terminal
-    $ oc patch sriovoperatorconfig default \
-      -n openshift-sriov-network-operator \
-      --type=merge \
-      -p '{"spec":{"disablePlugins":["mellanox"]}}'
-    ```
-
-    </div>
+</div>
 
 - To verify that the Operator is installed, enter the following command and then check that the output shows `Succeeded` for the Operator:
 
@@ -103,13 +128,33 @@ You can use the CLI to install the SR-IOV Network Operator. By using the CLI, yo
     -o custom-columns=Name:.metadata.name,Phase:.status.phase
   ```
 
+</div>
+
 # Use the web console to install the SR-IOV Network Operator
 
 You can use the web console to install the SR-IOV Network Operator. By using the web console, you can deploy the Operator and manage SR-IOV network devices and attachments directly from a graphical interface without having to use the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an account with `cluster-admin` privileges.
 
 - You installed a cluster on bare-metal hardware, and you ensured that cluster nodes have hardware that supports SR-IOV.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the SR-IOV Network Operator:
 
@@ -121,34 +166,36 @@ You can use the web console to install the SR-IOV Network Operator. By using the
 
     4.  Click **Install**.
 
-        <div class="important">
+        > [!IMPORTANT]
+        > The following configuration applies only to IBM Z `s390x` systems and is required:
+        >
+        > The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+        >
+        > To disable the Mellanox plugin, patch the `SriovOperatorConfig` resource by entering the following command:
+        >
+        > ``` terminal
+        > $ oc patch sriovoperatorconfig default \
+        >   -n openshift-sriov-network-operator \
+        >   --type=merge \
+        >   -p '{"spec":{"disablePlugins":["mellanox"]}}'
+        > ```
 
-        The following configuration applies only to IBM Z `s390x` systems and is required:
+</div>
 
-        The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+<div>
 
-        To disable the Mellanox plugin, patch the `SriovOperatorConfig` resource by entering the following command:
+<div class="title">
 
-        ``` terminal
-        $ oc patch sriovoperatorconfig default \
-          -n openshift-sriov-network-operator \
-          --type=merge \
-          -p '{"spec":{"disablePlugins":["mellanox"]}}'
-        ```
+Verification
 
-        </div>
-
-<!-- -->
+</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
 2.  Ensure that **SR-IOV Network Operator** is listed in the **openshift-sriov-network-operator** project with a **Status** of **InstallSucceeded**.
 
-    <div class="note">
-
-    During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
-
-    </div>
+    > [!NOTE]
+    > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
 
 3.  If the Operator does not show as installed, complete any of the following steps to troubleshoot the issue:
 
@@ -162,11 +209,10 @@ You can use the web console to install the SR-IOV Network Operator. By using the
       $ oc annotate ns/openshift-sriov-network-operator workload.openshift.io/allowed=management
       ```
 
-      <div class="note">
+      > [!NOTE]
+      > For single-node OpenShift clusters, the annotation `workload.openshift.io/allowed=management` is required for the namespace.
 
-      For single-node OpenShift clusters, the annotation `workload.openshift.io/allowed=management` is required for the namespace.
-
-      </div>
+</div>
 
 # Additional resources
 

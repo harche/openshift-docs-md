@@ -4,8 +4,18 @@ The Assisted Installer is a user-friendly installation solution offered on the H
 
 For access to the Assisted Installer user interface and documentation, see *Additional resources*.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Assisted Installer user interface](https://console.redhat.com/openshift/assisted-installer/clusters/~new)
 
 - [Assisted Installer documentation](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
 - [Red Hat Hybrid Cloud Console](https://console.redhat.com)
+
+</div>

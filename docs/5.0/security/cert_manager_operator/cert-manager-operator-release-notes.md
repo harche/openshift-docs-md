@@ -76,13 +76,10 @@ Version `v1.20.0` of the cert-manager Operator for Red Hat OpenShift is based on
 
 ## New features and enhancements
 
-<div class="important">
-
-TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 TrustManager Technology Preview no longer requires a cluster preview FeatureSet
 With this release, the cert-manager Operator for Red Hat OpenShift no longer requires the `featuregates.config.openshift.io/cluster` object to use a preview `FeatureSet`, such as `TechPreviewNoUpgrade`, in order to enable the TrustManager Technology Preview operand.
@@ -137,19 +134,13 @@ TLS arguments are applied per operand component as follows:
 
   This feature is gated by the `TLSAdherence` feature gate. To use this feature, you must enable the `TechPreviewNoUpgrade` feature set. For more information, see [Understanding feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling).
 
-  <div class="note">
+  > [!NOTE]
+  > Elliptic curve preferences are not configurable because cert-manager does not yet support specifying curve preferences upstream.
 
-  Elliptic curve preferences are not configurable because cert-manager does not yet support specifying curve preferences upstream.
-
-  </div>
-
-<div class="important">
-
-{FeatureName} is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> {FeatureName} is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Fixed issues
 

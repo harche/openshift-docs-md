@@ -14,7 +14,17 @@ The hosted control planes feature is enabled by default.
 
 You can use the hosted control plane command-line interface, `hcp`, to create an OpenShift Container Platform hosted cluster. The hosted cluster is automatically imported as a managed cluster. If you want to disable this automatic import feature, see "Disabling the automatic import of hosted clusters into multicluster engine Operator".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
+
+</div>
 
 # Prerequisites to deploy hosted control planes on OpenShift Virtualization
 
@@ -55,11 +65,8 @@ To create an OpenShift Container Platform cluster on OpenShift Virtualization, y
 
 - For optimal network performance, you are using a network maximum transmission unit (MTU) of 9000 or greater on the OpenShift Container Platform cluster that hosts the KubeVirt virtual machines. If you use a lower MTU setting, network latency and the throughput of the hosted pods are affected. Enable multiqueue on node pools only when the MTU is 9000 or greater.
 
-  <div class="important">
-
-  You cannot change the MTU value for your cluster as a postinstallation task.
-
-  </div>
+  > [!IMPORTANT]
+  > You cannot change the MTU value for your cluster as a postinstallation task.
 
 - The multicluster engine Operator has at least one managed OpenShift Container Platform cluster. The `local-cluster` is automatically imported. For more information about the `local-cluster`, see "Advanced configuration" in the multicluster engine Operator documentation. You can check the status of your hub cluster by running the following command:
 
@@ -73,7 +80,13 @@ To create an OpenShift Container Platform cluster on OpenShift Virtualization, y
 
 - Do not create a hosted cluster in the namespace of a multicluster engine Operator managed cluster.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing OpenShift Virtualization using the web console](../../virt/install/installing-virt.xml#installing-virt-web)
 
@@ -88,6 +101,8 @@ To create an OpenShift Container Platform cluster on OpenShift Virtualization, y
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
 - [Persistent storage using Logical Volume Manager Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#persistent-storage-using-lvms)
+
+</div>
 
 ## OpenShift Virtualization firewall and port requirements
 
@@ -121,19 +136,18 @@ While the management cluster for hosted cluster virtual machines (VMs) is underg
 
 As a result, the management cluster can be updated without affecting the availability and operation of the KubeVirt platform hosted clusters.
 
-<div class="important">
-
-The live migration of KubeVirt VMs is enabled by default provided that the VMs use `ReadWriteMany` (RWX) storage for both the root volume and the storage classes that are mapped to the `kubevirt-csi` CSI provider.
-
-</div>
+> [!IMPORTANT]
+> The live migration of KubeVirt VMs is enabled by default provided that the VMs use `ReadWriteMany` (RWX) storage for both the root volume and the storage classes that are mapped to the `kubevirt-csi` CSI provider.
 
 You can verify that the VMs in a node pool are capable of live migration by checking the `KubeVirtNodesLiveMigratable` condition in the `status` section of a `NodePool` object.
 
 In the following example, the VMs cannot be live migrated because RWX storage is not used.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration where VMs cannot be live migrated**
+<div class="title">
+
+Example configuration where VMs cannot be live migrated
 
 </div>
 
@@ -150,11 +164,15 @@ In the following example, the VMs cannot be live migrated because RWX storage is
       type: KubeVirtNodesLiveMigratable
 ```
 
+</div>
+
 In the next example, the VMs meet the requirements to be live migrated.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration where VMs can be live migrated**
+<div class="title">
+
+Example configuration where VMs can be live migrated
 
 </div>
 
@@ -167,6 +185,8 @@ In the next example, the VMs meet the requirements to be live migrated.
       type: KubeVirtNodesLiveMigratable
 ```
 
+</div>
+
 While live migration can protect VMs from disruption in normal circumstances, events such as infrastructure node failure can result in a hard restart of any VMs that are hosted on the failed node. For live migration to be successful, the source node that a VM is hosted on must be working correctly.
 
 When the VMs in a node pool cannot be live migrated, workload disruption might occur on the hosted cluster during maintenance on the management cluster. By default, the hosted control planes controllers try to drain the workloads that are hosted on KubeVirt VMs that cannot be live migrated before the VMs are stopped. Draining the hosted cluster nodes before stopping the VMs allows pod disruption budgets to protect workload availability within the hosted cluster.
@@ -175,7 +195,25 @@ When the VMs in a node pool cannot be live migrated, workload disruption might o
 
 Before you can create a hosted cluster on the KubeVirt platform, you must have the MetalLB load balancer configured.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the MetalLB Operator. For more information, see "Installing the MetalLB Operator".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `MetalLB` resource by saving the following sample YAML content in the `configure-metallb.yaml` file:
 
@@ -193,15 +231,19 @@ Before you can create a hosted cluster on the KubeVirt platform, you must have t
     $ oc apply -f configure-metallb.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     metallb.metallb.io/metallb created
     ```
+
+    </div>
 
 3.  Create a `IPAddressPool` resource by saving the following sample YAML content in the `create-ip-address-pool.yaml` file:
 
@@ -224,15 +266,19 @@ Before you can create a hosted cluster on the KubeVirt platform, you must have t
     $ oc apply -f create-ip-address-pool.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     ipaddresspool.metallb.io/metallb created
     ```
+
+    </div>
 
 5.  Create a `L2Advertisement` resource by saving the following sample YAML content in the `l2advertisement.yaml` file:
 
@@ -253,9 +299,11 @@ Before you can create a hosted cluster on the KubeVirt platform, you must have t
     $ oc apply -f l2advertisement.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -263,7 +311,21 @@ Before you can create a hosted cluster on the KubeVirt platform, you must have t
     l2advertisement.metallb.io/metallb created
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
+
+</div>
 
 # Hosted clusters with the KubeVirt platform
 
@@ -273,9 +335,14 @@ With OpenShift Container Platform 4.14 or later, you can create a hosted cluster
 
 To create a hosted cluster on OpenShift Virtualization, you can use the hosted control plane command-line interface (CLI), `hcp`.
 
-<div class="important">
+> [!IMPORTANT]
+> Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
 
-Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -329,9 +396,11 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
     $ oc -n clusters-<hosted-cluster-name> get pods
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -347,7 +416,19 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
     redhat-operators-catalog-9d5fd4d44-z8qqk              1/1     Running   0          66s
     ```
 
+    </div>
+
     A hosted cluster that has worker nodes that are backed by KubeVirt virtual machines typically takes 10-15 minutes to be fully provisioned.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To check the status of the hosted cluster, see the corresponding `HostedCluster` resource by entering the following command:
 
@@ -362,11 +443,21 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
+</div>
 
 ## Creating a hosted cluster with the KubeVirt platform by using external infrastructure
 
@@ -378,9 +469,14 @@ By default, the HyperShift Operator hosts both the control plane pods of the hos
 
 - By default, the management cluster also acts as the infrastructure cluster that hosts VMs. However, for external infrastructure, the management and infrastructure clusters are different.
 
-<div class="important">
+> [!IMPORTANT]
+> Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
 
-Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -388,7 +484,15 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
 - You must have a `kubeconfig` file for the external infrastructure cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the `hcp` command-line interface, place the KubeVirt worker VMs on the infrastructure cluster, use the `--infra-kubeconfig-file` and `--infra-namespace` arguments, as shown in the following example:
 
@@ -419,19 +523,34 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
   After you enter the command, the control plane pods are hosted on the management cluster that the HyperShift Operator runs on, and the KubeVirt VMs are hosted on a separate infrastructure cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
+</div>
+
 ## Creating a hosted cluster by using the console
 
 If you prefer to work in the OpenShift Container Platform console instead of the CLI, you can create a hosted cluster on the KubeVirt platform by using the console.
 
-<div class="note">
+> [!NOTE]
+> If you want to use predefined values to automatically populate fields in the console, you can create a OpenShift Virtualization credential. For more information, see "Creating a credential for an on-premises environment".
 
-If you want to use predefined values to automatically populate fields in the console, you can create a OpenShift Virtualization credential. For more information, see "Creating a credential for an on-premises environment".
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -447,11 +566,8 @@ If you want to use predefined values to automatically populate fields in the con
 
     On the **Cluster details** page, the pull secret is your OpenShift Container Platform pull secret that you use to access OpenShift Container Platform resources. If you selected a OpenShift Virtualization credential, the pull secret is automatically populated.
 
-    <div class="important">
-
-    Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
-
-    </div>
+    > [!IMPORTANT]
+    > Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
 
 6.  On the **Node pools** page, expand the **Networking options** section and configure the networking options for your node pool:
 
@@ -463,13 +579,31 @@ If you want to use predefined values to automatically populate fields in the con
 
     The **Hosted cluster** view is displayed.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Monitor the deployment of the hosted cluster in the **Hosted cluster** view. If you do not see information about the hosted cluster, ensure that **All Clusters** is selected, and click the cluster name.
 
 2.  Wait until the control plane components are ready. This process can take a few minutes.
 
 3.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
@@ -479,17 +613,16 @@ If you want to use predefined values to automatically populate fields in the con
 
 - [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-virt.xml#hcp-virt-access_hcp-manage-virt)
 
+</div>
+
 # Capabilities for hosted clusters
 
 To reduce resource consumption and prevent unnecessary Operators and operands from being deployed, administrators can enable or disable optional OpenShift Container Platform components when they create a hosted cluster.
 
 When capabilities are not specified on a `HostedCluster` resource, the cluster uses the OpenShift Container Platform version’s `DefaultCapabilitySet` settings, excluding the `baremetal` capability. As a result, most optional components are enabled by default.
 
-<div class="important">
-
-Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
-
-</div>
+> [!IMPORTANT]
+> Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
 
 ## Capabilities that you can enable or disable for a hosted cluster
 
@@ -497,15 +630,15 @@ Familiarize yourself with the supported capabilities that you can enable or disa
 
 The capabilities are described in the following table:
 
-| Capability          | Description                                                                                                                                                        |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ImageRegistry`     | The OpenShift Image Registry Operator and its operands, including cloud storage infrastructure, such as S3 buckets and Identity and Access Management (IAM) users. |
-| `openshift-samples` | The OpenShift Samples Operator, which manages example `ImageStreams` and templates.                                                                                |
-| `Insights`          | The Insights Operator, which collects and uploads cluster telemetry data.                                                                                          |
-| `baremetal`         | The Bare Metal Infrastructure Operator. This capability is excluded from the default set. If needed, you must explicitly enable it.                                |
-| `Console`           | The OpenShift Web Console Operator and its operands.                                                                                                               |
-| `NodeTuning`        | The Node Tuning Operator, which manages node-level performance tuning by using TuneD and performance profiles.                                                     |
-| `Ingress`           | The OpenShift Ingress Operator, which manages the default router of the cluster.                                                                                   |
+| Capability | Description |
+|----|----|
+| `ImageRegistry` | The OpenShift Image Registry Operator and its operands, including cloud storage infrastructure, such as S3 buckets and Identity and Access Management (IAM) users. |
+| `openshift-samples` | The OpenShift Samples Operator, which manages example `ImageStreams` and templates. |
+| `Insights` | The Insights Operator, which collects and uploads cluster telemetry data. |
+| `baremetal` | The Bare Metal Infrastructure Operator. This capability is excluded from the default set. If needed, you must explicitly enable it. |
+| `Console` | The OpenShift Web Console Operator and its operands. |
+| `NodeTuning` | The Node Tuning Operator, which manages node-level performance tuning by using TuneD and performance profiles. |
+| `Ingress` | The OpenShift Ingress Operator, which manages the default router of the cluster. |
 
 The following rules apply when you combine capability settings:
 
@@ -525,13 +658,18 @@ The `baremetal` capability is excluded from the default set. You can add it to t
 
 To reduce unnecessary resource consumption, you can control which optional capabilities are enabled for a hosted cluster when you create the cluster.
 
-<div class="important">
-
-Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
-
-</div>
+> [!IMPORTANT]
+> Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
 
 You can specify which capabilities are enabled by either using the `hcp` command-line interface (CLI) or by setting the `HostedCluster` manifest.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To specify which capabilities are enabled in a hosted cluster by using the CLI, you can add the `--disable-cluster-capabilities` flag, the `--enable-cluster-capabilities` flag, or both. The following example shows how to disable the `ImageRegistry`, `Console`, and `Ingress` capabilities and enable the `baremetal` capability while you create a hosted cluster on AWS by using the `hcp` command-line interface:
 
@@ -610,6 +748,8 @@ You can specify which capabilities are enabled by either using the `hcp` command
       # ...
     ```
 
+</div>
+
 # Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 
 Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it.
@@ -628,6 +768,14 @@ As a result, a hosted cluster that is named `guest` and that runs on that underl
 *.apps.guest.apps.mgmt-cluster.example.com
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - For the default ingress DNS to work properly, the cluster that hosts the virtual machines must allow wildcard DNS routes. You can configure this behavior by entering the following command:
 
   ``` terminal
@@ -636,11 +784,10 @@ As a result, a hosted cluster that is named `guest` and that runs on that underl
     -p '[{ "op": "add", "path": "/spec/routeAdmission", "value": {wildcardPolicy: "WildcardsAllowed"}}]'
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
 
-  When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
-
-  </div>
+</div>
 
 ## Defining a custom DNS name
 
@@ -656,11 +803,27 @@ You might want to define a different DNS name for the following reasons:
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -687,13 +850,12 @@ You can define a DNS name either during your initial setup or during postinstall
 
   A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-  <div class="note">
-
-  Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
-
-  </div>
+  > [!NOTE]
+  > Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
 
   If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
+
+</div>
 
 # Customized ingress and DNS behavior
 
@@ -704,6 +866,14 @@ This option requires manual configuration steps during creation and involves thr
 ## Creating a hosted cluster that specifies the base domain
 
 If you do not want to use the default ingress and DNS behavior, you can configure a KubeVirt hosted cluster with a unique base domain at creation time.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the cluster by entering the following command:
 
@@ -743,7 +913,15 @@ If you do not want to use the default ingress and DNS behavior, you can configur
 
       As a result, the hosted cluster has an ingress wildcard that is configured for the cluster name and the base domain, for example, `.apps.example.hypershift.lab`. The hosted cluster remains in `Partial` status because after you create a hosted cluster with unique base domain, you must configure the required DNS records and load balancer.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the status of your hosted cluster by entering the following command:
 
@@ -751,9 +929,11 @@ If you do not want to use the default ingress and DNS behavior, you can configur
     $ oc get --namespace clusters hostedclusters
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -761,6 +941,8 @@ If you do not want to use the default ingress and DNS behavior, you can configur
     NAME            VERSION   KUBECONFIG                       PROGRESS   AVAILABLE   PROGRESSING   MESSAGE
     example                   example-admin-kubeconfig         Partial    True        False         The hosted control plane is available
     ```
+
+    </div>
 
 2.  Access the cluster by entering the following commands:
 
@@ -773,9 +955,11 @@ If you do not want to use the default ingress and DNS behavior, you can configur
     $ oc --kubeconfig <hosted_cluster_name>-kubeconfig get co
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -785,21 +969,30 @@ If you do not want to use the default ingress and DNS behavior, you can configur
     ingress                                    <4.x.0>     True        False         True       28m     The "default" ingress controller reports Degraded=True: DegradedConditions: One or more other status conditions indicate a degraded state: CanaryChecksSucceeding=False (CanaryChecksRepetitiveFailures: Canary route checks for the default ingress controller are failing)
     ```
 
+    </div>
+
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
 3.  To fix any errors in the output, complete the steps in "Setting up the load balancer" and "Setting up a wildcard DNS".
 
-    <div class="note">
+    > [!NOTE]
+    > If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
 
-    If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
-
-    </div>
+</div>
 
 ## Setting up the load balancer
 
 Set up the load balancer service that routes ingress traffic to the KubeVirt VMs and assigns a wildcard DNS entry to the load balancer IP address.
 
 When you create a `LoadBalancer` service on an OpenShift Virtualization hosted cluster, a mirror `LoadBalancer` service is automatically created and configured on the management cluster to expose the service. As a result, the hosted cluster `LoadBalancer` services are exposed through the same technology that the management cluster has configured for its own `LoadBalancer` services, such as MetalLB.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  A `NodePort` service that exposes the hosted cluster ingress already exists. You can export the node ports and create the load balancer service that targets those ports.
 
@@ -860,9 +1053,19 @@ When you create a `LoadBalancer` service on an OpenShift Virtualization hosted c
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
 ## Setting up a wildcard DNS
 
 If you are customizing the ingress and DNS for your hosted cluster, you need to set up a wildcard DNS record or CNAME that references the external IP of the load balancer service.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the external IP address by entering the following command:
 
@@ -871,15 +1074,19 @@ If you are customizing the ingress and DNS for your hosted cluster, you need to 
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     192.168.20.30
     ```
+
+    </div>
 
 2.  Configure a wildcard DNS entry that references the external IP address. View the following example DNS entry:
 
@@ -889,9 +1096,11 @@ If you are customizing the ingress and DNS for your hosted cluster, you need to 
 
     The DNS entry must be able to route inside and outside of the cluster.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **DNS resolutions example**
+    <div class="title">
+
+    DNS resolutions example
 
     </div>
 
@@ -901,15 +1110,29 @@ If you are customizing the ingress and DNS for your hosted cluster, you need to 
     192.168.20.30
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check that hosted cluster status has moved from `Partial` to `Completed` by entering the following command:
 
   ``` terminal
   $ oc get --namespace clusters hostedclusters
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -918,7 +1141,11 @@ If you are customizing the ingress and DNS for your hosted cluster, you need to 
   example         <4.x.0>     example-admin-kubeconfig         Completed   True        False         The hosted control plane is available
   ```
 
+  </div>
+
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
+
+</div>
 
 # Additional networks, guaranteed CPUs, and VM scheduling for node pools
 
@@ -928,9 +1155,14 @@ You can configure additional networks for node pools, request a guaranteed CPU a
 
 By default, nodes generated by a node pool are attached to the pod network. You can attach additional networks to the nodes by using `NetworkAttachmentDefinitions`.
 
-<div class="important">
+> [!IMPORTANT]
+> You can connect compute nodes to multiple networks that have a Linux bridge or a user-defined network (UDN) that uses the localnet topology. Red Hat does not support connecting compute nodes to multiple UDNs that use a layer 2 or a layer 3 overlay topology.
 
-You can connect compute nodes to multiple networks that have a Linux bridge or a user-defined network (UDN) that uses the localnet topology. Red Hat does not support connecting compute nodes to multiple UDNs that use a layer 2 or a layer 3 overlay topology.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -967,9 +1199,19 @@ You can connect compute nodes to multiple networks that have a Linux bridge or a
   `namespace/name`
   Specifies the value of the `--additional-network` argument to `name:<namespace/name>`. Replace `<namespace/name>` with a namespace and name of your `NetworkAttachmentDefinitions`.
 
+</div>
+
 ### Using an additional network as default
 
 You can add your additional network as a default network for the nodes by disabling the default pod network.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To add an additional network as default to your nodes, run the following command:
 
@@ -998,9 +1240,19 @@ You can add your additional network as a default network for the nodes by disabl
 
   - `--additional-network` specifies the additional network that you want to add to your nodes, for example, `name:my-namespace/my-network`.
 
+</div>
+
 ## Requesting guaranteed CPU resources
 
 By default, KubeVirt VMs might share their CPUs with other workloads on a node. This might impact performance of a VM. To avoid the performance impact, you can request a guaranteed CPU access for VMs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To request guaranteed CPU resources, set the `--qos-class` argument to `Guaranteed` by running the following command:
 
@@ -1026,9 +1278,19 @@ By default, KubeVirt VMs might share their CPUs with other workloads on a node. 
 
   - `--qos-class Guaranteed` guarantees that the specified number of CPU resources are assigned to VMs.
 
+</div>
+
 ## Scheduling KubeVirt VMs on a set of nodes
 
 By default, KubeVirt virtual machines (VMs) created by a node pool are scheduled to any available nodes. You can schedule KubeVirt VMs on a specific set of nodes that has enough capacity to run the VM.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To schedule KubeVirt VMs within a node pool on a specific set of nodes, use the `--vm-node-selector` argument by running the following command:
 
@@ -1054,9 +1316,19 @@ By default, KubeVirt virtual machines (VMs) created by a node pool are scheduled
 
   - `--vm-node-selector` defines a specific set of nodes that contains the key-value pairs. Replace `<label_key>` with the keys of your labels and replace `<label_value>` with the values of your labels.
 
+</div>
+
 # Scaling a node pool
 
 You can manually scale a node pool for a hosted cluster on OpenShift Virtualization by using the `oc scale` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command:
 
@@ -1074,9 +1346,11 @@ You can manually scale a node pool for a hosted cluster on OpenShift Virtualizat
     $ oc --kubeconfig $CLUSTER_NAME-kubeconfig get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1089,11 +1363,33 @@ You can manually scale a node pool for a hosted cluster on OpenShift Virtualizat
     example-twxns         Ready    worker   88s     v1.27.4+18eadca
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Scaling up and down workloads in a hosted cluster](../../hosted_control_planes/hcp-machine-config.xml#scale-up-down-autoscaler-hcp_hcp-machine-config)
+
+</div>
 
 ## Adding node pools
 
 You can create node pools for a hosted cluster by specifying a name, number of replicas, and any additional information, such as memory and CPU requirements.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If the management cluster has a cluster-wide proxy configured, you must configure proxy settings in the `HostedCluster` resource by completing the following steps:
 
@@ -1165,9 +1461,11 @@ You can create node pools for a hosted cluster by specifying a name, number of r
     $ oc get nodepools --namespace <hosted_cluster_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1177,9 +1475,19 @@ You can create node pools for a hosted cluster by specifying a name, number of r
     example-extra-cpu         example         2                               False         False                  True              True             Minimum availability requires 2 replicas, current 0 available
     ```
 
+    </div>
+
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After some time, you can check the status of the node pool by entering the following command:
 
@@ -1187,9 +1495,11 @@ You can create node pools for a hosted cluster by specifying a name, number of r
     $ oc --kubeconfig $CLUSTER_NAME-kubeconfig get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1204,15 +1514,19 @@ You can create node pools for a hosted cluster by specifying a name, number of r
     example-extra-cpu-zr8mj   Ready    worker   102s    v1.27.4+18eadca
     ```
 
+    </div>
+
 2.  Verify that the node pool is in the status that you expect by entering this command:
 
     ``` terminal
     $ oc get nodepools --namespace <hosted_cluster_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1222,13 +1536,35 @@ You can create node pools for a hosted cluster by specifying a name, number of r
     example-extra-cpu         example         2               2               False         False        <4.x.0>
     ```
 
+    </div>
+
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Scaling down the data plane to zero](../../hosted_control_planes/hcp-machine-config.xml#scale-down-data-plane_hcp-machine-config)
+
+</div>
 
 # Verifying hosted cluster creation on OpenShift Virtualization
 
 After you create a hosted cluster on OpenShift Virtualization, verify that it was successfully created.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the `HostedCluster` resource transitioned to the `completed` state by entering the following command:
 
@@ -1236,9 +1572,11 @@ After you create a hosted cluster on OpenShift Virtualization, verify that it wa
     $ oc get --namespace clusters hostedclusters <hosted_cluster_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1246,6 +1584,8 @@ After you create a hosted cluster on OpenShift Virtualization, verify that it wa
     NAMESPACE   NAME      VERSION   KUBECONFIG                 PROGRESS    AVAILABLE   PROGRESSING   MESSAGE
     clusters    example   4.12.2    example-admin-kubeconfig   Completed   True        False         The hosted control plane is available
     ```
+
+    </div>
 
 2.  Verify that all the cluster operators in the hosted cluster are online by entering the following commands:
 
@@ -1258,9 +1598,11 @@ After you create a hosted cluster on OpenShift Virtualization, verify that it wa
     $ oc get co --kubeconfig=<hosted_cluster_name>-kubeconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1287,3 +1629,7 @@ After you create a hosted cluster on OpenShift Virtualization, verify that it wa
     service-ca                                 4.12.2   True        False         False      4m41s
     storage                                    4.12.2   True        False         False      4m43s
     ```
+
+    </div>
+
+</div>

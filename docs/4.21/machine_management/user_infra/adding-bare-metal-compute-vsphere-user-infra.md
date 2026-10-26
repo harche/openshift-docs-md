@@ -2,19 +2,13 @@ To support workloads requiring direct hardware access, extend your existing VMwa
 
 This procedure supports clusters installed using installer-provisioned infrastructure, user-provisioned infrastructure, or the Assisted Installer.
 
-<div class="important">
+> [!IMPORTANT]
+> Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-<div class="important">
-
-Bare-metal compute machines added to a vSphere cluster are unmanaged by the Machine API. You cannot use compute machine sets or the cluster autoscaler to manage these compute machines. Lifecycle tasks such as provisioning and replacement must be performed manually.
-
-</div>
+> [!IMPORTANT]
+> Bare-metal compute machines added to a vSphere cluster are unmanaged by the Machine API. You cannot use compute machine sets or the cluster autoscaler to manage these compute machines. Lifecycle tasks such as provisioning and replacement must be performed manually.
 
 # Prerequisites
 
@@ -30,23 +24,35 @@ Bare-metal compute machines added to a vSphere cluster are unmanaged by the Mach
 
 - You have obtained the Red Hat Enterprise Linux CoreOS (RHCOS) ISO image that matches your cluster version. You can download this from the **Cluster Details** page on the Red Hat Hybrid Cloud Console or extract it from the cluster payload.
 
-<div class="warning">
+> [!WARNING]
+> To use this feature, you must explicitly disable the native vSphere Container Storage Interface (CSI) driver for the entire cluster. This means existing vSphere virtual machines will lose the ability to provision or attach vSphere volumes. You must ensure that all workloads (virtual and physical) are migrated to an alternative storage solution before proceeding.
 
-To use this feature, you must explicitly disable the native vSphere Container Storage Interface (CSI) driver for the entire cluster. This means existing vSphere virtual machines will lose the ability to provision or attach vSphere volumes. You must ensure that all workloads (virtual and physical) are migrated to an alternative storage solution before proceeding.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Disabling and enabling storage on vSphere](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-disable-storage-procedure_persistent-storage-csi-vsphere)
 
+</div>
+
 # Create RHCOS machines using an ISO image
 
 To add bare-metal compute machines to your VMware vSphere cluster, you must manually provision them using an RHCOS ISO image and the `coreos-installer` utility.
 
-<div class="important">
+> [!IMPORTANT]
+> Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Bare-metal nodes on vSphere clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -57,6 +63,16 @@ For more information about the support scope of Red Hat Technology Preview featu
 - You have disabled the vSphere CSI driver.
 
 - The OpenShift CLI (`oc`) is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the Ignition config file for the worker node type from the cluster by running the following command:
 
@@ -99,17 +115,47 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 7.  Monitor the boot process. After the machine reboots, it attempts to join the cluster and generates certificate signing requests (CSRs).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the new compute machine has joined the cluster and is in the `Ready` state:
 
   ``` terminal
   $ oc get nodes
   ```
 
+</div>
+
 # Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You added machines to your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -117,9 +163,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -130,13 +178,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     master-2  Ready     master  64m  v1.34.2
     ```
 
+    </div>
+
     The output lists all of the machines that you created.
 
-    <div class="note">
-
-    The preceding output might not include the compute nodes until you approve some CSRs.
-
-    </div>
+    > [!NOTE]
+    > The preceding output might not include the compute nodes until you approve some CSRs.
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -144,9 +191,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -157,21 +206,17 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     ...
     ```
 
+    </div>
+
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    <div class="note">
+    > [!NOTE]
+    > You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
-
-    </div>
-
-    <div class="note">
-
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
-
-    </div>
+    > [!NOTE]
+    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -190,11 +235,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      <div class="note">
-
-      Some Operators might not become available until you approve some CSRs.
-
-      </div>
+      > [!NOTE]
+      > Some Operators might not become available until you approve some CSRs.
 
 4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
@@ -202,9 +244,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -214,6 +258,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
+
+    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -240,9 +286,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -255,11 +303,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     worker-1  Ready     worker  11m  v1.34.2
     ```
 
-    <div class="note">
-
-    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
-
     </div>
+
+    > [!NOTE]
+    > You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
+
+</div>
 
 # Remove the cloud provider uninitialized taint from bare-metal nodes
 
@@ -267,9 +316,14 @@ After a bare-metal node joins a VMware vSphere cluster, the vSphere Cloud Contro
 
 The vSphere CCM attempts to initialize each node by searching vCenter for a matching virtual machine. Because a bare-metal node is physical hardware and not a VM in vCenter, the CCM cannot find a match and never removes the taint automatically.
 
-<div class="note">
+> [!NOTE]
+> The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors are expected and do not indicate a problem with the node or the cluster.
 
-The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors are expected and do not indicate a problem with the node or the cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -279,7 +333,15 @@ The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors 
 
 - You have cluster administrator privileges.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Remove the `node.cloudprovider.kubernetes.io/uninitialized` taint from each bare-metal node by running the following command:
 
@@ -289,7 +351,15 @@ The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors 
 
   Replace `<node_name>` with the name of the bare-metal node as shown in the output of `oc get nodes`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the taint has been removed by running the following command and confirming that `node.cloudprovider.kubernetes.io/uninitialized` does not appear in the output:
 
@@ -298,3 +368,5 @@ The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors 
   ```
 
   Replace `<node_name>` with the name of the bare-metal node as shown in the output of `oc get nodes`.
+
+</div>

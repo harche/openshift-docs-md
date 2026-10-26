@@ -2,13 +2,10 @@ Use OpenShift API for Data Protection (OADP) to safeguard applications, applicat
 
 However, OADP does not serve as a disaster recovery solution for `etcd` or OpenShift Operators.
 
-<div class="important">
-
-OADP support is applicable to customer workload namespaces and cluster scope resources.
-
-Full cluster `backup` and `restore` are not supported.
-
-</div>
+> [!IMPORTANT]
+> OADP support is applicable to customer workload namespaces and cluster scope resources.
+>
+> Full cluster `backup` and `restore` are not supported.
 
 # OpenShift API for Data Protection APIs
 
@@ -42,7 +39,7 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <col style="width: 20%" />
 </colgroup>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Version</p></td>
 <td style="text-align: left;"><p>OpenShift Container Platform version</p></td>
 <td style="text-align: left;"><p>General availability</p></td>
@@ -51,7 +48,7 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>Extended Update Support (EUS)</p></td>
 <td style="text-align: left;"><p>Extended Update Support Term 2 (EUS Term 2)</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>1.6</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.22</p></li>
@@ -62,7 +59,7 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>30 Jun 2028</p></td>
 <td style="text-align: left;"><p>30 Jun 2029</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>1.5</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.19</p></li>
@@ -76,7 +73,7 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>30 Jun 2029</p>
 <p>EUS must be on OpenShift Container Platform 4.21</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>EUS Term 2 must be on OpenShift Container Platform 4.21</p></td>
 <td style="text-align: left;"><p>1.4</p></td>
 <td style="text-align: left;"><ul>
@@ -92,7 +89,7 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>27 Jun 2026</p>
 <p>EUS must be on OpenShift Container Platform 4.16</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>27 Jun 2027</p>
 <p>EUS Term 2 must be on OpenShift Container Platform 4.16</p></td>
 <td style="text-align: left;"><p>1.3</p></td>
@@ -111,8 +108,6 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 </tbody>
 </table>
 
-Supported versions of OADP
-
 ### Unsupported versions of the OADP Operator
 
 |         |                      |                    |                   |
@@ -128,6 +123,14 @@ For more details about EUS, see [Extended Update Support](https://access.redhat.
 
 For more details about EUS Term 2, see [Extended Update Support Term 2](https://access.redhat.com/support/policy/updates/openshift#eust2).
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Backup](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
 - [Restore](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications)
@@ -139,3 +142,5 @@ For more details about EUS Term 2, see [Extended Update Support Term 2](https://
 - [VolumeSnapshotLocation](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-pvs-csi-doc.xml#oadp-backing-up-pvs-csi-doc)
 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
+
+</div>

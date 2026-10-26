@@ -42,11 +42,8 @@ Run:
 $ oc -n openshift-file-integrity get pods -lapp=aide-worker-fileintegrity
 ```
 
-<div class="note">
-
-Adding `-owide` includes the IP address of the node that the pod is running on.
-
-</div>
+> [!NOTE]
+> Adding `-owide` includes the IP address of the node that the pod is running on.
 
 To check the logs of the daemon pods, run `oc logs`.
 

@@ -10,29 +10,54 @@ You can import hosted clusters into a location other than the local multicluster
 
 In this topology, you must update your hosted clusters by using the command-line interface or the console of the local multicluster engine for Kubernetes Operator where the cluster is hosted. You cannot update the hosted clusters through the RHACM hub cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating node pools in a hosted cluster](../hosted_control_planes/hcp-updating.xml#hcp-update-node-pools_hcp-updating)
 
 - [Updating a control plane in a hosted cluster](../hosted_control_planes/hcp-updating.xml#hcp-update-ocp-hc_hcp-updating)
 
 - [Discovering multicluster engine for Kubernetes Operator hosted clusters in Red Hat Advanced Cluster Management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#discover-hosted-acm)
 
+</div>
+
 # Manually importing hosted clusters
 
 Typically, hosted clusters are automatically imported to multicluster engine Operator after the hosted control plane becomes available. However, you can import hosted clusters manually as required.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the console, click **Infrastructure** → **Clusters** and select the hosted cluster that you want to import.
 
 2.  Click **Import hosted cluster**.
 
-    <div class="note">
+    > [!NOTE]
+    > For your *discovered* hosted cluster, you can also import from the console, but the cluster must be in an upgradeable state. Import on your cluster is disabled if the hosted cluster is not in an upgradeable state because the hosted control plane is not available. Click **Import** to begin the process. The status is `Importing` while the cluster receives updates and then changes to `Ready`.
 
-    For your *discovered* hosted cluster, you can also import from the console, but the cluster must be in an upgradeable state. Import on your cluster is disabled if the hosted cluster is not in an upgradeable state because the hosted control plane is not available. Click **Import** to begin the process. The status is `Importing` while the cluster receives updates and then changes to `Ready`.
-
-    </div>
+</div>
 
 # Manually importing a hosted cluster on AWS
 
 You can import a hosted cluster on Amazon Web Services (AWS) with the command-line interface.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create your `ManagedCluster` resource by using the following sample YAML file:
 
@@ -109,19 +134,26 @@ You can import a hosted cluster on Amazon Web Services (AWS) with the command-li
     $ oc get managedcluster <hosted_cluster_name>
     ```
 
+</div>
+
 # Disabling the automatic import of hosted clusters into multicluster engine Operator
 
 Hosted clusters are automatically imported into multicluster engine Operator after the control plane becomes available. If needed, you can disable the automatic import of hosted clusters.
 
 Any hosted clusters that were previously imported are not affected, even if you disable automatic import. When you upgrade to multicluster engine Operator 2.5 and automatic import is enabled, all hosted clusters that are not imported are automatically imported if their control planes are available.
 
-<div class="note">
-
-If Red Hat Advanced Cluster Management is installed, all Red Hat Advanced Cluster Management add-ons are also enabled.
-
-</div>
+> [!NOTE]
+> If Red Hat Advanced Cluster Management is installed, all Red Hat Advanced Cluster Management add-ons are also enabled.
 
 When automatic import is disabled, only newly created hosted clusters are not automatically imported. Hosted clusters that were already imported are not affected. You can still manually import clusters by using the console or by creating the `ManagedCluster` and `KlusterletAddonConfig` custom resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On the hub cluster, open the `hypershift-addon-deploy-config` specification that is in the `AddonDeploymentConfig` resource in the namespace where multicluster engine Operator is installed by entering the following command:
 
@@ -149,3 +181,5 @@ When automatic import is disabled, only newly created hosted clusters are not au
     ```
 
 3.  To re-enable automatic import, set the value of the `autoImportDisabled` variable to `"false"` or remove the variable from the `AddonDeploymentConfig` resource.
+
+</div>

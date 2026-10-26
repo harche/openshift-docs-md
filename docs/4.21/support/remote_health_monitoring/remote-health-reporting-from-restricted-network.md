@@ -8,15 +8,43 @@ To use the Insights Operator in a restricted network, you must complete the foll
 
 Additionally, you can select to obfuscate the Insights Operator data before data upload.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat Hybrid Cloud Console](https://console.redhat.com)
 
 - [Enabling Insights Operator data obfuscation](../../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#insights-operator-enable-obfuscation_remote-health-reporting-from-restricted-network)
+
+</div>
 
 # Running an Insights Operator gather operation
 
 You must run a gather operation to create an Insights Operator archive.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to OpenShift Container Platform as `cluster-admin`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `gather-job.yaml` using this template:
 
@@ -30,9 +58,11 @@ You must run a gather operation to create an Insights Operator archive.
     $ oc get -n openshift-insights deployment insights-operator -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -53,6 +83,8 @@ You must run a gather operation to create an Insights Operator archive.
             image: registry.ci.openshift.org/ocp/4.15-2023-10-12-212500@sha256:a0aa581400805ad0...
     # ...
     ```
+
+    </div>
 
     The `spec.template.spec.containers.image` field specifies your `insights-operator` image version.
 
@@ -89,9 +121,11 @@ You must run a gather operation to create an Insights Operator archive.
     $ oc describe -n openshift-insights job/insights-operator-job
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -105,6 +139,8 @@ You must run a gather operation to create an Insights Operator archive.
       Normal  SuccessfulCreate  7m18s  job-controller  Created pod: insights-operator-job-<your_job>
     ```
 
+    </div>
+
     Replace `insights-operator-job-<your_job>` with the name of the pod.
 
 6.  Verify that the operation has finished:
@@ -113,15 +149,19 @@ You must run a gather operation to create an Insights Operator archive.
     $ oc logs -n openshift-insights insights-operator-job-<your_job> insights-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     I0407 11:55:38.192084       1 diskrecorder.go:34] Wrote 108 records to disk in 33ms
     ```
+
+    </div>
 
 7.  Save the created archive:
 
@@ -135,15 +175,35 @@ You must run a gather operation to create an Insights Operator archive.
     $ oc delete -n openshift-insights job insights-operator-job
     ```
 
+</div>
+
 # Uploading an Insights Operator archive
 
 You can manually upload an Insights Operator archive to [console.redhat.com](https://console.redhat.com) to diagnose potential issues.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to OpenShift Container Platform as `cluster-admin`.
 
 - You have a workstation with unrestricted internet access.
 
 - You have created a copy of the Insights Operator archive.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Download the `dockerconfig.json` file:
 
@@ -182,9 +242,11 @@ You can manually upload an Insights Operator archive to [console.redhat.com](htt
 
     If the operation is successful, the command returns a `"request_id"` and `"account_number"`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -193,7 +255,17 @@ You can manually upload an Insights Operator archive to [console.redhat.com](htt
     {"request_id":"393a7cf1093e434ea8dd4ab3eb28884c","upload":{"account_number":"6274079"}}%
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Log in to <https://console.redhat.com/openshift>.
 
@@ -209,15 +281,14 @@ You can manually upload an Insights Operator archive to [console.redhat.com](htt
 
     - A list of issues that the Red Hat Lightspeed advisor service has detected, prioritized by risk (low, moderate, important, and critical).
 
+</div>
+
 # Enabling Insights Operator data obfuscation
 
 You can enable obfuscation to mask sensitive and identifiable IPv4 addresses and cluster base domains that the Insights Operator sends to [console.redhat.com](https://console.redhat.com).
 
-<div class="warning">
-
-Although this feature is available, Red Hat recommends keeping obfuscation disabled for a more effective support experience.
-
-</div>
+> [!WARNING]
+> Although this feature is available, Red Hat recommends keeping obfuscation disabled for a more effective support experience.
 
 Obfuscation assigns non-identifying values to cluster IPv4 addresses, and uses a translation table that is retained in memory to change IP addresses to their obfuscated versions throughout the Insights Operator archive before uploading the data to [console.redhat.com](https://console.redhat.com).
 
@@ -225,7 +296,25 @@ For cluster base domains, obfuscation changes the base domain to a hardcoded sub
 
 The following procedure enables obfuscation using the `support` secret in the `openshift-config` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -247,7 +336,15 @@ The following procedure enables obfuscation using the `support` secret in the `o
 
 10. To restart the `insights-operator` pod, click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=), and then click **Delete Pod**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -259,4 +356,16 @@ The following procedure enables obfuscation using the `support` secret in the `o
 
     Alternatively, you can inspect `/insights-operator/gathers.json` in your Insights Operator archive for the value `"is_global_obfuscation_enabled": true`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Showing data collected by the Insights Operator](../../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#insights-operator-showing-data-collected-from-the-cluster_showing-data-collected-by-remote-health-monitoring)
+
+</div>

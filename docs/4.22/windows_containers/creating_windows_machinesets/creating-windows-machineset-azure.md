@@ -121,6 +121,14 @@ Specify the following parameters:
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
@@ -128,6 +136,16 @@ To dynamically manage machine compute resources, you can create your own compute
 - Log in to `oc` as a user with `cluster-admin` permission.
 
 - In disconnected environments, the image specified in the `MachineSet` custom resource (CR) must have the [OpenSSH server v0.0.1.0 installed](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell#install-openssh-for-windows).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -196,11 +214,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -210,6 +225,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -231,6 +256,8 @@ To dynamically manage machine compute resources, you can create your own compute
   ```
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
+
+</div>
 
 # Additional resources
 

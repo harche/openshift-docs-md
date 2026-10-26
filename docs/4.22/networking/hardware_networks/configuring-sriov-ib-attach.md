@@ -58,6 +58,14 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 
 - multiple IP address assignment
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Set `type` to `whereabouts`.
 
 2.  Use `ipRanges` to allocate IP addresses as shown in the following example:
@@ -89,6 +97,16 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 
 3.  Attach the secondary network to a pod. For more information, see "Adding a pod to a secondary network".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that all IP addresses got assigned to the network interfaces within the network namespace of a pod by entering the following command:
 
   ``` yaml
@@ -99,6 +117,8 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 
   `<pod_name>`
   The name of the pod.
+
+</div>
 
 ## Configuration of IP address assignment for a network attachment
 
@@ -120,11 +140,8 @@ For networks requiring `type: dhcp` in their IPAM configuration, ensure the DHCP
 
 In cases where a DHCP server is unavailable in the environment, consider using the Whereabouts IPAM CNI plugin. The Whereabouts CNI provides similar IP address management capabilities without the need for an external DHCP server.
 
-<div class="note">
-
-Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
-
-</div>
+> [!NOTE]
+> Use the Whereabouts CNI plugin when no external DHCP server exists or where static IP address management is preferred. The Whereabouts plugin includes a reconciler daemon to manage stale IP address allocations.
 
 Ensure the periodic renewal of a DHCP lease throughout the lifetime of a container by including a separate daemon, the DHCP IPAM CNI Daemon. To deploy the DHCP IPAM CNI daemon, change the Cluster Network Operator (CNO) configuration to trigger the deployment of this daemon as part of the secondary network setup.
 
@@ -132,42 +149,44 @@ Ensure the periodic renewal of a DHCP lease throughout the lifetime of a contain
 
 The following table describes the configuration for static IP address assignment:
 
-| Field       | Type     | Description                                                                                                                    |
-|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
-| `type`      | `string` | The IPAM address type. The value `static` is required.                                                                         |
-| `addresses` | `array`  | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
-| `routes`    | `array`  | An array of objects specifying routes to configure inside the pod.                                                             |
-| `dns`       | `array`  | Optional: An array of objects specifying the DNS configuration.                                                                |
+| Field | Type | Description |
+|----|----|----|
+| `type` | `string` | The IPAM address type. The value `static` is required. |
+| `addresses` | `array` | An array of objects specifying IP addresses to assign to the virtual interface. Both IPv4 and IPv6 IP addresses are supported. |
+| `routes` | `array` | An array of objects specifying routes to configure inside the pod. |
+| `dns` | `array` | Optional: An array of objects specifying the DNS configuration. |
 
 `ipam` static configuration object
 
 The `addresses` array requires objects with the following fields:
 
-| Field     | Type     | Description                                                                                                                                                                                                 |
-|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Field | Type | Description |
+|----|----|----|
 | `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the subnet mask of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                     |
+| `gateway` | `string` | The default gateway to route egress network traffic to. |
 
 `ipam.addresses[]` array
 
-| Field | Type     | Description                                                                                          |
-|-------|----------|------------------------------------------------------------------------------------------------------|
+| Field | Type | Description |
+|----|----|----|
 | `dst` | `string` | The IP address range in CIDR format, such as `192.168.17.0/24` or `0.0.0.0/0` for the default route. |
-| `gw`  | `string` | The gateway that routes network traffic.                                                             |
+| `gw` | `string` | The gateway that routes network traffic. |
 
 `ipam.routes[]` array
 
-| Field         | Type    | Description                                                                                                                                                                       |
-|---------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent.                                                                                                                  |
-| `domain`      | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
-| `search`      | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query.                                                                 |
+| Field | Type | Description |
+|----|----|----|
+| `nameservers` | `array` | An array of one or more IP addresses where DNS queries get sent. |
+| `domain` | `array` | The default domain to append to a hostname. For example, if the domain is set to `example.com`, a DNS lookup query for `example-host` is rewritten as `example-host.example.com`. |
+| `search` | `array` | An array of domain names to append to an unqualified hostname, such as `example-host`, during a DNS lookup query. |
 
 `ipam.dns` object
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Static IP address assignment configuration example**
+<div class="title">
+
+Static IP address assignment configuration example
 
 </div>
 
@@ -184,21 +203,22 @@ The `addresses` array requires objects with the following fields:
 }
 ```
 
+</div>
+
 ### Dynamic IP address (DHCP) assignment configuration
 
 A pod obtains its original DHCP lease when the pod gets created. The lease must be periodically renewed by a minimal DHCP server deployment running on the cluster.
 
-<div class="important">
-
-For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
-
-</div>
+> [!IMPORTANT]
+> For an Ethernet network attachment, the SR-IOV Network Operator does not create a DHCP server deployment; the Cluster Network Operator is responsible for creating the minimal DHCP server deployment.
 
 To trigger the deployment of the DHCP server, you must create a shim network attachment by editing the Cluster Network Operator configuration, as in the following example:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example shim network attachment definition**
+<div class="title">
+
+Example shim network attachment definition
 
 </div>
 
@@ -224,6 +244,8 @@ spec:
   # ...
 ```
 
+</div>
+
 where:
 
 `type`
@@ -239,11 +261,11 @@ The Whereabouts CNI plugin also supports overlapping IP address ranges and confi
 
 The following table describes the configuration objects for dynamic IP address assignment with Whereabouts:
 
-| Field          | Type     | Description                                                                                                                                                                                                                                                     |
-|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                     |
-| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                        |
-| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                      |
+| Field | Type | Description |
+|----|----|----|
+| `type` | `string` | The IPAM address type. The value `whereabouts` is required. |
+| `range` | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses. |
+| `exclude` | `array` | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned. |
 | `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multitenant environments. |
 
 `ipam` whereabouts configuration parameters
@@ -252,9 +274,11 @@ The following table describes the configuration objects for dynamic IP address a
 
 The following example shows a dynamic address assignment configuration in a NAD file that uses Whereabouts:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Whereabouts dynamic IP address assignment that excludes specific IP address ranges**
+<div class="title">
+
+Whereabouts dynamic IP address assignment that excludes specific IP address ranges
 
 </div>
 
@@ -271,13 +295,17 @@ The following example shows a dynamic address assignment configuration in a NAD 
 }
 ```
 
+</div>
+
 ### Dynamic IP address assignment that uses Whereabouts with overlapping IP address ranges
 
 The following example shows a dynamic IP address assignment that uses overlapping IP address ranges for multitenant networks.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**NetworkAttachmentDefinition 1**
+<div class="title">
+
+NetworkAttachmentDefinition 1
 
 </div>
 
@@ -291,14 +319,18 @@ The following example shows a dynamic IP address assignment that uses overlappin
 }
 ```
 
+</div>
+
 where:
 
 `network_name`
 Optional parameter. If set, must match the `network_name` of `NetworkAttachmentDefinition 2`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**NetworkAttachmentDefinition 2**
+<div class="title">
+
+NetworkAttachmentDefinition 2
 
 </div>
 
@@ -312,6 +344,8 @@ Optional parameter. If set, must match the `network_name` of `NetworkAttachmentD
 }
 ```
 
+</div>
+
 where:
 
 `network_name`
@@ -321,15 +355,30 @@ Optional parameter. If set, must match the `network_name` of `NetworkAttachmentD
 
 You can configure an additional network that uses SR-IOV hardware by creating an `SriovIBNetwork` object. When you create an `SriovIBNetwork` object, the SR-IOV Network Operator automatically creates a `NetworkAttachmentDefinition` object.
 
-<div class="note">
+> [!NOTE]
+> Do not modify or delete an `SriovIBNetwork` object if it is attached to any pods in a `running` state.
 
-Do not modify or delete an `SriovIBNetwork` object if it is attached to any pods in a `running` state.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `SriovIBNetwork` object, and then save the YAML in the `<name>.yaml` file, where `<name>` is a name for this additional network. The object specification might resemble the following example:
 
@@ -368,6 +417,8 @@ Do not modify or delete an `SriovIBNetwork` object if it is attached to any pods
     ``` terminal
     $ oc get net-attach-def -n <namespace>
     ```
+
+</div>
 
 # Runtime configuration for an InfiniBand-based SR-IOV attachment
 
@@ -428,9 +479,27 @@ When a pod is created, a secondary network is attached to the pod. However, if a
 
 The pod must be in the same namespace as the secondary network.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Log in to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add an annotation to the `Pod` object. Only one of the following annotation formats can be used:
 
@@ -527,9 +596,19 @@ The pod must be in the same namespace as the secondary network.
     `k8s.v1.cni.cncf.io/network-status`
     Specifies a JSON array of objects. Each object describes the status of a secondary network attached to the pod. The annotation value is stored as a plain text value.
 
+</div>
+
 ## Expose MTU for vfio-pci SR-IOV devices to pod
 
 After adding a pod to an additional network, you can check that the MTU is available for the SR-IOV network.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check that the pod annotation includes MTU by running the following command:
 
@@ -588,6 +667,8 @@ After adding a pod to an additional network, you can check that the MTU is avail
         }
         }]"
     ```
+
+</div>
 
 # Additional resources
 

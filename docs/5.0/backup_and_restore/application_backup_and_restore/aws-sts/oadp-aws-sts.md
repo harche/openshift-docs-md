@@ -18,6 +18,14 @@ This process is performed in the following two stages:
 
 Configure an Amazon Web Services account to install the OpenShift API for Data Protection (OADP). Prepare the AWS credentials by using the following procedure.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Define the `cluster_name` environment variable by running the following command:
 
     ``` terminal
@@ -82,11 +90,8 @@ Configure an Amazon Web Services account to install the OpenShift API for Data P
 
     2.  Enter the following command to create the policy JSON file and then create the policy:
 
-        <div class="note">
-
-        If the policy ARN is not found, the command creates the policy. If the policy ARN already exists, the `if` statement intentionally skips the policy creation.
-
-        </div>
+        > [!NOTE]
+        > If the policy ARN is not found, the command creates the policy. If the policy ARN already exists, the `if` statement intentionally skips the policy creation.
 
         ``` terminal
         $ if [[ -z "${POLICY_ARN}" ]]; then
@@ -190,33 +195,50 @@ Configure an Amazon Web Services account to install the OpenShift API for Data P
     $ aws iam attach-role-policy --role-name "${ROLE_NAME}" --policy-arn ${POLICY_ARN}
     ```
 
+</div>
+
 # Install the OADP Operator and provide the IAM role
 
 Install OpenShift API for Data Protection (OADP) on an AWS STS cluster. AWS Security Token Service (AWS STS) is a global web service that provides short-term credentials for IAM or federated users.
 
-<div class="important">
+> [!IMPORTANT]
+> Restic is unsupported.
+>
+> Kopia file system backup (FSB) is supported when backing up file systems that do not support Container Storage Interface (CSI) snapshots.
+>
+> Example file systems include the following:
+>
+> - Amazon Elastic File System (EFS)
+>
+> - Network File System (NFS)
+>
+> - `emptyDir` volumes
+>
+> - Local volumes
+>
+> For backing up volumes, OADP on AWS STS recommends native snapshots and Container Storage Interface (CSI) snapshots. Data Mover backups are supported, but can be slower than native snapshots.
+>
+> In an AWS cluster that uses STS authentication, restoring backed-up data in a different AWS region is not supported.
 
-Restic is unsupported.
+<div>
 
-Kopia file system backup (FSB) is supported when backing up file systems that do not support Container Storage Interface (CSI) snapshots.
+<div class="title">
 
-Example file systems include the following:
-
-- Amazon Elastic File System (EFS)
-
-- Network File System (NFS)
-
-- `emptyDir` volumes
-
-- Local volumes
-
-For backing up volumes, OADP on AWS STS recommends native snapshots and Container Storage Interface (CSI) snapshots. Data Mover backups are supported, but can be slower than native snapshots.
-
-In an AWS cluster that uses STS authentication, restoring backed-up data in a different AWS region is not supported.
+Prerequisites
 
 </div>
 
 - An OpenShift Container Platform AWS STS cluster with the required access and tokens. For instructions, see the previous procedure *Preparing AWS credentials for OADP*. If you plan to use two different clusters for backing up and restoring, you must prepare AWS credentials, including `ROLE_ARN`, for each cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an OpenShift Container Platform secret from your AWS token file by entering the following commands:
 
@@ -246,13 +268,10 @@ In an AWS cluster that uses STS authentication, restoring backed-up data in a di
           --from-file=${SCRATCH}/credentials
         ```
 
-        <div class="note">
-
-        In OpenShift Container Platform versions 4.14 and later, the OADP Operator supports a new standardized STS workflow through the Operator Lifecycle Manager (OLM) and Cloud Credentials Operator (CCO). In this workflow, you do not need to create the above secret, you only need to supply the role ARN during the installation of OLM-managed operators using the OpenShift Container Platform web console, for more information see *Installing from the software catalog using the web console*.
-
-        The preceding secret is created automatically by CCO.
-
-        </div>
+        > [!NOTE]
+        > In OpenShift Container Platform versions 4.14 and later, the OADP Operator supports a new standardized STS workflow through the Operator Lifecycle Manager (OLM) and Cloud Credentials Operator (CCO). In this workflow, you do not need to create the above secret, you only need to supply the role ARN during the installation of OLM-managed operators using the OpenShift Container Platform web console, for more information see *Installing from the software catalog using the web console*.
+        >
+        > The preceding secret is created automatically by CCO.
 
 2.  Install the OADP Operator:
 
@@ -308,19 +327,16 @@ In an AWS cluster that uses STS authentication, restoring backed-up data in a di
     gp3-csi (default)   ebs.csi.aws.com         Delete          WaitForFirstConsumer   true                   4d21h
     ```
 
-    <div class="note">
-
-    The following storage classes will work:
-
-    - gp3-csi
-
-    - gp2-csi
-
-    - gp3
-
-    - gp2
-
-    </div>
+    > [!NOTE]
+    > The following storage classes will work:
+    >
+    > - gp3-csi
+    >
+    > - gp2-csi
+    >
+    > - gp3
+    >
+    > - gp2
 
     If the application or applications that are being backed up are all using persistent volumes (PVs) with Container Storage Interface (CSI), it is advisable to include the CSI plugin in the OADP DPA configuration.
 
@@ -440,26 +456,33 @@ In an AWS cluster that uses STS authentication, restoring backed-up data in a di
 
         You are now ready to back up and restore OpenShift Container Platform applications, as described in *Backing up applications*.
 
-        <div class="important">
-
-        If you use OADP 1.2, replace this configuration:
-
-        ``` terminal
-        nodeAgent:
-          enable: false
-          uploaderType: restic
-        ```
-
-        with the following configuration:
-
-        ``` terminal
-        restic:
-          enable: false
-        ```
-
-        </div>
+        > [!IMPORTANT]
+        > If you use OADP 1.2, replace this configuration:
+        >
+        > ``` terminal
+        > nodeAgent:
+        >   enable: false
+        >   uploaderType: restic
+        > ```
+        >
+        > with the following configuration:
+        >
+        > ``` terminal
+        > restic:
+        >   enable: false
+        > ```
 
     If you want to use two different clusters for backing up and restoring, the two clusters must have the same AWS S3 storage names in both the cloud storage CR and the OADP `DataProtectionApplication` configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
 
@@ -469,11 +492,21 @@ In an AWS cluster that uses STS authentication, restoring backed-up data in a di
 
 - [Backing up applications](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
+</div>
+
 # Perform a backup with OADP and AWS STS
 
 Perform a backup by using OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) (AWS STS). The following `hello-world` example application has no persistent volumes (PVs) attached.
 
 Either Data Protection Application (DPA) configuration will work.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a workload to back up by running the following commands:
 
@@ -599,15 +632,22 @@ Either Data Protection Application (DPA) configuration will work.
     Hello OpenShift!
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > For troubleshooting tips, see [troubleshooting documentation](https://access.redhat.com/articles/5456281).
 
-    For troubleshooting tips, see [troubleshooting documentation](https://access.redhat.com/articles/5456281).
-
-    </div>
+</div>
 
 ## Clean up a cluster after a backup with OADP and AWS STS
 
 Uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from the `hello-world` example.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the workload by running the following command:
 
@@ -627,15 +667,12 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     $ oc -n openshift-adp delete cloudstorage ${CLUSTER_NAME}-oadp
     ```
 
-    <div class="important">
-
-    If this command hangs, you might need to delete the finalizer by running the following command:
-
-    ``` terminal
-    $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
-    ```
-
-    </div>
+    > [!IMPORTANT]
+    > If this command hangs, you might need to delete the finalizer by running the following command:
+    >
+    > ``` terminal
+    > $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
+    > ```
 
 4.  If the Operator is no longer required, remove it by running the following command:
 
@@ -688,3 +725,5 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     ``` terminal
     $ aws iam delete-role --role-name "${ROLE_NAME}"
     ```
+
+</div>

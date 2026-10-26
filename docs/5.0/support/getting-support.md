@@ -22,13 +22,41 @@ The Red Hat Knowledgebase helps you get the most from Red Hat products and tec
 
 It includes articles, product documentation, and videos that outline best practices for installing, configuring, and using Red Hat products. You can also search for solutions to known issues. Each solution has a root cause description and steps to fix the problem.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
+
+</div>
 
 # Search the Red Hat Knowledgebase
 
 Search the Red Hat Knowledgebase to find solutions to known issues and resolve problems quickly without opening a support case.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a Red Hat Customer Portal account.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the [Red Hat Customer Portal](http://access.redhat.com).
 
@@ -48,9 +76,19 @@ Search the Red Hat Knowledgebase to find solutions to known issues and resolve 
 
 6.  Optional: Select the **Documentation** content type filter.
 
+</div>
+
 # Submitting a support case
 
 If you cannot resolve an OpenShift Container Platform issue by using the Red Hat Knowledgebase, submit a support case to get direct help from Red Hat Support.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -59,6 +97,16 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 - You have a Red Hat Customer Portal account.
 
 - You have a Red Hat Standard or Premium subscription.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 
@@ -120,15 +168,14 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 
 12. Preview the case details and click **Submit**.
 
+</div>
+
 # Self-service Technical Supportability Review
 
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
 
-<div class="note">
-
-The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
-
-</div>
+> [!NOTE]
+> The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
 
 The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
 
@@ -152,6 +199,8 @@ Confirm cluster stability ahead of high-traffic business events, such as seasona
 To run a self-service review, upload your cluster’s `must-gather` data to the **Analyze** tab in the **Support** section of the Red Hat Customer Portal. For a direct link, see "Technical Supportability Review with AI tool" in the Additional resources section. The **Analyze** feature generates a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. Review the recommendations and implement the suggested corrective actions to address the identified risks.
 
 The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
+
+## Additional resources
 
 - [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
 

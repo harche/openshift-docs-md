@@ -8,9 +8,17 @@ Install OpenShift Virtualization on IBM Cloud bare-metal nodes using Assisted In
 
 - Install the OpenShift CLI (`oc`).
 
-# Configuring IBM Cloud for the new cluster
+# Configure IBM Cloud for the new cluster
 
 Configure and provision the IBM Cloud environment to establish the operational framework and nodes for your OpenShift Virtualization cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new virtual server instance in IBM Cloud at [Virtual Server for Classic](https://cloud.ibm.com/gen1/infrastructure/provision/vs) to be the Bastion server. This instance is used to run the installation and provide environment services.
 
@@ -153,9 +161,19 @@ Configure and provision the IBM Cloud environment to establish the operational f
     $ firewall-cmd --reload
     ```
 
-# Initializing the new cluster configuration
+</div>
+
+# Initialize the new cluster configuration
 
 Initialize the new cluster configuration using the OpenShift Virtualization Assisted Installer service and Samba on the Bastion virtual server instance.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the **Assisted Installer** service.
 
@@ -208,9 +226,19 @@ Initialize the new cluster configuration using the OpenShift Virtualization Assi
 
 12. Navigate to the share directory and download the Assisted Installer ISO file using the generated `wget` command.
 
-# Configuring cluster networking and access
+</div>
+
+# Configure cluster networking and access
 
 Configure networking and access to allow for remote management of the cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit `/etc/samba/smb.conf` to use the following configuration:
 
@@ -240,11 +268,8 @@ Configure networking and access to allow for remote management of the cluster.
           valid users = root
     ```
 
-    <div class="note">
-
-    For a more detailed example of the `smb.conf` file, see the `smb.conf.example` file in the same directory.
-
-    </div>
+    > [!NOTE]
+    > For a more detailed example of the `smb.conf` file, see the `smb.conf.example` file in the same directory.
 
 2.  Save the file.
 
@@ -289,25 +314,29 @@ Configure networking and access to allow for remote management of the cluster.
         `<vpn_password>`
         Specifies the SSL VPN password you configured.
 
-        <div class="note">
+        > [!NOTE]
+        > Connecting to the IBM Cloud SSL VPN disconnects you from any open VPN connections.
 
-        Connecting to the IBM Cloud SSL VPN disconnects you from any open VPN connections.
+</div>
 
-        </div>
-
-# Completing the cluster configuration
+# Complete the cluster configuration
 
 Complete the cluster configuration by installing software on the control plane and compute nodes and configuring DNS for external access.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  For each bare-metal server, perform the following tasks:
 
     1.  Access the server using the IPMI console.
 
-        <div class="note">
-
-        The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
-
-        </div>
+        > [!NOTE]
+        > The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
 
     2.  Mount the Assisted Installer ISO file with the following attributes:
 
@@ -333,11 +362,8 @@ Complete the cluster configuration by installing software on the control plane a
 
 4.  Select a role for each host.
 
-    <div class="note">
-
-    The cluster consists of 3 control plane and 3 compute nodes.
-
-    </div>
+    > [!NOTE]
+    > The cluster consists of 3 control plane and 3 compute nodes.
 
 5.  Wait for the **Assisted Installer** interface to indicate each node is ready.
 
@@ -353,11 +379,8 @@ Complete the cluster configuration by installing software on the control plane a
 
     1.  Access the server using the IPMI console.
 
-        <div class="note">
-
-        The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
-
-        </div>
+        > [!NOTE]
+        > The IP address and credentials for IPMI console access is available in the **Remote management** section for each server.
 
     2.  Select **Virtual Media** → **CD-Rom Image**.
 
@@ -507,11 +530,8 @@ Complete the cluster configuration by installing software on the control plane a
     `<backend_insecure_ip_address>:<backend_insecure_port>`
     Specifies the back end IP address and port used for HTTP traffic for hosted applications.
 
-    <div class="note">
-
-    Replace the example values with values applicable to your network configuration.
-
-    </div>
+    > [!NOTE]
+    > Replace the example values with values applicable to your network configuration.
 
 15. Save the `haproxy` configuration.
 
@@ -533,7 +553,15 @@ Complete the cluster configuration by installing software on the control plane a
     `<cluster_domain>`
     Specifies the domain assigned to the cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Perform the following tasks to verify cluster access using command line access:
 
@@ -554,11 +582,8 @@ Complete the cluster configuration by installing software on the control plane a
         $ oc get nodes
         ```
 
-        <div class="note">
-
-        The command output should show all nodes as `Ready` in the `STATUS` column and the `ROLES` column should show that control plane and compute nodes are present.
-
-        </div>
+        > [!NOTE]
+        > The command output should show all nodes as `Ready` in the `STATUS` column and the `ROLES` column should show that control plane and compute nodes are present.
 
     3.  Check the cluster version:
 
@@ -566,22 +591,18 @@ Complete the cluster configuration by installing software on the control plane a
         $ oc get clusterversion
         ```
 
-        <div class="note">
-
-        The command output should say `Condition: Available`.
-
-        </div>
+        > [!NOTE]
+        > The command output should say `Condition: Available`.
 
 2.  Perform the following tasks to verify cluster access using the web console:
 
     1.  Paste the access URL provided by Assisted Installer into your web browser.
 
-        <div class="note">
-
-        By default, clusters use self-signed certificates. This may cause your browser to display a message that says **Connection not private** or a similar warning. You can close this warning and continue.
-
-        </div>
+        > [!NOTE]
+        > By default, clusters use self-signed certificates. This may cause your browser to display a message that says **Connection not private** or a similar warning. You can close this warning and continue.
 
     2.  Navigate to the URL.
 
     3.  Log in to the cluster with the username `kubeadmin` and the `kubeadmin` password provided in the **Cluster Credentials** section.
+
+</div>

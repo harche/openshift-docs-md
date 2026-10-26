@@ -38,9 +38,11 @@ Use the following REST API v2 endpoints to subscribe the `cloud-event-consumer` 
 
 Returns a list of subscriptions. If subscriptions exist, a `200 OK` status code is returned along with the list of subscriptions.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example API response**
+<div class="title">
+
+Example API response
 
 </div>
 
@@ -79,6 +81,8 @@ Returns a list of subscriptions. If subscriptions exist, a `200 OK` status code 
 ]
 ```
 
+</div>
+
 **HTTP method**
 
 `POST api/ocloudNotifications/v2/subscriptions`
@@ -105,9 +109,11 @@ You can subscribe to the following PTP events:
 
 Query parameters
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example sync-state subscription payload**
+<div class="title">
+
+Example sync-state subscription payload
 
 </div>
 
@@ -118,9 +124,13 @@ Query parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example PTP lock-state events subscription payload**
+<div class="formalpara">
+
+<div class="title">
+
+Example PTP lock-state events subscription payload
 
 </div>
 
@@ -131,9 +141,13 @@ Query parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example PTP gnss-sync-status events subscription payload**
+<div class="formalpara">
+
+<div class="title">
+
+Example PTP gnss-sync-status events subscription payload
 
 </div>
 
@@ -144,9 +158,13 @@ Query parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example PTP os-clock-sync-state events subscription payload**
+<div class="formalpara">
+
+<div class="title">
+
+Example PTP os-clock-sync-state events subscription payload
 
 </div>
 
@@ -157,9 +175,13 @@ Query parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example PTP clock-class events subscription payload**
+<div class="formalpara">
+
+<div class="title">
+
+Example PTP clock-class events subscription payload
 
 </div>
 
@@ -170,9 +192,13 @@ Query parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example API response**
+<div class="formalpara">
+
+<div class="title">
+
+Example API response
 
 </div>
 
@@ -185,14 +211,16 @@ Query parameters
 }
 ```
 
+</div>
+
 The following subscription status events are possible:
 
-| Status code       | Description                                                                                 |
-|-------------------|---------------------------------------------------------------------------------------------|
-| `201 Created`     | Indicates that the subscription is created                                                  |
+| Status code | Description |
+|----|----|
+| `201 Created` | Indicates that the subscription is created |
 | `400 Bad Request` | Indicates that the server could not process the request because it was malformed or invalid |
-| `404 Not Found`   | Indicates that the subscription resource is not available                                   |
-| `409 Conflict`    | Indicates that the subscription already exists                                              |
+| `404 Not Found` | Indicates that the subscription resource is not available |
+| `409 Conflict` | Indicates that the subscription already exists |
 
 PTP events REST API v2 subscription status codes
 
@@ -204,9 +232,11 @@ PTP events REST API v2 subscription status codes
 
 Deletes all subscriptions.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example API response**
+<div class="title">
+
+Example API response
 
 </div>
 
@@ -215,6 +245,8 @@ Deletes all subscriptions.
 "status": "deleted all subscriptions"
 }
 ```
+
+</div>
 
 ## api/ocloudNotifications/v2/subscriptions/{subscription_id}
 
@@ -232,9 +264,11 @@ Returns details for the subscription with ID `subscription_id`.
 
 Global path parameters
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example API response**
+<div class="title">
+
+Example API response
 
 </div>
 
@@ -246,6 +280,8 @@ Global path parameters
     "UriLocation": "http://ptp-event-publisher-service-compute-1.openshift-ptp.svc.cluster.local:9043/api/ocloudNotifications/v2/subscriptions/620283f3-26cd-4a6d-b80a-bdc4b614a96a"
 }
 ```
+
+</div>
 
 **HTTP method**
 
@@ -295,9 +331,11 @@ Returns a list of publisher details for the cluster node. The system generates n
 
 You can use equipment synchronization status subscriptions together to deliver a detailed view of the overall synchronization health of the system.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example API response**
+<div class="title">
+
+Example API response
 
 </div>
 
@@ -335,6 +373,8 @@ You can use equipment synchronization status subscriptions together to deliver a
   }
 ]
 ```
+
+</div>
 
 | HTTP response | Description |
 |---------------|-------------|
@@ -376,9 +416,11 @@ Returns the current state of the `os-clock-sync-state`, `clock-class`, `lock-sta
 
 Global path parameters
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example lock-state API response**
+<div class="title">
+
+Example lock-state API response
 
 </div>
 
@@ -409,9 +451,13 @@ Global path parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example os-clock-sync-state API response**
+<div class="formalpara">
+
+<div class="title">
+
+Example os-clock-sync-state API response
 
 </div>
 
@@ -444,9 +490,13 @@ Global path parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example clock-class API response**
+<div class="formalpara">
+
+<div class="title">
+
+Example clock-class API response
 
 </div>
 
@@ -471,9 +521,13 @@ Global path parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example sync-state API response**
+<div class="formalpara">
+
+<div class="title">
+
+Example sync-state API response
 
 </div>
 
@@ -500,9 +554,13 @@ Global path parameters
 }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example gnss-sync-state API response**
+<div class="formalpara">
+
+<div class="title">
+
+Example gnss-sync-state API response
 
 </div>
 
@@ -532,3 +590,5 @@ Global path parameters
   }
 }
 ```
+
+</div>

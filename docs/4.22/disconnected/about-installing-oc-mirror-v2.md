@@ -46,11 +46,8 @@ The following steps outline the high-level workflow on how to use the oc-mirror 
 
 The oc-mirror plugin v2 is supported for OpenShift Container Platform.
 
-<div class="note">
-
-On `aarch64`, `ppc64le`, and `s390x` architectures the oc-mirror plugin v2 is supported only for OpenShift Container Platform 4.14 and later.
-
-</div>
+> [!NOTE]
+> On `aarch64`, `ppc64le`, and `s390x` architectures the oc-mirror plugin v2 is supported only for OpenShift Container Platform 4.14 and later.
 
 Use the latest available version of the oc-mirror plugin v2 regardless of which versions of OpenShift Container Platform you need to mirror.
 
@@ -63,6 +60,10 @@ The following prerequisites must be met:
 - You must have a container image registry that supports [Docker V2-2](https://docs.docker.com/registry/spec/manifest-v2-2) in the location that hosts the OpenShift Container Platform cluster, such as Red Hat Quay.
 
   <div class="note">
+
+  <div class="title">
+
+  </div>
 
   - If you use Red Hat Quay, use version 3.6 or later with the oc-mirror plugin. See [Deploying the Red Hat Quay Operator on OpenShift Container Platform (Red Hat Quay documentation)](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index). If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat Support.
 
@@ -80,6 +81,14 @@ To use the oc-mirror plugin v2 for image mirroring, you must install the plugin 
 
 You can install the oc-mirror OpenShift CLI plugin to manage image sets in disconnected environments.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`). If you are mirroring image sets in a fully disconnected environment, ensure the following:
 
   - You have installed the oc-mirror plugin on the host that has internet access.
@@ -89,6 +98,16 @@ You can install the oc-mirror OpenShift CLI plugin to manage image sets in disco
 - You have set the `umask` parameter to `0022` on the operating system that uses oc-mirror.
 
 - You have installed the correct binary for the RHEL version that you are using.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Download the oc-mirror CLI plugin:
 
@@ -110,11 +129,8 @@ You can install the oc-mirror OpenShift CLI plugin to manage image sets in disco
     $ chmod +x oc-mirror
     ```
 
-    <div class="note">
-
-    Do not rename the `oc-mirror` file.
-
-    </div>
+    > [!NOTE]
+    > Do not rename the `oc-mirror` file.
 
 4.  Install the oc-mirror CLI plugin by placing the file in your `PATH`, for example `/usr/local/bin`, by running the following command:
 
@@ -122,19 +138,36 @@ You can install the oc-mirror OpenShift CLI plugin to manage image sets in disco
     $ sudo mv oc-mirror /usr/local/bin/.
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the oc-mirror plugin v2 is successfully installed by running the following command:
 
   ``` terminal
   $ oc mirror --v2 --help
   ```
 
+</div>
+
 ## Configure credentials that allow images to be mirrored
 
 Create a container image registry credentials file so that you can mirror images from Red Hat to your mirror. Complete the following steps on the installation host.
 
-<div class="warning">
+> [!WARNING]
+> Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
 
-Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -146,6 +179,16 @@ Do not use this image registry credentials file as the pull secret when you inst
 
 - You have write access to the mirror registry.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Download your `registry.redhat.io` [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
 2.  Make a copy of your pull secret in JSON format by running the following command:
@@ -156,9 +199,11 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     Specify the path to the directory to store the pull secret in and a name for the JSON file that you create.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pull secret**
+    <div class="title">
+
+    Example pull secret
 
     </div>
 
@@ -185,6 +230,8 @@ Do not use this image registry credentials file as the pull secret when you inst
     }
     ```
 
+    </div>
+
 3.  If the `$XDG_RUNTIME_DIR/containers` directory does not exist, create one by entering the following command:
 
     ``` terminal
@@ -201,15 +248,19 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     For `<user_name>` and `<password>`, specify the user name and password that you configured for your registry.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     BGVtbYk3ZHAtqXs=
     ```
+
+    </div>
 
 6.  Edit the JSON file and add a section that describes your registry to it:
 
@@ -226,9 +277,11 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     - For the `<credentials>` value, specify the base64-encoded user name and password for the mirror registry.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example modified pull secret**
+      <div class="title">
+
+      Example modified pull secret
 
       </div>
 
@@ -259,6 +312,10 @@ Do not use this image registry credentials file as the pull secret when you inst
       }
       ```
 
+      </div>
+
+</div>
+
 # Mirror an image set to a mirror registry
 
 Mirroring an image set to a mirror registry ensures that the required images are available in a secure and controlled environment, facilitating smoother deployments, updates, and maintenance tasks.
@@ -267,15 +324,33 @@ Mirroring an image set to a mirror registry ensures that the required images are
 
 Before you can use the oc-mirror plugin v2 to mirror images, you must create an image set configuration file. This image set configuration file defines which OpenShift Container Platform releases, Operators, and other images to mirror, along with other configuration settings for the oc-mirror plugin v2.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created a container image registry credentials file. For instructions, see *Configuring credentials that allow images to be mirrored*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create an `ImageSetConfiguration` YAML file and modify it to include your required images.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `ImageSetConfiguration` YAML file**
+  <div class="title">
+
+  Example `ImageSetConfiguration` YAML file
 
   </div>
 
@@ -302,6 +377,8 @@ Before you can use the oc-mirror plugin v2 to mirror images, you must create an 
      - name: registry.redhat.io/ubi9/ubi@sha256:20f695d2a91352d4eaa25107535126727b5945bff38ed36a3e59590f495046f0
   ```
 
+  </div>
+
   `mirror.platform.channels.name`
   Set the channel to retrieve OpenShift Container Platform images from.
 
@@ -320,28 +397,35 @@ Before you can use the oc-mirror plugin v2 to mirror images, you must create an 
   `mirror.additionalImages`
   Specify any additional images to include in image set.
 
-  <div class="note">
+  > [!NOTE]
+  > You must use explicit registry hostnames for all images listed under `additionalImages`. Without explicit hostnames, the plugin mirrors the images to unexpected target paths.
 
-  You must use explicit registry hostnames for all images listed under `additionalImages`. Without explicit hostnames, the plugin mirrors the images to unexpected target paths.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the OpenShift Update Service](../updating/understanding_updates/intro-to-updates.xml#update-service-about_understanding-openshift-updates)
+
+</div>
 
 ## Comparison of oc-mirror workflows
 
 Use the following table to compare the supported use cases for the mirror-to-disk (m2d), disk-to-mirror (d2m), and mirror-to-mirror (m2m) workflows.
 
-| **Use Case**                                                                                                                                                             | **Mirror To Disk (m2d) and Disk To Mirror (d2m)** | **Mirror To Mirror (m2m)** |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|----------------------------|
-| The target registry exists in an environment with no internet access and no external access.                                                                             | ✓                                                 |                            |
-| The target registry exists in an environment with no internet access but is accessible from another machine. For example, the target registry resides in a bastion host. |                                                   | ✓                          |
-| You must move content to the disconnected environment by using a physical method, such as USB devices.                                                                   | ✓                                                 |                            |
-| The workflow moves content directly to the target registry without generating an intermediate tar file.                                                                  |                                                   | ✓                          |
-| The workflow uses an internal cache to resume after failures but requires additional disk space.                                                                         | ✓                                                 |                            |
-| The workflow does not use a cache, restarts from the beginning after a failure, and requires no additional disk space.                                                   |                                                   | ✓                          |
+| **Use Case** | **Mirror To Disk (m2d) and Disk To Mirror (d2m)** | **Mirror To Mirror (m2m)** |
+|----|----|----|
+| The target registry exists in an environment with no internet access and no external access. | ✓ |  |
+| The target registry exists in an environment with no internet access but is accessible from another machine. For example, the target registry resides in a bastion host. |  | ✓ |
+| You must move content to the disconnected environment by using a physical method, such as USB devices. | ✓ |  |
+| The workflow moves content directly to the target registry without generating an intermediate tar file. |  | ✓ |
+| The workflow uses an internal cache to resume after failures but requires additional disk space. | ✓ |  |
+| The workflow does not use a cache, restarts from the beginning after a failure, and requires no additional disk space. |  | ✓ |
 
 ## Mirror an image set in a partially disconnected environment
 
@@ -349,9 +433,25 @@ You can mirror image sets to a registry using the oc-mirror plugin v2 in environ
 
 During the mirroring process, the plugin automatically generates the `ImageSetConfiguration` and `DeleteImageSetConfiguration` files that are pinned by digest in your working directory, along with your original files that reference tags. Pinning by digest maintains consistency across your disconnected environments ensuring that you always deploy the same image, regardless of any later changes to the upstream tags.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the internet and the mirror registry in the environment where you are running the oc-mirror plugin v2.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Mirror the images from the specified image set configuration to a specified registry by running the following command:
 
@@ -370,11 +470,33 @@ During the mirroring process, the plugin automatically generates the `ImageSetCo
   \<mirror_registry_url\>
   Specifies the URL or address of the mirror registry where the images are stored and from which they need to be deleted.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Navigate to the `working-dir/cluster-resources` directory that was generated in the `<file_path>` directory.
 
 2.  Verify that the YAML files are present for the `ImageDigestMirrorSet`, `ImageTagMirrorSet`, and `CatalogSource` resources.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Configure your cluster to use the resources generated by oc-mirror plugin v2.
+
+</div>
 
 ## Mirror an image set in a fully disconnected environment
 
@@ -396,6 +518,14 @@ Transfer the generated image set to the disconnected environment and mirror it t
 
 Additionally, the plugin automatically generates the `ImageSetConfiguration` and `DeleteImageSetConfiguration` files that are pinned by digest in your working directory and tar archive. Pinning by digest maintains consistency across your disconnected environments ensuring that you always deploy the same image, regardless of any later changes to the upstream tags.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Mirror the images from the specified image set configuration to the disk by running the following command:
 
   ``` terminal
@@ -410,17 +540,47 @@ Additionally, the plugin automatically generates the `ImageSetConfiguration` and
   \<file_path\>
   Specifies the directory where the archives containing the image sets will be generated in.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Navigate to the `<file_path>` directory that was generated.
 
 2.  Verify that the archive files have been generated.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Mirroring from disk to mirror
+
+</div>
 
 ### Mirroring from disk to mirror
 
 You can use the oc-mirror plugin v2 to mirror image sets from a disk to a target mirror registry.
 
 The oc-mirror plugin v2 retrieves container images from a local disk and transfers them to the specified mirror registry.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Transfer the disk containing mirrored image sets to the environment that contains the target mirror registry.
 
@@ -441,13 +601,33 @@ The oc-mirror plugin v2 retrieves container images from a local disk and transfe
     \<mirror_registry_url\>
     Specifies the URL or address of the mirror registry where the images are stored.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to the `cluster-resources` directory within the `working-dir` directory that was generated in the `<file_path>` directory.
 
 2.  Verify that the YAML files are present for the `ImageDigestMirrorSet`, `ImageTagMirrorSet`, and `CatalogSource` resources.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Configure your cluster to use the resources generated by oc-mirror plugin v2.
+
+</div>
 
 # Custom resources generated by oc-mirror plugin v2
 
@@ -470,6 +650,14 @@ Retrieves information about the available cluster extensions (which includes Ope
 `UpdateService`
 Provides update graph data to the disconnected environment. Used by the OpenShift Update Service.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CatalogSource](../rest_api/operatorhub_apis/catalogsource-operators-coreos-com-v1alpha1.html)
 
 - [ImageDigestMirrorSet](../rest_api/config_apis/imagedigestmirrorset-config-openshift-io-v1.xml#imagedigestmirrorset-config-openshift-io-v1)
@@ -478,20 +666,22 @@ Provides update graph data to the disconnected environment. Used by the OpenShif
 
 - [About catalogs in OLM v1](../extensions/catalogs/managing-catalogs.xml#olmv1-about-catalogs_managing-catalogs)
 
+</div>
+
 ## Restrictions on modifying resources that are generated by the oc-mirror plugin
 
 When using resources that are generated by the oc-mirror plugin v2 to configure your cluster, you must not change certain fields. Modifying these fields can cause errors and is not supported.
 
 The following table lists the resources and their fields that must remain unchanged:
 
-| Resource               | Fields that must not be changed                              |
-|------------------------|--------------------------------------------------------------|
-| `CatalogSource`        | `apiVersion`, `kind`, `spec.image`                           |
-| `ClusterCatalog`       | `apiVersion`, `kind`, `spec.source.image.ref`                |
-| `ImageDigestMirrorSet` | `apiVersion`, `kind`, `spec.imageDigestMirrors`              |
-| `ImageTagMirrorSet`    | `apiVersion`, `kind`, `spec.imageTagMirrors`                 |
-| Signature `ConfigMap`  | `apiVersion`, `kind`, `metadata.namespace`, `binaryData`     |
-| `UpdateService`        | `apiVersion`, `kind`, `spec.graphDataImage`, `spec.releases` |
+| Resource | Fields that must not be changed |
+|----|----|
+| `CatalogSource` | `apiVersion`, `kind`, `spec.image` |
+| `ClusterCatalog` | `apiVersion`, `kind`, `spec.source.image.ref` |
+| `ImageDigestMirrorSet` | `apiVersion`, `kind`, `spec.imageDigestMirrors` |
+| `ImageTagMirrorSet` | `apiVersion`, `kind`, `spec.imageTagMirrors` |
+| Signature `ConfigMap` | `apiVersion`, `kind`, `metadata.namespace`, `binaryData` |
+| `UpdateService` | `apiVersion`, `kind`, `spec.graphDataImage`, `spec.releases` |
 
 Fields that must not be modified in the resources generated by oc-mirror
 
@@ -501,13 +691,28 @@ For more information about these resources, see the OpenShift API documentation 
 
 After you have mirrored your image set to the mirror registry, you must apply the generated `ImageDigestMirrorSet` (IDMS), `ImageTagMirrorSet` (ITMS), `CatalogSource`, and `UpdateService` resources to the cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> In oc-mirror plugin v2, the IDMS and ITMS files cover the entire image set, unlike the `ImageContentSourcePolicy` (ICSP) files in oc-mirror plugin v1. Therefore, the IDMS and ITMS files contain all images of the set even if you only add new images during incremental mirroring.
 
-In oc-mirror plugin v2, the IDMS and ITMS files cover the entire image set, unlike the `ImageContentSourcePolicy` (ICSP) files in oc-mirror plugin v1. Therefore, the IDMS and ITMS files contain all images of the set even if you only add new images during incremental mirroring.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift CLI as a user with the `cluster-admin` role.
 
@@ -523,15 +728,20 @@ In oc-mirror plugin v2, the IDMS and ITMS files cover the entire image set, unli
     $ oc apply -f working-dir/cluster-resources/signature-configmap.json
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > If you are mirroring Operators instead of clusters, do not run the preceding command. Running the command results in an error because there are no release image signatures to apply.
+    >
+    > Additionally, a YAML file is available in the same directory `working-dir/cluster-resources/`. You can use either the JSON or YAML format.
 
-    If you are mirroring Operators instead of clusters, do not run the preceding command. Running the command results in an error because there are no release image signatures to apply.
+</div>
 
-    Additionally, a YAML file is available in the same directory `working-dir/cluster-resources/`. You can use either the JSON or YAML format.
+<div>
 
-    </div>
+<div class="title">
 
-<!-- -->
+Verification
+
+</div>
 
 1.  Verify that the `ImageDigestMirrorSet` resources are successfully installed by running the following command:
 
@@ -581,7 +791,19 @@ In oc-mirror plugin v2, the IDMS and ITMS files cover the entire image set, unli
     $ oc get clustercatalog -o jsonpath='{.items[?(@.metadata.annotations.createdBy=="oc-mirror v2")].metadata.name}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Disconnected environment support in OLM v1](../extensions/catalogs/disconnected-catalogs.xml#disconnected-catalogs)
+
+</div>
 
 # Deletion of images from your disconnected environment
 
@@ -599,9 +821,11 @@ In the following example, the `DeleteImageSetConfiguration` file removes the fol
 
 - The additional images for `ubi` and `ubi-minimal`, referenced by their corresponding digests.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `DeleteImageSetConfiguration` file**
+<div class="title">
+
+Example `DeleteImageSetConfiguration` file
 
 </div>
 
@@ -625,7 +849,13 @@ delete:
     - name: registry.redhat.io/ubi8/ubi-minimal@sha256:8bedbe742f140108897fb3532068e8316900d9814f399d676ac78b46e740e34e
 ```
 
+</div>
+
 <div class="important">
+
+<div class="title">
+
+</div>
 
 - Consider using the mirror-to-disk and disk-to-mirror workflows to reduce deletion issues.
 
@@ -641,6 +871,10 @@ For more information, see "Resolving storage cleanup issues in the distribution 
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - To skip deleting the Operator catalog image while you are deleting Operator images, you must list the specific Operators under the Operator catalog image in the `DeleteImageSetConfiguration` file. This ensures that only the specified Operators are deleted, not the catalog image.
 
   If only the Operator catalog image is specified, all Operators within that catalog, as well as the catalog image itself, will be deleted.
@@ -653,11 +887,29 @@ For more information, see "Resolving storage cleanup issues in the distribution 
 
 </div>
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Resolving storage cleanup issues in the distribution registry](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-v2-procedure-garbage-collector_about-installing-oc-mirror-v2)
+
+</div>
 
 ## Resolving storage cleanup issues in the distribution registry
 
 A known issue in the distribution registry prevents the garbage collector from freeing up storage as expected. This issue does not occur when you use Red Hat Quay.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Choose the appropriate method to work around the known issue in the distribution registry:
 
@@ -698,17 +950,39 @@ A known issue in the distribution registry prevents the garbage collector from f
         $ podman restart <registry_container>
         ```
 
+</div>
+
 ## Deleting images from a disconnected environment
 
 You can delete images from a disconnected environment using the oc-mirror plugin.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have enabled garbage collection in your environment to delete images that no longer reference manifests.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `delete-image-set-config.yaml` file and include the following content:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **`DeleteImageSetConfiguration` file**
+    <div class="title">
+
+    `DeleteImageSetConfiguration` file
 
     </div>
 
@@ -730,6 +1004,8 @@ You can delete images from a disconnected environment using the oc-mirror plugin
       additionalImages:
         - name: <additional_images>
     ```
+
+    </div>
 
     where:
 
@@ -762,11 +1038,8 @@ You can delete images from a disconnected environment using the oc-mirror plugin
     `<remote_registry>`
     Specifies the URL or address of the remote container registry from which images will be deleted.
 
-    <div class="important">
-
-    When deleting images, specify the correct workspace directory. Modify or delete the cache directory only when starting mirroring from scratch, such as setting up a new cluster. Incorrect changes to the cache directory might disrupt further mirroring operations.
-
-    </div>
+    > [!IMPORTANT]
+    > When deleting images, specify the correct workspace directory. Modify or delete the cache directory only when starting mirroring from scratch, such as setting up a new cluster. Incorrect changes to the cache directory might disrupt further mirroring operations.
 
 3.  Go to the `<previously_mirrored_work_folder>/delete` directory that was created.
 
@@ -788,11 +1061,10 @@ You can delete images from a disconnected environment using the oc-mirror plugin
     \<remote_registry\>
     Specifies the URL or address of the remote container registry from which images will be deleted.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > When using the mirror-to-mirror method to mirror images, images are not cached locally, so you cannot delete images from a local cache.
 
-    When using the mirror-to-mirror method to mirror images, images are not cached locally, so you cannot delete images from a local cache.
-
-    </div>
+</div>
 
 # Verifying your selected images for mirroring
 
@@ -803,6 +1075,14 @@ You can also use a dry run to catch any errors with your image set configuration
 ## Performing a dry run for oc-mirror plugin v2
 
 Verify your image set configuration by performing a dry run without mirroring any images. This ensures your setup is correct and prevents unintended changes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To perform a test run, run the `oc mirror` command and append the `--dry-run` argument to the command:
 
@@ -821,9 +1101,11 @@ Verify your image set configuration by performing a dry run without mirroring an
   `<mirror_registry_url>`
   Insert the URL or address of the remote container registry from which images will be mirrored or deleted.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -843,6 +1125,18 @@ Verify your image set configuration by performing a dry run without mirroring an
   [INFO]   : :wave: Goodbye, thank you for using oc-mirror
   ```
 
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Navigate to the workspace directory that was generated:
 
     ``` terminal
@@ -851,33 +1145,44 @@ Verify your image set configuration by performing a dry run without mirroring an
 
 2.  Review the `mapping.txt` and `missing.txt` files that were generated. These files contain a list of all images that would be mirrored.
 
+</div>
+
 # Troubleshooting oc-mirror plugin v2 errors
 
 oc-mirror plugin v2 now logs all image mirroring errors in a separate file, making it easier to track and diagnose failures.
 
-<div class="important">
-
-When errors occur while mirroring release or release component images, they are critical. This stops the mirroring process immediately.
-
-Errors with mirroring Operators, Operator-related images, or additional images do not stop the mirroring process. Mirroring continues, and oc-mirror plugin v2 saves a file under the `working-dir/logs` directory describing which Operator failed to mirror.
-
-</div>
+> [!IMPORTANT]
+> When errors occur while mirroring release or release component images, they are critical. This stops the mirroring process immediately.
+>
+> Errors with mirroring Operators, Operator-related images, or additional images do not stop the mirroring process. Mirroring continues, and oc-mirror plugin v2 saves a file under the `working-dir/logs` directory describing which Operator failed to mirror.
 
 When an image fails to mirror, and that image is mirrored as part of one or more Operator bundles, oc-mirror plugin v2 notifies the user which Operators are incomplete, providing clarity on the Operator bundles affected by the error.
 
 By following these steps, you can better diagnose issues and ensure smoother mirroring.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check for server-related issues:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example error**
+    <div class="title">
+
+    Example error
 
     </div>
 
     ``` terminal
     [ERROR]  : [Worker] error mirroring image localhost:55000/openshift/graph-image:latest error: copying image 1/4 from manifest list: trying to reuse blob sha256:edab65b863aead24e3ed77cea194b6562143049a9307cd48f86b542db9eecb6e at destination: pinging container registry localhost:5000: Get "https://localhost:5000/v2/": http: server gave HTTP response to HTTPS client
     ```
+
+    </div>
 
     1.  Open the `mirroring_error_date_time.log` file in the `working-dir/logs` folder located in the oc-mirror plugin v2 output directory.
 
@@ -887,9 +1192,11 @@ By following these steps, you can better diagnose issues and ensure smoother mir
 
 2.  Check for incomplete mirroring of Operators:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example error**
+    <div class="title">
+
+    Example error
 
     </div>
 
@@ -898,6 +1205,8 @@ By following these steps, you can better diagnose issues and ensure smoother mir
     error mirroring image docker://registry.redhat.io/3scale-amp2/3scale-rhel7-operator-metadata@sha256:de0a70d1263a6a596d28bf376158056631afd0b6159865008a7263a8e9bf0c7d error: skipping operator bundle docker://registry.redhat.io/3scale-amp2/3scale-rhel7-operator-metadata@sha256:de0a70d1263a6a596d28bf376158056631afd0b6159865008a7263a8e9bf0c7d because one of its related images failed to mirror
     error mirroring image docker://registry.redhat.io/3scale-amp2/system-rhel7@sha256:fe77272021867cc6b6d5d0c9bd06c99d4024ad53f1ab94ec0ab69d0fda74588e (Operator bundles: [3scale-operator.v0.11.12] - Operators: [3scale-operator]) error: initializing source docker://localhost:55000/3scale-amp2/system-rhel7:fe77272021867cc6b6d5d0c9bd06c99d4024ad53f1ab94ec0ab69d0fda74588e: reading manifest fe77272021867cc6b6d5d0c9bd06c99d4024ad53f1ab94ec0ab69d0fda74588e in localhost:55000/3scale-amp2/system-rhel7: manifest unknown
     ```
+
+    </div>
 
     1.  Check for warnings in the console or log file indicating which Operators are incomplete.
 
@@ -910,6 +1219,8 @@ By following these steps, you can better diagnose issues and ensure smoother mir
     1.  Check the output directory for the generated files.
 
     2.  If these files are missing for specific images, ensure that no critical errors occurred for those images during the mirroring process.
+
+</div>
 
 # Benefits of enclave support
 
@@ -963,17 +1274,24 @@ When you mirror to an enclave, you must first transfer the necessary images from
 
 The central registry is situated within a secure network, specifically a disconnected environment, and is not directly linked to the public internet. But the user must execute `oc mirror` in an environment with access to the public internet.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Before running oc-mirror plugin v2 in the disconnected environment, create a `registries.conf` file. The TOML format of the file is described in this specification:
 
-    <div class="note">
+    > [!NOTE]
+    > It is recommended to store the file under `$HOME/.config/containers/registries.conf` or `/etc/containers/registries.conf`.
 
-    It is recommended to store the file under `$HOME/.config/containers/registries.conf` or `/etc/containers/registries.conf`.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example `registries.conf`**
+    Example `registries.conf`
 
     </div>
 
@@ -989,6 +1307,8 @@ The central registry is situated within a secure network, specifically a disconn
     location="<enterprise-registry.in>"
     ```
 
+    </div>
+
 2.  Generate a mirror archive.
 
     1.  To collect all the OpenShift Container Platform content into an archive on the disk under `<file_path>/enterprise-content`, run the following command:
@@ -997,9 +1317,11 @@ The central registry is situated within a secure network, specifically a disconn
         $ oc mirror --v2 -c isc.yaml file://<file_path>/enterprise-content
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example of isc.yaml**
+        <div class="title">
+
+        Example of isc.yaml
 
         </div>
 
@@ -1015,6 +1337,8 @@ The central registry is situated within a secure network, specifically a disconn
                 minVersion: 4.15.0
                 maxVersion: 4.15.3
         ```
+
+        </div>
 
         After the archive is generated, it is transferred to the disconnected environment. The transport mechanism is not part of oc-mirror plugin v2. The enterprise network administrators determine the transfer strategy.
 
@@ -1036,9 +1360,11 @@ The central registry is situated within a secure network, specifically a disconn
 
 4.  Prepare the `imageSetConfig` YAML file, which describes the content to mirror to the enclave:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example isc-enclave.yaml**
+    <div class="title">
+
+    Example isc-enclave.yaml
 
     </div>
 
@@ -1055,6 +1381,8 @@ The central registry is situated within a secure network, specifically a disconn
             maxVersion: 4.15.2
     ```
 
+    </div>
+
     You must run oc-mirror plugin v2 on a machine with access to the disconnected registry. In the previous example, the disconnected environment, `enterprise-registry.in`, is accessible.
 
 5.  Update the graph URL
@@ -1067,13 +1395,10 @@ The central registry is situated within a secure network, specifically a disconn
 
     For more information on setting up OSUS on an OpenShift cluster, see "Updating a cluster in a disconnected environment using the OpenShift Update Service".
 
-    <div class="note">
-
-    When updating between OpenShift Container Platform Extended Update Support (EUS) versions, you must also include images for an intermediate minor version between the current and target versions. The oc-mirror plugin v2 might not always detect this requirement automatically, so check the [Red Hat OpenShift Container Platform Update Graph page](https://access.redhat.com/labs/ocpupgradegraph/update_path) to confirm any required intermediate versions.
-
-    Use the Update Graph page to find the intermediate minor versions suggested by the application, and include any of these versions in the `ImageSetConfiguration` file when using the oc-mirror plugin v2.
-
-    </div>
+    > [!NOTE]
+    > When updating between OpenShift Container Platform Extended Update Support (EUS) versions, you must also include images for an intermediate minor version between the current and target versions. The oc-mirror plugin v2 might not always detect this requirement automatically, so check the [Red Hat OpenShift Container Platform Update Graph page](https://access.redhat.com/labs/ocpupgradegraph/update_path) to confirm any required intermediate versions.
+    >
+    > Use the Update Graph page to find the intermediate minor versions suggested by the application, and include any of these versions in the `ImageSetConfiguration` file when using the oc-mirror plugin v2.
 
 6.  Generate a mirror archive from the enterprise registry for the enclave.
 
@@ -1098,13 +1423,25 @@ The central registry is situated within a secure network, specifically a disconn
 
     The administrators of the OpenShift Container Platform cluster in `enclave1` are now ready to install or upgrade that cluster.
 
+</div>
+
 # oc-mirror plugin v2 support proxy setting
 
 The oc-mirror plugin v2 can operate in a proxy-configured environment. The plugin can use system proxy settings to retrieve images for OpenShift Container Platform, Operator catalog, and the `additionalImages` registry.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating a cluster in a disconnected environment using the OpenShift Update Service](../disconnected/updating/disconnected-update-osus.xml#updating-disconnected-cluster-osus)
 
 - [Resolving storage cleanup issues in the distribution registry](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-v2-procedure-garbage-collector_about-installing-oc-mirror-v2)
+
+</div>
 
 # Mirroring and verifying image signatures in oc-mirror plugin v2
 
@@ -1128,11 +1465,29 @@ For more information on disabling signature mirroring, see "Disabling signature 
 
 For more details on configuration formats, see "containers-registries.d(5) manual".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [containers-registries.d(5) manual](https://github.com/containers/container-libs/blob/main/image/docs/containers-registries.d.5.md)
+
+</div>
 
 ## Disabling signature mirroring for oc-mirror plugin v2
 
 You can disable signature mirroring for all images by providing the `--remove-signatures` flag for the `oc mirror` command when the destination registry does not support signature storage or when you need to bypass invalid or expired source signatures.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you want to disable signature mirroring for all images, add `remove-signatures` flag while mirroring images. For example:
 
@@ -1146,9 +1501,11 @@ You can disable signature mirroring for all images by providing the `--remove-si
 
     2.  Specify the `use-sigstore-attachments` parameter and set it to either `true` or `false` under the specific element you want to control, as seen in the following examples:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example: Disable signature mirroring for the `quay.io` registry**
+        <div class="title">
+
+        Example: Disable signature mirroring for the `quay.io` registry
 
         </div>
 
@@ -1160,9 +1517,13 @@ You can disable signature mirroring for all images by providing the `--remove-si
         # ...
         ```
 
-        <div class="formalpara-title">
+        </div>
 
-        **Example: Enable signature mirroring for all registries**
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example: Enable signature mirroring for all registries
 
         </div>
 
@@ -1173,11 +1534,23 @@ You can disable signature mirroring for all images by providing the `--remove-si
         # ...
         ```
 
+        </div>
+
+</div>
+
 ## Enabling signature verification for oc-mirror plugin v2
 
 Starting with OpenShift Container Platform 4.19, the oc-mirror plugin v2 supports signature verification, which is disabled by default.
 
 When enabled, the plugin verifies that container images match their signatures, ensuring they have not been altered and come from trusted sources. If a signature mismatch is detected, the mirroring workflow will fail.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you want to enable signature verification for all images, run the following command:
 
@@ -1189,19 +1562,18 @@ When enabled, the plugin verifies that container images match their signatures, 
 
     1.  Create a `policy.json` file in either the `$HOME/.config/containers/` or `/etc/containers/` directory.
 
-        <div class="note">
-
-        If your policy configuration file is located outside the default directory, you can specify its path by using the `--policy` flag with the `oc mirror` command.
-
-        For more information, see [`containers-policy.json(5)`](https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md).
-
-        </div>
+        > [!NOTE]
+        > If your policy configuration file is located outside the default directory, you can specify its path by using the `--policy` flag with the `oc mirror` command.
+        >
+        > For more information, see [`containers-policy.json(5)`](https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md).
 
     2.  Define verification rules for the desired scope (for example, registry or image) using the appropriate policy configuration. You can set the verification requirement by specifying the desired rule under each element.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example: Enable verification for only a specific image, and reject all other images**
+        <div class="title">
+
+        Example: Enable verification for only a specific image, and reject all other images
 
         </div>
 
@@ -1222,6 +1594,10 @@ When enabled, the plugin verifies that container images match their signatures, 
         }
         ```
 
+        </div>
+
+</div>
+
 # How filtering works in the operator catalog
 
 oc-mirror plugin v2 selects the list of bundles for mirroring by processing the information in `imageSetConfig`.
@@ -1235,20 +1611,20 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">ImageSetConfig operator filtering</th>
 <th style="text-align: left;">Expected bundle versions</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 1</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">operators</span><span class="kw">:</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> </span><span class="fu">catalog</span><span class="kw">:</span><span class="at"> registry.redhat.io/redhat/redhat-operator-index:v4.10</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>For each package in the catalog, one bundle, corresponding to the head version for each channel of that package.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 2</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1256,7 +1632,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">full</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles of all channels of the specified catalog.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 3</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1265,7 +1641,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> compliance-operator</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>One bundle, corresponding to the head version for each channel of that package.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 4</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1275,7 +1651,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles of all channels for the packages specified.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 5</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1285,7 +1661,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">       </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">5.6.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles in all channels, from the <code>minVersion</code>, up to the channel head for that package.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 6</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1295,7 +1671,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles in all channels that are lower than the <code>maxVersion</code> for that package.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 7</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1306,7 +1682,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles in all channels, between the <code>minVersion</code> and <code>maxVersion</code> for that package. The head of the channel is not included, even if multiple channels are included in the filtering.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 8</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1317,7 +1693,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>The head bundle for the selected channel of that package. You must use the <code>defaultChannel</code> field in case the filtered channels are not the default.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 9</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1329,7 +1705,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">               </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;stable-v0&#39;</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All bundles for the packages and channels specified. The <code>defaultChannel</code> should be used in case the filtered channels are not the default.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 10</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1341,7 +1717,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-5.5</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>The head bundle for each selected channel of that package.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 11</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1353,7 +1729,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">5.6.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Within the selected channel of that package, all versions starting with the <code>minVersion</code> up to the channel head. You must use the <code>defaultChannel</code> field in case the filtered channels are not the default.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 12</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1365,7 +1741,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Within the selected channel of that package, all versions up to <code>maxVersion</code>. Head of channel is not included, even if multiple channels are included in the filtering. You might see errors if this filtering leads to a channel with multiple heads. You must use the <code>defaultChannel</code> field in case the filtered channels are not the default.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 13</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1378,7 +1754,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Within the selected channel of that package, all versions between the <code>minVersion</code> and <code>maxVersion</code>. The head of channel is not included, even if multiple channels are included in the filtering. You might see errors if this filtering leads to a channel with multiple heads. You must use the <code>defaultChannel</code> field in case the filtered channels are not the default.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 14</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1391,7 +1767,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Do not use this scenario. filtering by channel and by package with a <code>minVersion</code> or <code>maxVersion</code> is not allowed.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Scenario 15</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1404,7 +1780,7 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.0.0</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Do not use this scenario. You cannot filter using <code>full:true</code> and the <code>minVersion</code> or <code>maxVersion</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Scenario 16</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
@@ -1421,8 +1797,6 @@ When oc-mirror plugin v2 selects bundles for mirroring, it does not infer Group 
 </tbody>
 </table>
 
-Use the following table to see what bundle versions are included in different scenarios
-
 # ImageSet configuration parameters for oc-mirror plugin v2
 
 The oc-mirror plugin v2 requires an image set configuration file that defines what images to mirror.
@@ -1430,6 +1804,10 @@ The oc-mirror plugin v2 requires an image set configuration file that defines wh
 The following table lists the available parameters for the \`ImageSetConfiguration resource.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - When selecting bundles for mirroring, the oc-mirror plugin v2 does not automatically detect group/version/kind (GVK) and bundle dependencies. You must explicitly specify the required Operators, their channels, and the Operator versions in the `ImageSetConfiguration` file. For more information, see "opm CLI reference".
 
@@ -1449,24 +1827,24 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>apiVersion</code></p></td>
 <td style="text-align: left;"><p>The API version of the <code>ImageSetConfiguration</code> content.</p></td>
 <td style="text-align: left;"><p>String Example: <code>mirror.openshift.io/v2alpha1</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>archiveSize</code></p></td>
 <td style="text-align: left;"><p>The maximum size, in GiB, of each archive file within the image set.</p></td>
 <td style="text-align: left;"><p>Integer Example: <code>4</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>kubeVirtContainer</code></p></td>
 <td style="text-align: left;"><p>When set to <code>true</code>, includes images from the hosted control planes KubeVirt CoreOS container.</p></td>
 <td style="text-align: left;"><p>Boolean Example <code>ImageSetConfiguration</code> file:</p>
@@ -1480,12 +1858,12 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">maxVersion</span><span class="kw">:</span><span class="at"> </span><span class="fl">4.16.0</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kubeVirtContainer</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror</code></p></td>
 <td style="text-align: left;"><p>The configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.additionalImages</code></p></td>
 <td style="text-align: left;"><p>The additional images configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects</p>
@@ -1493,32 +1871,32 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">additionalImages</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> registry.redhat.io/ubi8/ubi:latest</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.additionalImages.name</code></p></td>
 <td style="text-align: left;"><p>The tag or digest of the image to mirror.</p></td>
 <td style="text-align: left;"><p>String Example: <code>registry.redhat.io/ubi8/ubi:latest</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.additionalImages.targetRepo</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the custom repository path and URL for the target image on the disconnected registry. This value overrides the default repository path.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.additionalImages.targetTag</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the tag applied to the mirrored image. If you do not configure this field, the image is mirrored using the tag provided in the <code>name</code> field. If no tag is provided in the <code>name</code> field, <code>oc-mirror</code> calculates and applies a tag based on the image’s partial digest.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.blockedImages</code></p></td>
 <td style="text-align: left;"><p>List of images with a tag or digest (SHA) to block from mirroring.</p></td>
 <td style="text-align: left;"><p>Array of strings Example: <code>docker.io/library/alpine</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm</code></p></td>
 <td style="text-align: left;"><p>The helm configuration of the image set. The oc-mirror plugin does not support helm charts with manually modified <code>values.yaml</code> files.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.local</code></p></td>
 <td style="text-align: left;"><p>The local helm charts to mirror.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1526,30 +1904,34 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> podinfo</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /test/podinfo-5.0.0.tar.gz</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.local.charts.imagePaths</code></p></td>
 <td style="text-align: left;"><p>The custom path of a container image inside of the local helm chart.</p>
 <p>+</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p><code>oc-mirror</code> detects and mirrors container images from the helm chart by searching well-known paths. You can also specify custom paths using this field.</p>
 </div>
 <p>+</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>Operand images, dynamically deployed by Operator controllers at runtime, are typically referenced by environment variables within the controller’s deployment template. Before OpenShift Container Platform 4.20, while <code>oc-mirror</code> could access these environment variables, it attempted to mirror all values, including non-image references, for example, log levels, leading to failures. With this update, you can mirror only the container images referenced in these environment variables.</p>
 </div></td>
 <td style="text-align: left;"><p>Array of string. For example: <code>"- {.spec.template.spec.custom[*].image}"</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.local.name</code></p></td>
 <td style="text-align: left;"><p>The name of the local helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.local.path</code></p></td>
 <td style="text-align: left;"><p>The path of the local helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>/test/podinfo-5.0.0.tar.gz</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories</code></p></td>
 <td style="text-align: left;"><p>The remote helm repositories to mirror from.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1562,40 +1944,44 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">         </span><span class="fu">imagePaths</span><span class="kw">:</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">         </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{.spec.template.spec.custom[*].image}&quot;</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories.name</code></p></td>
 <td style="text-align: left;"><p>The name of the helm repository to mirror from.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories.url</code></p></td>
 <td style="text-align: left;"><p>The URL of the helm repository to mirror from.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>https://example.github.io/podinfo</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts</code></p></td>
 <td style="text-align: left;"><p>The remote helm charts to mirror.</p></td>
 <td style="text-align: left;"><p>Array of objects.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts.name</code></p></td>
 <td style="text-align: left;"><p>The name of the helm chart to mirror.</p></td>
 <td style="text-align: left;"><p>String. For example: <code>podinfo</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.helm.repositories.charts.imagePaths</code></p></td>
 <td style="text-align: left;"><p>The custom path of a container image inside of the helm chart.</p>
 <p>+</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p><code>oc-mirror</code> detects and mirrors container images from the helm chart by searching well-known paths. You can also specify custom paths using this field.</p>
 </div>
 <p>+</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>Operand images, dynamically deployed by Operator controllers at runtime, are typically referenced by environment variables within the controller’s deployment template. Before OpenShift Container Platform 4.20, while <code>oc-mirror</code> could access these environment variables, it attempted to mirror all values, including non-image references, for example, log levels, leading to failures. With this update, you can mirror only the container images referenced in these environment variables.</p>
 </div></td>
 <td style="text-align: left;"><p>Array of string. For example: <code>"- {.spec.template.spec.custom[*].image}"</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators</code></p></td>
 <td style="text-align: left;"><p>The Operators configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects</p>
@@ -1606,17 +1992,17 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;2.4.0&#39;</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.catalog</code></p></td>
 <td style="text-align: left;"><p>The Operator catalog to include in the image set.</p></td>
 <td style="text-align: left;"><p>String Example: <code>registry.redhat.io/redhat/redhat-operator-index:v4.15</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.full</code></p></td>
 <td style="text-align: left;"><p>When <code>true</code>, downloads the full catalog, Operator package, or Operator channel.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages</code></p></td>
 <td style="text-align: left;"><p>The Operator packages configuration.</p></td>
 <td style="text-align: left;"><p>Array of objects</p>
@@ -1627,51 +2013,53 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;5.2.3-31&#39;</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.name</code></p></td>
 <td style="text-align: left;"><p>The Operator package name to include in the image set.</p></td>
 <td style="text-align: left;"><p>String Example: <code>elasticsearch-operator</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels</code></p></td>
 <td style="text-align: left;"><p>Operator package channel configuration</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.name</code></p></td>
 <td style="text-align: left;"><p>The Operator channel name, unique within a package, to include in the image set.</p>
 <p>+</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>You must use explicit registry hostnames for all images listed under <code>additionalImages</code>. Without explicit hostnames, the plugin mirrors the images to unexpected target paths.</p>
 </div></td>
 <td style="text-align: left;"><p>String Example: <code>fast</code> or <code>stable-v4.15</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator mirror across all channels in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to mirror across all channels in which it exists</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator to mirror across all channels in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to mirror across all channels in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.targetCatalog</code></p></td>
 <td style="text-align: left;"><p>An alternative name and optional namespace hierarchy to mirror the referenced catalog as</p></td>
 <td style="text-align: left;"><p>String Example: <code>my-namespace/my-operator-catalog</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.targetCatalogSourceTemplate</code></p></td>
 <td style="text-align: left;"><p>Path on disk for a template to use to complete catalogSource custom resource generated by oc-mirror plugin v2.</p></td>
 <td style="text-align: left;"><p>String Example: <code>/tmp/catalog-source_template.yaml</code> Example of a template file:</p>
@@ -1687,17 +2075,17 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">registryPoll</span><span class="kw">:</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">interval</span><span class="kw">:</span><span class="at"> 30m0s</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.targetTag</code></p></td>
 <td style="text-align: left;"><p>An alternative tag to append to the <code>targetName</code> or <code>targetCatalog</code>.</p></td>
 <td style="text-align: left;"><p>String Example: <code>v1</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform</code></p></td>
 <td style="text-align: left;"><p>The platform configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.architectures</code></p></td>
 <td style="text-align: left;"><p>The architecture of the platform release payload to mirror.</p></td>
 <td style="text-align: left;"><p>Array of strings Example:</p>
@@ -1709,7 +2097,7 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> s390x</span></span></code></pre></div>
 <p>The default value is <code>amd64</code>. The value <code>multi</code> ensures that the mirroring is supported for all available architectures, eliminating the need to specify individual architectures</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels</code></p></td>
 <td style="text-align: left;"><p>The platform channel configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects Example:</p>
@@ -1717,42 +2105,42 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.12</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.17</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.full</code></p></td>
 <td style="text-align: left;"><p>When <code>true</code>, sets the <code>minVersion</code> to the first release in the channel and the <code>maxVersion</code> to the last release in the channel.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.name</code></p></td>
 <td style="text-align: left;"><p>Name of the release channel</p></td>
 <td style="text-align: left;"><p>String Example: <code>stable-4.15</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The minimum version of the referenced platform to be mirrored.</p></td>
 <td style="text-align: left;"><p>String Example: <code>4.12.6</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the referenced platform to be mirrored.</p></td>
 <td style="text-align: left;"><p>String Example: <code>4.15.1</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.shortestPath</code></p></td>
 <td style="text-align: left;"><p>Toggles shortest path mirroring or full range mirroring.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.channels.type</code></p></td>
 <td style="text-align: left;"><p>Type of the platform to be mirrored</p></td>
 <td style="text-align: left;"><p>String Example: <code>ocp</code> or <code>okd</code>. The default is <code>ocp</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mirror.platform.graph</code></p></td>
 <td style="text-align: left;"><p>Indicates whether the OSUS graph is added to the image set and subsequently published to the mirror.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mirror.operators.packages.defaultChannel</code></p></td>
 <td style="text-align: left;"><p>Must be defined when excluding the default channel from the filtering.</p></td>
 <td style="text-align: left;"><p>Array of objects. For example:</p>
@@ -1768,8 +2156,6 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 </tbody>
 </table>
 
-`ImageSetConfiguration` parameters
-
 ## DeleteImageSetConfiguration parameters
 
 To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetConfiguration.yaml` configuration file that defines which images to delete from the mirror registry. The following table lists the available parameters for the `DeleteImageSetConfiguration` resource.
@@ -1782,46 +2168,46 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 <col style="width: 20%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Values</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>apiVersion</code></p></td>
 <td style="text-align: left;"><p>The API version for the <code>DeleteImageSetConfiguration</code> content.</p></td>
 <td style="text-align: left;"><p>String Example: <code>mirror.openshift.io/v2alpha1</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete</code></p></td>
 <td style="text-align: left;"><p>The configuration of the image set to delete.</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.additionalImages</code></p></td>
 <td style="text-align: left;"><p>The additional images configuration of the delete image set.</p></td>
 <td style="text-align: left;"><p>Array of objects Example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">additionalImages</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> registry.redhat.io/ubi8/ubi:latest</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.additionalImages.name</code></p></td>
 <td style="text-align: left;"><p>The tag or digest of the image to delete.</p></td>
 <td style="text-align: left;"><p>String Example: <code>registry.redhat.io/ubi8/ubi:latest</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.additionalImages.targetRepo</code></p></td>
 <td style="text-align: left;"><p>Specifies the repository path and URL of the image you want to delete.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.additionalImages.targetTag</code></p></td>
 <td style="text-align: left;"><p>Specifies the tag applied to the image you want to delete.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators</code></p></td>
 <td style="text-align: left;"><p>The Operators configuration of the delete image set.</p></td>
 <td style="text-align: left;"><p>Array of objects Example:</p>
@@ -1831,17 +2217,17 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;2.4.0&#39;</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.catalog</code></p></td>
 <td style="text-align: left;"><p>The Operator catalog to include in the delete image set.</p></td>
 <td style="text-align: left;"><p>String Example: <code>registry.redhat.io/redhat/redhat-operator-index:v4.15</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.full</code></p></td>
 <td style="text-align: left;"><p>When true, deletes the full catalog, Operator package, or Operator channel.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages</code></p></td>
 <td style="text-align: left;"><p>Operator packages configuration</p></td>
 <td style="text-align: left;"><p>Array of objects Example:</p>
@@ -1851,47 +2237,47 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> elasticsearch-operator</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">minVersion</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;5.2.3-31&#39;</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.name</code></p></td>
 <td style="text-align: left;"><p>The Operator package name to include in the delete image set.</p></td>
 <td style="text-align: left;"><p>String Example: <code>elasticsearch-operator</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.channels</code></p></td>
 <td style="text-align: left;"><p>Operator package channel configuration</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.channels.name</code></p></td>
 <td style="text-align: left;"><p>The Operator channel name, unique within a package, to include in the delete image set.</p></td>
 <td style="text-align: left;"><p>String Example: <code>fast</code> or <code>stable-v4.15</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator to delete within the selected channel.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to delete within the selection in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the Operator to delete across all channels in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.operators.packages.minVersion</code></p></td>
 <td style="text-align: left;"><p>The lowest version of the Operator to delete across all channels in which it exists.</p></td>
 <td style="text-align: left;"><p>String Example: <code>5.2.3-31</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform</code></p></td>
 <td style="text-align: left;"><p>The platform configuration of the image set</p></td>
 <td style="text-align: left;"><p>Object</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.architectures</code></p></td>
 <td style="text-align: left;"><p>The architecture of the platform release payload to delete.</p></td>
 <td style="text-align: left;"><p>Array of strings Example:</p>
@@ -1903,7 +2289,7 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> s390x</span></span></code></pre></div>
 <p>The default value is <code>amd64</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels</code></p></td>
 <td style="text-align: left;"><p>The platform channel configuration of the image set.</p></td>
 <td style="text-align: left;"><p>Array of objects</p>
@@ -1912,37 +2298,37 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.12</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stable-4.17</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.full</code></p></td>
 <td style="text-align: left;"><p>When <code>true</code>, sets the <code>minVersion</code> to the first release in the channel and the <code>maxVersion</code> to the last release in the channel.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.name</code></p></td>
 <td style="text-align: left;"><p>Name of the release channel</p></td>
 <td style="text-align: left;"><p>String Example: <code>stable-4.15</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.minVersion</code></p></td>
 <td style="text-align: left;"><p>The minimum version of the referenced platform to be deleted.</p></td>
 <td style="text-align: left;"><p>String Example: <code>4.12.6</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.maxVersion</code></p></td>
 <td style="text-align: left;"><p>The highest version of the referenced platform to be deleted.</p></td>
 <td style="text-align: left;"><p>String Example: <code>4.15.1</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.shortestPath</code></p></td>
 <td style="text-align: left;"><p>Toggles between deleting the shortest path and deleting the full range.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.channels.type</code></p></td>
 <td style="text-align: left;"><p>Type of the platform to be deleted</p></td>
 <td style="text-align: left;"><p>String Example: <code>ocp</code> or <code>okd</code> The default is <code>ocp</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>delete.platform.graph</code></p></td>
 <td style="text-align: left;"><p>Determines whether the OSUS graph is deleted as well on the mirror registry as well.</p></td>
 <td style="text-align: left;"><p>Boolean The default value is <code>false</code></p></td>
@@ -1950,9 +2336,17 @@ To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetCon
 </tbody>
 </table>
 
-`DeleteImageSetConfiguration` parameters
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [opm CLI reference](../cli_reference/opm/cli-opm-ref.xml#cli-opm-ref)
+
+</div>
 
 # Command reference for oc-mirror plugin v2
 
@@ -1968,34 +2362,34 @@ The following tables describe the `oc mirror` subcommands and flags for oc-mirro
 
 Subcommands and flags for the oc-mirror plugin v2
 
-| Flag                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--authfile`                       | Displays the string path of the authentication file. Default is `${XDG_RUNTIME_DIR}/containers/auth.json`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `-c`, `--config` `<string>`        | Specifies the path to an image set configuration file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--cache-dir <string>`             | Use this flag to specify a directory where the oc-mirror plugin stores a persistent cache of image blobs and manifests for use during mirroring operations. The oc-mirror plugin uses the cache in the `disk-to-mirror` and `mirror-to-disk` workflows but does not use the cache in the `mirror-to-mirror` workflow. The plugin uses the cache to perform incremental mirroring and avoids remirroring unchanged images, which saves time and reduces network bandwidth usage. The default cache directory is `$HOME`. For more information, see "About the --cache-dir and --workspace flags". |
-| `--dest-tls-verify`                | Requires HTTPS and verifies certificates when accessing the container registry or daemon. The default value is `true`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--dry-run`                        | Prints actions without mirroring images.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--from <string>`                  | Specifies the path to an image set archive that was generated by executing oc-mirror plugin v2 to load a target registry.                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `-h`, `--help`                     | Displays help                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--image-timeout duration`         | Timeout for mirroring an image. The default is 10m0s. Valid time units are `ns`, `us` or `µs`, `ms`, `s`, `m`, and `h`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `--log-level <string>`             | Displays string log levels. Supported values include info, debug, trace, error. The default value is `info`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `-p`, `--port`                     | Determines the HTTP port used by oc-mirror plugin v2 local storage instance. The default value is `55000`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `--parallel-images <unit>`         | Specifies the number of images mirrored in parallel. The value must be in the range of 1–10. The default value is `4`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--parallel-layers <unit>`         | Specifies the number of image layers mirrored in parallel. The value must be in the range of 1–10. The default value is `5`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `--max-nested-paths <int>`         | Specifies the maximum number of nested paths for destination registries that limit nested paths. The default value is `0`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `--secure-policy`                  | The default value is `false`. If you set a non-default value, the command enables signature verification, which is the secure policy for signature verification.                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `--since`                          | Includes all new content since a specified date (format: `yyyy-mm-dd`). When not provided, new content since previous mirroring is mirrored.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `--src-tls-verify`                 | Requires HTTPS and verifies certificates when accessing the container registry or daemon.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--strict-archive`                 | The default value is `false`. If you set a value, the command generates archives that are strictly less than the `archiveSize` that was set in the `imageSetConfig` custom resource (CR). Mirroring exist in error if a file being archived exceeds `archiveSize` (GB).                                                                                                                                                                                                                                                                                                                          |
-| `-v`, `--version`                  | Displays the version for oc-mirror plugin v2.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--workspace`                      | You can use the `--workspace` flag to specify a directory where the oc-mirror plugin stores the working files that it creates during a mirroring operation, such as the `ImageDigestMirrorSet` and `ImageTagMirrorSet` manifests. Use this directory to apply the generated configuration to clusters and repeat mirroring operations. For more information, see "About the --cache-dir and --workspace flags".                                                                                                                                                                                  |
-| `--retry-delay duration`           | Delay between 2 retries. The default value is `1s`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `--retry-times <int>`              | The number of times to retry. The default value is `2`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `--rootless-storage-path <string>` | Overrides the default container rootless storage path (usually in `etc/containers/storage.conf`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `--remove-signatures`              | Does not copy signatures from the source image.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--registries.d`                   | Specifies the directory that contains registry configuration files.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `--secure-policy=true`             | Enables signature verification for all images.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--policy`                         | Specifies the path to the signature verification policy file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Flag | Description |
+|----|----|
+| `--authfile` | Displays the string path of the authentication file. Default is `${XDG_RUNTIME_DIR}/containers/auth.json`. |
+| `-c`, `--config` `<string>` | Specifies the path to an image set configuration file. |
+| `--cache-dir <string>` | Use this flag to specify a directory where the oc-mirror plugin stores a persistent cache of image blobs and manifests for use during mirroring operations. The oc-mirror plugin uses the cache in the `disk-to-mirror` and `mirror-to-disk` workflows but does not use the cache in the `mirror-to-mirror` workflow. The plugin uses the cache to perform incremental mirroring and avoids remirroring unchanged images, which saves time and reduces network bandwidth usage. The default cache directory is `$HOME`. For more information, see "About the --cache-dir and --workspace flags". |
+| `--dest-tls-verify` | Requires HTTPS and verifies certificates when accessing the container registry or daemon. The default value is `true`. |
+| `--dry-run` | Prints actions without mirroring images. |
+| `--from <string>` | Specifies the path to an image set archive that was generated by executing oc-mirror plugin v2 to load a target registry. |
+| `-h`, `--help` | Displays help |
+| `--image-timeout duration` | Timeout for mirroring an image. The default is 10m0s. Valid time units are `ns`, `us` or `µs`, `ms`, `s`, `m`, and `h`. |
+| `--log-level <string>` | Displays string log levels. Supported values include info, debug, trace, error. The default value is `info`. |
+| `-p`, `--port` | Determines the HTTP port used by oc-mirror plugin v2 local storage instance. The default value is `55000`. |
+| `--parallel-images <unit>` | Specifies the number of images mirrored in parallel. The value must be in the range of 1–10. The default value is `4`. |
+| `--parallel-layers <unit>` | Specifies the number of image layers mirrored in parallel. The value must be in the range of 1–10. The default value is `5`. |
+| `--max-nested-paths <int>` | Specifies the maximum number of nested paths for destination registries that limit nested paths. The default value is `0`. |
+| `--secure-policy` | The default value is `false`. If you set a non-default value, the command enables signature verification, which is the secure policy for signature verification. |
+| `--since` | Includes all new content since a specified date (format: `yyyy-mm-dd`). When not provided, new content since previous mirroring is mirrored. |
+| `--src-tls-verify` | Requires HTTPS and verifies certificates when accessing the container registry or daemon. |
+| `--strict-archive` | The default value is `false`. If you set a value, the command generates archives that are strictly less than the `archiveSize` that was set in the `imageSetConfig` custom resource (CR). Mirroring exist in error if a file being archived exceeds `archiveSize` (GB). |
+| `-v`, `--version` | Displays the version for oc-mirror plugin v2. |
+| `--workspace` | You can use the `--workspace` flag to specify a directory where the oc-mirror plugin stores the working files that it creates during a mirroring operation, such as the `ImageDigestMirrorSet` and `ImageTagMirrorSet` manifests. Use this directory to apply the generated configuration to clusters and repeat mirroring operations. For more information, see "About the --cache-dir and --workspace flags". |
+| `--retry-delay duration` | Delay between 2 retries. The default value is `1s`. |
+| `--retry-times <int>` | The number of times to retry. The default value is `2`. |
+| `--rootless-storage-path <string>` | Overrides the default container rootless storage path (usually in `etc/containers/storage.conf`). |
+| `--remove-signatures` | Does not copy signatures from the source image. |
+| `--registries.d` | Specifies the directory that contains registry configuration files. |
+| `--secure-policy=true` | Enables signature verification for all images. |
+| `--policy` | Specifies the path to the signature verification policy file. |
 
 oc mirror flags
 
@@ -2005,26 +2399,26 @@ You can use the `oc mirror` subcommands and flags to modify how the oc-mirror pl
 
 The following tables describe the `oc mirror` subcommands and flags for deleting images:
 
-| Subcommand                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--authfile <string>`              | Path of the authentication file. The default value is `${XDG_RUNTIME_DIR}/containers/auth.json`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `--cache-dir <string>`             | Use this flag to specify a directory where the oc-mirror plugin stores a persistent cache of image blobs and manifests for use during mirroring operations. The oc-mirror plugin uses the cache in the `disk-to-mirror` and `mirror-to-disk` workflows but does not use the cache in the `mirror-to-mirror` workflow. The plugin uses the cache to perform incremental mirroring and avoids remirroring unchanged images, which saves time and reduces network bandwidth usage. The default cache directory is `$HOME`. For more information, see "About the --cache-dir and --workspace flags". |
-| `-c <string>`, `--config <string>` | Path to the delete imageset configuration file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--delete-id <string>`             | Used to differentiate between versions for files created by the delete functionality.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--delete-v1-images`               | Used during the migration, along with `--generate`, in order to target images previously mirrored with oc-mirror plugin v1.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--delete-yaml-file <string>`      | If set, uses the generated or updated yaml file to delete contents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `--dest-tls-verify`                | Require HTTPS and verify certificates when talking to the container registry or daemon. The default value is `true`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `--force-cache-delete`             | Used to force delete the local cache manifests and blobs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--generate`                       | Used to generate the delete yaml for the list of manifests and blobs, used when deleting from local cache and remote registry.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `-h`, `--help`                     | Displays help.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--log-level <string>`             | Log level one of `info`, `debug`, `trace`, and `error`. The default value is `info`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `--parallel-images <unit>`         | Indicates the number of images deleted in parallel. The value must be in the range of 1–10. The default value is `4`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--parallel-layers <unit>`         | Indicates the number of image layers deleted in parallel. The value must be in the range of 1–10. The default value is `5`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `-p <unit>`, `--port <unit>`       | HTTP port used by oc-mirror’s local storage instance. The default value is `55000`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `--retry-delay`                    | Duration delay between 2 retries. The default value is `1s`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `--retry-times <int>`              | The number of times to retry. The default value is `2`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `--src-tls-verify`                 | Require HTTPS and verify certificates when talking to the container registry or daemon. The default value is `true`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `--workspace <string>`             | You can use the `--workspace` flag to specify a directory where the oc-mirror plugin stores the working files that it creates during a mirroring operation, such as the `ImageDigestMirrorSet` and `ImageTagMirrorSet` manifests. Use this directory to apply the generated configuration to clusters and repeat mirroring operations. For more information, see "About the --cache-dir and --workspace flags".                                                                                                                                                                                  |
+| Subcommand | Description |
+|----|----|
+| `--authfile <string>` | Path of the authentication file. The default value is `${XDG_RUNTIME_DIR}/containers/auth.json`. |
+| `--cache-dir <string>` | Use this flag to specify a directory where the oc-mirror plugin stores a persistent cache of image blobs and manifests for use during mirroring operations. The oc-mirror plugin uses the cache in the `disk-to-mirror` and `mirror-to-disk` workflows but does not use the cache in the `mirror-to-mirror` workflow. The plugin uses the cache to perform incremental mirroring and avoids remirroring unchanged images, which saves time and reduces network bandwidth usage. The default cache directory is `$HOME`. For more information, see "About the --cache-dir and --workspace flags". |
+| `-c <string>`, `--config <string>` | Path to the delete imageset configuration file. |
+| `--delete-id <string>` | Used to differentiate between versions for files created by the delete functionality. |
+| `--delete-v1-images` | Used during the migration, along with `--generate`, in order to target images previously mirrored with oc-mirror plugin v1. |
+| `--delete-yaml-file <string>` | If set, uses the generated or updated yaml file to delete contents. |
+| `--dest-tls-verify` | Require HTTPS and verify certificates when talking to the container registry or daemon. The default value is `true`. |
+| `--force-cache-delete` | Used to force delete the local cache manifests and blobs. |
+| `--generate` | Used to generate the delete yaml for the list of manifests and blobs, used when deleting from local cache and remote registry. |
+| `-h`, `--help` | Displays help. |
+| `--log-level <string>` | Log level one of `info`, `debug`, `trace`, and `error`. The default value is `info`. |
+| `--parallel-images <unit>` | Indicates the number of images deleted in parallel. The value must be in the range of 1–10. The default value is `4`. |
+| `--parallel-layers <unit>` | Indicates the number of image layers deleted in parallel. The value must be in the range of 1–10. The default value is `5`. |
+| `-p <unit>`, `--port <unit>` | HTTP port used by oc-mirror’s local storage instance. The default value is `55000`. |
+| `--retry-delay` | Duration delay between 2 retries. The default value is `1s`. |
+| `--retry-times <int>` | The number of times to retry. The default value is `2`. |
+| `--src-tls-verify` | Require HTTPS and verify certificates when talking to the container registry or daemon. The default value is `true`. |
+| `--workspace <string>` | You can use the `--workspace` flag to specify a directory where the oc-mirror plugin stores the working files that it creates during a mirroring operation, such as the `ImageDigestMirrorSet` and `ImageTagMirrorSet` manifests. Use this directory to apply the generated configuration to clusters and repeat mirroring operations. For more information, see "About the --cache-dir and --workspace flags". |
 
 Subcommands and flags for the deleting images
 
@@ -2048,19 +2442,16 @@ You can use the `--workspace` flag to specify a directory where the oc-mirror pl
 
 If you remove or modify the workspace directory, future mirroring operations might fail, or clusters may use inconsistent image sources.
 
-<div class="warning">
-
-Deleting or modifying the contents of cache or workspace directories can cause the following issues:
-
-- Failed or incomplete mirroring operations.
-
-- Loss of incremental mirroring data.
-
-- Full remirroring requirements and increased network overhead.
-
-Do not modify, relocate, or delete these directories unless you fully understand the impact. You must regularly back up the cache directory after successful mirroring operations. It is not necessary to back up the workspace directory because its contents are regenerated during each mirroring cycle.
-
-</div>
+> [!WARNING]
+> Deleting or modifying the contents of cache or workspace directories can cause the following issues:
+>
+> - Failed or incomplete mirroring operations.
+>
+> - Loss of incremental mirroring data.
+>
+> - Full remirroring requirements and increased network overhead.
+>
+> Do not modify, relocate, or delete these directories unless you fully understand the impact. You must regularly back up the cache directory after successful mirroring operations. It is not necessary to back up the workspace directory because its contents are regenerated during each mirroring cycle.
 
 Consider the following best practices so that you can better manage the cache and workspace directories effectively:
 

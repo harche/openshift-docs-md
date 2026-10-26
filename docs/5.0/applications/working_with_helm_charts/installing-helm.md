@@ -1,6 +1,8 @@
 Install the Helm CLI to manage software packages on your OpenShift Container Platform cluster from a local workstation.
 
-You can also find the URL to the latest binaries from the OpenShift Container Platform web console by clicking the **?** icon in the upper-right corner and selecting **Command Line Tools**.
+You can find the URL to the latest binaries in the OpenShift Container Platform web console by clicking the help icon (**?**) and selecting **Command Line Tools**.
+
+Replace \<version\> in the curl commands with the Helm version that matches your OpenShift Container Platform cluster version. For more information, see "Helm CLI for Red Hat OpenShift compatibility matrix."
 
 # On Linux
 
@@ -9,25 +11,25 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     - Linux (x86_64, amd64)
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-linux-amd64 -o /usr/local/bin/helm
       ```
 
     - Linux on IBM Z® and IBM® LinuxONE (s390x)
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-s390x -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-linux-s390x -o /usr/local/bin/helm
       ```
 
     - Linux on IBM Power® (ppc64le)
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-ppc64le -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-linux-ppc64le -o /usr/local/bin/helm
       ```
 
     - Linux on ARM (arm64)
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-arm64 -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-linux-arm64 -o /usr/local/bin/helm
       ```
 
 2.  Make the binary file executable:
@@ -42,9 +44,11 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     $ helm version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -52,9 +56,11 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     version.BuildInfo{Version:"v3.0", GitCommit:"b31719aab7963acf4887a1c1e6d5e53378e34d93", GitTreeState:"clean", GoVersion:"go1.13.4"}
     ```
 
+    </div>
+
 # On Windows
 
-1.  Download the Helm binary: [`.exe` file](https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-windows-amd64.exe).
+1.  Go to <https://mirror.openshift.com/pub/cgw/helm/>, open the folder for your Helm version, and download `helm-windows-amd64.exe`.
 
 2.  Click **Search** and type `env` or `environment`.
 
@@ -71,13 +77,13 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     - For macOS on Intel (x86_64):
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-darwin-amd64 -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-darwin-amd64 -o /usr/local/bin/helm
       ```
 
     - For macOS on ARM (Apple Silicon):
 
       ``` terminal
-      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-darwin-arm64 -o /usr/local/bin/helm
+      # curl -L https://mirror.openshift.com/pub/cgw/helm/<version>/helm-darwin-arm64 -o /usr/local/bin/helm
       ```
 
 2.  Make the binary file executable:
@@ -92,12 +98,20 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     $ helm version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     version.BuildInfo{Version:"v3.0", GitCommit:"b31719aab7963acf4887a1c1e6d5e53378e34d93", GitTreeState:"clean", GoVersion:"go1.13.4"}
     ```
+
+    </div>
+
+# Additional resources
+
+- [Helm CLI for Red Hat OpenShift compatibility matrix](https://access.redhat.com/articles/7145580)

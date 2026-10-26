@@ -6,9 +6,27 @@ Capture network flows and apply filters based on resources or zones directly in 
 
 Table visualization in the CLI provides viewing and flow search capabilities.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Install the Network Observability CLI (`oc netobserv`) plugin.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Capture flows with filters enabled by running the following command:
 
@@ -28,9 +46,11 @@ Table visualization in the CLI provides viewing and flow search capabilities.
 
 5.  View the captured data in the `./output/flow/<capture_date_time>.json` JSON file, which contains JSON arrays of the captured data.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example JSON file**
+    <div class="title">
+
+    Example JSON file
 
     </div>
 
@@ -62,6 +82,8 @@ Table visualization in the CLI provides viewing and flow search capabilities.
     }
     ```
 
+    </div>
+
 6.  You can use SQLite to inspect the `./output/flow/<capture_date_time>.db` database file. For example:
 
     1.  Open the file by running the following command:
@@ -76,9 +98,11 @@ Table visualization in the CLI provides viewing and flow search capabilities.
         sqlite> SELECT DnsLatencyMs, DnsFlagsResponseCode, DnsId, DstAddr, DstPort, Interface, Proto, SrcAddr, SrcPort, Bytes, Packets FROM flow WHERE DnsLatencyMs >10 LIMIT 10;
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -95,13 +119,35 @@ Table visualization in the CLI provides viewing and flow search capabilities.
         15|NoError|40548|10.0.0.3|45933||17|169.254.169.254|53|174|1
         ```
 
+        </div>
+
+</div>
+
 # Capture packets
 
 Use the Network Observability CLI to capture network packets. You can apply filters and refine them live in the terminal for accurate, real-time debugging.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Install the Network Observability CLI (`oc netobserv`) plugin.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the packet capture with filters enabled:
 
@@ -123,19 +169,41 @@ Use the Network Observability CLI to capture network packets. You can apply filt
 
     1.  The `./output/pcap/<capture_date_time>.pcap` file can be opened with Wireshark.
 
+</div>
+
 # Capture metrics
 
 Generate on-demand network observability dashboards in Prometheus using a service monitor. This allows you to quickly view and analyze network metrics.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Install the Network Observability CLI (`oc netobserv`) plugin.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Capture metrics with filters enabled by running the following command:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -143,11 +211,15 @@ Generate on-demand network observability dashboards in Prometheus using a servic
     $ oc netobserv metrics --enable_filter=true --cidr=0.0.0.0/0 --protocol=TCP --port=49051
     ```
 
+    </div>
+
 2.  Open the link provided in the terminal to view the **NetObserv / On-Demand** dashboard:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example URL**
+    <div class="title">
+
+    Example URL
 
     </div>
 
@@ -155,15 +227,24 @@ Generate on-demand network observability dashboards in Prometheus using a servic
     https://console-openshift-console.apps.rosa...openshiftapps.com/monitoring/dashboards/netobserv-cli
     ```
 
-    <div class="note">
-
-    Features that are not enabled present as empty graphs.
-
     </div>
+
+    > [!NOTE]
+    > Features that are not enabled present as empty graphs.
+
+</div>
 
 # Clean the Network Observability CLI
 
 Use `oc netobserv cleanup` to manually remove all components installed by the Network Observability CLI from your cluster. While the client runs this command automatically after a capture, you may need to run it manually if you face connectivity issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following command:
 
@@ -171,6 +252,16 @@ Use `oc netobserv cleanup` to manually remove all components installed by the Ne
   $ oc netobserv cleanup
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Network Observability CLI reference](../../../observability/network_observability/netobserv_cli/netobserv-cli-reference.xml#network-observability-netobserv-cli-reference_netobserv-cli-reference)
+
+</div>

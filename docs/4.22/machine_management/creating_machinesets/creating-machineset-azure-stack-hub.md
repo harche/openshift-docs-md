@@ -1,18 +1,15 @@
 You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Microsoft Azure Stack Hub. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
-<div class="important">
-
-You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
-
-Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
-
-To view the platform type for your cluster, run the following command:
-
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
-
-</div>
+> [!IMPORTANT]
+> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+>
+> To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
 # Sample YAML for a compute machine set custom resource on Azure Stack Hub
 
@@ -124,11 +121,8 @@ Specifies the infrastructure ID, node label, and region.
 `<region>`
 Specifies the region to place machines on.
 
-<div class="note">
-
-The `spec.template.spec.providerSpec.value.zone` specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
-
-</div>
+> [!NOTE]
+> The `spec.template.spec.providerSpec.value.zone` specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
 `<availability_set>`
 Specifies the availability set for the cluster.
@@ -136,17 +130,32 @@ Specifies the availability set for the cluster.
 `<image>`
 Specifies the boot image to use. You should use the use the latest image when adding a new machine set.
 
-<div class="note">
+> [!NOTE]
+> Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
 
-Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
+</div>
+
 # Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -155,6 +164,16 @@ To dynamically manage machine compute resources, you can create your own compute
 - Log in to `oc` as a user with `cluster-admin` permission.
 
 - Create an availability set in which to deploy Azure Stack Hub compute machines.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -223,11 +242,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -237,6 +253,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -259,13 +285,31 @@ To dynamically manage machine compute resources, you can create your own compute
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
+</div>
+
 # Label GPU machine sets for the cluster autoscaler
 
 Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your cluster uses a cluster autoscaler.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - On the machine set that you want to create machines for the cluster autoscaler to use to deploy GPU-enabled nodes, add a `cluster-api/accelerator` label:
 
@@ -287,23 +331,46 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
   `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
-  <div class="note">
+  > [!NOTE]
+  > You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
 
-  You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
+
+</div>
 
 # Enabling Microsoft Azure boot diagnostics
 
 You can enable boot diagnostics on Microsoft Azure machines that your machine set creates. Use this to store console logs that you can use to troubleshoot why a node fails to boot.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Have an existing Azure Stack Hub cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add the `diagnostics` configuration that is applicable to your storage type to the `providerSpec` field in your machine set YAML file:
 
@@ -342,17 +409,24 @@ You can enable boot diagnostics on Microsoft Azure machines that your machine se
     `https://<storage_account>.blob.core.windows.net`
     Specifies the storage account URL. Replace `<storage_account>` with the name of your storage account.
 
-    <div class="note">
+    > [!NOTE]
+    > Only the Azure Blob Storage data service is supported.
 
-    Only the Azure Blob Storage data service is supported.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 - On the Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
 
-# Enable customer-managed encryption keys for a machine set
+</div>
+
+# Enable customer-managed encryption keys for a machine set on Azure
 
 To enhance data security, enable customer-managed encryption on Microsoft Azure by adding the disk encryption set ID to your machine set.
 
@@ -360,13 +434,29 @@ You can supply an encryption key to Azure to encrypt data on managed disks at re
 
 An Azure Key Vault, a disk encryption set, and an encryption key are required to use a customer-managed key. The disk encryption set must be in a resource group where the Cloud Credential Operator (CCO) has granted permissions. If not, an additional reader role is required to be granted on the disk encryption set.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - [You created an Azure Key Vault instance (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-azure-key-vault-instance).
 
 - [You created an instance of a disk encryption set (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-instance-of-a-diskencryptionset).
 
 - [You granted the disk encryption set access to key vault (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#grant-the-diskencryptionset-access-to-key-vault).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Configure the disk encryption set under the `providerSpec` field in your machine set YAML file. For example:
 
@@ -381,6 +471,16 @@ An Azure Key Vault, a disk encryption set, and an encryption key are required to
           storageAccountType: Premium_LRS
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Customer-managed keys (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#customer-managed-keys)
+
+</div>

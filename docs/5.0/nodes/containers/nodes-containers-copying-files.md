@@ -2,11 +2,8 @@ You can use the `oc rsync` command, or remote sync, to copy local files to or fr
 
 The `oc rsync` command leverages the local Rsync tool on the client machine and the remote container for tasks such as copying database archives to and from your pods for backup and restore purposes, or copying source code changes into a running pod for development debugging.
 
-<div class="note">
-
-If the Rsync tool is not found locally or in the remote container, a **tar** archive is created locally and sent to the container where the **tar** utility is used to extract the files. If **tar** is not available in the remote container, the copy fails.
-
-</div>
+> [!NOTE]
+> If the Rsync tool is not found locally or in the remote container, a **tar** archive is created locally and sent to the container where the **tar** utility is used to extract the files. If **tar** is not available in the remote container, the copy fails.
 
 # Understanding how to copy files
 
@@ -46,19 +43,32 @@ When using the `--watch` option, the behavior is effectively the same as manuall
 
 You can use the `oc rsync` command for copying local files to or from a container.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - rsync must be installed. The `oc rsync` command uses the local `rsync` tool, if present on the client machine and the remote container.
 
   If `rsync` is not found locally or in the remote container, a **tar** archive is created locally and sent to the container where the **tar** utility is used to extract the files. If **tar** is not available in the remote container, the copy will fail.
 
   The **tar** copy method does not provide the same functionality as `oc rsync`. For example, `oc rsync` creates the destination directory if it does not exist and only sends files that are different between the source and the destination.
 
-  <div class="note">
+  > [!NOTE]
+  > In Windows, the `cwRsync` client should be installed and added to the PATH for use with the `oc rsync` command.
 
-  In Windows, the `cwRsync` client should be installed and added to the PATH for use with the `oc rsync` command.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Procedure
+
+</div>
 
 - To copy a local directory to a pod directory:
 
@@ -78,15 +88,21 @@ You can use the `oc rsync` command for copying local files to or from a containe
   $ oc rsync devpod1234:/src /home/user/source
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   $ oc rsync devpod1234:/src/status.txt /home/user/
   ```
+
+  </div>
+
+</div>
 
 # Using advanced Rsync features
 

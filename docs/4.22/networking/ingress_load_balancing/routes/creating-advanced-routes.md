@@ -1,14 +1,19 @@
 You can secure your application traffic by managing certificates directly through ingress objects. This includes creating routes using the destination CA certificate in an ingress annotation or using the default certificate.
 
-<div class="warning">
-
-The Ingress Controller maintains a one-way sync for certificates managed through ingress objects. Do not manually apply changes directly to the generated route’s TLS configuration. Any manual modifications are silently overwritten the next time the parent ingress object is updated or reconciled. This is particularly important to note if you operate a GitOps-managed cluster.
-
-</div>
+> [!WARNING]
+> The Ingress Controller maintains a one-way sync for certificates managed through ingress objects. Do not manually apply changes directly to the generated route’s TLS configuration. Any manual modifications are silently overwritten the next time the parent ingress object is updated or reconciled. This is particularly important to note if you operate a GitOps-managed cluster.
 
 # Create a route using the destination CA certificate in the Ingress annotation
 
 To define a route with a custom destination CA certificate, apply the `route.openshift.io/destination-ca-certificate-secret` annotation to an Ingress object. This configuration ensures the Ingress Controller uses the specified secret to verify the identity of the destination service.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
@@ -17,6 +22,16 @@ To define a route with a custom destination CA certificate, apply the `route.ope
 - You have a separate destination CA certificate in a PEM-encoded file.
 
 - You have a service that you want to expose.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a secret for the destination CA certificate by entering the following command:
 
@@ -30,15 +45,19 @@ To define a route with a custom destination CA certificate, apply the `route.ope
     $ oc -n test-ns create secret generic dest-ca-cert --from-file=tls.crt=tls.crt
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     secret/dest-ca-cert created
     ```
+
+    </div>
 
 2.  Add the `route.openshift.io/destination-ca-certificate-secret` to the Ingress annotations:
 
@@ -60,9 +79,11 @@ To define a route with a custom destination CA certificate, apply the `route.ope
 
     The Ingress Controller inserts a secret that is referenced in the annotation into the generated route.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -86,19 +107,43 @@ To define a route with a custom destination CA certificate, apply the `route.ope
     ...
     ```
 
+    </div>
+
+</div>
+
 # Create a route using the default certificate through an Ingress object
 
 To generate a secure, edge-terminated route that uses the default ingress certificate, specify an empty TLS configuration in the Ingress object. This configuration overrides the default behavior, preventing the creation of an insecure route.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a service that you want to expose.
 
 - You have access to the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file for the Ingress object. In the following example, the file is called `example-ingress.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition of an Ingress object**
+    <div class="title">
+
+    YAML definition of an Ingress object
 
     </div>
 
@@ -115,6 +160,8 @@ To generate a secure, edge-terminated route that uses the default ingress certif
       - {}
     ```
 
+    </div>
+
     where:
 
     `spec.tls`
@@ -126,15 +173,27 @@ To generate a secure, edge-terminated route that uses the default ingress certif
     $ oc create -f example-ingress.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that OpenShift Container Platform has created the expected route for the Ingress object by running the following command:
 
   ``` terminal
   $ oc get routes -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -154,6 +213,8 @@ To generate a secure, edge-terminated route that uses the default ingress certif
   # ...
   ```
 
+  </div>
+
   where:
 
   `metadata.name`
@@ -164,3 +225,5 @@ To generate a secure, edge-terminated route that uses the default ingress certif
 
   `tls.termination`
   Specifies the termination policy for the route. The route should specify the `edge` termination policy.
+
+</div>

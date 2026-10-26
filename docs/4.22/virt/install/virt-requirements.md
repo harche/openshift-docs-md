@@ -7,13 +7,10 @@ OpenShift Virtualization requires CPUs supported by Red Hat Enterprise Linux (R
 CPU requirements for OpenShift Virtualization
 - Must be supported by Red Hat Enterprise Linux (RHEL) 9. See [Red Hat Ecosystem Catalog](https://catalog.redhat.com) for supported CPUs.
 
-  <div class="note">
-
-  If your worker nodes have different CPUs, live migration failures might occur because different CPUs have different capabilities. You can mitigate this issue by ensuring that your worker nodes have CPUs with the appropriate capacity and by configuring node affinity rules for your virtual machines.
-
-  For more information, see "Configuring a required node affinity rule" in the Additional resources section.
-
-  </div>
+  > [!NOTE]
+  > If your worker nodes have different CPUs, live migration failures might occur because different CPUs have different capabilities. You can mitigate this issue by ensuring that your worker nodes have CPUs with the appropriate capacity and by configuring node affinity rules for your virtual machines.
+  >
+  > For more information, see "Configuring a required node affinity rule" in the Additional resources section.
 
 - Supports AMD64, Intel 64-bit (x86-64-v2), IBM Z® (`s390x`), or ARM64-based (`arm64` or `aarch64`) architectures and their respective CPU extensions.
 
@@ -38,11 +35,8 @@ Storage requirements for OpenShift Virtualization
 
 - You must create a default OpenShift Virtualization or OpenShift Container Platform storage class. The purpose of this is to address the unique storage needs of VM workloads and offer optimized performance, reliability, and user experience. If both OpenShift Virtualization and OpenShift Container Platform default storage classes exist, the OpenShift Virtualization class takes precedence when creating VM disks.
 
-  <div class="note">
-
-  To mark a storage class as the default for virtualization workloads, set the annotation `storageclass.kubevirt.io/is-default-virt-class` to `"true"`.
-
-  </div>
+  > [!NOTE]
+  > To mark a storage class as the default for virtualization workloads, set the annotation `storageclass.kubevirt.io/is-default-virt-class` to `"true"`.
 
 - If the storage provisioner supports snapshots, you must associate a `VolumeSnapshotClass` object with the default storage class.
 
@@ -50,22 +44,19 @@ Storage requirements for OpenShift Virtualization
 
 Windows guest operating systems require consistently low storage I/O latency to remain stable. If the latency of the underlying storage exceeds the following thresholds, Windows VMs can become unstable or crash.
 
-| Storage I/O latency          | Impact                                                                                       |
-|------------------------------|----------------------------------------------------------------------------------------------|
-| Less than 15 ms              | Healthy. Storage performance is within the expected range for stable VM operation.           |
-| 15 ms to less than 100 ms    | Unhealthy. Exceeding this threshold can eventually lead to workload instability and crashes. |
-| 100 ms to less than 1,000 ms | Windows crashes are highly likely to occur.                                                  |
-| 1,000 ms or more             | Windows crashes are almost certain to occur.                                                 |
+| Storage I/O latency | Impact |
+|----|----|
+| Less than 15 ms | Healthy. Storage performance is within the expected range for stable VM operation. |
+| 15 ms to less than 100 ms | Unhealthy. Exceeding this threshold can eventually lead to workload instability and crashes. |
+| 100 ms to less than 1,000 ms | Windows crashes are highly likely to occur. |
+| 1,000 ms or more | Windows crashes are almost certain to occur. |
 
 Storage I/O latency thresholds for Windows VMs
 
-<div class="note">
+> [!NOTE]
+> If storage I/O latency exceeds 100 ms multiple times a day, prioritize identifying the root cause of the latency. Troubleshooting the affected workload is a secondary concern until you resolve the underlying latency issue.
 
-If storage I/O latency exceeds 100 ms multiple times a day, prioritize identifying the root cause of the latency. Troubleshooting the affected workload is a secondary concern until you resolve the underlying latency issue.
-
-</div>
-
-## About volume and access modes for virtual machine disks
+## Volume and access modes for VM disks
 
 If you use the storage API with known storage providers, the volume and access modes are selected automatically. However, if you use a storage class that does not have a storage profile, you must configure the volume and access mode.
 
@@ -79,17 +70,14 @@ For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volu
 
   For example, if you use Red Hat OpenShift Data Foundation, Ceph RBD volumes are preferable to CephFS volumes.
 
-<div class="important">
-
-You cannot live migrate virtual machines with the following configurations:
-
-- Storage volume with `ReadWriteOnce` (RWO) access mode
-
-- Passthrough features such as GPUs
-
-Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
-
-</div>
+> [!IMPORTANT]
+> You cannot live migrate virtual machines with the following configurations:
+>
+> - Storage volume with `ReadWriteOnce` (RWO) access mode
+>
+> - Passthrough features such as GPUs
+>
+> Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
 
 # Physical resource overhead requirements
 
@@ -97,11 +85,8 @@ OpenShift Virtualization is an add-on to OpenShift Container Platform and impose
 
 Each cluster machine must accommodate the following overhead requirements in addition to the OpenShift Container Platform requirements. Oversubscribing the physical resources in a cluster can affect performance.
 
-<div class="important">
-
-The numbers noted in this documentation are based on Red Hat’s test methodology and setup. These numbers can vary based on your own individual setup and environments.
-
-</div>
+> [!IMPORTANT]
+> The numbers noted in this documentation are based on Red Hat’s test methodology and setup. These numbers can vary based on your own individual setup and environments.
 
 ## Memory overhead
 
@@ -166,9 +151,9 @@ Storage overhead per virtual machine depends on specific requests for resource a
 Example
 As a cluster administrator, if you plan to host 10 virtual machines in the cluster, each with 1 GiB of RAM and 2 vCPUs, the memory impact across the cluster is 11.68 GiB. The estimated on-disk storage impact for each node in the cluster is 10 GiB and the CPU impact for worker nodes that host virtual machine workloads is a minimum of 2 cores.
 
-# Single-node OpenShift differences
+# Single-node OpenShift feature support
 
-You can install OpenShift Virtualization on single-node OpenShift.
+You can install OpenShift Virtualization on single-node OpenShift. The topology does not support high availability, pod disruption, live migration, or eviction strategies.
 
 However, you should be aware that Single-node OpenShift does not support the following features:
 
@@ -199,23 +184,17 @@ Live migration requirements
 
 - Sufficient RAM and network bandwidth.
 
-  <div class="note">
-
-  You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
-
-      Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
-
-  The default number of migrations that can run in parallel in the cluster is 5. For more information, see "Configuring live migration" in the Additional resources section.
-
-  </div>
+  > [!NOTE]
+  > You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
+  >
+  >     Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
+  >
+  > The default number of migrations that can run in parallel in the cluster is 5. For more information, see "Configuring live migration" in the Additional resources section.
 
 - If the virtual machine uses a host model CPU, the nodes must support the virtual machine’s host model CPU.
 
-<div class="note">
-
-A dedicated Multus network for live migration is highly recommended. For more information, see "Using a dedicated network for live migration" in the Additional resources section. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
-
-</div>
+> [!NOTE]
+> A dedicated Multus network for live migration is highly recommended. For more information, see "Using a dedicated network for live migration" in the Additional resources section. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
 
 # Cluster high availability options
 
@@ -224,29 +203,20 @@ Configure high availability (HA) for your cluster using installer-provisioned in
 Methods of configuring HA
 - Automatic high availability for installer-provisioned infrastructure is available by deploying machine health checks. For more information, see "Installer-provisioned infrastructure installation overview" and "About machine health checks" in the Additional resources section.
 
-  <div class="note">
-
-  In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See the "Run strategies" documentation for more detailed information about the potential outcomes and how run strategies affect those outcomes.
-
-  Currently, installer-provisioned infrastructure is not supported on IBM Z®.
-
-  </div>
+  > [!NOTE]
+  > In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See the "Run strategies" documentation for more detailed information about the potential outcomes and how run strategies affect those outcomes.
+  >
+  > Currently, installer-provisioned infrastructure is not supported on IBM Z®.
 
 - Automatic high availability for both IPI and non-IPI is available by using the **Node Health Check Operator** on the OpenShift Container Platform cluster to deploy the `NodeHealthCheck` controller. The controller identifies unhealthy nodes and uses a remediation provider, such as the Self Node Remediation Operator or Fence Agents Remediation Operator, to remediate the unhealthy nodes. For more information on remediation, fencing, and maintaining nodes, see the [Workload Availability for Red Hat OpenShift](https://access.redhat.com/documentation/en-us/workload_availability_for_red_hat_openshift) documentation.
 
-  <div class="note">
-
-  Fence Agents Remediation uses supported fencing agents to reset failed nodes faster than the Self Node Remediation Operator. This improves overall virtual machine high availability. For more information, see the [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929) knowledgebase article.
-
-  </div>
+  > [!NOTE]
+  > Fence Agents Remediation uses supported fencing agents to reset failed nodes faster than the Self Node Remediation Operator. This improves overall virtual machine high availability. For more information, see the [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929) knowledgebase article.
 
 - High availability for any platform is available by using either a monitoring system or a qualified human to monitor node availability. When a node is lost, shut it down and run `oc delete node <lost_node>`.
 
-  <div class="note">
-
-  Without an external monitoring system or a qualified human monitoring node health, virtual machines lose high availability.
-
-  </div>
+  > [!NOTE]
+  > Without an external monitoring system or a qualified human monitoring node health, virtual machines lose high availability.
 
 # Additional resources
 

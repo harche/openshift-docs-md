@@ -54,9 +54,11 @@ A local volume represents a mounted local storage device such as a disk, partiti
 Nested mount points
 A nested mount point is a mount point that attempts to use a mount point created by a previous volume.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example pod definition with nested mount points**
+<div class="title">
+
+Example pod definition with nested mount points
 
 </div>
 
@@ -88,13 +90,12 @@ spec:
         claimName: "web"
 ```
 
+</div>
+
 The `spec.containers.volumeMounts.mountPath` value of `/mnt/web/redis` is a nested mount point.
 
-<div class="warning">
-
-Do *not* use nested mount points because OpenShift Container Platform does not guarantee the order in which mount points are created. Such usage is prone to race conditions and undefined behavior.
-
-</div>
+> [!WARNING]
+> Do *not* use nested mount points because OpenShift Container Platform does not guarantee the order in which mount points are created. Such usage is prone to race conditions and undefined behavior.
 
 NFS
 A Network File System (NFS) that allows remote hosts to mount file systems over a network and interact with those file systems as though they are mounted locally. This enables system administrators to consolidate resources onto centralized servers on the network.
@@ -150,18 +151,48 @@ Pods and containers are ephemeral or transient in nature and designed for statel
 
 Stateful applications deployed in containers require persistent storage. OpenShift Container Platform uses a pre-provisioned storage framework called persistent volumes (PV) to allow cluster administrators to provision persistent storage. The data inside these volumes can exist beyond the lifecycle of an individual pod. Developers can use persistent volume claims (PVCs) to request storage requirements.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding ephemeral storage](../storage/understanding-ephemeral-storage.xml#understanding-ephemeral-storage)
 
 - [Understanding persistent storage](../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+</div>
 
 # Dynamic Provisioning
 
 With Dynamic Provisioning, you can create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision storage.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Dynamic provisioning](../storage/dynamic-provisioning.xml#dynamic-provisioning)
+
+</div>
 
 # Container Storage Interface (CSI)
 
 CSI is an API specification for managing container storage across different orchestration systems. With CSI, you can manage storage volumes without requiring specific knowledge of the underlying infrastructure, providing uniform storage functionality regardless of your storage vendors.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using Container Storage Interface (CSI)](../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+</div>

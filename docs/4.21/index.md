@@ -759,6 +759,7 @@
   - [Disabling multicast for a project](networking/ovn_kubernetes_network_provider/disabling-multicast.md)
   - [Tracking network flows](networking/ovn_kubernetes_network_provider/tracking-network-flows.md)
   - [Configuring hybrid networking](networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.md)
+  - [Increasing cluster network hostPrefix](networking/ovn_kubernetes_network_provider/increasing-cluster-network-hostprefix.md)
 - **Ingress and load balancing**
   - **Routes**
     - [Creating basic routes](networking/ingress_load_balancing/routes/creating-basic-routes.md)
@@ -1360,6 +1361,7 @@
   - [Network observability per-tenant model](observability/network_observability/network-observability-per-tenant-model.md)
   - [Network Policy](observability/network_observability/network-observability-network-policy.md)
   - [Network observability DNS resolution analysis](observability/network_observability/network-observability-dns-resolution-analysis.md)
+  - [Optimizing Flow-logs Pipeline](observability/network_observability/network-observability-optimizing-flowlogs-pipeline.md)
   - [Observing the network traffic](observability/network_observability/observing-network-traffic.md)
   - [Network observability health rules](observability/network_observability/network-observability-health-rules.md)
   - [Monitoring TLS traffic](observability/network_observability/network-observability-monitoring-tls-traffic.md)
@@ -1370,10 +1372,9 @@
   - **Network Observability CLI**
     - [Installing the Network Observability CLI](observability/network_observability/netobserv_cli/netobserv-cli-install.md)
     - [Using the Network Observability CLI](observability/network_observability/netobserv_cli/netobserv-cli-using.md)
+    - [Capture plain text from encrypted network traffic](observability/network_observability/netobserv_cli/netobserv-cli-plaintext-capture.md)
     - [Network Observability CLI reference](observability/network_observability/netobserv_cli/netobserv-cli-reference.md)
-  - [FlowCollector API reference](observability/network_observability/flowcollector-api.md)
-  - [FlowMetric API reference](observability/network_observability/flowmetric-api.md)
-  - [Flows format reference](observability/network_observability/json-flows-format-reference.md)
+  - [Network Observability API reference](observability/network_observability/network-observability-api-reference.md)
   - [Troubleshooting network observability](observability/network_observability/troubleshooting-network-observability.md)
 - **Power Monitoring**
   - [About power monitoring](observability/power_monitoring/about-power-monitoring.md)
@@ -2007,7 +2008,7 @@
   - [Hardware, software, and operational requirements](virt/install/virt-requirements.md)
   - [Installing OpenShift Virtualization](virt/install/installing-virt.md)
   - [Uninstalling OpenShift Virtualization](virt/install/uninstalling-virt.md)
-  - [Installing OpenShift Virtualization on IBM Cloud bare-metal nodes](virt/install/virt-install-ibm-cloud-bm-nodes.md)
+  - [Installation of OpenShift Virtualization on IBM Cloud bare-metal nodes](virt/install/virt-install-ibm-cloud-bm-nodes.md)
 - **Postinstallation configuration**
   - [Postinstallation configuration](virt/post_installation_configuration/virt-post-install-config.md)
   - [Node placement rules](virt/post_installation_configuration/virt-node-placement-virt-components.md)

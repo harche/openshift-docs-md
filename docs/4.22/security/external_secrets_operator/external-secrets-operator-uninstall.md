@@ -6,11 +6,29 @@ You can uninstall the External Secrets Operator for Red Hat OpenShift from your 
 
 The `ExternalSecrets` custom resources or the running `external-secrets` application workload remain in the cluster to prevent accidental data loss and must be removed manually if they are no longer needed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - The External Secrets Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -22,13 +40,33 @@ The `ExternalSecrets` custom resources or the running `external-secrets` applica
 
     3.  In the confirmation dialog, click **Uninstall**.
 
+</div>
+
 # Remove External Secrets Operator for Red Hat OpenShift resources by using the web console
 
 After you have uninstalled the External Secrets Operator for Red Hat OpenShift, you can optionally eliminate its associated resources from your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -102,11 +140,31 @@ After you have uninstalled the External Secrets Operator for Red Hat OpenShift, 
 
     3.  In the confirmation dialog, enter `external-secrets-operator` in the field and click **Delete**.
 
+</div>
+
 # Remove External Secrets Operator for Red Hat OpenShift resources by using the CLI
 
 After you have uninstalled the External Secrets Operator for Red Hat OpenShift, you can optionally eliminate its associated resources from your cluster by using the command-line interface (CLI).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the deployments of the `external-secrets` application components in the `external-secrets` namespace by running the following command:
 
@@ -125,3 +183,5 @@ After you have uninstalled the External Secrets Operator for Red Hat OpenShift, 
     ``` terminal
     $ oc delete project external-secrets-operator
     ```
+
+</div>

@@ -24,9 +24,17 @@ Consider the following limitations before hot swapping a VM secondary network:
 
 - If the new network requires a different IP configuration, such as a different subnet or gateway, you must reconfigure the guest operating system network settings. The hot swap does not automatically update the guest network configuration.
 
-# Hot swapping a virtual machine secondary network by using the command line
+# Hot swap a VM secondary network by using the CLI
 
 You can hot swap a virtual machine (VM) secondary network by using the command line.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The VM to which you want to hot swap the network is running and is live migratable.
 
@@ -50,6 +58,16 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
       "vlan": 20
     }'
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use your preferred text editor to edit the `VirtualMachine` manifest, as shown in the following example:
 
@@ -88,7 +106,15 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
     `<filename>`
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the VM live migration is progressing successfully by using the following command.
 
@@ -108,11 +134,13 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
     $ virtctl console vm-fedora
     ```
 
+</div>
+
 # Additional resources
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration-permissions_virt-about-live-migration)
 
-- [Connecting a virtual machine to a secondary localnet user-defined network](../../virt/vm_networking/virt-connecting-vm-to-secondary-udn.xml#virt-connecting-vm-to-secondary-udn)
+- [Connect a virtual machine to a physical network by using an Open vSwitch bridge](../../virt/vm_networking/virt-connecting-vm-to-physical-network-ovs-bridge.xml#virt-connecting-vm-to-physical-network-ovs-bridge)
 
 - [Creating a Linux bridge network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 

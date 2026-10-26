@@ -27,21 +27,15 @@ The telco core, telco RAN and telco hub reference design specifications (RDS) ca
 
 Each RDS includes the released features and supported configurations that are engineered and validated for clusters to run the individual profiles. The configurations provide a baseline OpenShift Container Platform installation that meets feature and KPI targets. Each RDS also describes expected variations for each individual configuration. Validation of each RDS includes many long duration and at-scale tests.
 
-<div class="note">
-
-The validated reference configurations are updated for each major Y-stream release of OpenShift Container Platform. Z-stream patch releases are periodically re-tested against the reference configurations.
-
-</div>
+> [!NOTE]
+> The validated reference configurations are updated for each major Y-stream release of OpenShift Container Platform. Z-stream patch releases are periodically re-tested against the reference configurations.
 
 # Deviations from the reference design
 
 Deviating from the validated telco core, telco RAN DU, and telco hub reference design specifications (RDS) can have significant impact beyond the specific component or feature that you change. Deviations require analysis and engineering in the context of the complete solution.
 
-<div class="important">
-
-All deviations from the RDS should be analyzed and documented with clear action tracking information. Due diligence is expected from partners to understand how to bring deviations into line with the reference design. This might require partners to provide additional resources to engage with Red Hat to work towards enabling their use case to achieve a best in class outcome with the platform. This is critical for the supportability of the solution and ensuring alignment across Red Hat and with partners.
-
-</div>
+> [!IMPORTANT]
+> All deviations from the RDS should be analyzed and documented with clear action tracking information. Due diligence is expected from partners to understand how to bring deviations into line with the reference design. This might require partners to provide additional resources to engage with Red Hat to work towards enabling their use case to achieve a best in class outcome with the platform. This is critical for the supportability of the solution and ensuring alignment across Red Hat and with partners.
 
 Deviation from the RDS can have some or all of the following consequences:
 
@@ -51,11 +45,8 @@ Deviation from the RDS can have some or all of the following consequences:
 
 - Unapproved deviations may require escalation at executive levels.
 
-<div class="note">
-
-Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
-
-</div>
+> [!NOTE]
+> Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
 # Telco core common baseline model
 
@@ -181,6 +172,14 @@ Engineering Considerations
 
   - PDB with 0 disruptable pods will block node drain and require administrator intervention. This pattern should be avoided for fast and automated upgrades.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Performing a canary rollout update](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools)
 
 - [Applying MachineConfigPool labels to nodes before the update](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools)
@@ -188,6 +187,8 @@ Engineering Considerations
 - [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-disruption-about_nodes-pods-configuring)
 
 - [Placing pods relative to other pods using affinity and anti-affinity rules](../nodes/scheduling/nodes-scheduler-pod-affinity.xml#nodes-scheduler-pod-affinity)
+
+</div>
 
 # Telco core cluster common use model engineering considerations
 
@@ -231,11 +232,8 @@ The following engineering considerations apply to the telco core cluster common 
 
   - Nodes with large numbers of pods or other resources might require additional reserved CPUs. The remaining CPUs are available for user workloads.
 
-    <div class="note">
-
-    Variations in OpenShift Container Platform configuration, workload size, and workload characteristics require additional analysis to determine the effect on the number of required CPUs for the OpenShift platform.
-
-    </div>
+    > [!NOTE]
+    > Variations in OpenShift Container Platform configuration, workload size, and workload characteristics require additional analysis to determine the effect on the number of required CPUs for the OpenShift platform.
 
 ## Application workloads
 
@@ -326,7 +324,7 @@ Engineering considerations
 
 - The real-time workload hint should be enabled for real-time capable workloads.
 
-  - Applying the real-time `workloadHint` setting results in the `nohz_full` kernel command line parameter being applied to improve performance of high performance applications. When you apply the `workloadHint` setting, any isolated or burstable pods that do not have the `cpu-quota.crio.io: "disable"` annotation and a proper `runtimeClassName` value, are subject to CRI-O rate limiting. When you set the `workloadHint` parameter, be aware of the tradeoff between increased performance and the potential impact of CRI-O rate limiting. Ensure that required pods are correctly annotated.
+  - Applying the real-time `workloadHint` setting results in the `nohz_full` kernel command line parameter being applied to improve performance of high performance applications.
 
 - Hardware without IRQ affinity support affects isolated CPUs. All server hardware must support IRQ affinity to ensure that pods with guaranteed CPU QoS can fully use allocated CPUs.
 
@@ -340,11 +338,8 @@ Engineering considerations
 
 - The `TunedPerformancePatch.yaml` file in the reference configures the `kernel.panic_on_unrecovered_nmi` sysctl parameter to enable triggering a kernel panic through BMC Non-Maskable Interrupt (NMI) on x86_64 architures. This provides a mechanism to force a kernel panic for system recovery and diagnostic purposes when nodes become unresponsive.
 
-  <div class="note">
-
-  Some drivers do not deallocate the interrupts even after reducing the queue count.
-
-  </div>
+  > [!NOTE]
+  > Some drivers do not deallocate the interrupts even after reducing the queue count.
 
 ## Workloads on schedulable control planes
 
@@ -377,9 +372,19 @@ To ensure stability, you must adhere to the following:
 NUMA Resources Operator support
 As part of this enablement, the NUMA Resources Operator is supported on control plane nodes. The functional behavior of the NUMA Resources Operator remains the same, but its use on control plane nodes is explicitly permitted.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Configuring host firmware for low latency and high performance](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-du-configuring-host-firmware-requirements_sno-configure-for-vdu)
+
+</div>
 
 ## Service Mesh
 
@@ -388,7 +393,17 @@ Telco core cloud-native functions (CNFs) typically require a Service Mesh implem
 Description
 Telco core cloud-native functions (CNFs) typically require a Service Mesh implementation. Specific Service Mesh features and performance requirements are dependent on the application. The selection of Service Mesh implementation and configuration is outside the scope of this documentation. The implementation must account for the impact of Service Mesh on cluster resource usage and performance, including additional latency introduced in pod networking.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About OpenShift Service Mesh](../service_mesh/v2x/ossm-about.xml#ossm-about)
+
+</div>
 
 ## Networking
 
@@ -399,11 +414,8 @@ The following diagram describes the telco core reference design networking confi
 <figcaption>Telco core reference design networking configuration</figcaption>
 </figure>
 
-<div class="note">
-
-The diagram shows the recommended network topology, where bonding uses ports from the same dual-port NIC. Bonding ports across different NICs is not recommended.
-
-</div>
+> [!NOTE]
+> The diagram shows the recommended network topology, where bonding uses ports from the same dual-port NIC. Bonding ports across different NICs is not recommended.
 
 New in this release
 - Per-interface IP forwarding
@@ -418,11 +430,8 @@ New in this release
 
 - Support for Intel E830 Jasper Beach in telco core
 
-<div class="note">
-
-If you have custom `FRRConfiguration` CRs in the `metallb-system` namespace, you must move them under the `openshift-network-operator` namespace.
-
-</div>
+> [!NOTE]
+> If you have custom `FRRConfiguration` CRs in the `metallb-system` namespace, you must move them under the `openshift-network-operator` namespace.
 
 Description
 - The cluster is configured for dual-stack IP (IPv4 and IPv6).
@@ -456,7 +465,17 @@ Description
 <figcaption aria-hidden="true">Telco core reference design MetalLB service separation</figcaption>
 </figure>
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding networking](../networking/networking_overview/understanding-networking.xml#understanding-networking)
+
+</div>
 
 ### Cluster Network Operator
 
@@ -500,9 +519,19 @@ Limits and requirements
 Engineering considerations
 - Pod egress traffic is managed by kernel routing table using the `routingViaHost` option. Appropriate static routes must be configured in the host.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Cluster Network Operator](../networking/networking_operators/cluster-network-operator.xml#nw-cluster-network-operator_cluster-network-operator)
 
 - [Configuring an egress IP address](../networking/ovn_kubernetes_network_provider/configuring-egress-ips-ovn.xml#configuring-egress-ips-ovn)
+
+</div>
 
 ### Load balancer
 
@@ -511,11 +540,8 @@ MetalLB is a load-balancer implementation for bare metal Kubernetes clusters tha
 New in this release
 - There are no reference design updates in this release.
 
-<div class="important">
-
-If you have custom `FRRConfiguration` CRs in the `metallb-system` namespace, you must move them under the `openshift-network-operator` namespace.
-
-</div>
+> [!IMPORTANT]
+> If you have custom `FRRConfiguration` CRs in the `metallb-system` namespace, you must move them under the `openshift-network-operator` namespace.
 
 Description
 MetalLB is a load-balancer implementation for bare metal Kubernetes clusters that uses standard routing protocols. It enables a Kubernetes service to get an external IP address which is also added to the host network for the cluster. The MetalLB Operator deploys and manages the lifecycle of a MetalLB instance in a cluster. Some use cases might require features not available in MetalLB, such as stateful load balancing. Where necessary, you can use an external third party load balancer. Selection and configuration of an external load balancer is outside the scope of this specification. When an external third-party load balancer is used, the integration effort must include enough analysis to ensure all performance and resource utilization requirements are met.
@@ -536,7 +562,17 @@ Engineering considerations
 
   - MetalLB uses BGP for announcing routes only. Only the `transmitInterval` and `minimumTtl` parameters are relevant in this mode. Other parameters in the BFD profile should remain close to the defaults as shorter values can lead to false negatives and affect performance.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [When to use MetalLB](../networking/networking_operators/metallb-operator/about-metallb.xml#nw-metallb-when-metallb_about-metallb-and-metallb-operator)
+
+</div>
 
 ### SR-IOV
 
@@ -566,11 +602,21 @@ Engineering considerations
 
 - To change the MTU value of a VF after the pod has started, do not configure the `SriovNetworkNodePolicy` MTU field. Instead, use the Kubernetes NMState Operator to set the MTU of the related PF.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About Single Root I/O Virtualization (SR-IOV) hardware networks](../networking/hardware_networks/about-sriov.xml#about-sriov)
 
 - [Red Hat certified hardware (Red Hat Ecosystem Catalog)](https://catalog.redhat.com/en/hardware)
 
 - [Configuring the SR-IOV Network Operator on Mellanox cards when Secure Boot is enabled](../networking/hardware_networks/configuring-sriov-device.html#nw-sriov-nic-mlx-secure-boot_configuring-sriov-device)
+
+</div>
 
 ### NMState Operator
 
@@ -590,7 +636,17 @@ Engineering considerations
 
 - When SR-IOV virtual functions are used for host networking, the NMState Operator (via `nodeNetworkConfigurationPolicy` CRs) is used to configure VF interfaces, such as VLANs and MTU.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Kubernetes NMState Operator](../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
+
+</div>
 
 ## Logging
 
@@ -610,7 +666,17 @@ Engineering considerations
 
 - The reference configuration does not include shipping of application logs. The inclusion of application logs in the configuration requires you to evaluate the application logging rate and have sufficient additional CPU resources allocated to the reserved set.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Logging 6.0](https://docs.openshift.com/container-platform/4.17/observability/logging/logging-6.0/log6x-about.html)
+
+</div>
 
 ## Power Management
 
@@ -628,9 +694,19 @@ Limits and requirements
 Engineering considerations
 - Latency: To ensure that latency-sensitive workloads meet requirements, you require a high-power or a per-pod power management configuration. Per-pod power management is only available for Guaranteed QoS pods with dedicated pinned CPUs.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [performance.openshift.io/v2 API reference](../rest_api/node_apis/performanceprofile-performance-openshift-io-v2.xml#spec-workloadhints)
 
 - [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-tuning-low-latency-nodes-with-perf-profile)
+
+</div>
 
 ## Storage
 
@@ -644,13 +720,20 @@ Cloud native storage services can be provided by OpenShift Data Foundation or ot
 
 OpenShift Data Foundation is a Red Hat Ceph Storage based software-defined storage solution for containers. It provides block storage, file system storage, and on-premise object storage, which can be dynamically provisioned for both persistent and non-persistent data requirements. Telco core applications require persistent storage.
 
-<div class="note">
+> [!NOTE]
+> All storage data might not be encrypted in flight. To reduce risk, isolate the storage network from other cluster networks. The storage network must not be reachable, or routable, from other cluster networks. Only nodes directly attached to the storage network should be allowed to gain access to it.
 
-All storage data might not be encrypted in flight. To reduce risk, isolate the storage network from other cluster networks. The storage network must not be reachable, or routable, from other cluster networks. Only nodes directly attached to the storage network should be allowed to gain access to it.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Red Hat OpenShift Data Foundation](../storage/persistent_storage/persistent-storage-ocs.xml#red-hat-openshift-data-foundation)
+
+</div>
 
 ### OpenShift Data Foundation
 
@@ -716,9 +799,19 @@ Limits and requirements
 Engineering considerations
 - When managing multiple clusters with unique content per installation, site, or deployment, using RHACM hub templating is strongly recommended. With RHACM hub templating, you can apply a consistent set of policies to clusters while providing unique values per installation.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using GitOps ZTP to provision clusters at the network far edge](../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#about-ztp_ztp-deploying-far-edge-clusters-at-scale)
 
 - [Red Hat Advanced Cluster Management for Kubernetes](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes)
+
+</div>
 
 ## Topology Aware Lifecycle Manager
 
@@ -748,11 +841,8 @@ Engineering considerations
 
 - Set the `MachineConfigPool` (`mcp`) CR `paused` field to true during a cluster upgrade maintenance window and set the `maxUnavailable` field to the maximum tolerable value. This prevents multiple cluster node reboots during upgrade, which results in a shorter overall upgrade. When you unpause the `mcp` CR, all the configuration changes are applied with a single reboot.
 
-  <div class="note">
-
-  During installation, custom `mcp` CRs can be paused along with setting `maxUnavailable` to 100% to improve installation times.
-
-  </div>
+  > [!NOTE]
+  > During installation, custom `mcp` CRs can be paused along with setting `maxUnavailable` to 100% to improve installation times.
 
 - You can orchestrate upgrades for OpenShift Container Platform, Day 2 OLM operators, and custom configurations using a ClusterGroupUpgrade (CGU) CR that defines the required policies.
 
@@ -762,7 +852,17 @@ Engineering considerations
 
   - For more information, see "Performing an EUS-to-EUS update for telco core clusters".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating managed clusters with the Topology Aware Lifecycle Manager](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-talm-for-cluster-updates)
+
+</div>
 
 ## GitOps Operator and GitOps ZTP plugins
 
@@ -776,11 +876,8 @@ The GitOps Operator provides a GitOps driven infrastructure for managing cluster
 
 The SiteConfig Operator generates installation CRs from `ClusterInstance` CRs.
 
-<div class="important">
-
-From OpenShift Container Platform 4.21, you must use `ClusterInstance` CRs and the SiteConfig Operator to define managed cluster installations. With this release, support for defining managed cluster installations with the `SiteConfig` CR is removed.
-
-</div>
+> [!IMPORTANT]
+> From OpenShift Container Platform 4.21, you must use `ClusterInstance` CRs and the SiteConfig Operator to define managed cluster installations. With this release, support for defining managed cluster installations with the `SiteConfig` CR is removed.
 
 GitOps ZTP plugins provide support for automatically wrapping configuration CRs in policies based on RHACM `PolicyGenerator` CRs.
 
@@ -798,9 +895,19 @@ Engineering considerations
 
 - The `ClusterInstance` CR allows multiple `ConfigMap` references in the `extraManifestsRefs` field for additional install-time manifests.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Preparing the GitOps ZTP site configuration repository for version independence](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-preparing-the-ztp-git-repository-ver-ind_ztp-preparing-the-hub-cluster)
 
 - [Adding custom content to the GitOps ZTP pipeline](../edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.xml#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config)
+
+</div>
 
 ## Agent-based Installer
 
@@ -826,7 +933,17 @@ Limits and requirements
 Engineering considerations
 - Networking configuration should be applied as NMState configuration during installation as opposed to Day 2 configuration using the NMState Operator.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing an OpenShift Container Platform cluster with the Agent-based Installer](../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer)
+
+</div>
 
 # Monitoring
 
@@ -849,7 +966,17 @@ In addition to the default configuration, telco core clusters typically configur
 Engineering considerations
 - The Prometheus retention period is specified by the user. The value used is a tradeoff between operational requirements for maintaining historical data on the cluster against CPU and storage resources. Longer retention periods increase the need for storage and require additional CPU to manage the indexing of data.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
+
+</div>
 
 # Scheduling
 
@@ -877,11 +1004,21 @@ Engineering considerations
 
 - You can configure SR-IOV virtual function NUMA affinity to be ignored during scheduling by using the excludeTopology field in `SriovNetworkNodePolicy` CR.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing the NUMA Resources Operator](../scalability_and_performance/cnf-numa-aware-scheduling.xml#installing-the-numa-resources-operator_numa-aware)
 
 - [Scheduling NUMA-aware workloads](../scalability_and_performance/cnf-numa-aware-scheduling.xml#cnf-numa-aware-scheduling)
 
 - [Topology Manager policies](../scalability_and_performance/using-cpu-manager.xml#topology-manager-policies_using-cpu-manager-and-topology-manager)
+
+</div>
 
 # Node Configuration
 
@@ -900,13 +1037,13 @@ Limits and requirements
   <col style="width: 50%" />
   </colgroup>
   <thead>
-  <tr class="header">
+  <tr>
   <th style="text-align: left;">Feature</th>
   <th style="text-align: left;">Description</th>
   </tr>
   </thead>
   <tbody>
-  <tr class="odd">
+  <tr>
   <td style="text-align: left;"><p>Additional kernel modules</p></td>
   <td style="text-align: left;"><p>Install the following kernel modules by using <code>MachineConfig</code> CRs to provide extended kernel functionality to CNFs.</p>
   <ul>
@@ -924,22 +1061,30 @@ Limits and requirements
   <li><p>nfnetlink_log</p></li>
   </ul></td>
   </tr>
-  <tr class="even">
+  <tr>
   <td style="text-align: left;"><p>Container mount namespace hiding</p></td>
   <td style="text-align: left;"><p>Reduce the frequency of kubelet housekeeping and eviction monitoring to reduce CPU usage. Creates a container mount namespace, visible to kubelet/CRI-O, to reduce system mount scanning overhead.</p></td>
   </tr>
-  <tr class="odd">
+  <tr>
   <td style="text-align: left;"><p>Kdump enable</p></td>
   <td style="text-align: left;"><p>Optional configuration (enabled by default)</p></td>
   </tr>
   </tbody>
   </table>
 
-  Additional kernel modules
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Automatic kernel crash dumps with kdump](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-kdump_sno-configure-for-vdu)
 
 - [Optimizing CPU usage with mount namespace encapsulation](../scalability_and_performance/optimization/optimizing-cpu-usage.xml#optimizing-cpu-usage)
+
+</div>
 
 ## Host firmware and boot loader configuration
 
@@ -951,11 +1096,8 @@ New in this release
 Engineering considerations
 - Enabling secure boot is the recommended configuration.
 
-  <div class="note">
-
-  When secure boot is enabled, only signed kernel modules are loaded by the kernel. Out-of-tree drivers are not supported.
-
-  </div>
+  > [!NOTE]
+  > When secure boot is enabled, only signed kernel modules are loaded by the kernel. Out-of-tree drivers are not supported.
 
 ## Kubelet Settings
 
@@ -963,9 +1105,11 @@ Some CNF workloads make use of sysctls which are not in the list of system-wide 
 
 Additionally, the `systemReserved` memory can be configured through the same `kubeletconfig.experimental` annotation to reserve memory for system daemons and kernel processes.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example snippet showing allowedUnsafeSysctls and systemReserved**
+<div class="title">
+
+Example snippet showing allowedUnsafeSysctls and systemReserved
 
 </div>
 
@@ -984,11 +1128,10 @@ metadata:
       }
 ```
 
-<div class="note">
-
-Although these are namespaced they may allow a pod to consume memory or other resources beyond any limits specified in the pod description. You must ensure that these `sysctls` do not exhaust platform resources.
-
 </div>
+
+> [!NOTE]
+> Although these are namespaced they may allow a pod to consume memory or other resources beyond any limits specified in the pod description. You must ensure that these `sysctls` do not exhaust platform resources.
 
 # Disconnected environment
 
@@ -1012,11 +1155,21 @@ Engineering considerations
 
 - In OpenShift Container Platform 4.17 and later, pulling OpenShift images from a disconnected mirror registry requires copying the image signatures into that registry during the mirroring process. The `oc adm mirror` command does not mirror signatures and must not be used. Instead, use the `oc mirror` plugin v2 to ensure signatures are properly mirrored.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [About cluster updates in a disconnected environment](../disconnected/updating/index.xml#about-disconnected-updates)
 
 - [Using sysctl in containers](../nodes/containers/nodes-containers-sysctls.xml#nodes-containers-sysctls)
+
+</div>
 
 # Security
 
@@ -1048,11 +1201,8 @@ It is crucial to carefully consider the operational implications before deployin
 
 - Node reboot: Unless node disruption policies are configured, applying the `MachineConfig` CR with the required firewall settings causes a node reboot. Be aware of this impact and schedule a maintenance window accordingly.
 
-  <div class="note">
-
-  Node disruption policies are available in OpenShift Container Platform 4.17 and later.
-
-  </div>
+  > [!NOTE]
+  > Node disruption policies are available in OpenShift Container Platform 4.17 and later.
 
 - Network flow matrix: For more information about managing ingress traffic, see "Network flow matrix". You can restrict ingress traffic to essential flows to improve network security. The matrix provides insights into base cluster services but excludes traffic generated by Day 2 Operators.
 
@@ -1068,6 +1218,14 @@ Limits and requirements
 Engineering considerations
 - For rootless DPDK pod support, enable the SELinux `container_use_devices` boolean on the host to allow the tap device to be created. This introduces an acceptable security risk.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring your firewall for OpenShift Container Platform](../installing/install_config/configuring-firewall.xml#configuring-firewall_configuring-firewall)
 
 - [OpenShift Container Platform network flow matrix](../installing/install_config/configuring-firewall.xml#network-flow-matrix_configuring-firewall)
@@ -1075,6 +1233,8 @@ Engineering considerations
 - [Managing security context constraints](../authentication/managing-security-context-constraints.xml#managing-pod-security-policies)
 
 - [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-config-node-disruption_machine-configs-configure)
+
+</div>
 
 # cert-manager Operator
 
@@ -1113,7 +1273,25 @@ Use the following custom resources (CRs) to configure and deploy OpenShift Conta
 
 You can extract the complete set of custom resources (CRs) for the telco core profile from the `telco-core-rds-rhel9` container image. The container image has both the required CRs, and the optional CRs, for the telco core profile.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed `podman`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log on to the container image registry with your credentials by running the following command:
 
@@ -1128,8 +1306,18 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
     ```
 
     ``` terminal
-    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v4.22 | base64 -d | tar xv -C out
+    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v5.0 | base64 -d | tar xv -C out
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - The `out` directory has the following directory structure. You can view the telco core CRs in the `out/telco-core-rds/` directory by running the following command:
 
@@ -1137,9 +1325,11 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
   $ tree -L 4
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1212,6 +1402,10 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
   └── README.md
   ```
 
+  </div>
+
+</div>
+
 ## Compare a cluster with the telco core reference configuration
 
 After you deploy a telco core cluster, you can use the `cluster-compare` OpenShift CLI (`oc`) plugin to assess compliance with the telco core reference design specifications (RDS).
@@ -1220,11 +1414,29 @@ The plugin-specific reference configuration for telco core is packaged in a cont
 
 For further information about the `cluster-compare` plugin, see "Understanding the cluster-compare plugin".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have credentials to access the `registry.redhat.io` container image registry.
 
 - You installed the `cluster-compare` plugin.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log on to the container image registry with your credentials by running the following command:
 
@@ -1283,9 +1495,11 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1363,6 +1577,8 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     No patched CRs
     ```
 
+    </div>
+
     Where:
 
     Cluster CR
@@ -1395,21 +1611,33 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     No patched CRs
     The list of patched CRs.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding the cluster-compare plugin](../scalability_and_performance/cluster-compare/understanding-the-cluster-compare-plugin.xml#understanding-the-cluster-compare-plugin)
+
+</div>
 
 ## Node configuration reference CRs
 
 Use the following custom resources (CRs) to configure node settings for the telco core profile.
 
-| Component                        | Reference CR                             | Description                                                                                                          | Optional |
-|----------------------------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------|----------|
-| Additional kernel modules        | `control-plane-load-kernel-modules.yaml` | Optional. Configures the kernel modules for control plane nodes.                                                     | No       |
-| Additional kernel modules        | `sctp_module_mc.yaml`                    | Optional. Loads the SCTP kernel module in worker nodes.                                                              | No       |
-| Additional kernel modules        | `worker-load-kernel-modules.yaml`        | Optional. Configures kernel modules for worker nodes.                                                                | No       |
-| Container mount namespace hiding | `mount_namespace_config_master.yaml`     | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on control plane nodes. | No       |
-| Container mount namespace hiding | `mount_namespace_config_worker.yaml`     | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on worker nodes.        | No       |
-| Kdump enable                     | `kdump-master.yaml`                      | Configures kdump crash reporting on master nodes.                                                                    | No       |
-| Kdump enable                     | `kdump-worker.yaml`                      | Configures kdump crash reporting on worker nodes.                                                                    | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Additional kernel modules | `control-plane-load-kernel-modules.yaml` | Optional. Configures the kernel modules for control plane nodes. | No |
+| Additional kernel modules | `sctp_module_mc.yaml` | Optional. Loads the SCTP kernel module in worker nodes. | No |
+| Additional kernel modules | `worker-load-kernel-modules.yaml` | Optional. Configures kernel modules for worker nodes. | No |
+| Container mount namespace hiding | `mount_namespace_config_master.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on control plane nodes. | No |
+| Container mount namespace hiding | `mount_namespace_config_worker.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on worker nodes. | No |
+| Kdump enable | `kdump-master.yaml` | Configures kdump crash reporting on master nodes. | No |
+| Kdump enable | `kdump-worker.yaml` | Configures kdump crash reporting on worker nodes. | No |
 
 Node configuration CRs
 
@@ -1417,20 +1645,20 @@ Node configuration CRs
 
 Use the following custom resources (CRs) to configure cluster infrastructure components for the telco core profile.
 
-| Component                    | Reference CR                                         | Description                                                                                                                                                   | Optional |
-|------------------------------|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| Cluster logging              | `ClusterLogForwarder.yaml`                           | Configures a log forwarding instance with the specified service account and verifies that the configuration is valid.                                         | Yes      |
-| Cluster logging              | `ClusterLogNS.yaml`                                  | Configures the cluster logging namespace.                                                                                                                     | Yes      |
-| Cluster logging              | `ClusterLogOperGroup.yaml`                           | Creates the Operator group in the openshift-logging namespace, allowing the Cluster Logging Operator to watch and manage resources.                           | Yes      |
-| Cluster logging              | `ClusterLogServiceAccount.yaml`                      | Configures the cluster logging service account.                                                                                                               | Yes      |
-| Cluster logging              | `ClusterLogServiceAccountAuditBinding.yaml`          | Grants the collect-audit-logs cluster role to the logs collector service account.                                                                             | Yes      |
-| Cluster logging              | `ClusterLogServiceAccountInfrastructureBinding.yaml` | Allows the collector service account to collect logs from infrastructure resources.                                                                           | Yes      |
-| Cluster logging              | `ClusterLogSubscription.yaml`                        | Creates a subscription resource for the Cluster Logging Operator with manual approval for install plans.                                                      | Yes      |
-| Disconnected configuration   | `catalog-source.yaml`                                | Defines a disconnected Red Hat Operators catalog.                                                                                                             | No       |
-| Disconnected configuration   | `idms.yaml`                                          | Defines a list of mirrored repository digests for the disconnected registry.                                                                                  | No       |
-| Disconnected configuration   | `operator-hub.yaml`                                  | Defines an OperatorHub configuration which disables all default sources.                                                                                      | No       |
-| Monitoring and observability | `monitoring-config-cm.yaml`                          | Configuring storage and retention for Prometheus and Alertmanager.                                                                                            | Yes      |
-| Power management             | `PerformanceProfile.yaml`                            | Defines a performance profile resource, specifying CPU isolation, hugepages configuration, and workload hints for performance optimization on selected nodes. | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Cluster logging | `ClusterLogForwarder.yaml` | Configures a log forwarding instance with the specified service account and verifies that the configuration is valid. | Yes |
+| Cluster logging | `ClusterLogNS.yaml` | Configures the cluster logging namespace. | Yes |
+| Cluster logging | `ClusterLogOperGroup.yaml` | Creates the Operator group in the openshift-logging namespace, allowing the Cluster Logging Operator to watch and manage resources. | Yes |
+| Cluster logging | `ClusterLogServiceAccount.yaml` | Configures the cluster logging service account. | Yes |
+| Cluster logging | `ClusterLogServiceAccountAuditBinding.yaml` | Grants the collect-audit-logs cluster role to the logs collector service account. | Yes |
+| Cluster logging | `ClusterLogServiceAccountInfrastructureBinding.yaml` | Allows the collector service account to collect logs from infrastructure resources. | Yes |
+| Cluster logging | `ClusterLogSubscription.yaml` | Creates a subscription resource for the Cluster Logging Operator with manual approval for install plans. | Yes |
+| Disconnected configuration | `catalog-source.yaml` | Defines a disconnected Red Hat Operators catalog. | No |
+| Disconnected configuration | `idms.yaml` | Defines a list of mirrored repository digests for the disconnected registry. | No |
+| Disconnected configuration | `operator-hub.yaml` | Defines an OperatorHub configuration which disables all default sources. | No |
+| Monitoring and observability | `monitoring-config-cm.yaml` | Configuring storage and retention for Prometheus and Alertmanager. | Yes |
+| Power management | `PerformanceProfile.yaml` | Defines a performance profile resource, specifying CPU isolation, hugepages configuration, and workload hints for performance optimization on selected nodes. | No |
 
 Cluster infrastructure CRs
 
@@ -1438,9 +1666,9 @@ Cluster infrastructure CRs
 
 Use the following custom resources (CRs) to configure resource tuning for the telco core profile.
 
-| Component                | Reference CR                         | Description                                                                                            | Optional |
-|--------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------|----------|
-| System reserved capacity | `control-plane-system-reserved.yaml` | Optional. Configures kubelet, enabling auto-sizing reserved resources for the control plane node pool. | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| System reserved capacity | `control-plane-system-reserved.yaml` | Optional. Configures kubelet, enabling auto-sizing reserved resources for the control plane node pool. | No |
 
 Resource tuning CRs
 
@@ -1448,30 +1676,30 @@ Resource tuning CRs
 
 Use the following custom resources (CRs) to configure networking components for the telco core profile.
 
-| Component                               | Reference CR                       | Description                                                                                                                                                                                                                                                                                   | Optional |
-|-----------------------------------------|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| Baseline                                | `Network.yaml`                     | Configures the default cluster network, specifying OVN Kubernetes settings like routing via the host. It also allows the definition of additional networks, including custom CNI configurations, and enables the use of MultiNetworkPolicy CRs for network policies across multiple networks. | No       |
-| Baseline                                | `networkAttachmentDefinition.yaml` | Optional. Defines a NetworkAttachmentDefinition resource specifying network configuration details such as node selector and CNI configuration.                                                                                                                                                | No       |
-| Load Balancer                           | `addr-pool.yaml`                   | Configures MetalLB to manage a pool of IP addresses with auto-assign enabled for dynamic allocation of IPs from the specified range.                                                                                                                                                          | No       |
-| Load Balancer                           | `bfd-profile.yaml`                 | Configures bidirectional forwarding detection (BFD) with customized intervals, detection multiplier, and modes for quicker network fault detection and load balancing failover.                                                                                                               | No       |
-| Load Balancer                           | `bgp-advr.yaml`                    | Defines a BGP advertisement resource for MetalLB, specifying how an IP address pool is advertised to BGP peers. This enables fine-grained control over traffic routing and announcements.                                                                                                     | No       |
-| Load Balancer                           | `bgp-peer.yaml`                    | Defines a BGP peer in MetalLB, representing a BGP neighbor for dynamic routing.                                                                                                                                                                                                               | No       |
-| Load Balancer                           | `community.yaml`                   | Defines a MetalLB community, which groups one or more BGP communities under a named resource. Communities can be applied to BGP advertisements to control routing policies and change traffic routing.                                                                                        | No       |
-| Load Balancer                           | `metallb.yaml`                     | Defines the MetalLB resource in the cluster.                                                                                                                                                                                                                                                  | No       |
-| Load Balancer                           | `metallbNS.yaml`                   | Defines the metallb-system namespace in the cluster.                                                                                                                                                                                                                                          | No       |
-| Load Balancer                           | `metallbOperGroup.yaml`            | Defines the Operator group for the MetalLB Operator.                                                                                                                                                                                                                                          | No       |
-| Load Balancer                           | `metallbSubscription.yaml`         | Creates a subscription resource for the MetalLB Operator with manual approval for install plans.                                                                                                                                                                                              | No       |
-| Multus - Tap CNI for rootless DPDK pods | `mc_rootless_pods_selinux.yaml`    | Configures a MachineConfig resource which sets an SELinux boolean for the tap CNI plugin on worker nodes.                                                                                                                                                                                     | Yes      |
-| NMState Operator                        | `NMState.yaml`                     | Defines an NMState resource that is used by the NMState Operator to manage node network configurations.                                                                                                                                                                                       | No       |
-| NMState Operator                        | `NMStateNS.yaml`                   | Creates the NMState Operator namespace.                                                                                                                                                                                                                                                       | No       |
-| NMState Operator                        | `NMStateOperGroup.yaml`            | Creates the Operator group in the openshift-nmstate namespace, allowing the NMState Operator to watch and manage resources.                                                                                                                                                                   | No       |
-| NMState Operator                        | `NMStateSubscription.yaml`         | Creates a subscription for the NMState Operator, managed through OLM.                                                                                                                                                                                                                         | No       |
-| SR-IOV Network Operator                 | `sriovNetwork.yaml`                | Defines an SR-IOV network specifying network capabilities, IP address management (ipam), and the associated network namespace and resource.                                                                                                                                                   | No       |
-| SR-IOV Network Operator                 | `sriovNetworkNodePolicy.yaml`      | Configures network policies for SR-IOV devices on specific nodes, including customization of device selection, VF allocation (numVfs), node-specific settings (nodeSelector), and priorities.                                                                                                 | No       |
-| SR-IOV Network Operator                 | `SriovOperatorConfig.yaml`         | Configures various settings for the SR-IOV Operator, including enabling the injector and Operator webhook, disabling pod draining, and defining the node selector for the configuration daemon.                                                                                               | No       |
-| SR-IOV Network Operator                 | `SriovSubscription.yaml`           | Creates a subscription for the SR-IOV Network Operator, managed through OLM.                                                                                                                                                                                                                  | No       |
-| SR-IOV Network Operator                 | `SriovSubscriptionNS.yaml`         | Creates the SR-IOV Network Operator subscription namespace.                                                                                                                                                                                                                                   | No       |
-| SR-IOV Network Operator                 | `SriovSubscriptionOperGroup.yaml`  | Creates the Operator group for the SR-IOV Network Operator, allowing it to watch and manage resources in the target namespace.                                                                                                                                                                | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Baseline | `Network.yaml` | Configures the default cluster network, specifying OVN Kubernetes settings like routing via the host. It also allows the definition of additional networks, including custom CNI configurations, and enables the use of MultiNetworkPolicy CRs for network policies across multiple networks. | No |
+| Baseline | `networkAttachmentDefinition.yaml` | Optional. Defines a NetworkAttachmentDefinition resource specifying network configuration details such as node selector and CNI configuration. | No |
+| Load Balancer | `addr-pool.yaml` | Configures MetalLB to manage a pool of IP addresses with auto-assign enabled for dynamic allocation of IPs from the specified range. | No |
+| Load Balancer | `bfd-profile.yaml` | Configures bidirectional forwarding detection (BFD) with customized intervals, detection multiplier, and modes for quicker network fault detection and load balancing failover. | No |
+| Load Balancer | `bgp-advr.yaml` | Defines a BGP advertisement resource for MetalLB, specifying how an IP address pool is advertised to BGP peers. This enables fine-grained control over traffic routing and announcements. | No |
+| Load Balancer | `bgp-peer.yaml` | Defines a BGP peer in MetalLB, representing a BGP neighbor for dynamic routing. | No |
+| Load Balancer | `community.yaml` | Defines a MetalLB community, which groups one or more BGP communities under a named resource. Communities can be applied to BGP advertisements to control routing policies and change traffic routing. | No |
+| Load Balancer | `metallb.yaml` | Defines the MetalLB resource in the cluster. | No |
+| Load Balancer | `metallbNS.yaml` | Defines the metallb-system namespace in the cluster. | No |
+| Load Balancer | `metallbOperGroup.yaml` | Defines the Operator group for the MetalLB Operator. | No |
+| Load Balancer | `metallbSubscription.yaml` | Creates a subscription resource for the MetalLB Operator with manual approval for install plans. | No |
+| Multus - Tap CNI for rootless DPDK pods | `mc_rootless_pods_selinux.yaml` | Configures a MachineConfig resource which sets an SELinux boolean for the tap CNI plugin on worker nodes. | Yes |
+| NMState Operator | `NMState.yaml` | Defines an NMState resource that is used by the NMState Operator to manage node network configurations. | No |
+| NMState Operator | `NMStateNS.yaml` | Creates the NMState Operator namespace. | No |
+| NMState Operator | `NMStateOperGroup.yaml` | Creates the Operator group in the openshift-nmstate namespace, allowing the NMState Operator to watch and manage resources. | No |
+| NMState Operator | `NMStateSubscription.yaml` | Creates a subscription for the NMState Operator, managed through OLM. | No |
+| SR-IOV Network Operator | `sriovNetwork.yaml` | Defines an SR-IOV network specifying network capabilities, IP address management (ipam), and the associated network namespace and resource. | No |
+| SR-IOV Network Operator | `sriovNetworkNodePolicy.yaml` | Configures network policies for SR-IOV devices on specific nodes, including customization of device selection, VF allocation (numVfs), node-specific settings (nodeSelector), and priorities. | No |
+| SR-IOV Network Operator | `SriovOperatorConfig.yaml` | Configures various settings for the SR-IOV Operator, including enabling the injector and Operator webhook, disabling pod draining, and defining the node selector for the configuration daemon. | No |
+| SR-IOV Network Operator | `SriovSubscription.yaml` | Creates a subscription for the SR-IOV Network Operator, managed through OLM. | No |
+| SR-IOV Network Operator | `SriovSubscriptionNS.yaml` | Creates the SR-IOV Network Operator subscription namespace. | No |
+| SR-IOV Network Operator | `SriovSubscriptionOperGroup.yaml` | Creates the Operator group for the SR-IOV Network Operator, allowing it to watch and manage resources in the target namespace. | No |
 
 Networking CRs
 
@@ -1479,14 +1707,14 @@ Networking CRs
 
 Use the following custom resources (CRs) to configure scheduling for the telco core profile.
 
-| Component            | Reference CR                     | Description                                                                                                                                                                          | Optional |
-|----------------------|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| NUMA-aware scheduler | `nrop.yaml`                      | Enables the NUMA Resources Operator, aligning workloads with specific NUMA node configurations. Required for clusters with multi-NUMA nodes.                                         | No       |
-| NUMA-aware scheduler | `NROPSubscription.yaml`          | Creates a subscription for the NUMA Resources Operator, managed through OLM. Required for clusters with multi-NUMA nodes.                                                            | No       |
-| NUMA-aware scheduler | `NROPSubscriptionNS.yaml`        | Creates the NUMA Resources Operator subscription namespace. Required for clusters with multi-NUMA nodes.                                                                             | No       |
-| NUMA-aware scheduler | `NROPSubscriptionOperGroup.yaml` | Creates the Operator group in the numaresources-operator namespace, allowing the NUMA Resources Operator to watch and manage resources. Required for clusters with multi-NUMA nodes. | No       |
-| NUMA-aware scheduler | `sched.yaml`                     | Configures a topology-aware scheduler in the cluster that can handle NUMA aware scheduling of pods across nodes.                                                                     | No       |
-| NUMA-aware scheduler | `Scheduler.yaml`                 | Configures control plane nodes as non-schedulable for workloads.                                                                                                                     | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| NUMA-aware scheduler | `nrop.yaml` | Enables the NUMA Resources Operator, aligning workloads with specific NUMA node configurations. Required for clusters with multi-NUMA nodes. | No |
+| NUMA-aware scheduler | `NROPSubscription.yaml` | Creates a subscription for the NUMA Resources Operator, managed through OLM. Required for clusters with multi-NUMA nodes. | No |
+| NUMA-aware scheduler | `NROPSubscriptionNS.yaml` | Creates the NUMA Resources Operator subscription namespace. Required for clusters with multi-NUMA nodes. | No |
+| NUMA-aware scheduler | `NROPSubscriptionOperGroup.yaml` | Creates the Operator group in the numaresources-operator namespace, allowing the NUMA Resources Operator to watch and manage resources. Required for clusters with multi-NUMA nodes. | No |
+| NUMA-aware scheduler | `sched.yaml` | Configures a topology-aware scheduler in the cluster that can handle NUMA aware scheduling of pods across nodes. | No |
+| NUMA-aware scheduler | `Scheduler.yaml` | Configures control plane nodes as non-schedulable for workloads. | No |
 
 Scheduling CRs
 
@@ -1494,13 +1722,13 @@ Scheduling CRs
 
 Use the following custom resources (CRs) to configure storage for the telco core profile.
 
-| Component                  | Reference CR                                        | Description                                                                                                                                   | Optional |
-|----------------------------|-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| External ODF configuration | `01-rook-ceph-external-cluster-details.secret.yaml` | Defines a Secret resource containing base64-encoded configuration data for an external Ceph cluster in the openshift-storage namespace.       | No       |
-| External ODF configuration | `02-ocs-external-storagecluster.yaml`               | Defines an OpenShift Container Storage (OCS) storage resource which configures the cluster to use an external storage back end.               | No       |
-| External ODF configuration | `odfNS.yaml`                                        | Creates the monitored openshift-storage namespace for the OpenShift Data Foundation Operator.                                                 | No       |
-| External ODF configuration | `odfOperGroup.yaml`                                 | Creates the Operator group in the openshift-storage namespace, allowing the OpenShift Data Foundation Operator to watch and manage resources. | No       |
-| External ODF configuration | `odfSubscription.yaml`                              | Creates the OpenShift Data Foundation Operator subscription, managed through OLM.                                                             | No       |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| External ODF configuration | `01-rook-ceph-external-cluster-details.secret.yaml` | Defines a Secret resource containing base64-encoded configuration data for an external Ceph cluster in the openshift-storage namespace. | No |
+| External ODF configuration | `02-ocs-external-storagecluster.yaml` | Defines an OpenShift Container Storage (OCS) storage resource which configures the cluster to use an external storage back end. | No |
+| External ODF configuration | `odfNS.yaml` | Creates the monitored openshift-storage namespace for the OpenShift Data Foundation Operator. | No |
+| External ODF configuration | `odfOperGroup.yaml` | Creates the Operator group in the openshift-storage namespace, allowing the OpenShift Data Foundation Operator to watch and manage resources. | No |
+| External ODF configuration | `odfSubscription.yaml` | Creates the OpenShift Data Foundation Operator subscription, managed through OLM. | No |
 
 Storage CRs
 
@@ -1508,16 +1736,16 @@ Storage CRs
 
 Use the following custom resources (CRs) to configure security components for the telco core profile.
 
-| Component    | Reference CR                    | Description                                                                    | Optional |
-|--------------|---------------------------------|--------------------------------------------------------------------------------|----------|
-| Cert-Manager | `certManagerNS.yaml`            | Defines the cert-manager-operator namespace.                                   | Yes      |
-| Cert-Manager | `certManagerOperatorgroup.yaml` | Defines the OperatorGroup for cert-manager.                                    | Yes      |
-| Cert-Manager | `certManagerSubscription.yaml`  | Installs the OpenShift cert-manager operator.                                  | Yes      |
-| Cert-Manager | `certManagerClusterIssuer.yaml` | Configures an ACME ClusterIssuer using Let’s Encrypt with DNS-01 challenge.    | Yes      |
-| Cert-Manager | `apiServerCertificate.yaml`     | Creates a certificate for the API Server endpoint.                             | Yes      |
-| Cert-Manager | `ingressCertificate.yaml`       | Creates a wildcard certificate for the Ingress/Router.                         | Yes      |
-| Cert-Manager | `apiServerConfig.yaml`          | Configures OpenShift to use the cert-manager generated API Server certificate. | Yes      |
-| Cert-Manager | `ingressControllerConfig.yaml`  | Configures OpenShift to use the cert-manager generated Ingress certificate.    | Yes      |
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Cert-Manager | `certManagerNS.yaml` | Defines the cert-manager-operator namespace. | Yes |
+| Cert-Manager | `certManagerOperatorgroup.yaml` | Defines the OperatorGroup for cert-manager. | Yes |
+| Cert-Manager | `certManagerSubscription.yaml` | Installs the OpenShift cert-manager operator. | Yes |
+| Cert-Manager | `certManagerClusterIssuer.yaml` | Configures an ACME ClusterIssuer using Let’s Encrypt with DNS-01 challenge. | Yes |
+| Cert-Manager | `apiServerCertificate.yaml` | Creates a certificate for the API Server endpoint. | Yes |
+| Cert-Manager | `ingressCertificate.yaml` | Creates a wildcard certificate for the Ingress/Router. | Yes |
+| Cert-Manager | `apiServerConfig.yaml` | Configures OpenShift to use the cert-manager generated API Server certificate. | Yes |
+| Cert-Manager | `ingressControllerConfig.yaml` | Configures OpenShift to use the cert-manager generated Ingress certificate. | Yes |
 
 Security CRs
 
@@ -1527,20 +1755,18 @@ The Red Hat telco core 4.17 solution has been validated using the following Red
 
 | Component                                   | Software version |
 |---------------------------------------------|------------------|
-| Red Hat Advanced Cluster Management (RHACM) | 2.17             |
-| Red Hat OpenShift GitOps                    | 1.20             |
-| cert-manager Operator                       | 1.19             |
-| Cluster Logging Operator                    | 6.5              |
+| Red Hat Advanced Cluster Management (RHACM) | 5.0              |
+| Red Hat OpenShift GitOps                    | 1.21             |
+| cert-manager Operator                       | 1.20             |
+| Cluster Logging Operator                    | 6.7              |
 | OpenShift Data Foundation                   | 4.22             |
-| SR-IOV Network Operator                     | 4.22             |
-| MetalLB                                     | 4.22             |
-| NMState Operator                            | 4.22             |
-| NUMA-aware scheduler                        | 4.22             |
+| SR-IOV Network Operator                     | 5.0              |
+| MetalLB                                     | 5.0              |
+| NMState Operator                            | 5.0              |
+| NUMA-aware scheduler                        | 5.0              |
 
 Telco core cluster validated software components
 
-- OpenShift Data Foundation is expected to be updated to 4.22 when the aligned OpenShift Data Foundation version is released.
-
-- The Cluster Logging Operator is expected to be updated to 6.6 when the aligned version is released.
+- OpenShift Data Foundation is expected to be updated to 5.0 when the aligned OpenShift Data Foundation version is released.
 
 - The cert-manager Operator and Red Hat OpenShift GitOps Operator are platform-agnostic operators. The support lifecycle for these operators is independent from the support lifecycle for OpenShift Container Platform. You might need to update to a newer minor version of these operators at the end of an operator lifecycle, or when planning to update the OpenShift Container Platform cluster to continue support. For support lifecycle details for platform-agnostic operators, see [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators).

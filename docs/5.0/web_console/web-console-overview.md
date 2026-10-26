@@ -1,16 +1,13 @@
 The OpenShift Container Platform web console provides a graphical user interface to visualize your project data and perform administrative, management, and troubleshooting tasks. The web console runs as pods on the control plane nodes in the openshift-console project. It is managed by a `console-operator` pod.
 
-<div class="important">
-
-Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
-
-All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
-
-You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
-
-See also, "Enabling the **Developer** perspective in the web console".
-
-</div>
+> [!IMPORTANT]
+> Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
+>
+> All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
+>
+> You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
+>
+> See also, "Enabling the **Developer** perspective in the web console".
 
 You can create quick start tutorials for OpenShift Container Platform that provide guided steps within the web console with user tasks. They are helpful for getting oriented with an application, Operator, or other product offering.
 
@@ -66,7 +63,17 @@ Developers have access to workflows specific to their use cases, such as the abi
 
 You can use the **Topology** view to display applications, components, and workloads of your project. If you have no workloads in the project, the **Topology** view will show some links to create or import them. You can also use the **Quick Search** to import components directly.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Viewing application composition using the Topology](https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html)
+
+</div>
 
 # Enable the **Developer** perspective in the web console
 
@@ -76,7 +83,25 @@ Starting with OpenShift Container Platform 4.19, the perspectives in the web con
 
 You can enable the **Developer** perspective with the following steps:
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the web console as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Cluster Settings** page by clicking <span class="menuchoice">Administration \> Cluster Settings</span>.
 
@@ -94,17 +119,32 @@ You can enable the **Developer** perspective with the following steps:
     $ oc patch console.operator.openshift.io/cluster --type='merge' -p '{"spec":{"customization":{"perspectives":[{"id":"dev","visibility":{"state":"Enabled"}}]}}}'
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The change reflects in the web console after the console pod restarts successfully.
 
-    The change reflects in the web console after the console pod restarts successfully.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Locate the perspective switcher in the web console.
 
 2.  Verify that **Developer** is displayed as an available perspective option.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Learn more about Cluster Administrator](../welcome/learn_more_about_openshift.xml#learn_more_about_openshift)
 
@@ -123,3 +163,5 @@ You can enable the **Developer** perspective with the following steps:
 - [Creating quick start tutorials](../web_console/creating-quick-start-tutorials.xml#creating-quick-start-tutorials)
 
 - [Disabling the web console](../web_console/disabling-web-console.xml#disabling-web-console)
+
+</div>

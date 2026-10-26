@@ -1,8 +1,5 @@
-<div class="important">
-
-This guidance does not cover layered OpenShift Container Platform offerings.
-
-</div>
+> [!IMPORTANT]
+> This guidance does not cover layered OpenShift Container Platform offerings.
 
 # API compatibility guidelines
 
@@ -32,11 +29,8 @@ Red Hat recommends that application developers follow the [compatibility guideli
 
 - Avoid direct interaction with `cgroups` in order to not conflict with OpenShift Container Platform host-agents that provide the container execution environment.
 
-<div class="note">
-
-During the lifecycle of a release, Red Hat makes commercially reasonable efforts to maintain API and application operating environment (AOE) compatibility across all minor releases and z-stream releases. If necessary, Red Hat might make exceptions to this compatibility goal for critical impact security or other significant issues.
-
-</div>
+> [!NOTE]
+> During the lifecycle of a release, Red Hat makes commercially reasonable efforts to maintain API and application operating environment (AOE) compatibility across all minor releases and z-stream releases. If necessary, Red Hat might make exceptions to this compatibility goal for critical impact security or other significant issues.
 
 # API compatibility exceptions
 

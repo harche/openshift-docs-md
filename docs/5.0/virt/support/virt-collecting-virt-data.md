@@ -15,11 +15,29 @@ The Alertmanager service handles alerts received from Prometheus. The Alertmanag
 
 Collecting data about your environment minimizes the time required to analyze and determine the root cause.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have set the retention time for Prometheus metrics data to a minimum of seven days.
 
 - You have configured the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox so that they can be viewed and persisted outside the cluster.
 
 - You have recorded the exact number of affected nodes and virtual machines.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Collect must-gather data for the cluster.
 
@@ -29,9 +47,19 @@ Collecting data about your environment minimizes the time required to analyze an
 
 4.  Collect Prometheus metrics for the cluster.
 
+</div>
+
 # Collecting data about virtual machines
 
 Collecting data about malfunctioning virtual machines (VMs) minimizes the time required to analyze and determine the root cause.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - For Linux VMs, you have installed the latest QEMU guest agent.
 
@@ -45,6 +73,16 @@ Collecting data about malfunctioning virtual machines (VMs) minimizes the time r
 
   - If Remote Desktop Protocol (RDP) is enabled, you have connected by using the desktop viewer to determine whether there is a problem with the connection software.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Collect must-gather data for the VMs using the `/usr/bin/gather` script.
 
 2.  Collect screenshots of VMs that have crashed before you restart them.
@@ -53,7 +91,9 @@ Collecting data about malfunctioning virtual machines (VMs) minimizes the time r
 
 4.  Record factors that the malfunctioning VMs have in common. For example, the VMs have the same host or network.
 
-# Using the must-gather tool for OpenShift Virtualization
+</div>
+
+# Use the must-gather tool for OpenShift Virtualization
 
 You can collect data about OpenShift Virtualization resources by running the `must-gather` command with the OpenShift Virtualization image.
 
@@ -69,9 +109,25 @@ The default data collection includes information about the following resources:
 
 You can add optional environment details and scripts to the `must-gather` command to collect additional information. Use these environment variables and scripts to collect data about specific VMs, images, or instance types.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the `must-gather` command to collect data about OpenShift Virtualization:
 
@@ -81,15 +137,12 @@ You can add optional environment details and scripts to the `must-gather` comman
     -- /usr/bin/gather
   ```
 
-  <div class="note">
-
-  You can also collect `must-gather` logs for all Operators and products on your cluster by running following command:
-
-  ``` terminal
-  $ oc adm must-gather --all-images
-  ```
-
-  </div>
+  > [!NOTE]
+  > You can also collect `must-gather` logs for all Operators and products on your cluster by running following command:
+  >
+  > ``` terminal
+  > $ oc adm must-gather --all-images
+  > ```
 
   1.  Run the following command to modify the number of processes running in parallel when collecting `must-gather` data:
 
@@ -127,6 +180,8 @@ You can add optional environment details and scripts to the `must-gather` comman
        /usr/bin/gather --instancetypes
       ```
 
+</div>
+
 ## must-gather tool options
 
 To troubleshoot complex issues and collect specific data beyond the default logs, add optional parameters to the `must-gather` command when gathering information from your cluster.
@@ -154,11 +209,8 @@ Collect details about a particular virtual machine. To use this option, you must
 `PROS=<number_of_processes>`
 Modify the maximum number of parallel processes that the `must-gather` tool uses. The default value is `5`.
 
-<div class="important">
-
-Using too many parallel processes can cause performance issues. Increasing the maximum number of parallel processes is not recommended.
-
-</div>
+> [!IMPORTANT]
+> Using too many parallel processes can cause performance issues. Increasing the maximum number of parallel processes is not recommended.
 
 ### Scripts
 
@@ -180,9 +232,11 @@ Collect instance types information. This information is not currently collected 
 
 You can run a script by itself or with one or more compatible environment variables.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**must-gather syntax with optional parameters**
+<div class="title">
+
+must-gather syntax with optional parameters
 
 </div>
 
@@ -192,6 +246,8 @@ $ oc adm must-gather \
   -- <environment_variable_1> <environment_variable_2> <script_name>
 ```
 
+</div>
+
 <table>
 <caption>Compatible parameters</caption>
 <colgroup>
@@ -199,34 +255,40 @@ $ oc adm must-gather \
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Script</th>
 <th style="text-align: left;">Compatible environment variable</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>/usr/bin/gather</code></p></td>
 <td style="text-align: left;"><p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>/usr/bin/gather --vms_details</code></p></td>
 <td style="text-align: left;"><p>* For a namespace: <code>NS=&lt;namespace_name&gt;</code></p>
 <p>* For a VM: <code>VM=&lt;vm_name&gt; NS=&lt;namespace_name&gt;</code></p>
 <p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>/usr/bin/gather --images</code></p></td>
 <td style="text-align: left;"><p>* <code>PROS=&lt;number_of_processes&gt;</code></p></td>
 </tr>
 </tbody>
 </table>
 
-Compatible parameters
+# Generate a VM memory dump
 
-# Generating a VM memory dump
+When a virtual machine (VM) terminates unexpectedly, you can run the `virtctl memory-dump` command to output a VM memory dump and save it on a persistent volume claim (PVC). Afterward, you can analyze the memory dump to diagnose and troubleshoot issues on the VM.
 
-When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl memory-dump` to generate a memory dump command to output a VM memory dump and save it on a persistent volume claim (PVC). Afterwards, you can analyze the memory dump to diagnose and troubleshoot issues on the VM.
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: You have an existing PVC on which you want to save the memory dump.
 
@@ -266,15 +328,14 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
     $ virtctl memory-dump remove <vm_name>
     ```
 
+</div>
+
 # Self-service Technical Supportability Review
 
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
 
-<div class="note">
-
-The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
-
-</div>
+> [!NOTE]
+> The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
 
 The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
 
@@ -299,6 +360,8 @@ To run a self-service review, upload your cluster’s `must-gather` data to the 
 
 The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
 
+## Additional resources
+
 - [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
 
 - [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255)
@@ -317,7 +380,7 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 - [Connect to the desktop viewer by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-connecting-desktop-viewer-web_virt-accessing-vm-consoles)
 
-- [Collect memory dumps from VMs](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data)
+- [Generate a VM memory dump](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data)
 
 - [Submitting a support case](../../support/getting-support.xml#support-submitting-a-case_getting-support)
 

@@ -6,14 +6,14 @@ The DPT checks the upload performance of backups to object storage, CSI snapshot
 
 Review the specification fields available in the `DataProtectionTest` (DPT) custom resource (CR) to configure backup location, upload speed tests, CSI volume snapshot tests, and other options. This helps you customize the DPT CR to validate your specific OADP configuration requirements.
 
-| Field                          | Type    | Description                                                                                    |
-|--------------------------------|---------|------------------------------------------------------------------------------------------------|
-| `backupLocationName`           | string  | Name of the `BackupStorageLocation` CR configured in the `DataProtectionApplication` (DPA) CR. |
-| `backupLocationSpec`           | object  | Inline specification of the `BackupStorageLocation` CR.                                        |
-| `uploadSpeedTestConfig`        | object  | Configuration to run an upload speed test to the object storage.                               |
-| `csiVolumeSnapshotTestConfigs` | list    | List of persistent volume claims to take a snapshot of and to verify the snapshot readiness.   |
-| `forceRun`                     | boolean | Re-run the DPT CR even if status is `Complete` or `Failed`.                                    |
-| `skipTLSVerify`                | boolean | Bypasses the TLS certificate validation if set to `true`.                                      |
+| Field | Type | Description |
+|----|----|----|
+| `backupLocationName` | string | Name of the `BackupStorageLocation` CR configured in the `DataProtectionApplication` (DPA) CR. |
+| `backupLocationSpec` | object | Inline specification of the `BackupStorageLocation` CR. |
+| `uploadSpeedTestConfig` | object | Configuration to run an upload speed test to the object storage. |
+| `csiVolumeSnapshotTestConfigs` | list | List of persistent volume claims to take a snapshot of and to verify the snapshot readiness. |
+| `forceRun` | boolean | Re-run the DPT CR even if status is `Complete` or `Failed`. |
+| `skipTLSVerify` | boolean | Bypasses the TLS certificate validation if set to `true`. |
 
 DPT CR spec fields
 
@@ -21,22 +21,30 @@ DPT CR spec fields
 
 Review the status fields in the `DataProtectionTest` (DPT) custom resource (CR) to monitor test progress, upload speed results, bucket metadata, and snapshot test outcomes. This helps you interpret the DPT CR results and identify any issues with your OADP configuration.
 
-| Field             | Type      | Description                                                                    |
-|-------------------|-----------|--------------------------------------------------------------------------------|
-| `phase`           | string    | Current phase of the DPT CR. Values are `InProgress`, `Complete`, or `Failed`. |
-| `lastTested`      | timestamp | The timestamp when the DPT CR was last run.                                    |
-| `uploadTest`      | object    | Results of the upload speed test.                                              |
-| `bucketMetadata`  | object    | Information about the storage bucket encryption and versioning.                |
-| `snapshotTests`   | list      | Snapshot test results for each persistent volume claim.                        |
-| `snapshotSummary` | string    | Aggregated pass/fail summary for snapshots. For example, `2/2 passed`.         |
-| `s3Vendor`        | string    | AWS S3-compatible storage bucket vendors. For example, AWS, MinIO, Ceph.       |
-| `errorMessage`    | string    | Error message if the DPT CR fails.                                             |
+| Field | Type | Description |
+|----|----|----|
+| `phase` | string | Current phase of the DPT CR. Values are `InProgress`, `Complete`, or `Failed`. |
+| `lastTested` | timestamp | The timestamp when the DPT CR was last run. |
+| `uploadTest` | object | Results of the upload speed test. |
+| `bucketMetadata` | object | Information about the storage bucket encryption and versioning. |
+| `snapshotTests` | list | Snapshot test results for each persistent volume claim. |
+| `snapshotSummary` | string | Aggregated pass/fail summary for snapshots. For example, `2/2 passed`. |
+| `s3Vendor` | string | AWS S3-compatible storage bucket vendors. For example, AWS, MinIO, Ceph. |
+| `errorMessage` | string | Error message if the DPT CR fails. |
 
 DPT CR status fields
 
 # Use the DataProtectionTest custom resource
 
 Configure and run the `DataProtectionTest` (DPT) custom resource (CR) to verify Container Storage Interface (CSI) snapshot readiness and data upload performance to your storage bucket. This helps you validate your OADP environment before performing backup and restore operations.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have logged in to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
@@ -49,6 +57,16 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) to verify 
 - You have configured a backup storage location (BSL) to store the backups.
 
 - You have an application with persistent volume claims (PVCs) running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file for the DPT CR as shown in the example:
 
@@ -108,7 +126,15 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) to verify 
 
     Replace `<dpt_file_name>` with the file name of the DPT manifest.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the phase of the DPT CR is `Complete` by running the following command:
 
@@ -172,9 +198,19 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) to verify 
     `uploadTest`
     Specifies the upload test details.
 
+</div>
+
 # Run a data protection test by configuring a backup storage location specification
 
 Configure and run the `DataProtectionTest` (DPT) custom resource (CR) by specifying an inline backup storage location (BSL) specification instead of referencing an existing BSL name. This helps you test data upload performance and CSI snapshot readiness without creating a separate BSL resource.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have logged in to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
@@ -189,6 +225,16 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) by specify
 - You have created the `Secret` object to access the bucket storage.
 
 - You have an application with persistent volume claims (PVCs) running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file for the DPT CR as shown in the example:
 
@@ -257,7 +303,15 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) by specify
 
     Replace `<dpt_file_name>` with the file name of the DPT manifest.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the phase of the DPT CR is `Complete` by running the following command:
 
@@ -272,9 +326,19 @@ Configure and run the `DataProtectionTest` (DPT) custom resource (CR) by specify
     dpt-sample   Complete   17m          546                 AES256       Enabled      2/2 passed   17m
     ```
 
+</div>
+
 # Run a data protection test on an Azure object storage
 
 Run the `DataProtectionTest` (DPT) custom resource (CR) on Azure object storage by configuring the required Azure credentials, including the `STORAGE_ACCOUNT_ID` parameter in the secret object. This helps you validate your OADP configuration and verify CSI snapshot readiness on Azure clusters.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have logged in to the Azure cluster as a user with the `cluster-admin` role.
 
@@ -285,6 +349,16 @@ Run the `DataProtectionTest` (DPT) custom resource (CR) on Azure object storage 
 - You have configured a bucket to store the backups.
 
 - You have an application with persistent volume claims (PVCs) running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `Storage Blob Data Contributor` role to Azure `storageAccount` object to avoid DPT run failure. Run the following command:
 
@@ -388,15 +462,17 @@ Run the `DataProtectionTest` (DPT) custom resource (CR) on Azure object storage 
 
 6.  Run the DPT CR to verify the snapshot readiness.
 
+</div>
+
 # Troubleshoot the DataProtectionTest custom resource
 
 Troubleshoot common `DataProtectionTest` (DPT) custom resource (CR) issues, such as stuck progress states, upload test failures, and snapshot test failures. This helps you identify and resolve problems with your DPT configuration.
 
-| Error                                         | Reason                                             | Solution                                                                     |
-|-----------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------|
-| DPT stuck in `InProgress` state               | Bucket credentials or bucket access failure        | Check `Secret` object, bucket permissions, and logs.                         |
-| Upload test failed                            | Incorrect `Secret` object or S3 endpoint           | Check the `BackupStorageLocation` object config and the access keys.         |
-| Snapshot tests fail                           | Incorrect configuration of CSI snapshot controller | Check the `VolumeSnapshotClass` object availability and the CSI driver logs. |
-| Bucket encryption or versioning not populated | Cloud provider limitations                         | Not all object storage providers expose these fields consistently.           |
+| Error | Reason | Solution |
+|----|----|----|
+| DPT stuck in `InProgress` state | Bucket credentials or bucket access failure | Check `Secret` object, bucket permissions, and logs. |
+| Upload test failed | Incorrect `Secret` object or S3 endpoint | Check the `BackupStorageLocation` object config and the access keys. |
+| Snapshot tests fail | Incorrect configuration of CSI snapshot controller | Check the `VolumeSnapshotClass` object availability and the CSI driver logs. |
+| Bucket encryption or versioning not populated | Cloud provider limitations | Not all object storage providers expose these fields consistently. |
 
 DPT CR troubleshooting

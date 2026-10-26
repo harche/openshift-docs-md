@@ -40,6 +40,14 @@ The `install-config.yaml` configuration file represents all of the nodes that ar
 
 If errors occur early in the deployment of the OpenShift Container Platform cluster, the errors are likely in the `install-config.yaml` configuration file.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Use the guidelines in [YAML-tips](https://www.redhat.com/sysadmin/yaml-tips).
 
 2.  Verify the YAML syntax is correct using [syntax-check](http://www.yamllint.com/).
@@ -52,9 +60,19 @@ If errors occur early in the deployment of the OpenShift Container Platform clus
 
     If the output is `200`, there is a valid response from the webserver storing the bootstrap VM image.
 
+</div>
+
 # Troubleshooting bootstrap VM issues
 
 The OpenShift Container Platform installation program spawns a bootstrap node virtual machine, which handles provisioning the OpenShift Container Platform cluster nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  About 10 to 15 minutes after triggering the installation program, ensure the bootstrap VM is operational by running the `virsh` command:
 
@@ -62,9 +80,11 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
     $ sudo virsh list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -74,11 +94,10 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
      12    openshift-xf6fq-bootstrap      running
     ```
 
-    <div class="note">
-
-    The name of the bootstrap VM is always the cluster name followed by a random set of characters and ending in the word "bootstrap."
-
     </div>
+
+    > [!NOTE]
+    > The name of the bootstrap VM is always the cluster name followed by a random set of characters and ending in the word "bootstrap."
 
 2.  If the bootstrap VM is not running after 10-15 minutes, verify `libvirtd` is running on the system by using the following command:
 
@@ -86,9 +105,11 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
     $ systemctl status libvirtd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -105,6 +126,8 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
                ├─ 9850 /usr/sbin/libvirtd
     ```
 
+    </div>
+
     If the bootstrap VM is operational, log in to it.
 
 3.  Find the IP address of the bootstrap VM by running the following command:
@@ -113,9 +136,11 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
     $ sudo virsh console example.com
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -131,19 +156,15 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
     localhost login:
     ```
 
-    <div class="important">
-
-    When deploying an OpenShift Container Platform cluster without the `provisioning` network, you must use a public IP address and not a private IP address like `172.22.0.2`.
-
     </div>
+
+    > [!IMPORTANT]
+    > When deploying an OpenShift Container Platform cluster without the `provisioning` network, you must use a public IP address and not a private IP address like `172.22.0.2`.
 
 4.  After you obtain the IP address, log in to the bootstrap VM by running the `ssh` command:
 
-    <div class="note">
-
-    In the console output of the previous step, you can use the IPv6 IP address provided by `ens3` or the IPv4 IP provided by `ens4`.
-
-    </div>
+    > [!NOTE]
+    > In the console output of the previous step, you can use the IPv6 IP address provided by `ens3` or the IPv4 IP provided by `ens4`.
 
     ``` terminal
     $ ssh core@172.22.0.2
@@ -156,6 +177,8 @@ The OpenShift Container Platform installation program spawns a bootstrap node vi
     - You cannot reach the bootstrap VM through the public network. When attempting to SSH via `baremetal` network, verify connectivity on the `provisioner` host specifically around the `baremetal` network bridge.
 
     - You encountered `Permission denied (publickey,password,keyboard-interactive)`. When attempting to access the bootstrap VM, a `Permission denied` error might occur. Verify that the SSH key for the user attempting to log in to the VM is set within the `install-config.yaml` file.
+
+</div>
 
 ## Bootstrap VM cannot boot up the cluster nodes
 
@@ -173,6 +196,14 @@ To verify the issue, there are three containers related to `ironic`:
 
 - `ironic-inspector`
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the bootstrap VM by running the following command:
 
     ``` terminal
@@ -187,21 +218,31 @@ To verify the issue, there are three containers related to `ironic`:
 
     Replace `<container_name>` with one of `ironic` or `ironic-inspector`. If you encounter an issue where the control plane nodes are not booting up from PXE, check the `ironic` pod. The `ironic` pod contains information about the attempt to boot the cluster nodes, because it attempts to log in to the node over IPMI.
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 The cluster nodes might be in the `ON` state when deployment started.
 
-<div class="formalpara-title">
+</div>
 
-**Troubleshooting**
+<div class="formalpara">
+
+<div class="title">
+
+Troubleshooting
 
 </div>
 
 Power off the OpenShift Container Platform cluster nodes before you begin the installation over IPMI by running the following command:
+
+</div>
 
 ``` terminal
 $ ipmitool -I lanplus -U root -P <password> -H <out_of_band_ip> power off
@@ -219,6 +260,14 @@ clusterOSImage: http://<ip:port>/rhcos-43.81.202001142154.0-openstack.<architect
 ```
 
 The `coreos-downloader` container downloads resources from a webserver or from the external [quay.io](https://quay.io) registry, whichever the `install-config.yaml` configuration file specifies. Verify that the `coreos-downloader` container is up and running and inspect its logs as needed.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the bootstrap VM by running the following command:
 
@@ -260,9 +309,19 @@ The `coreos-downloader` container downloads resources from a webserver or from t
     [core@localhost ~]$ sudo podman logs ironic
     ```
 
+</div>
+
 # Investigating an unavailable Kubernetes API
 
 When the Kubernetes API is unavailable, check the control plane nodes to ensure that they are running the correct components. Also, check the hostname resolution.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure that `etcd` is running on each of the control plane nodes by running the following command:
 
@@ -296,9 +355,11 @@ When the Kubernetes API is unavailable, check the control plane nodes to ensure 
     $ dig api.<cluster_name>.example.com
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -330,11 +391,23 @@ When the Kubernetes API is unavailable, check the control plane nodes to ensure 
     ;; MSG SIZE  rcvd: 140
     ```
 
+    </div>
+
     The output in the foregoing example indicates that the appropriate IP address for the `api.<cluster_name>.example.com` VIP is `10.19.13.86`. This IP address should reside on the `baremetal` network.
+
+</div>
 
 # Troubleshooting a failure to initialize the cluster
 
 The installation program uses the Cluster Version Operator to create all the components of an OpenShift Container Platform cluster. When the installation program fails to initialize the cluster, you can retrieve the most important information from the `ClusterVersion` and `ClusterOperator` objects.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Inspect the `ClusterVersion` object by running the following command:
 
@@ -342,9 +415,11 @@ The installation program uses the Cluster Version Operator to create all the com
     $ oc --kubeconfig=${INSTALL_DIR}/auth/kubeconfig get clusterversion -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -393,6 +468,8 @@ The installation program uses the Cluster Version Operator to create all the com
       versionHash: Wa7as_ik1qE=
     ```
 
+    </div>
+
 2.  View the conditions by running the following command:
 
     ``` terminal
@@ -402,9 +479,11 @@ The installation program uses the Cluster Version Operator to create all the com
 
     Some of most important conditions include `Failing`, `Available` and `Progressing`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -415,6 +494,8 @@ The installation program uses the Cluster Version Operator to create all the com
     RetrievedUpdates False Unable to retrieve available updates: unknown version 4.1.1
     ```
 
+    </div>
+
 3.  Inspect the `ClusterOperator` object by running the following command:
 
     ``` terminal
@@ -423,9 +504,11 @@ The installation program uses the Cluster Version Operator to create all the com
 
     The command returns the status of the cluster Operators.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -456,6 +539,8 @@ The installation program uses the Cluster Version Operator to create all the com
     service-ca                                      True        False         False     30m
     ```
 
+    </div>
+
 4.  Inspect individual cluster Operators by running the following command:
 
     ``` terminal
@@ -464,9 +549,11 @@ The installation program uses the Cluster Version Operator to create all the com
 
     Replace `<operator>` with the name of a cluster Operator. This command is useful for identifying why a cluster Operator has not achieved the `Available` state or is in the `Failed` state.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -498,6 +585,8 @@ The installation program uses the Cluster Version Operator to create all the com
       version: ""
     ```
 
+    </div>
+
 5.  Get the cluster Operator’s status condition by running the following command:
 
     ``` terminal
@@ -507,9 +596,11 @@ The installation program uses the Cluster Version Operator to create all the com
 
     Replace `<operator>` with the name of one of the operators above.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -519,6 +610,8 @@ The installation program uses the Cluster Version Operator to create all the com
     Failing False
     ```
 
+    </div>
+
 6.  Retrieve the list of objects owned by the cluster Operator by running the following command:
 
     ``` terminal
@@ -526,9 +619,11 @@ The installation program uses the Cluster Version Operator to create all the com
        -o=jsonpath='{.status.relatedObjects}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -536,11 +631,23 @@ The installation program uses the Cluster Version Operator to create all the com
     [map[resource:kubeapiservers group:operator.openshift.io name:cluster] map[group: name:openshift-config resource:namespaces] map[group: name:openshift-config-managed resource:namespaces] map[group: name:openshift-kube-apiserver-operator resource:namespaces] map[group: name:openshift-kube-apiserver resource:namespaces]]
     ```
 
+    </div>
+
+</div>
+
 # Troubleshooting a failure to fetch the console URL
 
 The installation program retrieves the URL for the OpenShift Container Platform console by using `[route][route-object]` within the `openshift-console` namespace.
 
 If the installation program fails the retrieve the URL for the console, use the following procedure.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check if the console router is in the `Available` or `Failing` state by running the following command:
 
@@ -548,9 +655,11 @@ If the installation program fails the retrieve the URL for the console, use the 
     $ oc --kubeconfig=${INSTALL_DIR}/auth/kubeconfig get clusteroperator console -oyaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -599,6 +708,8 @@ If the installation program fails the retrieve the URL for the console, use the 
       versions: null
     ```
 
+    </div>
+
 2.  Manually retrieve the console URL by running the following command:
 
     ``` terminal
@@ -606,11 +717,21 @@ If the installation program fails the retrieve the URL for the console, use the 
          -o=jsonpath='{.spec.host}' console-openshift-console.apps.adahiya-1.devcluster.openshift.com
     ```
 
+</div>
+
 # Troubleshooting a failure to add the ingress certificate to kubeconfig
 
 If the installation program fails to add the default ingress certificate to `${INSTALL_DIR}/auth/kubeconfig`, retrieve the certificate from the cluster and add it.
 
 The installation program normally adds the default ingress certificate to the list of trusted client certificate authorities in `${INSTALL_DIR}/auth/kubeconfig`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the certificate from the cluster by running the following command:
 
@@ -619,9 +740,11 @@ The installation program normally adds the default ingress certificate to the li
          -n openshift-config-managed -o=jsonpath='{.data.ca-bundle\.crt}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -647,7 +770,11 @@ The installation program normally adds the default ingress certificate to the li
     -----END CERTIFICATE-----
     ```
 
+    </div>
+
 2.  Add the certificate to the `client-certificate-authority-data` field in the `${INSTALL_DIR}/auth/kubeconfig` file.
+
+</div>
 
 # Troubleshooting SSH access to cluster nodes
 
@@ -655,15 +782,33 @@ For added security, you cannot SSH into the cluster from outside the cluster by 
 
 The control plane nodes retrieve their boot configuration from the bootstrap VM, and they cannot boot successfully if they do not retrieve the boot configuration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  If you have physical access to the nodes, check their console output to verify if they have successfully booted. If the nodes are still retrieving their boot configuration, there might be problems with the bootstrap VM .
 
 2.  Ensure you have configured the `sshKey: '<ssh_pub_key>'` setting in the `install-config.yaml` file, where `<ssh_pub_key>` is the public key of the `kni` user on the provisioner node.
+
+</div>
 
 # Cluster nodes do not PXE boot
 
 When OpenShift Container Platform cluster nodes do not PXE boot, run the troubleshooting checks on the cluster nodes that do not PXE boot.
 
 This procedure does not apply when installing an OpenShift Container Platform cluster without the `provisioning` network.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the network connectivity to the `provisioning` network.
 
@@ -685,11 +830,21 @@ This procedure does not apply when installing an OpenShift Container Platform cl
       bootMACAddress: 24:6E:96:1B:96:90 # MAC of bootable provisioning NIC
       ```
 
+</div>
+
 # Installing creates no worker nodes
 
 The installation program does not provision worker nodes directly. Instead, the Machine API Operator scales nodes up and down on supported platforms.
 
 If worker nodes are not created after 15 to 20 minutes, depending on the speed of the cluster’s internet connection, investigate the Machine API Operator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the Machine API Operator by running the following command:
 
@@ -700,9 +855,11 @@ If worker nodes are not created after 15 to 20 minutes, depending on the speed o
 
     If `${INSTALL_DIR}` is not set in your environment, replace the value with the name of the installation directory.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -714,6 +871,8 @@ If worker nodes are not created after 15 to 20 minutes, depending on the speed o
     machine-api-operator          1/1     1            1           86m
     ```
 
+    </div>
+
 2.  Check the machine controller logs by running the following command:
 
     ``` terminal
@@ -722,11 +881,21 @@ If worker nodes are not created after 15 to 20 minutes, depending on the speed o
          --container=machine-controller
     ```
 
+</div>
+
 # Troubleshooting the Cluster Network Operator
 
 To troubleshoot Cluster Network Operator issues during installation, verify that the network configuration exists and is running.
 
 The Cluster Network Operator deploys networking components early in the installation process, after the control plane nodes have come up but before the installation program removes the bootstrap control plane. Issues with this Operator might indicate installation program issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure the network configuration exists by running the following command:
 
@@ -747,6 +916,8 @@ The Cluster Network Operator deploys networking components early in the installa
     ``` terminal
     $ oc get po -n openshift-network-operator
     ```
+
+</div>
 
 # Unable to discover new bare-metal hosts using the BMC
 
@@ -779,11 +950,8 @@ Extended information: [
 
 In this situation, if you are using virtual media with an unknown certificate authority, you can configure your baseboard management controller (BMC) remote file share settings to trust an unknown certificate authority to avoid this error.
 
-<div class="note">
-
-This resolution was tested on OpenShift Container Platform 4.11 with Dell iDRAC 9 and firmware version 5.10.50.
-
-</div>
+> [!NOTE]
+> This resolution was tested on OpenShift Container Platform 4.11 with Dell iDRAC 9 and firmware version 5.10.50.
 
 # Troubleshooting worker nodes that cannot join the cluster
 
@@ -793,15 +961,25 @@ Installer-provisioned clusters deploy with a DNS server that includes a DNS entr
 
 Ensure that all nodes in the cluster can resolve the domain name.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add a DNS A/AAAA or CNAME record to internally identify the API load balancer. For example, when using dnsmasq, modify the `dnsmasq.conf` configuration file by running the following command:
 
     ``` terminal
     $ sudo nano /etc/dnsmasq.conf
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -811,15 +989,19 @@ Ensure that all nodes in the cluster can resolve the domain name.
     address=/api-int.mycluster.example.com/2001:0db8:85a3:0000:0000:8a2e:0370:7334
     ```
 
+    </div>
+
 2.  Add a DNS PTR record to internally identify the API load balancer. For example, when using dnsmasq, modify the `dnsmasq.conf` configuration file by running the following command:
 
     ``` terminal
     $ sudo nano /etc/dnsmasq.conf
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -827,6 +1009,8 @@ Ensure that all nodes in the cluster can resolve the domain name.
     ptr-record=<IP_address>.in-addr.arpa,api-int.<cluster_name>.<base_domain>
     ptr-record=10.1.168.192.in-addr.arpa,api-int.mycluster.example.com
     ```
+
+    </div>
 
 3.  Restart the DNS server. For example, when using dnsmasq, run the following command:
 
@@ -836,9 +1020,19 @@ Ensure that all nodes in the cluster can resolve the domain name.
 
     These records must be resolvable from all the nodes within the cluster.
 
+</div>
+
 # Cleaning up previous installations
 
 You must remove the artifacts from any failed deployment attempt before trying to deploy OpenShift Container Platform again.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster by running the following command:
 
@@ -873,9 +1067,19 @@ You must remove the artifacts from any failed deployment attempt before trying t
     $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
     ```
 
+</div>
+
 # Issues with creating the registry
 
 When creating a disconnected registry, you might encounter a "User Not Authorized" error when attempting to mirror the registry. This error might occur if you fail to append the new authentication to the existing `pull-secret.txt` file.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check to ensure authentication is successful by running the following command:
 
@@ -887,19 +1091,16 @@ When creating a disconnected registry, you might encounter a "User Not Authorize
       --to=$LOCAL_REG/$LOCAL_REPO
     ```
 
-    <div class="note">
-
-    Example output of the variables used to mirror the install images:
-
-    ``` terminal
-    UPSTREAM_REPO=${RELEASE_IMAGE}
-    LOCAL_REG=<registry_FQDN>:<registry_port>
-    LOCAL_REPO='ocp4/openshift4'
-    ```
-
-    The values of `RELEASE_IMAGE` and `VERSION` were set during the **Retrieving OpenShift Installer** step of the **Setting up the environment for an OpenShift installation** section.
-
-    </div>
+    > [!NOTE]
+    > Example output of the variables used to mirror the install images:
+    >
+    > ``` terminal
+    > UPSTREAM_REPO=${RELEASE_IMAGE}
+    > LOCAL_REG=<registry_FQDN>:<registry_port>
+    > LOCAL_REPO='ocp4/openshift4'
+    > ```
+    >
+    > The values of `RELEASE_IMAGE` and `VERSION` were set during the **Retrieving OpenShift Installer** step of the **Setting up the environment for an OpenShift installation** section.
 
 2.  After mirroring the registry, confirm that you can access it in your disconnected environment by running the following command:
 
@@ -907,6 +1108,8 @@ When creating a disconnected registry, you might encounter a "User Not Authorize
     $ curl -k -u <user>:<password> https://registry.example.com:<registry_port>/v2/_catalog
     {"repositories":["<Repo_Name>"]}
     ```
+
+</div>
 
 # Miscellaneous issues
 
@@ -924,15 +1127,25 @@ runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady messa
 
 The Cluster Network Operator is responsible for deploying the networking components in response to a special object created by the installation program. It runs very early in the installation process, after the control plane nodes have come up, but before the bootstrap control plane has been torn down. It can be indicative of more subtle installation program issues, such as long delays in bringing up control plane nodes or issues with `apiserver` communication.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Inspect the pods in the `openshift-network-operator` namespace by running the following command:
 
     ``` terminal
     $ oc get all -n openshift-network-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -941,15 +1154,19 @@ The Cluster Network Operator is responsible for deploying the networking compone
     pod/network-operator-69dfd7b577-bg89v   0/1   ContainerCreating 0          149m
     ```
 
+    </div>
+
 2.  On the `provisioner` node, determine that the network configuration exists by running the following command:
 
     ``` terminal
     $ kubectl get network.config.openshift.io cluster -oyaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -966,6 +1183,8 @@ The Cluster Network Operator is responsible for deploying the networking compone
         hostPrefix: 23
       networkType: OVNKubernetes
     ```
+
+    </div>
 
     If it does not exist, the installation program did not create it. To determine why the installation program did not create it, run the following command:
 
@@ -987,6 +1206,8 @@ The Cluster Network Operator is responsible for deploying the networking compone
 
     On high availability clusters with three or more control plane nodes, the Operator will perform leader election and all other Operators will sleep. For additional details, see [Troubleshooting](https://github.com/openshift/installer/blob/master/docs/user/troubleshooting.md).
 
+</div>
+
 ## Addressing the "No disk found with matching rootDeviceHints" error message
 
 To ensure the installer can locate and configure the target storage drive on your node, troubleshoot the No disk found with matching `rootDeviceHints` error.
@@ -998,6 +1219,14 @@ No disk found with matching rootDeviceHints
 ```
 
 To address the `No disk found with matching rootDeviceHints` error message, run the following temporary workaround:
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change the `rootDeviceHints` to `minSizeGigabytes: 300`.
 
@@ -1013,11 +1242,21 @@ To address the `No disk found with matching rootDeviceHints` error message, run 
 
     An alternative approach to fixing this problem is by using the serial ID of the disk. However, be aware that finding the serial ID can be challenging and might make the configuration file less readable. If you select this path, ensure that you gather the serial ID using the previously documented command and incorporate it into your configuration.
 
+</div>
+
 ## Addressing the cluster nodes not getting the correct IPv6 address over DHCP error
 
 Troubleshoot and resolve DHCP configuration issues that prevent OpenShift Container Platform cluster nodes from receiving their assigned IPv6 addresses.
 
 If the cluster nodes are not getting the correct IPv6 address over DHCP, check the following procedure.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure the reserved IPv6 addresses reside outside the DHCP range.
 
@@ -1034,6 +1273,8 @@ If the cluster nodes are not getting the correct IPv6 address over DHCP, check t
 
 4.  Ensure that the DHCP server is listening on the required interfaces serving the IP address ranges.
 
+</div>
+
 ## Addressing the cluster nodes not getting the correct hostname over DHCP error
 
 During IPv6 deployment, cluster nodes must get their hostname over DHCP. Sometimes the `NetworkManager` does not assign the hostname immediately.
@@ -1048,6 +1289,14 @@ Failed Units: 2
 
 This error indicates that the cluster node likely booted without first receiving a hostname from the DHCP server, which causes `kubelet` to boot with a `localhost.localdomain` hostname. To address the error, force the node to renew the hostname.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Retrieve the `hostname` by running the following command:
 
     ``` terminal
@@ -1056,11 +1305,8 @@ This error indicates that the cluster node likely booted without first receiving
 
     If the hostname is `localhost`, proceed with the following steps:
 
-    <div class="note">
-
-    Where `X` is the control plane node number.
-
-    </div>
+    > [!NOTE]
+    > Where `X` is the control plane node number.
 
 2.  Force the cluster node to renew the DHCP lease by running the following command:
 
@@ -1132,6 +1378,8 @@ This error indicates that the cluster node likely booted without first receiving
           $ oc delete csr <wrong_csr>
           ```
 
+</div>
+
 ## Addressing the routes not reaching endpoints error
 
 To restore external network connectivity to your applications, troubleshoot OpenShift Container Platform routes that do not reach their service endpoints.
@@ -1141,6 +1389,14 @@ During the installation process, it is possible to encounter a Virtual Router Re
 This conflict occurs when a currently active OpenShift Container Platform node from an older deployment uses your current OpenShift Container Platform cluster name without actually being part of the new deployment.
 
 For example, a cluster was deployed using the cluster name `openshift`, deploying three control plane nodes and three worker nodes. Later, a separate install uses the same cluster name `openshift`, but this redeployment only installed three control plane nodes, leaving the three worker nodes from a previous deployment in an `ON` state. This might cause a Virtual Router Identifier (VRID) conflict and a VRRP conflict.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the route by running the following command:
 
@@ -1154,9 +1410,11 @@ For example, a cluster was deployed using the cluster name `openshift`, deployin
     $ oc get svc oauth-openshift
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1165,15 +1423,19 @@ For example, a cluster was deployed using the cluster name `openshift`, deployin
     oauth-openshift   ClusterIP   172.30.19.162   <none>        443/TCP   59m
     ```
 
+    </div>
+
 3.  Attempt to reach the service from a control plane node by running the following command:
 
     ``` terminal
     [core@master0 ~]$ curl -k https://172.30.19.162
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1192,15 +1454,19 @@ For example, a cluster was deployed using the cluster name `openshift`, deployin
     }
     ```
 
+    </div>
+
 4.  Identify the `authentication-operator` errors from the `provisioner` node by running the following command:
 
     ``` terminal
     $ oc logs deployment/authentication-operator -n openshift-authentication-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1208,13 +1474,25 @@ For example, a cluster was deployed using the cluster name `openshift`, deployin
     Event(v1.ObjectReference{Kind:"Deployment", Namespace:"openshift-authentication-operator", Name:"authentication-operator", UID:"225c5bd5-b368-439b-9155-5fd3c0459d98", APIVersion:"apps/v1", ResourceVersion:"", FieldPath:""}): type: 'Normal' reason: 'OperatorStatusChanged' Status for clusteroperator/authentication changed: Degraded message changed from "IngressStateEndpointsDegraded: All 2 endpoints for oauth-server are reporting"
     ```
 
+    </div>
+
 5.  Ensure that the cluster name for every deployment is unique, ensuring no conflict.
 
 6.  Turn off all the rogue nodes which are not part of the cluster deployment that are using the same cluster name. Otherwise, the authentication pod of the OpenShift Container Platform cluster might never start successfully.
 
+</div>
+
 ## Addressing the failed Ignition during firstboot error
 
 Troubleshoot and resolve Ignition configuration failures that occur during the firstboot of your nodes to prevent cluster deployment failures.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the node where the Ignition configuration failed:
 
@@ -1229,9 +1507,19 @@ Troubleshoot and resolve Ignition configuration failures that occur during the f
     [core@worker-X ~]$ sudo systemctl restart machine-config-daemon-firstboot.service
     ```
 
+</div>
+
 ## Addressing the NTP out of sync error
 
 The deployment of OpenShift Container Platform clusters depends on NTP synchronized clocks among the cluster nodes. Without synchronized clocks, the deployment may fail due to clock drift if the time difference is greater than two seconds.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check for differences in the `AGE` of the cluster nodes by running the following command:
 
@@ -1239,9 +1527,11 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1253,15 +1543,19 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
     worker-2.cloud.example.com   Ready    worker   100m   v1.36.3
     ```
 
+    </div>
+
 2.  Check for inconsistent timing delays due to clock drift by running the following command:
 
     ``` terminal
     $ oc get bmh -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output showing registration error due to clock drift**
+    <div class="title">
+
+    Example output showing registration error due to clock drift
 
     </div>
 
@@ -1269,15 +1563,19 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
     master-1   error registering master-1  ipmi://<out_of_band_ip>
     ```
 
+    </div>
+
 3.  Check `System clock synchronized` on a node by running the following command:
 
     ``` terminal
     $ sudo timedatectl
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1291,6 +1589,8 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
               RTC in local TZ: no
     ```
 
+    </div>
+
     Ensure that the `System clock synchronized` value is **yes** before proceeding with the installation.
 
 4.  Resolve clock drift based on your deployment stage:
@@ -1299,11 +1599,8 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
 
       1.  Create a Butane config file including the contents of the `chrony.conf` file to be delivered to the nodes. In the following example, create `99-master-chrony.bu` to add the file to the control plane nodes. You can modify the file for compute nodes or repeat this procedure for the compute role.
 
-          <div class="note">
-
-          See "Creating machine configs with Butane" for information about Butane.
-
-          </div>
+          > [!NOTE]
+          > See "Creating machine configs with Butane" for information about Butane.
 
           ``` yaml
           variant: openshift
@@ -1354,9 +1651,11 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
           $ sudo timedatectl
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -1370,6 +1669,8 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
                     RTC in local TZ: no
           ```
 
+          </div>
+
     - **Addressing clock synchronization for clock drift before deployment:**
 
       1.  Generate the manifest files and add this file to the `openshift` directory.
@@ -1382,9 +1683,19 @@ The deployment of OpenShift Container Platform clusters depends on NTP synchroni
 
       2.  Continue to create the cluster.
 
+</div>
+
 # Reviewing the installation
 
 After installation, ensure the installation program deployed the nodes and pods successfully.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  When the OpenShift Container Platform cluster nodes are installed appropriately, ensure the following `Ready` state within the `STATUS` column by running the following command:
 
@@ -1392,9 +1703,11 @@ After installation, ensure the installation program deployed the nodes and pods 
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1405,8 +1718,12 @@ After installation, ensure the installation program deployed the nodes and pods 
     master-2.example.com   Ready    master,worker   4h   v1.36.3
     ```
 
+    </div>
+
 2.  Confirm the installation program deployed all pods successfully. Remove any pods that are still running or have completed as part of the output by running the following command:
 
     ``` terminal
     $ oc get pods --all-namespaces | grep -iv running | grep -iv complete
     ```
+
+</div>

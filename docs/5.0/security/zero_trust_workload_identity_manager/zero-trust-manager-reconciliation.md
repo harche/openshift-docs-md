@@ -12,9 +12,14 @@ The following scenarios are examples of when the `create-only` mode might be of 
 
 Pause reconciliation of the operands by enabling `create-only` mode. This setting prevents the Operator from automatically reverting your manual changes to the desired state. You can enable this mode by updating the Operator’s subscription object.
 
-<div class="important">
+> [!IMPORTANT]
+> When `create-only` mode is disabled, the Operator overwrites the resources if any conflicts exist.
 
-When `create-only` mode is disabled, the Operator overwrites the resources if any conflicts exist.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -22,7 +27,15 @@ When `create-only` mode is disabled, the Operator overwrites the resources if an
 
 - You have installed the SPIRE Servers, Agents, SPIFFE Container Storage Interface (CSI), and an OpenID Connect (OIDC) Discovery Provider and are in running status.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To pause reconciling the operands resources managed by the Operator, add the environment variable `CREATE_ONLY_MODE`: `true` in the subscription object by running the following command:
 
@@ -30,7 +43,15 @@ When `create-only` mode is disabled, the Operator overwrites the resources if an
   $ oc -n $OPERATOR_NAMESPACE patch subscription openshift-zero-trust-workload-identity-manager --type='merge' -p '{"spec":{"config":{"env":[{"name":"CREATE_ONLY_MODE","value":"true"}]}}}'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the status of the `SpireServer` resource to confirm that the `create-only` mode is active. The `status` must be `true` and the `reason` must be `CreateOnlyModeEnabled`.
 
@@ -40,7 +61,7 @@ When `create-only` mode is disabled, the Operator overwrites the resources if an
 
   The following is an example that confirms that the 'create-only' mode is active.
 
-<!-- -->
+</div>
 
     status:
       conditions:
@@ -60,21 +81,34 @@ When `create-only` mode is disabled, the Operator overwrites the resources if an
         status: "True"
         type: CreateOnlyMode
 
-<div class="important">
-
-The Operator updates the upgradeable condition to `false` in the `operatorCondition` resource. You might not be able to upgrade the Operator when in `create-only` mode.
-
-</div>
+> [!IMPORTANT]
+> The Operator updates the upgradeable condition to `false` in the `operatorCondition` resource. You might not be able to upgrade the Operator when in `create-only` mode.
 
 # Resuming Operator reconciliation
 
 To resume Operator reconciliation after manual configuration or debugging, disable the `create-only` mode. This allows the controller to resume managing resources and applying the desired state. You can disable this mode by setting the environment variable in the subscription object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have enabled `create-only` mode on the Zero Trust Workload Identity Manager.
 
 - You have completed your manual configuration or debugging tasks.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To restart reconciling the Operator-managed resources, add the environment variable `CREATE_ONLY_MODE`: `false` in the subscription object by running the following command:
 
@@ -82,7 +116,15 @@ To resume Operator reconciliation after manual configuration or debugging, disab
   $ oc -n $OPERATOR_NAMESPACE patch subscription openshift-zero-trust-workload-identity-manager --type='merge' -p '{"spec":{"config":{"env":[{"name":"CREATE_ONLY_MODE","value":"false"}]}}}'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the status of the `SpireServer` resource to confirm that `create-only` mode is disabled by running the following command:
 
@@ -90,9 +132,11 @@ To resume Operator reconciliation after manual configuration or debugging, disab
   $ oc get SpireServer cluster -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -105,3 +149,7 @@ To resume Operator reconciliation after manual configuration or debugging, disab
      status: "False"
      type: CreateOnlyMode
   ```
+
+  </div>
+
+</div>

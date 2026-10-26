@@ -6,11 +6,8 @@ You can create a cluster performance profile by using the Performance Profile Cr
 
 The PPC combines information about your cluster with user-supplied configurations to generate a performance profile that is appropriate to your hardware, topology and use-case.
 
-<div class="note">
-
-Performance profiles are applicable only to bare-metal environments where the cluster has direct access to the underlying hardware resources. You can configure performances profiles for both single-node OpenShift and multi-node clusters.
-
-</div>
+> [!NOTE]
+> Performance profiles are applicable only to bare-metal environments where the cluster has direct access to the underlying hardware resources. You can configure performances profiles for both single-node OpenShift and multi-node clusters.
 
 The following is a high-level workflow for creating and applying a performance profile in your cluster:
 
@@ -46,11 +43,8 @@ You can run the PPC by using one of the following methods:
 
 - Run the PPC by using the wrapper script
 
-<div class="note">
-
-Using the wrapper script abstracts some of the more granular Podman tasks into an executable script. For example, the wrapper script handles tasks such as pulling and running the required container image, mounting directories into the container, and providing parameters directly to the container through Podman. Both methods achieve the same result.
-
-</div>
+> [!NOTE]
+> Using the wrapper script abstracts some of the more granular Podman tasks into an executable script. For example, the wrapper script handles tasks such as pulling and running the required container image, mounting directories into the container, and providing parameters directly to the container through Podman. Both methods achieve the same result.
 
 ## Create a machine config pool to target nodes for performance tuning
 
@@ -58,9 +52,27 @@ For multi-node clusters, you can define a machine config pool (MCP) to identify 
 
 In single-node OpenShift clusters, you must use the `master` MCP because there is only one node in the cluster. You do not need to create a separate MCP for single-node OpenShift clusters.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have `cluster-admin` role access.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Label the target nodes for configuration by running the following command:
 
@@ -74,9 +86,11 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
 
     1.  Create a YAML file that defines the `MachineConfigPool` resource:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `mcp-worker-cnf.yaml` file**
+        <div class="title">
+
+        Example `mcp-worker-cnf.yaml` file
 
         </div>
 
@@ -101,6 +115,8 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
               node-role.kubernetes.io/worker-cnf: ""
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -118,9 +134,11 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
         $ oc apply -f mcp-worker-cnf.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -128,15 +146,29 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
         machineconfigpool.machineconfiguration.openshift.io/worker-cnf created
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the machine config pools in your cluster by running the following command:
 
   ``` terminal
   $ oc get mcp
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -147,15 +179,37 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
   worker-cnf   rendered-worker-cnf-168f52b168f151e4f853259729b6azc4   True      False      False      1              1                   1                     0                      73s
   ```
 
+  </div>
+
+</div>
+
 ## Gather data about your cluster for the PPC
 
 The Performance Profile Creator (PPC) tool requires `must-gather` data. As a cluster administrator, run the `must-gather` command to capture information about your cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You identified a target MCP that you want to configure with a performance profile.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -175,13 +229,22 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
 
     - `<must_gather_folder>`: Specifies the name of the `must-gather` data folder.
 
-      <div class="note">
+      > [!NOTE]
+      > Compressed output is required if you are running the Performance Profile Creator wrapper script.
 
-      Compressed output is required if you are running the Performance Profile Creator wrapper script.
+</div>
 
-      </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
+
+</div>
 
 ## Run the Performance Profile Creator using Podman
 
@@ -189,9 +252,14 @@ As a cluster administrator, you can use Podman with the Performance Profile Crea
 
 For more information about the PPC arguments, see the section "Performance Profile Creator arguments".
 
-<div class="important">
+> [!IMPORTANT]
+> The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
 
-The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -206,6 +274,16 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 - You identified a machine config pool containing target nodes for configuration.
 
 - You have access to the `must-gather` data for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the machine config pool by running the following command:
 
@@ -333,11 +411,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
 
-      <div class="note">
-
-      The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
-
-      </div>
+      > [!NOTE]
+      > The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
 
       The following output shows the CPU and NUMA allocation for the performance profile:
 
@@ -397,6 +472,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     performanceprofile.performance.openshift.io/performance created
     ```
 
+</div>
+
 ## Run the Performance Profile Creator wrapper script
 
 The wrapper script simplifies the process of creating a performance profile with the Performance Profile Creator (PPC) tool.
@@ -405,9 +482,14 @@ The script handles tasks such as pulling and running the required container imag
 
 For more information about the Performance Profile Creator arguments, see the section "Performance Profile Creator arguments".
 
-<div class="important">
+> [!IMPORTANT]
+> The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
 
-The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -422,6 +504,16 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 - You identified a machine config pool containing target nodes for configuration.
 
 - Access to the `must-gather` tarball.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file on your local machine named, for example, `run-perf-profile-creator.sh`:
 
@@ -577,11 +669,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     Use "performance-profile-creator [command] --help" for more information about a command.
     ```
 
-    <div class="note">
-
-    You can optionally set a path for the Node Tuning Operator image using the `-p` option. If you do not set a path, the wrapper script uses the default image: `registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17`.
-
-    </div>
+    > [!NOTE]
+    > You can optionally set a path for the Node Tuning Operator image using the `-p` option. If you do not set a path, the wrapper script uses the default image: `registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17`.
 
 6.  To display information about the cluster, run the PPC tool with the `info` command by running the following command:
 
@@ -628,11 +717,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
 
-      <div class="note">
-
-      The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
-
-      </div>
+      > [!NOTE]
+      > The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
 
 8.  Review the created YAML file by running the following command:
 
@@ -677,6 +763,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     performanceprofile.performance.openshift.io/performance created
     ```
 
+</div>
+
 ## Performance Profile Creator arguments
 
 To customize the generation of performance profiles, review the arguments for the Performance Profile Creator.
@@ -688,34 +776,32 @@ To customize the generation of performance profiles, review the arguments for th
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcp-name</code></p></td>
 <td style="text-align: left;"><p>Name for MCP; for example, <code>worker-cnf</code> corresponding to the target machines.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>must-gather-dir-path</code></p></td>
 <td style="text-align: left;"><p>The path of the must gather directory.</p>
 <p>This argument is only required if you run the PPC tool by using Podman. If you use the PPC with the wrapper script, do not use this argument. Instead, specify the directory path to the <code>must-gather</code> tarball by using the <code>-t</code> option for the wrapper script.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>reserved-cpu-count</code></p></td>
 <td style="text-align: left;"><p>Number of reserved CPUs. Use a natural number greater than zero.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>rt-kernel</code></p></td>
 <td style="text-align: left;"><p>Enables real-time kernel.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p></td>
 </tr>
 </tbody>
 </table>
-
-Required Performance Profile Creator arguments
 
 <table>
 <caption>Optional Performance Profile Creator arguments</caption>
@@ -724,22 +810,24 @@ Required Performance Profile Creator arguments
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>disable-ht</code></p></td>
 <td style="text-align: left;"><p>Disable Hyper-Threading.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p>
 <div class="warning">
+<div class="title">
+&#10;</div>
 <p>If this argument is set to <code>true</code> you should not disable Hyper-Threading in the BIOS. Disabling Hyper-Threading is accomplished with a kernel command-line argument.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>enable-hardware-tuning</p></td>
 <td style="text-align: left;"><p>Enable the setting of maximum CPU frequencies.</p>
 <p>To enable this feature, set the maximum frequency for applications running on isolated and reserved CPUs for both of the following fields:</p>
@@ -749,7 +837,7 @@ Required Performance Profile Creator arguments
 </ul>
 <p>This is an advanced feature. If you configure hardware tuning, the generated <code>PerformanceProfile</code> includes warnings and guidance on how to set frequency settings.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>info</code></p></td>
 <td style="text-align: left;"><p>This captures cluster information. This argument also requires the <code>must-gather-dir-path</code> argument. If any other arguments are set they are ignored.</p>
 <p>Possible values:</p>
@@ -759,22 +847,24 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>log</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>offlined-cpu-count</code></p></td>
 <td style="text-align: left;"><p>Number of offlined CPUs.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>Use a natural number greater than zero. If not enough logical processors are offlined, then error messages are logged. The messages are:</p>
 <pre class="terminal"><code>Error: failed to compute the reserved and isolated CPUs: please ensure that reserved-cpu-count plus offlined-cpu-count should be in the range [0,1]</code></pre>
 <pre class="terminal"><code>Error: failed to compute the reserved and isolated CPUs: please specify the offlined CPU count in the range [0,1]</code></pre>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ovs-dpdk-cpu-count</code></p></td>
 <td style="text-align: left;"><p>Number of CPUs to reserve for OVS-DPDK PMD threads. When you specify this argument, the PPC tool populates <code>spec.cpu.ovsDpdk</code> in the generated performance profile with the specified number of CPUs.</p>
 <p>The PPC tool selects OVS-DPDK CPUs after reserved and offlined CPUs are allocated. The selected CPUs are excluded from the isolated CPU set. If Hyper-Threading is enabled, the tool allocates whole sibling groups, requiring an even count.</p>
 <p>Default: <code>0</code> (no OVS-DPDK CPUs reserved).</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>power-consumption-mode</code></p></td>
 <td style="text-align: left;"><p>The power consumption mode.</p>
 <p>Possible values:</p>
@@ -785,24 +875,24 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>default</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>per-pod-power-management</code></p></td>
 <td style="text-align: left;"><p>Enable per pod power management. You cannot use this argument if you configured <code>ultra-low-latency</code> as the power consumption mode.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>profile-name</code></p></td>
 <td style="text-align: left;"><p>Name of the performance profile to create.</p>
 <p>Default: <code>performance</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>split-reserved-cpus-across-numa</code></p></td>
 <td style="text-align: left;"><p>Split the reserved CPUs across NUMA nodes.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>topology-manager-policy</code></p></td>
 <td style="text-align: left;"><p>Kubelet Topology Manager policy of the performance profile to be created.</p>
 <p>Possible values:</p>
@@ -813,7 +903,7 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>restricted</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>user-level-networking</code></p></td>
 <td style="text-align: left;"><p>Run with user level networking (DPDK) enabled.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
@@ -821,8 +911,6 @@ Required Performance Profile Creator arguments
 </tr>
 </tbody>
 </table>
-
-Optional Performance Profile Creator arguments
 
 # Reference performance profiles
 
@@ -836,9 +924,11 @@ You can create a performance profile manually using the template provided in thi
 
 You can use the following performance profile template to create a profile for your deployment.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Performance profile template for clusters that use OVS-DPDK**
+<div class="title">
+
+Performance profile template for clusters that use OVS-DPDK
 
 </div>
 
@@ -875,6 +965,8 @@ spec:
     globallyDisableIrqLoadBalancing: true
 ```
 
+</div>
+
 Insert values that are appropriate for your configuration for the `CPU_ISOLATED`, `CPU_RESERVED`, `HUGEPAGES_COUNT`, and `CPU_OVS_DPDK` keys.
 
 Optional: You can specify CPUs to reserve for OVS-DPDK PMD threads in the `spec.cpu.ovsDpdk` field. For example, `"2-3"` to allocate CPUs 2 and 3. Ensure these CPUs are on the same NUMA node as the OVS-DPDK NICs.
@@ -883,9 +975,11 @@ Optional: You can specify CPUs to reserve for OVS-DPDK PMD threads in the `spec.
 
 You can use a pre-configured design performance profile that configures node-level performance settings for OpenShift Container Platform clusters on commodity hardware to host telco RAN DU workloads.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Telco RAN DU reference design performance profile**
+<div class="title">
+
+Telco RAN DU reference design performance profile
 
 </div>
 
@@ -935,13 +1029,17 @@ spec:
     perPodPowerManagement: false
 ```
 
+</div>
+
 ## Telco core reference design performance profile
 
 You can use a pre-configured design performance profile that configures node-level performance settings for OpenShift Container Platform clusters on commodity hardware to host telco core workloads.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Telco core reference design performance profile**
+<div class="title">
+
+Telco core reference design performance profile
 
 </div>
 
@@ -992,6 +1090,8 @@ spec:
     userLevelNetworking: false
 ```
 
+</div>
+
 # Supported performance profile API versions
 
 The Node Tuning Operator supports `v2`, `v1`, and `v1alpha1` for the performance profile `apiVersion` field. The v1 and v1alpha1 APIs are identical. The v2 API includes an optional boolean field `globallyDisableIrqLoadBalancing` with a default value of `false`.
@@ -999,11 +1099,8 @@ The Node Tuning Operator supports `v2`, `v1`, and `v1alpha1` for the performance
 Upgrading the performance profile to use device interrupt processing
 When you upgrade the Node Tuning Operator performance profile custom resource definition (CRD) from v1 or v1alpha1 to v2, `globallyDisableIrqLoadBalancing` is set to `true` on existing profiles.
 
-<div class="note">
-
-`globallyDisableIrqLoadBalancing` toggles whether IRQ load balancing will be disabled for the Isolated CPU set. When the option is set to `true` it disables IRQ load balancing for the Isolated CPU set. Setting the option to `false` allows the IRQs to be balanced across all CPUs.
-
-</div>
+> [!NOTE]
+> `globallyDisableIrqLoadBalancing` toggles whether IRQ load balancing will be disabled for the Isolated CPU set. When the option is set to `true` it disables IRQ load balancing for the Isolated CPU set. Setting the option to `false` allows the IRQs to be balanced across all CPUs.
 
 Upgrading Node Tuning Operator API from v1alpha1 to v1
 When upgrading Node Tuning Operator API version from v1alpha1 to v1, the v1alpha1 performance profiles are converted on-the-fly using a "None" Conversion strategy and served to the Node Tuning Operator with API version v1.
@@ -1026,7 +1123,7 @@ The following table describes the possible values set for the `power-consumption
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Performance Profile creator setting</th>
 <th style="text-align: left;">Hint</th>
 <th style="text-align: left;">Environment</th>
@@ -1034,7 +1131,7 @@ The following table describes the possible values set for the `power-consumption
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Default</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: false
@@ -1042,7 +1139,7 @@ realTime: false</code></pre></td>
 <td style="text-align: left;"><p>High throughput cluster without latency requirements</p></td>
 <td style="text-align: left;"><p>Performance achieved through CPU partitioning only.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Low-latency</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: false
@@ -1050,7 +1147,7 @@ realTime: true</code></pre></td>
 <td style="text-align: left;"><p>Regional data-centers</p></td>
 <td style="text-align: left;"><p>Both energy savings and low-latency are desirable: compromise between power management, latency and throughput.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Ultra-low-latency</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: true
@@ -1058,7 +1155,7 @@ realTime: true</code></pre></td>
 <td style="text-align: left;"><p>Far edge clusters, latency critical workloads</p></td>
 <td style="text-align: left;"><p>Optimized for absolute minimal latency and maximum determinism at the cost of increased power consumption.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Per-pod power management</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 realTime: true
@@ -1069,8 +1166,6 @@ perPodPowerManagement: true</code></pre></td>
 </tr>
 </tbody>
 </table>
-
-Impact of combinations of power consumption and real-time settings on latency
 
 The following configuration is commonly used in a telco RAN DU deployment:
 
@@ -1090,29 +1185,51 @@ The following configuration is commonly used in a telco RAN DU deployment:
 `perPodPowerManagement`
 Specifies to disable some debugging and monitoring features that can affect system latency.
 
-<div class="note">
+> [!NOTE]
+> If you do not set the `realTime` workload hint, the hint defaults to `true`.
 
-When the `realTime` workload hint flag is set to `true` in a performance profile, add the `cpu-quota.crio.io: disable` annotation to every guaranteed pod with pinned CPUs. This annotation is necessary to prevent the degradation of the process performance within the pod. If the `realTime` workload hint is not explicitly set, it defaults to `true`.
+For more information about how combinations of power consumption and real-time settings impact latency, see "Understanding workload hints".
+
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
-
-For more information how combinations of power consumption and real-time settings impact latency, see "Understanding workload hints".
 
 - [Understanding workload hints](https://access.redhat.com/articles/7081587)
 
 - [Reserving CPUs for OVS-DPDK](../scalability_and_performance/cnf-reserving-cpus-for-ovs-dpdk.xml#cnf-reserving-cpus-for-ovs-dpdk)
 
+</div>
+
 # Configure power saving for nodes that run colocated high and low priority workloads
 
 You can enable power savings for a node that has low priority workloads that are colocated with high priority workloads without impacting the latency or throughput of the high priority workloads. Power saving is possible without modifications to the workloads themselves.
 
-<div class="important">
+> [!IMPORTANT]
+> The feature is supported on Intel Ice Lake and later generations of Intel CPUs. The capabilities of the processor might impact the latency and throughput of the high priority workloads.
 
-The feature is supported on Intel Ice Lake and later generations of Intel CPUs. The capabilities of the processor might impact the latency and throughput of the high priority workloads.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You enabled C-states and operating system controlled P-states in the BIOS
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate a `PerformanceProfile` with the `per-pod-power-management` argument set to `true`:
 
@@ -1127,9 +1244,11 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
 
     The `power-consumption-mode` argument must be `default` or `low-latency` when the `per-pod-power-management` argument is set to `true`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `PerformanceProfile` with `perPodPowerManagement`**
+    <div class="title">
+
+    Example `PerformanceProfile` with `perPodPowerManagement`
 
     </div>
 
@@ -1146,6 +1265,8 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
             perPodPowerManagement: true
     # ...
     ```
+
+    </div>
 
 2.  Set the default `cpufreq` governor as an additional kernel argument in the `PerformanceProfile` custom resource (CR):
 
@@ -1181,6 +1302,503 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
     `/sys/devices/system/cpu/intel_pstate/max_perf_pct`
     Specifies the `max_perf_pct` that controls the maximum frequency that the `cpufreq` driver is allowed to set as a percentage of the maximum supported cpu frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores will run at when the cores are all fully occupied.
 
+</div>
+
+# Configuring LLC-aware CPU pinning for low latency workloads
+
+You can configure the `prefer-align-cpus-by-uncorecache` CPU Manager policy option to attempt, on a best-effort basis, to allocate CPUs from as few last-level cache (LLC) domains as possible. An LLC, or layer 3 cache, is the cache that cores on the CPU share. Traditional CPU architectures use one LLC for every core. Modern CPU architectures split this LLC into two or more physical caches to reduce the distance, and therefore latency, between the cores and the LLC. The term *LLC domain* refers to cores that share the same LLC. A container can receive CPUs from more than one LLC domain, and more than one container can receive CPUs from the same LLC domain.
+
+On CPUs with a split LLC, this allocation can lower inter-cache latency and cache contention for low latency workloads when the allocated CPUs share fewer LLC domains.
+
+The following diagram shows an example of this best-effort allocation. The diagram is illustrative and does not show every allocation result.
+
+<figure>
+<img src="data:image/png;base64,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rspif61lpaZP5VNf2lup6QfKdUoXT868PBNAiWFbKzV9fldVrcr+rvo7YYBPRERERAEvUG5EK4Kj6BARERERBRAG+EREREREAYQBPhERERFRAGGAT0REREQUQKq8ky1HRSAiIiIiunRYg09EREREFECqrAafs5QREREREV16rMEnCiC5Jwuw4j+78fGT67Hola3I2HKiqotEVKa83wvxxfObsXT89qouCl1m8+bNQ7NmzWAymdCqVSusXLmyqotEFFAY4BMFCHeRjmVv7sQxew4atKiBwjwXVs+24bc9p6q6aESluAs1/DhjL/J+L4Ar313VxaHLaPv27bj//vvhcrlw77334siRIxg4cCBOnGCFBFW91atXo0uXLqhevTpycnIwbtw4REdHe29Gd+7cWdVFrBAG+EQBwrE+E2ezi5DUrzF6j0zELc+0hhACO5YfquqiERUngXVznfj98BlAVHVh6HLbvn07dF3HK6+8go8//hiPPPIIzpw5g7S0tKouGhEGDRqEtWvXIjc3F8888wzGjh0LRVHQvn177N27F7169YKUsqqLeV4M8IkCxMlDeQCApsn1AADVo8NRt1EkTh7Kw1/gu4j+RnasOIQDW06gxfXRiKgRUtXFocvspptuQlRUFEaNGoUuXbpgypQpaNSoEZKSkqq6aER45pln0LJlS+/fzz33HA4ePIh169ahY8eOOH78OLKzs6u6mOfFAJ8oQBSeOdfMITTC5F0WEhEEzaXDXahVYcmI/ufQrj+w7etfUb1eGK7u3RBSl9A1ibzfC6u6aHSZFBYWIjIyErm5uUhJSUFRUREiIyPhcrmqumhEePbZZ1GjRg0AQL169TBhwgSEhYUhLS0NGzduRMOGDVGrVq2qLuZ5McAnChCRtUMBADnHC84tkMDprHyEVgtGcJip/J2JLpP1852QEjh9ogCLX92K/NMu5P1RiG8m7ajqotFl8sYbb+DYsWP4+uuv4Xa7MXnyZKSlpWHmzJlVXTQiv44ePYpu3bpB0zQsWLCgqotTIVU+0RURXRqNr6mDtNVHsX3Zr+h4nwUHtp1E7skCWNo3qOqiEXlZO8bAXfS/J0r71h6DUAQSusRWabno8vO0Yy75P9GVJCcnB126dMHx48cxe/Zs3HDDDVVdpAphgE8UIGKtNdG8bTT2p2bhv2M2AQAi64Th2lsaVXXRiLxK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oaGoXbs2jhw54lumKEqZF8aWLVtQWFgITdPKrY/3OP5lhIWFITw83Ldu4cKFmDBhAsLDw2E2m5GXlwd4+sYfPXoUAHzncaGWLl2KcePG4bHHHsNdd91V5jbe84+NjS233tHR0b5lISEhqFu37jnvjclk8r0+evQopJSYOXNmiW2ioqIAAE899RS++OILpKenY9q0abBYLBg4cCC6det2UedHRFWnVfdGaNW9ESCKXwvFjh2rc5B7+CwiotgX/2rQtWtXLF26FOPHj8ehQ4cQGhqK+fPno1WrVoGuGtE5dF3H999/j8LCQkyaNAnDhw/Hp59+iueffz7QVatQ9b8FCaDk5GS43W4sXboUbdu29S1v27YtMjIycPjwYV/Ab9KkCYQQJbq77N+/H0eOHEF8fPx5y+rduzdatmyJMWPGlJilx1+TJk0AT79Frz179uDEiRO+MiZPnox27dph6tSp+Pzzz/Hwww/7to2JiYHZbMbatWt9y6SUFU7xuXLlSowePRoPPvggevfuXe52CQkJAFBiPv2zZ8/C7XajcePGUBSlRL1zcnJw8OBB335liY+Ph8vlwgsvvIAxY8b4/nvjjTcAAHXq1MGgQYMwdepUzJgxA5qm4X//+1+5xyOiwFv7fRbSP9qGvOMFyD9VhKP78iBEccs+XR3cbjc2bNiACRMmYPz48di8eTMsFgvuv//+QFeNqIQff/wRCQkJWLduHYKDg30zK14J2IJfAe/gWbfbjTZt2viWt23bFlOnTgUAX4t7vXr1cNttt+Gbb75BYWEhoqOj8f333yMsLAx33nnnecsym8147bXXMHjwYIwYMQLjxo07J/w2bNgQXbp0wdSpU3HmzBnUq1cP3333HerWrYvbbrsNABAREeEbH+B2u7Fy5Urf/iEhIejVqxdmzJgBl8uFlJQU/P777+XOa79lyxaMGjUKDRo0gMViwddff+1b16NHjxJdexISEtCpUydMnz4dx44dQ3R0NNLT09G8eXMMGjQId955J2bPng23242YmBjMmTMHNWrUKPcbAQDo1asX5s2bh6FDh+Lee+9FQUEBFi9ejOeeew4JCQmYNGkS8vLy0KlTJyiKgmPHjiExMfG87zURBYbuljh9rAB7Nx3F3k1HfctbdIvzzahDxvf555/jueeew3PPPedbNnbs2BLfThNVB5mZmdi7dy9uuukm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6IDdu3dj586dDPdEREREVxjOolMBs9mMsLAw33+l+963adMGN954I6KiohAaGor09HS0bNkSALBz5060bdsWiqJg+fLlAID09HQkJycjKCgIO3bsQOvWrRESEoKlS5eeU/a8efNQv359DB48GE2bNsX111+P0aNHIyIiAunp6QgNDcWgQYMQGxuLtm3bonfv3ti4cSNycnJ8x+jSpQtSU1MRExODgoICrFy5EqmpqcjLy0NWVhY6duyI06dPY82aNQgODoaiKJg7dy5+/vlnKIqCrl27Vvp7TERERESXF1vwK2Cz2fDKK6+Uu96//3pBQQHy8vKwd+9ezJgxw7e8RYsWsFgscLvdOHbsGIQQJdbbbLYyW8kPHz6M6OhoX7/50uvq1auH4OBg37LY2FjA04e+UaNG59TvyJEjAIDMzMwSNwHXXnsthBBo2LAhXn75ZcyePRsff/wxzp49i8TERLz99tuoVavWBb5jRERERBRoDPiXSUhICKKjoxEVFYUxY8aUuU2TJk0QFBSEt956C4pS8ZcnCQkJWLVqFU6cOIHatWsDAPLz8xEaGor4+HisX78ehw8fRv369QEAmzZtgslkQpMmTaDr+jnHi4uLQ1BQEDRNwz/+8Y8yy+zUqRM6deoEKSVWrVqFESNG4LfffkP37t0v4R0hIiIiokBgwL+M+vbtizFjxuCtt97Cddddh127duHAgQN48cUXERISgr59+2LEiBEYOXIkbrjhBuzZswdZWVkYOnToObPpPPDAA1i+fDkGDx6M7t2748CBA1iyZAnGjh2Le+65Bz/99BOGDh2Knj17Ijs7Gz/++CPuvPNOhIeH4+TJk+fUzWw244EHHsAXX3yB4OBgpKSkYMuWLQCAZ555BseOHcPw4cNx6623IikpCQ6HA0IIxMfHV9n7R0RERER/HgN+OWJiYnwt52WJjo5GREREiWU333wzLBYLvv76a7z//vuIjo5Gjx49fH3327dvjzfeeAPTpk3DhAkTUL9+fXTr1q3MefUbN26M8ePH47///S+++uorhIWF4e6770bjxo1hNpvxwQcf4D//+Q+mT5+OiIgIPPLII7j33nsBACaTCTExMQgLCytxzD59+qBWrVqYM2cO0tPTERcXh7/85S9QFAUhISFIS0vDDz/8gMOHD6NBgwb45z//CZvNdpneUSIiIiKqCiIrK0sGouD4t4r7hMtPUs+77eUg+q8DrtKnmdGVx/v7UdUu9++H9zzsI5td1uPSxdFe3QpU4udb1fh3vPowyjXAv1XVA/9WXT6cRYeIiIiIyEDYRYeoGtv07vEqKafVi3WqpBwyJl6n9Hjq81VSzuR146ukHDKmq+k6ZQs+EREREZGBMOATERERERkIAz4RERERkYEw4BMRERERGQgDPhERERGRgQR8Fh3v/PRERERERPTnsQWfiIiIiMhAAtaCzycREhERERFdfgHvokNEl8eZvHy8O+wjLJm3CqdPnUGHW9Lw8nvPITK6bqCrRgQA0N06bmz6lzLXjZn8Ejp0aVPldaKqd8B+AlvSs5GzMxc9BreEffkBZK07gg4PW9GkVb1AV4+uciWuz+dbYN74Ledsc+8baQgJswSkfheKAZ/IAKSUeLb3K1i7fDOaXaMitGYIFv6wAoUFRfjXN6MCXT2iYkIgpbVaYtHaFZvhdrnRIIbf6l4tFn1qR35uIQBgww97sGfjUQCA7pIBrhlRyeuzMN+FgjMu1GoQirB6wb5tFJMIYA0vDAM+kQEIIfDPt5/GygVr8cjA3gCAe9o9gQ0rMwJdNSIfRRH45Pu3fa+Xp6/BqsXrcWuvm2BtlhDQulHVaXZLQ+zZeBSHd59CQ1ttBNe0wLHiYKCrRQSUuj6LCnQAQPKNMUi+KQYm85UzdJUBn8ggtOZNoTVvijefn4DTuXnIcuxFh65tA10tojLpusTEkZ/BZDZhwLC/Bbo6VIVadW+EQ85cAIC1fRSkznBP1Yf/9VlU4AYA/P7dbqyeuQthdYORdk88Ets2CHAtz48Bn8hgvvtyHtyu4j9KUez2QNXU3P+lI3PzDvR+/A4kqI0CXR0ionNYgk0ICbOgXuMwhNUNxp5NR7H0MwfqxtVEnYY1A129Cl053zUQ0XnpusTind9ggeNrdOrWFt98/iN2bs8KdLWISig4W4iP3voCwaHBeOKFPoGuDhFRmWLUCDww9jp0H9gcHR+2ot29TaHrEgccJwNdtfNiwCcyiPdHfIon7x6CE8dyERQcBJenFV+I6j8YiK4u0z76Dgf+yMHDT/VCVMP6ga4OEVGZ/th6HLNGrkPOrlNwFeo46CwO9jUjgs+7b6Cxiw6RARQVurBn5x9YvWQD7rimr2/5jT2uQ4LWOKB1I/J34lgu/jv+a0TUCfcNCCciqo5yD+cjN+cs5r690bcsskkYGrWs/tNPM+ATGYAlyIxxU0Zg6c+rsX7lFpw8fgqt2zXDHX/twhZ8qlayHPtw36O3o2XbFIRHhAW6OhQg8amRqBNbA4pZILJJOFreGofa0aGBrhYR4Hd9Nu8Si8Yt6mL3+iM4fawA9RqFwdYpmtNkElHVEULgxh7X4cYe1wW6KkTlan1dM7S+rlmgq0EBpl4f5fs5KqkWopJqBbQ+RP78r886sTVRJ7Z6D6gtC/vgExEREREZCAM+EREREZGBMOATERERERkIAz4RERERkYEw4BMRERERGQgDPhERERGRgTDgExEREREZCOfBJ6rGWr1YJ9BVuCy0V7cGugpUiYxyndKlm7xufKCrcFnwb5WxGeU6vRBswSciIiIiMhCRlZUlA10JIiIiIiK6PNiCT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgDPhERERERAbCgE9EREREZCAM+EREREREBsKAT0RERERkIAz4REREREQGwoBPRERERGQgQkoZ6DoQEREREdFlwhZ8IiIiIiIDYcAnIiIiIjIQBnwiIiIiIgNhwCciIiIiMhAGfCIiIiIiA2HAJyIiIiIyEAZ8IiIiIiIDYcAnIiIiIjIQBnwiIiIiIgNhwCciIiIiMhAGfCIiIiIiA2HAJyIiIiIyEAZ8IiIiIiIDYcAnIiIiIjIQBnwiIiIiIgNhwCciIiIiMhAGfCIiIiIiA2HAJyIiIiIyEAZ8IiIiIiIDYcAnIiIiIjIQBnwiIiIiIgNhwCciIiIiMhAGfCIiIiIiA2HAJyIiIiIyEAZ8IiIiIiIDYcAnIiIiIjIQBnwiIiIiIgNhwCciIiIiMhAG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whnwO3ToQJMmTapss0mTJvTu3ZvVq1czceJEJkyYUG56zJIlS0hMTKRbt25wxhlKTk2pXLJkCR4eHkRFRbFz504Ali5dyrXXXuuc/nN6CuHp66+Sk5OxWq1cc801zJs3j8LCQlauXInVaiU9PZ309HQcDgc7d+4kNzf3ki41bGQK+CJyydx3331069aNVatWcfjwYa6//nratGlT7g/dTTfdRLt27cjOzqZ58+bOP5StW7d2frC3atWK4OBg53PuueceIiMjnaeMz3THHXc4jz9y5EgWL15MWVkZXbt2Ze3atURERADg7+9PdHQ0oaGh5f6AdOrUibi4ONavX+8czXd3d8fX15enn36ayMjICq/Tzc2NUaNGsXHjRrZs2YLFYqFfv37ExsZWeGz9+vX54IMPWLlyJTabjZYtWxIaGkp0dDT169dnz549dOrUiXbt2jnrSkpK4oMPPmDVqlV4eHiQlJREQEAAHTp0cF4bwKkRyNPTBQICAnjvvfdYtmwZ+fn53HnnncTFxV3w71LE6Gw2G4WFhfj7+5OUlERSUhJNmjRhyJAh5zyDdzF89tln/PTTT9x6661kZWWRn5/v3HfzzTfz1ltvsWjRIgoLC+nUqROcmqIXFBTknAZ5roUH/igyMpLIyEg6dOjA3/72N5YvX871119/zudt2bKFQYMGkZKSQlBQEBkZGX96pP2P1zBYLBbn6+DU557OOl44BXwRuaQCAgK4+eabz/qYxMTEckEVoEGDBs5pKPXr168wB72y5TQB5+gap0bPzmz79LSbnJwcli9fzs6dO+nbt2+FY0RHRxMdHV1um5eXl/P5VWnWrBnNmjU762M49eXij/WbTCZatWrlXP7yzNfLqZHD02caTvvj8qBNmzYt97PVaq30ZmAiUtFXX33FjBkz6NOnD61bt+bYsWPMnj2bkJAQ58BDbm4uy5YtIzY2lk8++QRfX18SExPJycmp8rju7u6UlZWxc+dOAgMD8ff3r/Rx27dvp1mzZvTs2ZNjx4455+5zaiT+7bff5u233+aaa65xruLVoUMHlixZQq9evQgJCWHZsmVcffXV53yt33zzDenp6fTu3ZuAgADmz59PaWlphTnv7du356WXXmLOnDnOKTpJSUlkZGTg6+vLPffcg4eHB1u3bmXXrl1wavW0d999l7Zt21K/fn1++OEHOnfufNZ6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dm5PTk5m48aN5ObmOgN+dHQ0JpOp3HSXffv2kZeXR0xMzDnb6tWrF82bN2fMmDFs2LCh0sdER0fDqZV7Ttu1axf5+fnONqZNm0abNm1ITU3lo48+4r777nM+NiIiAovFwurVq53bHA7HWZf4XLZsGaNHj+aee+6hV69eVT4uNjYWoNx6+sePH8dms1GvXj3MZnO5unNycsjOznY+rzIxMTGcOHGCQYMGMWbMGOe/ESNGABAQEMCAAQNITU1lxowZNGnShH/9619VHk9ERETkSqAR/LM4ffGszWZzTi3hVMBPTU0FcI64BwUF0bVrV7788ktKS0sJDw9n9uzZ+Pr6ctttt52zLYvFwquvvsrAgQMZOnQo48ePrxB+69Spw4033khqairHjh0jKCiIr776isDAQLp27QqAv7+/8/oAm83GsmXLnM+3Wq306NGDGTNmcOLECRISEli1alWV69qnpaUxcuRIQkNDcXd354svvnDu69KlC7Vq1XL+HBsbS/v27fn88885dOgQ4eHhzJs3j2bNmjFgwABuu+02vvnmG2w2GxEREXz77bd4e3tXeUYAoEePHsydO5fBgwdzxx13UFJSwsKFC/n73/9ObGws77zzDkVFRbRv3x6z2cyhQ4do0KDBOd9rERERESNTwD+LqKgoYmNjKSsro3nz5s7tjRs3pkGDBhQXF5dbZeapp54iODiYBQsWcPToURISEujXr59zmUp/f3/n9JLTLBYLERER+Pr64uPjw8iRIxk6dCiTJ09m2LBh1KpVi4iICEymk0s7DRw4kLCwMBYuXEhRURGJiYn069cPX19fAAYNGsRbb73FCy+8QExMDE2bNmXfvn1YLCd/1Q899BDe3t4sXLiQ7OxsunXrRklJCbVr167w+jMzMwkKCgKocCOs9u3blwv4AC+88AKffvop8+fP59ixYzRr1oxu3boB0K9fPwIDA5k/fz5HjhwhISGBRx991LlUqL+/f7kpPJwaoZ84cSJTpkxhypQpeHl5kZSU5Kw1KSmJmTNn8s9//hO73U7r1q15/PHH//TvWURERMRITJmZmS5ZwThm1Mm51+vfOFwt7f3luZNB8kq80ELEVU7/f751uFY3cqUmr2wCff6JVEmfVTWDPqsuHs3BFxERERExEAV8EREREREDUcAXERERETEQXWQrUgM5XHJlDJy6llvkvKif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" alt="Example of best-effort LLC alignment. Without the option" />
+<figcaption>Example best-effort LLC alignment</figcaption>
+</figure>
+
+You configure the `prefer-align-cpus-by-uncorecache` CPU Manager option by using the `PerformanceProfile` resource, which is the recommended approach. The option has the following behavior:
+
+- The CPU Manager still admits a guaranteed container that requests more CPUs than one LLC domain contains. The CPU Manager then uses the fewest LLC domains that can satisfy the request.
+
+- If the CPU Manager cannot align the CPUs to the preferred LLC domains and the node has enough unallocated CPUs, it still admits the container and allocates CPUs with the default packed behavior.
+
+> [!NOTE]
+> You must set `cpuManagerPolicy: static` to use `prefer-align-cpus-by-uncorecache`. The static policy still assigns exclusive CPUs to guaranteed containers that request an integer number of CPUs. The `prefer-align-cpus-by-uncorecache` option changes only which of those CPUs the CPU Manager selects.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You installed the OpenShift CLI (`oc`).
+
+- The target machine has a CPU architecture with a split LLC cache.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Label the target node that you want to configure by running the following command, where `<node_name>` is the name of your node. This example applies the `worker-cnf` label.
+
+    ``` terminal
+    $ oc label node <node_name> node-role.kubernetes.io/worker-cnf=""
+    ```
+
+2.  Optional: Create a `MachineConfigPool` resource containing the target nodes.
+
+    You can use an existing machine config pool that contains the target nodes, or create a new pool with the target nodes. This example demonstrates creating a new machine config pool named `worker-cnf`.
+
+    1.  Create a YAML file that defines the `MachineConfigPool` resource:
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example `mcp-worker-cnf.yaml` file
+
+        </div>
+
+        ``` yaml
+        apiVersion: machineconfiguration.openshift.io/v1
+        kind: MachineConfigPool
+        metadata:
+          name: worker-cnf
+          labels:
+            machineconfiguration.openshift.io/role: worker-cnf
+        spec:
+          machineConfigSelector:
+            matchExpressions:
+              - {
+                   key: machineconfiguration.openshift.io/role,
+                   operator: In,
+                   values: [worker, worker-cnf],
+                }
+          paused: false
+          nodeSelector:
+            matchLabels:
+              node-role.kubernetes.io/worker-cnf: ""
+        ```
+
+        </div>
+
+        where:
+
+        `metadata.name`
+        Specifies the name `worker-cnf` for the `MachineConfigPool` resource.
+
+        `metadata.labels`
+        Specifies the unique label `machineconfiguration.openshift.io/role: worker-cnf` for the machine config pool.
+
+        `nodeSelector.matchLabels`
+        Specifies the nodes that the pool includes. The pool includes nodes with the `node-role.kubernetes.io/worker-cnf: ""` label.
+
+    2.  Apply the `MachineConfigPool` resource by running the following command:
+
+        ``` terminal
+        $ oc apply -f mcp-worker-cnf.yaml
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        machineconfigpool.machineconfiguration.openshift.io/worker-cnf created
+        ```
+
+        </div>
+
+3.  Create an `openshift-llc-alignment` file in the `/etc/kubernetes/` directory to enable the feature.
+
+    1.  Create a YAML file that defines a `MachineConfig` resource to create the `openshift-llc-alignment` file:
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example `mc-enablement.yaml` file
+
+        </div>
+
+        ``` yaml
+        apiVersion: machineconfiguration.openshift.io/v1
+        kind: MachineConfig
+        metadata:
+          name: 99-worker-openshift-llc-alignment
+          labels:
+            machineconfiguration.openshift.io/role: worker-cnf
+            node-role.kubernetes.io/worker-cnf: ""
+        spec:
+          config:
+            ignition:
+              version: 3.2.0
+            storage:
+              files:
+                - path: /etc/kubernetes/openshift-llc-alignment
+                  mode: 0644
+                  overwrite: true
+                  contents:
+                    source: data:,
+        ```
+
+        </div>
+
+        where:
+
+        `metadata.labels`
+        Specifies nodes in the `worker-cnf` machine config pool with the `worker-cnf` label.
+
+        `spec.config.storage.files[0].path`
+        Specifies the path of the `openshift-llc-alignment` file, `/etc/kubernetes/openshift-llc-alignment`.
+
+        `spec.config.storage.files[0].contents.source`
+        Specifies an empty file. The contents do not matter. Creating the file in the `/etc/kubernetes/` directory enables the feature.
+
+        > [!NOTE]
+        > The node restarts after you apply the `MachineConfig` resource.
+
+    2.  Apply the `MachineConfig` resource by running the following command:
+
+        ``` terminal
+        $ oc apply -f mc-enablement.yaml
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        machineconfig.machineconfiguration.openshift.io/99-worker-openshift-llc-alignment created
+        ```
+
+        </div>
+
+4.  Create a `PerformanceProfile` resource with the `kubeletconfig.experimental` annotation to set `cpuManagerPolicyOptions: prefer-align-cpus-by-uncorecache`.
+
+    > [!NOTE]
+    > The recommended method for applying this configuration is through a `PerformanceProfile` resource. If the configuration is successfully applied through the `PerformanceProfile` resource, you can skip the next step and proceed directly to the verification steps.
+
+    1.  Create a YAML file that defines a `PerformanceProfile` resource:
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example `llc-aware-perfprof.yaml` file
+
+        </div>
+
+        ``` yaml
+        apiVersion: performance.openshift.io/v2
+        kind: PerformanceProfile
+        metadata:
+          name: llc-aware-perfprof
+          annotations:
+            kubeletconfig.experimental: "{\"cpuManagerPolicyOptions\": {\"prefer-align-cpus-by-uncorecache\": \"true\"}}"
+        spec:
+          globallyDisableIrqLoadBalancing: true
+          hugepages:
+            defaultHugepagesSize: 1G
+            pages:
+            - size: "1G"
+              count: 16
+          cpu:
+            isolated: 4-103
+            reserved: 0-3
+          nodeSelector:
+            node-role.kubernetes.io/worker-cnf: ""
+          machineConfigPoolSelector:
+            matchLabels:
+              machineconfiguration.openshift.io/role: worker-cnf
+          numa:
+            topologyPolicy: single-numa-node
+        ```
+
+        </div>
+
+        where:
+
+        `kubeletconfig.experimental`
+        Specifies additional kubelet parameters. These settings are applied on top of the `KubeletConfig` resource that the Node Tuning Operator generates.
+
+        `topologyPolicy`
+        Specifies the NUMA topology policy. Set this field to `single-numa-node`. The other parameters in this example, such as IRQ balancing, hugepages, and CPU isolation, must be adjusted for the requirements and topology of the cluster.
+
+        > [!NOTE]
+        > The node restarts after you apply the `PerformanceProfile` resource.
+
+    2.  Apply the `PerformanceProfile` resource by running the following command:
+
+        ``` terminal
+        $ oc apply -f llc-aware-perfprof.yaml
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        performanceprofile.performance.openshift.io/llc-aware-perfprof created
+        ```
+
+        </div>
+
+5.  Optional: If you cannot use a `PerformanceProfile` resource, create a `KubeletConfig` resource to configure the `prefer-align-cpus-by-uncorecache` option.
+
+    1.  Create a YAML file that defines a `KubeletConfig` resource:
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example `kc-llc-aware.yaml` file
+
+        </div>
+
+        ``` yaml
+        apiVersion: machineconfiguration.openshift.io/v1
+        kind: KubeletConfig
+        metadata:
+          name: llc-aware-kubeletconfig
+        spec:
+          machineConfigPoolSelector:
+            matchLabels:
+              machineconfiguration.openshift.io/role: worker-cnf
+          kubeletConfig:
+            cpuManagerPolicy: "static"
+            cpuManagerPolicyOptions:
+              prefer-align-cpus-by-uncorecache: "true"
+        # ...
+        ```
+
+        </div>
+
+        where:
+
+        `matchLabels`
+        Specifies the nodes in the `worker-cnf` machine config pool.
+
+        `cpuManagerPolicy`
+        Specifies the CPU Manager policy. Set this field to `static`.
+
+        `prefer-align-cpus-by-uncorecache`
+        Specifies best-effort LLC alignment. Set this field to `true`.
+
+        > [!NOTE]
+        > The node restarts after you apply the `KubeletConfig` resource.
+
+    2.  Apply the `KubeletConfig` resource by running the following command:
+
+        ``` terminal
+        $ oc apply -f kc-llc-aware.yaml
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        kubeletconfig.machineconfiguration.openshift.io/llc-aware-kubeletconfig created
+        ```
+
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Check that the enablement file was created on the target node by running the following command, where `<node_name>` is the name of your node:
+
+    ``` terminal
+    $ oc debug node/<node_name>
+    ```
+
+2.  Use the `stat` command to check for the `openshift-llc-alignment` file by running the following commands:
+
+    ``` terminal
+    sh-5.1# chroot /host
+    ```
+
+    ``` terminal
+    sh-5.1# stat /etc/kubernetes/openshift-llc-alignment
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+      File: /etc/kubernetes/openshift-llc-alignment
+      Size: 0           Blocks: 0          IO Block: 4096   regular empty file
+    ...
+    ```
+
+    </div>
+
+3.  Create a `Pod` resource to test the configuration.
+
+    1.  Create a YAML file that defines a `Pod` resource:
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example `pod-llc-aware.yaml` file
+
+        </div>
+
+        ``` yaml
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: llc-aware-pod
+        spec:
+          runtimeClassName: performance-llc-aware-perfprof
+          containers:
+          - name: centos-container
+            image: quay.io/centos/centos:stream9
+            command: ["/bin/bash", "-c", "sleep infinity"]
+            resources:
+              limits:
+                cpu: "4"
+                memory: "100Mi"
+              requests:
+                cpu: "4"
+                memory: "100Mi"
+        ```
+
+        </div>
+
+        where:
+
+        `runtimeClassName`
+        Specifies the runtime class that the pod uses.
+
+        `image`
+        Specifies the container image. This example uses a CentOS image to test the configuration.
+
+        `limits.cpu`
+        Specifies the number of CPU cores to use.
+
+        `requests.cpu`
+        Specifies the number of CPU cores to request.
+
+    2.  Apply the `Pod` resource by running the following command:
+
+        ``` terminal
+        $ oc apply -f pod-llc-aware.yaml
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        pod/llc-aware-pod created
+        ```
+
+        </div>
+
+4.  Enter the container from the command line to check the CPU assignment by running the following commands:
+
+    ``` terminal
+    $ oc exec -it llc-aware-pod --container centos-container -- /bin/bash
+    ```
+
+    ``` terminal
+    bash-5.1# cat /sys/fs/cgroup/cpuset.cpus
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    4,5,6,7
+    ```
+
+    </div>
+
+    The output shows the CPU cores assigned to the container.
+
+5.  Verify that the assigned cores share the same LLC by running the following command. This example uses `cpu4`, which checks the LLC affinity for the core with ID `4`.
+
+    ``` terminal
+    $ cat /sys/devices/system/cpu/cpu4/cache/index3/shared_cpu_list
+    ```
+
+    where:
+
+    `index3`
+    Specifies the LLC cache index.
+
+    `shared_cpu_list`
+    Specifies the cores that share the LLC with the specified core.
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    4-7
+    ```
+
+    </div>
+
+    In this example, the output shows that core `4` shares the LLC with cores `4` to `7`. Using this approach, you can verify that the CPU Manager is scheduling cores according to the LLC cache architecture.
+
+</div>
+
 # Protecting low latency workloads from exec operations
 
 ## How ExecCPUAffinity prevents latency spikes from exec operations
@@ -1197,11 +1815,8 @@ This ensures that your primary low-latency applications, such as Telco RAN DU or
 
 - **CPU Selection Logic**: The system automatically selects the first available CPU to host the executed process. It prioritizes a shared CPU if one is configured; otherwise, it uses the first exclusive CPU in the container’s set.
 
-  <div class="note">
-
-  If a Pod contains multiple containers, only the container requesting an integer number of CPUs uses `ExecCPUAffinity`. Any container with fractional CPU requests will follow the default behavior, allowing processes to run on any CPU within the container’s cgroup set.
-
-  </div>
+  > [!NOTE]
+  > If a Pod contains multiple containers, only the container requesting an integer number of CPUs uses `ExecCPUAffinity`. Any container with fractional CPU requests will follow the default behavior, allowing processes to run on any CPU within the container’s cgroup set.
 
 If you need the previous behavior where executed processes can run on any allocated core, you can disable the feature for all workloads by using that performance runtime class.
 
@@ -1213,11 +1828,8 @@ metadata:
     performance.openshift.io/exec-cpu-affinity: "disable"
 ```
 
-<div class="note">
-
-Use this annotation only as a temporary fallback and is expected to be removed in future releases.
-
-</div>
+> [!NOTE]
+> Use this annotation only as a temporary fallback and is expected to be removed in future releases.
 
 ## Isolate exec processes from latency-sensitive workloads
 
@@ -1225,7 +1837,25 @@ You can prevent `oc exec` and shell processes from interrupting latency-sensitiv
 
 The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` feature, which pins exec processes to a designated CPU so that your primary workload CPUs remain undisturbed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Apply a `PerformanceProfile` tailored to your workload tuning requirements, such as reserved CPU counts or real-time kernel settings. For detailed instructions on generating a profile, see *Creating a performance profile*.
 
@@ -1235,11 +1865,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
     $ oc create namespace performance-profile-testing
     ```
 
-    <div class="note">
-
-    You can create the workload in any namespace. This `performance-profile-testing` is used for testing purposes in this example.
-
-    </div>
+    > [!NOTE]
+    > You can create the workload in any namespace. This `performance-profile-testing` is used for testing purposes in this example.
 
 3.  Deploy a `Guaranteed` QoS pod that requests whole integer CPUs and uses the generated `RuntimeClass`.
 
@@ -1278,21 +1905,18 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
                 memory: "256Mi"
         ```
 
-        <div class="note">
-
-        The following requirements apply for CPU pinning:
-
-        - **Guaranteed QoS Class**: To trigger CPU pinning, the Pod must belong to the Guaranteed Quality of Service class. This requires that every container in the pod has both CPU and memory limits defined, and those limits must exactly equal their corresponding requests.
-
-        - **Integer CPUs**: The CPU request must be a whole integer.
-
-          - **SMT/Hyperthreading**: On systems where Simultaneous Multithreading (SMT) is enabled, the request should typically be a multiple of the threads per core, which is usually 2, to ensure exclusive core allocation.
-
-          - **Fractional Requests**: Pods with fractional CPU requests do not trigger the `ExecCPUAffinity` logic and follow the previous scheduling behavior.
-
-        - **Capacity**: Ensure your cluster has sufficient isolated CPU capacity available in the node’s allocated pool to satisfy the request.
-
-        </div>
+        > [!NOTE]
+        > The following requirements apply for CPU pinning:
+        >
+        > - **Guaranteed QoS Class**: To trigger CPU pinning, the Pod must belong to the Guaranteed Quality of Service class. This requires that every container in the pod has both CPU and memory limits defined, and those limits must exactly equal their corresponding requests.
+        >
+        > - **Integer CPUs**: The CPU request must be a whole integer.
+        >
+        >   - **SMT/Hyperthreading**: On systems where Simultaneous Multithreading (SMT) is enabled, the request should typically be a multiple of the threads per core, which is usually 2, to ensure exclusive core allocation.
+        >
+        >   - **Fractional Requests**: Pods with fractional CPU requests do not trigger the `ExecCPUAffinity` logic and follow the previous scheduling behavior.
+        >
+        > - **Capacity**: Ensure your cluster has sufficient isolated CPU capacity available in the node’s allocated pool to satisfy the request.
 
     3.  Apply the pod definition by running the following command:
 
@@ -1308,7 +1932,15 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
 
     Wait until the pod status shows `Running` before proceeding to the verification steps.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify `exec` process pinning as follows:
 
@@ -1318,11 +1950,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
         $ oc exec -n performance-profile-testing test -- cat /sys/fs/cgroup/cpuset.cpus
         ```
 
-        <div class="note">
-
-        In a single-container pod, the command defaults to that container. In a multi-container pod, you must specify the container name using the `-c <container_name>` flag to ensure you are checking the correct context.
-
-        </div>
+        > [!NOTE]
+        > In a single-container pod, the command defaults to that container. In a multi-container pod, you must specify the container name using the `-c <container_name>` flag to ensure you are checking the correct context.
 
         The following example shows the expected output:
 
@@ -1372,11 +2001,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
         $ oc exec -n performance-profile-testing test -- cat /sys/fs/cgroup/cpuset.cpus
         ```
 
-        <div class="note">
-
-        In a multi-container pod, you must specify the container name using the `-c <container_name>` flag.
-
-        </div>
+        > [!NOTE]
+        > In a multi-container pod, you must specify the container name using the `-c <container_name>` flag.
 
         The following example shows the expected output for example the specific cores exclusively assigned to this container by the CPU Manager:
 
@@ -1394,19 +2020,36 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
 
         In this example, while the container has access to CPUs 4-5, the `ExecCPUAffinity` logic has pinned the exec process specifically to CPU 4. This confirms the pinning logic is active and that your primary workload’s exclusive CPUs remain undisturbed.
 
+</div>
+
 ## Disable CPU isolation for executed processes
 
 If you have a high-performance workload that requires executed processes to use any available core rather than being pinned to the first core, you can opt out of the default behavior by following this procedure.
 
-<div class="note">
+> [!NOTE]
+> Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation triggers a MachineConfig rollout that reboots the affected nodes.
 
-Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation triggers a MachineConfig rollout that reboots the affected nodes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List existing profiles by running the following command:
 
@@ -1441,7 +2084,15 @@ Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation t
 
     All pools should show `UPDATED=True` and `UPDATING=False` before proceeding.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the annotation has been added by running the following command, replacing `<profile-name>` with the name of your PerformanceProfile:
 
@@ -1455,15 +2106,35 @@ Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation t
         performance.openshift.io/exec-cpu-affinity: "disable"
     ```
 
+</div>
+
 ## Troubleshoot ExecCPUAffinity configuration
 
 If a process initiated by using `oc exec` is not being pinned correctly despite the pod meeting the Guaranteed QoS and integer CPU requirements, use the following procedure to verify the configuration at the node level.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have the OpenShift CLI (`oc`) installed.
 
 - You have identified the node where the pod is running.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug session for the targeted node:
 
@@ -1491,11 +2162,8 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
     exec_cpu_affinity = "first"
     ```
 
-    <div class="note">
-
-    If `exec_cpu_affinity = "first"` is missing, ensure the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation. If you recently changed the annotation, verify that the MachineConfigPool (MCP) has finished updating.
-
-    </div>
+    > [!NOTE]
+    > If `exec_cpu_affinity = "first"` is missing, ensure the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation. If you recently changed the annotation, verify that the MachineConfigPool (MCP) has finished updating.
 
 4.  Verify the live CRI-O configuration to ensure the setting is loaded into memory:
 
@@ -1509,6 +2177,16 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
     exec_cpu_affinity = "first"
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - If both the runtime configuration file and live CRI-O configuration show `exec_cpu_affinity = "first"`, the ExecCPUAffinity feature is correctly configured. Processes initiated by `oc exec` on Guaranteed QoS pods with integer CPU requests are pinned to the first available core.
 
 - If `exec_cpu_affinity = "first"` is missing from either output, check that the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation and verify that the MachineConfigPool (MCP) has finished updating by running:
@@ -1519,18 +2197,28 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
 
   All pools should show `UPDATED=True` and `UPDATING=False`.
 
+</div>
+
 ## Troubleshooting ExecCPUAffinity configuration common issues and resolutions
 
 Troubleshoot `ExecCPUAffinity` configuration issues by identifying common symptoms and their resolutions. Use this information to ensure processes are correctly pinned to the intended CPUs and that the MachineConfigPool updates successfully.
 
 The following table describes common issues and resolutions for `ExecCPUAffinity` configuration:
 
-| Symptom                                                                   | Potential Cause                                                                                                                                                                       | Resolution                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Process runs on all CPUs in the container set.                            | The pod does not belong to the Guaranteed QoS class. For more information see [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#criteria). | Ensure the container has `limits` and `requests` defined for both CPU and memory, and that they are equal.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Process runs on all CPUs in the container set.                            | The container uses fractional CPU requests for example `500m`.                                                                                                                        | Update the pod specification to request a whole integer number of CPUs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| The `99-runtimes.conf` file does not exist or is not updated.             | The MachineConfigPool (MCP) is still updating or has failed.                                                                                                                          | Check the MCP status using `oc get mcp`. Changing the `ExecCPUAffinity` status triggers a node reboot; ensure the update has completed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| The `exec` process is pinned to an exclusive CPU instead of a shared CPU. | Shared CPUs are not defined in the `PerformanceProfile`.                                                                                                                              | When the `MixedCPUsAllocation` Technology Preview feature is enabled through the `TechPreviewNoUpgrade` feature set, the system’s CPU pinning logic for exec processes changes. If shared CPUs are defined in the PerformanceProfile under `spec.cpu.shared` and `workloadHints.mixedCpus` is set to `true`, the system prioritizes the first shared CPU. If no shared CPUs are defined, it defaults to the first exclusive (isolated) CPU. Enabling this feature set cannot be undone and is not recommended for production clusters. Additionally, the container must request shared CPUs by including `workload.openshift.io/enable-shared-cpus: "1"` in the resource limits. |
+| Symptom | Potential Cause | Resolution |
+|----|----|----|
+| Process runs on all CPUs in the container set. | The pod does not belong to the Guaranteed QoS class. For more information see [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#criteria). | Ensure the container has `limits` and `requests` defined for both CPU and memory, and that they are equal. |
+| Process runs on all CPUs in the container set. | The container uses fractional CPU requests for example `500m`. | Update the pod specification to request a whole integer number of CPUs. |
+| The `99-runtimes.conf` file does not exist or is not updated. | The MachineConfigPool (MCP) is still updating or has failed. | Check the MCP status using `oc get mcp`. Changing the `ExecCPUAffinity` status triggers a node reboot; ensure the update has completed. |
+| The `exec` process is pinned to an exclusive CPU instead of a shared CPU. | Shared CPUs are not defined in the `PerformanceProfile`. | When the `MixedCPUsAllocation` Technology Preview feature is enabled through the `TechPreviewNoUpgrade` feature set, the system’s CPU pinning logic for exec processes changes. If shared CPUs are defined in the PerformanceProfile under `spec.cpu.shared` and `workloadHints.mixedCpus` is set to `true`, the system prioritizes the first shared CPU. If no shared CPUs are defined, it defaults to the first exclusive (isolated) CPU. Enabling this feature set cannot be undone and is not recommended for production clusters. Additionally, the container must request shared CPUs by including `workload.openshift.io/enable-shared-cpus: "1"` in the resource limits. |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-tuning-low-latency-nodes-with-perf-profile)
 
@@ -1538,20 +2226,22 @@ The following table describes common issues and resolutions for `ExecCPUAffinity
 
 - [Managing device interrupt processing for guaranteed pod isolated CPUs](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#managing-device-interrupt-processing-for-guaranteed-pod-isolated-cpus_cnf-tuning-low-latency-nodes-with-perf-profile)
 
+</div>
+
 # CPUs for infra and application containers
 
 Generic housekeeping and workload tasks use CPUs in a way that might impact latency-sensitive processes. By default, the container runtime uses all online CPUs to run all containers together, which can result in context switches and spikes in latency.
 
 Partitioning the CPUs prevents noisy processes from interfering with latency-sensitive processes by separating them from each other. The following table describes how processes run on a CPU after you have tuned the node using the Node Tuning Operator:
 
-| Process type                      | Details                                                                             |
-|-----------------------------------|-------------------------------------------------------------------------------------|
-| `Burstable` and `BestEffort` pods | Runs on any CPU except where low latency workload is running                        |
-| Infrastructure pods               | Runs on any CPU except where low latency workload is running                        |
-| Interrupts                        | Redirects to reserved CPUs (optional in OpenShift Container Platform 4.7 and later) |
-| Kernel processes                  | Pins to reserved CPUs                                                               |
-| Latency-sensitive workload pods   | Pins to a specific set of exclusive CPUs from the isolated pool                     |
-| OS processes/systemd services     | Pins to reserved CPUs                                                               |
+| Process type | Details |
+|----|----|
+| `Burstable` and `BestEffort` pods | Runs on any CPU except where low latency workload is running |
+| Infrastructure pods | Runs on any CPU except where low latency workload is running |
+| Interrupts | Redirects to reserved CPUs (optional in OpenShift Container Platform 4.7 and later) |
+| Kernel processes | Pins to reserved CPUs |
+| Latency-sensitive workload pods | Pins to a specific set of exclusive CPUs from the isolated pool |
+| OS processes/systemd services | Pins to reserved CPUs |
 
 Process' CPU assignments
 
@@ -1573,22 +2263,27 @@ The decision regarding which specific CPUs should be used for reserved and isola
 
 To ensure that housekeeping tasks and workloads do not interfere with each other, specify two groups of CPUs in the `spec` section of the performance profile.
 
-<div class="important">
+> [!IMPORTANT]
+> The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
 
-The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
-
-</div>
-
-| Partition type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `reserved`     | Specifies the CPUs for cluster and operating system housekeeping duties. Kernel processes and operating system services are pinned to these CPUs. When workload partitioning is enabled, platform pods are also pinned to these CPUs. Threads in the `reserved` group are often busy. The kubelet does not place `Guaranteed` pods that request exclusive CPUs on these CPUs. Do not run latency-sensitive applications in the `reserved` group. |
-| `isolated`     | Specifies the CPUs for application container workloads. These CPUs have the lowest latency. Device interrupts can still be processed on this set unless you disable IRQ load balancing. The kubelet places `Guaranteed` pods that request exclusive CPUs on this set.                                                                                                                                                                            |
+| Partition type | Description |
+|----|----|
+| `reserved` | Specifies the CPUs for cluster and operating system housekeeping duties. Kernel processes and operating system services are pinned to these CPUs. When workload partitioning is enabled, platform pods are also pinned to these CPUs. Threads in the `reserved` group are often busy. The kubelet does not place `Guaranteed` pods that request exclusive CPUs on these CPUs. Do not run latency-sensitive applications in the `reserved` group. |
+| `isolated` | Specifies the CPUs for application container workloads. These CPUs have the lowest latency. Device interrupts can still be processed on this set unless you disable IRQ load balancing. The kubelet places `Guaranteed` pods that request exclusive CPUs on this set. |
 
 CPU partition types
 
 # Partition CPUs for infra and application containers
 
 By partitioning CPUs, you can prevent noisy processes from interfering with latency-sensitive processes by separating the processes from each other.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a performance profile appropriate for the environment’s hardware and topology. The following example adds the `reserved` and `isolated` parameters with the CPUs you want reserved and isolated for the infra and application containers:
 
@@ -1617,25 +2312,39 @@ By partitioning CPUs, you can prevent noisy processes from interfering with late
     `spec.nodeSelector`
     Specifies a node selector to apply the performance profile to specific nodes. Optional parameter.
 
+</div>
+
 # Configure Hyper-Threading for a cluster
 
 To configure Hyper-Threading for an OpenShift Container Platform cluster, set the CPU threads in the performance profile to the same cores that are configured for the reserved or isolated CPU pools.
 
-<div class="note">
+> [!NOTE]
+> If you configure a performance profile, and subsequently change the Hyper-Threading configuration for the host, ensure that you update the CPU `isolated` and `reserved` fields in the `PerformanceProfile` YAML to match the new configuration.
 
-If you configure a performance profile, and subsequently change the Hyper-Threading configuration for the host, ensure that you update the CPU `isolated` and `reserved` fields in the `PerformanceProfile` YAML to match the new configuration.
+> [!WARNING]
+> Disabling a previously enabled host Hyper-Threading configuration can cause the CPU core IDs listed in the `PerformanceProfile` YAML to be incorrect. This incorrect configuration can cause the node to become unavailable because the listed CPUs can no longer be found.
 
-</div>
+<div>
 
-<div class="warning">
+<div class="title">
 
-Disabling a previously enabled host Hyper-Threading configuration can cause the CPU core IDs listed in the `PerformanceProfile` YAML to be incorrect. This incorrect configuration can cause the node to become unavailable because the listed CPUs can no longer be found.
+Prerequisites
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ascertain which threads are running on what CPUs for the host you want to configure.
 
@@ -1645,9 +2354,11 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     $ lscpu --all --extended
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1663,21 +2374,27 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     7   0    0      3    3:3:3:0       yes    4800.0000 400.0000
     ```
 
+    </div>
+
     In this example, there are eight logical CPU cores running on four physical CPU cores. CPU0 and CPU4 are running on physical Core0, CPU1 and CPU5 are running on physical Core 1, and so on. Alternatively, to view the threads that are set for a particular physical CPU core (`cpu0` in the example below), open a shell prompt and run the following:
 
     ``` terminal
     $ cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     0-4
     ```
+
+    </div>
 
 2.  Apply the isolated and reserved CPUs in the `PerformanceProfile` YAML. For example, you can set logical cores CPU0 and CPU4 as `isolated`, and logical cores CPU1 to CPU3 and CPU5 to CPU7 as `reserved`. When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
 
@@ -1689,19 +2406,15 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
 
-    The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
+    > [!IMPORTANT]
+    > Hyper-Threading is enabled by default on most Intel processors. If you enable Hyper-Threading, all threads processed by a particular core must be isolated or processed on the same core.
+    >
+    > When Hyper-Threading is enabled, all guaranteed pods must use multiples of the simultaneous multi-threading (SMT) level to avoid a "noisy neighbor" situation that can cause the pod to fail. See [Static policy options](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options) for more information.
 
-    </div>
-
-    <div class="important">
-
-    Hyper-Threading is enabled by default on most Intel processors. If you enable Hyper-Threading, all threads processed by a particular core must be isolated or processed on the same core.
-
-    When Hyper-Threading is enabled, all guaranteed pods must use multiples of the simultaneous multi-threading (SMT) level to avoid a "noisy neighbor" situation that can cause the pod to fail. See [Static policy options](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options) for more information.
-
-    </div>
+</div>
 
 # Disable Hyper-Threading for low latency applications
 
@@ -1709,11 +2422,21 @@ When configuring clusters for low latency processing, consider whether you want 
 
 To disable Hyper-Threading, perform the following steps:
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Create a performance profile that is appropriate for your hardware and topology. The following example sets `nosmt` as an additional kernel argument:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example performance profile**
+  <div class="title">
+
+  Example performance profile
 
   </div>
 
@@ -1746,11 +2469,12 @@ To disable Hyper-Threading, perform the following steps:
       enabled: true
   ```
 
-  <div class="note">
-
-  When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
-
   </div>
+
+  > [!NOTE]
+  > When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
+
+</div>
 
 # Managing device interrupt processing for guaranteed pod isolated CPUs
 
@@ -1776,11 +2500,8 @@ The following are examples of drivers and hardware that Red Hat are aware lack s
 
 - The driver uses `managed_irqs`
 
-<div class="note">
-
-The reason they do not support IRQ affinity setting might be associated with factors such as the type of processor, the IRQ controller, or the circuitry connections in the motherboard.
-
-</div>
+> [!NOTE]
+> The reason they do not support IRQ affinity setting might be associated with factors such as the type of processor, the IRQ controller, or the circuitry connections in the motherboard.
 
 If the effective affinity of any IRQ is set to an isolated CPU, it might be a sign of some hardware or driver not supporting IRQ affinity setting. To find the effective affinity, log in to the host and run the following command:
 
@@ -1788,9 +2509,11 @@ If the effective affinity of any IRQ is set to an isolated CPU, it might be a si
 $ find /proc/irq -name effective_affinity -printf "%p: " -exec cat {} \;
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -1824,15 +2547,45 @@ $ find /proc/irq -name effective_affinity -printf "%p: " -exec cat {} \;
 /proc/irq/34/effective_affinity: 2
 ```
 
+</div>
+
 Some drivers use `managed_irqs`, whose affinity is managed internally by the kernel and userspace cannot change the affinity. In some cases, these IRQs might be assigned to isolated CPUs. For more information about `managed_irqs`, see "Affinity of managed interrupts cannot be changed even if they target isolated CPU".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Affinity of managed interrupts cannot be changed even if they target isolated CPU](https://access.redhat.com/solutions/4819541)
+
+</div>
 
 ## Configure node interrupt affinity
 
 Configure a cluster node for IRQ dynamic load balancing to control which cores can receive device interrupt requests (IRQ).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - For core isolation, all server hardware components must support IRQ affinity. To check if the hardware components of your server support IRQ affinity, view the hardware specifications of the server or contact your hardware provider.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform cluster as a user with cluster-admin privileges.
 
@@ -1854,11 +2607,10 @@ Configure a cluster node for IRQ dynamic load balancing to control which cores c
     ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > When you configure reserved and isolated CPUs, operating system processes, kernel processes, and systemd services run on reserved CPUs. Infrastructure pods run on any CPU except where the low latency workload is running. Low latency workload pods run on exclusive CPUs from the isolated pool. For more information, see "Partitioning CPUs for infra and application containers".
 
-    When you configure reserved and isolated CPUs, operating system processes, kernel processes, and systemd services run on reserved CPUs. Infrastructure pods run on any CPU except where the low latency workload is running. Low latency workload pods run on exclusive CPUs from the isolated pool. For more information, see "Partitioning CPUs for infra and application containers".
-
-    </div>
+</div>
 
 # Configuring memory page sizes
 
@@ -1868,9 +2620,14 @@ By configuring memory page sizes, system administrators can implement more effic
 
 Use the `kernelPageSize` specification in a performance profile to configure the kernel page size on a specific node. Specify larger kernel page sizes for memory-intensive, high-performance workloads.
 
-<div class="note">
+> [!NOTE]
+> For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for the `kernelPageSize` specification. For nodes with an AArch64 architecture, you can specify `4k` or `64k` for the `kernelPageSize` specification. You must disable the realtime kernel before you can use the `64k` option. The default value is `4k`.
 
-For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for the `kernelPageSize` specification. For nodes with an AArch64 architecture, you can specify `4k` or `64k` for the `kernelPageSize` specification. You must disable the realtime kernel before you can use the `64k` option. The default value is `4k`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1878,11 +2635,23 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
 
 - Install the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a performance profile to target nodes where you want to configure the kernel page size by creating a YAML file that defines the `PerformanceProfile` resource:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `pp-kernel-pages.yaml` file**
+    <div class="title">
+
+    Example `pp-kernel-pages.yaml` file
 
     </div>
 
@@ -1899,6 +2668,8 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
         nodeSelector:
             node-role.kubernetes.io/worker: ""
     ```
+
+    </div>
 
     where:
 
@@ -1917,15 +2688,27 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
     $ oc create -f pp-kernel-pages.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         performanceprofile.performance.openshift.io/example-performance-profile created
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Start a debug session on the node where you applied the performance profile by running the following command:
 
@@ -1941,13 +2724,19 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
     $ getconf PAGESIZE
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         65536
+
+    </div>
+
+</div>
 
 ## Configure huge pages
 
@@ -1955,11 +2744,21 @@ Because nodes must pre-allocate huge pages used in an OpenShift Container Platfo
 
 OpenShift Container Platform provides a method for creating and allocating huge pages. Node Tuning Operator provides an easier method for doing this using the performance profile.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - In the `hugepages.pages` section of the performance profile, specify multiple blocks of `size`, `count`, and, optionally, `node`:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example configuration**
+  <div class="title">
+
+  Example configuration
 
   </div>
 
@@ -1973,20 +2772,27 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   # ...
   ```
 
+  </div>
+
   where:
 
   `hugepages.pages.node`
   Specifies the `node` that is the NUMA node in which the huge pages are allocated. If you omit `node`, the pages are evenly spread across all NUMA nodes.
 
-  <div class="note">
-
-  Wait for the relevant machine config pool status that indicates the update is finished.
-
-  </div>
+  > [!NOTE]
+  > Wait for the relevant machine config pool status that indicates the update is finished.
 
   These are the only configuration steps you need to do to allocate huge pages.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify the configuration, see the `/proc/meminfo` file on the node:
 
@@ -1998,9 +2804,11 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   # grep -i huge /proc/meminfo
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2015,15 +2823,19 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   Hugetlb:            #### ##
   ```
 
+  </div>
+
 - Use `oc describe` to report the new size:
 
   ``` terminal
   $ oc describe node worker-0.ocp4poc.example.com | grep -i huge
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2033,11 +2845,23 @@ OpenShift Container Platform provides a method for creating and allocating huge 
    hugepages-###:  ###
   ```
 
+  </div>
+
+</div>
+
 ## Allocate multiple huge page sizes
 
 You can request huge pages with different sizes under the same container. By doing this task, you can define more complicated pods consisting of containers with different huge page size needs.
 
 The following example, shows you how to define sizes `1G` and `2M`. The Node Tuning Operator configures both sizes on the node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the `PerformanceProfile` object to define `1G` and `2M` sizes for the huge pages. The Node Tuning Operator configures both sizes on the node.
 
@@ -2059,6 +2883,8 @@ The following example, shows you how to define sizes `1G` and `2M`. The Node Tun
         size: 1G
   # ...
   ```
+
+</div>
 
 # Reducing NIC queues using the Node Tuning Operator
 
@@ -2082,11 +2908,27 @@ Unsupported network devices:
 
 - Intel DPDK virtual functions
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform cluster running the Node Tuning Operator as a user with `cluster-admin` privileges.
 
@@ -2114,13 +2956,10 @@ Unsupported network devices:
 
       - `deviceID`: The network device ID (model) represented as a 16-bit hexadecimal number with a `0x` prefix.
 
-        <div class="note">
-
-        When a `deviceID` is specified, the `vendorID` must also be defined. A device that matches all of the device identifiers specified in a device entry `interfaceName`, `vendorID`, or a pair of `vendorID` plus `deviceID` qualifies as a network device. This network device then has its net queues count set to the reserved CPU count.
-
-        When two or more devices are specified, the net queues count is set to any net device that matches one of them.
-
-        </div>
+        > [!NOTE]
+        > When a `deviceID` is specified, the `vendorID` must also be defined. A device that matches all of the device identifiers specified in a device entry `interfaceName`, `vendorID`, or a pair of `vendorID` plus `deviceID` qualifies as a network device. This network device then has its net queues count set to the reserved CPU count.
+        >
+        > When two or more devices are specified, the net queues count is set to any net device that matches one of them.
 
 5.  Set the queue count to the reserved CPU count for all devices by using this example performance profile:
 
@@ -2231,6 +3070,8 @@ Unsupported network devices:
     $ oc apply -f <your_profile_name>.yaml
     ```
 
+</div>
+
 ## Verifying the queue status
 
 To ensure that your performance profile changes are active, verify the queue status.
@@ -2261,11 +3102,8 @@ spec:
 
 The following command displays the status of the queues associated with a device:
 
-<div class="note">
-
-Run this command on the node where the performance profile was applied.
-
-</div>
+> [!NOTE]
+> Run this command on the node where the performance profile was applied.
 
 ``` terminal
 $ ethtool -l <device>
@@ -2277,9 +3115,11 @@ The following command verifies the queue status before the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2297,15 +3137,19 @@ Other:      0
 Combined:   4
 ```
 
+</div>
+
 The following command verifies the queue status after the profile is applied:
 
 ``` terminal
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2322,6 +3166,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies the combined channel that shows the total count of reserved CPUs for *all* supported devices is 2. This matches what is configured in the performance profile.
 
@@ -2349,11 +3195,8 @@ spec:
 
 The following command displays the status of the queues associated with a device:
 
-<div class="note">
-
-Run this command on the node where the performance profile was applied.
-
-</div>
+> [!NOTE]
+> Run this command on the node where the performance profile was applied.
 
 ``` terminal
 $ ethtool -l <device>
@@ -2365,9 +3208,11 @@ The following command verifies the queue status after the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2384,6 +3229,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies that the total count of reserved CPUs for all supported devices with `vendorID=0x1af4` is 2. For example, if there is another network device `ens2` with `vendorID=0x1af4` it will also have total net queues of 2. This matches what is configured in the performance profile.
 
@@ -2434,9 +3281,11 @@ The following command verifies the queue status after the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2453,6 +3302,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies that the total count of reserved CPUs for all supported devices with `vendorID=0x1af4` is set to 2.
 

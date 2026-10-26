@@ -1,10 +1,7 @@
 You can connect a virtual machine (VM) to an OVN-Kubernetes custom secondary overlay network. You can use this overlay network to connect VMs on different nodes, without configuring any additional physical networking infrastructure.
 
-<div class="note">
-
-An OVN-Kubernetes secondary network is compatible with the multi-network policy API which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. You cannot use pod or namespace selectors for virtualization workloads.
-
-</div>
+> [!NOTE]
+> An OVN-Kubernetes secondary network is compatible with the multi-network policy API which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. You cannot use pod or namespace selectors for virtualization workloads.
 
 A layer 2 topology connects workloads by a cluster-wide logical switch. The OVN-Kubernetes Container Network Interface (CNI) plugin uses the Geneve (Generic Network Virtualization Encapsulation) protocol to create an overlay network between nodes.
 
@@ -14,19 +11,34 @@ To configure an OVN-Kubernetes layer 2 secondary network and attach a VM to that
 
 2.  Attach the VM to the secondary network
 
-<div class="note">
+> [!NOTE]
+> Configuring IP address management (IPAM) by specifying the `spec.config.ipam.subnet` attribute in a network attachment definition for virtual machines is not supported.
 
-Configuring IP address management (IPAM) by specifying the `spec.config.ipam.subnet` attribute in a network attachment definition for virtual machines is not supported.
-
-</div>
-
-# Creating a NAD for layer 2 topology by using the CLI
+# Create a layer 2 NAD by using the CLI
 
 You can create a network attachment definition (NAD) which describes how to attach a pod to the layer 2 overlay network.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `NetworkAttachmentDefinition` object:
 
@@ -60,11 +72,8 @@ You can create a network attachment definition (NAD) which describes how to atta
 
     - `spec.config.netAttachDefName` defines the value of the `namespace` and `name` fields in the `metadata` stanza of the `NetworkAttachmentDefinition` object.
 
-      <div class="note">
-
-      The previous example configures a cluster-wide overlay without a subnet defined. This means that the logical switch implementing the network only provides layer 2 communication. You must configure an IP address when you create the virtual machine by either setting a static IP address or by deploying a DHCP server on the network for a dynamic IP address.
-
-      </div>
+      > [!NOTE]
+      > The previous example configures a cluster-wide overlay without a subnet defined. This means that the logical switch implementing the network only provides layer 2 communication. You must configure an IP address when you create the virtual machine by either setting a static IP address or by deploying a DHCP server on the network for a dynamic IP address.
 
 2.  Apply the manifest by running the following command:
 
@@ -72,11 +81,31 @@ You can create a network attachment definition (NAD) which describes how to atta
     $ oc apply -f <filename>.yaml
     ```
 
-# Creating a NAD for layer 2 topology by using the web console
+</div>
+
+# Create a layer 2 NAD by using the web console
 
 You can create a network attachment definition (NAD) that describes how to attach a pod to the layer 2 overlay network.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to **Networking** → **NetworkAttachmentDefinitions** in the web console.
 
@@ -88,13 +117,33 @@ You can create a network attachment definition (NAD) that describes how to attac
 
 5.  Click **Create**.
 
-# Attaching a virtual machine to an OVN-Kubernetes secondary network using the CLI
+</div>
+
+# Attach a VM to a secondary overlay network
 
 You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network by including the network details in the VM configuration.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to add the OVN-Kubernetes secondary network interface details, as in the following example:
 
@@ -139,6 +188,8 @@ You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network b
     ```
 
 3.  Optional: If you edited a running virtual machine, you must restart it for the changes to take effect.
+
+</div>
 
 # Additional resources
 

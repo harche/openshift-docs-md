@@ -8,17 +8,14 @@ To control traffic between workloads and improve network isolation, configure `N
 
 By default, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create `NetworkPolicy` objects in that project to indicate the allowed incoming connections. Project administrators can create and delete `NetworkPolicy` objects within their own project.
 
-<div class="important">
-
-From OpenShift Container Platform 4.22, OpenShift Container Platform now includes `NetworkPolicy` objects in some of its own namespaces by default. This inclusion improves overall security and better protects control plane components. Do not modify the `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default. To check the namespaces that include the objects by default, you can run the following command:
-
-``` terminal
-$ oc get networkpolicies --all-namespaces
-```
-
-The OpenShift Container Platform 4.22 release does not include these objects in all OpenShift Container Platform namespaces; later OpenShift Container Platform releases might include the objects in additional namespaces.
-
-</div>
+> [!IMPORTANT]
+> From OpenShift Container Platform 4.22, OpenShift Container Platform now includes `NetworkPolicy` objects in some of its own namespaces by default. This inclusion improves overall security and better protects control plane components. Do not modify the `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default. To check the namespaces that include the objects by default, you can run the following command:
+>
+> ``` terminal
+> $ oc get networkpolicies --all-namespaces
+> ```
+>
+> The OpenShift Container Platform 4.22 release does not include these objects in all OpenShift Container Platform namespaces; later OpenShift Container Platform releases might include the objects in additional namespaces.
 
 By default, all pods in a project are accessible from any network endpoint.
 
@@ -72,11 +69,8 @@ Traffic is controlled using targeted "allow" policies in the following namespace
 
   - Ingress is restricted to HTTP/HTTPS traffic and metrics.
 
-<div class="important">
-
-Do not run unmanaged or custom pods in these namespaces. Because these namespaces operate on a deny-by-default model, network traffic for any unmanaged containers running in these namespaces will be blocked.
-
-</div>
+> [!IMPORTANT]
+> Do not run unmanaged or custom pods in these namespaces. Because these namespaces operate on a deny-by-default model, network traffic for any unmanaged containers running in these namespaces will be blocked.
 
 # Optimizations for network policy with OVN-Kubernetes network plugin
 
@@ -182,9 +176,11 @@ In OVN-Kubernetes, the `NetworkPolicy` custom resource (CR) enforces strict isol
 
 To allow access to external IPs across namespaces, create a `NetworkPolicy` CR that explicitly permits ingress from the required namespaces and ensures traffic is allowed to the designated service ports. Without allowing traffic to the required ports, access might still be restricted.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -211,6 +207,8 @@ To allow access to external IPs across namespaces, create a `NetworkPolicy` CR t
     policyTypes:
     - Ingress
 ```
+
+</div>
 
 where:
 

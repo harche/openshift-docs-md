@@ -4,23 +4,17 @@ You might need to replace a healthy etcd member for planned hardware maintenance
 
 To replace a control plane node without disrupting etcd, remove a healthy member and add a replacement while the cluster remains operational. The procedure you follow depends on how your cluster was installed and whether it uses the Machine API and a control plane machine set.
 
-<div class="note">
-
-If the etcd member is unhealthy because the machine is not running, the node is not ready, or the etcd pod is crashlooping, see "Replacing an unhealthy etcd member".
-
-If you have lost the majority of your control plane hosts, see "Restoring to an earlier cluster state".
-
-</div>
+> [!NOTE]
+> If the etcd member is unhealthy because the machine is not running, the node is not ready, or the etcd pod is crashlooping, see "Replacing an unhealthy etcd member".
+>
+> If you have lost the majority of your control plane hosts, see "Restoring to an earlier cluster state".
 
 # Replacing a healthy etcd member
 
 To replace a healthy etcd member without disrupting cluster operations, choose the procedure that matches your control plane configuration. You can use a control plane machine set, the Machine API, or scale up and scale down control plane nodes.
 
-<div class="important">
-
-Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur. For more information, see "Backing up etcd data".
-
-</div>
+> [!IMPORTANT]
+> Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur. For more information, see "Backing up etcd data".
 
 Depending on your cluster configuration, use one of the following procedures:
 
@@ -36,9 +30,27 @@ For clusters that were installed by using the Assisted Installer, see "Replacing
 
 To choose the correct procedure for replacing a healthy etcd member, check whether your cluster uses the Assisted Installer, a control plane machine set, or the Machine API. Use the OpenShift CLI (`oc`) to identify your cluster configuration and follow the matching replacement procedure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in to `oc` as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check whether the cluster was installed by using the Assisted Installer by running the following command:
 
@@ -70,6 +82,8 @@ To choose the correct procedure for replacing a healthy etcd member, check wheth
 
     - If there are no `Machine` objects, follow the procedure in "Replacing a healthy etcd member by scaling up and scaling down".
 
+</div>
+
 # Replacing a healthy etcd member with a control plane machine set
 
 On clusters that use a control plane machine set, you can replace a healthy control plane machine by deleting the corresponding `Machine` object.
@@ -78,17 +92,32 @@ The control plane machine set creates a replacement machine, and the etcd Operat
 
 For more information about how quorum protection works during control plane machine deletion, see "Quorum protection with machine lifecycle hooks".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The cluster has a `ControlPlaneMachineSet` resource.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have taken an etcd backup. For more information, see "Backing up etcd data".
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
 
-  Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the control plane machines in your cluster by running the following command:
 
@@ -108,11 +137,8 @@ For more information about how quorum protection works during control plane mach
 
     Replace `<node_name>` with the name of the node that you are replacing.
 
-    <div class="important">
-
-    Delete only one control plane machine at a time. Deleting multiple control plane machines at the same time can cause etcd quorum loss.
-
-    </div>
+    > [!IMPORTANT]
+    > Delete only one control plane machine at a time. Deleting multiple control plane machines at the same time can cause etcd quorum loss.
 
 4.  Delete the control plane machine by running the following command:
 
@@ -122,17 +148,14 @@ For more information about how quorum protection works during control plane mach
 
     Replace `<control_plane_machine_name>` with the name of the control plane machine to delete.
 
-    <div class="note">
-
-    If you delete multiple control plane machines, the control plane machine set replaces them according to the configured update strategy:
-
-    - For clusters that use the default `RollingUpdate` update strategy, the Operator replaces one machine at a time until each machine is replaced.
-
-    - For clusters that are configured to use the `OnDelete` update strategy, the Operator creates all of the required replacement machines simultaneously.
-
-    Both strategies maintain etcd health during control plane machine replacement.
-
-    </div>
+    > [!NOTE]
+    > If you delete multiple control plane machines, the control plane machine set replaces them according to the configured update strategy:
+    >
+    > - For clusters that use the default `RollingUpdate` update strategy, the Operator replaces one machine at a time until each machine is replaced.
+    >
+    > - For clusters that are configured to use the `OnDelete` update strategy, the Operator creates all of the required replacement machines simultaneously.
+    >
+    > Both strategies maintain etcd health during control plane machine replacement.
 
 5.  Monitor the replacement by running the following commands:
 
@@ -150,11 +173,8 @@ For more information about how quorum protection works during control plane mach
         $ oc get clusteroperator etcd
         ```
 
-        <div class="note">
-
-        During the replacement `Progressing=True` is expected and transitions to `False` once the new member is fully reconciled.
-
-        </div>
+        > [!NOTE]
+        > During the replacement `Progressing=True` is expected and transitions to `False` once the new member is fully reconciled.
 
     3.  Verify that all control plane nodes are in the `Ready` state:
 
@@ -162,7 +182,15 @@ For more information about how quorum protection works during control plane mach
         $ oc get nodes -l node-role.kubernetes.io/control-plane
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify etcd health by running the following commands:
 
@@ -194,9 +222,19 @@ For more information about how quorum protection works during control plane mach
     $ oc get clusteroperators
     ```
 
+</div>
+
 # Replacing a healthy etcd member with the Machine API
 
 On clusters that access the Machine API but do not use a control plane machine set, you can replace a healthy control plane machine by deleting the corresponding `Machine` object. The Machine API provisions a replacement machine, and the etcd cluster Operator adds the new node as an etcd member.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The cluster has access to the Machine API.
 
@@ -206,11 +244,18 @@ On clusters that access the Machine API but do not use a control plane machine s
 
 - You have taken an etcd backup. For more information, see "Backing up etcd data".
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
 
-  Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the control plane machines in your cluster by running the following command:
 
@@ -238,11 +283,8 @@ On clusters that access the Machine API but do not use a control plane machine s
 
     Replace `<control_plane_machine_name>` with the name of the control plane machine to delete.
 
-    <div class="important">
-
-    Delete only one control plane machine at a time. Deleting multiple control plane machines at the same time can cause etcd quorum loss.
-
-    </div>
+    > [!IMPORTANT]
+    > Delete only one control plane machine at a time. Deleting multiple control plane machines at the same time can cause etcd quorum loss.
 
     A new machine is automatically provisioned after you delete the control plane machine.
 
@@ -262,7 +304,15 @@ On clusters that access the Machine API but do not use a control plane machine s
     $ oc get nodes -l node-role.kubernetes.io/control-plane
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify etcd health by running the following commands:
 
@@ -294,13 +344,20 @@ On clusters that access the Machine API but do not use a control plane machine s
     $ oc get clusteroperators
     ```
 
+</div>
+
 # Replacing a healthy etcd member by scaling up and scaling down
 
 On bare-metal clusters that do not use a control plane machine set, replace a healthy control plane node by temporarily scaling the control plane to four nodes, and then removing the node that you want to replace.
 
-<div class="important">
+> [!IMPORTANT]
+> Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
 
-Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -314,11 +371,18 @@ Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-met
 
 - You have created a single control plane node that you intend to add to your cluster as a postinstallation task.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
 
-  Take an etcd backup before you replace a healthy etcd member so that you can restore your cluster if any issues occur.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the new control plane node to your cluster by following the steps in "Adding a control plane node to your cluster".
 
@@ -370,11 +434,8 @@ Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-met
 
         Replace `<machine_name>` with the name of the machine that is associated with the node that you are replacing.
 
-        <div class="note">
-
-        After you remove the `BareMetalHost` and `Machine` objects, the machine controller automatically deletes the `Node` object.
-
-        </div>
+        > [!NOTE]
+        > After you remove the `BareMetalHost` and `Machine` objects, the machine controller automatically deletes the `Node` object.
 
 4.  Monitor the cluster until the control plane returns to three nodes and etcd is healthy by running the following commands:
 
@@ -386,7 +447,15 @@ Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-met
     $ oc get clusteroperator etcd
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify etcd health by running the following commands:
 
@@ -415,6 +484,8 @@ Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-met
     ``` terminal
     $ oc get clusteroperators
     ```
+
+</div>
 
 # Additional resources
 

@@ -30,15 +30,12 @@ A fundamental unit that describes the host for a node. A machine has a `provider
 Machine sets
 `MachineSet` resources are groups of compute machines. Compute machine sets are to compute machines as replica sets are to pods. If you need more compute machines or must scale them down, you change the `replicas` field on the `MachineSet` resource to meet your compute need.
 
-<div class="warning">
-
-Control plane machines cannot be managed by compute machine sets.
-
-Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
-
-For more information, see “Managing control plane machines".
-
-</div>
+> [!WARNING]
+> Control plane machines cannot be managed by compute machine sets.
+>
+> Control plane machine sets provide management capabilities for supported control plane machines that are similar to what compute machine sets provide for compute machines.
+>
+> For more information, see “Managing control plane machines".
 
 The following custom resources add more capabilities to your cluster:
 
@@ -61,7 +58,17 @@ The `MachineHealthCheck` resource detects when a machine is unhealthy, deletes i
 
 In OpenShift Container Platform version 3.11, you could not roll out a multi-zone architecture easily because the cluster did not manage machine provisioning. Beginning with OpenShift Container Platform version 4.1, this process is easier. Each compute machine set is scoped to a single zone, so the installation program sends out compute machine sets across availability zones on your behalf. And then because your compute is dynamic, and in the face of a zone failure, you always have a zone for when you must rebalance your machines. In global Azure regions that do not have multiple availability zones, you can use availability sets to ensure high availability. The autoscaler provides best-effort balancing over the life of a cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Machine phases and lifecycle](../machine_management/machine-phases-lifecycle.xml#machine-phases-lifecycle)
+
+</div>
 
 # Compute machine management
 
@@ -137,4 +144,14 @@ To [autoscale](../machine_management/applying-autoscaling.xml#applying-autoscali
 
 User-provisioned infrastructure is an environment where you can deploy infrastructure such as compute, network, and storage resources that host the OpenShift Container Platform. You can add compute machines to a cluster on user-provisioned infrastructure during or after the installation process.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding compute machines to clusters with user-provisioned infrastructure manually](../machine_management/user_infra/adding-compute-user-infra-general.xml#adding-compute-user-infra-general)
+
+</div>

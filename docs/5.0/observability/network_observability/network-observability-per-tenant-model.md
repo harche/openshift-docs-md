@@ -78,11 +78,29 @@ Enabling the `FlowCollectorSlice` feature in the `FlowCollector` resource allows
 
 Before project administrators can manage their own settings, a cluster administrator must enable the `FlowCollector` custom resource to watch for the `FlowCollectorSlice` custom resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Network Observability Operator is installed.
 
 - A `FlowCollector` custom resource exists in the cluster.
 
 - You have `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `FlowCollector` custom resource by running the following command:
 
@@ -117,19 +135,36 @@ Before project administrators can manage their own settings, a cluster administr
     `spec.processor.sliceConfig.namespacesAllowList`
     Specifies a list of namespaces for which flows are always collected, regardless of the presence of `FlowCollectorSlice` in those namespaces.
 
-    <div class="note">
-
-    The `namespacesAllowList` field supports regular expressions, such as `/openshift-.*/` to capture multiple namespaces, or strict equality, such as `netobserv`, to match a specific namespace.
-
-    </div>
+    > [!NOTE]
+    > The `namespacesAllowList` field supports regular expressions, such as `/openshift-.*/` to capture multiple namespaces, or strict equality, such as `netobserv`, to match a specific namespace.
 
 3.  Save the changes and exit the editor.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that only network flows from the `netobserv` namespace and namespaces starting with `openshift-` are displayed in the **Network Traffic** page of the web console.
+
+</div>
 
 ## Disable the Network Observability Operator FlowCollectorSlice
 
 Disable slice-based filtering in the Network Observability Operator to resume global flow collection while preserving existing `FlowCollectorSlice` resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `FlowCollector` resource by running the following command:
 
@@ -156,13 +191,33 @@ Disable slice-based filtering in the Network Observability Operator to resume gl
 
     Flow collection resumes for all traffic, and existing `FlowCollectorSlice` resources remain available for future use.
 
+</div>
+
 # Configure FlowCollectorSlice as a project administrator
 
 Project administrators can manage flow collection and data enrichment within their own namespaces by configuring a `FlowCollectorSlice` custom resource for decentralized network traffic analysis.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Network Observability Operator is installed.
 
 - You have `project-admin` permissions for the namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file named `flowCollectorSlice.yaml`:
 
@@ -186,125 +241,22 @@ Project administrators can manage flow collection and data enrichment within the
     $ oc apply -f flowCollectorSlice.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the OpenShift Container Platform console, navigate to **Observe** → **Network Traffic**.
 
 2.  Ensure flows to `192.168.50.0/24` subnet are observed with the `EXT:Database` label.
 
-# FlowCollectorSlice \[flows.netobserv.io/v1alpha1\]
-
-`FlowCollectorSlice` is the API allowing to decentralize some of the `FlowCollector` configuration per namespace tenant.
-
-Description
-FlowCollectorSlice is the API allowing to decentralize some of the FlowCollector configuration per namespace tenant.
-
-Type
-`object`
-
-| Property     | Type     | Description                                                                                                                                                                                                                                                                                            |
-|--------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and might reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string` | Kind is a string value representing the REST resource this object represents. Servers might infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | `object` | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                  |
-| `spec`       | `object` | FlowCollectorSliceSpec defines the desired state of FlowCollectorSlice                                                                                                                                                                                                                                 |
-
-## .metadata
-
-Description
-Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>
-
-Type
-`object`
-
-## .spec
-
-Description
-FlowCollectorSliceSpec defines the desired state of FlowCollectorSlice
-
-Type
-`object`
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>sampling</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p><code>sampling</code> is an optional sampling interval to apply to this slice. For example, a value of <code>50</code> means that 1 matching flow in 50 is sampled.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>subnetLabels</code></p></td>
-<td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p><code>subnetLabels</code> allows you to customize subnets and IPs labeling, such as to identify cluster external workloads or web services. External subnets must be labeled with the prefix <code>EXT:</code>, or not labeled at all, in order to work with default quick filters and some metrics examples provided.<br />
-</p>
-<p>Beware that the subnet labels configured in FlowCollectorSlice are not limited to the flows of the related namespace: any flow in the whole cluster can be labeled using this configuration. However, subnet labels defined in the cluster-scoped FlowCollector take precedence in case of conflicting rules.</p></td>
-</tr>
-</tbody>
-</table>
-
-## .spec.subnetLabels
-
-Description
-`subnetLabels` allows you to customize subnets and IPs labeling, such as to identify cluster external workloads or web services. External subnets must be labeled with the prefix `EXT:`, or not labeled at all, in order to work with default quick filters and some metrics examples provided.
-
-Beware that the subnet labels configured in FlowCollectorSlice are not limited to the flows of the related namespace: any flow in the whole cluster can be labeled using this configuration. However, subnet labels defined in the cluster-scoped FlowCollector take precedence in case of conflicting rules.
-
-Type
-`array`
-
-## .spec.subnetLabels\[\]
-
-Description
-SubnetLabel allows to label subnets and IPs, such as to identify cluster-external workloads or web services.
-
-Type
-`object`
-
-Required
-- `cidrs`
-
-- `name`
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>cidrs</code></p></td>
-<td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>List of CIDRs, such as <code>["1.2.3.4/32"]</code>.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>name</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Label name, used to flag matching flows. External subnets must be labeled with the prefix <code>EXT:</code>, or not labeled at all, in order to work with default quick filters and some metrics examples provided.<br />
-</p></td>
-</tr>
-</tbody>
-</table>
+</div>
 
 # Additional resources
 
-- [FlowCollector API reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
+- [FlowCollector API reference](../../observability/network_observability/network-observability-api-reference.xml#flowcollector-api_network_observability)

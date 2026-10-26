@@ -1,12 +1,9 @@
 To help avoid or recover from issues in a cluster that supports migrating resources to use a different authoritative API, you can learn how to recognize these issues. Generally, troubleshooting steps for problems with the Cluster API are similar to those steps for problems with the Machine API.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The Cluster CAPI Operator and its operands are provisioned in the `openshift-cluster-api` namespace, whereas the Machine API uses the `openshift-machine-api` namespace. When using `oc` commands that reference a namespace, be sure to reference the correct one.
 
@@ -31,11 +28,27 @@ Because of this behavior, the following unintended outcomes can occur on a clust
 Workaround
 You can ensure that `oc` commands act on the type of objects you intend by using the corresponding fully qualified name.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster using an account with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete a Machine API machine, use the fully qualified name `machine.machine.openshift.io` when running the `oc delete machine` command:
 
@@ -48,6 +61,8 @@ You can ensure that `oc` commands act on the type of objects you intend by using
   ``` terminal
   $ oc delete machine.cluster.x-k8s.io <machine_name>
   ```
+
+</div>
 
 # Duplicated machine set and machine resources
 
@@ -89,13 +104,10 @@ Although the resources have the same names as their counterparts in the other na
 Result
 Only one of each resource that seems to be a duplicate is active at a time. The inactive nonauthoritative resources do not impact functionality.
 
-<div class="important">
-
-Do not delete any nonauthoritative resource that does not use the current authoritative API unless you want to delete the corresponding resource that does use the current authoritative API.
-
-When you delete a nonauthoritative resource that does not use the current authoritative API, the synchronization controller deletes the corresponding resource that does use the current authoritative API. For more information, see "Unexpected resource deletion behavior".
-
-</div>
+> [!IMPORTANT]
+> Do not delete any nonauthoritative resource that does not use the current authoritative API unless you want to delete the corresponding resource that does use the current authoritative API.
+>
+> When you delete a nonauthoritative resource that does not use the current authoritative API, the synchronization controller deletes the corresponding resource that does use the current authoritative API. For more information, see "Unexpected resource deletion behavior".
 
 # Unexpected behavior when changing resource configurations
 
@@ -147,19 +159,16 @@ To help avoid or recover from issues when you migrate a resource to use a differ
 
 The values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in a Machine API compute machine set determine the authoritative API of the compute machines.
 
-|                                                       |              |              |              |              |
-|-------------------------------------------------------|--------------|--------------|--------------|--------------|
-| **`.spec.authoritativeAPI` value**                    | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
-| **`.spec.template.spec.authoritativeAPI` value**      | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
+|  |  |  |  |  |
+|----|----|----|----|----|
+| **`.spec.authoritativeAPI` value** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `MachineAPI` |
+| **`.spec.template.spec.authoritativeAPI` value** | `ClusterAPI` | `MachineAPI` | `MachineAPI` | `ClusterAPI` |
 | **`authoritativeAPI` value for new compute machines** | `ClusterAPI` | `ClusterAPI` | `MachineAPI` | `ClusterAPI` |
 
 Interaction of `authoritativeAPI` fields when creating compute machines
 
-<div class="note">
-
-When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
-
-</div>
+> [!NOTE]
+> When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine set is not authoritative and the `.spec.template.spec.authoritativeAPI` value is not used. As a result, the only combination that creates a compute machine with the Machine API as authoritative is where the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` values are `MachineAPI`.
 
 ## Incomplete synchronization of labels and annotations
 
@@ -184,11 +193,8 @@ The Machine API does not support all configuration options for the Cluster API. 
 
 Attempting to use unsupported configurations might cause a migration to fail or result in errors.
 
-<div class="note">
-
-This list might not be exhaustive.
-
-</div>
+> [!NOTE]
+> This list might not be exhaustive.
 
 ### General limitations
 

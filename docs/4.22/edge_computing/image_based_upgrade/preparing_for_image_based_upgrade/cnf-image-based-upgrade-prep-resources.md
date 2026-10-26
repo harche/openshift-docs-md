@@ -4,6 +4,14 @@ The Lifecycle Agent needs all your OADP resources, extra manifests, and custom c
 
 Create your OADP resources that are used to back up and restore your resources during the upgrade.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have generated a seed image from a compatible seed cluster.
 
 - You have created OADP backup and restore resources.
@@ -15,6 +23,16 @@ Create your OADP resources that are used to back up and restore your resources d
 - You have installed the OADP Operator, the `DataProtectionApplication` CR, and its secret on the target cluster.
 
 - You have created an S3-compatible storage solution and a ready-to-use bucket with proper credentials configured. For more information, see "About installing OADP".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the OADP `Backup` and `Restore` CRs for platform artifacts in the same namespace where the OADP Operator is installed, which is `openshift-adp`.
 
@@ -58,11 +76,8 @@ Create your OADP resources that are used to back up and restore your resources d
             acm-klusterlet
         ```
 
-        <div class="note">
-
-        If your `multiclusterHub` CR does not have `.spec.imagePullSecret` defined and the secret does not exist on the `open-cluster-management-agent` namespace in your hub cluster, remove `v1/secrets/open-cluster-management-agent/open-cluster-management-image-pull-credentials` from the `lca.openshift.io/apply-label` annotation.
-
-        </div>
+        > [!NOTE]
+        > If your `multiclusterHub` CR does not have `.spec.imagePullSecret` defined and the secret does not exist on the `open-cluster-management-agent` namespace in your hub cluster, remove `v1/secrets/open-cluster-management-agent/open-cluster-management-image-pull-credentials` from the `lca.openshift.io/apply-label` annotation.
 
     2.  If you created persistent volumes on your cluster through LVM Storage, add the following `PlatformBackupRestoreLvms.yaml` file for LVM Storage artifacts:
 
@@ -243,11 +258,8 @@ Create your OADP resources that are used to back up and restore your resources d
 
         - `restoreStatus.includedResources`: Required field for restoring logical volumes.
 
-        <div class="important">
-
-        The same version of the applications must function on both the current and the target release of OpenShift Container Platform.
-
-        </div>
+        > [!IMPORTANT]
+        > The same version of the applications must function on both the current and the target release of OpenShift Container Platform.
 
 3.  Create the `ConfigMap` object for your OADP CRs by running the following command:
 
@@ -263,25 +275,44 @@ Create your OADP resources that are used to back up and restore your resources d
       --type=merge -n openshift-lifecycle-agent
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring a shared container partition between ostree stateroots](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#cnf-image-based-upgrade-shared-container-partition_shared-container-partition)
 
 - [About installing OADP](../../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
+
+</div>
 
 # Creating ConfigMap objects of extra manifests for the image-based upgrade with Lifecycle Agent
 
 Create additional manifests that you want to apply to the target cluster.
 
-<div class="note">
+> [!NOTE]
+> If you add more than one extra manifest, and the manifests must be applied in a specific order, you must prefix the filenames of the manifests with numbers that represent the required order. For example, `00-namespace.yaml`, `01-sriov-extra-manifest.yaml`, and so on.
 
-If you add more than one extra manifest, and the manifests must be applied in a specific order, you must prefix the filenames of the manifests with numbers that represent the required order. For example, `00-namespace.yaml`, `01-sriov-extra-manifest.yaml`, and so on.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a YAML file that contains your extra manifests, such as SR-IOV.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example SR-IOV resources**
+    <div class="title">
+
+    Example SR-IOV resources
 
     </div>
 
@@ -319,6 +350,8 @@ If you add more than one extra manifest, and the manifests must be applied in a 
       trust: "off"
     ```
 
+    </div>
+
 2.  Create the `ConfigMap` object by running the following command:
 
     ``` terminal
@@ -333,9 +366,19 @@ If you add more than one extra manifest, and the manifests must be applied in a 
       --type=merge -n openshift-lifecycle-agent
     ```
 
+</div>
+
 # Creating ConfigMap objects of custom catalog sources for the image-based upgrade with Lifecycle Agent
 
 You can keep your custom catalog sources after the upgrade by generating a `ConfigMap` object for your catalog sources and adding them to the `spec.extraManifest` field in the `ImageBasedUpgrade` CR. For more information about catalog sources, see "Catalog source".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that contains the `CatalogSource` CR:
 
@@ -365,6 +408,18 @@ You can keep your custom catalog sources after the upgrade by generating a `Conf
       --type=merge -n openshift-lifecycle-agent
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Catalog source](../../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
 - [Performing an image-based upgrade for single-node OpenShift with Lifecycle Agent](../../../edge_computing/image_based_upgrade/cnf-image-based-upgrade-base.xml#cnf-image-based-upgrade)
+
+</div>

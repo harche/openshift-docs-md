@@ -48,6 +48,14 @@ As a cluster administrator, you can perform the following administrative tasks f
 
 For information about the cluster Operators that Red Hat provides, see "Cluster Operators reference".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Manage custom catalogs](../operators/admin/olm-managing-custom-catalogs.xml#olm-managing-custom-catalogs)
 
 - [Machine deletion lifecycle hook examples for Operator developers](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion-uses_deleting-machine)
@@ -75,3 +83,5 @@ For information about the cluster Operators that Red Hat provides, see "Cluster 
 - [Configure proxy support](../operators/admin/olm-configuring-proxy-support.xml#olm-configuring-proxy-support)
 
 - [What are Operators?](../operators/understanding/olm-what-operators-are.xml#olm-what-operators-are)
+
+</div>

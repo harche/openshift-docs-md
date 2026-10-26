@@ -12,13 +12,21 @@ Indicate to the Compliance Operator what type of scan this custom profile will g
 
 - Platform scan: Scans the OpenShift Container Platform configuration.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the following annotation on the `TailoredProfile` object:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `new-profile.yaml`**
+  <div class="title">
+
+  Example `new-profile.yaml`
 
   </div>
 
@@ -41,6 +49,8 @@ Indicate to the Compliance Operator what type of scan this custom profile will g
         rationale: This does not apply to the cluster
   ```
 
+  </div>
+
   where:
 
   `metadata.annotations.compliance.openshift.io/product-type`
@@ -55,11 +65,10 @@ Indicate to the Compliance Operator what type of scan this custom profile will g
   `spec.title`
   Specifies a title for the `TailoredProfile` object.
 
-  <div class="note">
+  > [!NOTE]
+  > Adding the `-node` suffix to the `name` field of the `TailoredProfile` object is similar to adding the `Node` product type annotation and generates an operating system scan.
 
-  Adding the `-node` suffix to the `name` field of the `TailoredProfile` object is similar to adding the `Node` product type annotation and generates an operating system scan.
-
-  </div>
+</div>
 
 # Use tailored profiles to extend existing ProfileBundles
 
@@ -68,6 +77,14 @@ Although the `TailoredProfile` CR enables the most common tailoring operations, 
 In addition, if your organization has been using OpenScap previously, you might have an existing XCCDF tailoring file and can reuse it.
 
 The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that you can point to a custom tailoring file. The value of the `TailoringConfigMap` attribute is a name of a config map, which must contain a key called `tailoring.xml` and the value of this key is the tailoring contents.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Browse the available rules for the Red Hat Enterprise Linux CoreOS (RHCOS) `ProfileBundle`:
 
@@ -85,9 +102,11 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
 
     1.  Choose which rules you want to add to the `nist-moderate-modified` tailored profile. This example extends the `rhcos4-moderate` profile by disabling two rules and changing one value. Use the `rationale` value to describe why these changes were made:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `new-profile-node.yaml`**
+        <div class="title">
+
+        Example `new-profile-node.yaml`
 
         </div>
 
@@ -111,23 +130,27 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
             value: permissive
         ```
 
-        | Attribute      | Description                                                                                                                                                                                                                                 |
-        |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-        | `extends`      | Name of the `Profile` object upon which this `TailoredProfile` is built.                                                                                                                                                                    |
-        | `title`        | Human-readable title of the `TailoredProfile`.                                                                                                                                                                                              |
-        | `disableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be disabled. The rationale value is human-readable text describing why the rule is disabled.                                                     |
-        | `manualRules`  | A list of name and rationale pairs. When a manual rule is added, the check result status will always be `manual` and remediation will not be generated. This attribute is automatic and by default has no values when set as a manual rule. |
-        | `enableRules`  | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be enabled. The rationale value is human-readable text describing why the rule is enabled.                                                       |
-        | `description`  | Human-readable text describing the `TailoredProfile`.                                                                                                                                                                                       |
-        | `setValues`    | A list of name, rationale, and value groupings. Each name refers to a name of the value set. The rationale is human-readable text describing the set. The value is the actual setting.                                                      |
+        </div>
+
+        | Attribute | Description |
+        |----|----|
+        | `extends` | Name of the `Profile` object upon which this `TailoredProfile` is built. |
+        | `title` | Human-readable title of the `TailoredProfile`. |
+        | `disableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be disabled. The rationale value is human-readable text describing why the rule is disabled. |
+        | `manualRules` | A list of name and rationale pairs. When a manual rule is added, the check result status will always be `manual` and remediation will not be generated. This attribute is automatic and by default has no values when set as a manual rule. |
+        | `enableRules` | A list of name and rationale pairs. Each name refers to a name of a rule object that is to be enabled. The rationale value is human-readable text describing why the rule is enabled. |
+        | `description` | Human-readable text describing the `TailoredProfile`. |
+        | `setValues` | A list of name, rationale, and value groupings. Each name refers to a name of the value set. The rationale is human-readable text describing the set. The value is the actual setting. |
 
         Attributes for spec variables
 
     2.  Add the `tailoredProfile.spec.manualRules` attribute:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `tailoredProfile.spec.manualRules.yaml`**
+        <div class="title">
+
+        Example `tailoredProfile.spec.manualRules.yaml`
 
         </div>
 
@@ -145,6 +168,8 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
               rationale: We use third party software that installs its own SCC with extra privileges
         ```
 
+        </div>
+
     3.  Create the `TailoredProfile` object:
 
         ``` terminal
@@ -153,9 +178,11 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
 
         - The `TailoredProfile` object is created in the default `openshift-compliance` namespace.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -163,11 +190,15 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
           tailoredprofile.compliance.openshift.io/nist-moderate-modified created
           ```
 
+          </div>
+
 4.  Define the `ScanSettingBinding` object to bind the new `nist-moderate-modified` tailored profile to the default `ScanSetting` object.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `new-scansettingbinding.yaml`**
+    <div class="title">
+
+    Example `new-scansettingbinding.yaml`
 
     </div>
 
@@ -189,18 +220,26 @@ The `ComplianceSuite` object has an optional `TailoringConfigMap` attribute that
       name: default
     ```
 
+    </div>
+
 5.  Create the `ScanSettingBinding` object:
 
     ``` terminal
     $ oc create -n openshift-compliance -f new-scansettingbinding.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     scansettingbinding.compliance.openshift.io/nist-moderate-modified created
     ```
+
+    </div>
+
+</div>

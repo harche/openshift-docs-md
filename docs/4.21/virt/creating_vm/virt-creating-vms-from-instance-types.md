@@ -18,13 +18,10 @@ These objects use the same `VirtualMachineInstancetypeSpec`.
 
 When you configure an instance type, you must define the `cpu` and `memory` attributes. Other attributes are optional.
 
-<div class="note">
-
-When you create a VM from an instance type, you cannot override any parameters defined in the instance type.
-
-Because instance types require defined CPU and memory attributes, OpenShift Virtualization always rejects additional requests for these resources when creating a VM from an instance type.
-
-</div>
+> [!NOTE]
+> When you create a VM from an instance type, you cannot override any parameters defined in the instance type.
+>
+> Because instance types require defined CPU and memory attributes, OpenShift Virtualization always rejects additional requests for these resources when creating a VM from an instance type.
 
 You can manually create an instance type manifest. For example:
 
@@ -58,15 +55,12 @@ Specifies the number of vCPUs to allocate to the guest. Required.
 `--memory <value>`
 Specifies an amount of memory to allocate to the guest. Required.
 
-<div class="tip">
-
-You can immediately create the object from the new manifest by running the following command:
-
-``` terminal
-$ virtctl create instancetype --cpu 2 --memory 256Mi | oc apply -f -
-```
-
-</div>
+> [!TIP]
+> You can immediately create the object from the new manifest by running the following command:
+>
+> ``` terminal
+> $ virtctl create instancetype --cpu 2 --memory 256Mi | oc apply -f -
+> ```
 
 ## Optional attributes
 
@@ -115,7 +109,7 @@ These instance type resources are named according to their series, version, and 
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: center;">Use case</th>
 <th style="text-align: center;">Series</th>
 <th style="text-align: center;">Characteristics</th>
@@ -124,7 +118,7 @@ These instance type resources are named according to their series, version, and 
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: center;"><p>Network</p></td>
 <td style="text-align: center;"><p>N</p></td>
 <td style="text-align: left;"><ul>
@@ -144,7 +138,7 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center;"><p>Overcommitted</p></td>
 <td style="text-align: center;"><p>O</p></td>
 <td style="text-align: left;"><ul>
@@ -162,7 +156,7 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: center;"><p>Compute Exclusive</p></td>
 <td style="text-align: center;"><p>CX</p></td>
 <td style="text-align: left;"><ul>
@@ -182,7 +176,7 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center;"><p>General Purpose</p></td>
 <td style="text-align: center;"><p>U</p></td>
 <td style="text-align: left;"><ul>
@@ -199,7 +193,7 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: center;"><p>Memory Intensive</p></td>
 <td style="text-align: center;"><p>M</p></td>
 <td style="text-align: left;"><ul>
@@ -217,7 +211,7 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center;"><p>Dedicated</p></td>
 <td style="text-align: center;"><p>D</p></td>
 <td style="text-align: left;"><ul>
@@ -238,8 +232,6 @@ These instance type resources are named according to their series, version, and 
 </tbody>
 </table>
 
-`common-instancetypes` series comparison
-
 # Specifying an instance type or preference
 
 You can specify an instance type, a preference, or both to define a set of workload sizing and runtime characteristics for reuse across multiple VMs.
@@ -248,7 +240,25 @@ You can specify an instance type, a preference, or both to define a set of workl
 
 You can specify instance types and preferences by using flags.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have an instance type, preference, or both on the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To specify an instance type when creating a VM, use the `--instancetype` flag. To specify a preference, use the `--preference` flag. The following example includes both flags:
 
@@ -262,6 +272,8 @@ You can specify instance types and preferences by using flags.
     $ virtctl create vm --instancetype virtualmachineinstancetype/<my_instancetype> --preference virtualmachinepreference/<my_preference>
     ```
 
+</div>
+
 ## Inferring an instance type or preference
 
 Inferring instance types, preferences, or both is enabled by default, and the `inferFromVolumeFailure` policy of the `inferFromVolume` attribute is set to `Ignore`. When inferring from the boot volume, errors are ignored, and the VM is created with the instance type and preference left unset.
@@ -270,9 +282,25 @@ However, when flags are applied, the `inferFromVolumeFailure` policy defaults to
 
 You can use the `--infer-instancetype` and `--infer-preference` flags to infer which instance type, preference, or both to use to define the workload sizing and runtime characteristics of a VM.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `virtctl` tool.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To explicitly infer instance types from the volume used to boot the VM, use the `--infer-instancetype` flag. To explicitly infer preferences, use the `--infer-preference` flag. The following command includes both flags:
 
@@ -290,6 +318,8 @@ You can use the `--infer-instancetype` and `--infer-preference` flags to infer w
     --infer-preference-from volume-b
   ```
 
+</div>
+
 ## Setting the inferFromVolume labels
 
 Use the following labels on your PVC, data source, or data volume to instruct the inference mechanism which instance type, preference, or both to use when trying to boot from a volume.
@@ -302,13 +332,27 @@ Use the following labels on your PVC, data source, or data volume to instruct th
 
 - A namespaced preference: `instancetype.kubevirt.io/default-preference-kind` label. Defaults to `VirtualMachineClusterPreference` label, if left empty.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have an instance type, preference, or both on the cluster.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To apply a label to a data source, use `oc label`. The following command applies a label that points to a cluster-wide instance type:
 
@@ -316,21 +360,28 @@ Use the following labels on your PVC, data source, or data volume to instruct th
   $ oc label DataSource foo instancetype.kubevirt.io/default-instancetype=<my_instancetype>
   ```
 
+</div>
+
 # Creating a VM from an instance type by using the web console
 
 You can create a virtual machine (VM) from an instance type by using the OpenShift Container Platform web console. You can also use the web console to create a VM by copying an existing snapshot or to clone a VM.
 
 You can create a VM from a list of available bootable volumes. You can add Linux- or Windows-based volumes to the list.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, navigate to **Virtualization** → **Catalog**.
 
     The **InstanceTypes** tab opens by default.
 
-    <div class="note">
-
-    When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
-
-    </div>
+    > [!NOTE]
+    > When configuring a downward-metrics device on an IBM Z® system that uses a VM preference, set the `spec.preference.name` value to `rhel.9.s390x` or another available preference with the format `*.s390x`.
 
 2.  Heterogeneous clusters only: To filter the bootable volumes using the options provided, click **Architecture**.
 
@@ -338,11 +389,8 @@ You can create a VM from a list of available bootable volumes. You can add Linux
 
     - Select a suitable bootable volume from the list. If the list is truncated, click the **Show all** button to display the entire list.
 
-      <div class="note">
-
-      The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
-
-      </div>
+      > [!NOTE]
+      > The bootable volume table lists only those volumes in the `openshift-virtualization-os-images` namespace that have the `instancetype.kubevirt.io/default-preference` label.
 
       - Optional: Click the star icon to designate a bootable volume as a favorite. Starred bootable volumes appear first in the volume list.
 
@@ -408,13 +456,19 @@ You can create a VM from a list of available bootable volumes. You can add Linux
 
 8.  Click **Create VirtualMachine**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 After the VM is created, you can monitor the status on the **VirtualMachine details** page.
+
+</div>
 
 # Change the instance type for a VM
 
@@ -430,7 +484,25 @@ You can change the instance type for an existing VM using either the OpenShift C
 
 You can change the instance type associated with a running virtual machine (VM) by using the web console. The change takes effect immediately.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created the VM by using an instance type.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **VirtualMachines**.
 
@@ -448,7 +520,15 @@ You can change the instance type associated with a running virtual machine (VM) 
 
 6.  Click **Save**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Click the **YAML** tab.
 
@@ -456,13 +536,33 @@ You can change the instance type associated with a running virtual machine (VM) 
 
 3.  Review the VM YAML to confirm that the instance type changed.
 
+</div>
+
 ## Changing the instance type of a VM by using the CLI
 
 To change the instance type of a VM, change the `name` field in the VM spec. This triggers the update logic, which ensures that a new, immutable controller revision snapshot is taken of the new resource configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You created the VM by using an instance type, or have administrator privileges for the VM that you want to modify.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop the VM.
 
@@ -471,6 +571,16 @@ To change the instance type of a VM, change the `name` field in the VM spec. Thi
     ``` terminal
     $ oc patch vm/<vm_name> --type merge -p '{"spec":{"instancetype":{"name": "<new_instancetype>"}}}'
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the controller revision reference in the updated VM `status` field. Run the following command and verify that the revision name is updated in the output:
 
@@ -507,6 +617,8 @@ To change the instance type of a VM, change the `name` field in the VM spec. Thi
   }
   ```
 
+</div>
+
 # Additional resources
 
-- [Configuring a downward metrics device](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-configuring-downward-metrics_virt-exposing-downward-metrics)
+- [Configure a downward metrics device](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-configuring-downward-metrics_virt-exposing-downward-metrics)

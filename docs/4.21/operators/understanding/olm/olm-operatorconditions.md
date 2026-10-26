@@ -4,11 +4,8 @@ Operator Lifecycle Manager (OLM) uses Operator conditions to communicate additio
 
 Operator Lifecycle Manager (OLM) infers Operator state from Kubernetes resources, but some conditions require explicit communication. You can use the `OperatorCondition` custom resource definition (CRD) to tell OLM about supported conditions that affect lifecycle management.
 
-<div class="note">
-
-By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
-
-</div>
+> [!NOTE]
+> By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
 
 # Supported conditions
 
@@ -22,15 +19,14 @@ The `Upgradeable` Operator condition prevents an existing cluster service versio
 
 - An Operator is performing a migration of custom resources (CRs) that must be completed before the Operator is ready to be upgraded.
 
-<div class="important">
+> [!IMPORTANT]
+> Setting the `Upgradeable` Operator condition to the `False` value does not avoid pod disruption. If you must ensure your pods are not disrupted, see "Using pod disruption budgets to specify the number of pods that must be up" and "Graceful termination" in the "Additional resources" section.
 
-Setting the `Upgradeable` Operator condition to the `False` value does not avoid pod disruption. If you must ensure your pods are not disrupted, see "Using pod disruption budgets to specify the number of pods that must be up" and "Graceful termination" in the "Additional resources" section.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example `Upgradeable` Operator condition**
+Example `Upgradeable` Operator condition
 
 </div>
 
@@ -48,6 +44,8 @@ spec:
     message: "The Operator is performing a migration."
     lastTransitionTime: "2020-08-24T23:15:55Z"
 ```
+
+</div>
 
 - The `type` field sets the name of the condition.
 

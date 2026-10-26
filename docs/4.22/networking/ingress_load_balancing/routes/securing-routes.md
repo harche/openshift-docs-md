@@ -8,19 +8,34 @@ The route specifies the TLS certificate and key that the Ingress Controller uses
 
 The procedure creates a `Route` resource with a custom certificate and edge TLS termination. The procedure assumes that the certificate/key pair are in the `tls.crt` and `tls.key` files in the current working directory. You may also specify a CA certificate if needed to complete the certificate chain. Substitute the actual path names for `tls.crt`, `tls.key`, and (optionally) `ca.crt`. Substitute the name of the service that you want to expose for `frontend`. Substitute the appropriate hostname for `www.example.com`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
 - You might have a separate CA certificate in a PEM-encoded file that completes the certificate chain.
 
 - You must have a service that you want to expose.
 
-<div class="note">
+</div>
 
-Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+> [!NOTE]
+> Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+>
+> ``` terminal
+> $ openssl rsa -in password_protected_tls.key -out tls.key
+> ```
 
-``` terminal
-$ openssl rsa -in password_protected_tls.key -out tls.key
-```
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -32,9 +47,11 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
 
   If you examine the resulting `Route` resource, the resource should have a configuration similar to the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **YAML Definition of the Secure Route**
+  <div class="title">
+
+  YAML Definition of the Secure Route
 
   </div>
 
@@ -65,13 +82,25 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
   # ...
   ```
 
+  </div>
+
   See `oc create route edge --help` for more options.
+
+</div>
 
 # Create a re-encrypt route with a custom certificate
 
 To secure traffic by using a custom certificate, configure a route with re-encrypt TLS termination by running the `oc create route` command. This configuration enables the Ingress Controller to decrypt traffic, and then re-encrypt traffic before forwarding the traffic to the destination pod.
 
 The procedure creates a `Route` resource with a custom certificate and reencrypt TLS termination. The procedure assumes that the certificate/key pair are in the `tls.crt` and `tls.key` files in the current working directory. You must also specify a destination CA certificate to enable the Ingress Controller to trust the service’s certificate. You may also specify a CA certificate if needed to complete the certificate chain. Substitute the actual path names for `tls.crt`, `tls.key`, `cacert.crt`, and (optionally) `ca.crt`. Substitute the name of the `Service` resource that you want to expose for `frontend`. Substitute the appropriate hostname for `www.example.com`.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
@@ -81,13 +110,20 @@ The procedure creates a `Route` resource with a custom certificate and reencrypt
 
 - You must have a service that you want to expose.
 
-<div class="note">
+</div>
 
-Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+> [!NOTE]
+> Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+>
+> ``` terminal
+> $ openssl rsa -in password_protected_tls.key -out tls.key
+> ```
 
-``` terminal
-$ openssl rsa -in password_protected_tls.key -out tls.key
-```
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -99,9 +135,11 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
 
   If you examine the resulting `Route` resource, the resource should have a configuration similar to the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **YAML Definition of the Secure Route**
+  <div class="title">
+
+  YAML Definition of the Secure Route
 
   </div>
 
@@ -136,15 +174,35 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
   # ...
   ```
 
+  </div>
+
   See `oc create route reencrypt --help` for more options.
+
+</div>
 
 # Create a passthrough route
 
 To send encrypted traffic directly to the destination without decryption at the router, configure a route with passthrough termination by running the `oc create route` command. This configuration requires no key or certificate on the route, as the destination pod handles TLS termination.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a service that you want to expose.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a `Route` resource:
 
@@ -154,9 +212,11 @@ To send encrypted traffic directly to the destination without decryption at the 
 
   If you examine the resulting `Route` resource, it should look similar to the following:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **A Secured Route Using Passthrough Termination**
+  <div class="title">
+
+  A Secured Route Using Passthrough Termination
 
   </div>
 
@@ -177,6 +237,8 @@ To send encrypted traffic directly to the destination without decryption at the 
       name: frontend
   ```
 
+  </div>
+
   where:
 
   `metadata.name`
@@ -190,23 +252,40 @@ To send encrypted traffic directly to the destination without decryption at the 
 
   The destination pod is responsible for serving certificates for the traffic at the endpoint. This is currently the only method that can support requiring client certificates, also known as two-way authentication.
 
+</div>
+
 # Create a route with externally managed certificates
 
 You can configure OpenShift Container Platform routes with third-party certificate management solutions by using the `.spec.tls.externalCertificate` field of the route API. You can reference externally managed TLS certificates via secrets, eliminating the need for manual certificate management.
 
 By using the externally managed certificate, you can reduce errors to ensure a smoother rollout of certificate updates and enable the OpenShift Container Platform router to serve renewed certificates promptly. You can use externally managed certificates with both edge routes and re-encrypt routes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a secret containing a valid certificate or key pair in PEM-encoded format of type `kubernetes.io/tls`, which includes both `tls.key` and `tls.crt` keys. Example command: `$ oc create secret tls myapp-tls --cert=server.crt --key=server.key`.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Note the following considerations for externally managed certificates:
+  >
+  > - When using `externalCertificate`, the router does not automatically pull a CA bundle from the secret. If your route requires a specific `tls.caCertificate` (for example, for client authentication or re-encryption), you must either provide it manually in the `Route` spec or bundle the full certificate chain directly into the `tls.crt` entry of the secret.
+  >
+  > - The Ingress Controller uses `SubjectAccessReview` to load external certificates. This means the ability of the router to serve the certificate is tied to the route creator’s permissions on that secret. If the user’s permissions are revoked, the router will eventually lose its lease on that certificate, and the route status will reflect a validation failure.
 
-  Note the following considerations for externally managed certificates:
+</div>
 
-  - When using `externalCertificate`, the router does not automatically pull a CA bundle from the secret. If your route requires a specific `tls.caCertificate` (for example, for client authentication or re-encryption), you must either provide it manually in the `Route` spec or bundle the full certificate chain directly into the `tls.crt` entry of the secret.
+<div>
 
-  - The Ingress Controller uses `SubjectAccessReview` to load external certificates. This means the ability of the router to serve the certificate is tied to the route creator’s permissions on that secret. If the user’s permissions are revoked, the router will eventually lose its lease on that certificate, and the route status will reflect a validation failure.
+<div class="title">
 
-  </div>
+Procedure
+
+</div>
 
 1.  Create a `role` object in the same namespace as the secret to allow the router service account read access by running the following command:
 
@@ -236,9 +315,11 @@ By using the externally managed certificate, you can reduce errors to ensure a s
 
 3.  Create a YAML file that defines the `route` and specifies the secret containing your certificate using the following example.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition of the secure route**
+    <div class="title">
+
+    YAML definition of the secure route
 
     </div>
 
@@ -258,6 +339,8 @@ By using the externally managed certificate, you can reduce errors to ensure a s
     [...]
     ```
 
+    </div>
+
     Where:
 
     `<secret-name>`
@@ -276,21 +359,24 @@ By using the externally managed certificate, you can reduce errors to ensure a s
 
     If the secret exists and has a certificate/key pair, the router will serve the generated certificate if all prerequisites are met.
 
-    <div class="note">
+    > [!NOTE]
+    > If `.spec.tls.externalCertificate` is not provided, the router uses default generated certificates.
+    >
+    > You cannot provide the `.spec.tls.certificate` field or the `.spec.tls.key` field when using the `.spec.tls.externalCertificate` field.
 
-    If `.spec.tls.externalCertificate` is not provided, the router uses default generated certificates.
+</div>
 
-    You cannot provide the `.spec.tls.certificate` field or the `.spec.tls.key` field when using the `.spec.tls.externalCertificate` field.
+<div class="formalpara">
 
-    </div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Troubleshooting**
+Troubleshooting
 
 </div>
 
 If your route is not serving the externally managed certificate, check the route’s status conditions by running the following command:
+
+</div>
 
 ``` terminal
 $ oc describe route <route-name> -n <route-namespace>
@@ -316,27 +402,42 @@ Cluster administrators can configure HSTS to do the following:
 
 - Enforce HSTS per-domain, for a set of domains, or use namespace labels in combination with domains
 
-<div class="important">
-
-HSTS works only with secure routes, either edge-terminated or re-encrypt. The configuration is ineffective on HTTP or passthrough routes.
-
-</div>
+> [!IMPORTANT]
+> HSTS works only with secure routes, either edge-terminated or re-encrypt. The configuration is ineffective on HTTP or passthrough routes.
 
 ## Enable HTTP Strict Transport Security per-route
 
 To enforce secure HTTPS connections for specific applications, enable HTTP Strict Transport Security (HSTS) on a per-route basis. Applying the `haproxy.router.openshift.io/hsts_header` annotation to edge and re-encrypt routes ensures that browsers reject unencrypted traffic.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster with a user with administrator privileges for the project.
 
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To enable HSTS on a route, add the `haproxy.router.openshift.io/hsts_header` value to the edge-terminated or re-encrypt route. You can use the `oc annotate` tool to do this by running the following command. To properly run the command, ensure that the semicolon (`;`) in the `haproxy.router.openshift.io/hsts_header` route annotation is also surrounded by double quotation marks (`""`).
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `annotate` command that sets the maximum age to `31536000` ms (approximately 8.5 hours)**
+  <div class="title">
+
+  Example `annotate` command that sets the maximum age to `31536000` ms (approximately 8.5 hours)
 
   </div>
 
@@ -345,9 +446,13 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   includeSubDomains;preload"
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example route configured with an annotation**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example route configured with an annotation
 
   </div>
 
@@ -367,6 +472,8 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   # ...
   ```
 
+  </div>
+
   where:
 
   `max-age`
@@ -378,15 +485,33 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   `preload`
   Specifies that the site is included in the HSTS preload list when `max-age` is greater than `0`. For example, sites such as Google can construct a list of sites that have `preload` set. Browsers can then use these lists to determine which sites they can communicate with over HTTPS, even before they have interacted with the site. Without `preload` set, browsers must have interacted with the site over HTTPS, at least once, to get the header. Optional parameter.
 
+</div>
+
 ## Disable HTTP Strict Transport Security per-route
 
 To allow unencrypted connections or troubleshoot access issues, disable HTTP Strict Transport Security (HSTS) for a specific route. Setting the `max-age` route annotation to `0` instructs browsers to stop enforcing HTTPS requirements on the route host.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster with a user with administrator privileges for the project.
 
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To disable HSTS, enter the following to set the `max-age` value in the route annotation to `0`:
 
@@ -394,19 +519,16 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc annotate route <route_name> -n <namespace> --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=0"
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to create the config map for disabling HSTS per-route:
-
-  ``` yaml
-  kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    annotations:
-      haproxy.router.openshift.io/hsts_header: max-age=0
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to create the config map for disabling HSTS per-route:
+  >
+  > ``` yaml
+  > kind: Route
+  > apiVersion: route.openshift.io/v1
+  > metadata:
+  >   annotations:
+  >     haproxy.router.openshift.io/hsts_header: max-age=0
+  > ```
 
 - To disable HSTS for every route in a namespace, enter the following command:
 
@@ -414,7 +536,15 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc annotate route --all -n <namespace> --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=0"
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To query the annotation for all routes, enter the following command:
 
@@ -422,9 +552,11 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc get route  --all-namespaces -o go-template='{{range .items}}{{if .metadata.annotations}}{{$a := index .metadata.annotations "haproxy.router.openshift.io/hsts_header"}}{{$n := .metadata.name}}{{with $a}}Name: {{$n}} HSTS: {{$a}}{{"\n"}}{{else}}{{""}}{{end}}{{end}}{{end}}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -432,27 +564,30 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   Name: routename HSTS: max-age=0
   ```
 
+  </div>
+
+</div>
+
 ## Enforce HTTP Strict Transport Security per-domain
 
 To enforce HTTP Strict Transport Security (HSTS) per-domain for secure routes, add a `requiredHSTSPolicies` record to the Ingress spec to capture the configuration of the HSTS policy.
 
 If you configure a `requiredHSTSPolicy` to enforce HSTS, then any newly created route must be configured with a compliant HSTS policy annotation.
 
-<div class="note">
+> [!NOTE]
+> To handle upgraded clusters with non-compliant HSTS routes, you can update the manifests at the source and apply the updates.
 
-To handle upgraded clusters with non-compliant HSTS routes, you can update the manifests at the source and apply the updates.
+> [!NOTE]
+> You cannot use `oc expose route` or `oc create route` commands to add a route in a domain that enforces HSTS, because the API for these commands does not accept annotations.
 
-</div>
+> [!IMPORTANT]
+> HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested for all routes globally.
 
-<div class="note">
+<div>
 
-You cannot use `oc expose route` or `oc create route` commands to add a route in a domain that enforces HSTS, because the API for these commands does not accept annotations.
+<div class="title">
 
-</div>
-
-<div class="important">
-
-HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested for all routes globally.
+Prerequisites
 
 </div>
 
@@ -460,15 +595,27 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
 
 - You installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Edit the Ingress configuration YAML by running the following command and updating fields as needed:
 
     ``` terminal
     $ oc edit ingresses.config.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example HSTS policy**
+    <div class="title">
+
+    Example HSTS policy
 
     </div>
 
@@ -500,6 +647,8 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
         preloadPolicy: NoOpinion
         includeSubDomainsPolicy: RequireNoIncludeSubDomains
     ```
+
+    </div>
 
     where:
 
@@ -551,13 +700,19 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
       $ oc annotate route --all -n my-namespace --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=31536000"
       ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 You can review the HSTS policy you configured. For example:
+
+</div>
 
 - To review the `maxAge` set for required HSTS policies, enter the following command:
 
@@ -571,12 +726,16 @@ You can review the HSTS policy you configured. For example:
   $ oc get route  --all-namespaces -o go-template='{{range .items}}{{if .metadata.annotations}}{{$a := index .metadata.annotations "haproxy.router.openshift.io/hsts_header"}}{{$n := .metadata.name}}{{with $a}}Name: {{$n}} HSTS: {{$a}}{{"\n"}}{{else}}{{""}}{{end}}{{end}}{{end}}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Name: <_routename_> HSTS: max-age=31536000;preload;includeSubDomains
   ```
+
+  </div>

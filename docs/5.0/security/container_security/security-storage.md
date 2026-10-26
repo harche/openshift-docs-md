@@ -46,6 +46,14 @@ Then, when the PV is claimed by the pod, the annotated GID is added to the suppl
 
 For block storage such as AWS Elastic Block Store (EBS), GCE Persistent Disks, and iSCSI, OpenShift Container Platform uses SELinux to secure mounted volumes for non-privileged pods, making each volume visible only to its associated container.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
@@ -57,3 +65,5 @@ For block storage such as AWS Elastic Block Store (EBS), GCE Persistent Disks, a
 - [Persistent storage using AWS Elastic Block Store](../../storage/persistent_storage/persistent-storage-aws.xml#persistent-storage-aws)
 
 - [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)
+
+</div>

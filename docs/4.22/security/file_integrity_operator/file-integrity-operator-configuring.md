@@ -4,6 +4,14 @@ You can configure the Custom File Integrity Operator to meet your cluster requir
 
 As with any Kubernetes custom resources (CRs), you can run `oc explain fileintegrity`, and then examine the individual attributes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - View the `FileIntegrity` spec attributes by running the following command:
 
   ``` terminal
@@ -16,21 +24,23 @@ As with any Kubernetes custom resources (CRs), you can run `oc explain fileinteg
   $ oc explain fileintegrity.spec.config
   ```
 
+</div>
+
 # Important attributes
 
 The following `spec` and `spec.config` attributes are important when configuring a `FileIntegrity` CR.
 
-| Attribute                  | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `spec.nodeSelector`        | Specifies a map of key-value pairs that labels for a node must match for a cluster to schedule Advanced Intrusion Detection Environment (AIDE) pods on that node. Typically, you can configure only a single key-value pair. For example, `node-role.kubernetes.io/worker: ""` schedules AIDE on all compute nodes, while `node.openshift.io/os_id: "rhel"` schedules AIDE on all RHEL nodes. |
-| `spec.debug`               | A boolean attribute. If set to `true`, the daemon running in the AIDE daemon set pods would output extra information.                                                                                                                                                                                                                                                                         |
-| `spec.tolerations`         | Specify tolerations to schedule on nodes with custom taints. When not specified, a default toleration is applied, which allows tolerations to run on control plane nodes.                                                                                                                                                                                                                     |
-| `spec.config.gracePeriod`  | The number of seconds to pause in between AIDE integrity checks. Frequent AIDE checks on a node can be resource intensive, so it can be useful to specify a longer interval. Defaults to `900`, or 15 minutes.                                                                                                                                                                                |
-| `maxBackups`               | The maximum number of AIDE database and log backups leftover from the `re-init` process to keep on a node. Older backups beyond this number are automatically pruned by the daemon.                                                                                                                                                                                                           |
-| `spec.config.name`         | Name of a configMap that contains custom AIDE configuration. If omitted, a default configuration is created.                                                                                                                                                                                                                                                                                  |
-| `spec.config.namespace`    | Namespace of a configMap that contains custom AIDE configuration. If unset, the FIO generates a default configuration suitable for RHCOS systems.                                                                                                                                                                                                                                             |
-| `spec.config.key`          | Key that contains actual AIDE configuration in a config map specified by `name` and `namespace`. The default value is `aide.conf`.                                                                                                                                                                                                                                                            |
-| `spec.config.initialDelay` | The number of seconds to wait before starting the first AIDE integrity check. Default is set to 0. This attribute is optional.                                                                                                                                                                                                                                                                |
+| Attribute | Description |
+|----|----|
+| `spec.nodeSelector` | Specifies a map of key-value pairs that labels for a node must match for a cluster to schedule Advanced Intrusion Detection Environment (AIDE) pods on that node. Typically, you can configure only a single key-value pair. For example, `node-role.kubernetes.io/worker: ""` schedules AIDE on all compute nodes, while `node.openshift.io/os_id: "rhel"` schedules AIDE on all RHEL nodes. |
+| `spec.debug` | A boolean attribute. If set to `true`, the daemon running in the AIDE daemon set pods would output extra information. |
+| `spec.tolerations` | Specify tolerations to schedule on nodes with custom taints. When not specified, a default toleration is applied, which allows tolerations to run on control plane nodes. |
+| `spec.config.gracePeriod` | The number of seconds to pause in between AIDE integrity checks. Frequent AIDE checks on a node can be resource intensive, so it can be useful to specify a longer interval. Defaults to `900`, or 15 minutes. |
+| `maxBackups` | The maximum number of AIDE database and log backups leftover from the `re-init` process to keep on a node. Older backups beyond this number are automatically pruned by the daemon. |
+| `spec.config.name` | Name of a configMap that contains custom AIDE configuration. If omitted, a default configuration is created. |
+| `spec.config.namespace` | Namespace of a configMap that contains custom AIDE configuration. If unset, the FIO generates a default configuration suitable for RHCOS systems. |
+| `spec.config.key` | Key that contains actual AIDE configuration in a config map specified by `name` and `namespace`. The default value is `aide.conf`. |
+| `spec.config.initialDelay` | The number of seconds to wait before starting the first AIDE integrity check. Default is set to 0. This attribute is optional. |
 
 Important `spec` and `spec.config` attributes
 
@@ -38,11 +48,21 @@ Important `spec` and `spec.config` attributes
 
 The default File Integrity Operator configuration is stored in a config map with the same name as the `FileIntegrity` CR.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To examine the default config, run:
 
   ``` terminal
   $ oc describe cm/worker-fileintegrity
   ```
+
+</div>
 
 # Understand the default File Integrity Operator configuration
 
@@ -89,17 +109,22 @@ The following directories are not covered:
 
 The Operator overwrites entries that configure internal AIDE behavior, such as `DBDIR`, `LOGDIR`, `database`, and `database_out`. It prepends `/hostroot/` to all watched paths. You can reuse existing AIDE configs that start from the root directory and are not tailored for containers.
 
-<div class="note">
-
-`/hostroot` is the directory where the pods running AIDE mount the host file system. Changing the configuration triggers a reinitializing of the database.
-
-</div>
+> [!NOTE]
+> `/hostroot` is the directory where the pods running AIDE mount the host file system. Changing the configuration triggers a reinitializing of the database.
 
 # Define a custom File Integrity Operator configuration
 
 Define a custom configuration for a scanner that runs on the control plane nodes based on the default configuration provided for the `worker-fileintegrity` CR.
 
 This workflow might be useful if you are planning to deploy a custom software running as a daemon set and storing its data under `/opt/mydaemon` on the control plane nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Make a copy of the default configuration.
 
@@ -121,9 +146,11 @@ This workflow might be useful if you are planning to deploy a custom software ru
     $ vim aide.conf
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -135,6 +162,8 @@ This workflow might be useful if you are planning to deploy a custom software ru
     !/hostroot/etc/selinux/targeted
     !/hostroot/etc/openvswitch/conf.db
     ```
+
+    </div>
 
     Exclude a path specific to control plane nodes:
 
@@ -176,9 +205,11 @@ This workflow might be useful if you are planning to deploy a custom software ru
     $ oc describe cm/master-fileintegrity | grep /opt/mydaemon
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -186,8 +217,22 @@ This workflow might be useful if you are planning to deploy a custom software ru
     !/hostroot/opt/mydaemon
     ```
 
+    </div>
+
+</div>
+
 # Change the custom File Integrity configuration
 
 To change the File Integrity configuration, never change the generated config map. Instead, change the config map that is linked to the `FileIntegrity` object through the `spec.name`, `namespace`, and `key` attributes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Update the config map referenced by the `spec.config` attributes of the `FileIntegrity` object.
+
+</div>

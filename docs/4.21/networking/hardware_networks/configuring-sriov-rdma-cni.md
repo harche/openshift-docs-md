@@ -4,9 +4,14 @@ Remote Direct Memory Access (RDMA) allows direct memory access between two syste
 
 Configure an RDMA CNI on SR-IOV for Mellanox devices.
 
-<div class="note">
+> [!NOTE]
+> This procedure applies only to Mellanox devices.
 
-This procedure applies only to Mellanox devices.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -16,11 +21,23 @@ This procedure applies only to Mellanox devices.
 
 - You have installed the SR-IOV Network Operator.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an `SriovNetworkPoolConfig` CR and save it as `sriov-nw-pool.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `SriovNetworkPoolConfig` CR**
+    <div class="title">
+
+    Example `SriovNetworkPoolConfig` CR
 
     </div>
 
@@ -38,6 +55,8 @@ This procedure applies only to Mellanox devices.
       rdmaMode: <rdma_mode>
     ```
 
+    </div>
+
     `spec.rdmaMode`
     Specifies the RDMA network namespace mode. Set to `exclusive`.
 
@@ -49,9 +68,11 @@ This procedure applies only to Mellanox devices.
 
 3.  Create an `SriovNetworkNodePolicy` CR and save it as `sriov-node-policy.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `SriovNetworkNodePolicy` CR**
+    <div class="title">
+
+    Example `SriovNetworkNodePolicy` CR
 
     </div>
 
@@ -73,6 +94,8 @@ This procedure applies only to Mellanox devices.
       resourceName: sriov_nic_pf1
     ```
 
+    </div>
+
     `spec.isRdma`
     Specifies whether to activate RDMA mode. Set to `true`.
 
@@ -84,9 +107,11 @@ This procedure applies only to Mellanox devices.
 
 5.  Create an `SriovNetwork` CR and save it as `sriov-network.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `SriovNetwork` CR**
+    <div class="title">
+
+    Example `SriovNetwork` CR
 
     </div>
 
@@ -106,6 +131,8 @@ This procedure applies only to Mellanox devices.
         }
     ```
 
+    </div>
+
     `spec.metaPlugins.type`
     Specifies the type of meta plugin. Set to `rdma` to create the RDMA plugin.
 
@@ -115,13 +142,23 @@ This procedure applies only to Mellanox devices.
     $ oc create -f sriov-network.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Create a `Pod` CR and save it as `sriov-test-pod.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example runtime configuration**
+    <div class="title">
+
+    Example runtime configuration
 
     </div>
 
@@ -147,6 +184,8 @@ This procedure applies only to Mellanox devices.
         command: ["sleep", "infinity"]
     ```
 
+    </div>
+
 2.  Create the test pod by running the following command:
 
     ``` terminal
@@ -165,9 +204,11 @@ This procedure applies only to Mellanox devices.
     $ ls /sys/bus/pci/devices/${PCIDEVICE_OPENSHIFT_IO_SRIOV_NIC_PF1}/infiniband/*/ports/1/hw_counters/
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -177,3 +218,7 @@ This procedure applies only to Mellanox devices.
     lifespan                packet_seq_err req_remote_invalid_request   resp_remote_access_errors   roce_slow_restart       rx_read_requests
     local_ack_timeout_err  req_cqe_error resp_cqe_error                 rnr_nak_retry_err           roce_slow_restart_cnps  rx_write_requests
     ```
+
+    </div>
+
+</div>

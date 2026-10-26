@@ -18,11 +18,19 @@ To create CSI-provisioned PVs that mount to IBM Power® Virtual Server Block sto
 
 - With the *IBM Power® Virtual Server Block CSI driver* you can create and mount IBM Power® Virtual Server Block PVs.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+</div>
 
 # About CSI
 

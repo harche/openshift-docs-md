@@ -14,11 +14,11 @@ The OpenShift CLI (`oc`) listens on each local port specified by the user, forwa
 
 You can specify ports by using the following formats:
 
-|                     |                                                                          |
-|---------------------|--------------------------------------------------------------------------|
-| `5000`              | The client listens on port 5000 locally and forwards to 5000 in the pod. |
-| `6000:5000`         | The client listens on port 6000 locally and forwards to 5000 in the pod. |
-| `:5000` or `0:5000` | The client selects a free local port and forwards to 5000 in the pod.    |
+|  |  |
+|----|----|
+| `5000` | The client listens on port 5000 locally and forwards to 5000 in the pod. |
+| `6000:5000` | The client listens on port 6000 locally and forwards to 5000 in the pod. |
+| `:5000` or `0:5000` | The client selects a free local port and forwards to 5000 in the pod. |
 
 OpenShift Container Platform handles port-forward requests from clients. Upon receiving a request, OpenShift Container Platform upgrades the response and waits for the client to create port-forwarding streams. When OpenShift Container Platform receives a new stream, it copies data between the stream and the pod’s port.
 
@@ -27,6 +27,14 @@ Architecturally, there are options for forwarding to a pod’s port. The support
 # Use port forwarding
 
 You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to a pod.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Use a command similar to the following to listen on the specified port in a pod:
 
@@ -40,9 +48,11 @@ You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to 
   $ oc port-forward <pod> 5000 6000
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -53,15 +63,19 @@ You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to 
   Forwarding from [::1]:6000 -> 6000
   ```
 
+  </div>
+
   For example, use the following command to listen on port `8888` locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 8888:5000
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -70,15 +84,19 @@ You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to 
   Forwarding from [::1]:8888 -> 5000
   ```
 
+  </div>
+
   For example, use the following command to listen on a free port locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> :5000
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -87,11 +105,15 @@ You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to 
   Forwarding from [::1]:42390 -> 5000
   ```
 
+  </div>
+
   Alternatively, use the following command to listen on a free port locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 0:5000
   ```
+
+</div>
 
 # Protocol for initiating port forwarding from a client
 
@@ -114,9 +136,11 @@ Specifies the namespace of the target pod.
 `<pod>`
 Specifies the name of the target pod.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example request**
+<div class="title">
+
+Example request
 
 </div>
 
@@ -124,10 +148,22 @@ Specifies the name of the target pod.
 /proxy/nodes/node123.openshift.com/portForward/myns/mypod
 ```
 
+</div>
+
 After sending a port forward request to the API server, the client upgrades the connection to one that supports multiplexed streams. For more information about the current implementation, see "Hypertext Transfer Protocol Version 2 (HTTP/2)".
 
 The client creates a stream with the `port` header containing the target port in the pod. All data written to the stream is delivered via the kubelet to the target pod and port. Similarly, all data sent from the pod for that forwarded connection is delivered back to the same stream in the client.
 
 The client closes all streams, the upgraded connection, and the underlying connection when it is finished with the port forwarding request.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [**Hypertext Transfer Protocol Version 2 (HTTP/2)**](https://httpwg.org/specs/rfc7540.html)
+
+</div>

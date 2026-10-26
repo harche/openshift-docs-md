@@ -12,11 +12,21 @@ To return to the above example, if `example.com/v1` is the preferred API, then V
 
 Therefore, you need to generate a list of the Kubernetes API group versions on your target cluster to be sure the preferred API version is registered in its set of available API resources.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Enter the following command:
 
   ``` terminal
   $ oc api-resources
   ```
+
+</div>
 
 # About Enable API Group Versions
 
@@ -30,11 +40,8 @@ Without the Enable API Group Versions feature enabled, Velero backs up only the 
 
 When the Enable API Group Versions feature is enabled on the destination cluster, Velero selects the version to restore on the basis of the order of priority of API group versions.
 
-<div class="note">
-
-Enable API Group Versions is still in beta.
-
-</div>
+> [!NOTE]
+> Enable API Group Versions is still in beta.
 
 Velero uses the following algorithm to assign priorities to API versions, with `1` as the top priority:
 
@@ -44,15 +51,30 @@ Velero uses the following algorithm to assign priorities to API versions, with `
 
 3.  Common non-preferred supported version with the highest Kubernetes version priority
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enable API Group Versions Feature](https://velero.io/docs/v1.9/enable-api-group-versions-feature/)
+
+</div>
 
 # Use Enable API Group Versions
 
 Configure the `EnableAPIGroupVersions` feature flag to back up all Kubernetes API group versions that are supported on a cluster, not only the preferred one. This helps you maintain compatibility across different API groups in your cluster.
 
-<div class="note">
+> [!NOTE]
+> Enable API Group Versions is still in beta.
 
-Enable API Group Versions is still in beta.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -69,6 +91,16 @@ Enable API Group Versions is still in beta.
         - EnableAPIGroupVersions
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Enable API Group Versions Feature](https://velero.io/docs/v1.9/enable-api-group-versions-feature/)
+
+</div>

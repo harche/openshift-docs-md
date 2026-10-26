@@ -8,9 +8,11 @@ You can run a remote direct memory access (RDMA) or a Data Plane Development Kit
 
 This example shows a pod using a virtual function (VF) in RDMA mode:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`Pod` spec that uses RDMA mode**
+<div class="title">
+
+`Pod` spec that uses RDMA mode
 
 </div>
 
@@ -33,11 +35,15 @@ spec:
     command: ["sleep", "infinity"]
 ```
 
+</div>
+
 The following example shows a pod with a VF in DPDK mode:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`Pod` spec that uses DPDK mode**
+<div class="title">
+
+`Pod` spec that uses DPDK mode
 
 </div>
 
@@ -75,15 +81,35 @@ spec:
       medium: HugePages
 ```
 
+</div>
+
 # Use a virtual function in DPDK mode with an Intel NIC
 
 You can use a virtual function (VF) in Data Plane Development Kit (DPDK) mode with an Intel NIC by creating a `SriovNetworkNodePolicy` object and then deploying a pod.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Install the SR-IOV Network Operator.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the following `SriovNetworkNodePolicy` object, and then save the YAML in the `intel-dpdk-node-policy.yaml` file.
 
@@ -112,15 +138,12 @@ You can use a virtual function (VF) in Data Plane Development Kit (DPDK) mode wi
     `spec.deviceType`
     Specifies the driver type for the virtual functions. Set to `vfio-pci`.
 
-    <div class="note">
-
-    See the `Configuring SR-IOV network devices` section for a detailed explanation on each option in `SriovNetworkNodePolicy`.
-
-    When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
-
-    After the configuration update is applied, all the pods in `openshift-sriov-network-operator` namespace will change to a `Running` status.
-
-    </div>
+    > [!NOTE]
+    > See the `Configuring SR-IOV network devices` section for a detailed explanation on each option in `SriovNetworkNodePolicy`.
+    >
+    > When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
+    >
+    > After the configuration update is applied, all the pods in `openshift-sriov-network-operator` namespace will change to a `Running` status.
 
 2.  Create the `SriovNetworkNodePolicy` object by running the following command:
 
@@ -149,11 +172,8 @@ You can use a virtual function (VF) in Data Plane Development Kit (DPDK) mode wi
     `spec.ipam`
     Specifies a configuration object for the IPAM CNI plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
 
-    <div class="note">
-
-    See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
-
-    </div>
+    > [!NOTE]
+    > See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
 
     An optional library, app-netutil, provides several API methods for gathering network information about a container’s parent pod.
 
@@ -231,15 +251,35 @@ You can use a virtual function (VF) in Data Plane Development Kit (DPDK) mode wi
     $ oc create -f intel-dpdk-pod.yaml
     ```
 
+</div>
+
 # Use a virtual function in DPDK mode with a Mellanox NIC
 
 You can create a network node policy and create a Data Plane Development Kit (DPDK) pod by using a virtual function in DPDK mode with a Mellanox NIC.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the Single Root I/O Virtualization (SR-IOV) Network Operator.
 
 - You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the following `SriovNetworkNodePolicy` YAML configuration to an `mlx-dpdk-node-policy.yaml` file:
 
@@ -275,15 +315,12 @@ You can create a network node policy and create a Data Plane Development Kit (DP
     `spec.isRdma`
     Setting to `true` enables Remote Direct Memory Access (RDMA) mode. This is required for Mellanox cards to work in DPDK mode.
 
-    <div class="note">
-
-    See *Configuring an SR-IOV network device* for a detailed explanation of each option in the `SriovNetworkNodePolicy` object.
-
-    When applying the configuration specified in an `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
-
-    After the configuration update is applied, all the pods in the `openshift-sriov-network-operator` namespace will change to a `Running` status.
-
-    </div>
+    > [!NOTE]
+    > See *Configuring an SR-IOV network device* for a detailed explanation of each option in the `SriovNetworkNodePolicy` object.
+    >
+    > When applying the configuration specified in an `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
+    >
+    > After the configuration update is applied, all the pods in the `openshift-sriov-network-operator` namespace will change to a `Running` status.
 
 2.  Create the `SriovNetworkNodePolicy` object by running the following command:
 
@@ -312,11 +349,8 @@ You can create a network node policy and create a Data Plane Development Kit (DP
     `spec.ipam`
     Specifies a configuration object for the IP Address Management (IPAM) Container Network Interface (CNI) plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
 
-    <div class="note">
-
-    See *Configuring an SR-IOV network device* for a detailed explanation on each option in the `SriovNetwork` object.
-
-    </div>
+    > [!NOTE]
+    > See *Configuring an SR-IOV network device* for a detailed explanation on each option in the `SriovNetwork` object.
 
     The `app-netutil` option library provides several API methods for gathering network information about the parent pod of a container.
 
@@ -394,6 +428,8 @@ You can create a network node policy and create a Data Plane Development Kit (DP
     $ oc create -f mlx-dpdk-pod.yaml
     ```
 
+</div>
+
 # Use the TAP CNI to run a rootless DPDK workload with kernel access
 
 DPDK applications can use `virtio-user` as an exception path to inject certain types of packets, such as log messages, into the kernel for processing.
@@ -405,6 +441,14 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
 <figcaption>DPDK and TAP example configuration</figcaption>
 </figure>
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the SR-IOV Network Operator.
@@ -413,11 +457,18 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
 
 - Ensure that `setsebools container_use_devices=on` is set as root on all nodes.
 
-  <div class="note">
+  > [!NOTE]
+  > Use the Machine Config Operator to set this SELinux boolean.
 
-  Use the Machine Config Operator to set this SELinux boolean.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file, such as `test-namespace.yaml`, with content such as the following example:
 
@@ -500,11 +551,8 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
      trust: "on"
     ```
 
-    <div class="note">
-
-    See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
-
-    </div>
+    > [!NOTE]
+    > See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
 
     An optional library, `app-netutil`, provides several API methods for gathering network information about a container’s parent pod.
 
@@ -661,11 +709,23 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
     $ oc create -f dpdk-pod-rootless.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Virtio_user as Exception Path (DPDK documentation)](https://doc.dpdk.org/guides/howto/virtio_user_as_exception_path.html)
 
 - [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Configuring an SR-IOV network device](../../networking/hardware_networks/configuring-sriov-device.xml#configuring-sriov-device)
+
+</div>
 
 # Overview of achieving a specific DPDK line rate
 
@@ -677,11 +737,8 @@ To achieve a specific Data Plane Development Kit (DPDK) line rate, deploy a Node
 
 - The topology scheduler
 
-<div class="note">
-
-In previous versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift Container Platform applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
-
-</div>
+> [!NOTE]
+> In previous versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift Container Platform applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
 
 The following diagram shows the components of a DPDK test environment:
 
@@ -707,6 +764,14 @@ The following diagram shows the components of a DPDK test environment:
 
 You can use the Node Tuning Operator to configure isolated CPUs, hugepages, and a topology scheduler. You can then use the Node Tuning Operator with Single Root I/O Virtualization (SR-IOV) to achieve a specific Data Plane Development Kit (DPDK) line rate.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the SR-IOV Network Operator.
@@ -715,11 +780,18 @@ You can use the Node Tuning Operator to configure isolated CPUs, hugepages, and 
 
 - You have deployed a standalone Node Tuning Operator.
 
-  <div class="note">
+  > [!NOTE]
+  > In previous versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
 
-  In previous versions of OpenShift Container Platform, the Performance Addon Operator was used to implement automatic tuning to achieve low latency performance for OpenShift applications. In OpenShift Container Platform 4.11 and later, this functionality is part of the Node Tuning Operator.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `PerformanceProfile` object based on the following example:
 
@@ -779,6 +851,8 @@ You can use the Node Tuning Operator to configure isolated CPUs, hugepages, and 
     ``` terminal
     $ oc create -f mlx-dpdk-perfprofile-policy.yaml
     ```
+
+</div>
 
 ## DPDK library for use with container applications
 
@@ -959,7 +1033,6 @@ metadata:
    ]'
     irq-load-balancing.crio.io: "disable"
     cpu-load-balancing.crio.io: "disable"
-    cpu-quota.crio.io: "disable"
   labels:
     app: dpdk
   name: testpmd
@@ -1009,11 +1082,8 @@ spec:
 
 - Request an equal number of resources for requests and limits to start the pod with `Guaranteed` Quality of Service (QoS).
 
-<div class="note">
-
-Do not start the pod with `SLEEP` and then exec into the pod to start the testpmd or the DPDK workload. This can add additional interrupts as the `exec` process is not pinned to any CPU.
-
-</div>
+> [!NOTE]
+> Do not start the pod with `SLEEP` and then exec into the pod to start the testpmd or the DPDK workload. This can add additional interrupts as the `exec` process is not pinned to any CPU.
 
 ## Example testpmd script
 
@@ -1032,21 +1102,36 @@ This example uses two different `sriovNetwork` CRs. The environment variable con
 
 # Use a virtual function in RDMA mode with a Mellanox NIC
 
-<div class="important">
-
-RDMA over Converged Ethernet (RoCE) is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> RDMA over Converged Ethernet (RoCE) is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 RDMA over Converged Ethernet (RoCE) is the only supported mode when using RDMA on OpenShift Container Platform.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - Install the SR-IOV Network Operator.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the following `SriovNetworkNodePolicy` object, and then save the YAML in the `mlx-rdma-node-policy.yaml` file.
 
@@ -1082,15 +1167,12 @@ RDMA over Converged Ethernet (RoCE) is the only supported mode when using RDMA o
     `spec.isRdma`
     Set to `true` to enable RDMA mode.
 
-    <div class="note">
-
-    See the `Configuring SR-IOV network devices` section for a detailed explanation on each option in `SriovNetworkNodePolicy`.
-
-    When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
-
-    After the configuration update is applied, all the pods in the `openshift-sriov-network-operator` namespace will change to a `Running` status.
-
-    </div>
+    > [!NOTE]
+    > See the `Configuring SR-IOV network devices` section for a detailed explanation on each option in `SriovNetworkNodePolicy`.
+    >
+    > When applying the configuration specified in a `SriovNetworkNodePolicy` object, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. It might take several minutes for a configuration change to apply. Ensure that there are enough available nodes in your cluster to handle the evicted workload beforehand.
+    >
+    > After the configuration update is applied, all the pods in the `openshift-sriov-network-operator` namespace will change to a `Running` status.
 
 2.  Create the `SriovNetworkNodePolicy` object by running the following command:
 
@@ -1119,11 +1201,8 @@ RDMA over Converged Ethernet (RoCE) is the only supported mode when using RDMA o
     `spec.ipam`
     Specifies a configuration object for the IPAM CNI plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
 
-    <div class="note">
-
-    See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
-
-    </div>
+    > [!NOTE]
+    > See the "Configuring SR-IOV additional network" section for a detailed explanation on each option in `SriovNetwork`.
 
     An optional library, app-netutil, provides several API methods for gathering network information about a container’s parent pod.
 
@@ -1196,13 +1275,17 @@ RDMA over Converged Ethernet (RoCE) is the only supported mode when using RDMA o
     $ oc create -f mlx-rdma-pod.yaml
     ```
 
+</div>
+
 # A test pod template for clusters that use OVS-DPDK on OpenStack
 
 The following `testpmd` pod demonstrates container creation with huge pages, reserved CPUs, and the SR-IOV port.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**An example `testpmd` pod**
+<div class="title">
+
+An example `testpmd` pod
 
 </div>
 
@@ -1214,7 +1297,6 @@ metadata:
   namespace: mynamespace
   annotations:
     cpu-load-balancing.crio.io: "disable"
-    cpu-quota.crio.io: "disable"
 # ...
 spec:
   containers:
@@ -1247,6 +1329,8 @@ spec:
     emptyDir:
       medium: HugePages
 ```
+
+</div>
 
 - The name `dpdk1` in this example is a user-created `SriovNetworkNodePolicy` resource. You can substitute this name for that of a resource that you create.
 

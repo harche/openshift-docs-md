@@ -1,18 +1,33 @@
 You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can simplify VM configuration by using an instance type in your VM manifest.
 
-<div class="note">
-
-You can also create VMs from instance types by using the OpenShift Container Platform web console.
-
-</div>
+> [!NOTE]
+> You can also create VMs from instance types by using the OpenShift Container Platform web console.
 
 # Creating a VM from a VirtualMachine manifest
 
 You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simplify the creation of these manifests, you can use the `virtctl` command-line tool.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM, run the following command:
 
@@ -22,15 +37,14 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
 
 2.  Review the `VirtualMachine` manifest for your VM:
 
-    <div class="note">
+    > [!NOTE]
+    > This example manifest does not configure VM authentication.
 
-    This example manifest does not configure VM authentication.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example manifest for a RHEL VM**
+    Example manifest for a RHEL VM
 
     </div>
 
@@ -73,6 +87,8 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
             name: imported-volume-mk4lj
     ```
 
+    </div>
+
     - `name: rhel-9-minimal` specifies the name of the VM.
 
     - `name: rhel9` specifies the boot source for the guest operating system in the `sourceRef` section.
@@ -97,9 +113,19 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
     $ virtctl start <vm_name>
     ```
 
+</div>
+
 # Uploading a virtual machine image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have an `ISO`, `IMG`, or `QCOW2` operating system image file.
 
@@ -110,6 +136,16 @@ You can upload an operating system image by using the `virtctl` command-line too
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Upload the image by running the `virtctl image-upload` command:
 
@@ -130,6 +166,10 @@ You can upload an operating system image by using the `virtctl` command-line too
 
     <div class="note">
 
+    <div class="title">
+
+    </div>
+
     - If you do not want to create a new data volume, omit the `--size` parameter and include the `--no-create` flag.
 
     - When uploading a disk image to a PVC, the PVC size must be larger than the size of the uncompressed virtual disk.
@@ -144,19 +184,18 @@ You can upload an operating system image by using the `virtctl` command-line too
     $ oc get dvs
     ```
 
+</div>
+
 ## Supported custom video device types
 
 When creating a virtual machine (VM), you can configure a custom video device type to override the default video configuration.
 
 Configuring a custom video device allows you to specify different video devices, based on your guest operating system requirements and performance needs.
 
-<div class="important">
-
-Custom video device support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Custom video device support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 Using a custom video device provides several advantages:
 
@@ -181,12 +220,12 @@ You can configure the following video device types:
 
 - ramfb: a simple, unaccelerated virtual display device primarily used in the QEMU emulator, and useful for ARM architecture.
 
-| Architecture | Boot mode | Default type | Supported types                                  |
-|--------------|-----------|--------------|--------------------------------------------------|
-| AMD/x86_64   | BIOS      | `vga`        | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
-| AMD/x86_64   | EFI       | `bochs`      | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
-| ARM64        | BIOS/EFI  | `virtio`     | `virtio`, `ramfb`                                |
-| s390x        | BIOS/EFI  | `virtio`     | `virtio`                                         |
+| Architecture | Boot mode | Default type | Supported types |
+|----|----|----|----|
+| AMD/x86_64 | BIOS | `vga` | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
+| AMD/x86_64 | EFI | `bochs` | `virtio`, `vga`, `bochs`, `cirrus`, `` ramfb` `` |
+| ARM64 | BIOS/EFI | `virtio` | `virtio`, `ramfb` |
+| s390x | BIOS/EFI | `virtio` | `virtio` |
 
 Video device support by architecture
 

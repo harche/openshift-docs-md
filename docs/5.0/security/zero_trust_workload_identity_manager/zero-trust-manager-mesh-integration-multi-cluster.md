@@ -10,14 +10,22 @@ Multi-cluster SPIRE integration extends single-cluster SPIRE capabilities to ena
 
 Federation happens at two layers, and both are required:
 
-| Layer            | What                          | How                                                                                               |
-|------------------|-------------------------------|---------------------------------------------------------------------------------------------------|
-| SPIRE Federation | Trust bundles                 | SPIRE Servers exchange bundles via `https_spiffe` profile                                         |
+| Layer | What | How |
+|----|----|----|
+| SPIRE Federation | Trust bundles | SPIRE Servers exchange bundles via `https_spiffe` profile |
 | Istio Federation | Service discovery and routing | `Istiod` discovers remote endpoints via remote secrets, routes traffic through east-west gateways |
 
 # Preparing the environment for multi-cluster SPIFFE Runtime Environment federation
 
 Export kubeconfig paths, trust domains, federation endpoints, and JWT issuer URLs for Cluster A and Cluster B before you deploy federated SPIFFE Runtime Environment (SPIRE) operands on both clusters.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have two OpenShift Container Platform clusters (4.x) with network connectivity between them.
 
@@ -30,6 +38,16 @@ Export kubeconfig paths, trust domains, federation endpoints, and JWT issuer URL
 - You have installed `helm`. This is used for gateway deployment.
 
 - You have Istio version 1.29.2 or later.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the namespace variables by running the following commands:
 
@@ -115,13 +133,33 @@ Export kubeconfig paths, trust domains, federation endpoints, and JWT issuer URL
     $ export JWT_ISSUER_B="https://oidc-discovery.${CLUSTER_B_BASE_DOMAIN}"
     ```
 
+</div>
+
 # Deploying SPIFFE Runtime Environment with federation on both clusters
 
 Deploy SPIFFE Runtime Environment (SPIRE) operand custom resources (CRs) with federation enabled on Cluster A and Cluster B, wait for operands to become ready, and verify SDS configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have completed preparing the environment for multi-cluster SPIRE federation. For more information, see "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" procedure are set.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Deploy SPIRE with federation enabled on Cluster A:
 
@@ -437,7 +475,15 @@ Deploy SPIFFE Runtime Environment (SPIRE) operand custom resources (CRs) with fe
       --kubeconfig="${CLUSTER_B_KUBECONFIG}" -n ${ZTWIM_NS} --timeout=300s
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the SDS configuration is available on Cluster A by running the following command:
 
@@ -453,9 +499,11 @@ Deploy SPIFFE Runtime Environment (SPIRE) operand custom resources (CRs) with fe
       -o jsonpath='{.data.agent\.conf}' | grep -A5 '"sds"'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -465,6 +513,10 @@ Deploy SPIFFE Runtime Environment (SPIRE) operand custom resources (CRs) with fe
       "default_bundle_name": "null"
     },
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 
@@ -476,7 +528,25 @@ Deploy SPIFFE Runtime Environment (SPIRE) operand custom resources (CRs) with fe
 
 Configure Red Hat OpenShift Service Mesh on each cluster with federation settings, east-west gateways, and remote secrets to enable cross-cluster service communication by using SPIRE-issued certificates.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You deployed SPIFFE Runtime Environment (SPIRE) with federation for multi-cluster integration. For more information, see "Deploying SPIFFE Runtime Environment with federation on both clusters".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the federation routes are created on Cluster A by running the following command:
 
@@ -536,7 +606,15 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
         $ oc apply --kubeconfig="${CLUSTER_B_KUBECONFIG}" -f <filename>
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the SPIRE Server on Cluster A has the trust bundle from Cluster B by running the following command:
 
@@ -547,9 +625,11 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
 
     The output must show public keys for `${CLUSTER_B_TRUST_DOMAIN}`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -560,6 +640,8 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
           "keys": [
     ```
 
+    </div>
+
 2.  Verify that the SPIRE Server on Cluster B has the trust bundle from Cluster A by running the following command:
 
     ``` terminal
@@ -569,9 +651,11 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
 
     The output must show public keys for `${CLUSTER_A_TRUST_DOMAIN}`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -582,6 +666,8 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
           "keys": [
     ```
 
+    </div>
+
 3.  Verify that the federation endpoint on Cluster A is reachable by running the following command:
 
     ``` terminal
@@ -590,15 +676,19 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
 
     The output must show at least one `x509-svid` key and one `jwt-svid` key.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     Keys: 2
     ```
+
+    </div>
 
 4.  Verify that the federation endpoint on Cluster B is reachable by running the following command:
 
@@ -608,9 +698,11 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
 
     The output must show at least one `x509-svid` key and one `jwt-svid` key.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -618,15 +710,37 @@ Configure Red Hat OpenShift Service Mesh on each cluster with federation settin
     Keys: 2
     ```
 
+    </div>
+
+</div>
+
 # Deploying the Red Hat OpenShift Service Mesh CNI on both clusters
 
 Deploy the `IstioCNI` CR and federated `ClusterSPIFFEID` resources on Cluster A and Cluster B. This configures Red Hat OpenShift Service Mesh CNI networking and federated SPIFFE trust for cross-cluster mesh workloads.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured Red Hat OpenShift Service Mesh for multi-cluster integration. For more information, see "Configuring Red Hat OpenShift Service Mesh for multi-cluster SPIFFE Runtime Environment integration".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
 
 - You have installed Red Hat OpenShift Service Mesh 2.6.11 on both clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the Red Hat OpenShift Service Mesh CNI namespace on Cluster A by running the following command:
 
@@ -782,11 +896,10 @@ Deploy the `IstioCNI` CR and federated `ClusterSPIFFEID` resources on Cluster A 
         $ oc apply --kubeconfig="${CLUSTER_B_KUBECONFIG}" -f <filename>
         ```
 
-        <div class="important">
+        > [!IMPORTANT]
+        > Do not patch the default `ClusterSPIFFEID` (`zero-trust-workload-identity-manager-spire-default`). The Zero Trust Workload Identity Manager reconciles and reverts manual changes. Instead, create custom `ClusterSPIFFEID` resources for the specific namespaces.
 
-        Do not patch the default `ClusterSPIFFEID` (`zero-trust-workload-identity-manager-spire-default`). The Zero Trust Workload Identity Manager reconciles and reverts manual changes. Instead, create custom `ClusterSPIFFEID` resources for the specific namespaces.
-
-        </div>
+</div>
 
 # Deploying the Istio custom resource with the federation configuration
 
@@ -806,15 +919,30 @@ The Istio CR must include the following fields and values:
 
 - A SPIRE injection template configuration.
 
-<div class="note">
+> [!NOTE]
+> Do not use `meshConfig.trustDomainAliases`. Use `meshConfig.caCertificates` with `spiffeBundleUrl` instead.
 
-Do not use `meshConfig.trustDomainAliases`. Use `meshConfig.caCertificates` with `spiffeBundleUrl` instead.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have completed deploying the Istio Container Network Interface (CNI) on both clusters. For more information, see "Deploying Red Hat OpenShift Service Mesh CNI on both clusters".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the OpenID Connect (OIDC) certificate on Cluster A by running the following command:
 
@@ -1030,15 +1158,35 @@ Do not use `meshConfig.trustDomainAliases`. Use `meshConfig.caCertificates` with
       --kubeconfig="${CLUSTER_B_KUBECONFIG}" -n "${OSSM_NS}" --timeout=300s
     ```
 
+</div>
+
 # Verifying SPIRE integration with Istio on each cluster
 
 Verify that Red Hat OpenShift Service Mesh on Cluster A and Cluster B obtains workload certificates from SPIFFE Runtime Environment (SPIRE). This confirms Istio sidecars use SPIRE-issued identities rather than the built-in Istio certificate authority (CA) before you proceed with cross-cluster mesh verification.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have deployed the Istio custom resource (CR) with the federation configuration. For more information, see "Deploying the Istio custom resource with the federation configuration".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
 
 - Istiod is running and ready on Cluster A and Cluster B.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the verification namespace variable by running the following command:
 
@@ -1214,9 +1362,11 @@ Verify that Red Hat OpenShift Service Mesh on Cluster A and Cluster B obtains w
         $ openssl x509 -in chain-b.pem -text | grep SPIRE
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1224,6 +1374,8 @@ Verify that Red Hat OpenShift Service Mesh on Cluster A and Cluster B obtains w
          Issuer: C=US, O=RH, CN=<APP_DOMAIN>/serialNumber=...
                 Subject: C=US, O=SPIRE
         ```
+
+        </div>
 
         If you see `SPIRE` in both `Issuer` and `Subject` on each cluster, Red Hat OpenShift Service Mesh is obtaining workload certificates from SPIRE rather than the Istio built-in CA.
 
@@ -1241,15 +1393,35 @@ Verify that Red Hat OpenShift Service Mesh on Cluster A and Cluster B obtains w
         $ oc delete namespace ${VERIFY_NS} --kubeconfig="${CLUSTER_B_KUBECONFIG}" --ignore-not-found
         ```
 
+</div>
+
 # Verifying workload mTLS with SPIRE-issued identities on each cluster
 
 Deploy `httpbin` and `curl` test workloads with SPIFFE Runtime Environment (SPIRE) sidecar injection on both clusters, enable `STRICT` mTLS with `ISTIO_MUTUAL`, and verify HTTP connectivity on each cluster. This confirms workloads use SPIRE-issued certificates under `STRICT` mTLS.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have verified that SPIRE is integrated with Istio on each cluster. For more information, see "Verifying SPIRE integration with Istio on each cluster".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
 
 - Istiod is running and ready on both clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the test environment variables by running the following commands:
 
@@ -1595,15 +1767,19 @@ Deploy `httpbin` and `curl` test workloads with SPIFFE Runtime Environment (SPIR
           curl -s -o /dev/null -w "%{http_code}" http://httpbin
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         200
         ```
+
+        </div>
 
         You must receive an HTTP `200` status code on each cluster.
 
@@ -1709,15 +1885,19 @@ Deploy `httpbin` and `curl` test workloads with SPIFFE Runtime Environment (SPIR
           curl -s -o /dev/null -w "%{http_code}" http://httpbin
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         200
         ```
+
+        </div>
 
         If you receive an HTTP `200` status code on each cluster, Red Hat OpenShift Service Mesh workloads are communicating under `STRICT` mTLS using SPIRE-issued identities.
 
@@ -1735,15 +1915,35 @@ Deploy `httpbin` and `curl` test workloads with SPIFFE Runtime Environment (SPIR
         $ oc delete namespace ${TPJ} --kubeconfig="${CLUSTER_B_KUBECONFIG}" --ignore-not-found
         ```
 
+</div>
+
 # Deploying east-west gateways
 
 Deploy SPIRE-enabled east-west gateways on both clusters using Helm. Red Hat OpenShift Service Mesh uses east-west gateways to connect cluster networks and enable secure cross-cluster communication in a multi-cluster mesh.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You deployed the Istio custom resource with the federation configuration. For more information, see "Deploying the Istio custom resource with the federation configuration".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
 
 - Federated `ClusterSPIFFEID` resources exist on both clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the Istio Helm repository by running the following command:
 
@@ -1869,7 +2069,15 @@ Deploy SPIRE-enabled east-west gateways on both clusters using Helm. Red Hat Op
 
         The `Gateway` CRs configure the east-west gateway deployment to accept cross-cluster TLS traffic on port 15443 using `AUTO_PASSTHROUGH` mode. This preserves SPIRE-issued certificates for end-to-end mTLS.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the cross-network `Gateway` exists on Cluster A by running the following command:
 
@@ -1879,15 +2087,19 @@ Deploy SPIRE-enabled east-west gateways on both clusters using Helm. Red Hat Op
       -o jsonpath='{.spec.servers[0].tls.mode}{"\n"}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     AUTO_PASSTHROUGH
     ```
+
+    </div>
 
 2.  Verify that the cross-network `Gateway` exists on Cluster B by running the following command:
 
@@ -1897,9 +2109,11 @@ Deploy SPIRE-enabled east-west gateways on both clusters using Helm. Red Hat Op
       -o jsonpath='{.spec.servers[0].tls.mode}{"\n"}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1907,15 +2121,37 @@ Deploy SPIRE-enabled east-west gateways on both clusters using Helm. Red Hat Op
     AUTO_PASSTHROUGH
     ```
 
+    </div>
+
+</div>
+
 # Exchanging remote secrets
 
 Create remote secrets on both clusters so `Istiod` can discover services in the peer cluster and route cross-cluster traffic through the east-west gateways.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have deployed the east-west gateway, including the cross-network `Gateway` CR on both clusters. For more information, see "Deploying east-west gateways".
 
 - The environment variables from the "Preparing the environment for multi-cluster SPIFFE Runtime Environment federation" and "Deploying SPIFFE Runtime Environment with federation on both clusters" procedures are set.
 
 - The `istioctl` CLI is available and configured for both clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an Istio remote secret on Cluster A by running the following command:
 
@@ -1945,9 +2181,11 @@ Create remote secrets on both clusters so `Istiod` can discover services in the 
 
     The output must show `${CLUSTER_B}` with status `synced`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1955,6 +2193,8 @@ Create remote secrets on both clusters so `Istiod` can discover services in the 
     NAME         STATUS   SECRET
     cluster-b    synced   istio-remote-secret-cluster-b
     ```
+
+    </div>
 
 4.  Verify that the remote cluster is synced on Cluster B by running the following command:
 
@@ -1964,9 +2204,11 @@ Create remote secrets on both clusters so `Istiod` can discover services in the 
 
     The output must show `${CLUSTER_A}` with status `synced`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1975,13 +2217,35 @@ Create remote secrets on both clusters so `Istiod` can discover services in the 
     cluster-a    synced   istio-remote-secret-cluster-a
     ```
 
+    </div>
+
+</div>
+
 # Verifying cross-cluster service communication
 
 Verify cross-cluster service communication between Red Hat OpenShift Service Mesh clusters using sample workloads. This confirms SPIRE-issued identities and federated mesh routing enable end-to-end cross-cluster communication.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed east-west gateways and created the cross-network `Gateway` CR on both clusters.
 
 - You have exchanged remote secrets between clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the sample namespace environment variable by running the following command:
 
@@ -2208,15 +2472,19 @@ Verify cross-cluster service communication between Red Hat OpenShift Service Me
       curl -s localhost:15000/certs | jq -r '.certificates[0].cert_chain[0].subject_alt_names[0].uri'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     spiffe://${CLUSTER_A_TRUST_DOMAIN}/ns/sample/sa/sleep
     ```
+
+    </div>
 
 15. Verify that the `sleep` pod on Cluster A can reach the `helloworld.sample` service by running the following command:
 
@@ -2227,15 +2495,21 @@ Verify cross-cluster service communication between Red Hat OpenShift Service Me
       -- curl -sS helloworld.sample:5000/hello
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     Hello version: v1, instance: helloworld-v1-5859666d7-pcb8v
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

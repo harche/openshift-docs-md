@@ -1,10 +1,7 @@
 OpenShift Container Platform provides additional ways of configuring network traffic by using Gateway API with the Ingress Operator.
 
-<div class="important">
-
-Gateway API does not support user-defined networks (UDN).
-
-</div>
+> [!IMPORTANT]
+> Gateway API does not support user-defined networks (UDN).
 
 # Overview of Gateway API
 
@@ -64,25 +61,27 @@ In some situations, Gateway API provides one or more fields that a vendor implem
 
 Any CRDs created within an OpenShift Container Platform 4.17 cluster are compatibly versioned and maintained by the Ingress Operator. If CRDs are already present but were not previously managed by the Ingress Operator, the Ingress Operator checks whether these configurations are compatible with Gateway API version supported by OpenShift Container Platform, and creates an admin-gate that requires your acknowledgment of CRD succession.
 
-<div class="important">
-
-If you are updating your cluster from a previous OpenShift Container Platform version that contains Gateway API CRDs change those resources so that they exactly match the version supported by OpenShift Container Platform. Otherwise, you cannot update your cluster because those CRDs were not managed by OpenShift Container Platform, and could contain functionality that is unsupported by Red Hat.
-
-</div>
+> [!IMPORTANT]
+> If you are updating your cluster from a previous OpenShift Container Platform version that contains Gateway API CRDs change those resources so that they exactly match the version supported by OpenShift Container Platform. Otherwise, you cannot update your cluster because those CRDs were not managed by OpenShift Container Platform, and could contain functionality that is unsupported by Red Hat.
 
 # Getting started with Gateway API for the Ingress Operator
 
 After you create a `GatewayClass` resource, the resource configures Gateway API for use on your cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> The OpenShift Container Platform Gateway API implementation relies on the Cluster Ingress Operator (CIO) to install and manage a specific version of OpenShift Service Mesh (OSSM v3.x) in the `openshift-ingress` namespace.
+>
+> A conflict occurs if your cluster already has an active OpenShift Service Mesh (OSSM v2.x) subscription in any namespace. OSSM v2.x and OSSM v3.x cannot coexist on the same cluster.
+>
+> If a conflicting OSSM v2.x subscription is present when you create a `GatewayClass` resource, the Cluster Ingress Operator attempts to install the required OSSM v3.x components but fails this installation operation. As a result, Gateway API resources, such as Gateway or HTTPRoute, have no effect and no proxy gets configured to route traffic. In OpenShift Container Platform 4.19, this failure is silent. For OpenShift Container Platform 4.20 and later, this conflict causes the ingress ClusterOperator to report a Degraded status.
+>
+> Before enabling Gateway API by creating a `GatewayClass`, verify that you do not have an active OSSM v2.x subscription on the cluster.
 
-The OpenShift Container Platform Gateway API implementation relies on the Cluster Ingress Operator (CIO) to install and manage a specific version of OpenShift Service Mesh (OSSM v3.x) in the `openshift-ingress` namespace.
+<div>
 
-A conflict occurs if your cluster already has an active OpenShift Service Mesh (OSSM v2.x) subscription in any namespace. OSSM v2.x and OSSM v3.x cannot coexist on the same cluster.
+<div class="title">
 
-If a conflicting OSSM v2.x subscription is present when you create a `GatewayClass` resource, the Cluster Ingress Operator attempts to install the required OSSM v3.x components but fails this installation operation. As a result, Gateway API resources, such as Gateway or HTTPRoute, have no effect and no proxy gets configured to route traffic. In OpenShift Container Platform 4.19, this failure is silent. For OpenShift Container Platform 4.20 and later, this conflict causes the ingress ClusterOperator to report a Degraded status.
-
-Before enabling Gateway API by creating a `GatewayClass`, verify that you do not have an active OSSM v2.x subscription on the cluster.
+Procedure
 
 </div>
 
@@ -90,9 +89,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
 
     1.  Create a YAML file, `openshift-default.yaml`, that contains the following information:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `GatewayClass` CR**
+        <div class="title">
+
+        Example `GatewayClass` CR
 
         </div>
 
@@ -105,13 +106,12 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
           controllerName: openshift.io/gateway-controller/v1
         ```
 
+        </div>
+
         - `controllerName`: The controller name.
 
-          <div class="important">
-
-          The controller name must be exactly as shown for the Ingress Operator to manage it. If you set this field to anything else, the Ingress Operator ignores the `GatewayClass` object and all associated `Gateway`, `GRPCRoute`, and `HTTPRoute` objects. The controller name is tied to the implementation of Gateway API in OpenShift Container Platform, and `openshift.io/gateway-controller/v1` is the only controller name allowed.
-
-          </div>
+          > [!IMPORTANT]
+          > The controller name must be exactly as shown for the Ingress Operator to manage it. If you set this field to anything else, the Ingress Operator ignores the `GatewayClass` object and all associated `Gateway`, `GRPCRoute`, and `HTTPRoute` objects. The controller name is tied to the implementation of Gateway API in OpenShift Container Platform, and `openshift.io/gateway-controller/v1` is the only controller name allowed.
 
     2.  Run the following command to create the `GatewayClass` resource:
 
@@ -119,15 +119,19 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
         $ oc create -f openshift-default.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         gatewayclass.gateway.networking.k8s.io/openshift-default created
         ```
+
+        </div>
 
         During the creation of the `GatewayClass` resource, the Ingress Operator installs a lightweight version of Red Hat OpenShift Service Mesh, an Istio custom resource, and a new deployment in the `openshift-ingress` namespace.
 
@@ -137,9 +141,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
         $ oc get deployment -n openshift-ingress
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -148,6 +154,8 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
         istiod-openshift-gateway   1/1     1            1           55s
         router-default             2/2     2            2           6h4m
         ```
+
+        </div>
 
 2.  Create a secret by running the following command:
 
@@ -165,9 +173,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
 
     1.  Create a YAML file, `example-gateway.yaml`, that contains the following information:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example Gateway CR**
+        <div class="title">
+
+        Example Gateway CR
 
         </div>
 
@@ -195,6 +205,8 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
                   matchLabels:
                     shared-gateway-access: "true"
         ```
+
+        </div>
 
         where:
 
@@ -230,9 +242,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
           $ oc get deployment -n openshift-ingress example-gateway-openshift-default
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -241,15 +255,19 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
           example-gateway-openshift-default    1/1     1            1           25s
           ```
 
+          </div>
+
         - To verify the service, run the following command:
 
           ``` terminal
           $ oc get service -n openshift-ingress example-gateway-openshift-default
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -258,15 +276,19 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
           example-gateway-openshift-default   LoadBalancer   10.1.2.3     <external_ipname>   <port_info>  47s
           ```
 
+          </div>
+
     4.  Optional: The Ingress Operator automatically creates a `DNSRecord` CR using the hostname from the listeners, and adds the label `gateway.networking.k8s.io/gateway-name=example-gateway`. Verify the status of the DNS record by running the following command:
 
         ``` terminal
         $ oc -n openshift-ingress get dnsrecord -l gateway.networking.k8s.io/gateway-name=example-gateway -o yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -293,19 +315,20 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
               id: ...
         ```
 
-        <div class="note">
-
-        For Google Cloud installations, you can use a custom DNS solution. You must manually create a DNS record for any Gateways in Gateway API. For more information, see "Enabling a user-managed DNS" and "Provisioning your own DNS records".
-
         </div>
+
+        > [!NOTE]
+        > For Google Cloud installations, you can use a custom DNS solution. You must manually create a DNS record for any Gateways in Gateway API. For more information, see "Enabling a user-managed DNS" and "Provisioning your own DNS records".
 
 5.  Create an `HTTPRoute` resource that directs requests to your already-created namespace and application called `example-app/example-app`:
 
     1.  Create a YAML file, `example-route.yaml`, that contains the following information:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example HTTPRoute CR**
+        <div class="title">
+
+        Example HTTPRoute CR
 
         </div>
 
@@ -325,6 +348,8 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
             - name: example-app
               port: 8443
         ```
+
+        </div>
 
         where:
 
@@ -349,9 +374,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
         $ oc apply -f example-route.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -359,7 +386,17 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
         httproute.gateway.networking.k8s.io/example-route created
         ```
 
-<!-- -->
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `Gateway` object is deployed and has the condition `Programmed` by running the following command:
 
@@ -367,9 +404,11 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
     $ oc wait -n openshift-ingress --for=condition=Programmed gateways.gateway.networking.k8s.io example-gateway
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -377,11 +416,15 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
     gateway.gateway.networking.k8s.io/example-gateway condition met
     ```
 
+    </div>
+
 2.  Send a request to the configured `HTTPRoute` object hostname:
 
     ``` terminal
     $ curl -I --cacert <local cert file> https://example.gwapi.${DOMAIN}:443
     ```
+
+</div>
 
 # Gateway API deployment topologies
 
@@ -392,9 +435,11 @@ Routes and any load balancers or proxies are served from the same namespace. The
 
 The following example shows a dedicated `Gateway` resource, `fin-gateway`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example dedicated `Gateway` resource**
+<div class="title">
+
+Example dedicated `Gateway` resource
 
 </div>
 
@@ -413,13 +458,17 @@ spec:
     hostname: "*.example.com"
 ```
 
+</div>
+
 - `spec.listeners`:: If you do not set `spec.listeners[].allowedRoutes` for a `Gateway` resource, the system implicitly sets the `namespaces.from` field to the value of `Same`.
 
 The following example shows the associated `HTTPRoute` resource, `sales-db`, which attaches to the dedicated `Gateway` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `HTTPRoute` resource**
+<div class="title">
+
+Example `HTTPRoute` resource
 
 </div>
 
@@ -440,6 +489,8 @@ spec:
           port: 8080
 ```
 
+</div>
+
 The `HTTPRoute` resource must have the name of the `Gateway` object as the value for its `parentRefs` field in order to attach to the gateway. The system implicitly assumes that the route exists in the same namespace as the `Gateway` object.
 
 Shared gateway
@@ -447,9 +498,11 @@ Routes are served from multiple namespaces or multiple hostnames. The `Gateway` 
 
 The following example shows a `Gateway` resource, `devops-gateway`, that has a `spec.listeners.allowedRoutes.namespaces` label selector set to match any namespaces containing `shared-gateway-access: "true"`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example shared `Gateway` resource**
+<div class="title">
+
+Example shared `Gateway` resource
 
 </div>
 
@@ -474,11 +527,15 @@ spec:
             shared-gateway-access: "true"
 ```
 
+</div>
+
 The following examples show the allowed namespaces for the `devops-gateway` resource:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Namespace` resources**
+<div class="title">
+
+Example `Namespace` resources
 
 </div>
 
@@ -497,6 +554,8 @@ metadata:
   labels:
     shared-gateway-access: "true"
 ```
+
+</div>
 
 In this example, two `HTTPRoute` resources, `dev-portal` and `ops-home`, are in different namespaces but are attached to the shared gateway:
 
@@ -538,13 +597,17 @@ In OpenShift Container Platform 4.20 and later, if you create a `GatewayClass` r
 
 The conflict occurs because the Gateway API implementation requires OSSM v3.x, which cannot coexist with OSSM v2.x. The CIO detects this conflict, stops the Gateway API provisioning, and reports the `Degraded` status to alert administrators.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 Your Cluster Operator reports a status of `True` and a type of `Degraded` with a reason of `GatewayAPIOSSMConflict`. Verify by running the following command:
+
+</div>
 
 ``` terminal
 $ oc get clusteroperator ingress -o yaml
@@ -568,6 +631,14 @@ status:
 
 You can resolve this issue and clear the `Degraded` status either by removing the `GatewayClass` resource or by using OpenShift Gateway API to remove the conflicting OpenShift Service Mesh v2.x subscription from the cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - If you do not intend to use the OpenShift Gateway API, remove the `GatewayClass` resource. This signals to the Ingress Operator to stop attempting to provision Gateway API.
 
   ``` terminal
@@ -582,6 +653,16 @@ You can resolve this issue and clear the `Degraded` status either by removing th
 
   After you remove the v2.x subscription, the Ingress Operator automatically retries the installation of OSSM v3.x and completes the Gateway API provisioning.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Ingress Controller sharding](configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding-concept_configuring-ingress-cluster-traffic-ingress-controller)
+
+</div>

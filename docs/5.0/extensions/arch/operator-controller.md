@@ -4,17 +4,16 @@ Operator Controller is the central component of Operator Lifecycle Manager (OLM)
 
 To manage installed extensions in OLM v1, use the `ClusterExtension` API. This consolidated API simplifies extension management by replacing multiple OLM (Classic) objects with a single cluster-scoped resource.
 
-<div class="important">
+> [!IMPORTANT]
+> In OLM v1, `ClusterExtension` objects are cluster-scoped. This differs from OLM (Classic) where Operators can be either namespace-scoped or cluster-scoped. In OLM (Classic), the scope depends on the configuration of related `Subscription` and `OperatorGroup` objects.
+>
+> For more information about OLM (Classic) behavior, see *Multitenancy and Operator colocation*.
 
-In OLM v1, `ClusterExtension` objects are cluster-scoped. This differs from OLM (Classic) where Operators can be either namespace-scoped or cluster-scoped. In OLM (Classic), the scope depends on the configuration of related `Subscription` and `OperatorGroup` objects.
+<div class="formalpara">
 
-For more information about OLM (Classic) behavior, see *Multitenancy and Operator colocation*.
+<div class="title">
 
-</div>
-
-<div class="formalpara-title">
-
-**Example `ClusterExtension` object**
+Example `ClusterExtension` object
 
 </div>
 
@@ -29,8 +28,6 @@ spec:
     configType: Inline
     inline:
       watchNamespace: <namespace_name>
-  serviceAccount:
-    name: <service_account_name>
   source:
     sourceType: Catalog
     catalog:
@@ -40,12 +37,28 @@ spec:
       version: "<version>"
 ```
 
+</div>
+
 `config`
 If the extension supports watching a specific namespace, use this field to configure extension behavior. For more information, see "Extension configuration".
+
+The `spec.serviceAccount` field is optional, deprecated, and ignored. The Operator Controller uses its own service account with `cluster-admin` permissions for all cluster interactions. Existing resources that specify the field remain valid. Omit the field from new manifests.
+
+When you create or update a resource that specifies this field, the API server warns that the field is deprecated and ignored.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Operator Lifecycle Manager (OLM) → Multitenancy and Operator colocation](../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
 
 - [Supported extensions](../../extensions/ce/olmv1-supported-extensions.xml#olmv1-supported-extensions)
+
+</div>
 
 ## Example custom resources (CRs) that specify a target version
 
@@ -61,28 +74,30 @@ You can define a target version by specifying any of the following fields:
 
 If you specify a channel in the CR, OLM v1 installs the latest version of the Operator or extension that can be resolved within the specified channel. When updates are published to the specified channel, OLM v1 automatically updates to the latest release that can be resolved from the channel.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CR with a specified channel**
+<div class="title">
+
+Example CR with a specified channel
 
 </div>
 
 ``` yaml
 apiVersion: olm.operatorframework.io/v1
-  kind: ClusterExtension
-  metadata:
-    name: <clusterextension_name>
-  spec:
-    namespace: <installed_namespace>
-    serviceAccount:
-      name: <service_account_installer_name>
-    source:
-      sourceType: Catalog
-      catalog:
-        packageName: <package_name>
-        channels:
-          - latest
+kind: ClusterExtension
+metadata:
+  name: <clusterextension_name>
+spec:
+  namespace: <installed_namespace>
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: <package_name>
+      channels:
+        - latest
 ```
+
+</div>
 
 Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Specify the value of the `channels` parameter as an array. This field is optional
 
@@ -90,67 +105,75 @@ If you specify the Operator or extension’s target version in the CR, OLM v1 in
 
 If you want to update the version of the Operator that is installed on the cluster, you must manually edit the Operator’s CR. Specifying an Operator’s target version pins the Operator’s version to the specified release.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CR with the target version specified**
+<div class="title">
+
+Example CR with the target version specified
 
 </div>
 
 ``` yaml
 apiVersion: olm.operatorframework.io/v1
-  kind: ClusterExtension
-  metadata:
-    name: <clusterextension_name>
-  spec:
-    namespace: <installed_namespace>
-    serviceAccount:
-      name: <service_account_installer_name>
-    source:
-      sourceType: Catalog
-      catalog:
-        packageName: <package_name>
-        version: "1.11.1"
+kind: ClusterExtension
+metadata:
+  name: <clusterextension_name>
+spec:
+  namespace: <installed_namespace>
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: <package_name>
+      version: "1.11.1"
 ```
+
+</div>
 
 Specifies the target version. If you want to update the version of the Operator or extension that is installed, you must manually update this field the CR to the desired target version. This field is optional.
 
 If you want to define a range of acceptable versions for an Operator or extension, you can specify a version range by using a comparison string. When you specify a version range, OLM v1 installs the latest version of an Operator or extension that can be resolved by the Operator Controller.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CR with a version range specified**
+<div class="title">
+
+Example CR with a version range specified
 
 </div>
 
 ``` yaml
 apiVersion: olm.operatorframework.io/v1
-  kind: ClusterExtension
-  metadata:
-    name: <clusterextension_name>
-  spec:
-    namespace: <installed_namespace>
-    serviceAccount:
-      name: <service_account_installer_name>
-    source:
-      sourceType: Catalog
-      catalog:
-        packageName: <package_name>
-        version: ">1.11.1"
+kind: ClusterExtension
+metadata:
+  name: <clusterextension_name>
+spec:
+  namespace: <installed_namespace>
+  source:
+    sourceType: Catalog
+    catalog:
+      packageName: <package_name>
+      version: ">1.11.1"
 ```
+
+</div>
 
 Specifies that the desired version range is greater than version `1.11.1`. This field is optional.
 
 After you create or update a CR, apply the configuration file by running the following command:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Command syntax**
+<div class="title">
+
+Command syntax
 
 </div>
 
 ``` terminal
 $ oc apply -f <extension_name>.yaml
 ```
+
+</div>
 
 # Object ownership for cluster extensions
 
@@ -172,15 +195,19 @@ The core ownership principle enforced by OLM v1 is that each object can only hav
 
 When a conflict occurs due to multiple cluster extensions attempting to manage the same object, Operator Controller returns an error message indicating the ownership conflict, such as the following:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example error message**
+<div class="title">
+
+Example error message
 
 </div>
 
 ``` text
 CustomResourceDefinition 'logfilemetricexporters.logging.kubernetes.io' already exists in namespace 'kubernetes-logging' and cannot be managed by operator-controller
 ```
+
+</div>
 
 This error message signals that the object is already being managed by another cluster extension and cannot be reassigned or shared.
 
@@ -196,13 +223,10 @@ If you need different cluster extensions to interact with similar resources, ens
 
 # ClusterObjectSets
 
-<div class="important">
-
-ClusterObjectSets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> ClusterObjectSets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 As part of Operator Lifecycle Manager (OLM) v1, the operator-controller creates `ClusterObjectSet` resources when you install or upgrade content with a `ClusterExtension` object. `ClusterObjectSet` objects enable safe, phased rollouts of Kubernetes resources.
 
@@ -225,11 +249,8 @@ Each resource can only be managed by one `ClusterObjectSet` at a time, preventin
 Large resource support
 Object manifests can be stored inline or externalized into secrets, allowing bundles larger than the etcd 1.5 MiB object size limit.
 
-<div class="note">
-
-Archived `ClusterObjectSet` revisions stay on the cluster as a history of what was applied for that `ClusterExtension` object.
-
-</div>
+> [!NOTE]
+> Archived `ClusterObjectSet` revisions stay on the cluster as a history of what was applied for that `ClusterExtension` object.
 
 Each `ClusterObjectSet` contains the following content:
 

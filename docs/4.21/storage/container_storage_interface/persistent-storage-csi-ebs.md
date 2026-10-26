@@ -14,19 +14,21 @@ The AWS EBS CSI Driver Operator provides a `StorageClass` by default that you ca
 AWS EBS CSI driver
 The AWS EBS CSI driver enables you to create and mount AWS EBS PVs.
 
-<div class="note">
+> [!NOTE]
+> If you installed the AWS EBS CSI Operator and driver on an OpenShift Container Platform 4.5 cluster, you must uninstall the 4.5 Operator and driver before you update to OpenShift Container Platform 4.17.
 
-If you installed the AWS EBS CSI Operator and driver on an OpenShift Container Platform 4.5 cluster, you must uninstall the 4.5 Operator and driver before you update to OpenShift Container Platform 4.17.
-
-</div>
-
-<div class="important">
-
-OpenShift Container Platform defaults to using the CSI plugin to provision Amazon Elastic Block Store (Amazon EBS) storage.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform defaults to using the CSI plugin to provision Amazon Elastic Block Store (Amazon EBS) storage.
 
 For information about dynamically provisioning AWS EBS persistent volumes in OpenShift Container Platform, see "Dynamic provisioning".
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
@@ -37,6 +39,8 @@ For information about dynamically provisioning AWS EBS persistent volumes in Ope
 - [Creating the EBS storage class](../../storage/persistent_storage/persistent-storage-aws.xml#storage-create-storage-class_persistent-storage-aws)
 
 - [Dynamic provisioning](../../storage/dynamic-provisioning.xml#dynamic-provisioning)
+
+</div>
 
 # About CSI
 
@@ -54,21 +58,15 @@ This features supports the following storage types:
 
 - Amazon Web Services (AWS) Elastic Block storage (EBS)
 
-  <div class="note">
-
-  If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
-
-  </div>
+  > [!NOTE]
+  > If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
 
   For information about installing AWS EBS with user-managed encryption, see "Optional AWS configuration parameters".
 
 - Microsoft Azure Disk storage
 
-  <div class="note">
-
-  If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
-
-  </div>
+  > [!NOTE]
+  > If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
 
   For information about installing Azure Disk with user-managed encryption, see "Preparing an Azure Disk Encryption Set".
 
@@ -80,6 +78,14 @@ This features supports the following storage types:
 
   For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Optional AWS configuration parameters](../../installing/installing_aws/installation-config-parameters-aws.xml#installation-configuration-parameters-optional-aws_installation-config-parameters-aws)
+
+</div>

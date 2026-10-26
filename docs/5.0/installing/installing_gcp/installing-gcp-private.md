@@ -12,7 +12,13 @@ You customize your cluster by modifying parameters in the `install-config.yaml` 
 
 - If you use a firewall, you configured it to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall for OpenShift Container Platform".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
@@ -22,17 +28,16 @@ You customize your cluster by modifying parameters in the `install-config.yaml` 
 
 - [Configuring your firewall for OpenShift Container Platform](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
+</div>
+
 # Private clusters
 
 You can deploy a private OpenShift Container Platform cluster that does not expose external endpoints. Private clusters are accessible from only an internal network and are not visible to the internet.
 
 By default, OpenShift Container Platform is provisioned to use publicly-accessible DNS and endpoints. A private cluster sets the DNS, Ingress Controller, and API server to private when you deploy your cluster. This means that the cluster resources are only accessible from your internal network and are not visible to the internet.
 
-<div class="important">
-
-If the cluster has any public subnets, load balancer services created by administrators might be publicly accessible. To ensure cluster security, verify that these services are explicitly annotated as private.
-
-</div>
+> [!IMPORTANT]
+> If the cluster has any public subnets, load balancer services created by administrators might be publicly accessible. To ensure cluster security, verify that these services are explicitly annotated as private.
 
 To deploy a private cluster, you must:
 
@@ -144,11 +149,8 @@ You must have internet access to perform the following actions:
 
 - Obtain the packages that are required to perform cluster updates.
 
-<div class="important">
-
-If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
-
-</div>
+> [!IMPORTANT]
+> If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
 
 # Generating a key pair for cluster node SSH access
 
@@ -158,15 +160,17 @@ The key is added to the `~/.ssh/authorized_keys` list for the `core` user on eac
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+> [!NOTE]
+> You must use a local key, not one that you configured with platform-specific approaches.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-You must use a local key, not one that you configured with platform-specific approaches.
+Procedure
 
 </div>
 
@@ -178,11 +182,8 @@ You must use a local key, not one that you configured with platform-specific app
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    <div class="note">
-
-    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
-
-    </div>
+    > [!NOTE]
+    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
 
 2.  View the public SSH key:
 
@@ -198,11 +199,8 @@ You must use a local key, not one that you configured with platform-specific app
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    <div class="note">
-
-    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
-
-    </div>
+    > [!NOTE]
+    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -210,9 +208,11 @@ You must use a local key, not one that you configured with platform-specific app
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -220,11 +220,10 @@ You must use a local key, not one that you configured with platform-specific app
         Agent pid 31874
         ```
 
-        <div class="note">
-
-        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
-
         </div>
+
+        > [!NOTE]
+        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -234,9 +233,11 @@ You must use a local key, not one that you configured with platform-specific app
 
     Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -244,21 +245,50 @@ You must use a local key, not one that you configured with platform-specific app
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program.
+
+</div>
 
 # Obtaining the installation program
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    <div class="tip">
-
-    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
-
-    </div>
+    > [!TIP]
+    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -267,6 +297,10 @@ Before you install OpenShift Container Platform, download the installation file 
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -282,19 +316,36 @@ Before you install OpenShift Container Platform, download the installation file 
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    <div class="tip">
+    > [!TIP]
+    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
 
-    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
-
-    </div>
+</div>
 
 # Manually creating the installation configuration file
 
 Installing the cluster requires that you manually create the installation configuration file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
 - You have obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an installation directory to store your required installation assets in:
 
@@ -302,11 +353,8 @@ Installing the cluster requires that you manually create the installation config
     $ mkdir <installation_directory>
     ```
 
-    <div class="important">
-
-    You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
-
-    </div>
+    > [!IMPORTANT]
+    > You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
 2.  Edit the `install-config.yaml` file to set the `publish: Internal` parameter.
 
@@ -326,31 +374,37 @@ Installing the cluster requires that you manually create the installation config
 
 4.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
-    <div class="note">
-
-    You must name this configuration file `install-config.yaml`.
-
-    </div>
+    > [!NOTE]
+    > You must name this configuration file `install-config.yaml`.
 
 5.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
 
-    Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation configuration parameters for Google Cloud](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
+
+</div>
 
 ## Minimum resource requirements for cluster installation
 
 To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
-|---------------|------------------|------|-------------|---------|--------------------------------|
-| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
-| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
-| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
+| Machine | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|----|----|----|----|----|----|
+| Bootstrap | RHCOS | 4 | 16 GB | 100 GB | 300 |
+| Control plane | RHCOS | 4 | 16 GB | 100 GB | 300 |
+| Compute | RHCOS | 2 | 8 GB | 100 GB | 300 |
 
 Minimum resource requirements
 
@@ -360,41 +414,45 @@ Minimum resource requirements
 
 - As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
-<div class="note">
-
-In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
-
-- x86-64 architecture requires x86-64-v2 ISA
-
-- ARM64 architecture requires ARMv8.0-A ISA
-
-- ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
-
-- ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
-
-- s390x architecture requires IBM® z14 ISA
-
-If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
-
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
-
-</div>
+> [!NOTE]
+> In OpenShift Container Platform version 4.17, RHCOS uses RHEL version 10.2, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
+>
+> - x86-64 architecture requires x86-64-v2 ISA
+>
+> - ARM64 architecture requires ARMv8.0-A ISA
+>
+> - ppc64le architecture and RHCOS-10.2 requires IBM® Power10 ISA or higher
+>
+> - ppc64le architecture and RHCOS-9.8 requires IBM® Power9 ISA or higher
+>
+> - s390x architecture requires IBM® z14 ISA
+>
+> If a customer had installed OpenShift Container Platform with RHEL 9, they may use `ppc64le` architecture with IBM® Power9 ISA.
+>
+> For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
+
+</div>
 
 ## Tested instance types for Google Cloud
 
 OpenShift Container Platform supports specific Google Cloud instance types that have been validated for cluster deployment.
 
-<div class="note">
-
-Not all instance types are available in all regions and zones. For a detailed breakdown of which instance types are available in which zones, see [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available) (Google documentation).
-
-Some instance types require the use of Hyperdisk storage. If you use an instance type that requires Hyperdisk storage, all of the nodes in your cluster must support Hyperdisk storage, and you must change the default storage class to use Hyperdisk storage. For more information, see [machine series support for Hyperdisk](https://cloud.google.com/compute/docs/disks/hyperdisks#machine-type-support) (Google documentation). For instructions on modifying storage classes, see the "GCE PersistentDisk (gcePD) object definition" section in the Dynamic Provisioning page in *Storage*.
-
-</div>
+> [!NOTE]
+> Not all instance types are available in all regions and zones. For a detailed breakdown of which instance types are available in which zones, see [regions and zones](https://cloud.google.com/compute/docs/regions-zones#available) (Google documentation).
+>
+> Some instance types require the use of Hyperdisk storage. If you use an instance type that requires Hyperdisk storage, all of the nodes in your cluster must support Hyperdisk storage, and you must change the default storage class to use Hyperdisk storage. For more information, see [machine series support for Hyperdisk](https://cloud.google.com/compute/docs/disks/hyperdisks#machine-type-support) (Google documentation). For instructions on modifying storage classes, see the "GCE PersistentDisk (gcePD) object definition" section in the Dynamic Provisioning page in *Storage*.
 
 See the following machine series:
 
@@ -424,9 +482,11 @@ Consider the following when using a custom machine type:
 
 As part of the installation process, you specify the custom machine type in the `install-config.yaml` file.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `install-config.yaml` file with a custom machine type**
+<div class="title">
+
+Sample `install-config.yaml` file with a custom machine type
 
 </div>
 
@@ -449,15 +509,22 @@ controlPlane:
   replicas: 3
 ```
 
+</div>
+
 ## Enabling Shielded VMs
 
 You can use Shielded VMs when installing your OpenShift Container Platform cluster. Shielded VMs have extra security features including secure boot, firmware and integrity monitoring, and rootkit detection.
 
 For more information, see Google’s documentation on [Shielded VMs](https://cloud.google.com/shielded-vm).
 
-<div class="note">
+> [!NOTE]
+> Shielded VMs are currently not supported on clusters with 64-bit ARM infrastructures.
 
-Shielded VMs are currently not supported on clusters with 64-bit ARM infrastructures.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -490,15 +557,22 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
              secureBoot: Enabled
       ```
 
+</div>
+
 ## Enable Confidential VMs
 
 You can use Confidential VMs when installing your OpenShift Container Platform cluster. Confidential VMs encrypt data during processing.
 
 For more information, see Google’s documentation on [Confidential Computing](https://cloud.google.com/confidential-computing). You can enable Confidential VMs and Shielded VMs at the same time, although they are not dependent on each other.
 
-<div class="note">
+> [!NOTE]
+> Confidential VMs are currently not supported on 64-bit ARM architectures.
 
-Confidential VMs are currently not supported on 64-bit ARM architectures.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -548,9 +622,19 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
              onHostMaintenance: Terminate
       ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Additional Google Cloud configuration parameters](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-configuration-parameters-additional-gcp_installation-config-parameters-gcp)
+
+</div>
 
 ## Enabling a user-managed DNS
 
@@ -562,9 +646,25 @@ If you enable user-managed DNS during installation, the installation program pro
 
 For information about provisioning your DNS records for the API server and the Ingress services, see "Provisioning your own DNS records".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the `jq` package.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Before you deploy your cluster, use a text editor to open the `install-config.yaml` file and add the following stanza:
 
@@ -581,19 +681,26 @@ For information about provisioning your DNS records for the API server and the I
     `Enabled`
     Enables user-provisioned DNS management.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation configuration parameters for Google Cloud](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
+
+</div>
 
 ## Sample customized install-config.yaml file for Google Cloud
 
 To specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters, you can customize the `install-config.yaml` file.
 
-<div class="important">
-
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
-
-</div>
+> [!IMPORTANT]
+> This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
 
 ``` yaml
 apiVersion: v1
@@ -637,15 +744,43 @@ Specifies parameters that apply to the cluster networking configuration. If you 
 `platform`
 Specifies parameters that apply to the infrastructure platform that hosts the cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installation configuration parameters for GCP](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
 - [Enabling customer-managed encryption keys for a compute machine set](../../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-enabling-customer-managed-encryption_creating-machineset-gcp)
+
+</div>
 
 ## Create an Ingress Controller with global access on Google Cloud
 
 You can create an Ingress Controller that has global access to a Google Cloud cluster, which allows clients from any region to reach your cluster’s internal load balancer. Global access is available only to Ingress Controllers that use internal load balancers.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created the `install-config.yaml` and complete any modifications to it.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the directory that contains the installation program and create a manifest file:
 
@@ -669,9 +804,11 @@ You can create an Ingress Controller that has global access to a Google Cloud cl
     $ ls <installation_directory>/manifests/cluster-ingress-default-ingresscontroller.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -679,11 +816,15 @@ You can create an Ingress Controller that has global access to a Google Cloud cl
     cluster-ingress-default-ingresscontroller.yaml
     ```
 
+    </div>
+
 3.  Open the `cluster-ingress-default-ingresscontroller.yaml` file in an editor and enter a custom resource (CR) that describes the Operator configuration you want:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `clientAccess` configuration to `Global`**
+    <div class="title">
+
+    Sample `clientAccess` configuration to `Global`
 
     </div>
 
@@ -704,25 +845,44 @@ You can create an Ingress Controller that has global access to a Google Cloud cl
           type: LoadBalancerService
     ```
 
+    </div>
+
     - `gcp.clientAccess` is set to `Global` to provide global access for the Ingress Controller.
 
     - `scope` is set to `Internal` because global access is available only to Ingress Controllers that use internal load balancers.
+
+</div>
 
 ## Configuring the cluster-wide proxy during installation
 
 Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  <div class="note">
+  > [!NOTE]
+  > The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  >
+  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
-  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+</div>
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
+<div>
 
-  </div>
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -758,41 +918,39 @@ Production environments can deny direct access to the internet and instead have 
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    <div class="note">
+    > [!NOTE]
+    > The installation program does not support the proxy `readinessEndpoints` field.
 
-    The installation program does not support the proxy `readinessEndpoints` field.
-
-    </div>
-
-    <div class="note">
-
-    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
-
-    ``` terminal
-    $ ./openshift-install wait-for install-complete --log-level debug
-    ```
-
-    </div>
+    > [!NOTE]
+    > If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
+    >
+    > ``` terminal
+    > $ ./openshift-install wait-for install-complete --log-level debug
+    > ```
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
-    <div class="note">
+    > [!NOTE]
+    > Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
-    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
-
-    </div>
+</div>
 
 # Install the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -818,21 +976,38 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
+</div>
+
 # Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -852,21 +1027,38 @@ Download and install the new version of `oc`.
     C:\> path
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
+</div>
+
 # Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -878,11 +1070,8 @@ Download and install the new version of `oc`.
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    <div class="note">
-
-    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
-
-    </div>
+    > [!NOTE]
+    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
 
 5.  Extract the archive.
 
@@ -894,11 +1083,23 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
+
+</div>
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
@@ -913,6 +1114,14 @@ If you configured the `credentialsMode` parameter in the `install-config.yaml` f
 ## Manually creating long-term credentials
 
 You can put the Cloud Credential Operator (CCO) into manual mode before OpenShift Container Platform installation if the cloud identity and access management (IAM) APIs are not reachable, or if you prefer not to store an administrator-level credential secret in the cluster `kube-system` namespace.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the following granular permissions to the Google Cloud account that the installation program uses:
 
@@ -944,9 +1153,11 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
 
 2.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample configuration file snippet**
+    <div class="title">
+
+    Sample configuration file snippet
 
     </div>
 
@@ -956,6 +1167,8 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
     credentialsMode: Manual
     # ...
     ```
+
+    </div>
 
 3.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -995,9 +1208,11 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
 
     This command creates a YAML file for each `CredentialsRequest` object.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `CredentialsRequest` object**
+    <div class="title">
+
+    Sample `CredentialsRequest` object
 
     </div>
 
@@ -1019,11 +1234,15 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
       ...
     ```
 
+    </div>
+
 6.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `CredentialsRequest` object with secrets**
+    <div class="title">
+
+    Sample `CredentialsRequest` object with secrets
 
     </div>
 
@@ -1044,9 +1263,13 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
       ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Sample `Secret` object**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Sample `Secret` object
 
     </div>
 
@@ -1060,11 +1283,12 @@ You can put the Cloud Credential Operator (CCO) into manual mode before OpenShif
       service_account.json: <base64_encoded_gcp_service_account_file>
     ```
 
-    <div class="important">
-
-    Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
-
     </div>
+
+    > [!IMPORTANT]
+    > Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
+
+</div>
 
 ## Short-term credential configuration for a Google Cloud cluster
 
@@ -1076,9 +1300,14 @@ Cluster Operators use the credentials created by the CCO. The installation progr
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-<div class="note">
+> [!NOTE]
+> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
-The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1086,7 +1315,7 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
 
 - You have added one of the following authentication options to the Google Cloud account that the `ccoctl` utility uses:
 
@@ -1154,6 +1383,14 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
     - `storage.objects.list`
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
     ``` terminal
@@ -1166,11 +1403,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    <div class="note">
-
-    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
-
-    </div>
+    > [!NOTE]
+    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -1186,11 +1420,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
     - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    <div class="note">
-
-    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
-
-    </div>
+    > [!NOTE]
+    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -1198,15 +1429,27 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ chmod 775 ccoctl
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1230,25 +1473,38 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
+  </div>
+
+</div>
+
 ### Creating Google Cloud resources with the Cloud Credential Operator utility
 
 You can use the `ccoctl gcp create-all` command to automate the creation of Google Cloud resources.
 
-<div class="note">
+> [!NOTE]
+> By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
 
-By default, `ccoctl` creates objects in the directory in which the commands are run. To create the objects in a different directory, use the `--output-dir` flag. This procedure uses `<path_to_ccoctl_output_dir>` to refer to this directory.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Prerequisites**
+Prerequisites
 
 </div>
 
 You must have:
 
+</div>
+
 - Extracted and prepared the `ccoctl` binary.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set a `$RELEASE_IMAGE` variable with the release image from your installation file by running the following command:
 
@@ -1278,11 +1534,8 @@ You must have:
     `<path_to_directory_for_credentials_requests>`
     Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-    <div class="note">
-
-    This command might take a few moments to run.
-
-    </div>
+    > [!NOTE]
+    > This command might take a few moments to run.
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1312,11 +1565,18 @@ You must have:
     `<key_storage_method>`
     Specifies the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket. This parameter is optional.
 
-    <div class="note">
+    > [!NOTE]
+    > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
 
-    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1324,9 +1584,11 @@ You must have:
   $ ls <path_to_ccoctl_output_dir>/manifests
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1342,19 +1604,28 @@ You must have:
   openshift-machine-api-gcp-cloud-credentials-credentials.yaml
   ```
 
+  </div>
+
   You can verify that the IAM service accounts are created by querying Google Cloud. For more information, refer to Google Cloud documentation on listing IAM service accounts.
+
+</div>
 
 ### Restricting service account impersonation to the compute nodes service account
 
 After the Cloud Credential Operator utility (`ccoctl`) creates the resources for the cluster, you can restrict the Google Cloud `iam.serviceAccounts.actAs` permission that the `ccoctl` utility granted to the Machine API controller service account to the compute nodes service account.
 
-<div class="note">
-
-Restricting service account impersonation to the compute nodes service account is optional. If your organization does not require this change, you can continue to "Incorporating the Cloud Credential Operator utility manifests".
-
-</div>
+> [!NOTE]
+> Restricting service account impersonation to the compute nodes service account is optional. If your organization does not require this change, you can continue to "Incorporating the Cloud Credential Operator utility manifests".
 
 When the `ccoctl` utility assigns custom and Google Cloud predefined roles to OpenShift Container Platform components service accounts, it grants the `iam.serviceAccounts.actAs` permission to the Machine API controller service account at the Google Cloud project level. To reduce the scope of the `iam.serviceAccounts.actAs` permission, you identify the custom role of the Machine API controller service account and replace it with a role that has a more restricted set of permissions. To allow this component to work, you then grant the Machine API controller service account the Service Account User role on the service account of the compute nodes instead.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
@@ -1363,6 +1634,16 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
 - You have access to your `install-config.yaml` file.
 
 - You have logged in to the Google Cloud CLI (`gcloud`) as a user with permissions to manage service accounts and roles.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Obtain the following values from your `install-config.yaml` file:
 
@@ -1402,9 +1683,11 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
 
     where `<machine_api_role>` is the role ID of the custom role for the Machine API controller service account.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1431,13 +1714,12 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
     title: <project_name>-openshift-machine-api-gcp
     ```
 
+    </div>
+
     where `<project_name>` is the Google Cloud project name specified in the `install-config.yaml` file.
 
-    <div class="note">
-
-    This truncated example output might not match the permissions list for your cluster.
-
-    </div>
+    > [!NOTE]
+    > This truncated example output might not match the permissions list for your cluster.
 
 5.  Create a custom role that includes all of the permissions from your output except for the `iam.serviceAccounts.actAs` permission by running a command similar to the following:
 
@@ -1464,11 +1746,8 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
 
     In this example, the new role name is the original custom role name, `<machine_api_role>`, with a `_without_actas` string added to the end.
 
-    <div class="important">
-
-    This truncated example command might not match the permissions list for your cluster. You must use the list of permissions from the output of the `gcloud iam roles describe <machine_api_role> --project <project_name>` command on your cluster.
-
-    </div>
+    > [!IMPORTANT]
+    > This truncated example command might not match the permissions list for your cluster. You must use the list of permissions from the output of the `gcloud iam roles describe <machine_api_role> --project <project_name>` command on your cluster.
 
 6.  Remove the custom role that includes the `iam.serviceAccounts.actAs` permission from the Machine API controller service account by running the following command:
 
@@ -1499,9 +1778,11 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
       --filter="bindings.members:<machine_api_controller_service_account>"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1509,6 +1790,8 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
     ROLE
     projects/<project_name>/roles/<machine_api_role>_without_actas
     ```
+
+    </div>
 
 9.  Grant the Machine API controller service account the Service Account User role on the service account of the compute nodes by running the following command:
 
@@ -1520,15 +1803,35 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
 
     where `<compute_nodes_service_account>` is the service account for your compute nodes. This value is the `compute[0].platform.gcp.serviceAccount` parameter in your `install-config.yaml` file.
 
+</div>
+
 ### Incorporating the Cloud Credential Operator utility manifests
 
 To implement short-term security credentials managed outside the cluster for individual OpenShift Container Platform components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
 - You have configured the Cloud Credential Operator utility (`ccoctl`).
 
 - You have created the cloud provider resources that are required for your cluster with the `ccoctl` utility.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the following granular permissions to the Google Cloud account that the installation program uses:
 
@@ -1560,9 +1863,11 @@ To implement short-term security credentials managed outside the cluster for ind
 
 2.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample configuration file snippet**
+    <div class="title">
+
+    Sample configuration file snippet
 
     </div>
 
@@ -1572,6 +1877,8 @@ To implement short-term security credentials managed outside the cluster for ind
     credentialsMode: Manual
     # ...
     ```
+
+    </div>
 
 3.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -1593,13 +1900,20 @@ To implement short-term security credentials managed outside the cluster for ind
     $ cp -a /<path_to_ccoctl_output_dir>/tls .
     ```
 
+</div>
+
 # Deploying the cluster
 
 To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
-<div class="important">
+> [!IMPORTANT]
+> You can run the `create cluster` command of the installation program only once, during initial installation.
 
-You can run the `create cluster` command of the installation program only once, during initial installation.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1608,6 +1922,16 @@ You can run the `create cluster` command of the installation program only once, 
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You have verified that the cloud provider account on your host has the correct permissions to deploy the cluster. An account with incorrect permissions causes the installation process to fail with an error message that displays the missing permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Remove any existing Google Cloud credentials that do not use the service account key for the Google Cloud account that you configured for your cluster and that are stored in the following locations:
 
@@ -1636,23 +1960,26 @@ You can run the `create cluster` command of the installation program only once, 
 
     - If you included the `Service Account Key Admin` role, you can remove it.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 When the cluster deployment completes successfully:
 
+</div>
+
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-  <div class="important">
-
-  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
   The following example shows the expected output:
 
@@ -1667,6 +1994,10 @@ When the cluster deployment completes successfully:
 
   <div class="important">
 
+  <div class="title">
+
+  </div>
+
   - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
   - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
@@ -1677,15 +2008,30 @@ When the cluster deployment completes successfully:
 
 Use your cluster name and base domain to provision your DNS records. Point `api.<cluster_name>.<base_domain>.` to the API server IP address, and point `*.apps.<cluster_name>.<base_domain>.` to the Ingress service IP address.
 
-<div class="important">
+> [!IMPORTANT]
+> Before you use this feature, you must add the `userProvisionedDNS` parameter to the `install-config.yaml` file and enable the parameter. For more information, see "Enabling a user-managed DNS".
 
-Before you use this feature, you must add the `userProvisionedDNS` parameter to the `install-config.yaml` file and enable the parameter. For more information, see "Enabling a user-managed DNS".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You installed your cluster.
 
 - You installed the `gcloud` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Determine the infrastructure ID of your cluster by running the following command:
 
@@ -1762,7 +2108,19 @@ Before you use this feature, you must add the `userProvisionedDNS` parameter to 
 
 5.  Use the IP address to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Additional Google Cloud configuration parameters](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-configuration-parameters-additional-gcp_installation-config-parameters-gcp)
+
+</div>
 
 # Logging in to the cluster by using the CLI
 
@@ -1770,9 +2128,27 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -1791,9 +2167,11 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     $ oc whoami
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1801,13 +2179,35 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     system:admin
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - "Customize your cluster"
 
 - "Remote health reporting"
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Accessing the web console](../../web_console/web-console.xml#web-console)
+
+</div>
 
 # Telemetry access for OpenShift Container Platform
 

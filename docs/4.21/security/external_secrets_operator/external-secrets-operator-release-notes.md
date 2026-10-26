@@ -20,11 +20,8 @@ The following advisories are available for the External Secrets Operator for Red
 
 - [RHBA-2026:66382](https://access.redhat.com/errata/RHBA-2026:66382)
 
-<div class="note">
-
-This release updates the NTLM library that is used by the webhook provider for `NTLM` and Neg\`otiate authentication. This update modifies the initial handshake message, but the configuration settings, credentials, and secret synchronization behavior remain unchanged. Most NTLM servers are unaffected. However, webhook stores that use `NTLM` or `Negotiate` authentication might encounter errors if a server rejects the new handshake format.
-
-</div>
+> [!NOTE]
+> This release updates the NTLM library that is used by the webhook provider for `NTLM` and Neg\`otiate authentication. This update modifies the initial handshake message, but the configuration settings, credentials, and secret synchronization behavior remain unchanged. Most NTLM servers are unaffected. However, webhook stores that use `NTLM` or `Negotiate` authentication might encounter errors if a server rejects the new handshake format.
 
 ## New features and enhancements
 
@@ -87,17 +84,14 @@ With this release, the `ExternalSecretsManager` CR supports a `spec.features` fi
 
 The first supported feature is `UnsafeAllowGenericTargets`. When enabled, the Operator passes the `--unsafe-allow-generic-targets` flag to the `external-secrets` core controller, allowing `ExternalSecret` resources to sync secrets into Kubernetes resources other than `Secret` objects.
 
-<div class="important">
-
-`UnsafeAllowGenericTargets` is a pre-release feature in the upstream `external-secrets` project. The `UnsafeAllowGenericTargets` feature has the following limitations:
-
-- Only namespaced resources can be targeted, and only by an `ExternalSecret` CR in the same namespace as the target resource.
-
-- Performance is approximately 20% slower than standard `Secret` synchronization.
-
-- Custom resources are not encrypted at rest by Kubernetes. Use this feature only when the target resource does not contain sensitive credentials, or when encryption is provided by other means.
-
-</div>
+> [!IMPORTANT]
+> `UnsafeAllowGenericTargets` is a pre-release feature in the upstream `external-secrets` project. The `UnsafeAllowGenericTargets` feature has the following limitations:
+>
+> - Only namespaced resources can be targeted, and only by an `ExternalSecret` CR in the same namespace as the target resource.
+>
+> - Performance is approximately 20% slower than standard `Secret` synchronization.
+>
+> - Custom resources are not encrypted at rest by Kubernetes. Use this feature only when the target resource does not contain sensitive credentials, or when encryption is provided by other means.
 
 Enabling this feature also requires that the `external-secret` service account has the appropriate role-based access control (RBAC) permissions to create and update the target resource types. Without these permissions, secret synchronization for affected `ExternalSecret` CR resources fails.
 

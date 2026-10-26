@@ -12,6 +12,14 @@ With **Boot Order** in the **VirtualMachine details** page, you can:
 
 You can add items to a boot order list by using the web console.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
 2.  Click the **Virtual machines** tab.
@@ -30,17 +38,24 @@ You can add items to a boot order list by using the web console.
 
 9.  Click **Save**.
 
-    <div class="note">
+    > [!NOTE]
+    > If the virtual machine is running, changes to **Boot Order** will not take effect until you restart the virtual machine.
+    >
+    > You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
 
-    If the virtual machine is running, changes to **Boot Order** will not take effect until you restart the virtual machine.
-
-    You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
-
-    </div>
+</div>
 
 # Editing a boot order list in the web console
 
 You can edit the boot order list in the web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -62,19 +77,36 @@ You can edit the boot order list in the web console.
 
 8.  Click **Save**.
 
-    <div class="note">
+    > [!NOTE]
+    > If the virtual machine is running, changes to the boot order list will not take effect until you restart the virtual machine.
+    >
+    > You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
 
-    If the virtual machine is running, changes to the boot order list will not take effect until you restart the virtual machine.
-
-    You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
-
-    </div>
+</div>
 
 # Editing a boot order list in the YAML configuration file
 
 You can edit the boot order list in a YAML configuration file by using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the YAML configuration file for the virtual machine by running the following command:
 
@@ -109,9 +141,19 @@ You can edit the boot order list in a YAML configuration file by using the CLI.
 
 3.  Save the YAML file.
 
+</div>
+
 # Removing items from a boot order list in the web console
 
 Remove items from a boot order list by using the web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -127,10 +169,9 @@ Remove items from a boot order list by using the web console.
 
 7.  Click the **Remove** icon ![delete](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAAlElEQVQokZXSTQ7BUBTF8V8r6QIsw8dMUmzGQqxDlDIwtw8xFquRqEFfpUqpk5zBffm/e89NbuRVcywwCPUVB5wanAQ7FC3OA/PU/gtceVuP8QsucMe0hyUmzYwfFOEWYxgejui3+BiYUdyh85vWHXcosILZH0un1ZS8w4esHivB5kvnLDCixj6p8jTGob4oT+NcAQ+QBUqLPgmv0gAAAABJRU5ErkJggg==) next to the item. The item is removed from the boot order list and saved in the list of available boot sources. If you remove all items from the boot order list, the following message displays: **No resource selected. VM will attempt to boot from disks by order of appearance in YAML file.**
 
-    <div class="note">
+    > [!NOTE]
+    > If the virtual machine is running, changes to **Boot Order** will not take effect until you restart the virtual machine.
+    >
+    > You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
 
-    If the virtual machine is running, changes to **Boot Order** will not take effect until you restart the virtual machine.
-
-    You can view pending changes by clicking **View Pending Changes** on the right side of the **Boot Order** field. The **Pending Changes** banner at the top of the page displays a list of all changes that will be applied when the virtual machine restarts.
-
-    </div>
+</div>

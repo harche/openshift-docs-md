@@ -1,12 +1,9 @@
 To back up etcd data for hosted control planes, you can use the default volume snapshot approach, or you can take the etcd snapshot approach, which results in smaller backup artifacts.
 
-<div class="important">
-
-The etcd snapshot method is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The etcd snapshot method is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Overview of the etcd snapshot method
 
@@ -18,20 +15,28 @@ The etcd snapshot approach is driven by the `HCPEtcdBackup` custom resource and 
 
 For a more detailed comparison of the etcd snapshot method and the default volume snapshot method, see the following table.
 
-| Aspect            | Volume snapshot (default)                                                                     | etcd snapshot                                                                                           |
-|-------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| Backup mechanism  | CSI volume snapshots or a Kopia filesystem backup of etcd PVCs. One per replica; typically 3. | The `etcdctl snapshot save` mechanism produces a single snapshot file and uploads it to object storage. |
-| Portability       | Tied to the storage provider and the CSI driver.                                              | Storage-agnostic.                                                                                       |
-| Backup size       | Full PVC content. Highly available deployments have 3 PVCs.                                   | A single etcd database snapshot.                                                                        |
-| Restore mechanism | PVC restore from snapshot.                                                                    | `etcdutl snapshot restore` by using the init container.                                                 |
-| Requirements      | A CSI driver with snapshot support or a Kopia node agent.                                     | The `HCPEtcdBackup` feature gate must be enabled.                                                       |
-| Encryption        | Depends on the storage provider.                                                              | Optional Key Management Service (KMS) encryption for hosted control planes on AWS.                      |
+| Aspect | Volume snapshot (default) | etcd snapshot |
+|----|----|----|
+| Backup mechanism | CSI volume snapshots or a Kopia filesystem backup of etcd PVCs. One per replica; typically 3. | The `etcdctl snapshot save` mechanism produces a single snapshot file and uploads it to object storage. |
+| Portability | Tied to the storage provider and the CSI driver. | Storage-agnostic. |
+| Backup size | Full PVC content. Highly available deployments have 3 PVCs. | A single etcd database snapshot. |
+| Restore mechanism | PVC restore from snapshot. | `etcdutl snapshot restore` by using the init container. |
+| Requirements | A CSI driver with snapshot support or a Kopia node agent. | The `HCPEtcdBackup` feature gate must be enabled. |
+| Encryption | Depends on the storage provider. | Optional Key Management Service (KMS) encryption for hosted control planes on AWS. |
 
 Comparing the etcd snapshot and volume snapshot methods
 
 # Configuring the etcd snapshot method
 
 Before you can use the etcd snapshot method to back up your etcd data for hosted control planes, you must meet a few prerequisites and configure a plugin.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The `HCPEtcdBackup` feature gate is enabled in the HyperShift Operator.
 
@@ -52,6 +57,16 @@ Before you can use the etcd snapshot method to back up your etcd data for hosted
   - For hosted control planes on AWS, ensure that the OIDC provider configuration is accessible for any fixes that are needed after the restore process. If you use AWS S3 for backup storage, ensure that IAM roles and policies are configured according to "About installing OADP".
 
   - For hosted control planes on bare metal with the Agent provider, ensure that the `InfraEnv` resource is in a separate namespace from the hosted control plane namespace. Be careful to not delete the `InfraEnv` resource during the backup or restore processes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the OADP HyperShift plugin by creating a config map in the OADP namespace and specifying the etcd backup method, as shown in the following example:
 
@@ -82,19 +97,47 @@ Before you can use the etcd snapshot method to back up your etcd data for hosted
     $ oc apply -f hypershift-oadp-plugin-config.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring OADP](../../hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp-auto.xml#hcp-dr-prep-oadp-auto_hcp-disaster-recovery-oadp-auto)
 
 - [Automating the backup and restore process by using DPA](../../hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp-auto.xml#hcp-dr-oadp-dpa_hcp-disaster-recovery-oadp-auto)
 
 - [About installing OADP](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
 
+</div>
+
 # Backing up etcd data by using the etcd snapshot method
 
 You can start the etcd snapshot backup process from the hosted control planes command-line interface (CLI).
 
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
 - You completed the steps in "Configuring the etcd snapshot method".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Start the backup process by entering the following command:
 
@@ -111,15 +154,33 @@ You can start the etcd snapshot backup process from the hosted control planes co
 
   Next, the OADP HyperShift plugin and the `HCPEtcdBackup` CR work to complete the backup process.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring the etcd snapshot method](../../hosted_control_planes/hcp_high_availability/hcp-backup-etcd-snapshot.xml#hcp-backup-etcd-snapshot-config_hcp-backup-etcd-snapshot)
+
+</div>
 
 # Restoring etcd data by using the etcd snapshot method
 
 You can specify a backup to recover from or set a schedule to run the recovery process on.
 
 The process to recover a hosted control plane from an etcd snapshot backup involves the OADP HyperShift plugin, the Control Plane Operator, and the etcd init container.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You completed the steps in "Configuring the etcd snapshot method".
 
@@ -133,7 +194,15 @@ The process to recover a hosted control plane from an etcd snapshot backup invol
 
 - For bare metal on the Agent platform, your `InfraEnv` objects are preserved. Do not delete them.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Start the restore process by entering the following command:
 
@@ -149,6 +218,16 @@ The process to recover a hosted control plane from an etcd snapshot backup invol
 
   `<my_backup>`
   Specifies the name of the backup to use. If you run the restore process on a schedule, replace the `--from-backup` flag with the `--from-schedule` flag and specify the name of the schedule to use.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check that the etcd pods are running and that the cluster is functioning as expected by entering the following command:
 
@@ -180,18 +259,30 @@ The process to recover a hosted control plane from an etcd snapshot backup invol
     $ oc --kubeconfig <hosted_cluster_kubeconfig> get clusteroperators
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the etcd snapshot method](../../hosted_control_planes/hcp_high_availability/hcp-backup-etcd-snapshot.xml#hcp-backup-etcd-snapshot-config_hcp-backup-etcd-snapshot)
+
+</div>
 
 # Condition codes for the etcd snapshot method
 
 During the backup and restore process with the etcd snapshot method, you might see messages about the condition of hosted control planes resources.
 
-| Resource             | Condition, field, or annotation      | Meaning                                                                                                                                                                |
-|----------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `HCPEtcdBackup`      | `BackupCompleted`                    | Tracks the backup lifecycle: `InProgress`, `Succeeded`, `Failed`, `Rejected`, or `EtcdUnhealthy`.                                                                      |
-| `HostedControlPlane` | `EtcdSnapshotRestored`               | This value is set to `True` after etcd is restored from the snapshot.                                                                                                  |
-| `HostedCluster`      | `Status.LastSuccessfulEtcdBackupURL` | Persists the last snapshot URL. After a successful backup, the HyperShift Operator sets this condition.                                                                |
-| `HostedCluster`      | `etcd-snapshot-url`                  | The OADP plugin inserts this annotation during the backup process. During the restore process, the plugin reads this annotation to set the `RestoreSnapshotURL` value. |
-| `HostedCluster`      | `restored-from-backup`               | This annotation is set during the restore process. It is removed after the `HostedClusterRestoredFromBackup` condition is `True`.                                      |
+| Resource | Condition, field, or annotation | Meaning |
+|----|----|----|
+| `HCPEtcdBackup` | `BackupCompleted` | Tracks the backup lifecycle: `InProgress`, `Succeeded`, `Failed`, `Rejected`, or `EtcdUnhealthy`. |
+| `HostedControlPlane` | `EtcdSnapshotRestored` | This value is set to `True` after etcd is restored from the snapshot. |
+| `HostedCluster` | `Status.LastSuccessfulEtcdBackupURL` | Persists the last snapshot URL. After a successful backup, the HyperShift Operator sets this condition. |
+| `HostedCluster` | `etcd-snapshot-url` | The OADP plugin inserts this annotation during the backup process. During the restore process, the plugin reads this annotation to set the `RestoreSnapshotURL` value. |
+| `HostedCluster` | `restored-from-backup` | This annotation is set during the restore process. It is removed after the `HostedClusterRestoredFromBackup` condition is `True`. |
 
 Explanations of conditions during etcd snapshot backup and restore processes

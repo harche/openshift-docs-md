@@ -72,15 +72,19 @@ Changing the `ocpReleaseImage` of a `HostedCluster` while an upgrade is already 
 Connectivity loss after a DPU reboot or upgrade
 When a DPU reboots, the corresponding DPU worker node loses connectivity and a `NoExecute` taint is added to the host. Most pods are evicted immediately, but some daemon set pods remain and might lose connectivity until you re-create them. For example:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
 ``` terminal
 openshift-network-diagnostics   network-check-target-lpkp2   0/1   Running
 ```
+
+</div>
 
 DPU stuck in the NodeEffect or Initializing state
 The NVIDIA Maintenance Operator might fail to pause the machine config pool, which leaves the DPU in the `NodeEffect` or `Initializing` state. As a workaround, pause the `worker-dpu` machine config pool manually:

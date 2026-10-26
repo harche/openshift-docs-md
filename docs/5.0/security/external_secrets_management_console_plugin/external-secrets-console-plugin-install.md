@@ -1,20 +1,35 @@
 Install the External Secrets Management Console Plug-in from the OpenShift Container Platform web console **Software Catalog** to manage certificates and secrets across installed secrets management Operators.
 
-<div class="important">
-
-External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Installing the External Secrets Management Console Plug-in by using the web console
 
 You can use the web console to install the External Secrets Management Console Plug-in.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -38,8 +53,18 @@ You can use the web console to install the External Secrets Management Console P
 
     3.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that **External Secrets Management Console Plug-in** is available under **Plugins**.
 
 2.  Verify that all the installed secrets management Operators are listed when you click **External Secrets Management Console Plug-in**.
+
+</div>

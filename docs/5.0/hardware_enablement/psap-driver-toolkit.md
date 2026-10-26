@@ -44,7 +44,17 @@ Before the Driver Toolkit’s existence, users would install kernel packages in 
 
 The Driver Toolkit is also used by the Kernel Module Management (KMM), which is currently available as a community Operator in the software catalog. KMM supports out-of-tree and third-party kernel drivers and the support software for the underlying operating system. Users can create modules for KMM to build and deploy a driver container, as well as support software like a device plugin, or metrics. Modules can include a build config to build a driver container-based on the Driver Toolkit, or KMM can deploy a prebuilt driver container.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [How to use entitled image builds to build DriverContainers with UBI on OpenShift](https://www.redhat.com/en/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift)
+
+</div>
 
 # Pulling the Driver Toolkit container image
 
@@ -54,9 +64,27 @@ The `driver-toolkit` image is available from the [Container images section of th
 
 Instructions for pulling the `driver-toolkit` image from `registry.redhat.io` with `podman` or in OpenShift Container Platform can be found on the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/openshift4/driver-toolkit-rhel8/604009d6122bd89307e00865?container-tabs=gti). The driver-toolkit image for the latest minor release is tagged with the minor release version on `registry.redhat.io`, for example: `registry.redhat.io/openshift4/driver-toolkit-rhel8:v4.17`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You obtained the image [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use the `oc adm` command to extract the image URL of the `driver-toolkit` corresponding to a certain release:
 
@@ -72,9 +100,11 @@ Instructions for pulling the `driver-toolkit` image from `registry.redhat.io` wi
       $ oc adm release info quay.io/openshift-release-dev/ocp-release:4.17.z-aarch64 --image-for=driver-toolkit
       ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -82,19 +112,28 @@ Instructions for pulling the `driver-toolkit` image from `registry.redhat.io` wi
     quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:b53883ca2bac5925857148c4a1abc300ced96c222498e3bc134fe7ce3a1dd404
     ```
 
+    </div>
+
 2.  Obtain this image using a valid pull secret, such as the pull secret required to install OpenShift Container Platform:
 
     ``` terminal
     $ podman pull --authfile=path/to/pullsecret.json quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:<SHA>
     ```
 
+</div>
+
 # Using the Driver Toolkit
 
 Build and deploy the `simple-kmod` example kernel module by using the Driver Toolkit as a base image to learn the driver container workflow on an OpenShift Container Platform cluster.
 
-<div class="note">
+> [!NOTE]
+> The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, and `keyutils`, needed to sign a kernel module. However, in this example, the `simple-kmod` kernel module is not signed and therefore cannot be loaded on systems with `Secure Boot` enabled.
 
-The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, and `keyutils`, needed to sign a kernel module. However, in this example, the `simple-kmod` kernel module is not signed and therefore cannot be loaded on systems with `Secure Boot` enabled.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -105,6 +144,16 @@ The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, an
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged into the OpenShift CLI as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace. For example:
 
@@ -284,9 +333,11 @@ The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, an
         $ oc get pod -n simple-kmod-demo
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -298,15 +349,19 @@ The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, an
         simple-kmod-driver-container-p45cc   1/1     Running     0          40s
         ```
 
+        </div>
+
     2.  Execute the `lsmod` command in the driver container pod:
 
         ``` terminal
         $ oc exec -it pod/simple-kmod-driver-container-p45cc -- lsmod | grep simple
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -314,6 +369,10 @@ The Driver Toolkit includes the necessary dependencies, `openssl`, `mokutil`, an
         simple_procfs_kmod     16384  0
         simple_kmod            16384  0
         ```
+
+        </div>
+
+</div>
 
 # Additional resources
 

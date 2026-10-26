@@ -92,6 +92,14 @@ Network reconfiguration by using the `IPConfig` CR has the following limitations
 
 - You cannot perform an image-based upgrade and a network reconfiguration at the same time.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the Lifecycle Agent using the CLI](../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-install-operators.xml#cnf-image-based-upgrade-installing-lifecycle-agent-using-cli_install-operators)
+
+</div>

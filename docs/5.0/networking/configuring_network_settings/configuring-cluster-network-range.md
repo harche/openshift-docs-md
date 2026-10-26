@@ -10,21 +10,23 @@ The following limitations apply when modifying the cluster network IP address ra
 
 - Pods that are configured with an overridden default gateway must be recreated after the cluster network expands
 
-<div class="important">
-
-You cannot expand the service network CIDR range after installing the cluster, either directly or through the ServiceCIDR API. You must configure the service network CIDR during installation using the `install-config.yaml` file. To avoid service IP address exhaustion, ensure that your initial service network range is large enough to accommodate future growth.
-
-</div>
+> [!IMPORTANT]
+> You cannot expand the service network CIDR range after installing the cluster, either directly or through the ServiceCIDR API. You must configure the service network CIDR during installation using the `install-config.yaml` file. To avoid service IP address exhaustion, ensure that your initial service network range is large enough to accommodate future growth.
 
 # Expand the cluster network IP address range
 
 To expand the cluster network IP address range in OpenShift Container Platform to support more nodes, you can modify the cluster network CIDR mask using the `oc patch` command.
 
-<div class="note">
+> [!NOTE]
+> This change requires rolling out a new Operator configuration across the cluster, and can take up to 30 minutes to take effect.
+>
+> For clusters configured with cluster proxy, expanding the cluster network range also triggers a MachineConfigPool update that reboots all nodes. Plan this operation during a maintenance window to avoid service disruption.
 
-This change requires rolling out a new Operator configuration across the cluster, and can take up to 30 minutes to take effect.
+<div>
 
-For clusters configured with cluster proxy, expanding the cluster network range also triggers a MachineConfigPool update that reboots all nodes. Plan this operation during a maintenance window to avoid service disruption.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -34,6 +36,16 @@ For clusters configured with cluster proxy, expanding the cluster network range 
 
 - You have ensured that the cluster uses the OVN-Kubernetes network plugin.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To obtain the cluster network range and host prefix for your cluster, enter the following command:
 
     ``` terminal
@@ -41,15 +53,19 @@ For clusters configured with cluster proxy, expanding the cluster network range 
       -o jsonpath="{.items[0].spec.clusterNetwork}"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     [{"cidr":"10.217.0.0/22","hostPrefix":23}]
     ```
+
+    </div>
 
 2.  To expand the cluster network IP address range, enter the following command. Use the CIDR IP address range and host prefix returned from the output of the previous command.
 
@@ -74,9 +90,11 @@ For clusters configured with cluster proxy, expanding the cluster network range 
     `<prefix>`
     Specifies the current host prefix for your cluster. This value must be the same value for the `hostPrefix` field that you obtained from the previous step.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -90,15 +108,21 @@ For clusters configured with cluster proxy, expanding the cluster network range 
       }'
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     network.config.openshift.io/cluster patched
     ```
+
+    </div>
 
 3.  To confirm that the configuration is active, enter the following command. It can take up to 30 minutes for this change to take effect.
 
@@ -107,15 +131,21 @@ For clusters configured with cluster proxy, expanding the cluster network range 
       -o jsonpath="{.items[0].spec.clusterNetwork}"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     [{"cidr":"10.217.0.0/14","hostPrefix":23}]
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

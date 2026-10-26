@@ -12,9 +12,14 @@ You can add multi-architecture compute machines to a multi-architecture cluster 
 
 - Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is considered the secondary architecture.
 
-<div class="note">
+> [!NOTE]
+> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
-Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -22,13 +27,25 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 - You used the installation program to create a 64-bit ARM or 64-bit x86 single-architecture cluster with the multi-architecture installer binary.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the OpenShift CLI (`oc`).
 
 2.  Create a YAML file and add the configuration to create a compute machine set to control the 64-bit ARM or 64-bit x86 compute nodes in your cluster.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `MachineSet` object for an AWS 64-bit ARM or x86 compute node**
+    <div class="title">
+
+    Example `MachineSet` object for an AWS 64-bit ARM or x86 compute node
 
     </div>
 
@@ -96,6 +113,8 @@ Before adding a secondary architecture node to your cluster, it is recommended t
                 name: worker-user-data
     ```
 
+    </div>
+
     where:
 
     `<infrastructure_id>`
@@ -138,7 +157,15 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
     - Replace `<file_name>` with the name of the YAML file with compute machine set configuration. For example: `aws-arm64-machine-set-0.yaml`, or `aws-amd64-machine-set-0.yaml`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the new machines are running by running the following command:
 
@@ -148,9 +175,11 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
     The output must include the machine set that you created.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -159,11 +188,15 @@ Before adding a secondary architecture node to your cluster, it is recommended t
     <infrastructure_id>-aws-machine-set-0                   2        2      2          2  10m
     ```
 
+    </div>
+
 2.  You can check if the nodes are ready and schedulable by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
+
+</div>
 
 # Additional resources
 

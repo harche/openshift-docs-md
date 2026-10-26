@@ -6,23 +6,20 @@ To simplify BGP configuration, define named aliases for community values by usin
 
 The fields for the `community` custom resource are described in the following table.
 
-<div class="note">
+> [!NOTE]
+> The `community` CRD applies only to BGPAdvertisement.
 
-The `community` CRD applies only to BGPAdvertisement.
-
-</div>
-
-| Field                | Type     | Description                                                                                                                                                                                                                                                                     |
-|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `metadata.name`      | `string` | Specifies the name for the `community`.                                                                                                                                                                                                                                         |
-| `metadata.namespace` | `string` | Specifies the namespace for the `community`. Specify the same namespace that the MetalLB Operator uses.                                                                                                                                                                         |
-| `spec.communities`   | `string` | Specifies a list of BGP community aliases that can be used in BGPAdvertisements. A community alias consists of a pair of name (alias) and value (number:number). Link the BGPAdvertisement to a community alias by referring to the alias name in its `spec.communities` field. |
+| Field | Type | Description |
+|----|----|----|
+| `metadata.name` | `string` | Specifies the name for the `community`. |
+| `metadata.namespace` | `string` | Specifies the namespace for the `community`. Specify the same namespace that the MetalLB Operator uses. |
+| `spec.communities` | `string` | Specifies a list of BGP community aliases that can be used in BGPAdvertisements. A community alias consists of a pair of name (alias) and value (number:number). Link the BGPAdvertisement to a community alias by referring to the alias name in its `spec.communities` field. |
 
 MetalLB community custom resource
 
-| Field   | Type     | Description                                                |
-|---------|----------|------------------------------------------------------------|
-| `name`  | `string` | The name of the alias for the `community`.                 |
+| Field | Type | Description |
+|----|----|----|
+| `name` | `string` | The name of the alias for the `community`. |
 | `value` | `string` | The BGP `community` value corresponding to the given name. |
 
 CommunityAlias
@@ -33,9 +30,27 @@ To advertise an `IPAddressPool` by using the BGP protocol, configure MetalLB wit
 
 In the following example, the peer BGP router `doc-example-peer-community` receives one `203.0.113.200/32` route and one `fc00:f853:ccd:e799::1/128` route for each load-balancer IP address that MetalLB assigns to a service. A community alias is configured with the `NO_ADVERTISE` community.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`)
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an IP address pool.
 
@@ -126,3 +141,5 @@ In the following example, the peer BGP router `doc-example-peer-community` recei
         ``` terminal
         $ oc apply -f bgpadvertisement.yaml
         ```
+
+</div>

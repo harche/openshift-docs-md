@@ -2,17 +2,22 @@ You can upgrade clusters provisioned by the O-Cloud Manager by creating a new `C
 
 You can perform these upgrades by editing the `ProvisioningRequest` CR directly or through the Provisioning REST API. For more information about updating using the Provisioning API, see "Upgrade clusters with the Provisioning API".
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Prepare cluster templates for a new release
 
 Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom resource (CR) version for the target OpenShift Container Platform release. Because `ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation, upgrading to a new release requires creating new versions of these resources with updated cluster installation defaults, policy templates, and upgrade configuration.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The GitOps repository is configured and ArgoCD synchronizes resources to the hub cluster.
 
@@ -21,6 +26,16 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
 - For multi-node OpenShift Container Platform clusters in disconnected environments, you have mirrored the target release payload to your local registry.
 
 - For single-node OpenShift clusters in disconnected environments, you have mirrored the seed image to your local registry.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create new `clustertemplates` and `policytemplates` directories in the GitOps repository for the target release version, following the same directory structure as existing versions:
 
@@ -69,11 +84,8 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
     `<template_name>`
     Specifies the template name used for policy binding, such as `sno-ran-du`.
 
-    <div class="note">
-
-    The remaining configuration in the cluster instance defaults `ConfigMap` CR must remain identical to the original `ConfigMap` CR used for provisioning. For example, the `extraManifestsRefs` field must reference the same `ConfigMap` CR as the original version.
-
-    </div>
+    > [!NOTE]
+    > The remaining configuration in the cluster instance defaults `ConfigMap` CR must remain identical to the original `ConfigMap` CR used for provisioning. For example, the `extraManifestsRefs` field must reference the same `ConfigMap` CR as the original version.
 
 3.  Create policy templates for the new version with updated Operator index images and any new configuration manifests.
 
@@ -212,20 +224,17 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
         `ibuSpec.seedImageRef`
         Specifies the seed container image and target platform version for the upgrade.
 
-        <div class="important">
-
-        For disconnected environments, the spoke cluster cannot reach public registries. You must set `ibuSpec.seedImageRef.image` to the mirrored seed image in your local registry, for example:
-
-        ``` yaml
-            upgradeDefaults:
-              imageBasedGroupUpgrade:
-                ibuSpec:
-                  seedImageRef:
-                    image: "registry.example.com:5000/seed-repo/seed-image:<target_version>"
-                    version: "<target_version>"
-        ```
-
-        </div>
+        > [!IMPORTANT]
+        > For disconnected environments, the spoke cluster cannot reach public registries. You must set `ibuSpec.seedImageRef.image` to the mirrored seed image in your local registry, for example:
+        >
+        > ``` yaml
+        >     upgradeDefaults:
+        >       imageBasedGroupUpgrade:
+        >         ibuSpec:
+        >           seedImageRef:
+        >             image: "registry.example.com:5000/seed-repo/seed-image:<target_version>"
+        >             version: "<target_version>"
+        > ```
 
         `ibuSpec.oadpContent`
         References `ConfigMap` resources that contain OADP `Backup` and `Restore` CRs for application data protection during the upgrade.
@@ -323,25 +332,22 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
         `clusterVersion.cvSpec.desiredUpdate.version`
         Specifies the target OpenShift Container Platform version.
 
-        <div class="important">
-
-        For disconnected environments, the spoke cluster cannot reach public registries or the public update graph. You must set `cvSpec.desiredUpdate.image` to the mirrored release image in your local registry, set `cvSpec.upstream` to a local OpenShift Update Service (OSUS) instance, and keep the `cvSpec.desiredUpdate.version` aligned with the mirrored release:
-
-        ``` yaml
-            upgradeDefaults:
-              clusterVersion:
-                clusterUpgradeTimeout: 4h
-                cvSpec:
-                  channel: "stable-<target_version>"
-                  upstream: "https://osus.example.com/graph"
-                  desiredUpdate:
-                    version: "<target_version>"
-                    image: "registry.example.com:5000/ocp/release@sha256:<digest>"
-        ```
-
-        For more information about updating clusters in disconnected environments with OSUS, see "Updating a cluster in a disconnected environment using the OpenShift Update Service" in *Disconnected environments*.
-
-        </div>
+        > [!IMPORTANT]
+        > For disconnected environments, the spoke cluster cannot reach public registries or the public update graph. You must set `cvSpec.desiredUpdate.image` to the mirrored release image in your local registry, set `cvSpec.upstream` to a local OpenShift Update Service (OSUS) instance, and keep the `cvSpec.desiredUpdate.version` aligned with the mirrored release:
+        >
+        > ``` yaml
+        >     upgradeDefaults:
+        >       clusterVersion:
+        >         clusterUpgradeTimeout: 4h
+        >         cvSpec:
+        >           channel: "stable-<target_version>"
+        >           upstream: "https://osus.example.com/graph"
+        >           desiredUpdate:
+        >             version: "<target_version>"
+        >             image: "registry.example.com:5000/ocp/release@sha256:<digest>"
+        > ```
+        >
+        > For more information about updating clusters in disconnected environments with OSUS, see "Updating a cluster in a disconnected environment using the OpenShift Update Service" in *Disconnected environments*.
 
         `spec.templateParameterSchema`
         Defines the full schema for parameters that can be overridden for a specific cluster in the `ProvisioningRequest` CR. Use the `upgradeParameters` section to permit individual deployments to customize the upgrade timeout, intermediate version for EUS-to-EUS upgrades, or target release.
@@ -352,13 +358,20 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
         `clusterVersion.intermediateVersion`
         Specifies an intermediate OpenShift Container Platform version for EUS-to-EUS upgrades. If not specified, the controller auto-selects the highest valid intermediate version from the update graph.
 
-        <div class="note">
-
-        Do not configure both `imageBasedGroupUpgrade` and `clusterVersion` in the same `ClusterTemplate` CR. Each template must target a single cluster topology.
-
-        </div>
+        > [!NOTE]
+        > Do not configure both `imageBasedGroupUpgrade` and `clusterVersion` in the same `ClusterTemplate` CR. Each template must target a single cluster topology.
 
 5.  Commit the new resources to the GitOps repository and wait for ArgoCD to synchronize them to the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the new `ClusterTemplate` CR is validated on the hub cluster by running the following command:
 
@@ -366,9 +379,11 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
   $ oc get clustertemplates.clcm.openshift.io -n <template_namespace>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -377,17 +392,37 @@ Before you can upgrade a cluster, you must create a new `ClusterTemplate` custom
   sno-ran-du.v4-22-0-1   10m   Validated   Cluster template has been validated
   ```
 
+  </div>
+
   Verify that the STATE column shows `Validated`. If the state shows `Failed`, check the DETAILS column for the validation error.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Mirroring images for a disconnected installation](../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
 
 - [Updating a cluster in a disconnected environment using the OpenShift Update Service](../disconnected/updating/disconnected-update-osus.xml#updating-disconnected-cluster-osus)
 
+</div>
+
 # Upgrade a single-node cluster with image-based upgrade
 
 You can upgrade a single-node OpenShift Container Platform cluster by updating the `ProvisioningRequest` custom resource (CR) to reference a new `ClusterTemplate` CR version configured for image-based upgrade. The O-Cloud Manager creates an `ImageBasedGroupUpgrade` CR that orchestrates the upgrade using a seed image containing the pre-installed target version.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OpenShift API for Data Protection (OADP) Operator and the Lifecycle Agent (LCA) Operator are installed on the spoke cluster, deployed through Red Hat Advanced Cluster Management (RHACM) policies in the `PolicyGenerator`.
 
@@ -396,6 +431,16 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
 - The spoke cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
 
 - A new `ClusterTemplate` CR version is prepared for the target release with `upgradeDefaults.imageBasedGroupUpgrade` configured and the `templateParameterSchema.upgradeParameters` schema defined.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `ProvisioningRequest` CR to reference the new `ClusterTemplate` version by running the following command:
 
@@ -417,13 +462,18 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
 
     The O-Cloud Manager detects the version change and creates an `ImageBasedGroupUpgrade` CR to orchestrate the upgrade.
 
-    <div class="note">
+    > [!NOTE]
+    > The `upgradeDefaults` in the `ClusterTemplate` CR define default image-based group upgrade parameters including the seed image, OADP content references, rollback timeout, and the stage rollout plan.
 
-    The `upgradeDefaults` in the `ClusterTemplate` CR define default image-based group upgrade parameters including the seed image, OADP content references, rollback timeout, and the stage rollout plan.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the upgrade completed successfully by running the following command on the hub cluster:
 
@@ -431,9 +481,11 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
     $ oc get provisioningrequests.clcm.openshift.io <uuid>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -441,6 +493,8 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
     NAME                                   DISPLAYNAME   AGE    PROVISIONPHASE   PROVISIONDETAILS
     123e4567-e89b-12d3-a456-426614174000                 120m   fulfilled        Upgrade is completed
     ```
+
+    </div>
 
 2.  Verify the upgrade progress on the spoke cluster by running the following commands:
 
@@ -456,6 +510,16 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
         $ oc get mcp
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If the `provisioningPhase` shows `failed`, check the `UpgradeCompleted` condition for failure details by running the following command:
 
   ``` terminal
@@ -465,15 +529,33 @@ You can upgrade a single-node OpenShift Container Platform cluster by updating t
 
   The `reason` field categorizes the failure: `TimedOut` indicates the upgrade exceeded the configured timeout, `PreconditionChecksFailed` indicates unmet requirements such as schema validation or version mismatch, and `Failed` indicates a runtime error. The `message` field provides specific details about the cause.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding the image-based upgrade for single-node OpenShift clusters](../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
+
+</div>
 
 # Upgrade a multi-node cluster
 
 You can upgrade a multi-node OpenShift Container Platform cluster by updating the `ProvisioningRequest` custom resource (CR) to reference a new `ClusterTemplate` CR version configured for the target release.
 
 The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where the Cluster Version Operator (CVO) orchestrates the component-by-component update of the control plane and worker nodes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The `ManagedServiceAccount` addon is enabled on the hub cluster. To verify, check the `MultiClusterEngine` CR by running the following command:
 
@@ -489,6 +571,16 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
 - The spoke cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
 
 - A new `ClusterTemplate` CR version is prepared for the target release with `upgradeDefaults.clusterVersion` configured and the `templateParameterSchema.upgradeParameters` schema defined.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `ProvisioningRequest` CR to reference the new `ClusterTemplate` version by running the following command:
 
@@ -510,15 +602,20 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
 
     The O-Cloud Manager detects the version change and orchestrates the upgrade.
 
-    <div class="note">
+    > [!NOTE]
+    > For EUS-to-EUS upgrades, the O-Cloud Manager pauses all worker `MachineConfigPool` resources, triggers the intermediate version upgrade on the control plane first, then the target version upgrade, and finally unpauses the pools and waits for workers to update. This prevents workers from rebooting twice. If `intermediateVersion` is not specified in the `upgradeDefaults`, the controller auto-selects the highest valid intermediate version from the update graph.
+    >
+    > Upgrades might remain at the machine config pool phase for extended periods during control plane rolling reboots.
 
-    For EUS-to-EUS upgrades, the O-Cloud Manager pauses all worker `MachineConfigPool` resources, triggers the intermediate version upgrade on the control plane first, then the target version upgrade, and finally unpauses the pools and waits for workers to update. This prevents workers from rebooting twice. If `intermediateVersion` is not specified in the `upgradeDefaults`, the controller auto-selects the highest valid intermediate version from the update graph.
+</div>
 
-    Upgrades might remain at the machine config pool phase for extended periods during control plane rolling reboots.
+<div>
 
-    </div>
+<div class="title">
 
-<!-- -->
+Verification
+
+</div>
 
 1.  Verify that the upgrade completed successfully by running the following command on the hub cluster:
 
@@ -526,9 +623,11 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
     $ oc get provisioningrequests.clcm.openshift.io <uuid>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -536,6 +635,8 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
     NAME                                   DISPLAYNAME   AGE    PROVISIONPHASE   PROVISIONDETAILS
     123e4567-e89b-12d3-a456-426614174000                 180m   fulfilled        Upgrade to version 4.22.0 completed
     ```
+
+    </div>
 
 2.  Verify the upgrade progress on the spoke cluster by running the following commands:
 
@@ -551,6 +652,16 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
         $ oc get mcp
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If the `provisioningPhase` shows `failed`, check the `UpgradeCompleted` condition for failure details by running the following command:
 
   ``` terminal
@@ -560,25 +671,39 @@ The O-Cloud Manager patches the `ClusterVersion` CR on the spoke cluster, where 
 
   The `reason` field categorizes the failure: `TimedOut` indicates the upgrade exceeded the configured timeout, `PreconditionChecksFailed` indicates unmet requirements such as schema validation or version mismatch, and `Failed` indicates a runtime error. The `message` field provides specific details about the cause.
 
+</div>
+
 # Override upgrade parameters for a ProvisioningRequest
 
 You can override the default upgrade parameters defined in the `ClusterTemplate` custom resource (CR) by specifying `upgradeParameters` in the `ProvisioningRequest` CR. Override values are merged with the values you defined in the `upgradeDefaults` field of the `ClusterTemplate` CR, with the values specified in the `ProvisioningRequest` CR taking precedence.
 
-<div class="note">
+> [!NOTE]
+> For image-based upgrades, the `plan` field is an array and is merged by index position. Element 0 of the override merges with element 0 of the defaults, element 1 with element 1, and so on.
 
-For image-based upgrades, the `plan` field is an array and is merged by index position. Element 0 of the override merges with element 0 of the defaults, element 1 with element 1, and so on.
+> [!NOTE]
+> Both `upgradeDefaults` in the `ClusterTemplate` CR and `upgradeParameters` in the `ProvisioningRequest` CR must conform to the `templateParameterSchema` schema defined in the `ClusterTemplate` CR. Invalid overrides are rejected during validation.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-Both `upgradeDefaults` in the `ClusterTemplate` CR and `upgradeParameters` in the `ProvisioningRequest` CR must conform to the `templateParameterSchema` schema defined in the `ClusterTemplate` CR. Invalid overrides are rejected during validation.
+Prerequisites
 
 </div>
 
 - A `ClusterTemplate` CR is prepared for the target release with `upgradeDefaults` configured.
 
 - The `templateParameterSchema` in the `ClusterTemplate` CR exposes the `upgradeParameters` sub-schema.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ProvisioningRequest` CR to add or update the `spec.templateParameters.upgradeParameters` field by running the following command:
 
@@ -617,11 +742,8 @@ Both `upgradeDefaults` in the `ClusterTemplate` CR and `upgradeParameters` in th
 
         - Fields not specified in `upgradeParameters` are inherited from the `upgradeDefaults` field of the `ClusterTemplate` CR.
 
-          <div class="note">
-
-          During an in-progress image-based upgrade, all parameter changes are ignored until the upgrade completes or fails.
-
-          </div>
+          > [!NOTE]
+          > During an in-progress image-based upgrade, all parameter changes are ignored until the upgrade completes or fails.
 
     2.  For multi-node standard platform upgrades, you can override any upgrade parameter defined in the `templateParameterSchema`. The following example overrides the timeout and channel specifications:
 
@@ -635,13 +757,20 @@ Both `upgradeDefaults` in the `ClusterTemplate` CR and `upgradeParameters` in th
                   channel: "eus-4.22"
         ```
 
-        <div class="note">
-
-        During an in-progress upgrade, only `clusterVersion.clusterUpgradeTimeout` is recognized as an update. Other parameter changes are ignored until the upgrade completes or fails.
-
-        </div>
+        > [!NOTE]
+        > During an in-progress upgrade, only `clusterVersion.clusterUpgradeTimeout` is recognized as an update. Other parameter changes are ignored until the upgrade completes or fails.
 
 2.  Apply the updated `ProvisioningRequest` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the override is accepted by checking that the upgrade proceeds with the modified parameters by running the following command:
 
@@ -649,11 +778,31 @@ Both `upgradeDefaults` in the `ClusterTemplate` CR and `upgradeParameters` in th
   $ oc get provisioningrequests.clcm.openshift.io <uuid> -o jsonpath='{.status.conditions[?(@.type=="UpgradeCompleted")]}'
   ```
 
+</div>
+
 # Retry a failed single-node OpenShift cluster upgrade
 
 When an image-based upgrade fails on a single-node OpenShift cluster, the recovery path depends on the failure reason reported in the `UpgradeCompleted` condition. Input errors can be corrected in place, while runtime failures require reverting to the original `ClusterTemplate` version after the automatic rollback completes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The `UpgradeCompleted` condition on the `ProvisioningRequest` CR shows `reason: PreconditionChecksFailed`, `reason: Failed`, or `reason: TimedOut`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the `UpgradeCompleted` condition to determine the failure type by running the following command:
 
@@ -706,7 +855,15 @@ When an image-based upgrade fails on a single-node OpenShift cluster, the recove
         `<target_version>`
         Specifies the new `ClusterTemplate` version for the target release.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the upgrade completed successfully by running the following command on the hub cluster:
 
@@ -714,9 +871,11 @@ When an image-based upgrade fails on a single-node OpenShift cluster, the recove
     $ oc get provisioningrequests.clcm.openshift.io <uuid>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -724,6 +883,8 @@ When an image-based upgrade fails on a single-node OpenShift cluster, the recove
     NAME                                   DISPLAYNAME   AGE    PROVISIONPHASE   PROVISIONDETAILS
     123e4567-e89b-12d3-a456-426614174000                 240m   fulfilled        Upgrade is completed
     ```
+
+    </div>
 
 2.  Verify the upgrade progress on the spoke cluster by running the following commands:
 
@@ -739,13 +900,33 @@ When an image-based upgrade fails on a single-node OpenShift cluster, the recove
         $ oc get mcp
         ```
 
+</div>
+
 # Retry a failed multi-node cluster upgrade
 
 When a standard platform upgrade fails on a multi-node OpenShift Container Platform cluster, the recovery path depends on the failure reason reported in the `UpgradeCompleted` condition. Input errors can be corrected in place, while timeout failures require investigating the spoke cluster and determining whether to retry or reconcile a manually completed upgrade.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The `UpgradeCompleted` condition on the `ProvisioningRequest` CR shows `reason: PreconditionChecksFailed`, or `reason: TimedOut`.
 
 - You have access to the spoke cluster for investigation if the failure reason is `TimedOut`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the `UpgradeCompleted` condition to determine the failure type by running the following command:
 
@@ -796,20 +977,25 @@ When a standard platform upgrade fails on a multi-node OpenShift Container Platf
     `<target_version>`
     Specifies the new `ClusterTemplate` CR version for the target release.
 
-    <div class="note">
+    > [!NOTE]
+    > If the administrator completed the upgrade to the target version outside of the O-Cloud Manager, you can skip the revert and re-trigger steps. Instead, add or update a `ManagedCluster` label through the `ProvisioningRequest` `clusterInstanceParameters` to trigger reconciliation:
+    >
+    > ``` terminal
+    > $ oc patch provisioningrequests.clcm.openshift.io <uuid> --type merge \
+    >   -p '{"spec":{"templateParameters":{"clusterInstanceParameters":{"extraLabels":{"ManagedCluster":{"upgrade-reconcile":"true"}}}}}}'
+    > ```
+    >
+    > The O-Cloud Manager detects that the spoke cluster is already running the target version and transitions the `ProvisioningRequest` CR to `provisioningPhase: fulfilled`.
 
-    If the administrator completed the upgrade to the target version outside of the O-Cloud Manager, you can skip the revert and re-trigger steps. Instead, add or update a `ManagedCluster` label through the `ProvisioningRequest` `clusterInstanceParameters` to trigger reconciliation:
+</div>
 
-    ``` terminal
-    $ oc patch provisioningrequests.clcm.openshift.io <uuid> --type merge \
-      -p '{"spec":{"templateParameters":{"clusterInstanceParameters":{"extraLabels":{"ManagedCluster":{"upgrade-reconcile":"true"}}}}}}'
-    ```
+<div>
 
-    The O-Cloud Manager detects that the spoke cluster is already running the target version and transitions the `ProvisioningRequest` CR to `provisioningPhase: fulfilled`.
+<div class="title">
 
-    </div>
+Verification
 
-<!-- -->
+</div>
 
 1.  Verify that the upgrade completed successfully by running the following command on the hub cluster:
 
@@ -817,9 +1003,11 @@ When a standard platform upgrade fails on a multi-node OpenShift Container Platf
     $ oc get provisioningrequests.clcm.openshift.io <uuid>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -827,6 +1015,8 @@ When a standard platform upgrade fails on a multi-node OpenShift Container Platf
     NAME                                   DISPLAYNAME   AGE    PROVISIONPHASE   PROVISIONDETAILS
     123e4567-e89b-12d3-a456-426614174000                 300m   fulfilled        Upgrade to version 4.22.0 completed
     ```
+
+    </div>
 
 2.  Verify the upgrade progress on the spoke cluster by running the following commands:
 
@@ -842,15 +1032,35 @@ When a standard platform upgrade fails on a multi-node OpenShift Container Platf
         $ oc get mcp
         ```
 
+</div>
+
 # Upgrade clusters with the Provisioning API
 
 You can trigger a cluster upgrade through the Provisioning REST API by sending an update request with a new `templateVersion` that references a `ClusterTemplate` CR configured for the target release. Because `ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation, a new `ClusterTemplate` CR version must be prepared for the target release before sending the upgrade request. This method is used by SMO frameworks and external automation systems that manage cluster upgrades programmatically.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You authenticated to the O-Cloud Manager REST API and set the `MY_TOKEN` environment variable.
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled`.
 
 - A new `ClusterTemplate` CR version configured for the target OpenShift Container Platform release exists on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the O-Cloud Manager API hostname by running the following command:
 
@@ -901,11 +1111,8 @@ You can trigger a cluster upgrade through the Provisioning REST API by sending a
 
     - All other fields remain unchanged unless the new template requires different parameter values.
 
-      <div class="note">
-
-      The `PUT` request replaces the entire provisioning request. Retrieve the current state first, then send the complete modified payload. Do not send partial updates.
-
-      </div>
+      > [!NOTE]
+      > The `PUT` request replaces the entire provisioning request. Retrieve the current state first, then send the complete modified payload. Do not send partial updates.
 
 5.  Send the updated provisioning request by running the following command:
 
@@ -917,6 +1124,16 @@ You can trigger a cluster upgrade through the Provisioning REST API by sending a
       -d @current-request.json | jq
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Query the provisioning request status and verify that the upgrade completes by running the following command:
 
   ``` terminal
@@ -925,3 +1142,5 @@ You can trigger a cluster upgrade through the Provisioning REST API by sending a
   ```
 
   The `provisioningPhase` transitions from `progressing` to `fulfilled` when the upgrade completes successfully.
+
+</div>

@@ -2,6 +2,14 @@ Prepare your clusters for the upgrade by installing the Lifecycle Agent and the 
 
 To install the OADP Operator with the non-GitOps method, see "Installing the OADP Operator".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
 
 - [About backup and snapshot locations and their secrets](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#oadp-about-backup-snapshot-locations_installing-oadp-ocs)
@@ -10,13 +18,33 @@ To install the OADP Operator with the non-GitOps method, see "Installing the OAD
 
 - [Creating a Restore CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#oadp-creating-restore-cr_restoring-applications)
 
+</div>
+
 # Installing the Lifecycle Agent by using the CLI
 
 You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Namespace` object YAML file for the Lifecycle Agent:
 
@@ -75,7 +103,15 @@ You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
         $ oc create -f <subscription_filename>.yaml
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To verify that the installation succeeded, inspect the CSV resource by running the following command:
 
@@ -85,7 +121,7 @@ You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
 
     Example output:
 
-<!-- -->
+</div>
 
     NAME                              DISPLAY                     VERSION               REPLACES                           PHASE
     lifecycle-agent.v{product-version}.0           Openshift Lifecycle Agent   {product-version}.0                Succeeded
@@ -107,7 +143,25 @@ You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
 
 You can use the OpenShift Container Platform web console to install the Lifecycle Agent.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -117,7 +171,15 @@ You can use the OpenShift Container Platform web console to install the Lifecycl
 
 4.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To confirm that the installation is successful:
 
@@ -125,11 +187,10 @@ You can use the OpenShift Container Platform web console to install the Lifecycl
 
     2.  Ensure that the Lifecycle Agent is listed in the **openshift-lifecycle-agent** project with a **Status** of **InstallSucceeded**.
 
-        <div class="note">
+        > [!NOTE]
+        > During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
 
-        During installation an Operator might display a **Failed** status. If the installation later succeeds with an **InstallSucceeded** message, you can ignore the **Failed** message.
-
-        </div>
+</div>
 
 If the Operator is not installed successfully:
 
@@ -140,6 +201,14 @@ If the Operator is not installed successfully:
 # Installing the Lifecycle Agent with GitOps ZTP
 
 Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an image-based upgrade.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
@@ -244,9 +313,19 @@ Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an i
     [...]
     ```
 
+</div>
+
 # Installing and configuring the OADP Operator with GitOps ZTP
 
 Install and configure the OADP Operator with GitOps ZTP before starting the upgrade.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
@@ -536,3 +615,5 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
 
         `bucket` and `prefix`
         The `bucket` defines the bucket name that is created in S3 backend, for example `ibu`. The `prefix` defines the name of the subdirectory that will be automatically created in the `bucket`. The combination of `bucket` and `prefix` must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, as shown in the example.
+
+</div>

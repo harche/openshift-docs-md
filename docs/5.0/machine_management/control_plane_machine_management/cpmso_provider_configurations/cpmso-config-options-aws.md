@@ -10,11 +10,8 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for an Amazon Web Services (AWS) cluster.
 
-<div class="note">
-
-When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
-
-</div>
+> [!NOTE]
+> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
 
 You can omit any field that has a value set in the failure domain section of the CR.
 
@@ -24,9 +21,11 @@ In the following example, the `<cluster_id>` string is the infrastructure ID. Th
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample AWS `providerSpec` values**
+<div class="title">
+
+Sample AWS `providerSpec` values
 
 </div>
 
@@ -91,6 +90,8 @@ spec:
               name: master-user-data
 ```
 
+</div>
+
 where:
 
 `<ami_id_string>`
@@ -114,11 +115,8 @@ Specifies the cloud provider platform type. Do not change this value.
 `spec.template.spec.providerSpec.value.loadBalancers`
 Specifies the internal (`int`) and external (`ext`) load balancers for the cluster.
 
-<div class="note">
-
-You can omit the external (`ext`) load balancer parameters on private OpenShift Container Platform clusters.
-
-</div>
+> [!NOTE]
+> You can omit the external (`ext`) load balancer parameters on private OpenShift Container Platform clusters.
 
 `spec.template.spec.providerSpec.value.placement`
 Specifies where to create the control plane instance in AWS. The following keys in this stanza specify additional details:
@@ -148,11 +146,8 @@ This parameter is in the failure domain configuration and has an empty value her
 
 If the cluster uses a failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using a failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
 
-<div class="note">
-
-If the failure domain configuration does not specify a value, the control plane machines use the value in the provider specification.
-
-</div>
+> [!NOTE]
+> If the failure domain configuration does not specify a value, the control plane machines use the value in the provider specification.
 
 `spec.template.spec.providerSpec.value.userDataSecret`
 Specifies the control plane user data secret. Do not change this value.
@@ -165,9 +160,11 @@ The control plane machine set concept of a failure domain is analogous to the AW
 
 When configuring AWS failure domains in the control plane machine set, you must specify the availability zone name and the subnet to use.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample AWS failure domain values**
+<div class="title">
+
+Sample AWS failure domain values
 
 </div>
 
@@ -203,6 +200,8 @@ spec:
         platform: AWS
 # ...
 ```
+
+</div>
 
 where:
 

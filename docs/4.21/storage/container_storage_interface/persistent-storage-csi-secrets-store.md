@@ -12,11 +12,21 @@ For more information about CSI inline volumes, see "CSI inline ephemeral volumes
 
 Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CSI inline ephemeral volumes](../../storage/container_storage_interface/ephemeral-storage-csi-inline.xml#ephemeral-storage-csi-inline)
 
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+</div>
 
 ## Secrets store providers
 
@@ -34,11 +44,8 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 - HashiCorp Vault
 
-<div class="note">
-
-Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the "Red Hat third-party support policy".
-
-</div>
+> [!NOTE]
+> Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the "Red Hat third-party support policy".
 
 # About CSI
 
@@ -62,13 +69,20 @@ The following secrets store providers support using the Secrets Store CSI driver
 
 To enable communication between Secrets Store CSI driver and the secrets store provider, configure Virtual Private Cloud (VPC) endpoints or equivalent connectivity to the corresponding secrets store provider, the OpenID Connect (OIDC) issuer, and the Secure Token Service (STS). The exact configuration depends on the secrets store provider, the authentication method, and the type of disconnected cluster.
 
-<div class="note">
+> [!NOTE]
+> For more information about disconnected environments, see "About disconnected environments".
 
-For more information about disconnected environments, see "About disconnected environments".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [About disconnected environments](../../disconnected/about.xml#about)
+
+</div>
 
 # Support for network policies
 
@@ -76,18 +90,36 @@ The Secrets Store CSI Driver Operator uses pre-defined `NetworkPolicies` to cont
 
 The following table summarizes the default ingress and egress rules:
 
-| Component                         | Ingress ports | Egress ports | Description                                           |
-|-----------------------------------|---------------|--------------|-------------------------------------------------------|
-| Secrets Store CSI Driver Operator | `8443`        | `6443`       | Accesses metrics and communicates with the API server |
-| Secrets Store CSI driver          | `8095`        | `6443`       | Accesses metrics and communicates with the API server |
+| Component | Ingress ports | Egress ports | Description |
+|----|----|----|----|
+| Secrets Store CSI Driver Operator | `8443` | `6443` | Accesses metrics and communicates with the API server |
+| Secrets Store CSI driver | `8095` | `6443` | Accesses metrics and communicates with the API server |
 
 # Install the Secrets Store CSI driver
 
 To enable OpenShift Container Platform to mount secrets from external secret management systems, install the Secrets Store CSI Driver Operator and create a `ClusterCSIDriver` instance.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the Secrets Store CSI Driver Operator:
 
@@ -130,15 +162,45 @@ To enable OpenShift Container Platform to mount secrets from external secret man
 
     3.  Click **Create**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Providing sensitive data to pods by using an external secrets store](../../nodes/pods/nodes-pods-secrets-store.xml#nodes-pods-secrets-store)
+
+</div>
 
 # Uninstall the Secrets Store CSI Driver Operator
 
 To remove the Secrets Store CSI Driver Operator and free cluster resources, uninstall the Operator after stopping applications and removing the CSI driver.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop all application pods that use the `secrets-store.csi.k8s.io` provider.
 
@@ -156,11 +218,8 @@ To remove the Secrets Store CSI Driver Operator and free cluster resources, unin
 
 5.  Uninstall the Secrets Store CSI Driver Operator:
 
-    <div class="note">
-
-    Before you can uninstall the Operator, you must remove the CSI driver first.
-
-    </div>
+    > [!NOTE]
+    > Before you can uninstall the Operator, you must remove the CSI driver first.
 
     1.  Click **Ecosystem** → **Installed Operators**.
 
@@ -171,6 +230,8 @@ To remove the Secrets Store CSI Driver Operator and free cluster resources, unin
     4.  When prompted on the **Uninstall Operator** window, click the **Uninstall** button to remove the Operator from the namespace. Any applications deployed by the Operator on the cluster need to be cleaned up manually.
 
         After uninstalling, the Secrets Store CSI Driver Operator is no longer listed in the **Installed Operators** section of the web console.
+
+</div>
 
 # Additional resources
 

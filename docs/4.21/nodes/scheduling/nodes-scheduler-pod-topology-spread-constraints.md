@@ -40,9 +40,11 @@ When configuring topology spread constraints, you can specify which pods to grou
 
 The following examples demonstrate pod topology spread constraint configurations.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example to distribute pods that match the specified labels based on their zone**
+<div class="title">
+
+Example to distribute pods that match the specified labels based on their zone
 
 </div>
 
@@ -76,6 +78,8 @@ spec:
         drop: [ALL]
 ```
 
+</div>
+
 where:
 
 `spec.topologySpreadConstraints.maxSkew`
@@ -93,9 +97,11 @@ Specifies {key,value} pairs for matching. Pods that match this label selector ar
 `spec.topologySpreadConstraints.matchLabelKeys`
 Specifies a list of pod label keys to select which pods to calculate spreading over.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example demonstrating a single pod topology spread constraint**
+<div class="title">
+
+Example demonstrating a single pod topology spread constraint
 
 </div>
 
@@ -127,11 +133,15 @@ spec:
         drop: [ALL]
 ```
 
+</div>
+
 The previous example defines a `Pod` spec with a one pod topology spread constraint. It matches on pods labeled `region: us-east`, distributes among zones, specifies a skew of `1`, and does not schedule the pod if it does not meet these requirements.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example demonstrating multiple pod topology spread constraints**
+<div class="title">
+
+Example demonstrating multiple pod topology spread constraints
 
 </div>
 
@@ -168,6 +178,8 @@ spec:
       capabilities:
         drop: [ALL]
 ```
+
+</div>
 
 The previous example defines a `Pod` spec with two pod topology spread constraints. Both match on pods labeled `region: us-east`, specify a skew of `1`, and do not schedule the pod if it does not meet these requirements.
 

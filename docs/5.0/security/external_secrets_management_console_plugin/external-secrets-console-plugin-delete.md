@@ -1,22 +1,24 @@
 Delete certificates and secrets from installed secrets management Operators using the External Secrets Management Console Plug-in in the OpenShift Container Platform web console.
 
-<div class="important">
-
-External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Deleting certificates and secrets by using External Secrets Management Console Plug-in
 
 You can delete certificates and secrets from installed secrets management Operators across your clusters by using the OpenShift Container Platform web console.
 
-<div class="important">
+> [!IMPORTANT]
+> External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-External Secrets Management Console Plug-in is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -25,6 +27,16 @@ For more information about the support scope of Red Hat Technology Preview featu
 - You have installed the External Secrets Management Console Plug-in.
 
 - You have installed at least one secrets management Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -36,10 +48,20 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 5.  Click **Delete**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Select the secrets management Operator whose custom resource you deleted.
 
 3.  Verify that the deleted custom resource no longer appears in the Operator details view.
+
+</div>

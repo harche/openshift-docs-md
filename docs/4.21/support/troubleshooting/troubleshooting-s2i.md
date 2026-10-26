@@ -4,6 +4,14 @@ A cluster administrator can observe the S2I stages to determine where in the S2I
 
 Use Source-to-Image (S2I) to build reproducible, Docker-formatted container images. You can create ready-to-run images by injecting application source code into a container image and assembling a new image. The new image incorporates the base image (the builder) and built source.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To determine where in the S2I process a failure occurs, you can observe the state of the pods relating to each of the following S2I stages:
 
     1.  **During the build configuration stage**, a build pod is used to create an application container image from a base image and application source code.
@@ -20,17 +28,37 @@ Use Source-to-Image (S2I) to build reproducible, Docker-formatted container imag
 
     3.  Review logs corresponding to the failed stage.
 
+</div>
+
 # Gather Source-to-Image diagnostic data
 
 The S2I tool runs a build pod and a deployment pod in sequence. The deployment pod is responsible for deploying the application pods based on the application container image created in the build stage.
 
 Watch build, deployment and application pod status to determine where in the S2I process a failure occurs. Then, focus diagnostic data collection accordingly.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Watch the pod status throughout the S2I process to determine at which stage a failure occurs:
 
@@ -48,11 +76,8 @@ Watch build, deployment and application pod status to determine where in the S2I
       $ oc logs -f pod/<application_name>-<build_number>-build
       ```
 
-      <div class="note">
-
-      Alternatively, you can review the build configuration’s logs using `oc logs -f bc/<application_name>`. The build configuration’s logs include the logs from the build pod.
-
-      </div>
+      > [!NOTE]
+      > Alternatively, you can review the build configuration’s logs using `oc logs -f bc/<application_name>`. The build configuration’s logs include the logs from the build pod.
 
     - **If the deployment pod fails**, review the deployment pod’s logs:
 
@@ -60,17 +85,16 @@ Watch build, deployment and application pod status to determine where in the S2I
       $ oc logs -f pod/<application_name>-<build_number>-deploy
       ```
 
-      <div class="note">
-
-      Alternatively, you can review the deployment configuration’s logs using `oc logs -f dc/<application_name>`. This outputs logs from the deployment pod until the deployment pod completes successfully. The command outputs logs from the application pods if you run it after the deployment pod has completed. After a deployment pod completes, its logs can still be accessed by running `oc logs -f pod/<application_name>-<build_number>-deploy`.
-
-      </div>
+      > [!NOTE]
+      > Alternatively, you can review the deployment configuration’s logs using `oc logs -f dc/<application_name>`. This outputs logs from the deployment pod until the deployment pod completes successfully. The command outputs logs from the application pods if you run it after the deployment pod has completed. After a deployment pod completes, its logs can still be accessed by running `oc logs -f pod/<application_name>-<build_number>-deploy`.
 
     - **If an application pod fails, or if an application is not behaving as expected within a running application pod**, review the application pod’s logs:
 
       ``` terminal
       $ oc logs -f pod/<application_name>-<build_number>-<random_string>
       ```
+
+</div>
 
 # Gather application diagnostic data to investigate application failures
 
@@ -82,11 +106,27 @@ Application failures can occur within running application pods. In these situati
 
 - Test application functionality interactively and run diagnostic tools in an application container.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List events relating to a specific application pod. The following example retrieves events for an application pod named `my-app-1-akdlg`:
 
@@ -114,11 +154,8 @@ Application failures can occur within running application pods. In these situati
         $ oc debug dc/my-deployment-configuration --as-root -- cat /var/log/my-application.log
         ```
 
-        <div class="note">
-
-        You can access an interactive shell with root access within the debug pod if you run `oc debug dc/<deployment_configuration> --as-root` without appending `-- <command>`.
-
-        </div>
+        > [!NOTE]
+        > You can access an interactive shell with root access within the debug pod if you run `oc debug dc/<deployment_configuration> --as-root` without appending `-- <command>`.
 
 4.  Test application functionality interactively and run diagnostic tools, in an application container with an interactive shell.
 
@@ -132,11 +169,8 @@ Application failures can occur within running application pods. In these situati
 
     3.  Run diagnostic binaries available within the container.
 
-        <div class="note">
-
-        Root privileges are required to run some diagnostic binaries. In these situations you can start a debug pod with root access, based on a problematic pod’s `DeploymentConfig` object, by running `oc debug dc/<deployment_configuration> --as-root`. Then, you can run diagnostic binaries as root from within the debug pod.
-
-        </div>
+        > [!NOTE]
+        > Root privileges are required to run some diagnostic binaries. In these situations you can start a debug pod with root access, based on a problematic pod’s `DeploymentConfig` object, by running `oc debug dc/<deployment_configuration> --as-root`. Then, you can run diagnostic binaries as root from within the debug pod.
 
 5.  If diagnostic binaries are not available within a container, you can run a host’s diagnostic binaries within a container’s namespace by using `nsenter`. The following example runs `ip ad` within a container’s namespace, using the host\`s `ip` binary.
 
@@ -152,11 +186,8 @@ Application failures can occur within running application pods. In these situati
         # chroot /host
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>` instead.
 
     3.  Determine the target container ID:
 
@@ -176,11 +207,10 @@ Application failures can occur within running application pods. In these situati
         # nsenter -n -t 31150 -- ip ad
         ```
 
-        <div class="note">
+        > [!NOTE]
+        > Running a host’s diagnostic binaries within a container’s namespace is only possible if you are using a privileged container such as a debug node.
 
-        Running a host’s diagnostic binaries within a container’s namespace is only possible if you are using a privileged container such as a debug node.
-
-        </div>
+</div>
 
 # Additional resources
 

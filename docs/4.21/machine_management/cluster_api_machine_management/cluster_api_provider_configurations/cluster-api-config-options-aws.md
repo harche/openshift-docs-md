@@ -1,12 +1,9 @@
 You can change the configuration of your Amazon Web Services (AWS) Cluster API machines by updating values in the Cluster API custom resource manifests.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The YAML file examples show configurations for an Amazon Web Services cluster.
 
@@ -117,9 +114,11 @@ EFA instances do not require placement groups, and you can use placement groups 
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample EFA instance and placement group configuration**
+<div class="title">
+
+Sample EFA instance and placement group configuration
 
 </div>
 
@@ -137,6 +136,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.instanceType`
@@ -151,9 +152,14 @@ Specifies the name of the existing AWS placement group to deploy machines in.
 `spec.template.spec.placementGroupPartition`
 Specifies the partition number of the existing AWS placement group where you want your machines deployed. Setting a value for the parameter is optional.
 
-<div class="note">
+> [!NOTE]
+> Ensure that the rules and limitations for the type of placement group that you create are compatible with your intended use case. For more information, see "Placement groups for your Amazon EC2 instances".
 
-Ensure that the rules and limitations for the type of placement group that you create are compatible with your intended use case. For more information, see "Placement groups for your Amazon EC2 instances".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -163,21 +169,22 @@ Ensure that the rules and limitations for the type of placement group that you c
 
 - [Supported instance types (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types)
 
+</div>
+
 ## Amazon EC2 Instance Metadata Service configuration options
 
 You can restrict the version of the Amazon EC2 Instance Metadata Service (IMDS) that machines on Amazon Web Services (AWS) clusters use. Machines can require the use of IMDSv2, or allow the use of IMDSv1 in addition to IMDSv2.
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
-<div class="important">
+> [!IMPORTANT]
+> Before creating machines that require IMDSv2, ensure that any workloads that interact with the IMDS support IMDSv2.
 
-Before creating machines that require IMDSv2, ensure that any workloads that interact with the IMDS support IMDSv2.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample IMDS configuration**
+Sample IMDS configuration
 
 </div>
 
@@ -196,6 +203,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.instanceMetadataOptions.httpPutResponseHopLimit`
@@ -208,17 +217,24 @@ Specifies whether to require the use of IMDSv2. If no value is specified, this p
 
 - `required`: Require IMDSv2.
 
-<div class="note">
-
-The Machine API does not support the `httpEndpoint`, `httpPutResponseHopLimit`, and `instanceMetadataTags` fields. If you migrate a Cluster API machine template that uses this feature to a Machine API compute machine set, any Machine API machines that it creates will not have these fields and the underlying instances will not use these settings. Any existing machines that the migrated machine set manages will retain these fields and the underlying instances will continue to use these settings.
-
-</div>
+> [!NOTE]
+> The Machine API does not support the `httpEndpoint`, `httpPutResponseHopLimit`, and `instanceMetadataTags` fields. If you migrate a Cluster API machine template that uses this feature to a Machine API compute machine set, any Machine API machines that it creates will not have these fields and the underlying instances will not use these settings. Any existing machines that the migrated machine set manages will retain these fields and the underlying instances will continue to use these settings.
 
 Requiring the use of IMDSv2 might cause timeouts. For more information, including mitigation strategies, see "Instance metadata access considerations".
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [IMDSv2 (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html)
 
 - [Instance metadata access considerations (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html#imds-considerations)
+
+</div>
 
 ## Dedicated Instance configuration options
 
@@ -230,9 +246,11 @@ OpenShift Container Platform supports instances with public or dedicated tenancy
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample Dedicated Instances configuration**
+<div class="title">
+
+Sample Dedicated Instances configuration
 
 </div>
 
@@ -247,6 +265,8 @@ spec:
 # ...
 ```
 
+</div>
+
 The `tenancy` field specifies using instances with dedicated tenancy that run on single-tenant hardware. If you do not specify the `dedicated` value, instances with public tenancy that run on shared hardware are used by default.
 
 ## Non-guaranteed Spot Instances and hourly cost limits
@@ -255,15 +275,14 @@ You can deploy machines as non-guaranteed Spot Instances on Amazon Web Services 
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
-<div class="important">
+> [!IMPORTANT]
+> AWS EC2 can reclaim the capacity for a Spot Instance at any time.
 
-AWS EC2 can reclaim the capacity for a Spot Instance at any time.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample Spot Instance configuration**
+Sample Spot Instance configuration
 
 </div>
 
@@ -279,6 +298,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.spotMarketOptions`
@@ -287,11 +308,8 @@ Specifies the use of Spot Instances.
 `spec.template.spec.spotMarketOptions.maxPrice`
 Optional parameter. Specifies an hourly cost limit in US dollars for the Spot Instance. For example, setting the `<price_per_hour>` value to `2.50` limits the cost of the Spot Instance to USD 2.50 per hour. When this value is not set, the maximum price charges up to the On-Demand Instance price.
 
-<div class="warning">
-
-Setting a specific `maxPrice: <price_per_hour>` value might increase the frequency of interruptions compared to using the default On-Demand Instance price. Red Hat recommends to use the default On-Demand Instance price and to not set the maximum price for Spot Instances.
-
-</div>
+> [!WARNING]
+> Setting a specific `maxPrice: <price_per_hour>` value might increase the frequency of interruptions compared to using the default On-Demand Instance price. Red Hat recommends to use the default On-Demand Instance price and to not set the maximum price for Spot Instances.
 
 Interruptions can occur when using Spot Instances for the following reasons:
 
@@ -311,9 +329,25 @@ You can improve performance for high traffic services by increasing the throughp
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You use gp3 storage volume(s).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - On the machine template in which you want to configure throughput, add the `throughput` parameter:
 
@@ -336,6 +370,8 @@ To deploy compute machines with your configuration, configure the appropriate va
   `<throughput_value>`
   Specifies a value in MiB per second between 125 and 2,000. You can only edit this value on gp3 volumes. The default value is `125`.
 
+</div>
+
 ## Capacity Reservation configuration options
 
 OpenShift Container Platform version 4.17 and later supports Capacity Reservations on Amazon Web Services clusters, including On-Demand Capacity Reservations and Capacity Blocks for ML.
@@ -344,9 +380,11 @@ You can deploy machines on any available resources that match the parameters of 
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file. Then, configure a machine set YAML file to reference the machine template when it deploys machines.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample Capacity Reservation configuration**
+<div class="title">
+
+Sample Capacity Reservation configuration
 
 </div>
 
@@ -362,6 +400,8 @@ spec:
       marketType: <market_type>
 # ...
 ```
+
+</div>
 
 where:
 
@@ -394,7 +434,17 @@ Use this market type with Spot Instances. This option is not compatible with Cap
 
 For more information, including limitations and suggested use cases for this offering, see On-Demand Capacity Reservations and Capacity Blocks for ML (AWS documentation).
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [On-Demand Capacity Reservations and Capacity Blocks for ML (AWS documentation)](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html)
+
+</div>
 
 ## GPU-enabled machine options
 
@@ -410,9 +460,11 @@ For more information about supported instance types, see the following pages in 
 
 To deploy compute machines with your configuration, configure the appropriate values in a machine template YAML file and a machine set YAML file that references the machine template when it deploys machines.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample GPU-enabled machine template configuration**
+<div class="title">
+
+Sample GPU-enabled machine template configuration
 
 </div>
 
@@ -427,11 +479,15 @@ spec:
 # ...
 ```
 
+</div>
+
 - The `spec.template.spec.instanceType` field specifies a G4dn instance type.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample GPU-enabled machine set configuration**
+<div class="title">
+
+Sample GPU-enabled machine set configuration
 
 </div>
 
@@ -461,6 +517,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `metadate.name`
@@ -472,8 +530,18 @@ Specifies a selector label that matches the machine set name.
 `spec.template.metadata.labels.cluster.x-k8s.io/set-name`
 Specifies a template label that matches the machine set name.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [AWS G4dn instance type](https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing)
 
 - [NVIDIA GPU Operator Community support matrix (NVIDIA documentation)](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html)
 
 - [NVIDIA AI Enterprise support matrix (NVIDIA documentation)](https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html)
+
+</div>

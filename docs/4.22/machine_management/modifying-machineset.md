@@ -1,10 +1,7 @@
 To add labels, change the instance type, change block storage, or make other changes, you can modify a compute machine set.
 
-<div class="note">
-
-If you need to scale a compute machine set without making other changes, see "Manually scaling a compute machine set".
-
-</div>
+> [!NOTE]
+> If you need to scale a compute machine set without making other changes, see "Manually scaling a compute machine set".
 
 # Modify a compute machine set by using the CLI
 
@@ -12,27 +9,39 @@ To enable features or change the properties of machines, you can modify the conf
 
 When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
 
-<div class="note">
-
-Changes made in the underlying cloud provider are not reflected in the `Machine` or `MachineSet` CRs. To adjust instance configuration in cluster-managed infrastructure, use the cluster-side resources.
-
-</div>
+> [!NOTE]
+> Changes made in the underlying cloud provider are not reflected in the `Machine` or `MachineSet` CRs. To adjust instance configuration in cluster-managed infrastructure, use the cluster-side resources.
 
 You can replace the existing machines with new ones that reflect the updated configuration by scaling the compute machine set to create twice the number of replicas and then scaling it down to the original number of replicas.
 
 If you need to scale a compute machine set without making other changes, you do not need to delete the machines.
 
-<div class="note">
-
-By default, the OpenShift Container Platform router pods are deployed on compute machines. Because the router is required to access some cluster resources, including the web console, do not scale the compute machine set to `0` unless you first relocate the router pods.
-
-</div>
+> [!NOTE]
+> By default, the OpenShift Container Platform router pods are deployed on compute machines. Because the router is required to access some cluster resources, including the web console, do not scale the compute machine set to `0` unless you first relocate the router pods.
 
 The output examples in this procedure use the values for an AWS cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your OpenShift Container Platform cluster uses the Machine API.
 
 - You are logged in to the cluster as an administrator by using the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the compute machine sets in your cluster by running the following command:
 
@@ -40,9 +49,11 @@ The output examples in this procedure use the values for an AWS cluster.
     $ oc get machinesets.machine.openshift.io -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -51,6 +62,8 @@ The output examples in this procedure use the values for an AWS cluster.
     <compute_machine_set_name_1>   1         1         1       1           55m
     <compute_machine_set_name_2>   1         1         1       1           55m
     ```
+
+    </div>
 
 2.  Edit a compute machine set by running the following command:
 
@@ -84,9 +97,11 @@ The output examples in this procedure use the values for an AWS cluster.
       -l machine.openshift.io/cluster-api-machineset=<machine_set_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for an AWS cluster**
+    <div class="title">
+
+    Example output for an AWS cluster
 
     </div>
 
@@ -95,6 +110,8 @@ The output examples in this procedure use the values for an AWS cluster.
     <machine_name_original_1>   Running   m6i.xlarge   us-west-1   us-west-1a   4h
     <machine_name_original_2>   Running   m6i.xlarge   us-west-1   us-west-1a   4h
     ```
+
+    </div>
 
 6.  For each machine that is managed by the updated compute machine set, set the `delete` annotation by running the following command:
 
@@ -122,9 +139,11 @@ The output examples in this procedure use the values for an AWS cluster.
       -l machine.openshift.io/cluster-api-machineset=<machine_set_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for an AWS cluster**
+    <div class="title">
+
+    Example output for an AWS cluster
 
     </div>
 
@@ -135,6 +154,8 @@ The output examples in this procedure use the values for an AWS cluster.
     <machine_name_updated_1>    Provisioned    m6i.xlarge   us-west-1   us-west-1a   55s
     <machine_name_updated_2>    Provisioning   m6i.xlarge   us-west-1   us-west-1a   55s
     ```
+
+    </div>
 
     When the new machines are in the `Running` phase, you can scale the compute machine set to the original number of replicas.
 
@@ -147,6 +168,16 @@ The output examples in this procedure use the values for an AWS cluster.
     ```
 
     The `replicas` parameter is set to the original example value of `2`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that a machine created by the updated machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 
@@ -163,9 +194,11 @@ The output examples in this procedure use the values for an AWS cluster.
     -l machine.openshift.io/cluster-api-machineset=<machine_set_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output while deletion is in progress for an AWS cluster**
+  <div class="title">
+
+  Example output while deletion is in progress for an AWS cluster
 
   </div>
 
@@ -177,9 +210,13 @@ The output examples in this procedure use the values for an AWS cluster.
   <machine_name_updated_2>    Running         m6i.xlarge   us-west-1   us-west-1a   5m41s
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example output when deletion is complete for an AWS cluster**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example output when deletion is complete for an AWS cluster
 
   </div>
 
@@ -189,10 +226,22 @@ The output examples in this procedure use the values for an AWS cluster.
   <machine_name_updated_2>    Running         m6i.xlarge   us-west-1   us-west-1a   6m30s
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Lifecycle hooks for the machine deletion phase](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion_deleting-machine)
 
 - [Manually scaling a compute machine set](../machine_management/manually-scaling-machineset.xml#machineset-manually-scaling_manually-scaling-machineset)
 
 - [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
+
+</div>

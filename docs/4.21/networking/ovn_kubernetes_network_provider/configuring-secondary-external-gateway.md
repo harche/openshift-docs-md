@@ -28,13 +28,10 @@ You specify an IP address directly.
 Dynamic assignment
 You specify an IP address indirectly, with namespace and pod selectors, and an optional network attachment definition.
 
-<div class="important">
-
-If the name of a network attachment definition is provided, the external gateway IP address of the network attachment is used.
-
-If the name of a network attachment definition is not provided, the external gateway IP address for the pod itself is used. However, this approach works only if the pod is configured with `hostNetwork` set to `true`.
-
-</div>
+> [!IMPORTANT]
+> If the name of a network attachment definition is provided, the external gateway IP address of the network attachment is used.
+>
+> If the name of a network attachment definition is not provided, the external gateway IP address for the pod itself is used. However, this approach works only if the pod is configured with `hostNetwork` set to `true`.
 
 # AdminPolicyBasedExternalRoute object configuration
 
@@ -52,19 +49,19 @@ The following tables detail supported fields for objects.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the name of the <code>AdminPolicyBasedExternalRoute</code> object.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.from</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a namespace selector that the routing policies apply to. Only <code>namespaceSelector</code> is supported for external traffic. For example:</p>
@@ -74,7 +71,7 @@ The following tables detail supported fields for objects.
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">kubernetes.io/metadata.name</span><span class="kw">:</span><span class="at"> novxlan-externalgw-ecmp-4059</span></span></code></pre></div>
 <p>A namespace can only be targeted by one <code>AdminPolicyBasedExternalRoute</code> CR. If a namespace is selected by more than one <code>AdminPolicyBasedExternalRoute</code> CR, a <code>failed</code> error status occurs on the second and subsequent CRs that target the same namespace. To apply updates, you must change the policy itself or related objects such as target namespaces, pod gateways, or namespaces hosting them from dynamic hops. The policy is then re-evaluated and your changes are applied.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.nextHops</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies the destinations where the packets are forwarded to. Must be either or both of <code>static</code> and <code>dynamic</code>. You must have at least one next hop defined.</p></td>
@@ -82,28 +79,26 @@ The following tables detail supported fields for objects.
 </tbody>
 </table>
 
-`AdminPolicyBasedExternalRoute` object
-
-| Field     | Type    | Description                                                                                                                                      |
-|-----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| `static`  | `array` | Specifies an array of static IP addresses.                                                                                                       |
+| Field | Type | Description |
+|----|----|----|
+| `static` | `array` | Specifies an array of static IP addresses. |
 | `dynamic` | `array` | Specifies an array of pod selectors corresponding to pods configured with a network attachment definition to use as the external gateway target. |
 
 `nextHops` object
 
-| Field        | Type      | Description                                                                                                                            |
-|--------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `ip`         | `string`  | Specifies either an IPv4 or IPv6 address of the next destination hop.                                                                  |
+| Field | Type | Description |
+|----|----|----|
+| `ip` | `string` | Specifies either an IPv4 or IPv6 address of the next destination hop. |
 | `bfdEnabled` | `boolean` | Optional field. Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`. |
 
 `nextHops.static` object
 
-| Field                   | Type      | Description                                                                                                                                                                                                                                                                                              |
-|-------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `podSelector`           | `string`  | Specifies a set-based label selector to filter the pods in the namespace that match this network configuration. For more information, see "Set-based requirement" in the *Additional resources* section.                                                                                                 |
-| `namespaceSelector`     | `string`  | Specifies a `set-based` selector to filter the namespaces that the `podSelector` applies to. You must specify a value for this field.                                                                                                                                                                    |
-| `bfdEnabled`            | `boolean` | Optional field. Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`.                                                                                                                                                                   |
-| `networkAttachmentName` | `string`  | Optional field. Specifies the name of a network attachment definition. The name must match the list of logical networks associated with the pod. If this field is not specified, the host network of the pod is used. However, the pod must be configured as a host network pod to use the host network. |
+| Field | Type | Description |
+|----|----|----|
+| `podSelector` | `string` | Specifies a set-based label selector to filter the pods in the namespace that match this network configuration. For more information, see "Set-based requirement" in the *Additional resources* section. |
+| `namespaceSelector` | `string` | Specifies a `set-based` selector to filter the namespaces that the `podSelector` applies to. You must specify a value for this field. |
+| `bfdEnabled` | `boolean` | Optional field. Specifies whether Bi-Directional Forwarding Detection (BFD) is supported by the network. The default value is `false`. |
+| `networkAttachmentName` | `string` | Optional field. Specifies the name of a network attachment definition. The name must match the list of logical networks associated with the pod. If this field is not specified, the host network of the pod is used. However, the pod must be configured as a host network pod to use the host network. |
 
 `nextHops.dynamic` object
 
@@ -196,9 +191,27 @@ spec:
 
 You can configure an external gateway on the default network for a namespace in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that contains an `AdminPolicyBasedExternalRoute` object. For more information, see "AdminPolicyBasedExternalRoute object configuration".
 
@@ -210,15 +223,19 @@ You can configure an external gateway on the default network for a namespace in 
 
     - `<file>`: Specifies the name of the YAML file that you created in a previous step.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
       ``` text
       adminpolicybasedexternalroute.k8s.ovn.org/default-route-policy created
       ```
+
+      </div>
 
 3.  To confirm that the admin policy based external route was created, enter the following command:
 
@@ -228,9 +245,11 @@ You can configure an external gateway on the default network for a namespace in 
 
     - `<name>`: Specifies the name of the `AdminPolicyBasedExternalRoute` object.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -242,6 +261,10 @@ You can configure an external gateway on the default network for a namespace in 
         Status:  Success
       Events:  <none>
       ```
+
+      </div>
+
+</div>
 
 # Additional resources
 

@@ -1,24 +1,18 @@
-<div class="important">
-
-You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
-
-Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
-
-To view the platform type for your cluster, run the following command:
-
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
-
-</div>
+> [!IMPORTANT]
+> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+>
+> To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
 You can use infrastructure machine sets to create machines that host only infrastructure components, such as the default router, the integrated container image registry, and the components for cluster metrics and monitoring. These infrastructure machines are not counted toward the total number of subscriptions that are required to run the environment.
 
-<div class="note">
-
-After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
-
-</div>
+> [!NOTE]
+> After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
 # OpenShift Container Platform infrastructure components
 
@@ -68,6 +62,10 @@ You can optionally create a default cluster-wide node selector. The default node
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the Machine API.
 
 - If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
@@ -75,6 +73,14 @@ You can optionally create a default cluster-wide node selector. The default node
   However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
 
   You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -115,6 +121,8 @@ You can optionally create a default cluster-wide node selector. The default node
     3.  Save the file to apply the changes.
 
     You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+
+</div>
 
 # Additional resources
 

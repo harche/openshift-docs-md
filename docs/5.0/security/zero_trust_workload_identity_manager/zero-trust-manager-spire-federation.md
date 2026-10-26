@@ -28,20 +28,17 @@ Uses standard Web PKI (X.509 certificates from public or private certificate Aut
 
 The following table summarizes the key differences between the two profiles:
 
-| Criteria               | https_spiffe                       | https_web                             |
-|------------------------|------------------------------------|---------------------------------------|
-| Authentication method  | SPIFFE SVID (TLS)                  | X.509 certificate from CA             |
-| Certificate management | Automatic (SPIRE-managed)          | ACME (automatic) or manual            |
-| Trust model            | SPIFFE trust domain                | Web PKI / CA trust                    |
-| Best for               | Internal SPIRE-to-SPIRE federation | External federation, public endpoints |
-| Security level         | Very high (cryptographic identity) | High (CA-based trust)                 |
-| Setup complexity       | Medium (requires SPIFFE IDs)       | Low (ACME) to Medium (manual certs)   |
+| Criteria | https_spiffe | https_web |
+|----|----|----|
+| Authentication method | SPIFFE SVID (TLS) | X.509 certificate from CA |
+| Certificate management | Automatic (SPIRE-managed) | ACME (automatic) or manual |
+| Trust model | SPIFFE trust domain | Web PKI / CA trust |
+| Best for | Internal SPIRE-to-SPIRE federation | External federation, public endpoints |
+| Security level | Very high (cryptographic identity) | High (CA-based trust) |
+| Setup complexity | Medium (requires SPIFFE IDs) | Low (ACME) to Medium (manual certs) |
 
-<div class="important">
-
-After enablement, federation cannot be disabled. The bundle endpoint profile is immutable once configured. Changing the profile or disabling federation requires reinstallation of the system. However, peer configurations (`federatesWith`) remain dynamic and can be added or removed at any time. Plan your profile selection carefully based on your long-term federation requirements.
-
-</div>
+> [!IMPORTANT]
+> After enablement, federation cannot be disabled. The bundle endpoint profile is immutable once configured. Changing the profile or disabling federation requires reinstallation of the system. However, peer configurations (`federatesWith`) remain dynamic and can be added or removed at any time. Plan your profile selection carefully based on your long-term federation requirements.
 
 # Federation configuration examples
 
@@ -182,6 +179,14 @@ spec:
 
 The Zero Trust Workload Identity Manager includes SPIRE federation support, allowing multiple independent SPIRE deployments to establish trust relationships by using the `https_spiffe` profile with SPIFFE-based TLS authentication.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the Zero Trust Workload Identity Manager on all clusters that will participate in the federation.
@@ -189,6 +194,16 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
 - You have `cluster-admin` privileges on all participating clusters.
 
 - You have network connectivity between the clusters you intend to federate.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the `SpireServer` custom resource on each cluster to enable federation with the `https_spiffe` profile. The `https_spiffe` profile uses SPIFFE-based TLS authentication, where SPIRE servers authenticate to each other using their own SPIFFE Verifiable Identity Documents (SVIDs).
 
@@ -232,9 +247,11 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
     $ oc get route -n zero-trust-workload-identity-manager | grep federation
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -243,23 +260,24 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
     spire-server-federation   federation.apps.cluster1.example.com               spire-server     8443    passthrough
     ```
 
+    </div>
+
 5.  Fetch the trust bundle from each remote cluster’s federation endpoint:
 
     ``` terminal
     $  curl -k https://federation.apps.cluster2.example.com > cluster2-bundle.json
     ```
 
-    <div class="note">
-
-    For `https_spiffe` profile, you might need to use the `-k` flag if the certificate is not trusted by your system’s CA bundle:
-
-    </div>
+    > [!NOTE]
+    > For `https_spiffe` profile, you might need to use the `-k` flag if the certificate is not trusted by your system’s CA bundle:
 
     The response contains the trust bundle in JSON Web Key Set (JWKS) format:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example trust bundle**
+    <div class="title">
+
+    Example trust bundle
 
     </div>
 
@@ -278,6 +296,8 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
       "refresh_hint": 300
     }
     ```
+
+    </div>
 
 6.  Create `ClusterFederatedTrustDomain` resources for each remote trust domain.
 
@@ -365,7 +385,15 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
     $ oc apply -f spireserver.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `ClusterFederatedTrustDomain` resources have been created by running the following command:
 
@@ -373,9 +401,11 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
     $ oc get clusterfederatedtrustdomains
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -384,6 +414,8 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
     cluster2-federation   cluster2.example.com   https://federation.apps.cluster2.example.com     5m
     cluster3-federation   cluster3.example.com   https://federation.apps.cluster3.example.com     5m
     ```
+
+    </div>
 
 2.  Check the status of a `ClusterFederatedTrustDomain` to ensure bundle synchronization is working by running the following command:
 
@@ -410,9 +442,19 @@ The Zero Trust Workload Identity Manager includes SPIRE federation support, allo
 
     Look for log messages indicating successful bundle synchronization with federated trust domains.
 
+</div>
+
 # Use SPIRE federation with Automatic Certificate Management Environment protocol
 
 Using SPIRE federation with Automatic Certificate Management Environment (ACME) protocol provides automatic certificate provisioning from Let’s Encrypt. ACME also enables automatic certificate renewal before expiration, eliminating manual certificate management overhead.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Zero Trust Workload Identity Manager on all clusters that will participate in the federation.
 
@@ -423,6 +465,16 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
 - Your federation endpoints must be publicly accessible for Let’s Encrypt HTTP-01 challenge validation.
 
 - You have network connectivity between all federated clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the `SpireServer` custom resource on each cluster to enable federation with ACME certificate management.
 
@@ -474,9 +526,11 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     $ oc get spireserver cluster -w
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -485,15 +539,19 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     cluster   Ready    5m
     ```
 
+    </div>
+
 4.  Verify that the federation route has been created by running the following command:
 
     ``` terminal
     $ oc get route -n zero-trust-workload-identity-manager | grep federation
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -501,6 +559,8 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     NAME                      HOST/PORT                                          PATH   SERVICES        PORT   TERMINATION
     spire-server-federation   federation.apps.cluster1.example.com                     spire-server     8443    passthrough
     ```
+
+    </div>
 
 5.  On each cluster, fetch the trust bundle from the federation endpoint by running the following command:
 
@@ -510,9 +570,11 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
 
     The response contains the trust bundle in JSON Web Key Set (JWKS) format:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example trust bundle**
+    <div class="title">
+
+    Example trust bundle
 
     </div>
 
@@ -531,6 +593,8 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
       "refresh_hint": 300
     }
     ```
+
+    </div>
 
 6.  Create `ClusterFederatedTrustDomain` resources to establish federation relationships.
 
@@ -612,7 +676,15 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     $ oc apply -f spireserver.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `ClusterFederatedTrustDomain` resources have been created by running the following command:
 
@@ -620,9 +692,11 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     $ oc get clusterfederatedtrustdomains
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -631,6 +705,8 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     cluster2-federation   cluster2.example.com  https://federation.apps.cluster2.example.com   5m
     cluster3-federation   cluster3.example.com  https://federation.apps.cluster3.example.com   5m
     ```
+
+    </div>
 
 2.  Check the status of a `ClusterFederatedTrustDomain` to ensure bundle synchronization is working by running the following command:
 
@@ -662,9 +738,11 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     $ oc get pods -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -674,11 +752,23 @@ Using SPIRE federation with Automatic Certificate Management Environment (ACME) 
     spire-server-0          2/2     Running   0          10m
     ```
 
+    </div>
+
 6.  Optional: Test cross-cluster workload authentication by deploying workloads with SPIFFE identities on different clusters and verifying they can authenticate to each other using the federated trust.
+
+</div>
 
 # Use SPIRE federation with manual certificate management
 
 You can use SPIRE federation with custom certificate management by using cert-manager or other certificate providers for control over certificate issuance and integration with internal certificate authorities (CAs).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Zero Trust Workload Identity Manager on all clusters that will participate in the federation.
 
@@ -691,6 +781,16 @@ You can use SPIRE federation with custom certificate management by using cert-ma
 - Your federation endpoints must be publicly accessible for certificate validation.
 
 - You have network connectivity between all federated clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the cert-manager Operator on the cluster where you want to use externally managed certificates.
 
@@ -786,9 +886,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     $ echo "Federation domain will be: $FEDERATION_DOMAIN"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -796,11 +898,10 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     Federation domain will be: federation.apps.cluster1.example.com
     ```
 
-    <div class="note">
-
-    The federation route is created automatically if `managedRoute` is set to `true` when you apply the `SpireServer` configuration in a later step. The route name is `spire-server-federation` and the hostname is `federation.<cluster-apps-domain>`.
-
     </div>
+
+    > [!NOTE]
+    > The federation route is created automatically if `managedRoute` is set to `true` when you apply the `SpireServer` configuration in a later step. The route name is `spire-server-federation` and the hostname is `federation.<cluster-apps-domain>`.
 
 7.  Create a Certificate resource to request a TLS certificate.
 
@@ -853,9 +954,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
         -n zero-trust-workload-identity-manager -w
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output when ready**
+    <div class="title">
+
+    Example output when ready
 
     </div>
 
@@ -863,6 +966,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     NAME                            READY   SECRET                          AGE
     spire-server-federation-tls     True    spire-server-federation-tls     2m
     ```
+
+    </div>
 
 10. Create RBAC permissions for the OpenShift Ingress Router to access the certificate secret.
 
@@ -933,9 +1038,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     $ oc get route spire-server-federation -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -943,6 +1050,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     NAME                      HOST/PORT                                  PATH   SERVICES        PORT    TERMINATION
     spire-server-federation   federation.apps.cluster1.example.com              spire-server    8443    reencrypt
     ```
+
+    </div>
 
     Verify that the route hostname matches the domain name used in your certificate.
 
@@ -967,9 +1076,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
 
     The trust bundle is in JSON Web Key Set (JWKS) format:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example trust bundle**
+    <div class="title">
+
+    Example trust bundle
 
     </div>
 
@@ -988,6 +1099,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
       "refresh_hint": 300
     }
     ```
+
+    </div>
 
 17. Create `ClusterFederatedTrustDomain` resources for each remote trust domain you want to federate with:
 
@@ -1091,7 +1204,15 @@ You can use SPIRE federation with custom certificate management by using cert-ma
 
     - Each cluster’s `SpireServer` has the complete `federatesWith` list
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the certificate has been issued successfully by running the following command:
 
@@ -1100,9 +1221,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
         -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1110,6 +1233,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     NAME                            READY   SECRET                          AGE
     spire-server-federation-tls     True    spire-server-federation-tls     5m
     ```
+
+    </div>
 
 2.  Check the certificate details and expiration by running the following command:
 
@@ -1119,9 +1244,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
         -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -dates
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1130,6 +1257,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     notAfter=Mar 16 10:00:00 2026 GMT
     ```
 
+    </div>
+
 3.  Verify that the RBAC permissions are configured correctly by running the following command:
 
     ``` terminal
@@ -1137,9 +1266,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
         | grep secret-reader
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1148,6 +1279,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     rolebinding.rbac.authorization.k8s.io/secret-reader-binding
     ```
 
+    </div>
+
     Verify the RoleBinding references the correct ServiceAccount by running the following command:
 
     ``` terminal
@@ -1155,9 +1288,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
         -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1173,15 +1308,19 @@ You can use SPIRE federation with custom certificate management by using cert-ma
       ServiceAccount  router  openshift-ingress
     ```
 
+    </div>
+
 4.  Verify that the `ClusterFederatedTrustDomain` resources have been created by running the following command:
 
     ``` terminal
     $ oc get clusterfederatedtrustdomains
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1190,6 +1329,8 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     cluster1-federation   cluster1.example.com   https://federation.apps.cluster1.example.com     5m
     cluster2-federation   cluster2.example.com   https://federation.apps.cluster2.example.com     5m
     ```
+
+    </div>
 
 5.  Check the status of a `ClusterFederatedTrustDomain` to ensure bundle synchronization is working by running the following command:
 
@@ -1230,9 +1371,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     $ oc get pods -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1242,7 +1385,11 @@ You can use SPIRE federation with custom certificate management by using cert-ma
     spire-server-0                          2/2     Running   0          10m
     ```
 
+    </div>
+
 9.  Optional: Test cross-cluster workload authentication by deploying workloads with SPIFFE identities on different clusters and verifying they can authenticate to each other using the federated trust.
+
+</div>
 
 # Federation configuration field reference
 
@@ -1250,51 +1397,51 @@ This reference provides detailed information about all configuration fields avai
 
 Top-level federation fields
 
-| Field                       | Type   | Required | Default  | Description                                                                                                                                 |
-|-----------------------------|--------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| `federation.bundleEndpoint` | object | Yes      | N/A      | Configuration for this cluster’s federation endpoint that exposes the trust bundle to remote clusters.                                      |
-| `federation.federatesWith`  | array  | No       | `[]`     | List of remote trust domains to federate with.                                                                                              |
-| `federation.managedRoute`   | string | No       | `"true"` | Enable or disable automatic OpenShift Route creation. Set to `"true"` for operator-managed routes or `"false"` for manual route management. |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.bundleEndpoint` | object | Yes | N/A | Configuration for this cluster’s federation endpoint that exposes the trust bundle to remote clusters. |
+| `federation.federatesWith` | array | No | `[]` | List of remote trust domains to federate with. |
+| `federation.managedRoute` | string | No | `"true"` | Enable or disable automatic OpenShift Route creation. Set to `"true"` for operator-managed routes or `"false"` for manual route management. |
 
 bundleEndpoint configuration fields
 
-| Field                                   | Type          | Required    | Default        | Description                                                                                                                                       |
-|-----------------------------------------|---------------|-------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `federation.bundleEndpoint.profile`     | string (enum) | Yes         | `https_spiffe` | Authentication profile for the bundle endpoint. Valid values: `https_spiffe` or `https_web`. This value is immutable after initial configuration. |
-| `federation.bundleEndpoint.refreshHint` | integer       | No          | `300`          | Suggested interval (in seconds) for remote servers to refresh the trust bundle. Valid range: 60-3600.                                             |
-| `federation.bundleEndpoint.httpsWeb`    | object        | Conditional | N/A            | Required when `profile` is `https_web`. Contains certificate configuration.                                                                       |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.bundleEndpoint.profile` | string (enum) | Yes | `https_spiffe` | Authentication profile for the bundle endpoint. Valid values: `https_spiffe` or `https_web`. This value is immutable after initial configuration. |
+| `federation.bundleEndpoint.refreshHint` | integer | No | `300` | Suggested interval (in seconds) for remote servers to refresh the trust bundle. Valid range: 60-3600. |
+| `federation.bundleEndpoint.httpsWeb` | object | Conditional | N/A | Required when `profile` is `https_web`. Contains certificate configuration. |
 
 httpsWeb configuration fields
 
-| Field                                            | Type   | Required    | Default | Description                                                                                     |
-|--------------------------------------------------|--------|-------------|---------|-------------------------------------------------------------------------------------------------|
-| `federation.bundleEndpoint.httpsWeb.acme`        | object | Conditional | N/A     | ACME configuration for automatic certificate management. Mutually exclusive with `servingCert`. |
-| `federation.bundleEndpoint.httpsWeb.servingCert` | object | Conditional | N/A     | Manual certificate configuration. Mutually exclusive with `acme`.                               |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.bundleEndpoint.httpsWeb.acme` | object | Conditional | N/A | ACME configuration for automatic certificate management. Mutually exclusive with `servingCert`. |
+| `federation.bundleEndpoint.httpsWeb.servingCert` | object | Conditional | N/A | Manual certificate configuration. Mutually exclusive with `acme`. |
 
 ACME configuration fields
 
-| Field                                                  | Type   | Required | Default   | Description                                                                                                                                                               |
-|--------------------------------------------------------|--------|----------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `federation.bundleEndpoint.httpsWeb.acme.directoryUrl` | string | Yes      | N/A       | ACME directory URL. For Let’s Encrypt production: `https://acme-v02.api.letsencrypt.org/directory`. For staging: `https://acme-staging-v02.api.letsencrypt.org/directory` |
-| `federation.bundleEndpoint.httpsWeb.acme.domainName`   | string | Yes      | N/A       | Fully qualified domain name for the certificate. Typically the federation endpoint hostname.                                                                              |
-| `federation.bundleEndpoint.httpsWeb.acme.email`        | string | Yes      | N/A       | Email address for ACME account registration and certificate expiration notifications.                                                                                     |
-| `federation.bundleEndpoint.httpsWeb.acme.tosAccepted`  | string | No       | `"false"` | Accept the ACME provider’s Terms of Service. Must be `"true"` to obtain certificates.                                                                                     |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.bundleEndpoint.httpsWeb.acme.directoryUrl` | string | Yes | N/A | ACME directory URL. For Let’s Encrypt production: `https://acme-v02.api.letsencrypt.org/directory`. For staging: `https://acme-staging-v02.api.letsencrypt.org/directory` |
+| `federation.bundleEndpoint.httpsWeb.acme.domainName` | string | Yes | N/A | Fully qualified domain name for the certificate. Typically the federation endpoint hostname. |
+| `federation.bundleEndpoint.httpsWeb.acme.email` | string | Yes | N/A | Email address for ACME account registration and certificate expiration notifications. |
+| `federation.bundleEndpoint.httpsWeb.acme.tosAccepted` | string | No | `"false"` | Accept the ACME provider’s Terms of Service. Must be `"true"` to obtain certificates. |
 
 servingCert configuration fields
 
-| Field                                                              | Type    | Required | Default | Description                                                                                                                    |
-|--------------------------------------------------------------------|---------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------|
-| `federation.bundleEndpoint.httpsWeb.servingCert.fileSyncInterval`  | integer | No       | `86400` | Interval (in seconds) to check for certificate updates. Valid range: 3600-7776000 (1 hour to 90 days).                         |
-| `federation.bundleEndpoint.httpsWeb.servingCert.externalSecretRef` | string  | Yes      | N/A     | Name of the Kubernetes Secret containing the TLS certificate (`tls.crt`) and private key (`tls.key`) for the federation route. |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.bundleEndpoint.httpsWeb.servingCert.fileSyncInterval` | integer | No | `86400` | Interval (in seconds) to check for certificate updates. Valid range: 3600-7776000 (1 hour to 90 days). |
+| `federation.bundleEndpoint.httpsWeb.servingCert.externalSecretRef` | string | Yes | N/A | Name of the Kubernetes Secret containing the TLS certificate (`tls.crt`) and private key (`tls.key`) for the federation route. |
 
 federatesWith configuration fields
 
-| Field                                              | Type          | Required    | Default | Description                                                                                                                                                |
-|----------------------------------------------------|---------------|-------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `federation.federatesWith[].trustDomain`           | string        | Yes         | N/A     | Trust domain name of the remote SPIRE deployment (for example, `cluster2.example.com`).                                                                    |
-| `federation.federatesWith[].bundleEndpointUrl`     | string        | Yes         | N/A     | HTTPS URL of the remote federation endpoint (for example, `https://federation.apps.cluster2.example.com`).                                                 |
-| `federation.federatesWith[].bundleEndpointProfile` | string (enum) | Yes         | N/A     | Authentication profile of the remote endpoint. Valid values: `https_spiffe` or `https_web`.                                                                |
-| `federation.federatesWith[].endpointSpiffeId`      | string        | Conditional | N/A     | SPIFFE ID of the remote SPIRE server (for example, `spiffe://cluster2.example.com/spire/server`). Required when `bundleEndpointProfile` is `https_spiffe`. |
+| Field | Type | Required | Default | Description |
+|----|----|----|----|----|
+| `federation.federatesWith[].trustDomain` | string | Yes | N/A | Trust domain name of the remote SPIRE deployment (for example, `cluster2.example.com`). |
+| `federation.federatesWith[].bundleEndpointUrl` | string | Yes | N/A | HTTPS URL of the remote federation endpoint (for example, `https://federation.apps.cluster2.example.com`). |
+| `federation.federatesWith[].bundleEndpointProfile` | string (enum) | Yes | N/A | Authentication profile of the remote endpoint. Valid values: `https_spiffe` or `https_web`. |
+| `federation.federatesWith[].endpointSpiffeId` | string | Conditional | N/A | SPIFFE ID of the remote SPIRE server (for example, `spiffe://cluster2.example.com/spire/server`). Required when `bundleEndpointProfile` is `https_spiffe`. |
 
 Field validation rules
 The following validation rules are enforced by the operator:

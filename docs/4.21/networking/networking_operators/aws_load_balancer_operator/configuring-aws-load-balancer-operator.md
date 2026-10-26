@@ -6,6 +6,14 @@ You can configure the cluster-wide proxy in the AWS Load Balancer Operator. Afte
 
 Environment variables include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. These variables are populated to the managed controller by the AWS Load Balancer Operator.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the config map to contain the certificate authority (CA) bundle in the `aws-load-balancer-operator` namespace by running the following command:
 
     ``` terminal
@@ -30,9 +38,11 @@ Environment variables include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. These
     $ oc -n aws-load-balancer-operator exec deploy/aws-load-balancer-operator-controller-manager -c manager -- bash -c "ls -l /etc/pki/tls/certs/albo-tls-ca-bundle.crt; printenv TRUSTED_CA_CONFIGMAP_NAME"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -41,25 +51,59 @@ Environment variables include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. These
     trusted-ca
     ```
 
+    </div>
+
 5.  Optional: Restart deployment of the AWS Load Balancer Operator every time the config map changes by running the following command:
 
     ``` terminal
     $ oc -n aws-load-balancer-operator rollout restart deployment/aws-load-balancer-operator-controller-manager
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Certificate injection using Operators](../../../networking/configuring_network_settings/configuring-a-custom-pki.xml#certificate-injection-using-operators_configuring-a-custom-pki)
+
+</div>
 
 # Add TLS termination on the AWS Load Balancer
 
 You can route the traffic for the domain to pods of a service and add TLS termination on the AWS Load Balancer.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that defines the `AWSLoadBalancerController` resource:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `add-tls-termination-albc.yaml` file**
+    <div class="title">
+
+    Example `add-tls-termination-albc.yaml` file
 
     </div>
 
@@ -74,6 +118,8 @@ You can route the traffic for the domain to pods of a service and add TLS termin
     # ...
     ```
 
+    </div>
+
     where:
 
     `spec.ingressClass`
@@ -81,9 +127,11 @@ You can route the traffic for the domain to pods of a service and add TLS termin
 
 2.  Create a YAML file that defines the `Ingress` resource:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `add-tls-termination-ingress.yaml` file**
+    <div class="title">
+
+    Example `add-tls-termination-ingress.yaml` file
 
     </div>
 
@@ -111,6 +159,8 @@ You can route the traffic for the domain to pods of a service and add TLS termin
     # ...
     ```
 
+    </div>
+
     where:
 
     `metadata.name`
@@ -131,11 +181,31 @@ You can route the traffic for the domain to pods of a service and add TLS termin
     `backend.service`
     Specifies the service for traffic routing.
 
+</div>
+
 # Create multiple ingress resources through a single AWS Load Balancer
 
 To route traffic to different services within a single domain, configure multiple ingress resources on a single AWS Load Balancer. This setup allows each resource to provide different endpoints while sharing the same load balancing infrastructure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `IngressClassParams` resource YAML file, for example, `sample-single-lb-params.yaml`, as follows:
 
@@ -335,12 +405,24 @@ To route traffic to different services within a single domain, configure multipl
     $ oc create -f sample-multiple-ingress.yaml
     ```
 
+</div>
+
 # AWS Load Balancer Operator logs
 
 To troubleshoot the AWS Load Balancer Operator, view the logs using the `oc logs` command. By viewing the logs, you can diagnose issues and monitor the activity of the Operator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the logs of the AWS Load Balancer Operator by running the following command:
 
   ``` terminal
   $ oc logs -n aws-load-balancer-operator deployment/aws-load-balancer-operator-controller-manager -c manager
   ```
+
+</div>

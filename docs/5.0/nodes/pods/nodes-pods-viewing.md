@@ -4,6 +4,14 @@ As an administrator, you can view cluster pods, check their health, and evaluate
 
 You can display pod usage statistics, such as CPU, memory, and storage consumption, to monitor container runtime environments and ensure efficient resource use.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Change to the project by entering the following command:
 
     ``` terminal
@@ -16,9 +24,11 @@ You can display pod usage statistics, such as CPU, memory, and storage consumpti
     $ oc get pods
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -28,15 +38,19 @@ You can display pod usage statistics, such as CPU, memory, and storage consumpti
     console-698d866b78-m87pm   1/1     Running   2          165m
     ```
 
+    </div>
+
 3.  Optional: Add the `-o wide` flags to view the pod IP address and the node where the pod is located. For example:
 
     ``` terminal
     $ oc get pods -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -46,9 +60,21 @@ You can display pod usage statistics, such as CPU, memory, and storage consumpti
     console-698d866b78-m87pm   1/1     Running   2          166m   10.129.0.23   ip-10-0-173-237.ec2.internal   <none>
     ```
 
+    </div>
+
+</div>
+
 # Describing a pod
 
 To troubleshoot pod issues and view detailed information about a pod in OpenShift Container Platform, you can describe a pod using the `oc describe pod` command. The **Events** section in the output provides detailed information about the pod and the containers inside of it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Describe a pod by running the following command:
 
@@ -56,9 +82,11 @@ To troubleshoot pod issues and view detailed information about a pod in OpenShif
   $ oc describe pod -n <namespace> busybox-1
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -81,13 +109,35 @@ To troubleshoot pod issues and view detailed information about a pod in OpenShif
     Normal  Started  41m (x170 over 7d1h)  kubelet  Started container busybox
   ```
 
+  </div>
+
+</div>
+
 # Viewing pod usage statistics
 
 You can display usage statistics about pods, including CPU, memory, and storage consumption. By monitoring pod usage levels you can help ensure efficient resource use.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have `cluster-reader` permission to view the usage statistics.
 
 - Metrics must be installed to view the usage statistics.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the usage statistics by entering the following command:
 
@@ -95,9 +145,11 @@ You can display usage statistics about pods, including CPU, memory, and storage 
     $ oc adm top pods -n <namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -109,11 +161,15 @@ You can display usage statistics about pods, including CPU, memory, and storage 
     downloads-594fcccf94-kv4p6   2m           15Mi
     ```
 
+    </div>
+
 2.  Optional: Add the `--selector=''` label to view usage statistics for pods with labels. Note that you must choose the label query to filter on, such as `=`, `==`, or `!=`. For example:
 
     ``` terminal
     $ oc adm top pod --selector='<pod_name>'
     ```
+
+</div>
 
 # Viewing resource logs
 
@@ -125,13 +181,18 @@ Logs display from the end (or tail) by default.
 
 You can view resource logs by using the OpenShift Container Platform web console. By viewing logs for resources, you can troubleshoot issues and monitor resource behavior.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the OpenShift Container Platform console, navigate to **Workloads** → **Pods** or navigate to the pod through the resource you want to investigate.
 
-    <div class="note">
-
-    Some resources, such as builds, do not have pods to query directly. In such instances, you can locate the **Logs** link on the **Details** page for the resource.
-
-    </div>
+    > [!NOTE]
+    > Some resources, such as builds, do not have pods to query directly. In such instances, you can locate the **Logs** link on the **Details** page for the resource.
 
 2.  Select a project from the drop-down menu.
 
@@ -139,13 +200,31 @@ You can view resource logs by using the OpenShift Container Platform web console
 
 4.  Click **Logs**.
 
+</div>
+
 ## Viewing resource logs by using the CLI
 
 You can view resource logs by using the command-line interface (CLI). By viewing logs for resources, you can troubleshoot issues and monitor resource behavior.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the log for a specific pod by entering the following command:
 
@@ -181,6 +260,8 @@ You can view resource logs by using the command-line interface (CLI). By viewing
   ``` terminal
   $ oc logs deployment/ruby
   ```
+
+</div>
 
 # Additional resources
 

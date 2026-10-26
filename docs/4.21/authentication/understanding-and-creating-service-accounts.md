@@ -24,22 +24,19 @@ system:serviceaccount:<project>:<name>
 
 Every service account is also a member of two groups:
 
-| Group                              | Description                                             |
-|------------------------------------|---------------------------------------------------------|
-| system:serviceaccounts             | Includes all service accounts in the system.            |
+| Group | Description |
+|----|----|
+| system:serviceaccounts | Includes all service accounts in the system. |
 | system:serviceaccounts:\<project\> | Includes all service accounts in the specified project. |
 
 ## Automatically generated image pull secrets
 
 OpenShift Container Platform automatically creates image pull secrets for each service account to integrate the internal image registry with user authentication.
 
-<div class="note">
-
-Prior to OpenShift Container Platform 4.16, a long-lived service account API token secret was also generated for each service account that was created. Starting with OpenShift Container Platform 4.16, this service account API token secret is no longer created.
-
-After upgrading to 4.17, any existing long-lived service account API token secrets are not deleted and will continue to function. For information about detecting long-lived API tokens that are in use in your cluster or deleting them if they are not needed, see "Long-lived service account API tokens in OpenShift Container Platform (Red Hat Knowledgebase)".
-
-</div>
+> [!NOTE]
+> Prior to OpenShift Container Platform 4.16, a long-lived service account API token secret was also generated for each service account that was created. Starting with OpenShift Container Platform 4.16, this service account API token secret is no longer created.
+>
+> After upgrading to 4.17, any existing long-lived service account API token secrets are not deleted and will continue to function. For information about detecting long-lived API tokens that are in use in your cluster or deleting them if they are not needed, see "Long-lived service account API tokens in OpenShift Container Platform (Red Hat Knowledgebase)".
 
 This image pull secret is necessary to integrate the OpenShift image registry into the cluster’s user authentication and authorization system.
 
@@ -51,15 +48,25 @@ When the integrated OpenShift image registry is disabled on a cluster that previ
 
 You can create a service account in a project and grant it permissions by binding it to a role.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Optional: To view the service accounts in the current project:
 
     ``` terminal
     $ oc get sa
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -70,6 +77,8 @@ You can create a service account in a project and grant it permissions by bindin
     deployer   1         2d
     ```
 
+    </div>
+
 2.  To create a new service account in the current project:
 
     ``` terminal
@@ -78,9 +87,11 @@ You can create a service account in a project and grant it permissions by bindin
 
     To create a service account in a different project, specify `-n <project_name>`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -88,19 +99,18 @@ You can create a service account in a project and grant it permissions by bindin
     serviceaccount "robot" created
     ```
 
-    <div class="tip">
-
-    You can alternatively apply the following YAML to create the service account:
-
-    ``` yaml
-    apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      name: <service_account_name>
-      namespace: <current_project>
-    ```
-
     </div>
+
+    > [!TIP]
+    > You can alternatively apply the following YAML to create the service account:
+    >
+    > ``` yaml
+    > apiVersion: v1
+    > kind: ServiceAccount
+    > metadata:
+    >   name: <service_account_name>
+    >   namespace: <current_project>
+    > ```
 
 3.  Optional: View the secrets for the service account:
 
@@ -108,9 +118,11 @@ You can create a service account in a project and grant it permissions by bindin
     $ oc describe sa robot
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -125,9 +137,21 @@ You can create a service account in a project and grant it permissions by bindin
     Events:              <none>
     ```
 
+    </div>
+
+</div>
+
 # Grant roles to service accounts
 
 You can grant roles to service accounts in the same way that you grant roles to a regular user account.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  You can modify the service accounts for the current project. For example, to add the `view` role to the `robot` service account in the `top-secret` project:
 
@@ -135,27 +159,24 @@ You can grant roles to service accounts in the same way that you grant roles to 
     $ oc policy add-role-to-user view system:serviceaccount:top-secret:robot
     ```
 
-    <div class="tip">
-
-    You can alternatively apply the following YAML to add the role:
-
-    ``` yaml
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: view
-      namespace: top-secret
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: view
-    subjects:
-    - kind: ServiceAccount
-      name: robot
-      namespace: top-secret
-    ```
-
-    </div>
+    > [!TIP]
+    > You can alternatively apply the following YAML to add the role:
+    >
+    > ``` yaml
+    > apiVersion: rbac.authorization.k8s.io/v1
+    > kind: RoleBinding
+    > metadata:
+    >   name: view
+    >   namespace: top-secret
+    > roleRef:
+    >   apiGroup: rbac.authorization.k8s.io
+    >   kind: ClusterRole
+    >   name: view
+    > subjects:
+    > - kind: ServiceAccount
+    >   name: robot
+    >   namespace: top-secret
+    > ```
 
 2.  You can also grant access to a specific service account in a project. For example, from the project to which the service account belongs, use the `-z` flag and specify the `<service_account_name>`
 
@@ -163,33 +184,27 @@ You can grant roles to service accounts in the same way that you grant roles to 
     $ oc policy add-role-to-user <role_name> -z <service_account_name>
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > If you want to grant access to a specific service account in a project, use the `-z` flag. Using this flag helps prevent typos and ensures that access is granted to only the specified service account.
 
-    If you want to grant access to a specific service account in a project, use the `-z` flag. Using this flag helps prevent typos and ensures that access is granted to only the specified service account.
-
-    </div>
-
-    <div class="tip">
-
-    You can alternatively apply the following YAML to add the role:
-
-    ``` yaml
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: <rolebinding_name>
-      namespace: <current_project_name>
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: <role_name>
-    subjects:
-    - kind: ServiceAccount
-      name: <service_account_name>
-      namespace: <current_project_name>
-    ```
-
-    </div>
+    > [!TIP]
+    > You can alternatively apply the following YAML to add the role:
+    >
+    > ``` yaml
+    > apiVersion: rbac.authorization.k8s.io/v1
+    > kind: RoleBinding
+    > metadata:
+    >   name: <rolebinding_name>
+    >   namespace: <current_project_name>
+    > roleRef:
+    >   apiGroup: rbac.authorization.k8s.io
+    >   kind: ClusterRole
+    >   name: <role_name>
+    > subjects:
+    > - kind: ServiceAccount
+    >   name: <service_account_name>
+    >   namespace: <current_project_name>
+    > ```
 
 3.  To modify a different namespace, you can use the `-n` option to indicate the project namespace it applies to, as shown in the following examples.
 
@@ -199,27 +214,24 @@ You can grant roles to service accounts in the same way that you grant roles to 
       $ oc policy add-role-to-group view system:serviceaccounts -n my-project
       ```
 
-      <div class="tip">
-
-      You can alternatively apply the following YAML to add the role:
-
-      ``` yaml
-      apiVersion: rbac.authorization.k8s.io/v1
-      kind: RoleBinding
-      metadata:
-        name: view
-        namespace: my-project
-      roleRef:
-        apiGroup: rbac.authorization.k8s.io
-        kind: ClusterRole
-        name: view
-      subjects:
-      - apiGroup: rbac.authorization.k8s.io
-        kind: Group
-        name: system:serviceaccounts
-      ```
-
-      </div>
+      > [!TIP]
+      > You can alternatively apply the following YAML to add the role:
+      >
+      > ``` yaml
+      > apiVersion: rbac.authorization.k8s.io/v1
+      > kind: RoleBinding
+      > metadata:
+      >   name: view
+      >   namespace: my-project
+      > roleRef:
+      >   apiGroup: rbac.authorization.k8s.io
+      >   kind: ClusterRole
+      >   name: view
+      > subjects:
+      > - apiGroup: rbac.authorization.k8s.io
+      >   kind: Group
+      >   name: system:serviceaccounts
+      > ```
 
     - To allow all service accounts in the `managers` project to edit resources in the `my-project` project:
 
@@ -227,24 +239,23 @@ You can grant roles to service accounts in the same way that you grant roles to 
       $ oc policy add-role-to-group edit system:serviceaccounts:managers -n my-project
       ```
 
-      <div class="tip">
+      > [!TIP]
+      > You can alternatively apply the following YAML to add the role:
+      >
+      > ``` yaml
+      > apiVersion: rbac.authorization.k8s.io/v1
+      > kind: RoleBinding
+      > metadata:
+      >   name: edit
+      >   namespace: my-project
+      > roleRef:
+      >   apiGroup: rbac.authorization.k8s.io
+      >   kind: ClusterRole
+      >   name: edit
+      > subjects:
+      > - apiGroup: rbac.authorization.k8s.io
+      >   kind: Group
+      >   name: system:serviceaccounts:managers
+      > ```
 
-      You can alternatively apply the following YAML to add the role:
-
-      ``` yaml
-      apiVersion: rbac.authorization.k8s.io/v1
-      kind: RoleBinding
-      metadata:
-        name: edit
-        namespace: my-project
-      roleRef:
-        apiGroup: rbac.authorization.k8s.io
-        kind: ClusterRole
-        name: edit
-      subjects:
-      - apiGroup: rbac.authorization.k8s.io
-        kind: Group
-        name: system:serviceaccounts:managers
-      ```
-
-      </div>
+</div>

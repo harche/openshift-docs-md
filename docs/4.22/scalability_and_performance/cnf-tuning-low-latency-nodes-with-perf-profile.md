@@ -6,11 +6,8 @@ You can create a cluster performance profile by using the Performance Profile Cr
 
 The PPC combines information about your cluster with user-supplied configurations to generate a performance profile that is appropriate to your hardware, topology and use-case.
 
-<div class="note">
-
-Performance profiles are applicable only to bare-metal environments where the cluster has direct access to the underlying hardware resources. You can configure performances profiles for both single-node OpenShift and multi-node clusters.
-
-</div>
+> [!NOTE]
+> Performance profiles are applicable only to bare-metal environments where the cluster has direct access to the underlying hardware resources. You can configure performances profiles for both single-node OpenShift and multi-node clusters.
 
 The following is a high-level workflow for creating and applying a performance profile in your cluster:
 
@@ -46,11 +43,8 @@ You can run the PPC by using one of the following methods:
 
 - Run the PPC by using the wrapper script
 
-<div class="note">
-
-Using the wrapper script abstracts some of the more granular Podman tasks into an executable script. For example, the wrapper script handles tasks such as pulling and running the required container image, mounting directories into the container, and providing parameters directly to the container through Podman. Both methods achieve the same result.
-
-</div>
+> [!NOTE]
+> Using the wrapper script abstracts some of the more granular Podman tasks into an executable script. For example, the wrapper script handles tasks such as pulling and running the required container image, mounting directories into the container, and providing parameters directly to the container through Podman. Both methods achieve the same result.
 
 ## Create a machine config pool to target nodes for performance tuning
 
@@ -58,9 +52,27 @@ For multi-node clusters, you can define a machine config pool (MCP) to identify 
 
 In single-node OpenShift clusters, you must use the `master` MCP because there is only one node in the cluster. You do not need to create a separate MCP for single-node OpenShift clusters.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have `cluster-admin` role access.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Label the target nodes for configuration by running the following command:
 
@@ -74,9 +86,11 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
 
     1.  Create a YAML file that defines the `MachineConfigPool` resource:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `mcp-worker-cnf.yaml` file**
+        <div class="title">
+
+        Example `mcp-worker-cnf.yaml` file
 
         </div>
 
@@ -101,6 +115,8 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
               node-role.kubernetes.io/worker-cnf: ""
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -118,9 +134,11 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
         $ oc apply -f mcp-worker-cnf.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -128,15 +146,29 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
         machineconfigpool.machineconfiguration.openshift.io/worker-cnf created
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the machine config pools in your cluster by running the following command:
 
   ``` terminal
   $ oc get mcp
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -147,15 +179,37 @@ In single-node OpenShift clusters, you must use the `master` MCP because there i
   worker-cnf   rendered-worker-cnf-168f52b168f151e4f853259729b6azc4   True      False      False      1              1                   1                     0                      73s
   ```
 
+  </div>
+
+</div>
+
 ## Gather data about your cluster for the PPC
 
 The Performance Profile Creator (PPC) tool requires `must-gather` data. As a cluster administrator, run the `must-gather` command to capture information about your cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You identified a target MCP that you want to configure with a performance profile.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -175,13 +229,22 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
 
     - `<must_gather_folder>`: Specifies the name of the `must-gather` data folder.
 
-      <div class="note">
+      > [!NOTE]
+      > Compressed output is required if you are running the Performance Profile Creator wrapper script.
 
-      Compressed output is required if you are running the Performance Profile Creator wrapper script.
+</div>
 
-      </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
+
+</div>
 
 ## Run the Performance Profile Creator using Podman
 
@@ -189,9 +252,14 @@ As a cluster administrator, you can use Podman with the Performance Profile Crea
 
 For more information about the PPC arguments, see the section "Performance Profile Creator arguments".
 
-<div class="important">
+> [!IMPORTANT]
+> The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
 
-The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -206,6 +274,16 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 - You identified a machine config pool containing target nodes for configuration.
 
 - You have access to the `must-gather` data for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the machine config pool by running the following command:
 
@@ -332,11 +410,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
 
-      <div class="note">
-
-      The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
-
-      </div>
+      > [!NOTE]
+      > The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
 
       The following output shows the CPU and NUMA allocation for the performance profile:
 
@@ -396,6 +471,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     performanceprofile.performance.openshift.io/performance created
     ```
 
+</div>
+
 ## Run the Performance Profile Creator wrapper script
 
 The wrapper script simplifies the process of creating a performance profile with the Performance Profile Creator (PPC) tool.
@@ -404,9 +481,14 @@ The script handles tasks such as pulling and running the required container imag
 
 For more information about the Performance Profile Creator arguments, see the section "Performance Profile Creator arguments".
 
-<div class="important">
+> [!IMPORTANT]
+> The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
 
-The PPC uses the `must-gather` data from your cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -421,6 +503,16 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 - You identified a machine config pool containing target nodes for configuration.
 
 - Access to the `must-gather` tarball.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file on your local machine named, for example, `run-perf-profile-creator.sh`:
 
@@ -575,11 +667,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     Use "performance-profile-creator [command] --help" for more information about a command.
     ```
 
-    <div class="note">
-
-    You can optionally set a path for the Node Tuning Operator image using the `-p` option. If you do not set a path, the wrapper script uses the default image: `registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17`.
-
-    </div>
+    > [!NOTE]
+    > You can optionally set a path for the Node Tuning Operator image using the `-p` option. If you do not set a path, the wrapper script uses the default image: `registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17`.
 
 6.  To display information about the cluster, run the PPC tool with the `info` command by running the following command:
 
@@ -626,11 +715,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
 
-      <div class="note">
-
-      The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
-
-      </div>
+      > [!NOTE]
+      > The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
 
 8.  Review the created YAML file by running the following command:
 
@@ -675,6 +761,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     performanceprofile.performance.openshift.io/performance created
     ```
 
+</div>
+
 ## Performance Profile Creator arguments
 
 To customize the generation of performance profiles, review the arguments for the Performance Profile Creator.
@@ -686,34 +774,32 @@ To customize the generation of performance profiles, review the arguments for th
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcp-name</code></p></td>
 <td style="text-align: left;"><p>Name for MCP; for example, <code>worker-cnf</code> corresponding to the target machines.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>must-gather-dir-path</code></p></td>
 <td style="text-align: left;"><p>The path of the must gather directory.</p>
 <p>This argument is only required if you run the PPC tool by using Podman. If you use the PPC with the wrapper script, do not use this argument. Instead, specify the directory path to the <code>must-gather</code> tarball by using the <code>-t</code> option for the wrapper script.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>reserved-cpu-count</code></p></td>
 <td style="text-align: left;"><p>Number of reserved CPUs. Use a natural number greater than zero.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>rt-kernel</code></p></td>
 <td style="text-align: left;"><p>Enables real-time kernel.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p></td>
 </tr>
 </tbody>
 </table>
-
-Required Performance Profile Creator arguments
 
 <table>
 <caption>Optional Performance Profile Creator arguments</caption>
@@ -722,22 +808,24 @@ Required Performance Profile Creator arguments
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>disable-ht</code></p></td>
 <td style="text-align: left;"><p>Disable Hyper-Threading.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p>
 <div class="warning">
+<div class="title">
+&#10;</div>
 <p>If this argument is set to <code>true</code> you should not disable Hyper-Threading in the BIOS. Disabling Hyper-Threading is accomplished with a kernel command-line argument.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>enable-hardware-tuning</p></td>
 <td style="text-align: left;"><p>Enable the setting of maximum CPU frequencies.</p>
 <p>To enable this feature, set the maximum frequency for applications running on isolated and reserved CPUs for both of the following fields:</p>
@@ -747,7 +835,7 @@ Required Performance Profile Creator arguments
 </ul>
 <p>This is an advanced feature. If you configure hardware tuning, the generated <code>PerformanceProfile</code> includes warnings and guidance on how to set frequency settings.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>info</code></p></td>
 <td style="text-align: left;"><p>This captures cluster information. This argument also requires the <code>must-gather-dir-path</code> argument. If any other arguments are set they are ignored.</p>
 <p>Possible values:</p>
@@ -757,16 +845,18 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>log</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>offlined-cpu-count</code></p></td>
 <td style="text-align: left;"><p>Number of offlined CPUs.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>Use a natural number greater than zero. If not enough logical processors are offlined, then error messages are logged. The messages are:</p>
 <pre class="terminal"><code>Error: failed to compute the reserved and isolated CPUs: please ensure that reserved-cpu-count plus offlined-cpu-count should be in the range [0,1]</code></pre>
 <pre class="terminal"><code>Error: failed to compute the reserved and isolated CPUs: please specify the offlined CPU count in the range [0,1]</code></pre>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>power-consumption-mode</code></p></td>
 <td style="text-align: left;"><p>The power consumption mode.</p>
 <p>Possible values:</p>
@@ -777,24 +867,24 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>default</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>per-pod-power-management</code></p></td>
 <td style="text-align: left;"><p>Enable per pod power management. You cannot use this argument if you configured <code>ultra-low-latency</code> as the power consumption mode.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>profile-name</code></p></td>
 <td style="text-align: left;"><p>Name of the performance profile to create.</p>
 <p>Default: <code>performance</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>split-reserved-cpus-across-numa</code></p></td>
 <td style="text-align: left;"><p>Split the reserved CPUs across NUMA nodes.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
 <p>Default: <code>false</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>topology-manager-policy</code></p></td>
 <td style="text-align: left;"><p>Kubelet Topology Manager policy of the performance profile to be created.</p>
 <p>Possible values:</p>
@@ -805,7 +895,7 @@ Required Performance Profile Creator arguments
 </ul>
 <p>Default: <code>restricted</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>user-level-networking</code></p></td>
 <td style="text-align: left;"><p>Run with user level networking (DPDK) enabled.</p>
 <p>Possible values: <code>true</code> or <code>false</code>.</p>
@@ -813,8 +903,6 @@ Required Performance Profile Creator arguments
 </tr>
 </tbody>
 </table>
-
-Optional Performance Profile Creator arguments
 
 # Reference performance profiles
 
@@ -826,9 +914,11 @@ To maximize machine performance in a cluster that uses Open vSwitch with the Dat
 
 You can use the following performance profile template to create a profile for your deployment.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Performance profile template for clusters that use OVS-DPDK**
+<div class="title">
+
+Performance profile template for clusters that use OVS-DPDK
 
 </div>
 
@@ -864,15 +954,19 @@ spec:
     globallyDisableIrqLoadBalancing: true
 ```
 
+</div>
+
 Insert values that are appropriate for your configuration for the `CPU_ISOLATED`, `CPU_RESERVED`, and `HUGEPAGES_COUNT` keys.
 
 ## Telco RAN DU reference design performance profile
 
 You can use a pre-configured design performance profile that configures node-level performance settings for OpenShift Container Platform clusters on commodity hardware to host telco RAN DU workloads.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Telco RAN DU reference design performance profile**
+<div class="title">
+
+Telco RAN DU reference design performance profile
 
 </div>
 
@@ -922,13 +1016,17 @@ spec:
     perPodPowerManagement: false
 ```
 
+</div>
+
 ## Telco core reference design performance profile
 
 You can use a pre-configured design performance profile that configures node-level performance settings for OpenShift Container Platform clusters on commodity hardware to host telco core workloads.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Telco core reference design performance profile**
+<div class="title">
+
+Telco core reference design performance profile
 
 </div>
 
@@ -979,6 +1077,8 @@ spec:
     userLevelNetworking: false
 ```
 
+</div>
+
 # Supported performance profile API versions
 
 The Node Tuning Operator supports `v2`, `v1`, and `v1alpha1` for the performance profile `apiVersion` field. The v1 and v1alpha1 APIs are identical. The v2 API includes an optional boolean field `globallyDisableIrqLoadBalancing` with a default value of `false`.
@@ -986,11 +1086,8 @@ The Node Tuning Operator supports `v2`, `v1`, and `v1alpha1` for the performance
 Upgrading the performance profile to use device interrupt processing
 When you upgrade the Node Tuning Operator performance profile custom resource definition (CRD) from v1 or v1alpha1 to v2, `globallyDisableIrqLoadBalancing` is set to `true` on existing profiles.
 
-<div class="note">
-
-`globallyDisableIrqLoadBalancing` toggles whether IRQ load balancing will be disabled for the Isolated CPU set. When the option is set to `true` it disables IRQ load balancing for the Isolated CPU set. Setting the option to `false` allows the IRQs to be balanced across all CPUs.
-
-</div>
+> [!NOTE]
+> `globallyDisableIrqLoadBalancing` toggles whether IRQ load balancing will be disabled for the Isolated CPU set. When the option is set to `true` it disables IRQ load balancing for the Isolated CPU set. Setting the option to `false` allows the IRQs to be balanced across all CPUs.
 
 Upgrading Node Tuning Operator API from v1alpha1 to v1
 When upgrading Node Tuning Operator API version from v1alpha1 to v1, the v1alpha1 performance profiles are converted on-the-fly using a "None" Conversion strategy and served to the Node Tuning Operator with API version v1.
@@ -1013,7 +1110,7 @@ The following table describes the possible values set for the `power-consumption
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Performance Profile creator setting</th>
 <th style="text-align: left;">Hint</th>
 <th style="text-align: left;">Environment</th>
@@ -1021,7 +1118,7 @@ The following table describes the possible values set for the `power-consumption
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Default</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: false
@@ -1029,7 +1126,7 @@ realTime: false</code></pre></td>
 <td style="text-align: left;"><p>High throughput cluster without latency requirements</p></td>
 <td style="text-align: left;"><p>Performance achieved through CPU partitioning only.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Low-latency</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: false
@@ -1037,7 +1134,7 @@ realTime: true</code></pre></td>
 <td style="text-align: left;"><p>Regional data-centers</p></td>
 <td style="text-align: left;"><p>Both energy savings and low-latency are desirable: compromise between power management, latency and throughput.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Ultra-low-latency</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 highPowerConsumption: true
@@ -1045,7 +1142,7 @@ realTime: true</code></pre></td>
 <td style="text-align: left;"><p>Far edge clusters, latency critical workloads</p></td>
 <td style="text-align: left;"><p>Optimized for absolute minimal latency and maximum determinism at the cost of increased power consumption.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Per-pod power management</p></td>
 <td style="text-align: left;"><pre class="terminal"><code>workloadHints:
 realTime: true
@@ -1056,8 +1153,6 @@ perPodPowerManagement: true</code></pre></td>
 </tr>
 </tbody>
 </table>
-
-Impact of combinations of power consumption and real-time settings on latency
 
 The following configuration is commonly used in a telco RAN DU deployment:
 
@@ -1077,27 +1172,49 @@ The following configuration is commonly used in a telco RAN DU deployment:
 `perPodPowerManagement`
 Specifies to disable some debugging and monitoring features that can affect system latency.
 
-<div class="note">
+> [!NOTE]
+> If you do not set the `realTime` workload hint, the hint defaults to `true`.
 
-When the `realTime` workload hint flag is set to `true` in a performance profile, add the `cpu-quota.crio.io: disable` annotation to every guaranteed pod with pinned CPUs. This annotation is necessary to prevent the degradation of the process performance within the pod. If the `realTime` workload hint is not explicitly set, it defaults to `true`.
+For more information about how combinations of power consumption and real-time settings impact latency, see "Understanding workload hints".
+
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
-For more information how combinations of power consumption and real-time settings impact latency, see "Understanding workload hints".
-
 - [Understanding workload hints](https://access.redhat.com/articles/7081587)
+
+</div>
 
 # Configure power saving for nodes that run colocated high and low priority workloads
 
 You can enable power savings for a node that has low priority workloads that are colocated with high priority workloads without impacting the latency or throughput of the high priority workloads. Power saving is possible without modifications to the workloads themselves.
 
-<div class="important">
+> [!IMPORTANT]
+> The feature is supported on Intel Ice Lake and later generations of Intel CPUs. The capabilities of the processor might impact the latency and throughput of the high priority workloads.
 
-The feature is supported on Intel Ice Lake and later generations of Intel CPUs. The capabilities of the processor might impact the latency and throughput of the high priority workloads.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You enabled C-states and operating system controlled P-states in the BIOS
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate a `PerformanceProfile` with the `per-pod-power-management` argument set to `true`:
 
@@ -1112,9 +1229,11 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
 
     The `power-consumption-mode` argument must be `default` or `low-latency` when the `per-pod-power-management` argument is set to `true`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `PerformanceProfile` with `perPodPowerManagement`**
+    <div class="title">
+
+    Example `PerformanceProfile` with `perPodPowerManagement`
 
     </div>
 
@@ -1131,6 +1250,8 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
             perPodPowerManagement: true
     # ...
     ```
+
+    </div>
 
 2.  Set the default `cpufreq` governor as an additional kernel argument in the `PerformanceProfile` custom resource (CR):
 
@@ -1166,6 +1287,8 @@ The feature is supported on Intel Ice Lake and later generations of Intel CPUs. 
     `/sys/devices/system/cpu/intel_pstate/max_perf_pct`
     Specifies the `max_perf_pct` that controls the maximum frequency that the `cpufreq` driver is allowed to set as a percentage of the maximum supported cpu frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores will run at when the cores are all fully occupied.
 
+</div>
+
 # Protecting low latency workloads from exec operations
 
 ## How ExecCPUAffinity prevents latency spikes from exec operations
@@ -1182,11 +1305,8 @@ This ensures that your primary low-latency applications, such as Telco RAN DU or
 
 - **CPU Selection Logic**: The system automatically selects the first available CPU to host the executed process. It prioritizes a shared CPU if one is configured; otherwise, it uses the first exclusive CPU in the container’s set.
 
-  <div class="note">
-
-  If a Pod contains multiple containers, only the container requesting an integer number of CPUs uses `ExecCPUAffinity`. Any container with fractional CPU requests will follow the default behavior, allowing processes to run on any CPU within the container’s cgroup set.
-
-  </div>
+  > [!NOTE]
+  > If a Pod contains multiple containers, only the container requesting an integer number of CPUs uses `ExecCPUAffinity`. Any container with fractional CPU requests will follow the default behavior, allowing processes to run on any CPU within the container’s cgroup set.
 
 If you need the previous behavior where executed processes can run on any allocated core, you can disable the feature for all workloads by using that performance runtime class.
 
@@ -1198,11 +1318,8 @@ metadata:
     performance.openshift.io/exec-cpu-affinity: "disable"
 ```
 
-<div class="note">
-
-Use this annotation only as a temporary fallback and is expected to be removed in future releases.
-
-</div>
+> [!NOTE]
+> Use this annotation only as a temporary fallback and is expected to be removed in future releases.
 
 ## Isolate exec processes from latency-sensitive workloads
 
@@ -1210,7 +1327,25 @@ You can prevent `oc exec` and shell processes from interrupting latency-sensitiv
 
 The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` feature, which pins exec processes to a designated CPU so that your primary workload CPUs remain undisturbed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Apply a `PerformanceProfile` tailored to your workload tuning requirements, such as reserved CPU counts or real-time kernel settings. For detailed instructions on generating a profile, see *Creating a performance profile*.
 
@@ -1220,11 +1355,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
     $ oc create namespace performance-profile-testing
     ```
 
-    <div class="note">
-
-    You can create the workload in any namespace. This `performance-profile-testing` is used for testing purposes in this example.
-
-    </div>
+    > [!NOTE]
+    > You can create the workload in any namespace. This `performance-profile-testing` is used for testing purposes in this example.
 
 3.  Deploy a `Guaranteed` QoS pod that requests whole integer CPUs and uses the generated `RuntimeClass`.
 
@@ -1263,21 +1395,18 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
                 memory: "256Mi"
         ```
 
-        <div class="note">
-
-        The following requirements apply for CPU pinning:
-
-        - **Guaranteed QoS Class**: To trigger CPU pinning, the Pod must belong to the Guaranteed Quality of Service class. This requires that every container in the pod has both CPU and memory limits defined, and those limits must exactly equal their corresponding requests.
-
-        - **Integer CPUs**: The CPU request must be a whole integer.
-
-          - **SMT/Hyperthreading**: On systems where Simultaneous Multithreading (SMT) is enabled, the request should typically be a multiple of the threads per core, which is usually 2, to ensure exclusive core allocation.
-
-          - **Fractional Requests**: Pods with fractional CPU requests do not trigger the `ExecCPUAffinity` logic and follow the previous scheduling behavior.
-
-        - **Capacity**: Ensure your cluster has sufficient isolated CPU capacity available in the node’s allocated pool to satisfy the request.
-
-        </div>
+        > [!NOTE]
+        > The following requirements apply for CPU pinning:
+        >
+        > - **Guaranteed QoS Class**: To trigger CPU pinning, the Pod must belong to the Guaranteed Quality of Service class. This requires that every container in the pod has both CPU and memory limits defined, and those limits must exactly equal their corresponding requests.
+        >
+        > - **Integer CPUs**: The CPU request must be a whole integer.
+        >
+        >   - **SMT/Hyperthreading**: On systems where Simultaneous Multithreading (SMT) is enabled, the request should typically be a multiple of the threads per core, which is usually 2, to ensure exclusive core allocation.
+        >
+        >   - **Fractional Requests**: Pods with fractional CPU requests do not trigger the `ExecCPUAffinity` logic and follow the previous scheduling behavior.
+        >
+        > - **Capacity**: Ensure your cluster has sufficient isolated CPU capacity available in the node’s allocated pool to satisfy the request.
 
     3.  Apply the pod definition by running the following command:
 
@@ -1293,7 +1422,15 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
 
     Wait until the pod status shows `Running` before proceeding to the verification steps.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify `exec` process pinning as follows:
 
@@ -1303,11 +1440,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
         $ oc exec -n performance-profile-testing test -- cat /sys/fs/cgroup/cpuset.cpus
         ```
 
-        <div class="note">
-
-        In a single-container pod, the command defaults to that container. In a multi-container pod, you must specify the container name using the `-c <container_name>` flag to ensure you are checking the correct context.
-
-        </div>
+        > [!NOTE]
+        > In a single-container pod, the command defaults to that container. In a multi-container pod, you must specify the container name using the `-c <container_name>` flag to ensure you are checking the correct context.
 
         The following example shows the expected output:
 
@@ -1357,11 +1491,8 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
         $ oc exec -n performance-profile-testing test -- cat /sys/fs/cgroup/cpuset.cpus
         ```
 
-        <div class="note">
-
-        In a multi-container pod, you must specify the container name using the `-c <container_name>` flag.
-
-        </div>
+        > [!NOTE]
+        > In a multi-container pod, you must specify the container name using the `-c <container_name>` flag.
 
         The following example shows the expected output for example the specific cores exclusively assigned to this container by the CPU Manager:
 
@@ -1379,19 +1510,36 @@ The Node Tuning Operator (NTO) automatically enables the `ExecCPUAffinity` featu
 
         In this example, while the container has access to CPUs 4-5, the `ExecCPUAffinity` logic has pinned the exec process specifically to CPU 4. This confirms the pinning logic is active and that your primary workload’s exclusive CPUs remain undisturbed.
 
+</div>
+
 ## Disable CPU isolation for executed processes
 
 If you have a high-performance workload that requires executed processes to use any available core rather than being pinned to the first core, you can opt out of the default behavior by following this procedure.
 
-<div class="note">
+> [!NOTE]
+> Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation triggers a MachineConfig rollout that reboots the affected nodes.
 
-Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation triggers a MachineConfig rollout that reboots the affected nodes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List existing profiles by running the following command:
 
@@ -1426,7 +1574,15 @@ Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation t
 
     All pools should show `UPDATED=True` and `UPDATING=False` before proceeding.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the annotation has been added by running the following command, replacing `<profile-name>` with the name of your PerformanceProfile:
 
@@ -1440,15 +1596,35 @@ Adding or removing the `performance.openshift.io/exec-cpu-affinity` annotation t
         performance.openshift.io/exec-cpu-affinity: "disable"
     ```
 
+</div>
+
 ## Troubleshoot ExecCPUAffinity configuration
 
 If a process initiated by using `oc exec` is not being pinned correctly despite the pod meeting the Guaranteed QoS and integer CPU requirements, use the following procedure to verify the configuration at the node level.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have the OpenShift CLI (`oc`) installed.
 
 - You have identified the node where the pod is running.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug session for the targeted node:
 
@@ -1476,11 +1652,8 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
     exec_cpu_affinity = "first"
     ```
 
-    <div class="note">
-
-    If `exec_cpu_affinity = "first"` is missing, ensure the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation. If you recently changed the annotation, verify that the MachineConfigPool (MCP) has finished updating.
-
-    </div>
+    > [!NOTE]
+    > If `exec_cpu_affinity = "first"` is missing, ensure the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation. If you recently changed the annotation, verify that the MachineConfigPool (MCP) has finished updating.
 
 4.  Verify the live CRI-O configuration to ensure the setting is loaded into memory:
 
@@ -1494,6 +1667,16 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
     exec_cpu_affinity = "first"
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - If both the runtime configuration file and live CRI-O configuration show `exec_cpu_affinity = "first"`, the ExecCPUAffinity feature is correctly configured. Processes initiated by `oc exec` on Guaranteed QoS pods with integer CPU requests are pinned to the first available core.
 
 - If `exec_cpu_affinity = "first"` is missing from either output, check that the `PerformanceProfile` does not contain the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation and verify that the MachineConfigPool (MCP) has finished updating by running:
@@ -1504,18 +1687,28 @@ If a process initiated by using `oc exec` is not being pinned correctly despite 
 
   All pools should show `UPDATED=True` and `UPDATING=False`.
 
+</div>
+
 ## Troubleshooting ExecCPUAffinity configuration common issues and resolutions
 
 Troubleshoot `ExecCPUAffinity` configuration issues by identifying common symptoms and their resolutions. Use this information to ensure processes are correctly pinned to the intended CPUs and that the MachineConfigPool updates successfully.
 
 The following table describes common issues and resolutions for `ExecCPUAffinity` configuration:
 
-| Symptom                                                                   | Potential Cause                                                                                                                                                                       | Resolution                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Process runs on all CPUs in the container set.                            | The pod does not belong to the Guaranteed QoS class. For more information see [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#criteria). | Ensure the container has `limits` and `requests` defined for both CPU and memory, and that they are equal.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Process runs on all CPUs in the container set.                            | The container uses fractional CPU requests for example `500m`.                                                                                                                        | Update the pod specification to request a whole integer number of CPUs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| The `99-runtimes.conf` file does not exist or is not updated.             | The MachineConfigPool (MCP) is still updating or has failed.                                                                                                                          | Check the MCP status using `oc get mcp`. Changing the `ExecCPUAffinity` status triggers a node reboot; ensure the update has completed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| The `exec` process is pinned to an exclusive CPU instead of a shared CPU. | Shared CPUs are not defined in the `PerformanceProfile`.                                                                                                                              | When the `MixedCPUsAllocation` Technology Preview feature is enabled through the `TechPreviewNoUpgrade` feature set, the system’s CPU pinning logic for exec processes changes. If shared CPUs are defined in the PerformanceProfile under `spec.cpu.shared` and `workloadHints.mixedCpus` is set to `true`, the system prioritizes the first shared CPU. If no shared CPUs are defined, it defaults to the first exclusive (isolated) CPU. Enabling this feature set cannot be undone and is not recommended for production clusters. Additionally, the container must request shared CPUs by including `workload.openshift.io/enable-shared-cpus: "1"` in the resource limits. |
+| Symptom | Potential Cause | Resolution |
+|----|----|----|
+| Process runs on all CPUs in the container set. | The pod does not belong to the Guaranteed QoS class. For more information see [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#criteria). | Ensure the container has `limits` and `requests` defined for both CPU and memory, and that they are equal. |
+| Process runs on all CPUs in the container set. | The container uses fractional CPU requests for example `500m`. | Update the pod specification to request a whole integer number of CPUs. |
+| The `99-runtimes.conf` file does not exist or is not updated. | The MachineConfigPool (MCP) is still updating or has failed. | Check the MCP status using `oc get mcp`. Changing the `ExecCPUAffinity` status triggers a node reboot; ensure the update has completed. |
+| The `exec` process is pinned to an exclusive CPU instead of a shared CPU. | Shared CPUs are not defined in the `PerformanceProfile`. | When the `MixedCPUsAllocation` Technology Preview feature is enabled through the `TechPreviewNoUpgrade` feature set, the system’s CPU pinning logic for exec processes changes. If shared CPUs are defined in the PerformanceProfile under `spec.cpu.shared` and `workloadHints.mixedCpus` is set to `true`, the system prioritizes the first shared CPU. If no shared CPUs are defined, it defaults to the first exclusive (isolated) CPU. Enabling this feature set cannot be undone and is not recommended for production clusters. Additionally, the container must request shared CPUs by including `workload.openshift.io/enable-shared-cpus: "1"` in the resource limits. |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-tuning-low-latency-nodes-with-perf-profile)
 
@@ -1523,20 +1716,22 @@ The following table describes common issues and resolutions for `ExecCPUAffinity
 
 - [Managing device interrupt processing for guaranteed pod isolated CPUs](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#managing-device-interrupt-processing-for-guaranteed-pod-isolated-cpus_cnf-tuning-low-latency-nodes-with-perf-profile)
 
+</div>
+
 # CPUs for infra and application containers
 
 Generic housekeeping and workload tasks use CPUs in a way that might impact latency-sensitive processes. By default, the container runtime uses all online CPUs to run all containers together, which can result in context switches and spikes in latency.
 
 Partitioning the CPUs prevents noisy processes from interfering with latency-sensitive processes by separating them from each other. The following table describes how processes run on a CPU after you have tuned the node using the Node Tuning Operator:
 
-| Process type                      | Details                                                                             |
-|-----------------------------------|-------------------------------------------------------------------------------------|
-| `Burstable` and `BestEffort` pods | Runs on any CPU except where low latency workload is running                        |
-| Infrastructure pods               | Runs on any CPU except where low latency workload is running                        |
-| Interrupts                        | Redirects to reserved CPUs (optional in OpenShift Container Platform 4.7 and later) |
-| Kernel processes                  | Pins to reserved CPUs                                                               |
-| Latency-sensitive workload pods   | Pins to a specific set of exclusive CPUs from the isolated pool                     |
-| OS processes/systemd services     | Pins to reserved CPUs                                                               |
+| Process type | Details |
+|----|----|
+| `Burstable` and `BestEffort` pods | Runs on any CPU except where low latency workload is running |
+| Infrastructure pods | Runs on any CPU except where low latency workload is running |
+| Interrupts | Redirects to reserved CPUs (optional in OpenShift Container Platform 4.7 and later) |
+| Kernel processes | Pins to reserved CPUs |
+| Latency-sensitive workload pods | Pins to a specific set of exclusive CPUs from the isolated pool |
+| OS processes/systemd services | Pins to reserved CPUs |
 
 Process' CPU assignments
 
@@ -1558,22 +1753,27 @@ The decision regarding which specific CPUs should be used for reserved and isola
 
 To ensure that housekeeping tasks and workloads do not interfere with each other, specify two groups of CPUs in the `spec` section of the performance profile.
 
-<div class="important">
+> [!IMPORTANT]
+> The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
 
-The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
-
-</div>
-
-| Partition type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `reserved`     | Specifies the CPUs for cluster and operating system housekeeping duties. Kernel processes and operating system services are pinned to these CPUs. When workload partitioning is enabled, platform pods are also pinned to these CPUs. Threads in the `reserved` group are often busy. The kubelet does not place `Guaranteed` pods that request exclusive CPUs on these CPUs. Do not run latency-sensitive applications in the `reserved` group. |
-| `isolated`     | Specifies the CPUs for application container workloads. These CPUs have the lowest latency. Device interrupts can still be processed on this set unless you disable IRQ load balancing. The kubelet places `Guaranteed` pods that request exclusive CPUs on this set.                                                                                                                                                                            |
+| Partition type | Description |
+|----|----|
+| `reserved` | Specifies the CPUs for cluster and operating system housekeeping duties. Kernel processes and operating system services are pinned to these CPUs. When workload partitioning is enabled, platform pods are also pinned to these CPUs. Threads in the `reserved` group are often busy. The kubelet does not place `Guaranteed` pods that request exclusive CPUs on these CPUs. Do not run latency-sensitive applications in the `reserved` group. |
+| `isolated` | Specifies the CPUs for application container workloads. These CPUs have the lowest latency. Device interrupts can still be processed on this set unless you disable IRQ load balancing. The kubelet places `Guaranteed` pods that request exclusive CPUs on this set. |
 
 CPU partition types
 
 # Partition CPUs for infra and application containers
 
 By partitioning CPUs, you can prevent noisy processes from interfering with latency-sensitive processes by separating the processes from each other.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a performance profile appropriate for the environment’s hardware and topology. The following example adds the `reserved` and `isolated` parameters with the CPUs you want reserved and isolated for the infra and application containers:
 
@@ -1602,25 +1802,39 @@ By partitioning CPUs, you can prevent noisy processes from interfering with late
     `spec.nodeSelector`
     Specifies a node selector to apply the performance profile to specific nodes. Optional parameter.
 
+</div>
+
 # Configure Hyper-Threading for a cluster
 
 To configure Hyper-Threading for an OpenShift Container Platform cluster, set the CPU threads in the performance profile to the same cores that are configured for the reserved or isolated CPU pools.
 
-<div class="note">
+> [!NOTE]
+> If you configure a performance profile, and subsequently change the Hyper-Threading configuration for the host, ensure that you update the CPU `isolated` and `reserved` fields in the `PerformanceProfile` YAML to match the new configuration.
 
-If you configure a performance profile, and subsequently change the Hyper-Threading configuration for the host, ensure that you update the CPU `isolated` and `reserved` fields in the `PerformanceProfile` YAML to match the new configuration.
+> [!WARNING]
+> Disabling a previously enabled host Hyper-Threading configuration can cause the CPU core IDs listed in the `PerformanceProfile` YAML to be incorrect. This incorrect configuration can cause the node to become unavailable because the listed CPUs can no longer be found.
 
-</div>
+<div>
 
-<div class="warning">
+<div class="title">
 
-Disabling a previously enabled host Hyper-Threading configuration can cause the CPU core IDs listed in the `PerformanceProfile` YAML to be incorrect. This incorrect configuration can cause the node to become unavailable because the listed CPUs can no longer be found.
+Prerequisites
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ascertain which threads are running on what CPUs for the host you want to configure.
 
@@ -1630,9 +1844,11 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     $ lscpu --all --extended
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1648,21 +1864,27 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     7   0    0      3    3:3:3:0       yes    4800.0000 400.0000
     ```
 
+    </div>
+
     In this example, there are eight logical CPU cores running on four physical CPU cores. CPU0 and CPU4 are running on physical Core0, CPU1 and CPU5 are running on physical Core 1, and so on. Alternatively, to view the threads that are set for a particular physical CPU core (`cpu0` in the example below), open a shell prompt and run the following:
 
     ``` terminal
     $ cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     0-4
     ```
+
+    </div>
 
 2.  Apply the isolated and reserved CPUs in the `PerformanceProfile` YAML. For example, you can set logical cores CPU0 and CPU4 as `isolated`, and logical cores CPU1 to CPU3 and CPU5 to CPU7 as `reserved`. When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
 
@@ -1674,19 +1896,15 @@ Disabling a previously enabled host Hyper-Threading configuration can cause the 
     ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
 
-    The reserved and isolated CPU pools must not overlap and together must span all available cores in the worker node.
+    > [!IMPORTANT]
+    > Hyper-Threading is enabled by default on most Intel processors. If you enable Hyper-Threading, all threads processed by a particular core must be isolated or processed on the same core.
+    >
+    > When Hyper-Threading is enabled, all guaranteed pods must use multiples of the simultaneous multi-threading (SMT) level to avoid a "noisy neighbor" situation that can cause the pod to fail. See [Static policy options](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options) for more information.
 
-    </div>
-
-    <div class="important">
-
-    Hyper-Threading is enabled by default on most Intel processors. If you enable Hyper-Threading, all threads processed by a particular core must be isolated or processed on the same core.
-
-    When Hyper-Threading is enabled, all guaranteed pods must use multiples of the simultaneous multi-threading (SMT) level to avoid a "noisy neighbor" situation that can cause the pod to fail. See [Static policy options](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options) for more information.
-
-    </div>
+</div>
 
 # Disable Hyper-Threading for low latency applications
 
@@ -1694,11 +1912,21 @@ When configuring clusters for low latency processing, consider whether you want 
 
 To disable Hyper-Threading, perform the following steps:
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Create a performance profile that is appropriate for your hardware and topology. The following example sets `nosmt` as an additional kernel argument:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example performance profile**
+  <div class="title">
+
+  Example performance profile
 
   </div>
 
@@ -1731,11 +1959,12 @@ To disable Hyper-Threading, perform the following steps:
       enabled: true
   ```
 
-  <div class="note">
-
-  When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
-
   </div>
+
+  > [!NOTE]
+  > When you configure reserved and isolated CPUs, the infra containers in pods use the reserved CPUs and the application containers use the isolated CPUs.
+
+</div>
 
 # Managing device interrupt processing for guaranteed pod isolated CPUs
 
@@ -1761,11 +1990,8 @@ The following are examples of drivers and hardware that Red Hat are aware lack s
 
 - The driver uses `managed_irqs`
 
-<div class="note">
-
-The reason they do not support IRQ affinity setting might be associated with factors such as the type of processor, the IRQ controller, or the circuitry connections in the motherboard.
-
-</div>
+> [!NOTE]
+> The reason they do not support IRQ affinity setting might be associated with factors such as the type of processor, the IRQ controller, or the circuitry connections in the motherboard.
 
 If the effective affinity of any IRQ is set to an isolated CPU, it might be a sign of some hardware or driver not supporting IRQ affinity setting. To find the effective affinity, log in to the host and run the following command:
 
@@ -1773,9 +1999,11 @@ If the effective affinity of any IRQ is set to an isolated CPU, it might be a si
 $ find /proc/irq -name effective_affinity -printf "%p: " -exec cat {} \;
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -1809,15 +2037,45 @@ $ find /proc/irq -name effective_affinity -printf "%p: " -exec cat {} \;
 /proc/irq/34/effective_affinity: 2
 ```
 
+</div>
+
 Some drivers use `managed_irqs`, whose affinity is managed internally by the kernel and userspace cannot change the affinity. In some cases, these IRQs might be assigned to isolated CPUs. For more information about `managed_irqs`, see "Affinity of managed interrupts cannot be changed even if they target isolated CPU".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Affinity of managed interrupts cannot be changed even if they target isolated CPU](https://access.redhat.com/solutions/4819541)
+
+</div>
 
 ## Configure node interrupt affinity
 
 Configure a cluster node for IRQ dynamic load balancing to control which cores can receive device interrupt requests (IRQ).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - For core isolation, all server hardware components must support IRQ affinity. To check if the hardware components of your server support IRQ affinity, view the hardware specifications of the server or contact your hardware provider.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform cluster as a user with cluster-admin privileges.
 
@@ -1839,11 +2097,10 @@ Configure a cluster node for IRQ dynamic load balancing to control which cores c
     ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > When you configure reserved and isolated CPUs, operating system processes, kernel processes, and systemd services run on reserved CPUs. Infrastructure pods run on any CPU except where the low latency workload is running. Low latency workload pods run on exclusive CPUs from the isolated pool. For more information, see "Partitioning CPUs for infra and application containers".
 
-    When you configure reserved and isolated CPUs, operating system processes, kernel processes, and systemd services run on reserved CPUs. Infrastructure pods run on any CPU except where the low latency workload is running. Low latency workload pods run on exclusive CPUs from the isolated pool. For more information, see "Partitioning CPUs for infra and application containers".
-
-    </div>
+</div>
 
 # Configuring memory page sizes
 
@@ -1853,9 +2110,14 @@ By configuring memory page sizes, system administrators can implement more effic
 
 Use the `kernelPageSize` specification in a performance profile to configure the kernel page size on a specific node. Specify larger kernel page sizes for memory-intensive, high-performance workloads.
 
-<div class="note">
+> [!NOTE]
+> For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for the `kernelPageSize` specification. For nodes with an AArch64 architecture, you can specify `4k` or `64k` for the `kernelPageSize` specification. You must disable the realtime kernel before you can use the `64k` option. The default value is `4k`.
 
-For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for the `kernelPageSize` specification. For nodes with an AArch64 architecture, you can specify `4k` or `64k` for the `kernelPageSize` specification. You must disable the realtime kernel before you can use the `64k` option. The default value is `4k`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1863,11 +2125,23 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
 
 - Install the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a performance profile to target nodes where you want to configure the kernel page size by creating a YAML file that defines the `PerformanceProfile` resource:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `pp-kernel-pages.yaml` file**
+    <div class="title">
+
+    Example `pp-kernel-pages.yaml` file
 
     </div>
 
@@ -1884,6 +2158,8 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
         nodeSelector:
             node-role.kubernetes.io/worker: ""
     ```
+
+    </div>
 
     where:
 
@@ -1902,15 +2178,27 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
     $ oc create -f pp-kernel-pages.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         performanceprofile.performance.openshift.io/example-performance-profile created
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Start a debug session on the node where you applied the performance profile by running the following command:
 
@@ -1926,13 +2214,19 @@ For nodes with an x86_64 or AMD64 architecture, you can only specify `4k` for th
     $ getconf PAGESIZE
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         65536
+
+    </div>
+
+</div>
 
 ## Configure huge pages
 
@@ -1940,11 +2234,21 @@ Because nodes must pre-allocate huge pages used in an OpenShift Container Platfo
 
 OpenShift Container Platform provides a method for creating and allocating huge pages. Node Tuning Operator provides an easier method for doing this using the performance profile.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - In the `hugepages.pages` section of the performance profile, specify multiple blocks of `size`, `count`, and, optionally, `node`:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example configuration**
+  <div class="title">
+
+  Example configuration
 
   </div>
 
@@ -1958,20 +2262,27 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   # ...
   ```
 
+  </div>
+
   where:
 
   `hugepages.pages.node`
   Specifies the `node` that is the NUMA node in which the huge pages are allocated. If you omit `node`, the pages are evenly spread across all NUMA nodes.
 
-  <div class="note">
-
-  Wait for the relevant machine config pool status that indicates the update is finished.
-
-  </div>
+  > [!NOTE]
+  > Wait for the relevant machine config pool status that indicates the update is finished.
 
   These are the only configuration steps you need to do to allocate huge pages.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify the configuration, see the `/proc/meminfo` file on the node:
 
@@ -1983,9 +2294,11 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   # grep -i huge /proc/meminfo
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2000,15 +2313,19 @@ OpenShift Container Platform provides a method for creating and allocating huge 
   Hugetlb:            #### ##
   ```
 
+  </div>
+
 - Use `oc describe` to report the new size:
 
   ``` terminal
   $ oc describe node worker-0.ocp4poc.example.com | grep -i huge
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2018,11 +2335,23 @@ OpenShift Container Platform provides a method for creating and allocating huge 
    hugepages-###:  ###
   ```
 
+  </div>
+
+</div>
+
 ## Allocate multiple huge page sizes
 
 You can request huge pages with different sizes under the same container. By doing this task, you can define more complicated pods consisting of containers with different huge page size needs.
 
 The following example, shows you how to define sizes `1G` and `2M`. The Node Tuning Operator configures both sizes on the node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the `PerformanceProfile` object to define `1G` and `2M` sizes for the huge pages. The Node Tuning Operator configures both sizes on the node.
 
@@ -2044,6 +2373,8 @@ The following example, shows you how to define sizes `1G` and `2M`. The Node Tun
         size: 1G
   # ...
   ```
+
+</div>
 
 # Reducing NIC queues using the Node Tuning Operator
 
@@ -2067,11 +2398,27 @@ Unsupported network devices:
 
 - Intel DPDK virtual functions
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform cluster running the Node Tuning Operator as a user with `cluster-admin` privileges.
 
@@ -2099,13 +2446,10 @@ Unsupported network devices:
 
       - `deviceID`: The network device ID (model) represented as a 16-bit hexadecimal number with a `0x` prefix.
 
-        <div class="note">
-
-        When a `deviceID` is specified, the `vendorID` must also be defined. A device that matches all of the device identifiers specified in a device entry `interfaceName`, `vendorID`, or a pair of `vendorID` plus `deviceID` qualifies as a network device. This network device then has its net queues count set to the reserved CPU count.
-
-        When two or more devices are specified, the net queues count is set to any net device that matches one of them.
-
-        </div>
+        > [!NOTE]
+        > When a `deviceID` is specified, the `vendorID` must also be defined. A device that matches all of the device identifiers specified in a device entry `interfaceName`, `vendorID`, or a pair of `vendorID` plus `deviceID` qualifies as a network device. This network device then has its net queues count set to the reserved CPU count.
+        >
+        > When two or more devices are specified, the net queues count is set to any net device that matches one of them.
 
 5.  Set the queue count to the reserved CPU count for all devices by using this example performance profile:
 
@@ -2216,6 +2560,8 @@ Unsupported network devices:
     $ oc apply -f <your_profile_name>.yaml
     ```
 
+</div>
+
 ## Verifying the queue status
 
 To ensure that your performance profile changes are active, verify the queue status.
@@ -2246,11 +2592,8 @@ spec:
 
 The following command displays the status of the queues associated with a device:
 
-<div class="note">
-
-Run this command on the node where the performance profile was applied.
-
-</div>
+> [!NOTE]
+> Run this command on the node where the performance profile was applied.
 
 ``` terminal
 $ ethtool -l <device>
@@ -2262,9 +2605,11 @@ The following command verifies the queue status before the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2282,15 +2627,19 @@ Other:      0
 Combined:   4
 ```
 
+</div>
+
 The following command verifies the queue status after the profile is applied:
 
 ``` terminal
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2307,6 +2656,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies the combined channel that shows the total count of reserved CPUs for *all* supported devices is 2. This matches what is configured in the performance profile.
 
@@ -2334,11 +2685,8 @@ spec:
 
 The following command displays the status of the queues associated with a device:
 
-<div class="note">
-
-Run this command on the node where the performance profile was applied.
-
-</div>
+> [!NOTE]
+> Run this command on the node where the performance profile was applied.
 
 ``` terminal
 $ ethtool -l <device>
@@ -2350,9 +2698,11 @@ The following command verifies the queue status after the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2369,6 +2719,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies that the total count of reserved CPUs for all supported devices with `vendorID=0x1af4` is 2. For example, if there is another network device `ens2` with `vendorID=0x1af4` it will also have total net queues of 2. This matches what is configured in the performance profile.
 
@@ -2419,9 +2771,11 @@ The following command verifies the queue status after the profile is applied:
 $ ethtool -l ens4
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -2438,6 +2792,8 @@ TX:         0
 Other:      0
 Combined:   2
 ```
+
+</div>
 
 - `Combined`: Specifies that the total count of reserved CPUs for all supported devices with `vendorID=0x1af4` is set to 2.
 

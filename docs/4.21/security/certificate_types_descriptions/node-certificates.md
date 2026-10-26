@@ -12,11 +12,21 @@ Although the kubelet CA certificate automatically renews at 292 days, you can ma
 
 The old CA certificate is removed after 365 days. Nodes are not rebooted when a kubelet CA certificate is renewed or removed.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Annotate the secret to trigger manual renewal by running the following command:
 
   ``` terminal
   $ oc annotate -n openshift-kube-apiserver-operator secret kube-apiserver-to-kubelet-signer auth.openshift.io/certificate-not-after-
   ```
+
+</div>
 
 # Additional resources
 

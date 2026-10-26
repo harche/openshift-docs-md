@@ -1,18 +1,15 @@
 Create compute machine sets in your OpenShift Container Platform cluster on IBM Power® Virtual Server to perform specific tasks. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines. Moving supporting workloads to dedicated machines helps ensure that your cluster resources are allocated efficiently.
 
-<div class="important">
-
-You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
-
-Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
-
-To view the platform type for your cluster, run the following command:
-
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
-
-</div>
+> [!IMPORTANT]
+> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+>
+> To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
 # Sample YAML for a compute machine set custom resource on IBM Power Virtual Server
 
@@ -94,17 +91,45 @@ Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image to use as a 
 `<ibm_power_vs_service_instance_id>`
 Specifies the infrastructure ID within your region to place machines on.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
+
+</div>
 
 # Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -173,11 +198,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -187,6 +209,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -209,6 +241,16 @@ To dynamically manage machine compute resources, you can create your own compute
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
+
+</div>

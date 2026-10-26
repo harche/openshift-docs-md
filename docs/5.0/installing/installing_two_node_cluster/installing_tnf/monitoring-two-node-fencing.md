@@ -30,42 +30,42 @@ You can build queries and dashboards to monitor health of your two-node OpenShif
 
 The cluster-level metrics describe the cluster as a whole and have no labels.
 
-| Metric                               | Description                                                                              |
-|--------------------------------------|------------------------------------------------------------------------------------------|
-| `tnf_cluster_healthy`                | Overall cluster health. `1` when the cluster is healthy.                                 |
-| `tnf_cluster_in_service`             | Whether the cluster is in service. `0` indicates the cluster is in maintenance mode.     |
+| Metric | Description |
+|----|----|
+| `tnf_cluster_healthy` | Overall cluster health. `1` when the cluster is healthy. |
+| `tnf_cluster_in_service` | Whether the cluster is in service. `0` indicates the cluster is in maintenance mode. |
 | `tnf_cluster_node_count_as_expected` | Whether the cluster has the expected node count. `1` when exactly two nodes are present. |
 
 Cluster-level TNF metrics
 
 The node-level metrics describe an individual node and carry a `node` label set to the node name:
 
-| Metric                       | Description                                                                                         |
-|------------------------------|-----------------------------------------------------------------------------------------------------|
-| `tnf_node_healthy`           | Overall node health. `1` when the node is healthy.                                                  |
-| `tnf_node_online`            | Whether the node is online. `0` indicates the node is offline.                                      |
-| `tnf_node_in_service`        | Whether the node is in service. `0` indicates the node is in maintenance mode.                      |
-| `tnf_node_active`            | Whether the node is active. `0` indicates the node is in standby mode.                              |
-| `tnf_node_ready`             | Whether the node is ready. `0` indicates the node is pending.                                       |
-| `tnf_node_clean`             | Whether the node is in a clean state. `0` indicates Pacemaker cannot confirm the node state.        |
-| `tnf_node_member`            | Whether the node is a cluster member.                                                               |
+| Metric | Description |
+|----|----|
+| `tnf_node_healthy` | Overall node health. `1` when the node is healthy. |
+| `tnf_node_online` | Whether the node is online. `0` indicates the node is offline. |
+| `tnf_node_in_service` | Whether the node is in service. `0` indicates the node is in maintenance mode. |
+| `tnf_node_active` | Whether the node is active. `0` indicates the node is in standby mode. |
+| `tnf_node_ready` | Whether the node is ready. `0` indicates the node is pending. |
+| `tnf_node_clean` | Whether the node is in a clean state. `0` indicates Pacemaker cannot confirm the node state. |
+| `tnf_node_member` | Whether the node is a cluster member. |
 | `tnf_node_fencing_available` | Whether at least one fence device for the node is healthy. `0` indicates the node cannot be fenced. |
-| `tnf_node_fencing_healthy`   | Whether all fence devices for the node are healthy. `0` indicates reduced fencing redundancy.       |
+| `tnf_node_fencing_healthy` | Whether all fence devices for the node are healthy. `0` indicates reduced fencing redundancy. |
 
 Node-level TNF metrics
 
 The resource-level metrics describe a Pacemaker-managed resource, such as `etcd`, on a specific node. They carry a `node` label and a `resource` label.
 
-| Metric                     | Description                                                                                      |
-|----------------------------|--------------------------------------------------------------------------------------------------|
-| `tnf_resource_healthy`     | Overall resource health. `1` when the resource is healthy.                                       |
-| `tnf_resource_in_service`  | Whether the resource is in service. `0` indicates maintenance mode.                              |
-| `tnf_resource_managed`     | Whether the resource is managed by Pacemaker. `0` indicates the resource was manually unmanaged. |
-| `tnf_resource_enabled`     | Whether the resource is enabled. `0` indicates the resource was manually disabled.               |
-| `tnf_resource_operational` | Whether the resource is operational. `0` indicates the resource has failed and cannot start.     |
-| `tnf_resource_active`      | Whether the resource is active.                                                                  |
-| `tnf_resource_started`     | Whether the resource is started. `0` indicates the resource is stopped.                          |
-| `tnf_resource_schedulable` | Whether the resource can be scheduled.                                                           |
+| Metric | Description |
+|----|----|
+| `tnf_resource_healthy` | Overall resource health. `1` when the resource is healthy. |
+| `tnf_resource_in_service` | Whether the resource is in service. `0` indicates maintenance mode. |
+| `tnf_resource_managed` | Whether the resource is managed by Pacemaker. `0` indicates the resource was manually unmanaged. |
+| `tnf_resource_enabled` | Whether the resource is enabled. `0` indicates the resource was manually disabled. |
+| `tnf_resource_operational` | Whether the resource is operational. `0` indicates the resource has failed and cannot start. |
+| `tnf_resource_active` | Whether the resource is active. |
+| `tnf_resource_started` | Whether the resource is started. `0` indicates the resource is stopped. |
+| `tnf_resource_schedulable` | Whether the resource can be scheduled. |
 
 Resource-level TNF metrics
 
@@ -83,34 +83,34 @@ Each alert includes a `runbook_url` annotation that links to detailed investigat
 
 The cluster-level alerts describe the cluster as a whole and have no labels.
 
-| Alert                     | Severity   | Fires when                                                                                                                                 | Runbook                                                                                                              |
-|---------------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| `TNFNodeCountMismatch`    | `critical` | The cluster does not have exactly two nodes, for example after a node is added or removed. Restore the cluster to two control plane nodes. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeCountMismatch.md)    |
-| `TNFClusterInMaintenance` | `warning`  | The cluster is in maintenance mode. Expected during planned maintenance; investigate if unexpected.                                        | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFClusterInMaintenance.md) |
+| Alert | Severity | Fires when | Runbook |
+|----|----|----|----|
+| `TNFNodeCountMismatch` | `critical` | The cluster does not have exactly two nodes, for example after a node is added or removed. Restore the cluster to two control plane nodes. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeCountMismatch.md) |
+| `TNFClusterInMaintenance` | `warning` | The cluster is in maintenance mode. Expected during planned maintenance; investigate if unexpected. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFClusterInMaintenance.md) |
 
 Cluster-level TNF alerts
 
 The node-level alerts carry a `node` label that identifies the affected node.
 
-| Alert                       | Severity   | Fires when                                                                                                                                                                                                    | Runbook                                                                                                                |
-|-----------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| `TNFNodeOffline`            | `critical` | The node is offline because of a node failure, reboot, or network partition. The cluster has lost high-availability redundancy until the node recovers.                                                       | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeOffline.md)            |
+| Alert | Severity | Fires when | Runbook |
+|----|----|----|----|
+| `TNFNodeOffline` | `critical` | The node is offline because of a node failure, reboot, or network partition. The cluster has lost high-availability redundancy until the node recovers. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeOffline.md) |
 | `TNFNodeFencingUnavailable` | `critical` | All fence devices for the node are unhealthy, so the node cannot be fenced. Common causes are an unreachable BMC or invalid credentials. Restore fencing before relying on the cluster for high availability. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeFencingUnavailable.md) |
-| `TNFNodeFencingDegraded`    | `warning`  | Fence device redundancy is lost, but at least one device remains healthy. The node can still be fenced. Repair the failed device.                                                                             | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeFencingDegraded.md)    |
-| `TNFNodeUnclean`            | `critical` | Pacemaker cannot confirm the node state, for example after a fencing, communication, or configuration problem.                                                                                                | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeUnclean.md)            |
-| `TNFNodeInMaintenance`      | `warning`  | The node is in maintenance mode. Expected during planned maintenance; investigate if unexpected.                                                                                                              | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeInMaintenance.md)      |
-| `TNFNodeStandby`            | `warning`  | The node is in standby mode and is not running resources. Expected during planned maintenance; investigate if unexpected.                                                                                     | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeStandby.md)            |
+| `TNFNodeFencingDegraded` | `warning` | Fence device redundancy is lost, but at least one device remains healthy. The node can still be fenced. Repair the failed device. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeFencingDegraded.md) |
+| `TNFNodeUnclean` | `critical` | Pacemaker cannot confirm the node state, for example after a fencing, communication, or configuration problem. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeUnclean.md) |
+| `TNFNodeInMaintenance` | `warning` | The node is in maintenance mode. Expected during planned maintenance; investigate if unexpected. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeInMaintenance.md) |
+| `TNFNodeStandby` | `warning` | The node is in standby mode and is not running resources. Expected during planned maintenance; investigate if unexpected. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFNodeStandby.md) |
 
 Node-level TNF alerts
 
 The resource-level alerts carry a `node` label and a `resource` label, for example `resource="etcd"`.
 
-| Alert                  | Severity   | Fires when                                                                                                                             | Runbook                                                                                                           |
-|------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `TNFResourceStopped`   | `critical` | A Pacemaker-managed resource, such as `etcd`, is stopped. This can follow a quorum loss or a manual stop.                              | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceStopped.md)   |
-| `TNFResourceFailed`    | `critical` | A resource has failed and cannot start, for example because of a resource agent failure or a configuration error.                      | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceFailed.md)    |
-| `TNFResourceUnmanaged` | `warning`  | A resource is not managed by Pacemaker, typically after a manual unmanage operation. Pacemaker does not recover an unmanaged resource. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceUnmanaged.md) |
-| `TNFResourceDisabled`  | `warning`  | A resource is disabled, typically after a manual disable operation.                                                                    | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceDisabled.md)  |
+| Alert | Severity | Fires when | Runbook |
+|----|----|----|----|
+| `TNFResourceStopped` | `critical` | A Pacemaker-managed resource, such as `etcd`, is stopped. This can follow a quorum loss or a manual stop. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceStopped.md) |
+| `TNFResourceFailed` | `critical` | A resource has failed and cannot start, for example because of a resource agent failure or a configuration error. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceFailed.md) |
+| `TNFResourceUnmanaged` | `warning` | A resource is not managed by Pacemaker, typically after a manual unmanage operation. Pacemaker does not recover an unmanaged resource. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceUnmanaged.md) |
+| `TNFResourceDisabled` | `warning` | A resource is disabled, typically after a manual disable operation. | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/TNFResourceDisabled.md) |
 
 Resource-level TNF alerts
 

@@ -2,19 +2,34 @@ To observe and update the node network state and configuration in your cluster, 
 
 For more information about how to install the NMState Operator, see [Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator).
 
-<div class="important">
-
-You cannot modify an existing `br-ex` bridge, an OVN-Kubernetes-managed Open vSwitch bridge, or any interfaces, bonds, VLANs, and so on that associate with the `br-ex` bridge. However, you can configure a customized br-ex bridge.
-
-For more information, see "Creating a manifest object that includes a customized br-ex bridge" in the *Deploying installer-provisioned clusters on bare metal* document or the *Installing a user-provisioned cluster on bare metal* document.
-
-</div>
+> [!IMPORTANT]
+> You cannot modify an existing `br-ex` bridge, an OVN-Kubernetes-managed Open vSwitch bridge, or any interfaces, bonds, VLANs, and so on that associate with the `br-ex` bridge. However, you can configure a customized br-ex bridge.
+>
+> For more information, see "Creating a manifest object that includes a customized br-ex bridge" in the *Deploying installer-provisioned clusters on bare metal* document or the *Installing a user-provisioned cluster on bare metal* document.
 
 # View the network state of a node by using the CLI
 
 Node network state is the network configuration for all nodes in the cluster. A `NodeNetworkState` object exists on every node in the cluster. This object is periodically updated and captures the state of the network for that node.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List all the `NodeNetworkState` objects in the cluster:
 
@@ -57,11 +72,21 @@ Node network state is the network configuration for all nodes in the cluster. A 
     `status.lastSuccessfulUpdateTime`
     Timestamp of the last successful update. This is updated periodically if the node is reachable and can be used to evaluate the freshness of the report.
 
+</div>
+
 # View a graphical representation of the network state of a node (NNS) topology from the web console
 
 To make the configuration of the node network in the cluster easier to understand, you can view it in the form of a diagram.
 
 The NNS topology diagram displays all node components (network interface controllers, bridges, bonds, and VLANs), their properties and configurations, and connections between the nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the **Administrator** view of the OpenShift Container Platform web console, navigate to **Networking** → **Node Network Configuration**.
 
@@ -73,9 +98,19 @@ The NNS topology diagram displays all node components (network interface control
 
   - The icons of active components have green borders; the icons of disconnected components have red borders.
 
+</div>
+
 # View the list of NodeNetworkState resources
 
 As an administrator, you can use the OpenShift Container Platform web console to view the list of `NodeNetworkState` resources and network interfaces, and access network details.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Networking** → **Node Network Configuration**.
 
@@ -89,67 +124,60 @@ As an administrator, you can use the OpenShift Container Platform web console to
 
     - To expand and view the **Network Details** section for the `NodeNetworkState` resource, click the greater than (**\>**) symbol . Alternatively, you can click on each interface type under the **Network interface** column to view the network details.
 
+</div>
+
 # About the NodeNetworkConfigurationPolicy manifest file
 
 A `NodeNetworkConfigurationPolicy` manifest file defines policies that the Kubernetes NMState Operator uses to configure networking for nodes in your OpenShift Container Platform cluster. You can create, edit, and delete these policies to manage node network configurations.
 
-<div class="important">
-
-If you want to apply multiple NNCP CRs to a node, you must create the NNCPs in a logical order that is based on the alphanumeric sorting of the policy names. The Kubernetes NMState Operator continuously checks for a newly created NNCP CR so that the Operator can instantly apply the CR to node. Consider the following logical order issue example:
-
-1.  You create NNCP 1 for defining the bridge interface that listens on a VLAN port, such as `eth1.1000`.
-
-2.  You create NNCP 2 for defining the VLAN interface and specify the port for this interface, such as `eth1.1000`.
-
-3.  You apply NNCP 1 before you apply NNCP 2 to the node.
-
-The node experiences a node connectivity issue because port `eth1.1000` does not exist. As a result, the cluster fails.
-
-</div>
+> [!IMPORTANT]
+> If you want to apply multiple NNCP CRs to a node, you must create the NNCPs in a logical order that is based on the alphanumeric sorting of the policy names. The Kubernetes NMState Operator continuously checks for a newly created NNCP CR so that the Operator can instantly apply the CR to node. Consider the following logical order issue example:
+>
+> 1.  You create NNCP 1 for defining the bridge interface that listens on a VLAN port, such as `eth1.1000`.
+>
+> 2.  You create NNCP 2 for defining the VLAN interface and specify the port for this interface, such as `eth1.1000`.
+>
+> 3.  You apply NNCP 1 before you apply NNCP 2 to the node.
+>
+> The node experiences a node connectivity issue because port `eth1.1000` does not exist. As a result, the cluster fails.
 
 After you apply a node network policy to a node, the Kubernetes NMState Operator configures the networking configuration for nodes according to the node network policy details.
 
-<div class="warning">
-
-The following list of interface names are reserved and you cannot use the names with NMstate configurations:
-
-- `br-ext`
-
-- `br-int`
-
-- `br-local`
-
-- `br-nexthop`
-
-- `br0`
-
-- `ext-vxlan`
-
-- `ext`
-
-- `genev_sys_*`
-
-- `int`
-
-- `k8s-*`
-
-- `ovn-k8s-*`
-
-- `patch-br-*`
-
-- `tun0`
-
-- `vxlan_sys_*`
-
-</div>
+> [!WARNING]
+> The following list of interface names are reserved and you cannot use the names with NMstate configurations:
+>
+> - `br-ext`
+>
+> - `br-int`
+>
+> - `br-local`
+>
+> - `br-nexthop`
+>
+> - `br0`
+>
+> - `ext-vxlan`
+>
+> - `ext`
+>
+> - `genev_sys_*`
+>
+> - `int`
+>
+> - `k8s-*`
+>
+> - `ovn-k8s-*`
+>
+> - `patch-br-*`
+>
+> - `tun0`
+>
+> - `vxlan_sys_*`
 
 You can create an NNCP by using either the OpenShift CLI (`oc`) or the OpenShift Container Platform web console. As a postinstallation task you can create an NNCP or edit an existing NNCP.
 
-<div class="note">
-
-Before you create an NNCP, ensure that you read the "Example policy configurations for different interfaces" document.
-
-</div>
+> [!NOTE]
+> Before you create an NNCP, ensure that you read the "Example policy configurations for different interfaces" document.
 
 If you want to delete an NNCP, you can use the `oc delete nncp` command to complete this action. However, this command does not delete any objects, such as a bridge interface.
 
@@ -165,9 +193,19 @@ To effectively delete the NNCP, the node network policy, and any interfaces woul
 
 4.  Run `oc delete nncp` to delete the NNCP.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Example policy configurations for different interfaces](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-nmstate-example-policy-configurations_k8s-nmstate-updating-node-network-config)
 
 - [Removing an interface from nodes](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-removing-interface-from-nodes_k8s-nmstate-updating-node-network-config)
+
+</div>
 
 # Manage policy from the web console
 
@@ -194,15 +232,20 @@ To find the desired policy, you can filter the list either based on enactment st
 
 You can create a policy by using either a form or YAML in the web console. When creating a policy by using a form, you can see how the new policy changes the topology of the nodes in your cluster in real time.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Go to **Networking** → **Node Network Configuration**.
 
 2.  On the **Node Network Configuration** page, click **Create** and select the **From Form** option.
 
-    <div class="note">
-
-    To create a policy by using YAML, click **Create** → **With YAML** option. However, the following steps apply only to the form method.
-
-    </div>
+    > [!NOTE]
+    > To create a policy by using YAML, click **Create** → **With YAML** option. However, the following steps apply only to the form method.
 
 3.  Optional: To apply this `NodeNetworkConfigurationPolicy` object only to specific subsets of nodes by using the node selector, select the corresponding checkbox.
 
@@ -218,11 +261,8 @@ You can create a policy by using either a form or YAML in the web console. When 
 
     3.  Select the type of interface. The available types are **Bridge**, **Bonding**, and **Ethernet**. The default selected value is **Bridge**.
 
-        <div class="note">
-
-        Addition of a VLAN interface by using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy by using form.
-
-        </div>
+        > [!NOTE]
+        > Addition of a VLAN interface by using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy by using form.
 
     4.  Optional: In the IP configuration section, check **IPv4** checkbox to assign an IPv4 address to the interface, and configure the IP address assignment details:
 
@@ -240,15 +280,14 @@ You can create a policy by using either a form or YAML in the web console. When 
 
     8.  Optional: To remove an interface from the policy, click ![minus](data:image/svg+xml;base64,77u/PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIHN0eWxlPSJ2ZXJ0aWNhbC1hbGlnbjotMC4xMjVlbSIgZmlsbD0iY3VycmVudENvbG9yIiBoZWlnaHQ9IjE1IiB3aWR0aD0iMTUiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiBhcmlhLWRlc2NyaWJlZGJ5PSJwZi10b29sdGlwLTM4MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHpNMTI0IDI5NmMtNi42IDAtMTItNS40LTEyLTEydi01NmMwLTYuNiA1LjQtMTIgMTItMTJoMjY0YzYuNiAwIDEyIDUuNCAxMiAxMnY1NmMwIDYuNi01LjQgMTItMTIgMTJIMTI0eiI+PC9wYXRoPjwvc3ZnPg==) icon next to the interface.
 
-    <div class="note">
-
-    You can also click **Edit YAML** at the top of the page to continue editing the form by using YAML.
-
-    </div>
+    > [!NOTE]
+    > You can also click **Edit YAML** at the top of the page to continue editing the form by using YAML.
 
 7.  Click **Next** to go to the **Review** section of the form.
 
 8.  Verify the settings and click **Create** to create the policy.
+
+</div>
 
 # Update the NodeNetworkConfigurationPolicy manifest file
 
@@ -258,9 +297,14 @@ To modify the network configuration for nodes in your OpenShift Container Platfo
 
 You can update a `NodeNetworkConfigurationPolicy` object by using the form view in the web console.
 
-<div class="note">
+> [!NOTE]
+> Addition of a VLAN interface using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy using form.
 
-Addition of a VLAN interface using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy using form.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -272,9 +316,19 @@ Addition of a VLAN interface using the form is not supported. To add a VLAN inte
 
 4.  Click **Save**.
 
+</div>
+
 ## Update the policy by using YAML
 
 You can update a `NodeNetworkConfigurationPolicy` object by editing the YAML in the web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Networking** → **NodeNetworkConfigurationPolicy**.
 
@@ -284,15 +338,27 @@ You can update a `NodeNetworkConfigurationPolicy` object by editing the YAML in 
 
 4.  Click **Save**.
 
+</div>
+
 ## Delete the policy
 
 You can delete a `NodeNetworkConfigurationPolicy` object when it is no longer needed.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Networking** → **NodeNetworkConfigurationPolicy**.
 
 2.  In the **NodeNetworkConfigurationPolicy** page, click the ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) icon placed next to the policy you want to delete, and click **Delete**.
 
 3.  In the pop-up window, enter the policy name to confirm deletion, and click **Delete**.
+
+</div>
 
 # Manage the NodeNetworkConfigurationPolicy manifest file
 
@@ -306,13 +372,28 @@ By default, the manifest applies to all nodes in the cluster. To add the interfa
 
 You can configure multiple nmstate-enabled nodes concurrently. The configuration applies to 50% of the nodes in parallel. This strategy prevents the entire cluster from being unavailable if the network connection fails. To apply the policy configuration in parallel to a specific portion of the cluster, use the `maxUnavailable` parameter in the `NodeNetworkConfigurationPolicy` manifest configuration file.
 
-<div class="note">
+> [!NOTE]
+> If you have two nodes and you apply an NNCP manifest with the `maxUnavailable` parameter set to `50%` to these nodes, one node at a time receives the NNCP configuration. If you then introduce an additional NNCP manifest file with the `maxUnavailable` parameter set to `50%`, this NCCP is independent of the initial NNCP; this means that if both NNCP manifests apply a bad configuration to nodes, you can no longer guarantee that half of your cluster is functional.
 
-If you have two nodes and you apply an NNCP manifest with the `maxUnavailable` parameter set to `50%` to these nodes, one node at a time receives the NNCP configuration. If you then introduce an additional NNCP manifest file with the `maxUnavailable` parameter set to `50%`, this NCCP is independent of the initial NNCP; this means that if both NNCP manifests apply a bad configuration to nodes, you can no longer guarantee that half of your cluster is functional.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `NodeNetworkConfigurationPolicy` manifest. The following example configures a Linux bridge on all worker nodes and configures the DNS resolver:
 
@@ -373,9 +454,21 @@ If you have two nodes and you apply an NNCP manifest with the `maxUnavailable` p
     `br1-eth1-policy.yaml`
     Specifies the file name of the node network configuration policy manifest.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Example for creating multiple interfaces in the same policy](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-example-nmstate-multiple-interfaces_k8s-nmstate-updating-node-network-config)
 
 - [Examples of different IP management methods in policies](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-example-nmstate-IP-management_k8s-nmstate-updating-node-network-config)
+
+</div>
 
 ## Confirm node network policy updates on nodes
 
@@ -383,7 +476,25 @@ When you apply a node network policy, a `NodeNetworkConfigurationEnactment` obje
 
 If the policy fails to be applied on the node, the enactment for that node includes a traceback for troubleshooting.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To confirm that a policy has been applied to the cluster, list the policies and their status:
 
@@ -409,6 +520,8 @@ If the policy fails to be applied on the node, the enactment for that node inclu
     $ oc get nnce <node>.<policy> -o yaml
     ```
 
+</div>
+
 ## Remove an interface from nodes
 
 You can remove an interface from one or more nodes in the cluster by editing the `NodeNetworkConfigurationPolicy` object and setting the `state` of the interface to `absent`.
@@ -417,13 +530,28 @@ Removing an interface from a node does not automatically restore the node networ
 
 If you remove a bridge or bonding interface, any node NICs in the cluster that were previously attached or subordinate to that bridge or bonding interface are placed in a `down` state and become unreachable. To avoid losing connectivity, configure the node NIC in the same policy so that it has a status of `up` and either DHCP or a static IP address.
 
-<div class="note">
+> [!NOTE]
+> Deleting the node network policy that added an interface does not change the configuration of the policy on the node. Although a `NodeNetworkConfigurationPolicy` is an object in the cluster, the object only represents the requested configuration. Similarly, removing an interface does not delete the policy.
 
-Deleting the node network policy that added an interface does not change the configuration of the policy on the node. Although a `NodeNetworkConfigurationPolicy` is an object in the cluster, the object only represents the requested configuration. Similarly, removing an interface does not delete the policy.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `NodeNetworkConfigurationPolicy` manifest used to create the interface. The following example removes a Linux bridge and configures the `eth1` NIC with DHCP to avoid losing connectivity:
 
@@ -463,6 +591,8 @@ Deleting the node network policy that added an interface does not change the con
     ```
 
     Where `<filename.yaml>` is the filename of the policy manifest.
+
+</div>
 
 # Example policy configurations for different interfaces
 
@@ -578,13 +708,10 @@ spec:
 
 You can create a VLAN interface on nodes in the cluster by applying a `NodeNetworkConfigurationPolicy` manifest to the cluster.
 
-<div class="note">
-
-Define all related configurations for the VLAN interface of a node in a single `NodeNetworkConfigurationPolicy` manifest. For example, define the VLAN interface for a node and the related routes for the VLAN interface in the same `NodeNetworkConfigurationPolicy` manifest.
-
-When a node restarts, the Kubernetes NMState Operator cannot control the order in which policies are applied. Therefore, if you use separate policies for related network configurations, the Kubernetes NMState Operator might apply these policies in a sequence that results in a degraded network object.
-
-</div>
+> [!NOTE]
+> Define all related configurations for the VLAN interface of a node in a single `NodeNetworkConfigurationPolicy` manifest. For example, define the VLAN interface for a node and the related routes for the VLAN interface in the same `NodeNetworkConfigurationPolicy` manifest.
+>
+> When a node restarts, the Kubernetes NMState Operator cannot control the order in which policies are applied. Therefore, if you use separate policies for related network configurations, the Kubernetes NMState Operator might apply these policies in a sequence that results in a degraded network object.
 
 The following YAML file is an example of a manifest for a VLAN interface. It includes samples values that you must replace with your own information.
 
@@ -625,29 +752,34 @@ spec:
 
 - `spec.desiredState.interfaces.vlan.id` defines the VLAN tag.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring an SR-IOV network device](../../networking/hardware_networks/configuring-sriov-device.xml#configuring-sriov-device)
 
 - [Configuring hardware offloading](../../networking/hardware_networks/configuring-hardware-offloading.xml#configuring-hardware-offloading)
 
+</div>
+
 ## Example: Bond interface node network configuration policy
 
 You can create a bond interface on nodes in the cluster by applying a `NodeNetworkConfigurationPolicy` manifest to the cluster.
 
-<div class="note">
-
-OpenShift Container Platform only supports the following bond modes:
-
-- `active-backup`
-
-- `balance-xor`
-
-- `802.3ad`
-
-Other bond modes are not supported.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform only supports the following bond modes:
+>
+> - `active-backup`
+>
+> - `balance-xor`
+>
+> - `802.3ad`
+>
+> Other bond modes are not supported.
 
 The `balance-xor` and `802.3ad` bond modes require switch configuration to establish an "EtherChannel" or similar port grouping. Those two modes also require additional load-balancing configuration, depending on the source and destination of traffic being passed through the interface. The `active-backup` bond mode does not require any switch configuration. Other bond modes are not supported.
 
@@ -710,11 +842,8 @@ spec:
 
 You can create multiple interfaces in the same node network configuration policy. These interfaces can reference each other, allowing you to build and deploy a network configuration by using a single policy manifest.
 
-<div class="important">
-
-If multiple interfaces use the same default configuration, a single Network Manager connection profile activates on multiple interfaces simultaneously and this causes connections to have the same universally unique identifier (UUID). To avoid this issue, ensure that each interface has a specific configuration that is different from the default configuration.
-
-</div>
+> [!IMPORTANT]
+> If multiple interfaces use the same default configuration, a single Network Manager connection profile activates on multiple interfaces simultaneously and this causes connections to have the same universally unique identifier (UUID). To avoid this issue, ensure that each interface has a specific configuration that is different from the default configuration.
 
 The following example YAML file creates a bond that is named `bond10` across two NICs and VLAN that is named `bond10.103` that connects to the bond.
 
@@ -791,11 +920,8 @@ You can apply a `NodeNetworkConfigurationPolicy` manifest to an existing cluster
 
 - Manage VF bonding configurations.
 
-<div class="note">
-
-To update host network settings for SR-IOV VFs by using NMState on physical functions that are also managed through the SR-IOV Network Operator, you must set the `externallyManaged` parameter in the relevant `SriovNetworkNodePolicy` resource to `true`. For more information, see the *Additional resources* section.
-
-</div>
+> [!NOTE]
+> To update host network settings for SR-IOV VFs by using NMState on physical functions that are also managed through the SR-IOV Network Operator, you must set the `externallyManaged` parameter in the relevant `SriovNetworkNodePolicy` resource to `true`. For more information, see the *Additional resources* section.
 
 The following YAML file is an example of a manifest that defines QoS policies for a VF. This YAML includes samples values that you must replace with your own information.
 
@@ -913,11 +1039,8 @@ You can associate a Virtual Routing and Forwarding (VRF) instance with a network
 
 By associating a VRF instance with a network interface, you can support traffic isolation, independent routing decisions, and the logical separation of network resources.
 
-<div class="warning">
-
-When configuring Virtual Route Forwarding (VRF), you must change the VRF value to a table ID lower than `1000` because a value higher than `1000` is reserved for OpenShift Container Platform.
-
-</div>
+> [!WARNING]
+> When configuring Virtual Route Forwarding (VRF), you must change the VRF value to a table ID lower than `1000` because a value higher than `1000` is reserved for OpenShift Container Platform.
 
 In a bare-metal environment, you can announce load balancer services through interfaces belonging to a VRF instance by using MetalLB. For more information, see the *Additional resources* section.
 
@@ -1007,9 +1130,19 @@ Specifies the route type. NetworkManager supports the `unicast`, `local`, `black
 `spec.desiredState.routes.config.vrf-name`
 Specifies a stable link in that if a policy changes the `route-table-id` parameter to a different value, the route automatically follows the `vrf0` name to the new ID. You do not need to manually update the route configuration.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About virtual routing and forwarding](../../networking/multiple_networks/about-virtual-routing-and-forwarding.xml#cnf-about-virtual-routing-and-forwarding_about-virtual-routing-and-forwarding)
 
 - [Exposing a service through a network VRF](../../networking/ingress_load_balancing/metallb/metallb-configure-bgp-peers.xml#nw-metallb-bgp-peer-vrf_configure-metallb-bgp-peers)
+
+</div>
 
 # Create an IP over InfiniBand interface on nodes
 
@@ -1019,17 +1152,32 @@ To create an IPoIB interface on nodes in your cluster, you must define an Infini
 
 If you need to attach IPoIB to a bond interface, only the `active-backup` mode supports this configuration.
 
-<div class="important">
+> [!IMPORTANT]
+> The OpenShift Container Platform documentation describes defining only the IPoIB interface configuration in a `NodeNetworkConfigurationPolicy` (NNCP) manifest file. You must refer to the NVIDIA and other third-party vendor documentation for the majority of the configuring steps. Red Hat support does not extend to anything external to the NNCP configuration.
+>
+> For more information about the NVIDIA Operator, see [Getting Started with Red Hat OpenShift](https://docs.nvidia.com/networking/display/kubernetes2410/getting+started+with+red+hat+openshift) (NVIDIA Docs Hub).
 
-The OpenShift Container Platform documentation describes defining only the IPoIB interface configuration in a `NodeNetworkConfigurationPolicy` (NNCP) manifest file. You must refer to the NVIDIA and other third-party vendor documentation for the majority of the configuring steps. Red Hat support does not extend to anything external to the NNCP configuration.
+<div>
 
-For more information about the NVIDIA Operator, see [Getting Started with Red Hat OpenShift](https://docs.nvidia.com/networking/display/kubernetes2410/getting+started+with+red+hat+openshift) (NVIDIA Docs Hub).
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You installed a Red Hat certified third-party Operator that supports an IPoIB interface.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit a `NodeNetworkConfigurationPolicy` (NNCP) manifest file, and then specify an IPoIB interface in the file.
 
@@ -1089,17 +1237,16 @@ For more information about the NVIDIA Operator, see [Getting Started with Red H
     `<nncp_file_name>`
     Replace `<nncp_file_name>` with the name of your NNCP file.
 
+</div>
+
 # Example policy configurations that use dynamic matching and templating
 
 The following example configuration snippets show node network policies that use dynamic matching and templating.
 
-<div class="important">
-
-Applying node network configuration policies that use dynamic matching and templating is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Applying node network configuration policies that use dynamic matching and templating is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Example: Linux bridge interface node network configuration policy to inherit static IP address from the NIC attached to the bridge
 
@@ -1148,9 +1295,17 @@ spec:
 
 - `spec.desiredState.interfaces.bridge.port.name` defines the node NIC to which the bridge attaches.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [The NMPolicy project - Policy syntax](https://nmstate.io/nmpolicy/user-guide/102-policy-syntax.html)
+
+</div>
 
 # Examples: IP management
 
@@ -1199,11 +1354,8 @@ The following snippet ensures that the interface has no IP address:
 # ...
 ```
 
-<div class="important">
-
-Always set the `state` parameter to `up` when you set both the `ipv4.enabled` and the `ipv6.enabled` parameter to `false` to disable an interface. If you set `state: down` with this configuration, the interface receives a DHCP IP address because of automatic DHCP assignment.
-
-</div>
+> [!IMPORTANT]
+> Always set the `state` parameter to `up` when you set both the `ipv4.enabled` and the `ipv6.enabled` parameter to `false` to disable an interface. If you set `state: down` with this configuration, the interface receives a DHCP IP address because of automatic DHCP assignment.
 
 ## Dynamic host configuration
 
@@ -1247,11 +1399,8 @@ Supported values for the `identifier` parameter include the default `name` value
 
 Using a `mac-address` value for the `identifier` parameter indicates that a MAC address is the identifier for the network interface. If you set the `identifier` value to `mac-address`, you must enter a specific MAC address in the following `mac-address` parameter field.
 
-<div class="note">
-
-You can still specify a value for the `name` parameter, but setting the `identifier: mac-address` value means that a MAC address is used as the primary identifier for a network interface. If you specify an incorrect MAC address, `nmstate` reports an invalid argument error.
-
-</div>
+> [!NOTE]
+> You can still specify a value for the `name` parameter, but setting the `identifier: mac-address` value means that a MAC address is used as the primary identifier for a network interface. If you specify an incorrect MAC address, `nmstate` reports an invalid argument error.
 
 The following snippet specifies a MAC address as the primary identifier for an Ethernet device, named `eth1`, with a MAC address of `8A:8C:92:1A:F6:98`:
 
@@ -1271,11 +1420,8 @@ interfaces:
 
 By default, the `nmstate` API stores DNS values globally as against storing them in a network interface. For certain situations, you must configure a network interface to store DNS values.
 
-<div class="tip">
-
-Setting a DNS configuration is comparable to modifying the `/etc/resolv.conf` file.
-
-</div>
+> [!TIP]
+> Setting a DNS configuration is comparable to modifying the `/etc/resolv.conf` file.
 
 To define a DNS configuration for a network interface, you must initially specify the `dns-resolver` section in the network interface’s YAML configuration file. To apply an NNCP configuration to your network interface, you need to run the `oc apply -f <nncp_file_name>` command.
 
@@ -1283,11 +1429,8 @@ The following example shows a default situation that stores DNS values globally:
 
 - Configure a static DNS without a network interface. Note that when updating the `/etc/resolv.conf` file on a host node, you do not need to specify an interface, IPv4 or IPv6, in the `NodeNetworkConfigurationPolicy` (NNCP) manifest.
 
-  <div class="important">
-
-  During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on a node. If you modify the `/etc/resolv.conf` file on a host node, the changes do not propagate to the `/etc/resolv.conf` file that exists in a container. You must re-create the container for changes to take effect.
-
-  </div>
+  > [!IMPORTANT]
+  > During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on a node. If you modify the `/etc/resolv.conf` file on a host node, the changes do not propagate to the `/etc/resolv.conf` file that exists in a container. You must re-create the container for changes to take effect.
 
   Example of a DNS configuration for a network interface that globally stores DNS values:
 
@@ -1311,32 +1454,29 @@ The following example shows a default situation that stores DNS values globally:
   # ...
   ```
 
-  <div class="important">
-
-  You can specify DNS options under the `dns-resolver.config` section of your NNCP file as demonstrated in the following example:
-
-  ``` terminal
-  # ...
-  desiredState:
-      dns-resolver:
-        config:
-          options:
-           - timeout:2
-           - attempts:3
-  # ...
-  ```
-
-  If you want to remove the DNS options from your network interface, apply the following configuration to your NNCP and then run the `oc apply -f <nncp_file_name>` command:
-
-  ``` terminal
-  # ...
-      dns-resolver:
-        config: {}
-      interfaces: []
-  # ...
-  ```
-
-  </div>
+  > [!IMPORTANT]
+  > You can specify DNS options under the `dns-resolver.config` section of your NNCP file as demonstrated in the following example:
+  >
+  > ``` terminal
+  > # ...
+  > desiredState:
+  >     dns-resolver:
+  >       config:
+  >         options:
+  >          - timeout:2
+  >          - attempts:3
+  > # ...
+  > ```
+  >
+  > If you want to remove the DNS options from your network interface, apply the following configuration to your NNCP and then run the `oc apply -f <nncp_file_name>` command:
+  >
+  > ``` terminal
+  > # ...
+  >     dns-resolver:
+  >       config: {}
+  >     interfaces: []
+  > # ...
+  > ```
 
 The following examples show situations that require configuring a network interface to store DNS values:
 
@@ -1363,11 +1503,8 @@ The following examples show situations that require configuring a network interf
 
 - If you need to configure a network interface to store DNS values instead of adopting the default method, which uses the `nmstate` API to store DNS values globally, you can set static DNS values and static IP addresses in the network interface YAML file.
 
-  <div class="important">
-
-  Storing DNS values at the network interface level might cause name resolution issues after you attach the interface to network components, such as an Open vSwitch (OVS) bridge, a Linux bridge, or a bond.
-
-  </div>
+  > [!IMPORTANT]
+  > Storing DNS values at the network interface level might cause name resolution issues after you attach the interface to network components, such as an Open vSwitch (OVS) bridge, a Linux bridge, or a bond.
 
   Example configuration that stores DNS values at the interface level:
 
@@ -1404,15 +1541,12 @@ The following examples show situations that require configuring a network interf
 
 - If you want to set static DNS search domains and static DNS name servers for your network interface, define the static interface that runs either the Dynamic Host Configuration Protocol (DHCP) or the IPv6 Autoconfiguration (`autoconf`) mechanism in the network interface YAML configuration file.
 
-  <div class="important">
-
-  Specifying the following `dns-resolver` configurations in the network interface YAML file might cause a race condition at reboot that prevents the `NodeNetworkConfigurationPolicy` (NNCP) from applying to pods that run in your cluster:
-
-  - Setting static DNS search domains and dynamic DNS name servers for your network interface.
-
-  - Specifying domain suffixes for the `search` parameter and not setting IP addresses for the `server` parameter.
-
-  </div>
+  > [!IMPORTANT]
+  > Specifying the following `dns-resolver` configurations in the network interface YAML file might cause a race condition at reboot that prevents the `NodeNetworkConfigurationPolicy` (NNCP) from applying to pods that run in your cluster:
+  >
+  > - Setting static DNS search domains and dynamic DNS name servers for your network interface.
+  >
+  > - Specifying domain suffixes for the `search` parameter and not setting IP addresses for the `server` parameter.
 
   Example configuration that sets `example.com` and `example.org` static DNS search domains along with static DNS name server settings:
 
@@ -1446,23 +1580,17 @@ The following examples show situations that require configuring a network interf
 
 After you configure an IP address for a network interface, you can configure routes and route rules in the NMState configuration for cluster nodes.
 
-<div class="important">
-
-You cannot use the OVN-Kubernetes `br-ex` bridge as the next hop interface when configuring a static route unless you manually configured a customized `br-ex` bridge.
-
-For more information, see "Creating a manifest object that includes a customized br-ex bridge" in the *Deploying installer-provisioned clusters on bare metal* document or the *Installing a user-provisioned cluster on bare metal* document.
-
-</div>
+> [!IMPORTANT]
+> You cannot use the OVN-Kubernetes `br-ex` bridge as the next hop interface when configuring a static route unless you manually configured a customized `br-ex` bridge.
+>
+> For more information, see "Creating a manifest object that includes a customized br-ex bridge" in the *Deploying installer-provisioned clusters on bare metal* document or the *Installing a user-provisioned cluster on bare metal* document.
 
 The `routes` parameter defines static routes and these routes determine the traffic that leaves the network interfaces and the destination network for the traffic. Supported values include `running` and `config`.
 
-<div class="note">
-
-After you apply an NMState configuration to cluster nodes and you want to change existing routes, you must specify the old route with the `state: absent` parameter and the new route with the `state: present` parameter. The NMState Operator can then delete the old route and apply the new route to cluster nodes.
-
-Setting the `state` parameter to `ignore` means that the Operator ignores certain routes.
-
-</div>
+> [!NOTE]
+> After you apply an NMState configuration to cluster nodes and you want to change existing routes, you must specify the old route with the `state: absent` parameter and the new route with the `state: present` parameter. The NMState Operator can then delete the old route and apply the new route to cluster nodes.
+>
+> Setting the `state` parameter to `ignore` means that the Operator ignores certain routes.
 
 The `route-rules` parameter implements a policy-based routing capability for cluster nodes. This capability allows traffic that originates from a different source IP address to be segregated and routed through different gateways and network paths.
 
@@ -1508,7 +1636,13 @@ routes:
 
 - `config.next-hop-address`: The next hop address for the node traffic. This must be in the same subnet as the IP address set for the Ethernet interface.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating a manifest object that includes a customized br-ex bridge (Installer-provisioned infrastructure)](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 
@@ -1517,3 +1651,5 @@ routes:
 - [Routes (nmstate documentation)](https://nmstate.io/devel/yaml_api.html#routes)
 
 - [Route Rules (nmstate documentation)](https://nmstate.io/devel/yaml_api.html#route-rules)
+
+</div>

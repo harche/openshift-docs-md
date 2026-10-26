@@ -8,9 +8,14 @@ You can implement Border Gateway Protocol (BGP) routing by using a sample config
 
 As a cluster administrator, you can enable Border Gateway Protocol (BGP) routing support for your cluster. The configuration uses route reflection rather than a full mesh setup.
 
-<div class="note">
+> [!NOTE]
+> BGP routing is supported only on bare-metal infrastructure.
 
-BGP routing is supported only on bare-metal infrastructure.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -22,21 +27,35 @@ BGP routing is supported only on bare-metal infrastructure.
 
 - You have a bare-metal system with access to the cluster where you plan to run the FRR daemon container.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Confirm that the `RouteAdvertisements` feature gate is enabled by running the following command:
 
     ``` terminal
     $ oc get featuregate -oyaml | grep -i routeadvertisement
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` yaml
           - name: RouteAdvertisements
     ```
+
+    </div>
 
 2.  Configure the Cluster Network Operator (CNO) by running the following command:
 
@@ -59,9 +78,11 @@ BGP routing is supported only on bare-metal infrastructure.
     $ oc get node -owide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -75,21 +96,27 @@ BGP routing is supported only on bare-metal infrastructure.
     worker-2                                   Ready    worker                 27h   v1.31.3   192.168.111.25   <none>        Red Hat Enterprise Linux CoreOS 418.94.202501062026-0   5.14.0-427.50.1.el9_4.x86_64   cri-o://1.31.4-2.rhaos4.18.git33d7598.el9
     ```
 
+    </div>
+
 4.  Get the default pod network of each node by running the following command:
 
     ``` terminal
     $ oc get node <node_name> -o=jsonpath={.metadata.annotations.k8s\\.ovn\\.org/node-subnets}
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     {"default":["10.129.0.0/23"],"ns1.udn-network-primary-layer3":["10.150.6.0/24"]}
     ```
+
+    </div>
 
 5.  On the bare-metal hypervisor, get the IP address for the external FRR container to use by running the following command:
 
@@ -99,9 +126,11 @@ BGP routing is supported only on bare-metal infrastructure.
 
 6.  Create a `frr.conf` file for FRR that includes each node’s IP address, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `frr.conf` configuration file**
+    <div class="title">
+
+    Example `frr.conf` configuration file
 
     </div>
 
@@ -159,11 +188,15 @@ BGP routing is supported only on bare-metal infrastructure.
      exit-address-family
     ```
 
+    </div>
+
 7.  Create a file named `daemons` that includes the following content:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `daemons` configuration file**
+    <div class="title">
+
+    Example `daemons` configuration file
 
     </div>
 
@@ -250,6 +283,8 @@ BGP routing is supported only on bare-metal infrastructure.
     # the normal daemon command is added to this at the end.
     ```
 
+    </div>
+
 8.  Save both the `frr.conf` and `daemons` files in the same directory, such as `/tmp/frr`.
 
 9.  Create an external FRR container by running the following command:
@@ -262,9 +297,11 @@ BGP routing is supported only on bare-metal infrastructure.
 
     1.  Create a `receive_all.yaml` file that includes the following content:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `receive_all.yaml` configuration file**
+        <div class="title">
+
+        Example `receive_all.yaml` configuration file
 
         </div>
 
@@ -286,11 +323,15 @@ BGP routing is supported only on bare-metal infrastructure.
                     mode: all
         ```
 
+        </div>
+
     2.  Create a `ra.yaml` file that includes the following content:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `ra.yaml` configuration file**
+        <div class="title">
+
+        Example `ra.yaml` configuration file
 
         </div>
 
@@ -309,13 +350,23 @@ BGP routing is supported only on bare-metal infrastructure.
           - "EgressIP"
         ```
 
+        </div>
+
 11. Apply the `receive_all.yaml` and `ra.yaml` files by running the following command:
 
     ``` terminal
     $ for f in receive_all.yaml ra.yaml; do oc apply -f $f; done
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the configurations were applied:
 
@@ -325,9 +376,11 @@ BGP routing is supported only on bare-metal infrastructure.
         $ oc get frrconfiguration -A
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -344,15 +397,19 @@ BGP routing is supported only on bare-metal infrastructure.
         openshift-frr-k8s   receive-all            4h47m
         ```
 
+        </div>
+
     2.  Verify that the `RouteAdvertisements` configurations were created by running the following command:
 
         ``` terminal
         $ oc get ra -A
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -361,15 +418,19 @@ BGP routing is supported only on bare-metal infrastructure.
         default   Accepted
         ```
 
+        </div>
+
 2.  Get the external FRR container ID by running the following command:
 
     ``` terminal
     $ sudo podman ps | grep frr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -377,15 +438,19 @@ BGP routing is supported only on bare-metal infrastructure.
     22cfc713890e  quay.io/frrouting/frr:9.1.0              /usr/lib/frr/dock...  5 hours ago   Up 5 hours ago               frr
     ```
 
+    </div>
+
 3.  Use the container ID that you obtained in the previous step to check the BGP neighbor and routes in the external FRR container’s `vtysh` session. Run the following command:
 
     ``` terminal
     $ sudo podman exec -it <container_id> vtysh -c "show ip bgp"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -411,15 +476,19 @@ BGP routing is supported only on bare-metal infrastructure.
      *> 192.169.1.1/32   0.0.0.0                  0         32768 i
     ```
 
+    </div>
+
 4.  Find the `frr-k8s` pod for each cluster node by running the following command:
 
     ``` terminal
     $ oc -n openshift-frr-k8s get pod -owide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -436,6 +505,8 @@ BGP routing is supported only on bare-metal infrastructure.
     frr-k8s-zwmgh                             6/6     Running   0          25h   192.168.111.23   worker-0                                   <none>           <none>
     ```
 
+    </div>
+
 5.  From the OpenShift Container Platform cluster, check BGP routes on the cluster node’s `frr-k8s` pod in the FRR container by running the following command:
 
     ``` terminal
@@ -448,9 +519,11 @@ BGP routing is supported only on bare-metal infrastructure.
     sh-5.1# vtysh
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -459,15 +532,19 @@ BGP routing is supported only on bare-metal infrastructure.
     Copyright 1996-2005 Kunihiro Ishiguro, et al.
     ```
 
+    </div>
+
 7.  Check the IP routes by running the following command:
 
     ``` terminal
     worker-2# show ip bgp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -495,15 +572,19 @@ BGP routing is supported only on bare-metal infrastructure.
     Displayed  10 routes and 10 total paths
     ```
 
+    </div>
+
 8.  From the OpenShift Container Platform cluster, debug the node by running the following command:
 
     ``` terminal
     $ oc debug node/<node_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -515,15 +596,19 @@ BGP routing is supported only on bare-metal infrastructure.
     If you don't see a command prompt, try pressing enter.
     ```
 
+    </div>
+
 9.  Confirm that the BGP routes are being advertised by running the following command:
 
     ``` terminal
     sh-5.1# ip route show | grep bgp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -538,3 +623,7 @@ BGP routing is supported only on bare-metal infrastructure.
     192.168.1.0/24 nhid 264 via 192.168.111.1 dev br-ex proto bgp metric 20
     192.169.1.1 nhid 264 via 192.168.111.1 dev br-ex proto bgp metric 20
     ```
+
+    </div>
+
+</div>

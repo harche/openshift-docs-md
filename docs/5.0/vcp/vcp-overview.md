@@ -12,11 +12,8 @@ The OpenShift Container Platform cluster whose control plane nodes run as VMs on
 
 KubeVirt Redfish runs on the hosting cluster and exposes the control plane VMs through standard Redfish API endpoints. This enables standard installation workflows such as Agent-based Installer, installer-provisioned infrastructure, or GitOps Zero Touch Provisioning (ZTP) to treat the VMs the same as physical servers with baseboard management controllers (BMCs).
 
-<div class="note">
-
-Virtualized control planes differ from Hosted control planes. With virtualized control planes, the control plane runs as VMs with hypervisor-level isolation. With Hosted control planes, the control plane runs as pods with container-level isolation.
-
-</div>
+> [!NOTE]
+> Virtualized control planes differ from Hosted control planes. With virtualized control planes, the control plane runs as VMs with hypervisor-level isolation. With Hosted control planes, the control plane runs as pods with container-level isolation.
 
 # When to use a virtualized control plane
 
@@ -49,11 +46,8 @@ Each target cluster’s control plane VMs are distributed across hosting cluster
 
 Each target cluster has its own machine network that provides L2 connectivity between its control plane VMs. The target cluster’s worker nodes run on a separate L2 network segment on bare-metal infrastructure, connected to the control plane through routed L3 connectivity. The `apiVIPs` must reside on the same L2 segment as the control plane VMs, and the `ingressVIPs` must reside on the same L2 segment as the worker nodes.
 
-<div class="note">
-
-Network address translation (NAT) is not supported between the control plane and worker networks.
-
-</div>
+> [!NOTE]
+> Network address translation (NAT) is not supported between the control plane and worker networks.
 
 The following diagram shows how network traffic flows inside a single hosting cluster node. Control plane VM traffic and hosting cluster pod traffic use separate network paths.
 
@@ -67,11 +61,8 @@ Control plane VMs connect to the cluster machine network through a Multus `Netwo
 
 A virtualized control plane deployment involves installing KubeVirt Redfish on the hosting cluster, configuring it to expose VMs, and running a supported installation method.
 
-<div class="note">
-
-Virtualized control planes require an OpenShift Container Platform cluster with OpenShift Virtualization installed and operational, which operates as the hosting cluster.
-
-</div>
+> [!NOTE]
+> Virtualized control planes require an OpenShift Container Platform cluster with OpenShift Virtualization installed and operational, which operates as the hosting cluster.
 
 The following high-level steps outline the deployment process:
 
@@ -101,11 +92,8 @@ The following high-level steps outline the deployment process:
 
 A virtualized control plane relies on `etcd` quorum to remain operational. With three control plane VMs, the cluster tolerates the loss of one VM but becomes unavailable if two VMs fail simultaneously. To protect quorum, distribute VMs across physical nodes and prevent disruptive operations from affecting more than one control plane VM at a time.
 
-<div class="important">
-
-Live migration is not supported for virtualized control plane VMs. The eviction strategy for control plane VMs must be set to `None` to prevent the hosting cluster from attempting to migrate them during node drain operations.
-
-</div>
+> [!IMPORTANT]
+> Live migration is not supported for virtualized control plane VMs. The eviction strategy for control plane VMs must be set to `None` to prevent the hosting cluster from attempting to migrate them during node drain operations.
 
 ## Anti-affinity for virtualized control planes
 

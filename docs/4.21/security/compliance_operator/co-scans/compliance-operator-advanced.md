@@ -41,9 +41,25 @@ To discover the profile, content, or rule values, you can start by creating a si
 
 In some clusters, the default `PriorityClass` object can be too low to guarantee pods execute scans on time. To maintain compliance or guarantee automated scanning, you can set the `PriorityClass` variable to ensure the Compliance Operator is always given priority in resource constrained situations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Optional: You have created a `PriorityClass` object. For more information, see "Configuring priority and preemption" in the *Additional resources*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the `PriorityClass` variable:
 
@@ -91,6 +107,8 @@ In some clusters, the default `PriorityClass` object can be too low to guarantee
   `PriorityClass`
   If the `PriorityClass` referenced in the `ScanSetting` cannot be found, the Operator will leave the `PriorityClass` empty, issue a warning, and continue scheduling scans without a `PriorityClass`.
 
+</div>
+
 # Using raw tailored profiles
 
 Although the `TailoredProfile` CR enables the most common tailoring operations, you can use the XCCDF standard for more flexibility in tailoring OpenSCAP profiles.
@@ -98,6 +116,14 @@ Although the `TailoredProfile` CR enables the most common tailoring operations, 
 In addition, if your organization has been using OpenScap previously, you might have an existing XCCDF tailoring file and can reuse it.
 
 The `ComplianceSuite` object contains an optional `TailoringConfigMap` attribute that you can point to a custom tailoring file. The value of the `TailoringConfigMap` attribute is a name of a config map which must contain a key called `tailoring.xml` and the value of this key is the tailoring contents.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `ConfigMap` object from a file:
 
@@ -128,11 +154,21 @@ The `ComplianceSuite` object contains an optional `TailoringConfigMap` attribute
         node-role.kubernetes.io/worker: ""
     ```
 
+</div>
+
 # Performing a rescan
 
 You can re-run a scan on a defined schedule, such as every Monday or daily. It can also be useful to re-run a scan once after fixing a problem on a node.
 
 To perform a single scan, annotate the scan with the `compliance.openshift.io/rescan=` option:
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Annotate the scan to trigger a rescan:
 
@@ -149,9 +185,11 @@ To perform a single scan, annotate the scan with the `compliance.openshift.io/re
     $ oc get mc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -162,11 +200,12 @@ To perform a single scan, annotate the scan with the `compliance.openshift.io/re
     75-worker-scan-usbguard-allow-hid-and-hub
     ```
 
-    <div class="important">
-
-    When the scan setting `default-auto-apply` label is applied, remediations are applied automatically and outdated remediations automatically update. If there are remediations that were not applied due to dependencies, or remediations that had been outdated, rescanning applies the remediations and might trigger a reboot. Only remediations that use `MachineConfig` objects trigger reboots. If there are no updates or dependencies to be applied, no reboot occurs.
-
     </div>
+
+    > [!IMPORTANT]
+    > When the scan setting `default-auto-apply` label is applied, remediations are applied automatically and outdated remediations automatically update. If there are remediations that were not applied due to dependencies, or remediations that had been outdated, rescanning applies the remediations and might trigger a reboot. Only remediations that use `MachineConfig` objects trigger reboots. If there are no updates or dependencies to be applied, no reboot occurs.
+
+</div>
 
 # Set custom storage size for results
 
@@ -178,17 +217,16 @@ A related parameter is `rawResultStorage.rotation` which controls how many scans
 
 Because OpenShift Container Platform can be deployed in a variety of public clouds or bare metal, the Compliance Operator cannot determine available storage configurations. By default, the Compliance Operator will try to create the PV for storing results by using the default storage class of the cluster, but a custom storage class can be configured using the `rawResultStorage.StorageClassName` attribute.
 
-<div class="important">
-
-If your cluster does not specify a default storage class, this attribute must be set.
-
-</div>
+> [!IMPORTANT]
+> If your cluster does not specify a default storage class, this attribute must be set.
 
 - Configure the `ScanSetting` custom resource to use a standard storage class and create persistent volumes that are 10GB in size and keep the last 10 results:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `ScanSetting` CR**
+  <div class="title">
+
+  Example `ScanSetting` CR
 
   </div>
 
@@ -212,9 +250,19 @@ If your cluster does not specify a default storage class, this attribute must be
   schedule: '0 1 * * *'
   ```
 
+  </div>
+
 # Applying remediations generated by suite scans
 
 Although you can use the `autoApplyRemediations` boolean parameter in a `ComplianceSuite` object, you can alternatively annotate the object with `compliance.openshift.io/apply-remediations`. This allows the Operator to apply all of the created remediations.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Apply the `compliance.openshift.io/apply-remediations` annotation by running the following command:
 
@@ -223,11 +271,21 @@ Although you can use the `autoApplyRemediations` boolean parameter in a `Complia
   annotate compliancesuites/workers-compliancesuite compliance.openshift.io/apply-remediations=
   ```
 
+</div>
+
 # Automatically update remediations
 
 In some cases, a scan with newer content might mark remediations as `OUTDATED`. As an administrator, you can apply the `compliance.openshift.io/remove-outdated` annotation to apply new remediations and remove the outdated ones.
 
 Alternatively, set the `autoUpdateRemediations` flag in a `ScanSetting` or `ComplianceSuite` object to update the remediations automatically.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Apply the `compliance.openshift.io/remove-outdated` annotation:
 
@@ -236,17 +294,39 @@ Alternatively, set the `autoUpdateRemediations` flag in a `ScanSetting` or `Comp
   annotate compliancesuites/workers-compliancesuite compliance.openshift.io/remove-outdated=
   ```
 
+</div>
+
 # Creating a custom SCC for the Compliance Operator
 
 In some environments, you must create a custom Security Context Constraints (SCC) file to ensure the correct permissions are available to the Compliance Operator `api-resource-collector`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have `admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define the SCC in a YAML file named `restricted-adjusted-compliance.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **`SecurityContextConstraints` object definition**
+    <div class="title">
+
+    `SecurityContextConstraints` object definition
 
     </div>
 
@@ -290,6 +370,8 @@ In some environments, you must create a custom Security Context Constraints (SCC
       - secret
     ```
 
+    </div>
+
     where:
 
     `priority`
@@ -304,9 +386,11 @@ In some environments, you must create a custom Security Context Constraints (SCC
     $ oc create -n openshift-compliance  -f restricted-adjusted-compliance.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -314,7 +398,17 @@ In some environments, you must create a custom Security Context Constraints (SCC
     securitycontextconstraints.security.openshift.io/restricted-adjusted-compliance created
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the SCC was created:
 
@@ -322,9 +416,11 @@ In some environments, you must create a custom Security Context Constraints (SCC
     $ oc get -n openshift-compliance scc restricted-adjusted-compliance
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -332,6 +428,10 @@ In some environments, you must create a custom Security Context Constraints (SCC
     NAME                             PRIV    CAPS         SELINUX     RUNASUSER        FSGROUP     SUPGROUP   PRIORITY   READONLYROOTFS   VOLUMES
     restricted-adjusted-compliance   false   <no value>   MustRunAs   MustRunAsRange   MustRunAs   RunAsAny   30         false            ["configMap","downwardAPI","emptyDir","persistentVolumeClaim","projected","secret"]
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

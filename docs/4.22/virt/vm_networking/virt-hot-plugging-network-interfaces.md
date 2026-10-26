@@ -2,11 +2,8 @@ You can add or remove secondary network interfaces without stopping your virtual
 
 OpenShift Virtualization also supports hot plugging secondary interfaces that use SR-IOV binding. To hot plug or hot unplug a secondary interface, you must have permission to create and list `VirtualMachineInstanceMigration` objects.
 
-<div class="note">
-
-Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
-
-</div>
+> [!NOTE]
+> Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
 
 # VirtIO limitations
 
@@ -14,23 +11,38 @@ Each VirtIO interface uses one of the limited Peripheral Connect Interface (PCI)
 
 OpenShift Virtualization reserves up to six slots for hot plugging interfaces.
 
-<div class="note">
-
-The actual number of slots available for hot plugging also depends on the machine type. For example, the default PCI topology for the q35 machine type supports hot plugging one additional PCIe device. For more information on PCI topology and hot plug support, see the [libvirt documentation](https://libvirt.org/pci-hotplug.html).
-
-</div>
+> [!NOTE]
+> The actual number of slots available for hot plugging also depends on the machine type. For example, the default PCI topology for the q35 machine type supports hot plugging one additional PCIe device. For more information on PCI topology and hot plug support, see the [libvirt documentation](https://libvirt.org/pci-hotplug.html).
 
 If you restart the VM after hot plugging an interface, that interface becomes part of the standard network interfaces.
 
-# Hot plugging a secondary network interface by using the CLI
+# Hot plug a secondary network interface by using the CLI
 
 You can hot plug a secondary network interface to a virtual machine (VM) while the VM is running.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - A network attachment definition is configured in the same namespace as your VM.
 
 - The VM to which you want to hot plug the network interface is running.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use your preferred text editor to edit the `VirtualMachine` manifest, as shown in the following example:
 
@@ -78,7 +90,15 @@ You can hot plug a secondary network interface to a virtual machine (VM) while t
     \<filename\>
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the VM live migration is successful by using the following command:
 
@@ -132,13 +152,20 @@ You can hot plug a secondary network interface to a virtual machine (VM) while t
 
     The hot plugged interface appears in the VMI status.
 
-# Hot unplugging a secondary network interface by using the CLI
+</div>
+
+# Hot unplug a secondary network interface by using the CLI
 
 You can remove a secondary network interface from a running virtual machine (VM).
 
-<div class="note">
+> [!NOTE]
+> Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
 
-Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) interfaces.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -149,6 +176,16 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 - The VM must have a bridge network interface attached.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Using your preferred text editor, edit the `VirtualMachine` manifest file and set the interface state to `absent`. Setting the interface state to `absent` detaches the network interface from the guest, but the interface still exists in the pod.
 
@@ -194,6 +231,8 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
     \<filename\>
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
+</div>
+
 # Additional resources
 
 - [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-installing-virtctl-binary_virt-using-the-cli-tools)
@@ -204,4 +243,4 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 - [Creating an SR-IOV network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov)
 
-- [Connecting a virtual machine to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)
+- [Connect a VM to an SR-IOV network by using the CLI](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)

@@ -10,25 +10,25 @@ Pod failures return explicit error states that can be observed in the `status` f
 
 The following table provides a list of pod error states along with their descriptions.
 
-| Pod error state          | Description                                                                                           |
-|--------------------------|-------------------------------------------------------------------------------------------------------|
-| `ErrImagePull`           | Generic image retrieval error.                                                                        |
-| `ErrImagePullBackOff`    | Image retrieval failed and is backed off.                                                             |
-| `ErrInvalidImageName`    | The specified image name was invalid.                                                                 |
-| `ErrImageInspect`        | Image inspection did not succeed.                                                                     |
-| `ErrImageNeverPull`      | `PullPolicy` is set to `NeverPullImage` and the target image is not present locally on the host.      |
-| `ErrRegistryUnavailable` | When attempting to retrieve an image from a registry, an HTTP error was encountered.                  |
-| `ErrContainerNotFound`   | The specified container is either not present or not managed by the kubelet, within the declared pod. |
-| `ErrRunInitContainer`    | Container initialization failed.                                                                      |
-| `ErrRunContainer`        | None of the pod’s containers started successfully.                                                    |
-| `ErrKillContainer`       | None of the pod’s containers were killed successfully.                                                |
-| `ErrCrashLoopBackOff`    | A container has terminated. The kubelet will not attempt to restart it.                               |
-| `ErrVerifyNonRoot`       | A container or image attempted to run with root privileges.                                           |
-| `ErrCreatePodSandbox`    | Pod sandbox creation did not succeed.                                                                 |
-| `ErrConfigPodSandbox`    | Pod sandbox configuration was not obtained.                                                           |
-| `ErrKillPodSandbox`      | A pod sandbox did not stop successfully.                                                              |
-| `ErrSetupNetwork`        | Network initialization failed.                                                                        |
-| `ErrTeardownNetwork`     | Network termination failed.                                                                           |
+| Pod error state | Description |
+|----|----|
+| `ErrImagePull` | Generic image retrieval error. |
+| `ErrImagePullBackOff` | Image retrieval failed and is backed off. |
+| `ErrInvalidImageName` | The specified image name was invalid. |
+| `ErrImageInspect` | Image inspection did not succeed. |
+| `ErrImageNeverPull` | `PullPolicy` is set to `NeverPullImage` and the target image is not present locally on the host. |
+| `ErrRegistryUnavailable` | When attempting to retrieve an image from a registry, an HTTP error was encountered. |
+| `ErrContainerNotFound` | The specified container is either not present or not managed by the kubelet, within the declared pod. |
+| `ErrRunInitContainer` | Container initialization failed. |
+| `ErrRunContainer` | None of the pod’s containers started successfully. |
+| `ErrKillContainer` | None of the pod’s containers were killed successfully. |
+| `ErrCrashLoopBackOff` | A container has terminated. The kubelet will not attempt to restart it. |
+| `ErrVerifyNonRoot` | A container or image attempted to run with root privileges. |
+| `ErrCreatePodSandbox` | Pod sandbox creation did not succeed. |
+| `ErrConfigPodSandbox` | Pod sandbox configuration was not obtained. |
+| `ErrKillPodSandbox` | A pod sandbox did not stop successfully. |
+| `ErrSetupNetwork` | Network initialization failed. |
+| `ErrTeardownNetwork` | Network termination failed. |
 
 Pod error states
 
@@ -36,11 +36,29 @@ Pod error states
 
 You can query pod status and error states. You can also query a pod’s associated deployment configuration and review base image availability.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - `skopeo` is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Switch into a project:
 
@@ -86,15 +104,35 @@ You can query pod status and error states. You can also query a pod’s associat
     $ oc get events
     ```
 
+</div>
+
 # Inspect pod and container logs
 
 You can inspect pod and container logs for warnings and error messages related to explicit pod failures. Depending on policy and exit code, pod and container logs remain available after pods have been terminated.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Query logs for a specific pod:
 
@@ -118,9 +156,11 @@ You can inspect pod and container logs for warnings and error messages related t
         $ oc exec <pod_name>  -- ls -alh /var/log
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -140,15 +180,19 @@ You can inspect pod and container logs for warnings and error messages related t
         -rw-rw-r--. 1 root utmp    0 Jul 10 10:31 wtmp
         ```
 
+        </div>
+
     2.  Query a specific log file contained in `/var/log` within a pod:
 
         ``` terminal
         $ oc exec <pod_name> cat /var/log/<path_to_log>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -162,6 +206,8 @@ You can inspect pod and container logs for warnings and error messages related t
         2023-07-10T10:29:38+0000 INFO
         ```
 
+        </div>
+
     3.  List log files and subdirectories contained in `/var/log` within a specific container:
 
         ``` terminal
@@ -174,15 +220,35 @@ You can inspect pod and container logs for warnings and error messages related t
         $ oc exec <pod_name> -c <container_name> cat /var/log/<path_to_log>
         ```
 
+</div>
+
 # Access running pods
 
 You can review running pods dynamically by opening a shell inside a pod or by gaining network access through port forwarding.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Switch into the project that contains the pod you would like to access. This is necessary because the `oc rsh` command does not accept the `-n` namespace option:
 
@@ -218,15 +284,35 @@ You can review running pods dynamically by opening a shell inside a pod or by ga
     `<pod_name> <host_port>:<pod_port>`
     Enter `Ctrl+C` to cancel the port forwarding session.
 
+</div>
+
 # Start debug pods with root access
 
 You can start a debug pod with root access, based on a problematic pod’s deployment or deployment configuration. Pod users typically run with non-root privileges, but running troubleshooting pods with temporary root privileges can be useful during issue investigation.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug pod with root access, based on a deployment.
 
@@ -256,21 +342,38 @@ You can start a debug pod with root access, based on a problematic pod’s deplo
         $ oc debug deploymentconfig/my-deployment-configuration --as-root -n <project_name>
         ```
 
-        <div class="note">
+        > [!NOTE]
+        > You can append `-- <command>` to the preceding `oc debug` commands to run individual commands within a debug pod, instead of running an interactive shell.
 
-        You can append `-- <command>` to the preceding `oc debug` commands to run individual commands within a debug pod, instead of running an interactive shell.
-
-        </div>
+</div>
 
 # Copy files to and from pods and containers
 
 You can copy files to and from a pod to test configuration changes or gather diagnostic information.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - Your API service is still functional.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Copy a file to a pod:
 
@@ -288,8 +391,7 @@ You can copy files to and from a pod to test configuration changes or gather dia
 
     `-c <container_name>` refers to the desired container in a pod. If you do not specify a container with the `-c` option, then the first container in a pod is selected.
 
-    <div class="note">
+    > [!NOTE]
+    > For `oc cp` to function, the `tar` binary must be available within the container.
 
-    For `oc cp` to function, the `tar` binary must be available within the container.
-
-    </div>
+</div>

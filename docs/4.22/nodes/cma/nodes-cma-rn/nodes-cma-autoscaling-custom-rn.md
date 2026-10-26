@@ -2,11 +2,8 @@ You can review the following release notes to learn about changes in the Custom 
 
 The Custom Metrics Autoscaler Operator uses the Kubernetes-based Event Driven Autoscaler (KEDA) and is built on top of the OpenShift Container Platform horizontal pod autoscaler (HPA).
 
-<div class="note">
-
-The Custom Metrics Autoscaler Operator for Red Hat OpenShift is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#cma) outlines release compatibility.
-
-</div>
+> [!NOTE]
+> The Custom Metrics Autoscaler Operator for Red Hat OpenShift is provided as an installable component, with a distinct release cycle from the core OpenShift Container Platform. The [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift#cma) outlines release compatibility.
 
 # Supported versions
 
@@ -36,17 +33,11 @@ The following advisory is available for the Custom Metrics Autoscaler Operator:
 
 - [RHBA-2026:70460](https://access.redhat.com/errata/RHBA-2026:70460)
 
-<div class="important">
-
-Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
-
-</div>
+> [!IMPORTANT]
+> Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
 
 Bug fixes
 - Before this update, the `default` scaling strategy for scaled jobs was missing. With this fix, the `default` strategy has been added back to the `scaledjobs` custom resource. As a result, you can select the default strategy with scaled jobs. ([OCPBUGS-121352](https://redhat.atlassian.net/browse/OCPBUGS-121352))
 
-  <div class="note">
-
-  This issue was initially addressed in the Custom Metrics Autoscaler 2.19.0-3 release through [OCPBUGS-98657](https://redhat.atlassian.net/browse/OCPBUGS-98657). However, the fix did not fully address the problem. Updating to the Custom Metrics Autoscaler 2.19.0-4 release will fix this issue.
-
-  </div>
+  > [!NOTE]
+  > This issue was initially addressed in the Custom Metrics Autoscaler 2.19.0-3 release through [OCPBUGS-98657](https://redhat.atlassian.net/browse/OCPBUGS-98657). However, the fix did not fully address the problem. Updating to the Custom Metrics Autoscaler 2.19.0-4 release will fix this issue.

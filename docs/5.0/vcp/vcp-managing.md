@@ -18,11 +18,29 @@ Update the hosting cluster and OpenShift Virtualization while maintaining the av
 
 During a hosting cluster update, the Machine Config Operator drains and reboots nodes one at a time. If pod disruption budgets and anti-affinity rules are configured correctly, the update proceeds without losing `etcd` quorum in any target cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Control plane VMs are distributed across hosting cluster nodes by using anti-affinity rules.
 
 - A `PodDisruptionBudget` with `minAvailable: 2` is configured for each target cluster’s control plane VMs.
 
 - The VM eviction strategy is set to `None` for all control plane VMs.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that all target cluster control plane VMs are healthy before starting the update by running the following command:
 
@@ -65,7 +83,15 @@ During a hosting cluster update, the Machine Config Operator drains and reboots 
 
     All control plane VMs must show a `Running` status.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify `etcd` health on each target cluster after the update by running the following command:
 
@@ -83,17 +109,37 @@ During a hosting cluster update, the Machine Config Operator drains and reboots 
 
     - `target_cluster_kubeconfig` is the path to the target cluster’s kubeconfig file.
 
+</div>
+
 # Performing node maintenance on a hosting cluster
 
 Perform maintenance on a hosting cluster node, such as applying operating system updates or hardware repairs, without disrupting the target clusters.
 
 When you drain a hosting cluster node, the control plane VM on that node shuts down. If pod disruption budgets and anti-affinity rules are configured correctly, only one control plane VM for each target cluster is affected, and `etcd` quorum is preserved.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Control plane VMs are distributed across hosting cluster nodes by using anti-affinity rules.
 
 - A `PodDisruptionBudget` with `minAvailable: 2` is configured for each target cluster’s control plane VMs.
 
 - The VM eviction strategy is set to `None` for all control plane VMs.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify which control plane VMs are running on the node you plan to maintain by running the following command:
 
@@ -107,11 +153,8 @@ When you drain a hosting cluster node, the control plane VM on that node shuts d
 
     - `<cluster_name>` is the name of the target cluster.
 
-      <div class="note">
-
-      Use `oc get pods` with the `spec.nodeName` field selector to filter by node. The `oc get vmi` command does not support the `status.nodeName` field selector.
-
-      </div>
+      > [!NOTE]
+      > Use `oc get pods` with the `spec.nodeName` field selector to filter by node. The `oc get vmi` command does not support the `status.nodeName` field selector.
 
 2.  Verify that all target clusters affected by this node have healthy `etcd` quorum before proceeding by running the following command:
 
@@ -167,11 +210,18 @@ When you drain a hosting cluster node, the control plane VM on that node shuts d
 
     All control plane VMs must show a `Running` phase.
 
-    <div class="note">
+    > [!NOTE]
+    > Use `oc get vmi` (VirtualMachineInstance) instead of `oc get vm` (VirtualMachine) to verify the actual runtime state. The `VirtualMachine` resource reflects the desired state, while the `VirtualMachineInstance` resource reflects whether the VM is currently running.
 
-    Use `oc get vmi` (VirtualMachineInstance) instead of `oc get vm` (VirtualMachine) to verify the actual runtime state. The `VirtualMachine` resource reflects the desired state, while the `VirtualMachineInstance` resource reflects whether the VM is currently running.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify `etcd` health on each affected target cluster by running the following command:
 
@@ -180,6 +230,8 @@ When you drain a hosting cluster node, the control plane VM on that node shuts d
   ```
 
   - `target_cluster_kubeconfig` is the path to the target cluster’s kubeconfig file.
+
+</div>
 
 # Additional resources
 

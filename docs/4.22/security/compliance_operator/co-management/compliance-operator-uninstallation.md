@@ -4,9 +4,27 @@ You can remove the OpenShift Compliance Operator from your cluster by using the 
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster by using an account with `cluster-admin` permissions.
 
 - The OpenShift Compliance Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to the **Ecosystem** → **Installed Operators** → **Compliance Operator** page.
 
@@ -26,13 +44,33 @@ To remove the Compliance Operator, you must first delete the objects in the name
 
     1.  Confirm the deletion by typing `openshift-compliance` in the dialog box, and click **Delete**.
 
+</div>
+
 # Uninstalling the OpenShift Compliance Operator from OpenShift Container Platform using the CLI
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster by using an account with `cluster-admin` permissions.
 
 - The OpenShift Compliance Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete all objects in the namespace.
 
@@ -84,9 +122,11 @@ To remove the Compliance Operator, you must first delete the objects in the name
     $ oc delete project openshift-compliance
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -94,7 +134,17 @@ To remove the Compliance Operator, you must first delete the objects in the name
     project.project.openshift.io "openshift-compliance" deleted
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Confirm the namespace is deleted:
 
@@ -102,15 +152,21 @@ To remove the Compliance Operator, you must first delete the objects in the name
     $ oc get project/openshift-compliance
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     Error from server (NotFound): namespaces "openshift-compliance" not found
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

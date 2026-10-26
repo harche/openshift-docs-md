@@ -6,15 +6,30 @@ When you install the OpenShift Virtualization Operator, the Hostpath Provisioner
 
 You configure a hostpath provisioner (HPP) with a basic storage pool by creating an HPP custom resource (CR) with a `storagePools` stanza. The storage pool specifies the name and path used by the CSI driver.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
 
-Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The directories specified in `spec.storagePools.path` must have read/write access.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `hpp_cr.yaml` file with a `storagePools` stanza as in the following example:
 
@@ -45,25 +60,33 @@ Do not create storage pools in the same partition as the operating system. Other
     $ oc create -f hpp_cr.yaml
     ```
 
+</div>
+
 ## About creating storage classes
 
 When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
 
 To use the hostpath provisioner (HPP) you must create an associated storage class for the CSI driver with the `storagePools` stanza.
 
-<div class="note">
+> [!NOTE]
+> Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While the disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
+>
+> To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
 
-Virtual machines use data volumes that are based on local PVs. Local PVs are bound to specific nodes. While the disk image is prepared for consumption by the virtual machine, it is possible that the virtual machine cannot be scheduled to the node where the local storage PV was previously pinned.
-
-To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. By using the `StorageClass` value with `volumeBindingMode` parameter set to `WaitForFirstConsumer`, the binding and provisioning of the PV is delayed until a pod is created using the PVC.
-
-</div>
-
-## Creating a storage class for the CSI driver with the storagePools stanza
+## Create a storage class for the CSI driver with the storagePools stanza
 
 To use the hostpath provisioner (HPP) you must create an associated storage class for the Container Storage Interface (CSI) driver.
 
-When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
+> [!NOTE]
+> When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `storageclass_csi.yaml` file to define the storage class:
 
@@ -83,13 +106,10 @@ When you create a storage class, you set parameters that affect the dynamic prov
 
     - `volumeBindingMode` defines the timing of PV creation. In this example, the `WaitForFirstConsumer` configuration delays PV creation until the scheduler assigns a pod to a specific node.
 
-      <div class="note">
-
-      Virtual machines use data volumes based on local PVs, which reside on specific nodes. When the system prepares a disk image for the virtual machine, the scheduler might not place the virtual machine on the node where it pinned the local storage PV.
-
-      \+ To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. Setting the `volumeBindingMode` parameter of the `StorageClass` to `WaitForFirstConsumer` delays PV binding and provisioning until you create a pod that uses the PVC.
-
-      </div>
+      > [!NOTE]
+      > Virtual machines use data volumes based on local PVs, which reside on specific nodes. When the system prepares a disk image for the virtual machine, the scheduler might not place the virtual machine on the node where it pinned the local storage PV.
+      >
+      > \+ To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. Setting the `volumeBindingMode` parameter of the `StorageClass` to `WaitForFirstConsumer` delays PV binding and provisioning until you create a pod that uses the PVC.
 
     - `parameters.storagePool` defines the name of the storage pool defined in the HPP custom resource (CR).
 
@@ -100,6 +120,8 @@ When you create a storage class, you set parameters that affect the dynamic prov
     ``` terminal
     $ oc create -f storageclass_csi.yaml
     ```
+
+</div>
 
 # About storage pools created with PVC templates
 
@@ -134,15 +156,30 @@ You can combine basic storage pools with storage pools created from PVC template
 
 You can create a storage pool for multiple hostpath provisioner (HPP) volumes by specifying a persistent volume claim (PVC) template in the HPP custom resource (CR).
 
-<div class="important">
+> [!IMPORTANT]
+> Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
 
-Do not create storage pools in the same partition as the operating system. Otherwise, the operating system partition might become filled to capacity, which will impact performance or cause the node to become unstable or unusable.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The directories specified in `spec.storagePools.path` must have read/write access.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `hpp_pvc_template_pool.yaml` file for the HPP CR that specifies a PVC template in the `storagePools` stanza according to the following example:
 
@@ -186,3 +223,5 @@ Do not create storage pools in the same partition as the operating system. Other
     ``` terminal
     $ oc create -f hpp_pvc_template_pool.yaml
     ```
+
+</div>

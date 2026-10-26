@@ -28,11 +28,8 @@ OpenShift Pipelines uses [YAML](https://yaml.org/) syntax for declarative pipeli
 
 - **TaskRun**: Execution of a task with one or more steps.
 
-  <div class="note">
-
-  You can initiate a PipelineRun or a TaskRun with a set of inputs such as parameters and workspaces, and the execution results in a set of outputs and artifacts.
-
-  </div>
+  > [!NOTE]
+  > You can initiate a PipelineRun or a TaskRun with a set of inputs such as parameters and workspaces, and the execution results in a set of outputs and artifacts.
 
 - **Workspace**: In OpenShift Pipelines, workspaces are conceptual blocks that serve the following purposes:
 
@@ -42,11 +39,8 @@ OpenShift Pipelines uses [YAML](https://yaml.org/) syntax for declarative pipeli
 
   - Mount points for credentials held in secrets, configurations held in config maps, and common tools shared by an organization.
 
-  <div class="note">
-
-  In Jenkins, there is no direct equivalent of OpenShift Pipelines workspaces. You can think of the control node as a workspace, as it stores the cloned code repository, build history, and artifacts. When a job is assigned to a different node, the cloned code and the generated artifacts are stored in that node, but the control node maintains the build history.
-
-  </div>
+  > [!NOTE]
+  > In Jenkins, there is no direct equivalent of OpenShift Pipelines workspaces. You can think of the control node as a workspace, as it stores the cloned code repository, build history, and artifacts. When a job is assigned to a different node, the cloned code and the generated artifacts are stored in that node, but the control node maintains the build history.
 
 ## Mapping of concepts
 
@@ -96,9 +90,11 @@ pipeline {
 
 To create a pipeline in OpenShift Pipelines that is equivalent to the preceding Jenkins pipeline, you create the following three tasks:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `build` task YAML definition file**
+<div class="title">
+
+Example `build` task YAML definition file
 
 </div>
 
@@ -116,9 +112,13 @@ spec:
     workingDir: $(workspaces.source.path)
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example `test` task YAML definition file**
+<div class="formalpara">
+
+<div class="title">
+
+Example `test` task YAML definition file
 
 </div>
 
@@ -141,9 +141,13 @@ spec:
     workingDir: $(workspaces.source.path)
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example `deploy` task YAML definition file**
+<div class="formalpara">
+
+<div class="title">
+
+Example `deploy` task YAML definition file
 
 </div>
 
@@ -161,11 +165,15 @@ spec:
     workingDir: $(workspaces.source.path)
 ```
 
+</div>
+
 You can combine the three tasks sequentially to form a pipeline in OpenShift Pipelines:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example: OpenShift Pipelines pipeline for building, testing, and deployment**
+<div class="title">
+
+Example: OpenShift Pipelines pipeline for building, testing, and deployment
 
 </div>
 
@@ -198,15 +206,19 @@ spec:
       workspace: shared-dir
 ```
 
+</div>
+
 # Migrating from Jenkins plugins to Tekton Hub tasks
 
 You can extend the capability of Jenkins by using [plugins](https://plugins.jenkinsci.org). To achieve similar extensibility in OpenShift Pipelines, use any of the tasks available from [Tekton Hub](https://hub.tekton.dev).
 
 For example, consider the [git-clone](https://hub.tekton.dev/tekton/task/git-clone) task in Tekton Hub, which corresponds to the [git plugin](https://plugins.jenkins.io/git/) for Jenkins.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example: `git-clone` task from Tekton Hub**
+<div class="title">
+
+Example: `git-clone` task from Tekton Hub
 
 </div>
 
@@ -235,13 +247,17 @@ spec:
        workspace: source
 ```
 
+</div>
+
 # Extending OpenShift Pipelines capabilities using custom tasks and scripts
 
 In OpenShift Pipelines, if you do not find the right task in Tekton Hub, or need greater control over tasks, you can create custom tasks and scripts to extend the capabilities of OpenShift Pipelines.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example: A custom task for running the `maven test` command**
+<div class="title">
+
+Example: A custom task for running the `maven test` command
 
 </div>
 
@@ -259,9 +275,13 @@ spec:
     workingDir: $(workspaces.source.path)
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example: Run a custom shell script by providing its path**
+<div class="formalpara">
+
+<div class="title">
+
+Example: Run a custom shell script by providing its path
 
 </div>
 
@@ -275,9 +295,13 @@ steps:
 ...
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example: Run a custom Python script by writing it in the YAML file**
+<div class="formalpara">
+
+<div class="title">
+
+Example: Run a custom Python script by writing it in the YAML file
 
 </div>
 
@@ -291,15 +315,17 @@ steps:
 ...
 ```
 
+</div>
+
 # Comparison of Jenkins and OpenShift Pipelines execution models
 
 Jenkins and OpenShift Pipelines offer similar functions but are different in architecture and execution.
 
-| Jenkins                                                                                                                 | OpenShift Pipelines                                                                                                                      |
-|-------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| Jenkins has a controller node. Jenkins runs pipelines and steps centrally, or orchestrates jobs running in other nodes. | OpenShift Pipelines is serverless and distributed, and there is no central dependency for execution.                                     |
-| Containers are launched by the Jenkins controller node through the pipeline.                                            | OpenShift Pipelines adopts a 'container-first' approach, where every step runs as a container in a pod (equivalent to nodes in Jenkins). |
-| Extensibility is achieved by using plugins.                                                                             | Extensibility is achieved by using tasks in Tekton Hub or by creating custom tasks and scripts.                                          |
+| Jenkins | OpenShift Pipelines |
+|----|----|
+| Jenkins has a controller node. Jenkins runs pipelines and steps centrally, or orchestrates jobs running in other nodes. | OpenShift Pipelines is serverless and distributed, and there is no central dependency for execution. |
+| Containers are launched by the Jenkins controller node through the pipeline. | OpenShift Pipelines adopts a 'container-first' approach, where every step runs as a container in a pod (equivalent to nodes in Jenkins). |
+| Extensibility is achieved by using plugins. | Extensibility is achieved by using tasks in Tekton Hub or by creating custom tasks and scripts. |
 
 Comparison of execution models in Jenkins and OpenShift Pipelines
 
@@ -317,9 +343,11 @@ Both Jenkins and OpenShift Pipelines offer capabilities for common CI/CD use cas
 
 You can use Maven in both Jenkins and OpenShift Pipelines workflows for compiling, building, and deploying images. To map your existing Jenkins workflow to OpenShift Pipelines, consider the following examples:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example: Compile and build an image and deploy it to OpenShift using Maven in Jenkins**
+<div class="title">
+
+Example: Compile and build an image and deploy it to OpenShift using Maven in Jenkins
 
 </div>
 
@@ -354,9 +382,13 @@ node('maven') {
     sh 'oc new-app helloworld/jboss-eap70-deploy.json' }
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example: Compile and build an image and deploy it to OpenShift using Maven in OpenShift Pipelines.**
+<div class="formalpara">
+
+<div class="title">
+
+Example: Compile and build an image and deploy it to OpenShift using Maven in OpenShift Pipelines.
 
 </div>
 
@@ -457,6 +489,8 @@ spec:
             oc start-build eap-helloworld-app --from-dir=artifacts/
             oc new-app jboss-eap70-deploy.json
 ```
+
+</div>
 
 ## Extending the core capabilities of Jenkins and OpenShift Pipelines by using plugins
 

@@ -14,23 +14,17 @@ In addition to the defaults, the admission chain can be extended dynamically thr
 
 Calling webhook servers through a mutating admission plugin can produce side effects on resources related to the target object. In such situations, you must take steps to validate that the end result is as expected.
 
-<div class="warning">
-
-Dynamic admission should be used cautiously because it impacts cluster control plane operations. When calling webhook servers through webhook admission plugins in OpenShift Container Platform 4.17, ensure that you have read the documentation fully and tested for side effects of mutations. Include steps to restore resources back to their original state prior to mutation, in the event that a request does not pass through the entire admission chain.
-
-</div>
+> [!WARNING]
+> Dynamic admission should be used cautiously because it impacts cluster control plane operations. When calling webhook servers through webhook admission plugins in OpenShift Container Platform 4.17, ensure that you have read the documentation fully and tested for side effects of mutations. Include steps to restore resources back to their original state prior to mutation, in the event that a request does not pass through the entire admission chain.
 
 # Default admission plugins
 
 Default validating and mutating admission plugins are enabled in OpenShift Container Platform. These default plugins contribute to fundamental control plane functionality, such as ingress policy, cluster resource limit override, and quota policy.
 
-<div class="important">
-
-Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
-
-The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
-
-</div>
+> [!IMPORTANT]
+> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+>
+> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
 
 The following list includes the default validating admission plugins:
 
@@ -195,11 +189,8 @@ Some common webhook admission plugin use cases include:
 
 - Pod priority class validation.
 
-<div class="note">
-
-The maximum default webhook timeout value in OpenShift Container Platform is 13 seconds, and it cannot be changed.
-
-</div>
+> [!NOTE]
+> The maximum default webhook timeout value in OpenShift Container Platform is 13 seconds, and it cannot be changed.
 
 # Types of webhook admission plugins
 
@@ -208,9 +199,11 @@ As a cluster administrator, you can call webhook servers through the mutating ad
 Mutating admission plugin
 The mutating admission plugin is invoked during the mutation phase of the admission process, which allows modification of resource content before it is persisted. One example webhook that can be called through the mutating admission plugin is the Pod Node Selector feature, which uses an annotation on a namespace to find a label selector and add it to the pod specification.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample mutating admission plugin configuration**
+<div class="title">
+
+Sample mutating admission plugin configuration
 
 </div>
 
@@ -239,6 +232,8 @@ webhooks:
   failurePolicy: <policy>
   sideEffects: None
 ```
+
+</div>
 
 where:
 
@@ -275,18 +270,17 @@ Specifies one or more operations that trigger the API server to call this webhoo
 `webhooks.failurePolicy`
 Specifies how the policy should proceed if the webhook server is unavailable. Replace `<policy>` with either `Ignore` (to unconditionally accept the request in case of a failure) or `Fail` (to deny the failed request). Using `Ignore` can result in unpredictable behavior for all clients.
 
-<div class="important">
-
-In OpenShift Container Platform 4.17, objects created by users or control loops through a mutating admission plugin might return unexpected results, especially if values set in an initial request are overwritten, which is not recommended.
-
-</div>
+> [!IMPORTANT]
+> In OpenShift Container Platform 4.17, objects created by users or control loops through a mutating admission plugin might return unexpected results, especially if values set in an initial request are overwritten, which is not recommended.
 
 Validating admission plugin
 A validating admission plugin is invoked during the validation phase of the admission process. This phase allows the enforcement of invariants on particular API resources to ensure that the resource does not change again. The Pod Node Selector is also an example of a webhook which is called by the validating admission plugin, to ensure that all `nodeSelector` fields are constrained by the node selector restrictions on the namespace.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample validating admission plugin configuration**
+<div class="title">
+
+Sample validating admission plugin configuration
 
 </div>
 
@@ -315,6 +309,8 @@ webhooks:
   failurePolicy: <policy>
   sideEffects: Unknown
 ```
+
+</div>
 
 where:
 
@@ -357,11 +353,29 @@ You can complete high-level steps to configure dynamic admission. These steps ex
 
 The webhook server is also configured as an aggregated API server. This allows other OpenShift Container Platform components to communicate with the webhook that uses internal credentials and facilitates testing that uses the `oc` command. Additionally, this enables role-based access control (RBAC) into the webhook and prevents token information from other API servers from being disclosed to the webhook.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An OpenShift Container Platform account with cluster administrator access.
 
 - The OpenShift Container Platform OpenShift CLI (`oc`) installed.
 
 - A published webhook server container image.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Build a webhook server container image and make it available to the cluster by using an image registry.
 
@@ -783,6 +797,8 @@ The webhook server is also configured as an aggregated API server. This allows o
     ```
 
 18. Verify that the webhook is functioning as expected. For example, if you have configured dynamic admission to reserve specific namespaces, confirm that requests to create those namespaces are rejected and that requests to create non-reserved namespaces succeed.
+
+</div>
 
 # Additional resources
 

@@ -26,11 +26,8 @@ Review the following information to learn about worker latency profiles, which a
 
 Worker latency profiles are four different categories of carefully-tuned parameters. The four parameters which implement these values are `node-status-update-frequency`, `node-monitor-grace-period`, `default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds`.
 
-<div class="important">
-
-Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
-
-</div>
+> [!IMPORTANT]
+> Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
 
 All worker latency profiles configure the following parameters:
 
@@ -63,12 +60,12 @@ The Kubernetes Controller Manager waits 40 seconds (`node-monitor-grace-period`)
 
 If a pod is on a node that has the `NoExecute` taint, the pod runs according to `tolerationSeconds`. If the node has no taint, it will be evicted in 300 seconds (`default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds` settings of the `Kube API Server`).
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| Default                        | kubelet                                  | `node-status-update-frequency` | 10s   |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 40s                            |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 300s                           |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 300s                           |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| Default | kubelet | `node-status-update-frequency` | 10s |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 40s |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 300s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 300s |  |
 
 Medium worker latency profile
 Use the `MediumUpdateAverageReaction` profile if the network latency is slightly higher than usual.
@@ -77,12 +74,12 @@ The `MediumUpdateAverageReaction` profile reduces the frequency of kubelet updat
 
 The Kubernetes Controller Manager waits for 2 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| MediumUpdateAverageReaction    | kubelet                                  | `node-status-update-frequency` | 20s   |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 2m                             |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| MediumUpdateAverageReaction | kubelet | `node-status-update-frequency` | 20s |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 2m |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 60s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s |  |
 
 Low worker latency profile
 Use the `LowUpdateSlowReaction` profile if the network latency is extremely high.
@@ -91,18 +88,15 @@ The `LowUpdateSlowReaction` profile reduces the frequency of kubelet updates to 
 
 The Kubernetes Controller Manager waits for 5 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| LowUpdateSlowReaction          | kubelet                                  | `node-status-update-frequency` | 1m    |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 5m                             |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| LowUpdateSlowReaction | kubelet | `node-status-update-frequency` | 1m |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 5m |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 60s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s |  |
 
-<div class="note">
-
-The latency profiles do not support custom machine config pools, only the default worker machine config pools.
-
-</div>
+> [!NOTE]
+> The latency profiles do not support custom machine config pools, only the default worker machine config pools.
 
 # Use and change worker latency profiles
 
@@ -110,9 +104,14 @@ You can change a worker latency profile to deal with network latency at any time
 
 You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile and then to the `LowUpdateSlowReaction` profile. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
 
-<div class="note">
+> [!NOTE]
+> You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
 
-You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -126,9 +125,11 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
     2.  Add `spec.workerLatencyProfile: MediumUpdateAverageReaction`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `node.config` object**
+        <div class="title">
+
+        Example `node.config` object
 
         </div>
 
@@ -156,6 +157,8 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         # ...
         ```
 
+        </div>
+
         where:
 
         `spec.workerLatencyProfile.MediumUpdateAverageReaction`
@@ -173,9 +176,11 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
     2.  Change the `spec.workerLatencyProfile` value to `LowUpdateSlowReaction`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `node.config` object**
+        <div class="title">
+
+        Example `node.config` object
 
         </div>
 
@@ -203,6 +208,8 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         # ...
         ```
 
+        </div>
+
         where:
 
         `spec.workerLatencyProfile.LowUpdateSlowReaction`
@@ -210,15 +217,27 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
         Scheduling on each compute node is disabled as the change is being applied.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - When all nodes return to the `Ready` condition, you can use the following command to look in the Kubernetes Controller Manager to ensure it was applied:
 
   ``` terminal
   $ oc get KubeControllerManager -o yaml | grep -i workerlatency -A 5 -B 5
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -242,9 +261,13 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
   # ...
   ```
 
+  </div>
+
   where:
 
   `status.message: all static pod revision(s) have updated latency profile`
   Specifies that the profile is applied and active.
 
   To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
+
+</div>

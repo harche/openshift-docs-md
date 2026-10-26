@@ -12,11 +12,8 @@ Templates without a boot source are labeled **Boot source required**. See "Manag
 Customize before starting the VM
 You can customize the disk source and VM parameters before you start the VM.
 
-<div class="note">
-
-If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
-
-</div>
+> [!NOTE]
+> If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
 
 Single-node OpenShift
 Due to differences in storage behavior, some templates are incompatible with single-node OpenShift. To ensure compatibility, do not set the `evictionStrategy` field for templates or VMs that use data volumes or storage profiles.
@@ -30,6 +27,14 @@ You can choose between two views in the web console to create the VM:
 - A virtualization-focused view, which provides a concise list of virtualization-related options at the top of the view
 
 - A general view, which provides access to the various web console options, including **Virtualization**
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the OpenShift Container Platform web console, choose your view:
 
@@ -67,13 +72,20 @@ You can choose between two views in the web console to create the VM:
 
           The **VirtualMachine details** page displays the provisioning status.
 
+</div>
+
 # Removing a deprecated designation from a customized VM template by using the web console
 
 You can customize an existing virtual machine (VM) template before you start the VM, by modifying the VM or template parameters, such as data sources, cloud-init, or SSH keys.
 
-<div class="note">
+> [!NOTE]
+> If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
 
-If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -99,9 +111,19 @@ If you customize a template by copying it and including all of its labels and an
 
 8.  Click **Save**.
 
+</div>
+
 ## Creating a custom VM template in the web console
 
 You can create a virtual machine template by editing a YAML file example in the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -117,9 +139,19 @@ You can create a virtual machine template by editing a YAML file example in the 
 
 6.  Optional: Click **Download** to download and save the YAML file.
 
+</div>
+
 ## Enabling dedicated resources for a virtual machine template
 
 You can enable dedicated resources for a virtual machine (VM) template in the OpenShift Container Platform web console. VMs that are created from this template will be scheduled with dedicated resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -130,6 +162,8 @@ You can enable dedicated resources for a virtual machine (VM) template in the Op
 4.  Select **Schedule this workload with dedicated resources (guaranteed policy)**.
 
 5.  Click **Save**.
+
+</div>
 
 # Additional resources
 

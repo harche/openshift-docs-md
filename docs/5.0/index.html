@@ -54,6 +54,7 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/installing-mirroring-installation-images.md">Mirroring images for a disconnected installation by using the oc adm command</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/installing.md">Installing a cluster in a disconnected environment</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/using-olm.md">Using OLM in disconnected environments</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=disconnected/configuring-registry-external.md">Configuring your cluster to use an external registry</a></div>
 <div style="padding-left:0px">&bull; <strong>Updating a cluster in a disconnected environment</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=disconnected/updating/index.md">About cluster updates in a disconnected environment</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=disconnected/updating/mirroring-image-repository.md">Mirroring OpenShift Container Platform images</a></div>
@@ -366,6 +367,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/updating-cluster-cli.md">Updating a cluster using the CLI</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/updating-cluster-web-console.md">Updating a cluster using the web console</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/control-plane-only-update.md">Performing a Control Plane Only update</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/update-ai.md">Creating cluster update assessments with OpenShift Lightspeed</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/update-using-custom-machine-config-pools.md">Performing a canary rollout update</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/disconnected-update.md">Updating a cluster in a disconnected environment</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/updating-hardware-on-nodes-running-on-vsphere.md">Updating hardware on nodes running on vSphere</a></div>
@@ -446,6 +448,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=cli_reference/tkn_cli/op-configuring-tkn.md">Configuring tkn</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=cli_reference/tkn_cli/op-tkn-reference.md">Basic tkn commands</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=cli_reference/gitops-argocd-cli-tools.md">GitOps CLI (argocd) for use with OpenShift GitOps</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=cli_reference/helm-cli.md">Helm CLI (helm)</a></div>
 <div style="padding-left:0px">&bull; <strong>opm CLI</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=cli_reference/opm/cli-opm-install.md">Installing the opm CLI</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=cli_reference/opm/cli-opm-ref.md">opm CLI reference</a></div>
@@ -490,8 +493,8 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/compliance_operator/compliance-operator-release-notes.md">Compliance Operator release notes</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-support.md">Compliance Operator support</a></div>
 <div style="padding-left:20px">&bull; <strong>Compliance Operator concepts</strong></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-concepts/compliance-operator-understanding.md">Understanding the Compliance Operator</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-concepts/compliance-operator-crd.md">Understanding the Custom Resource Definitions</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-concepts/compliance-operator-understanding.md">About the Compliance Operator</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-concepts/compliance-operator-crd.md">About the Compliance Operator custom resource definitions</a></div>
 <div style="padding-left:20px">&bull; <strong>Compliance Operator management</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-management/compliance-operator-installation.md">Installing the Compliance Operator</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=security/compliance_operator/co-management/compliance-operator-updating.md">Updating the Compliance Operator</a></div>
@@ -603,6 +606,7 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/index.md">Authentication and authorization overview</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/understanding-authentication.md">Understanding authentication</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/configuring-internal-oauth.md">Configuring the internal OAuth server</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/configuring-authentication-proxy.md">Configuring proxy settings for the authentication stack</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/configuring-oauth-clients.md">Configuring OAuth clients</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/managing-oauth-access-tokens.md">Managing user-owned OAuth access tokens</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/understanding-identity-provider.md">Understanding identity provider configuration</a></div>
@@ -751,6 +755,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.md">About the OVN-Kubernetes network plugin</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/ovn-kubernetes-architecture-assembly.md">OVN-Kubernetes architecture</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/ovn-kubernetes-troubleshooting-sources.md">OVN-Kubernetes troubleshooting</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/troubleshooting-ovn-kubernetes-with-mcp-server.md">Troubleshooting OVN-Kubernetes with the MCP server</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/ovn-kubernetes-tracing-using-ovntrace.md">OVN-Kubernetes traffic tracing</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/converting-to-dual-stack.md">Converting to IPv4/IPv6 dual stack networking</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/configure-ovn-kubernetes-subnets.md">Configuring internal subnets</a></div>
@@ -764,6 +769,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/disabling-multicast.md">Disabling multicast for a project</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/tracking-network-flows.md">Tracking network flows</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.md">Configuring hybrid networking</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ovn_kubernetes_network_provider/increasing-cluster-network-hostprefix.md">Increasing cluster network hostPrefix</a></div>
 <div style="padding-left:0px">&bull; <strong>Ingress and load balancing</strong></div>
 <div style="padding-left:20px">&bull; <strong>Routes</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/routes/creating-basic-routes.md">Creating basic routes</a></div>
@@ -1091,7 +1097,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-compute-user-infra-general.md">Adding compute machines to clusters with user-provisioned infrastructure manually</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-aws-compute-user-infra.md">Adding compute machines to AWS using CloudFormation templates</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-vsphere-compute-user-infra.md">Adding compute machines to vSphere manually</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.md">Adding bare-metal compute machines to a vSphere cluster</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.md">Add compute machines without vSphere integration</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/user_infra/adding-bare-metal-compute-user-infra.md">Adding compute machines to bare metal</a></div>
 <div style="padding-left:0px">&bull; <strong>Managing control plane machines</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=machine_management/control_plane_machine_management/cpmso-about.md">About control plane machine sets</a></div>
@@ -1292,6 +1298,7 @@
 <div style="padding-left:0px">&bull; <strong>Network Observability</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-operator-release-notes.md">Network Observability Operator release notes</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-overview.md">Network observability overview</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-automatic-installation.md">Network Observability Operator automatic installation</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/installing-operators.md">Installing the Network Observability Operator</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-kafka-operator-scaling-network-flow-collection.md">Scaling network flow collection with Kafka</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/understanding-network-observability-operator.md">Understanding Network Observability Operator</a></div>
@@ -1299,6 +1306,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-per-tenant-model.md">Network observability per-tenant model</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-network-policy.md">Network Policy</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-dns-resolution-analysis.md">Network observability DNS resolution analysis</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-optimizing-flowlogs-pipeline.md">Optimizing Flow-logs Pipeline</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/observing-network-traffic.md">Observing the network traffic</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-health-rules.md">Network observability health rules</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-monitoring-tls-traffic.md">Monitoring TLS traffic</a></div>
@@ -1309,10 +1317,9 @@
 <div style="padding-left:20px">&bull; <strong>Network Observability CLI</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=observability/network_observability/netobserv_cli/netobserv-cli-install.md">Installing the Network Observability CLI</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=observability/network_observability/netobserv_cli/netobserv-cli-using.md">Using the Network Observability CLI</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=observability/network_observability/netobserv_cli/netobserv-cli-plaintext-capture.md">Capture plain text from encrypted network traffic</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=observability/network_observability/netobserv_cli/netobserv-cli-reference.md">Network Observability CLI reference</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/flowcollector-api.md">FlowCollector API reference</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/flowmetric-api.md">FlowMetric API reference</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/json-flows-format-reference.md">Flows format reference</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/network-observability-api-reference.md">Network Observability API reference</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/troubleshooting-network-observability.md">Troubleshooting network observability</a></div>
 <div style="padding-left:0px">&bull; <strong>Power Monitoring</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/about-power-monitoring.md">About power monitoring</a></div>
@@ -1954,7 +1961,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/virt-requirements.md">Hardware, software, and operational requirements</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/installing-virt.md">Installing OpenShift Virtualization</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/uninstalling-virt.md">Uninstalling OpenShift Virtualization</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/virt-install-ibm-cloud-bm-nodes.md">Installing OpenShift Virtualization on IBM Cloud bare-metal nodes</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/virt-install-ibm-cloud-bm-nodes.md">Installation of OpenShift Virtualization on IBM Cloud bare-metal nodes</a></div>
 <div style="padding-left:0px">&bull; <strong>Postinstallation configuration</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-platform-autopilot.md">Run automated postinstallation configuration</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-post-install-config.md">Postinstallation configuration</a></div>
@@ -2034,7 +2041,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-networking-overview.md">Networking configuration overview</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-default-pod-network.md">Connecting a VM to the default pod network</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-primary-udn.md">Connecting a VM to a primary user-defined network</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-secondary-udn.md">Connecting a VM to a secondary localnet user-defined network</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-physical-network-ovs-bridge.md">Connect a VM to a physical network by using an Open vSwitch bridge</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-exposing-vm-with-service.md">Exposing a VM by using a service</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-accessing-vm-internal-fqdn.md">Accessing a VM by using its internal FQDN</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-linux-bridge.md">Connecting a VM to a Linux bridge network</a></div>

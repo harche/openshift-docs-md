@@ -4,15 +4,35 @@ Download the `velero` CLI tool or access the `velero` binary in your cluster to 
 
 Download and install the `velero` CLI tool from the Velero documentation page, which provides instructions for macOS by using Homebrew, GitHub, and Windows by using Chocolatey. This helps you to access the `velero` CLI for debugging backup and restore operations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to a Kubernetes cluster, v1.16 or later, with DNS and container networking enabled.
 
 - You have installed `kubectl` locally.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open a browser and navigate to ["Install the CLI" on the Velero website](https://velero.io/docs/v1.16/basic-install/#install-the-cli).
 
 2.  Follow the appropriate procedure for macOS, GitHub, or Windows.
 
 3.  Download the Velero version appropriate for your version of OADP and OpenShift Container Platform.
+
+</div>
 
 ## OADP-Velero-OpenShift Container Platform version relationship
 
@@ -32,19 +52,45 @@ Review the version relationship between OADP, Velero, and OpenShift Container Pl
 | 1.4.3        | 1.14           | 4.14-4.18                            |
 | 1.5.0        | 1.16           | 4.19                                 |
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Velero 1.12 documentation](https://velero.io/docs/v1.12/)
 
 - [Velero 1.14 documentation](https://velero.io/docs/v1.14/)
 
 - [Velero 1.16 documentation](https://velero.io/docs/v1.16/)
 
+</div>
+
 # Accessing the Velero binary in the Velero deployment in the cluster
 
 Use a shell command to access the Velero binary in the Velero deployment in the cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your `DataProtectionApplication` custom resource has a status of `Reconcile complete`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the needed alias by using the following command:
 
@@ -52,9 +98,19 @@ Use a shell command to access the Velero binary in the Velero deployment in the 
   $ alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
   ```
 
+</div>
+
 # Debug Velero resources with the OpenShift CLI tool
 
 Debug a failed backup or restore by checking Velero custom resources (CRs) and the `Velero` pod log with the OpenShift CLI tool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `oc describe` command:
 
@@ -70,11 +126,8 @@ Debug a failed backup or restore by checking Velero custom resources (CRs) and t
 
 - Specify the Velero log level in the `DataProtectionApplication` resource as shown in the following example.
 
-  <div class="note">
-
-  This option is available starting from OADP 1.0.3.
-
-  </div>
+  > [!NOTE]
+  > This option is available starting from OADP 1.0.3.
 
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
@@ -105,9 +158,19 @@ Debug a failed backup or restore by checking Velero custom resources (CRs) and t
 
     Use the `info` `logLevel` value for most logs.
 
+</div>
+
 # Debug Velero resources with the Velero CLI tool
 
 Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Use the `oc exec` command to run a Velero CLI command:
 
@@ -116,9 +179,11 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
     <backup_restore_cr> <command> <cr_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `oc exec` command**
+  <div class="title">
+
+  Example `oc exec` command
 
   </div>
 
@@ -126,6 +191,8 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
   $ oc -n openshift-adp exec deployment/velero -c velero -- ./velero \
     backup describe 0e44ae00-5dc3-11eb-9ca8-df7e5254778b-2d8ql
   ```
+
+  </div>
 
 - List all Velero CLI commands by using the following `velero --help` option:
 
@@ -141,9 +208,11 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
     <backup_restore_cr> logs <cr_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `velero logs` command**
+  <div class="title">
+
+  Example `velero logs` command
 
   </div>
 
@@ -152,6 +221,8 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
     restore logs ccc7c2d0-6017-11eb-afab-85d0007f5a19-x4lbf
   ```
 
+  </div>
+
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `velero describe` command:
 
   ``` terminal
@@ -159,9 +230,11 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
     <backup_restore_cr> describe <cr_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `velero describe` command**
+  <div class="title">
+
+  Example `velero describe` command
 
   </div>
 
@@ -169,6 +242,8 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
   $ oc -n openshift-adp exec deployment/velero -c velero -- ./velero \
     backup describe 0e44ae00-5dc3-11eb-9ca8-df7e5254778b-2d8ql
   ```
+
+  </div>
 
   The following types of restore errors and warnings are shown in the output of a `velero describe` request:
 
@@ -189,3 +264,5 @@ Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the V
 - If there are `Velero` errors but no resource-specific errors in the output of a `describe` command, it is possible that the restore completed without any actual problems in restoring workloads. In this case, carefully validate post-restore applications.
 
   For example, if the output contains `PodVolumeRestore` or node agent-related errors, check the status of `PodVolumeRestores` and `DataDownloads`. If none of these are failed or still running, then volume data might have been fully restored.
+
+</div>

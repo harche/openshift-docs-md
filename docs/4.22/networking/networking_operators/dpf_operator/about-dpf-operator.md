@@ -10,13 +10,10 @@ In Host Trusted deployments, DPF uses BlueField DPUs as host accelerators, and t
 
 By offloading critical OpenShift Container Platform networking functions, such as OVN-Kubernetes, to the DPU, the architecture frees host CPU resources for tenant applications. DPF also provides automated lifecycle management so that administrators can provision, configure, and update fleets of DPUs directly from OpenShift Container Platform.
 
-<div class="note">
-
-In the current release, the supported DPU services are Host-Based Networking (HBN) with OVN-Kubernetes and the DOCA Telemetry Service (DTS).
-
-The NVIDIA DPF Operator is distinct from the Red Hat DPU Operator. The Red Hat DPU Operator manages supported non-NVIDIA DPU devices. NVIDIA BlueField-3 deployments use the DPF Operator and related components.
-
-</div>
+> [!NOTE]
+> In the current release, the supported DPU services are Host-Based Networking (HBN) with OVN-Kubernetes and the DOCA Telemetry Service (DTS).
+>
+> The NVIDIA DPF Operator is distinct from the Red Hat DPU Operator. The Red Hat DPU Operator manages supported non-NVIDIA DPU devices. NVIDIA BlueField-3 deployments use the DPF Operator and related components.
 
 ## The topology
 
@@ -120,11 +117,8 @@ The deployment flow consists of the following steps:
 
 3.  **DPF installation:** Deploy the DPF Operator, controllers, DPF resources, and DPU service definitions on the management cluster.
 
-    <div class="important">
-
-    You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires DPF custom resource definitions (CRDs) such as `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
-
-    </div>
+    > [!IMPORTANT]
+    > You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires DPF custom resource definitions (CRDs) such as `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
 
 4.  **Hosted cluster creation:** The DPF HCP Provisioner Operator automates the creation of a hosted DPU cluster by using hosted control planes. The Operator references the `DPUDeployment` resource during ignition generation.
 
@@ -152,14 +146,14 @@ A workstation with the following command-line interface (CLI) tools installed:
 
 Three nodes form the control plane of the management cluster.
 
-| Component   | Requirement                                                            |
-|-------------|------------------------------------------------------------------------|
-| Form factor | Virtual machines or physical servers                                   |
-| Memory      | 60 GB RAM                                                              |
-| CPU         | 16 CPUs (Intel or AMD x86_64)                                          |
-| Storage     | 120 GB NVMe SSD storage, plus an additional 80 GB disk for LVM Storage |
-| Networking  | 1x 1GbE network interface                                              |
-| DPUs        | DPUs must not be installed on control plane nodes                      |
+| Component | Requirement |
+|----|----|
+| Form factor | Virtual machines or physical servers |
+| Memory | 60 GB RAM |
+| CPU | 16 CPUs (Intel or AMD x86_64) |
+| Storage | 120 GB NVMe SSD storage, plus an additional 80 GB disk for LVM Storage |
+| Networking | 1x 1GbE network interface |
+| DPUs | DPUs must not be installed on control plane nodes |
 
 Control plane node requirements
 
@@ -167,33 +161,30 @@ Control plane node requirements
 
 Two physical x86 servers host the NVIDIA BlueField-3 DPUs and act as worker nodes for the management cluster.
 
-| Component     | Requirement                                                                                                              |
-|---------------|--------------------------------------------------------------------------------------------------------------------------|
-| Memory        | 256 GB RAM                                                                                                               |
-| CPU           | 16 CPUs (Intel or AMD x86_64)                                                                                            |
-| Storage       | A minimum of 500 GB NVMe SSD storage for the base operating system                                                       |
-| DPU slot      | PCIe Gen 5 x16 slot required. Each server can have multiple DPUs but only one NVIDIA BlueField-3 DPU can be provisioned. |
-| BIOS settings | SR-IOV must be enabled. In-Band Manageability Interface must be enabled.                                                 |
+| Component | Requirement |
+|----|----|
+| Memory | 256 GB RAM |
+| CPU | 16 CPUs (Intel or AMD x86_64) |
+| Storage | A minimum of 500 GB NVMe SSD storage for the base operating system |
+| DPU slot | PCIe Gen 5 x16 slot required. Each server can have multiple DPUs but only one NVIDIA BlueField-3 DPU can be provisioned. |
+| BIOS settings | SR-IOV must be enabled. In-Band Manageability Interface must be enabled. |
 
 Worker node requirements
 
-<div class="note">
-
-As part of the installation process, a Linux bridge named `br-ex` is automatically created on the worker node’s physical management port by using a `MachineConfig` custom resource to facilitate control-plane traffic from the DPU through the host server.
-
-</div>
+> [!NOTE]
+> As part of the installation process, a Linux bridge named `br-ex` is automatically created on the worker node’s physical management port by using a `MachineConfig` custom resource to facilitate control-plane traffic from the DPU through the host server.
 
 ## NVIDIA BlueField-3 DPUs
 
 One NVIDIA BlueField-3 DPU is required per worker node.
 
-| Component                     | Requirement                                                                                                                                                                                                                                                                                                                                                                                                       |
-|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Model                         | BlueField-3: [B3240](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3240DPUsSpecifications), [B3220](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3220DPUsSpecifications), or [B3210](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3210DPUsSpecifications) |
-| Memory                        | 32 GB. Dual-port DPUs with 32 GB require an external power connection to the x86 server.                                                                                                                                                                                                                                                                                                                          |
-| Networking                    | Dual 200GbE ports per DPU. Both ports must be connected to the high-speed switch for ECMP routing.                                                                                                                                                                                                                                                                                                                |
-| Management                    | The out-of-band management port is not used in this configuration.                                                                                                                                                                                                                                                                                                                                                |
-| Operating system and software | The DPUs are provisioned with a BlueField Bootstream File (BFB) that bundles a Red Hat Enterprise Linux CoreOS (RHCOS) base image and the NVIDIA DOCA software stack. The DOCA software stack includes the DPU firmware (version 32.49.1014).                                                                                                                                                                     |
+| Component | Requirement |
+|----|----|
+| Model | BlueField-3: [B3240](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3240DPUsSpecifications), [B3220](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3220DPUsSpecifications), or [B3210](https://docs.nvidia.com/networking/display/bf3dpu/specifications#src-2449222537_Specifications-B3210DPUsSpecifications) |
+| Memory | 32 GB. Dual-port DPUs with 32 GB require an external power connection to the x86 server. |
+| Networking | Dual 200GbE ports per DPU. Both ports must be connected to the high-speed switch for ECMP routing. |
+| Management | The out-of-band management port is not used in this configuration. |
+| Operating system and software | The DPUs are provisioned with a BlueField Bootstream File (BFB) that bundles a Red Hat Enterprise Linux CoreOS (RHCOS) base image and the NVIDIA DOCA software stack. The DOCA software stack includes the DPU firmware (version 32.49.1014). |
 
 BlueField-3 DPU requirements
 
@@ -223,31 +214,30 @@ An NVIDIA SN3700 or similar switch providing 2x 200GbE connectivity per DPU.
 
 The deployment supports any maximum transmission unit (MTU) value, provided it is consistent across all network components, including switches, interfaces, and bridges. Common values are 1500 for standard frames and 9000 for jumbo frames. Whichever value you choose must be supported end-to-end by every component in the network path.
 
-<div class="important">
-
-The MTU value is set during deployment and cannot be changed later. Ensure consistency across all environment components. When using VMs for control plane nodes, ensure the hypervisor bridge MTU matches the chosen value.
-
-</div>
+> [!IMPORTANT]
+> The MTU value is set during deployment and cannot be changed later. Ensure consistency across all environment components. When using VMs for control plane nodes, ensure the hypervisor bridge MTU matches the chosen value.
 
 # DPF software requirements
 
 A DPF v26.4.1 deployment requires specific versions of OpenShift Container Platform, the OpenShift CLI (`oc`), hosted control planes, the NVIDIA DPF Operator, and RHCOS BFB, plus `cluster-admin` privileges on the management cluster.
 
-| Component                                                  | Required version |
-|------------------------------------------------------------|------------------|
-| OpenShift Container Platform                               | 4.17             |
-| OpenShift CLI (`oc`)                                       | 4.17             |
-| Hosted control planes OpenShift Container Platform cluster | 4.17             |
-| NVIDIA DPF Operator                                        | v26.4.1          |
-| RHCOS BFB                                                  | 4.17             |
+| Component | Required version |
+|----|----|
+| OpenShift Container Platform | 4.17 |
+| OpenShift CLI (`oc`) | 4.17 |
+| Hosted control planes OpenShift Container Platform cluster | 4.17 |
+| NVIDIA DPF Operator | v26.4.1 |
+| RHCOS BFB | 4.17 |
 
 Software version requirements
 
 The `RHCOS BFB` entry refers to the base RHCOS BlueField Bootstream (BFB) image, which is available from the OpenShift Container Platform mirror. For example:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example BFB image URL**
+<div class="title">
+
+Example BFB image URL
 
 </div>
 
@@ -255,14 +245,16 @@ The `RHCOS BFB` entry refers to the base RHCOS BlueField Bootstream (BFB) image,
 https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb
 ```
 
+</div>
+
 The base BFB is layered with the NVIDIA DOCA stack at provisioning time, and the DOCA services run on the DPUs as separately deployed `DPUService` resources. The following versions are pinned by this deployment:
 
-| Component                    | Required version                               |
-|------------------------------|------------------------------------------------|
-| NVIDIA DOCA                  | 3.4.1                                          |
-| Host-Based Networking (HBN)  | 3.4.0                                          |
-| DOCA Telemetry Service (DTS) | 1.25.5                                         |
-| OVN-Kubernetes               | Delivered by the DPF OVN-Kubernetes Helm chart |
+| Component | Required version |
+|----|----|
+| NVIDIA DOCA | 3.4.1 |
+| Host-Based Networking (HBN) | 3.4.0 |
+| DOCA Telemetry Service (DTS) | 1.25.5 |
+| OVN-Kubernetes | Delivered by the DPF OVN-Kubernetes Helm chart |
 
 NVIDIA DOCA component versions
 

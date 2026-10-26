@@ -24,9 +24,17 @@ Consider the following limitations before hot swapping a VM secondary network:
 
 - If the new network requires a different IP configuration, such as a different subnet or gateway, you must reconfigure the guest operating system network settings. The hot swap does not automatically update the guest network configuration.
 
-# Hot swapping a virtual machine secondary network by using the command line
+# Hot swap a VM secondary network by using the CLI
 
 You can hot swap a virtual machine (VM) secondary network by using the command line.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The VM to which you want to hot swap the network is running and is live migratable.
 
@@ -50,6 +58,16 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
       "vlan": 20
     }'
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use your preferred text editor to edit the `VirtualMachine` manifest, as shown in the following example:
 
@@ -88,7 +106,15 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
     `<filename>`
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the VM live migration is progressing successfully by using the following command.
 
@@ -108,13 +134,33 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
     $ virtctl console vm-fedora
     ```
 
-# Hot swapping a virtual machine secondary network by using the web console
+</div>
+
+# Hot swap a VM secondary network by using the web console
 
 You can hot swap the secondary network of a running virtual machine (VM) by using the OpenShift Container Platform web console. Hot swapping the secondary network preserves the workload and avoids the need for a VM reboot.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The VM is running and is live migratable.
 
 - The target `NetworkAttachmentDefinition` object exists in the same namespace as the VM. If you created a `ClusterUserDefinedNetwork` object, verify that the cluster user-defined network controller has created the corresponding `NetworkAttachmentDefinition` object.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -130,7 +176,15 @@ You can hot swap the secondary network of a running virtual machine (VM) by usin
 
     The network interface row displays a **Pending** label. A warning banner indicates that the VM has pending network changes. The pending changes are applied during the next live migration or reboot.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  On the **VirtualMachine details** page, click the **Diagnostics** tab.
 
@@ -138,11 +192,13 @@ You can hot swap the secondary network of a running virtual machine (VM) by usin
 
     After the live migration completes, the `MigrationRequired` condition disappears and the **Pending** label is removed from the network interface.
 
+</div>
+
 # Additional resources
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration-permissions_virt-about-live-migration)
 
-- [Connecting a virtual machine to a secondary localnet user-defined network](../../virt/vm_networking/virt-connecting-vm-to-secondary-udn.xml#virt-connecting-vm-to-secondary-udn)
+- [Connect a virtual machine to a physical network by using an Open vSwitch bridge](../../virt/vm_networking/virt-connecting-vm-to-physical-network-ovs-bridge.xml#virt-connecting-vm-to-physical-network-ovs-bridge)
 
 - [Creating a Linux bridge network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 

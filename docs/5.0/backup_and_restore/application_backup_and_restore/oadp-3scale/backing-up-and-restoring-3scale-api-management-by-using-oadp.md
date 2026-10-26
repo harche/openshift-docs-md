@@ -4,11 +4,8 @@ You can deploy 3scale components on-premise, in the cloud, as a managed service,
 
 With OpenShift API for Data Protection (OADP), you can safeguard 3scale API Management deployments by backing up application resources, persistent volumes, and configurations.
 
-<div class="note">
-
-You can use the OpenShift API for Data Protection (OADP) Operator to back up and restore your 3scale API Management on-cluster storage databases without affecting your running services
-
-</div>
+> [!NOTE]
+> You can use the OpenShift API for Data Protection (OADP) Operator to back up and restore your 3scale API Management on-cluster storage databases without affecting your running services
 
 You can configure OADP to perform the following operations with 3scale API Management:
 
@@ -16,8 +13,16 @@ You can configure OADP to perform the following operations with 3scale API Manag
 
 - Restore the components to scale up the 3scale operator and deployment. For more details, see *Restoring 3scale API Management*.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Backing up 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/backing-up-3scale-api-management-by-using-oadp.xml#backing-up-3scale-api-management-by-using-oadp)
 
 - [Restoring 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/restoring-3scale-api-management-by-using-oadp.xml#restoring-3scale-api-management-by-using-oadp)
+
+</div>

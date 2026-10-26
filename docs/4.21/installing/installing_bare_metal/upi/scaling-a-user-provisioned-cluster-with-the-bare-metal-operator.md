@@ -28,7 +28,25 @@ The following limitations apply to scaling a user-provisioned cluster.
 
 Create a `Provisioning` custom resource (CR) to enable Metal platform components on a user-provisioned infrastructure cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed a user-provisioned infrastructure cluster on bare metal.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Provisioning` CR.
 
@@ -44,11 +62,8 @@ Create a `Provisioning` custom resource (CR) to enable Metal platform components
           watchAllNamespaces: false
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 does not support enabling a provisioning network when you scale a user-provisioned cluster by using the Bare Metal Operator.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 does not support enabling a provisioning network when you scale a user-provisioned cluster by using the Bare Metal Operator.
 
 2.  Create the `Provisioning` CR by running the following command:
 
@@ -56,9 +71,11 @@ Create a `Provisioning` custom resource (CR) to enable Metal platform components
     $ oc create -f provisioning.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -66,15 +83,29 @@ Create a `Provisioning` custom resource (CR) to enable Metal platform components
     provisioning.metal3.io/provisioning-configuration created
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the provisioning service is running by running the following command:
 
   ``` terminal
   $ oc get pods -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -92,13 +123,22 @@ Create a `Provisioning` custom resource (CR) to enable Metal platform components
   metal3-image-customization-59d745768d-bhrp7           1/1     Running   0               5d21h
   ```
 
+  </div>
+
+</div>
+
 # Provisioning new hosts in a user-provisioned cluster by using the BMO
 
 You can use the Bare Metal Operator (BMO) to provision bare-metal hosts in a user-provisioned cluster by creating a `BareMetalHost` custom resource (CR).
 
-<div class="note">
+> [!NOTE]
+> Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.externallyProvisioned` specification in the `BareMetalHost` custom resource to `false` by default. Do not set the `spec.externallyProvisioned` specification to `true`, because this setting results in unexpected behavior.
 
-Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.externallyProvisioned` specification in the `BareMetalHost` custom resource to `false` by default. Do not set the `spec.externallyProvisioned` specification to `true`, because this setting results in unexpected behavior.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -107,6 +147,16 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
 - You have baseboard management controller (BMC) access to the hosts.
 
 - You deployed a provisioning service in the cluster by creating a `Provisioning` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a configuration file for the bare-metal node. Depending if you use either a static configuration or a DHCP server, choose one of the following example `bmh.yaml` files and configure it to your needs by replacing values in the YAML to match your environment:
 
@@ -284,11 +334,8 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
       `spec.rootDeviceHints.deviceName`
       Specifies the root device hint path. Replace `<root_device_hint>` with a device path when specifying a root device hint. See "Root device hints" for additional details. This field is optional.
 
-      <div class="important">
-
-      If the MAC address of an existing bare-metal node matches the MAC address of the bare-metal host that you are attempting to provision, then the installation will fail. If the host enrollment, inspection, cleaning, or other steps fail, the Bare Metal Operator retries the installation continuously. See "Diagnosing a duplicate MAC address when provisioning a new host in the cluster" for additional details.
-
-      </div>
+      > [!IMPORTANT]
+      > If the MAC address of an existing bare-metal node matches the MAC address of the bare-metal host that you are attempting to provision, then the installation will fail. If the host enrollment, inspection, cleaning, or other steps fail, the Bare Metal Operator retries the installation continuously. See "Diagnosing a duplicate MAC address when provisioning a new host in the cluster" for additional details.
 
 2.  Create the bare-metal node by running the following command:
 
@@ -296,9 +343,11 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
     $ oc create -f bmh.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -307,6 +356,8 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
     secret/openshift-worker-<num>-bmc-secret created
     baremetalhost.metal3.io/openshift-worker-<num> created
     ```
+
+    </div>
 
 3.  Inspect the bare-metal node by running the following command:
 
@@ -319,9 +370,11 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
     \<num\>
     Specifies the compute node number.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -329,6 +382,8 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
     NAME                    STATE       CONSUMER   ONLINE   ERROR
     openshift-worker-<num>  provisioned true
     ```
+
+    </div>
 
 4.  Approve all certificate signing requests (CSRs).
 
@@ -338,9 +393,11 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
         $ oc get csr
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -350,15 +407,19 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
         perator:node-bootstrapper   <none>              Pending
         ```
 
+        </div>
+
     2.  Approve the CSR by running the following command:
 
         ``` terminal
         $ oc adm certificate approve <csr_name>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -366,15 +427,29 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
         certificatesigningrequest.certificates.k8s.io/<csr_name> approved
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the node is ready by running the following command:
 
   ``` terminal
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -384,7 +459,17 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
   controller1 Ready    master,worker   2d22h   v1.24.0+dc5a2fd
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Preparing the bare-metal node](../../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#preparing-the-bare-metal-node_bare-metal-expanding)
 
@@ -392,15 +477,22 @@ Provisioning bare-metal hosts to the cluster by using the BMO sets the `spec.ext
 
 - [Diagnosing a duplicate MAC address when provisioning a new host in the cluster](../../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#ipi-install-diagnosing-duplicate-mac-address_bare-metal-expanding)
 
+</div>
+
 # Optional: Managing existing hosts in a user-provisioned cluster by using the BMO
 
 Optionally, you can use the Bare Metal Operator (BMO) to manage existing bare-metal controller hosts in a user-provisioned cluster by creating a `BareMetalHost` object for the existing host.
 
 It is not a requirement to manage existing user-provisioned hosts; however, you can enroll them as externally-provisioned hosts for inventory purposes.
 
-<div class="important">
+> [!IMPORTANT]
+> To manage existing hosts by using the BMO, you must set the `spec.externallyProvisioned` specification in the `BareMetalHost` custom resource to `true` to prevent the BMO from re-provisioning the host.
 
-To manage existing hosts by using the BMO, you must set the `spec.externallyProvisioned` specification in the `BareMetalHost` custom resource to `true` to prevent the BMO from re-provisioning the host.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -409,6 +501,16 @@ To manage existing hosts by using the BMO, you must set the `spec.externallyProv
 - You have baseboard management controller (BMC) access to the hosts.
 
 - You deployed a provisioning service in the cluster by creating a `Provisioning` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `Secret` CR and the `BareMetalHost` CR.
 
@@ -459,9 +561,11 @@ To manage existing hosts by using the BMO, you must set the `spec.externallyProv
     $ oc create -f controller.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -470,15 +574,29 @@ To manage existing hosts by using the BMO, you must set the `spec.externallyProv
     baremetalhost.metal3.io/controller1 created
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the BMO created the bare-metal host object by running the following command:
 
   ``` terminal
   $ oc get bmh -A
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -487,9 +605,21 @@ To manage existing hosts by using the BMO, you must set the `spec.externallyProv
   openshift-machine-api   controller1   externally provisioned              true             13s
   ```
 
+  </div>
+
+</div>
+
 # Removing hosts from a user-provisioned cluster by using the BMO
 
 You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user-provisioned cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created a user-provisioned bare-metal cluster.
 
@@ -497,15 +627,27 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
 
 - You deployed a provisioning service in the cluster by creating a `Provisioning` CR.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Cordon and drain the node by running the following command:
 
     ``` terminal
     $ oc adm drain app1 --force --ignore-daemonsets=true
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -525,6 +667,8 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
     pod/collect-profiles-27766935-stf4s evicted
     node/app1 drained
     ```
+
+    </div>
 
 2.  Delete the `customDeploy` specification from the `BareMetalHost` CR.
 
@@ -548,9 +692,11 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
         $ oc get bmh -A
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -560,17 +706,16 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
         openshift-machine-api   worker1       deprovisioning                      true             57m
         ```
 
+        </div>
+
 3.  Delete the host by running the following command when the `BareMetalHost` state changes to `available`:
 
     ``` terminal
     $ oc delete bmh -n openshift-machine-api <bmh_name>
     ```
 
-    <div class="note">
-
-    You can run this step without having to edit the `BareMetalHost` CR. It might take some time for the `BareMetalHost` state to change from `deprovisioning` to `available`.
-
-    </div>
+    > [!NOTE]
+    > You can run this step without having to edit the `BareMetalHost` CR. It might take some time for the `BareMetalHost` state to change from `deprovisioning` to `available`.
 
 4.  Delete the node by running the following command:
 
@@ -578,15 +723,27 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
     $ oc delete node <node_name>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that you deleted the node by running the following command:
 
   ``` terminal
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -594,3 +751,7 @@ You can use the Bare Metal Operator (BMO) to remove bare-metal hosts from a user
   NAME          STATUS   ROLES           AGE     VERSION
   controller1   Ready    master,worker   2d23h   v1.24.0+dc5a2fd
   ```
+
+  </div>
+
+</div>

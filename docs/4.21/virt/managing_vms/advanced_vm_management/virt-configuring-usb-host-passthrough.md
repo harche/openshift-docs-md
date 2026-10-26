@@ -2,15 +2,33 @@ You can enable passthrough of USB devices to allow a virtual machine (VM) to con
 
 To expose a USB device, first enable host passthrough and then configure the VM to use the USB device.
 
-# Enabling USB host passthrough
+# Enable USB host passthrough
 
 To attach a USB device to a virtual machine (VM), you must first enable USB host passthrough at the cluster level.
 
 To do this, specify a resource name and USB device name for each device you want first to add and then assign to a VM. You can allocate more than one device, each of which is known as a `selector` in the `HyperConverged` custom resource (CR), to a single resource name. If you have multiple identical USB devices on the cluster, you can choose to allocate a VM to a specific device.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster as a user who has the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify the USB device vendor and product:
 
@@ -82,13 +100,33 @@ To do this, specify a resource name and USB device name for each device you want
 
     - `spec.permittedHostDevices.usbHostDevices.resourceName` defines the USB device that you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
 
-# Connecting a USB device to a virtual machine
+</div>
+
+# Connect a USB device to a virtual machine
 
 You can configure virtual machine (VM) access to a USB device. This configuration enables the VM to connect to USB hardware that is attached to an OpenShift Container Platform node, as if the hardware and the VM are physically connected.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have attached the required USB device as a resource at the cluster level.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the `HyperConverged` custom resource (CR), find the assigned resource name of the USB device:
 
@@ -159,3 +197,5 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
 
     `<filename>`
     Specifies the name of the `VirtualMachine` manifest YAML file.
+
+</div>

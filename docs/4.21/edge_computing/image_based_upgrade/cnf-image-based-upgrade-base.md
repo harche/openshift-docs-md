@@ -8,19 +8,34 @@ When you deploy the Lifecycle Agent on a cluster, the Lifecycle Agent automatica
 
 After you create all the resources that you need during the upgrade, you can move on to the `Prep` stage. For more information, see the "Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent" section.
 
-<div class="note">
+> [!NOTE]
+> In a disconnected environment, if the seed cluster’s release image registry is different from the target cluster’s release image registry, you must create an `ImageDigestMirrorSet` (IDMS) resource to configure alternative mirrored repository locations. For more information, see "Configuring image registry repository mirroring".
+>
+> You can retrieve the release registry used in the seed image by running the following command:
+>
+> ``` terminal
+> $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-agent.seed_cluster_info" | fromjson | .release_registry'
+> ```
 
-In a disconnected environment, if the seed cluster’s release image registry is different from the target cluster’s release image registry, you must create an `ImageDigestMirrorSet` (IDMS) resource to configure alternative mirrored repository locations. For more information, see "Configuring image registry repository mirroring".
+<div>
 
-You can retrieve the release registry used in the seed image by running the following command:
+<div class="title">
 
-``` terminal
-$ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-agent.seed_cluster_info" | fromjson | .release_registry'
-```
+Prerequisites
 
 </div>
 
 - You have created resources to back up and restore your clusters.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check that you have patched your `ImageBasedUpgrade` CR:
 
@@ -95,6 +110,16 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
 
     When the validations pass, the cluster creates a new `ostree` stateroot, which involves pulling and unpacking the seed image, and running host-level commands. Finally, the Lifecycle Agent precaches all the required images on the target cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the status of the `ImageBasedUpgrade` CR by running the following command:
 
   ``` terminal
@@ -129,11 +154,21 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
     - Upgrade
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent](../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-prep-resources.xml#cnf-image-based-upgrade-prep-resources)
 
 - [Configuring image registry repository mirroring](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror-configuring_image-configuration)
+
+</div>
 
 # Moving to the Upgrade stage of the image-based upgrade with Lifecycle Agent
 
@@ -141,7 +176,25 @@ After you generate the seed image and complete the `Prep` stage, you can upgrade
 
 If the upgrade fails or stops, the Lifecycle Agent initiates an automatic rollback. If you have an issue after the upgrade, you can perform a manual rollback. For more information about manual rollback, see "Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have completed the `Prep` stage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To move to the `Upgrade` stage, change the value of the `stage` field to `Upgrade` in the `ImageBasedUpgrade` CR by running the following command:
 
@@ -208,17 +261,22 @@ If the upgrade fails or stops, the Lifecycle Agent initiates an automatic rollba
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge
     ```
 
-    <div class="important">
-
-    You cannot roll back the changes once you move to the `Idle` stage after an upgrade.
-
-    </div>
+    > [!IMPORTANT]
+    > You cannot roll back the changes once you move to the `Idle` stage after an upgrade.
 
     The Lifecycle Agent deletes all resources created during the upgrade process.
 
 5.  You can remove the OADP Operator and its configuration files after a successful upgrade. For more information, see "Deleting Operators from a cluster".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the status of the `ImageBasedUpgrade` CR by running the following command:
 
@@ -283,15 +341,24 @@ If the upgrade fails or stops, the Lifecycle Agent initiates an automatic rollba
     localvolume      Completed   <none>
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The `acm-klusterlet` is specific to RHACM environments only.
 
-    The `acm-klusterlet` is specific to RHACM environments only.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent](../../edge_computing/image_based_upgrade/cnf-image-based-upgrade-base.xml#cnf-image-based-upgrade-rollback_cnf-non-gitops)
 
 - [Deleting Operators from a cluster](../../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operators-from-cluster)
+
+</div>
 
 # Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent
 
@@ -319,13 +386,28 @@ Optional: The time frame in seconds to roll back if the upgrade does not complet
 
 You can manually roll back the changes if you see unresolvable issues after an upgrade.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have logged into the hub cluster as a user with `cluster-admin` privileges.
 
 - You ensured that the control plane certificates on the original stateroot are valid. If the certificates expired, see "Recovering from expired control plane certificates".
 
-<div class="warning">
+</div>
 
-If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback time frame of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
+> [!WARNING]
+> If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback time frame of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -343,23 +425,29 @@ If you choose to upgrade a recently installed single-node OpenShift cluster for 
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge -n openshift-lifecycle-agent
     ```
 
-    <div class="warning">
+    > [!WARNING]
+    > If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that you can use to troubleshoot a failed upgrade.
 
-    If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that you can use to troubleshoot a failed upgrade.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Recovering from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-scenario-3-recovering-expired-certs_dr-recovering-expired-certs)
+
+</div>
 
 # Troubleshooting image-based upgrades with Lifecycle Agent
 
 Perform troubleshooting steps on the managed clusters to resolve any issues.
 
-<div class="important">
-
-If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
-
-</div>
+> [!IMPORTANT]
+> If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
 
 ## Collecting logs
 
@@ -433,11 +521,8 @@ Resolution
 
 3.  After cleaning up all the deployments of the stateroot, wipe the stateroot directory by running the following commands:
 
-    <div class="warning">
-
-    Ensure that the booted deployment is not in this stateroot.
-
-    </div>
+    > [!WARNING]
+    > Ensure that the booted deployment is not in this stateroot.
 
     ``` terminal
     $ stateroot="<stateroot_to_delete>"

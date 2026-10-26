@@ -12,11 +12,8 @@ A template without a boot source displays the **Boot source required** label.
 Customize before starting the VM
 You can customize the disk source and VM parameters before you start the VM.
 
-<div class="note">
-
-If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
-
-</div>
+> [!NOTE]
+> If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
 
 Single-node OpenShift
 Due to differences in storage behavior, some templates are incompatible with single-node OpenShift. To ensure compatibility, do not set the `evictionStrategy` field for templates or VMs that use data volumes or storage profiles.
@@ -24,6 +21,14 @@ Due to differences in storage behavior, some templates are incompatible with sin
 # Creating a custom VM template in the web console
 
 You can create a virtual machine template by editing a YAML file example in the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -39,9 +44,19 @@ You can create a virtual machine template by editing a YAML file example in the 
 
 6.  Optional: Click **Download** to download and save the YAML file.
 
+</div>
+
 # Enabling dedicated resources for a virtual machine template
 
 You can enable dedicated resources for a virtual machine (VM) template in the OpenShift Container Platform web console. VMs that are created from this template will be scheduled with dedicated resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -53,13 +68,20 @@ You can enable dedicated resources for a virtual machine (VM) template in the Op
 
 5.  Click **Save**.
 
+</div>
+
 # Removing a deprecated designation from a customized VM template by using the web console
 
 You can customize an existing virtual machine (VM) template before you start the VM, by modifying the VM or template parameters, such as data sources, cloud-init, or SSH keys.
 
-<div class="note">
+> [!NOTE]
+> If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
 
-If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -84,6 +106,8 @@ If you customize a template by copying it and including all of its labels and an
     - `template.kubevirt.io/deprecated`
 
 8.  Click **Save**.
+
+</div>
 
 # Additional resources
 

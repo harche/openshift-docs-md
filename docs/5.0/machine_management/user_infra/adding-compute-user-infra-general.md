@@ -26,17 +26,17 @@ See [Creating additional worker machines in Google Cloud](../../installing/insta
 
 # Adding compute machines to vSphere
 
-You can use compute machine sets to automate the creation of additional compute machines for your OpenShift Container Platform cluster on vSphere.
+You can add compute machines hosted on VMware vSphere to your OpenShift Container Platform cluster by using compute machine sets or by provisioning the machines manually.
 
 See [use compute machine sets](../../machine_management/creating_machinesets/creating-machineset-vsphere.xml#creating-machineset-vsphere) for more information.
 
-You can manually add more compute machines to your cluster.
+You can also provision additional vSphere virtual machines (VMs) manually and add them to your cluster.
 
 See [Adding compute machines to vSphere manually](../../machine_management/user_infra/adding-vsphere-compute-user-infra.xml#adding-vsphere-compute-user-infra) for more information.
 
-You can add bare-metal compute machines to your cluster.
+You can manually add bare-metal compute machines or VMs hosted outside vSphere to your existing cluster. These nodes join without vSphere integration.
 
-See [Adding bare-metal compute machines to a vSphere cluster](../../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra) for more information.
+For more information, see [Add compute machines without vSphere integration](../../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra).
 
 # Adding compute machines to bare metal
 

@@ -18,9 +18,11 @@ You can get detailed information about the nodes in the cluster, which can help 
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -31,15 +33,19 @@ You can get detailed information about the nodes in the cluster, which can help 
   node2.example.com      Ready     worker    7h        v1.34.2
   ```
 
+  </div>
+
   The following example is a cluster with one unhealthy node:
 
   ``` terminal
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -50,6 +56,8 @@ You can get detailed information about the nodes in the cluster, which can help 
   node2.example.com      Ready                       worker    7h        v1.34.2
   ```
 
+  </div>
+
   The conditions that trigger a `NotReady` status are shown later in this section.
 
 - The `-o wide` option provides additional information on nodes.
@@ -58,9 +66,11 @@ You can get detailed information about the nodes in the cluster, which can help 
   $ oc get nodes -o wide
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -70,6 +80,8 @@ You can get detailed information about the nodes in the cluster, which can help 
   node1.example.com   Ready    worker   72m    v1.34.2   10.0.129.222   <none>        Red Hat Enterprise Linux CoreOS 48.83.202103210901-0 (Ootpa)   4.21.0-240.15.1.el8_3.x86_64   cri-o://1.34.2-30.rhaos4.10.gitf2f339d.el8-dev
   node2.example.com   Ready    worker   164m   v1.34.2   10.0.142.150   <none>        Red Hat Enterprise Linux CoreOS 48.83.202103210901-0 (Ootpa)   4.21.0-240.15.1.el8_3.x86_64   cri-o://1.34.2-30.rhaos4.10.gitf2f339d.el8-dev
   ```
+
+  </div>
 
 - The following command lists information about a single node:
 
@@ -83,9 +95,11 @@ You can get detailed information about the nodes in the cluster, which can help 
   $ oc get node node1.example.com
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -93,6 +107,8 @@ You can get detailed information about the nodes in the cluster, which can help 
   NAME                   STATUS    ROLES     AGE       VERSION
   node1.example.com      Ready     worker    7h        v1.34.2
   ```
+
+  </div>
 
 - The following command provides more detailed information about a specific node, including the reason for the current condition:
 
@@ -106,15 +122,14 @@ You can get detailed information about the nodes in the cluster, which can help 
   $ oc describe node node1.example.com
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > The following example contains some values that are specific to OpenShift Container Platform on AWS.
 
-  The following example contains some values that are specific to OpenShift Container Platform on AWS.
+  <div class="formalpara">
 
-  </div>
+  <div class="title">
 
-  <div class="formalpara-title">
-
-  **Example output**
+  Example output
 
   </div>
 
@@ -212,6 +227,8 @@ You can get detailed information about the nodes in the cluster, which can help 
   #...
   ```
 
+  </div>
+
   where:
 
   `Names`
@@ -247,30 +264,35 @@ You can get detailed information about the nodes in the cluster, which can help 
   `Events`
   Specifies the events reported by the node.
 
-  <div class="note">
-
-  The control plane label is not automatically added to newly created or updated master nodes. If you want to use the control plane label for your nodes, you can manually configure the label. For more information, see "Understanding how to update labels on nodes".
-
-  </div>
+  > [!NOTE]
+  > The control plane label is not automatically added to newly created or updated master nodes. If you want to use the control plane label for your nodes, you can manually configure the label. For more information, see "Understanding how to update labels on nodes".
 
 Among the information shown for nodes, the following node conditions appear in the output of the commands shown in this section:
 
-| Condition            | Description                                                                                                                                                                                                                                                           |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Ready`              | If `true`, the node is healthy and ready to accept pods. If `false`, the node is not healthy and is not accepting pods. If `unknown`, the node controller has not received a heartbeat from the node for the `node-monitor-grace-period` (the default is 40 seconds). |
-| `DiskPressure`       | If `true`, the disk capacity is low.                                                                                                                                                                                                                                  |
-| `MemoryPressure`     | If `true`, the node memory is low.                                                                                                                                                                                                                                    |
-| `PIDPressure`        | If `true`, there are too many processes on the node.                                                                                                                                                                                                                  |
-| `OutOfDisk`          | If `true`, the node has insufficient free space on the node for adding new pods.                                                                                                                                                                                      |
-| `NetworkUnavailable` | If `true`, the network for the node is not correctly configured.                                                                                                                                                                                                      |
-| `NotReady`           | If `true`, one of the underlying components, such as the container runtime or network, is experiencing issues or is not yet configured.                                                                                                                               |
-| `SchedulingDisabled` | Pods cannot be scheduled for placement on the node.                                                                                                                                                                                                                   |
+| Condition | Description |
+|----|----|
+| `Ready` | If `true`, the node is healthy and ready to accept pods. If `false`, the node is not healthy and is not accepting pods. If `unknown`, the node controller has not received a heartbeat from the node for the `node-monitor-grace-period` (the default is 40 seconds). |
+| `DiskPressure` | If `true`, the disk capacity is low. |
+| `MemoryPressure` | If `true`, the node memory is low. |
+| `PIDPressure` | If `true`, there are too many processes on the node. |
+| `OutOfDisk` | If `true`, the node has insufficient free space on the node for adding new pods. |
+| `NetworkUnavailable` | If `true`, the network for the node is not correctly configured. |
+| `NotReady` | If `true`, one of the underlying components, such as the container runtime or network, is experiencing issues or is not yet configured. |
+| `SchedulingDisabled` | Pods cannot be scheduled for placement on the node. |
 
-Node Conditions
+Node Conditions {#machine-health-checks-resource-conditions}
 
 # Listing pods on a node in your cluster
 
 You can list all of the pods on a node by using the `oc get pods` command along with specific flags. This command shows the number of pods on that node, the state of the pods, number of pod restarts, and the age of the pods.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To list all or selected pods on selected nodes:
 
@@ -298,15 +320,33 @@ You can list all of the pods on a node by using the `oc get pods` command along 
   $ oc get pod --all-namespaces --field-selector=spec.nodeName=<nodename>
   ```
 
+</div>
+
 # Viewing memory and CPU usage statistics on your nodes
 
 You can display usage statistics about nodes, including CPU, memory, and storage consumption. These statistics can help you ensure your cluster is running efficiently.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have `cluster-reader` permission to view the usage statistics.
 
 - Metrics must be installed to view the usage statistics.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To view the usage statistics:
 
@@ -314,9 +354,11 @@ You can display usage statistics about nodes, including CPU, memory, and storage
   $ oc adm top nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -331,6 +373,8 @@ You can display usage statistics about nodes, including CPU, memory, and storage
   ip-10-0-44-193.ec2.compute.internal    632m         42%       5349Mi          72%
   ```
 
+  </div>
+
 - To view the usage statistics for nodes with labels:
 
   ``` terminal
@@ -338,6 +382,8 @@ You can display usage statistics about nodes, including CPU, memory, and storage
   ```
 
   You must choose the selector (label query) to filter on. Supports `=`, `==`, and `!=`.
+
+</div>
 
 # Additional resources
 

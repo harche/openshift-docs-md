@@ -1,10 +1,7 @@
 You can perform minor version and patch updates on an OpenShift Container Platform cluster by using the web console.
 
-<div class="note">
-
-Use the web console or `oc adm upgrade channel <channel>` to change the update channel. You can follow the steps in [Updating a cluster using the CLI](../../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli) to complete the update after you change to a 4.17 channel.
-
-</div>
+> [!NOTE]
+> Use the web console or `oc adm upgrade channel <channel>` to change the update channel. You can follow the steps in [Updating a cluster using the CLI](../../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli) to complete the update after you change to a 4.17 channel.
 
 # Before updating the OpenShift Container Platform cluster
 
@@ -24,6 +21,10 @@ Consider the following information:
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - When an update is failing to complete, the Cluster Version Operator (CVO) reports the status of any blocking components while attempting to reconcile the update. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
 
 - Using the `unsupportedConfigOverrides` section to modify the configuration of an Operator is unsupported and might block cluster updates. You must remove this setting before you can update your cluster.
@@ -36,17 +37,37 @@ You can change the update server your cluster uses to retrieve information about
 
 Changing the update server is optional. If you have an OpenShift Update Service (OSUS) installed and configured locally, you must set the URL for the server as the `upstream` to use the local server during updates.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On the web console, navigate to **Administration** → **Cluster Settings** and click **version**.
 
 2.  Click the **YAML** tab and then edit the `upstream` parameter value:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML snippet**
+    <div class="title">
+
+    Example YAML snippet
 
     </div>
 
@@ -58,21 +79,53 @@ Changing the update server is optional. If you have an OpenShift Update Service 
       ...
     ```
 
+    </div>
+
     Replace `<update_server_url>` with the URL for the update server.
 
     The default `upstream` value is `https://api.openshift.com/api/upgrades_info/v1/graph`.
 
 3.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
+
+</div>
 
 # Pausing a MachineHealthCheck resource by using the web console
 
 During the update process, nodes in the cluster might become temporarily unavailable. For worker nodes, the machine health check might identify such nodes as unhealthy and reboot them. To avoid rebooting such nodes, pause all the `MachineHealthCheck` resources before updating the cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On the web console, navigate to **Compute** → **MachineHealthChecks**.
 
@@ -84,11 +137,21 @@ During the update process, nodes in the cluster might become temporarily unavail
 
     3.  In the **Key** and **Value** fields, add `cluster.x-k8s.io/paused` and `""` values, respectively, and click **Save**.
 
+</div>
+
 # Updating a cluster by using the web console
 
 If updates are available, you can update your cluster from the web console.
 
 You can find information about available OpenShift Container Platform advisories and updates [in the errata section](https://access.redhat.com/downloads/content/290) of the Customer Portal.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Have access to the web console as a user with `cluster-admin` privileges.
 
@@ -102,23 +165,27 @@ You can find information about available OpenShift Container Platform advisories
 
 - Your RHEL7 workers are replaced with RHEL8 or RHCOS workers. Red Hat does not support in-place RHEL7 to RHEL8 updates for RHEL workers; those hosts must be replaced with a clean operating system install.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  From the web console, click **Administration** → **Cluster Settings** and review the contents of the **Details** tab.
 
 2.  For production clusters, ensure that the **Channel** is set to the correct channel for the version that you want to update to, such as `stable-4.17`.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > For production clusters, you must subscribe to a `stable-*`, `eus-*` or `fast-*` channel.
 
-    For production clusters, you must subscribe to a `stable-*`, `eus-*` or `fast-*` channel.
-
-    </div>
-
-    <div class="note">
-
-    When you are ready to move to the next minor version, choose the channel that corresponds to that minor version. The sooner you declare the update channel, the more effectively the cluster can recommend update paths to your target version. The cluster might take some time to evaluate all the possible updates that are available and offer the best update recommendations to choose from. Update recommendations can change over time, as they are based on what update options are available at the time.
-
-    If you cannot see an update path to your target minor version, keep updating your cluster to the latest patch release for your current version until the next minor version is available in the path.
-
-    </div>
+    > [!NOTE]
+    > When you are ready to move to the next minor version, choose the channel that corresponds to that minor version. The sooner you declare the update channel, the more effectively the cluster can recommend update paths to your target version. The cluster might take some time to evaluate all the possible updates that are available and offer the best update recommendations to choose from. Update recommendations can change over time, as they are based on what update options are available at the time.
+    >
+    > If you cannot see an update path to your target minor version, keep updating your cluster to the latest patch release for your current version until the next minor version is available in the path.
 
     If the **Update status** is not **Updates available**, you cannot update your cluster.
 
@@ -128,11 +195,8 @@ You can find information about available OpenShift Container Platform advisories
 
     The Input channel **Update status** changes to **Update to \<product-version\> in progress**, and you can review the progress of the cluster update by watching the progress bars for the Operators and nodes.
 
-    <div class="note">
-
-    If you are updating your cluster to the next minor version, for example from version 4.10 to 4.11, confirm that your nodes are updated before deploying workloads that rely on a new feature. Any pools with worker nodes that are not yet updated are displayed on the **Cluster Settings** page.
-
-    </div>
+    > [!NOTE]
+    > If you are updating your cluster to the next minor version, for example from version 4.10 to 4.11, confirm that your nodes are updated before deploying workloads that rely on a new feature. Any pools with worker nodes that are not yet updated are displayed on the **Cluster Settings** page.
 
 4.  After the update completes and the Cluster Version Operator refreshes the available updates, check if more updates are available in your current channel.
 
@@ -142,11 +206,31 @@ You can find information about available OpenShift Container Platform advisories
 
     You might need to perform several intermediate updates until you reach the version that you want.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
+
+</div>
 
 # Viewing conditional updates in the web console
 
 You can view and assess the risks associated with particular updates with conditional updates.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -158,21 +242,40 @@ You can view and assess the risks associated with particular updates with condit
 
 - Your machine config pools (MCPs) are running and not paused. Nodes associated with a paused MCP are skipped during the update process. You can pause the MCPs if you are performing an advanced update strategy, such as a canary rollout, an EUS update, or a control-plane update.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  From the web console, click **Administration** → **Cluster settings** page and review the contents of the **Details** tab.
 
 2.  You can enable the `Include versions with known issues` feature in the **Select new version** dropdown of the **Update cluster** modal to populate the dropdown list with conditional updates.
 
-    <div class="note">
-
-    If a version with known issues is selected, more information is provided with potential risks that are associated with the version.
-
-    </div>
+    > [!NOTE]
+    > If a version with known issues is selected, more information is provided with potential risks that are associated with the version.
 
 3.  Review the notification detailing the potential risks to updating.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
 
 - [Update recommendations and Conditional Updates](../../updating/understanding_updates/understanding-update-channels-release.xml#conditional-updates-overview_understanding-update-channels-releases)
+
+</div>
 
 # Performing a canary rollout update
 
@@ -202,15 +305,22 @@ The rolling update process described in this topic involves:
 
 - Optionally removing the custom labels from the remaining nodes in small batches and testing the applications on those nodes.
 
-<div class="note">
-
-Pausing an MCP should be done with careful consideration and for short periods of time only.
-
-</div>
+> [!NOTE]
+> Pausing an MCP should be done with careful consideration and for short periods of time only.
 
 If you want to use the canary rollout update process, see "Performing a canary rollout update".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Performing a canary rollout update](../../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools)
+
+</div>
 
 # About updating single node OpenShift Container Platform
 
@@ -230,10 +340,17 @@ However, note the following limitations:
 
   - If the update payload does not contain an operating system update or machine configuration changes, a short API outage occurs and resolves quickly.
 
-<div class="important">
+> [!IMPORTANT]
+> There are conditions, such as bugs in an updated package, that can cause the single node to not restart after a reboot. In this case, the update does not rollback automatically.
 
-There are conditions, such as bugs in an updated package, that can cause the single node to not restart after a reboot. In this case, the update does not rollback automatically.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [About the Machine Config Operator](../../machine_configuration/index.xml#about-machine-config-operator_machine-config-index)
+
+</div>

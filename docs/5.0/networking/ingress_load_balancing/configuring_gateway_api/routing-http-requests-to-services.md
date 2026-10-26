@@ -14,9 +14,27 @@ Traffic delivery can be configured for an `HTTPRoute` using rules. You can confi
 
 To direct incoming network traffic from a gateway to your backend applications, you must create an HTTPRoute custom resource (CR). The resource specifies the hostnames the route handles and binds them to a parent `Gateway` CR.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created a target backend service.
 
 - You know the name and namespace of the parent `Gateway` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `HTTPRoute` CR file that references your parent gateway, application hostnames, and backend service, and save it as `httproute.yaml`:
 
@@ -51,15 +69,27 @@ To direct incoming network traffic from a gateway to your backend applications, 
     $ oc apply -f httproute.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `HTTPRoute` CR was successfully created:
 
   ``` terminal
   $ oc get httproute <sample_route> -n <my_application>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -68,11 +98,33 @@ To direct incoming network traffic from a gateway to your backend applications, 
   sample-route   ["app1.example.com","app2.example.com"]   45s
   ```
 
+  </div>
+
+</div>
+
 # Configuring path-based routing
 
 To ensure traffic is routed to the correct application when multiple services share a gateway, you can define request matching conditions within your `HTTPRoute` custom resource (CR). You can match HTTP requests based on paths, headers, query parameters, or methods.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit an `HTTPRoute` YAML file to include your desired match conditions under the `spec.rules.matches` field.
 
@@ -105,6 +157,8 @@ To ensure traffic is routed to the correct application when multiple services sh
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
+
+</div>
 
 ## Supported HTTPRoute match types
 
@@ -176,7 +230,25 @@ To modify how HTTP requests are processed before they reach your backend service
 
 Configuring these filters allows you to automatically redirect traffic, modify headers, or mirror requests to achieve your desired routing behavior.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit an `HTTPRoute` YAML file to include your desired processing directives under the `spec.rules.filters` field.
 
@@ -207,6 +279,8 @@ Configuring these filters allows you to automatically redirect traffic, modify h
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
+
+</div>
 
 ## Supported HTTPRoute filters
 
@@ -320,7 +394,25 @@ spec:
 
 To route traffic to your backends, you must define service destinations and traffic weights within your `HTTPRoute` custom resource (CR) to distribute requests across your applications.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit an `HTTPRoute` YAML file to include your desired service destinations under the `spec.rules.backendRefs` field.
 
@@ -347,6 +439,8 @@ To route traffic to your backends, you must define service destinations and traf
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
+
+</div>
 
 ## HTTPRoute backendRef configuration
 
@@ -396,7 +490,25 @@ spec:
 
 To prevent hanging connections and ensure your application remains responsive, you can set strict timeouts for the entire request and the backend hop within your `HTTPRoute` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit an `HTTPRoute` YAML file to include your desired timeout configurations under the `spec.rules.timeouts` field.
 
@@ -430,6 +542,8 @@ To prevent hanging connections and ensure your application remains responsive, y
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 ## HTTPRoute timeout configuration
 
 There are two types of timeouts you can configure for an `HTTPRoute` custom resource (CR): `request` and `backendRequest`.
@@ -438,11 +552,8 @@ The `request` timeout covers the total time to send a request and then get a res
 
 The `backendRequest` timeout covers the time for a request to travel from the gateway to the backend, and for a response to be received. Extending the timeout for a `backendRequest` can be helpful if the gateway needs to retry connections to a backend.
 
-<div class="note">
-
-The `backendRequest` timeout is classified as an extended feature (`Support: Extended`) according to Gateway API conventions.
-
-</div>
+> [!NOTE]
+> The `backendRequest` timeout is classified as an extended feature (`Support: Extended`) according to Gateway API conventions.
 
 When configuring timeouts, you must adhere to the following formatting rules and constraints:
 
@@ -535,12 +646,12 @@ The following features are exclusive to OpenShift Container Platform routes:
 
 The following table outlines the features that are shared between both resources and how their specific implementations differ:
 
-| Feature            | OpenShift Container Platform route implementation                             | `HTTPRoute` implementation                                        |
-|--------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| Path matching      | Supports prefix and exact matching.                                           | Supports prefix, exact, and regular expression matching.          |
-| Backend references | Supports weighted traffic delivery to services.                               | Supports weighted traffic delivery to services via `backendRefs`. |
-| Rewrite target     | Configured using the `haproxy.router.openshift.io/rewrite-target` annotation. | Configured using the `URLRewrite` filter.                         |
-| Sharding           | Configured using metadata labels.                                             | Configured using parent references (`parentRefs`).                |
+| Feature | OpenShift Container Platform route implementation | `HTTPRoute` implementation |
+|----|----|----|
+| Path matching | Supports prefix and exact matching. | Supports prefix, exact, and regular expression matching. |
+| Backend references | Supports weighted traffic delivery to services. | Supports weighted traffic delivery to services via `backendRefs`. |
+| Rewrite target | Configured using the `haproxy.router.openshift.io/rewrite-target` annotation. | Configured using the `URLRewrite` filter. |
+| Sharding | Configured using metadata labels. | Configured using parent references (`parentRefs`). |
 
 Shared features and implementation differences
 

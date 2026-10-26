@@ -6,15 +6,31 @@ If you have completed the process of installing the Windows Machine Config Opera
 
 The WMCO requires your OpenShift Container Platform cluster to be configured with hybrid networking using OVN-Kubernetes; the WMCO cannot complete the installation process without hybrid networking available. This is necessary to manage nodes on multiple operating systems (OS) and OS variants. This must be completed during the installation of your cluster.
 
-# Investigating why Windows Machine does not become compute node
+# Investigate why a Windows machine does not become a compute node
 
 There are various reasons why a Windows Machine does not become a compute node. The best way to investigate this problem is to collect the Windows Machine Config Operator (WMCO) logs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
 - You have created a Windows compute machine set.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following command to collect the WMCO logs:
 
@@ -22,13 +38,23 @@ There are various reasons why a Windows Machine does not become a compute node. 
   $ oc logs -f deployment/windows-machine-config-operator -n openshift-windows-machine-config-operator
   ```
 
-# Accessing a Windows node
+</div>
 
-Windows nodes cannot be accessed using the `oc debug node` command; the command requires running a privileged pod on the node, which is not yet supported for Windows. Instead, a Windows node can be accessed using a secure shell (SSH) or Remote Desktop Protocol (RDP). An SSH bastion is required for both methods.
+# Windows node access methods
 
-## Accessing a Windows node using SSH
+Windows nodes cannot be accessed using the `oc debug node` command; the command requires running a privileged pod on the node, which is not supported for Windows. Instead, a Windows node can be accessed using a secure shell (SSH) or Remote Desktop Protocol (RDP). An SSH bastion is required for both methods.
+
+## Access a Windows node by using SSH
 
 You can access a Windows node by using a secure shell (SSH).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
@@ -38,7 +64,15 @@ You can access a Windows node by using a secure shell (SSH).
 
 - You have connected to the Windows node [using an `ssh-bastion` pod](https://access.redhat.com/solutions/4073041).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Access the Windows node by running the following command:
 
@@ -60,9 +94,19 @@ You can access a Windows node by using a secure shell (SSH).
   $ oc get nodes <node_name> -o jsonpath={.status.addresses[?\(@.type==\"InternalIP\"\)].address}
   ```
 
-## Accessing a Windows node using RDP
+</div>
+
+## Access a Windows node by using RDP
 
 You can access a Windows node by using a Remote Desktop Protocol (RDP).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
@@ -71,6 +115,16 @@ You can access a Windows node by using a Remote Desktop Protocol (RDP).
 - You have added the key used in the `cloud-private-key` secret and the key used when creating the cluster to the ssh-agent. For security reasons, remember to remove the keys from the ssh-agent after use.
 
 - You have connected to the Windows node [using an `ssh-bastion` pod](https://access.redhat.com/solutions/4073041).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to set up an SSH tunnel:
 
@@ -96,13 +150,33 @@ You can access a Windows node by using a Remote Desktop Protocol (RDP).
 
     Specify the cloud provider user name, such as `Administrator` for AWS or `capi` for Azure. You can now remotely access the Windows node at `localhost:2020` using an RDP client.
 
-# Collecting Kubernetes node logs for Windows containers
+</div>
+
+# Collect Kubernetes node logs for Windows containers
 
 Windows container logging works differently from Linux container logging; the Kubernetes node logs for Windows workloads are streamed to the `C:\var\logs` directory by default. Therefore, you must gather the Windows node logs from that directory.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
 - You have created a Windows compute machine set.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To view the logs under all directories in `C:\var\logs`, run the following command:
 
@@ -121,15 +195,33 @@ Windows container logging works differently from Linux container logging; the Ku
     $ oc adm node-logs -l kubernetes.io/os=windows --path=/kubelet/kubelet.log
     ```
 
-# Collecting Windows application event logs
+</div>
+
+# Collect Windows application event logs
 
 The `Get-WinEvent` shim on the kubelet `logs` endpoint can be used to collect application event logs from Windows machines.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
 - You have created a Windows compute machine set.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To view logs from all applications logging to the event logs on the Windows machine, run:
 
@@ -145,21 +237,41 @@ The `Get-WinEvent` shim on the kubelet `logs` endpoint can be used to collect ap
   $ oc adm node-logs -l kubernetes.io/os=windows --path=journal -u containerd
   ```
 
-# Collecting containerd logs for Windows containers
+</div>
 
-The Windows containerd container service does not stream log data to stdout, but instead, it stream log data to the Windows event log. You can view the containerd event logs to investigate issues you think might be caused by the Windows containerd container service.
+# Collect containerd logs for Windows containers
+
+The Windows containerd container service does not stream log data to stdout, but instead, it streams log data to the Windows event log. You can view the containerd event logs to investigate issues you think might be caused by the Windows containerd container service.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Windows Machine Config Operator (WMCO) using Operator Lifecycle Manager (OLM).
 
 - You have created a Windows compute machine set.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the containerd logs by running the following command:
 
   ``` terminal
   $ oc adm node-logs -l kubernetes.io/os=windows --path=containerd
   ```
+
+</div>
 
 # Additional resources
 

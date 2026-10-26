@@ -2,23 +2,38 @@ You can use a storage checkup to verify that the cluster storage is optimally co
 
 Running a predefined checkup in an existing namespace involves setting up a service account for the checkup, creating the `Role` and `RoleBinding` objects for the service account, enabling permissions for the checkup, and creating the input config map and the checkup job. You can run a checkup multiple times.
 
-<div class="important">
+> [!IMPORTANT]
+> You must always:
+>
+> - Verify that the checkup image is from a trustworthy source before applying it.
+>
+> - Review the checkup permissions before creating the `Role` and `RoleBinding` objects.
 
-You must always:
-
-- Verify that the checkup image is from a trustworthy source before applying it.
-
-- Review the checkup permissions before creating the `Role` and `RoleBinding` objects.
-
-</div>
-
-# Retaining resources for troubleshooting storage checkups
+# Keep checkup resources for troubleshooting
 
 The predefined storage checkup includes `skipTeardown` configuration options, which control resource clean up after a storage checkup runs. By default, the `skipTeardown` field value is `Never`, which means that the checkup always performs teardown steps and deletes all resources after the checkup runs.
 
 You can retain resources for further inspection in case a failure occurs by setting the `skipTeardown` field to `onfailure`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to edit the `storage-checkup-config` config map:
 
@@ -45,9 +60,19 @@ You can retain resources for further inspection in case a failure occurs by sett
     $ oc apply -f storage_checkup.yaml -n <checkup_namespace>
     ```
 
-# Running a storage checkup by using the web console
+</div>
+
+# Run a storage checkup by using the web console
 
 You can run a storage checkup to validate that storage is working correctly for virtual machines.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Checkups** in the web console.
 
@@ -63,17 +88,31 @@ You can run a storage checkup to validate that storage is working correctly for 
 
 7.  Click **Run**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 You can view the status of the storage checkup in the **Checkups** list on the **Storage** tab. Click on the name of the checkup for more details.
 
-# Running a storage checkup by using the CLI
+</div>
+
+# Run a storage checkup by using the CLI
 
 Use a predefined checkup to verify that the OpenShift Container Platform cluster storage is configured optimally to run OpenShift Virtualization workloads.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -98,6 +137,16 @@ Use a predefined checkup to verify that the OpenShift Container Platform cluster
 
   `<target_namespace>`
   Specifies the namespace where the checkup is to be run.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ServiceAccount`, `Role`, and `RoleBinding` manifest file for the storage checkup.
 
@@ -303,13 +352,33 @@ Use a predefined checkup to verify that the OpenShift Container Platform cluster
     $ oc delete -f <storage_sa_roles_rolebinding>.yaml
     ```
 
-# Troubleshooting a failed storage checkup
+</div>
+
+# Troubleshoot a failed storage checkup
 
 If a storage checkup fails, there are steps that you can take to identify the reason for failure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have downloaded the directory provided by the `must-gather` tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Review the `status.failureReason` field in the `storage-checkup-config` config map by running the following command and observing the output:
 
@@ -339,21 +408,33 @@ If a storage checkup fails, there are steps that you can take to identify the re
 
 2.  Search the directory provided by the `must-gather` tool for logs, events, or terms related to the error in the `data.status.failureReason` field value.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Collecting data for Red Hat Support](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-virt-data)
 
-- [Using the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
+- [Use the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
+
+</div>
 
 # Storage checkup error codes
 
 Storage checkup error codes might appear in the `storage-checkup-config` config map after a storage checkup fails.
 
-| Error code                         | Meaning                                                                                                                                |
-|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `ErrNoDefaultStorageClass`         | No default storage class is configured.                                                                                                |
-| `ErrPvcNotBound`                   | One or more persistent volume claims (PVCs) failed to bind.                                                                            |
-| `ErrMultipleDefaultStorageClasses` | Multiple default storage classes are configured.                                                                                       |
-| `ErrEmptyClaimPropertySets`        | There are `StorageProfile` objects containing empty `ClaimPropertySets` specs.                                                         |
-| `ErrVMsWithUnsetEfsStorageClass`   | There are VMs using elastic file system (EFS) storage classes, where the GID and UID are not set in the `StorageClass` object.         |
-| `ErrGoldenImagesNotUpToDate`       | One or more golden images has a `DataImportCron` object that is either not up to date or has a `DataSource` object which is not ready. |
-| `ErrGoldenImageNoDataSource`       | The `DataSource` object of the golden image has either no PVC or no snapshot source configured.                                        |
-| `ErrBootFailedOnSomeVMs`           | Some VMs failed to boot within the expected time.                                                                                      |
+| Error code | Meaning |
+|----|----|
+| `ErrNoDefaultStorageClass` | No default storage class is configured. |
+| `ErrPvcNotBound` | One or more persistent volume claims (PVCs) failed to bind. |
+| `ErrMultipleDefaultStorageClasses` | Multiple default storage classes are configured. |
+| `ErrEmptyClaimPropertySets` | There are `StorageProfile` objects containing empty `ClaimPropertySets` specs. |
+| `ErrVMsWithUnsetEfsStorageClass` | There are VMs using elastic file system (EFS) storage classes, where the GID and UID are not set in the `StorageClass` object. |
+| `ErrGoldenImagesNotUpToDate` | One or more golden images has a `DataImportCron` object that is either not up to date or has a `DataSource` object which is not ready. |
+| `ErrGoldenImageNoDataSource` | The `DataSource` object of the golden image has either no PVC or no snapshot source configured. |
+| `ErrBootFailedOnSomeVMs` | Some VMs failed to boot within the expected time. |

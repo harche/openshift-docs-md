@@ -1,10 +1,7 @@
 You must mirror container images onto a mirror registry to update a cluster in a disconnected environment. In connected environments, mirroring images ensures that your clusters run only approved container images that meet your organizational controls for external content.
 
-<div class="note">
-
-Your mirror registry must be running at all times while the cluster is running.
-
-</div>
+> [!NOTE]
+> Your mirror registry must be running at all times while the cluster is running.
 
 The following steps outline the high-level workflow about mirroring images to a mirror registry:
 
@@ -34,13 +31,10 @@ The following steps outline the high-level workflow about mirroring images to a 
 
         3.  Repeat these steps as needed to update your mirror registry.
 
-<div class="important">
-
-The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
-
-As an alternative, use the oc-mirror plugin v2.
-
-</div>
+> [!IMPORTANT]
+> The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+>
+> As an alternative, use the oc-mirror plugin v2.
 
 The `oc-mirror` plugin offers the following advantages over the `oc adm release mirror` command:
 
@@ -56,39 +50,51 @@ You can use the oc-mirror OpenShift CLI (`oc`) plugin to mirror images to a mirr
 
 For more information, see "Mirroring images for a disconnected installation by using the oc-mirror plugin v2".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
+</div>
 
 # Mirror images using the oc adm release mirror command
 
 You can use the `oc adm release mirror` command to mirror images to your mirror registry.
 
-<div class="important">
-
-The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
-
-As an alternative, use the oc-mirror plugin v2.
-
-</div>
+> [!IMPORTANT]
+> The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+>
+> As an alternative, use the oc-mirror plugin v2.
 
 The requirements for a mirror registry are:
 
 - You must have a container image registry that supports Docker v2-2 in the location that will host the OpenShift Container Platform cluster, such as Red Hat Quay.
 
-  <div class="note">
-
-  If you use Red Hat Quay, you must use version 3.6 or later with the oc-mirror plugin. If you have an entitlement to Red Hat Quay, see the documentation on "Deploying Red Hat Quay for proof-of-concept purposes" or "Deploying Red Hat Quay by using the Quay Operator". If you need additional information about selecting and installing a registry, contact your sales representative or Red Hat Support.
-
-  </div>
+  > [!NOTE]
+  > If you use Red Hat Quay, you must use version 3.6 or later with the oc-mirror plugin. If you have an entitlement to Red Hat Quay, see the documentation on "Deploying Red Hat Quay for proof-of-concept purposes" or "Deploying Red Hat Quay by using the Quay Operator". If you need additional information about selecting and installing a registry, contact your sales representative or Red Hat Support.
 
 - If you do not have an existing solution for a container image registry, see the "Mirror registry for Red Hat OpenShift" in OpenShift Container Platform subscriptions. The mirror registry for Red Hat OpenShift is a small-scale container registry that you can use to mirror OpenShift Container Platform container images in disconnected installations and updates.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Deploying Red Hat Quay for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay/index)
 
 - [Deploying Red Hat Quay by using the Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index)
 
 - [Mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
+
+</div>
 
 ## Prepare your mirror host
 
@@ -98,11 +104,16 @@ Before you perform the mirror procedure, you must prepare the host to retrieve c
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -128,21 +139,38 @@ Download and install the new version of `oc`. If you are updating a cluster in a
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
+</div>
+
 ### Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -162,21 +190,38 @@ Download and install the new version of `oc`. If you are updating a cluster in a
     C:\> path
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
+</div>
+
 ### Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`. If you are updating a cluster in a disconnected environment, install the `oc` version that you plan to update to.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -188,11 +233,8 @@ Download and install the new version of `oc`. If you are updating a cluster in a
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    <div class="note">
-
-    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
-
-    </div>
+    > [!NOTE]
+    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
 
 5.  Extract the archive.
 
@@ -204,23 +246,48 @@ Download and install the new version of `oc`. If you are updating a cluster in a
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing and using CLI plugins](../../cli_reference/openshift_cli/extending-cli-plugins.xml#cli-installing-plugins_cli-extend-plugins)
+
+</div>
 
 ### Configure credentials that allow images to be mirrored
 
 Create a container image registry credentials file so that you can mirror images from Red Hat to your mirror. Complete the following steps on the installation host.
 
-<div class="warning">
+> [!WARNING]
+> Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
 
-Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -232,6 +299,16 @@ Do not use this image registry credentials file as the pull secret when you inst
 
 - You have write access to the mirror registry.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Download your `registry.redhat.io` [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
 2.  Make a copy of your pull secret in JSON format by running the following command:
@@ -242,9 +319,11 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     Specify the path to the directory to store the pull secret in and a name for the JSON file that you create.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pull secret**
+    <div class="title">
+
+    Example pull secret
 
     </div>
 
@@ -270,6 +349,8 @@ Do not use this image registry credentials file as the pull secret when you inst
       }
     }
     ```
+
+    </div>
 
 3.  Optional: If using the oc-mirror plugin, save the file as either `~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`:
 
@@ -297,15 +378,19 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     For `<user_name>` and `<password>`, specify the user name and password that you configured for your registry.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     BGVtbYk3ZHAtqXs=
     ```
+
+    </div>
 
 5.  Edit the JSON file and add a section that describes your registry to it:
 
@@ -322,9 +407,11 @@ Do not use this image registry credentials file as the pull secret when you inst
 
     - For the `<credentials>` value, specify the base64-encoded user name and password for the mirror registry.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example modified pull secret**
+      <div class="title">
+
+      Example modified pull secret
 
       </div>
 
@@ -355,13 +442,22 @@ Do not use this image registry credentials file as the pull secret when you inst
       }
       ```
 
+      </div>
+
+</div>
+
 ## Mirror images to a mirror registry
 
 Before you can update a cluster in a disconnected environment, you must mirror the required OpenShift Container Platform release images onto a local registry mirror.
 
-<div class="important">
+> [!IMPORTANT]
+> To avoid excessive memory usage by the OpenShift Update Service application, you must mirror release images to a separate repository as described in the following procedure.
 
-To avoid excessive memory usage by the OpenShift Update Service application, you must mirror release images to a separate repository as described in the following procedure.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -370,6 +466,16 @@ To avoid excessive memory usage by the OpenShift Update Service application, you
 - You downloaded the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and modified it to include authentication to your mirror repository.
 
 - If you use self-signed certificates, you have specified a Subject Alternative Name in the certificates.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use the [Red Hat OpenShift Container Platform Update Graph visualizer and update planner](https://access.redhat.com/labs/ocpupgradegraph/update_channel) to plan an update from one version to another. The OpenShift Update Graph provides channel graphs and a way to confirm that there is an update path between your current and intended cluster versions.
 
@@ -425,11 +531,8 @@ To avoid excessive memory usage by the OpenShift Update Service application, you
 
         For `<path_to_pull_secret>`, specify the absolute path to and file name of the pull secret for your mirror registry that you created.
 
-        <div class="note">
-
-        If your cluster uses an `ImageContentSourcePolicy` object to configure repository mirroring, you can use only global pull secrets for mirrored registries. You cannot add a pull secret to a project.
-
-        </div>
+        > [!NOTE]
+        > If your cluster uses an `ImageContentSourcePolicy` object to configure repository mirroring, you can use only global pull secrets for mirrored registries. You cannot add a pull secret to a project.
 
     7.  Export the release mirror:
 
@@ -473,11 +576,8 @@ To avoid excessive memory usage by the OpenShift Update Service application, you
           $ oc adm release mirror -a ${LOCAL_SECRET_JSON} --to-dir=${REMOVABLE_MEDIA_PATH}/mirror quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}
           ```
 
-          <div class="note">
-
-          This command also generates and saves the mirrored release image signature config map onto the removable media.
-
-          </div>
+          > [!NOTE]
+          > This command also generates and saves the mirrored release image signature config map onto the removable media.
 
       3.  Take the media to the disconnected environment and upload the images to the local container registry.
 
@@ -512,14 +612,13 @@ To avoid excessive memory usage by the OpenShift Update Service application, you
             --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} --apply-release-image-signature
           ```
 
-          <div class="note">
-
-          If you include the `--apply-release-image-signature` option, do not create the config map for image signature verification.
-
-          </div>
+          > [!NOTE]
+          > If you include the `--apply-release-image-signature` option, do not create the config map for image signature verification.
 
       2.  If you are using the OpenShift Update Service, mirror the release image to a separate repository:
 
           ``` terminal
           $ oc image mirror -a ${LOCAL_SECRET_JSON} ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} ${LOCAL_REGISTRY}/${LOCAL_RELEASE_IMAGES_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}
           ```
+
+</div>

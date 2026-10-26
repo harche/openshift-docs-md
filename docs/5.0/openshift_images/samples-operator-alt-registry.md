@@ -8,11 +8,8 @@ You can mirror the images that are required for OpenShift Container Platform ins
 
 You can use any container registry that supports Docker v2-2, such as Red Hat Quay, the *mirror registry for Red Hat OpenShift*, Artifactory, Sonatype Nexus Repository, or Harbor. Regardless of your chosen registry, the procedure to mirror content from Red Hat hosted sites on the internet to an isolated image registry is the same. After you mirror the content, you configure each cluster to retrieve this content from your mirror registry.
 
-<div class="important">
-
-The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
-
-</div>
+> [!IMPORTANT]
+> The OpenShift image registry cannot be used as the target registry because it does not support pushing without a tag, which is required during the mirroring process.
 
 If choosing a container registry that is not the *mirror registry for Red Hat OpenShift*, it must be reachable by every machine in the clusters that you provision. If the registry is unreachable, installation, updating, or normal operations such as workload relocation might fail. For that reason, you must run mirror registries in a highly available way, and the mirror registries must at least match the production availability of your OpenShift Container Platform clusters.
 
@@ -20,21 +17,23 @@ When you populate your mirror registry with OpenShift Container Platform images,
 
 For mirrored registries, to view the source of pulled images, you must review the `Trying to access` log entry in the CRI-O logs. Other methods to view the image pull source, such as using the `crictl images` command on a node, show the non-mirrored image name, even though the image is pulled from the mirrored location.
 
-<div class="note">
-
-Red Hat does not test third party registries with OpenShift Container Platform.
-
-</div>
+> [!NOTE]
+> Red Hat does not test third party registries with OpenShift Container Platform.
 
 ## Install the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -60,21 +59,38 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
+</div>
+
 ## Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -94,21 +110,38 @@ Download and install the new version of `oc`.
     C:\> path
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
+</div>
+
 ## Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -120,11 +153,8 @@ Download and install the new version of `oc`.
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    <div class="note">
-
-    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
-
-    </div>
+    > [!NOTE]
+    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
 
 5.  Extract the archive.
 
@@ -136,17 +166,47 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
+</div>
+
 # Configure credentials that allow images to be mirrored
 
 Create a container image registry credentials file so that you can mirror images from Red Hat to your mirror. Complete the following steps on the installation host.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You configured a mirror registry to use in your disconnected environment.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Download your `registry.redhat.io` [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
@@ -158,9 +218,11 @@ Create a container image registry credentials file so that you can mirror images
 
     Specify the path to the directory to store the pull secret in and a name for the JSON file that you create.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pull secret**
+    <div class="title">
+
+    Example pull secret
 
     </div>
 
@@ -187,6 +249,8 @@ Create a container image registry credentials file so that you can mirror images
     }
     ```
 
+    </div>
+
 3.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
 
     ``` terminal
@@ -195,15 +259,19 @@ Create a container image registry credentials file so that you can mirror images
 
     For `<user_name>` and `<password>`, specify the user name and password that you configured for your registry.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     BGVtbYk3ZHAtqXs=
     ```
+
+    </div>
 
 4.  Edit the JSON file and add a section that describes your registry to it:
 
@@ -220,9 +288,11 @@ Create a container image registry credentials file so that you can mirror images
 
     - For the `<credentials>` value, specify the base64-encoded user name and password for the mirror registry.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example modified pull secret**
+      <div class="title">
+
+      Example modified pull secret
 
       </div>
 
@@ -253,15 +323,24 @@ Create a container image registry credentials file so that you can mirror images
       }
       ```
 
+      </div>
+
+</div>
+
 # Mirror the OpenShift Container Platform image repository
 
 Mirror the OpenShift Container Platform image repository to your registry to use during cluster installation or upgrade. Complete the following steps on the mirror host.
 
-<div class="important">
+> [!IMPORTANT]
+> The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+>
+> As an alternative, use the oc-mirror plugin v2.
 
-The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+<div>
 
-As an alternative, use the oc-mirror plugin v2.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -272,6 +351,16 @@ As an alternative, use the oc-mirror plugin v2.
 - You downloaded the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and modified it to include authentication to your mirror repository.
 
 - If you use self-signed certificates, you have specified a Subject Alternative Name in the certificates.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Review the [Download OpenShift Container Platform](https://access.redhat.com/downloads/content/290/) page to determine the version of OpenShift Container Platform that you want to install and determine the corresponding tag on the [Repository Tags](https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags) page.
 
@@ -372,11 +461,8 @@ As an alternative, use the oc-mirror plugin v2.
 
           For the `REMOVABLE_MEDIA_PATH` variable, you must use the same path that you specified when you mirrored the images.
 
-          <div class="important">
-
-          Running the `oc image mirror` command might result in the following error: `error: unable to retrieve source image`. This error occurs when image indexes include references to images that no longer exist on the image registry. Image indexes might retain older references to allow users running those images an upgrade path to newer points on the upgrade graph. As a temporary workaround, you can use the `--skip-missing` option to bypass the error and continue downloading the image index. For more information, see [Service Mesh Operator mirroring failed](https://access.redhat.com/solutions/6975305).
-
-          </div>
+          > [!IMPORTANT]
+          > Running the `oc image mirror` command might result in the following error: `error: unable to retrieve source image`. This error occurs when image indexes include references to images that no longer exist on the image registry. Image indexes might retain older references to allow users running those images an upgrade path to newer points on the upgrade graph. As a temporary workaround, you can use the `--skip-missing` option to bypass the error and continue downloading the image index. For more information, see [Service Mesh Operator mirroring failed](https://access.redhat.com/solutions/6975305).
 
     - If the local container registry is connected to the mirror host, take the following actions:
 
@@ -393,11 +479,8 @@ As an alternative, use the oc-mirror plugin v2.
 
       2.  Record the entire `imageContentSources` section from the output of the previous command. The information about your mirrors is unique to your mirrored repository, and you must add the `imageContentSources` section to the `install-config.yaml` file during installation.
 
-          <div class="note">
-
-          The image name gets patched to Quay.io during the mirroring process, and the Podman images will show Quay.io in the registry on the bootstrap virtual machine.
-
-          </div>
+          > [!NOTE]
+          > The image name gets patched to Quay.io during the mirroring process, and the Podman images will show Quay.io in the registry on the bootstrap virtual machine.
 
 4.  To create the installation program that is based on the content that you mirrored, extract it and pin it to the release:
 
@@ -416,13 +499,10 @@ As an alternative, use the oc-mirror plugin v2.
       $ oc adm release extract -a ${LOCAL_SECRET_JSON} --command=openshift-install "${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}"
       ```
 
-      <div class="important">
-
-      To ensure that you use the correct images for the version of OpenShift Container Platform that you selected, you must extract the installation program from the mirrored content.
-
-      You must perform this step on a machine with an active internet connection.
-
-      </div>
+      > [!IMPORTANT]
+      > To ensure that you use the correct images for the version of OpenShift Container Platform that you selected, you must extract the installation program from the mirrored content.
+      >
+      > You must perform this step on a machine with an active internet connection.
 
 5.  For clusters using installer-provisioned infrastructure, run the following command:
 
@@ -430,27 +510,41 @@ As an alternative, use the oc-mirror plugin v2.
     $ openshift-install
     ```
 
+</div>
+
 # Use Cluster Samples Operator image streams with alternate or mirrored registries
 
 You can use an alternate or mirror registry to host your images streams instead of using the Red Hat registry.
 
 Most image streams in the `openshift` namespace managed by the Cluster Samples Operator point to images located in the Red Hat registry at [registry.redhat.io](https://registry.redhat.io).
 
-<div class="note">
+> [!NOTE]
+> The `cli`, `installer`, `must-gather`, and `tests` image streams, while part of the install payload, are not managed by the Cluster Samples Operator. These are not addressed in this procedure.
 
-The `cli`, `installer`, `must-gather`, and `tests` image streams, while part of the install payload, are not managed by the Cluster Samples Operator. These are not addressed in this procedure.
+> [!IMPORTANT]
+> The Cluster Samples Operator must be set to `Managed` in a disconnected environment. To install the image streams, you must have a mirrored registry.
 
-</div>
+<div>
 
-<div class="important">
+<div class="title">
 
-The Cluster Samples Operator must be set to `Managed` in a disconnected environment. To install the image streams, you must have a mirrored registry.
+Prerequisites
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Create a pull secret for your mirror registry.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Access the images of a specific image stream to mirror, for example:
 
@@ -482,21 +576,17 @@ The Cluster Samples Operator must be set to `Managed` in a disconnected environm
     $ oc edit configs.samples.operator.openshift.io -n openshift-cluster-samples-operator
     ```
 
-    <div class="important">
-
-    This step is required because the image stream import process does not use the mirror or search mechanism at this time.
-
-    </div>
+    > [!IMPORTANT]
+    > This step is required because the image stream import process does not use the mirror or search mechanism at this time.
 
 6.  Add any image streams that are not mirrored into the `skippedImagestreams` field of the Cluster Samples Operator configuration object. Or if you do not want to support any of the sample image streams, set the Cluster Samples Operator to `Removed` in the Cluster Samples Operator configuration object.
 
-    <div class="note">
-
-    The Cluster Samples Operator issues alerts if image stream imports are failing but the Cluster Samples Operator is either periodically retrying or does not appear to be retrying them.
-
-    </div>
+    > [!NOTE]
+    > The Cluster Samples Operator issues alerts if image stream imports are failing but the Cluster Samples Operator is either periodically retrying or does not appear to be retrying them.
 
     Many of the templates in the `openshift` namespace reference the image streams. You can use `Removed` to purge both the image streams and templates. This eliminates the possibility of attempts to use the templates if they are not functional because of any missing image streams.
+
+</div>
 
 ## Cluster Samples Operator assistance for mirroring
 
@@ -508,11 +598,8 @@ The format of the key for each entry in the data field in the config map is `<im
 
 During a disconnected installation of OpenShift Container Platform, the status of the Cluster Samples Operator is set to `Removed`. If you choose to change it to `Managed`, it installs samples.
 
-<div class="note">
-
-The use of samples in a network-restricted or discontinued environment might require access to services external to your network. Some example services include: Github, Maven Central, npm, RubyGems, PyPi and others. There might be additional steps to take that allow the Cluster Samples Operators objects to reach the services they require.
-
-</div>
+> [!NOTE]
+> The use of samples in a network-restricted or discontinued environment might require access to services external to your network. Some example services include: Github, Maven Central, npm, RubyGems, PyPi and others. There might be additional steps to take that allow the Cluster Samples Operators objects to reach the services they require.
 
 Use the following principles to determine which images you need to mirror for your image streams to import:
 

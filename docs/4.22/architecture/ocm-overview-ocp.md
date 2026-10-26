@@ -20,13 +20,31 @@ You can use OpenShift Cluster Manager to do the following actions:
 
 You can access OpenShift Cluster Manager with your configured OpenShift account.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an account that is part of an OpenShift organization.
 
 - If you are creating a cluster, your organization has a specified quota.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift) using your login credentials.
+
+</div>
 
 # General actions
 
@@ -106,7 +124,17 @@ The **Access control** tab allows the cluster owner to set up an identity provid
 
 The **Red Hat Lightspeed Advisor** tab uses the Remote Health functionality of the OpenShift Container Platform to identify and mitigate risks to security, performance, availability, and stability.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using Red Hat Lightspeed to identify issues with your cluster](https://docs.openshift.com/container-platform/latest/support/getting-support.html)
+
+</div>
 
 ## Machine pools tab
 

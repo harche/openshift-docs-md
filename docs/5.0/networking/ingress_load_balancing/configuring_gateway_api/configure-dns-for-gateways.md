@@ -30,11 +30,8 @@ If you create the `Gateway` object in any other namespace, note the following li
 
 When you deploy a `Gateway` object in the `openshift-ingress` namespace to use automatic DNS management, you must configure listener route attachment rules to support multi-namespace deployments.
 
-<div class="note">
-
-Setting the `spec.listeners[*].allowedRoutes.namespaces.from` field to `Same` on a Gateway in the `openshift-ingress` namespace restricts route attachment to that namespace. If you do not set that field, the Gateway defaults to this same behavior and only accepts route attachments from its own namespace. If you deploy `HTTPRoute`, `GRPCRoute` or `TLSRoute` objects in user namespaces, you cannot attach routes to the Gateway.
-
-</div>
+> [!NOTE]
+> Setting the `spec.listeners[*].allowedRoutes.namespaces.from` field to `Same` on a Gateway in the `openshift-ingress` namespace restricts route attachment to that namespace. If you do not set that field, the Gateway defaults to this same behavior and only accepts route attachments from its own namespace. If you deploy `HTTPRoute`, `GRPCRoute` or `TLSRoute` objects in user namespaces, you cannot attach routes to the Gateway.
 
 The following example creates a Gateway in the `openshift-ingress` namespace with a listener hostname under the cluster base domain, enabling automatic DNS management. The example also sets the `allowedRoutes.namespaces.from` field to `Selector` to allow route attachment from labeled application namespaces.
 
@@ -84,9 +81,11 @@ When you deploy a `Gateway` in the `openshift-ingress` namespace, the Ingress Op
 $ oc -n openshift-ingress get gateway managed-dns-gateway -o jsonpath='{.status.conditions[?(@.type=="DNSReady")]}' | jq
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -100,6 +99,8 @@ $ oc -n openshift-ingress get gateway managed-dns-gateway -o jsonpath='{.status.
 }
 ```
 
+</div>
+
 If `DNSReady` is `False`, inspect the listener-level conditions for specific failure reasons. For more information, see "Verifying Gateway infrastructure status".
 
 # Configuring DNS for on-premise gateways
@@ -107,6 +108,14 @@ If `DNSReady` is `False`, inspect the listener-level conditions for specific fai
 Configure DNS records manually on on-premise environments to ensure clients can reliably resolve your gateway.
 
 Although the Ingress Operator automatically creates a `DNSRecord` custom resource (CR) using the hostname from the listener, this record is marked as "unmanaged" on on-premise platforms because the cluster Ingress Operator does not implement on-premise DNS providers. You must manually configure DNS records to point to the IP address of your load balancer.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -117,6 +126,16 @@ Although the Ingress Operator automatically creates a `DNSRecord` custom resourc
 - Your gateway has been assigned an external network address by the load balancer.
 
 - Your gateway is located in the `openshift-ingress` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the external IP address assigned to your gateway by the load balancer by running the following command:
 
@@ -129,6 +148,8 @@ Although the Ingress Operator automatically creates a `DNSRecord` custom resourc
 2.  Access your organization’s DNS provider or server.
 
 3.  Create a DNS record, such as an A record or wildcard A record, that maps the listener’s hostname to the external IP address of your gateway.
+
+</div>
 
 # Additional resources
 

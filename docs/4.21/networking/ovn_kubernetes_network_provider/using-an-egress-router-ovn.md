@@ -4,17 +4,11 @@ Before you use the egress router pod, you must understand how the pod works. Doi
 
 The OpenShift Container Platform egress router pod redirects traffic to a specified remote server from a private source IP address that is not used for any other purpose. An egress router pod can send network traffic to servers that are set up to allow access only from specific IP addresses.
 
-<div class="note">
+> [!NOTE]
+> The egress router pod is not intended for every outgoing connection. Creating large numbers of egress router pods can exceed the limits of your network hardware. For example, creating an egress router pod for every project or application could exceed the number of local MAC addresses that the network interface can handle before reverting to filtering MAC addresses in software.
 
-The egress router pod is not intended for every outgoing connection. Creating large numbers of egress router pods can exceed the limits of your network hardware. For example, creating an egress router pod for every project or application could exceed the number of local MAC addresses that the network interface can handle before reverting to filtering MAC addresses in software.
-
-</div>
-
-<div class="important">
-
-The egress router image is not compatible with Amazon Web Services (AWS), Microsoft Azure, or any other cloud platform that does not support layer 2 manipulations due to their incompatibility with macvlan traffic.
-
-</div>
+> [!IMPORTANT]
+> The egress router image is not compatible with Amazon Web Services (AWS), Microsoft Azure, or any other cloud platform that does not support layer 2 manipulations due to their incompatibility with macvlan traffic.
 
 ## Egress router modes
 
@@ -24,11 +18,8 @@ In *redirect mode*, an egress router pod configures `iptables` rules to redirect
 $ curl <router_service_IP> <port>
 ```
 
-<div class="note">
-
-The egress router CNI plugin supports redirect mode only. The egress router CNI plugin does not support HTTP proxy mode or DNS proxy mode.
-
-</div>
+> [!NOTE]
+> The egress router CNI plugin supports redirect mode only. The egress router CNI plugin does not support HTTP proxy mode or DNS proxy mode.
 
 ## Egress router pod implementation
 

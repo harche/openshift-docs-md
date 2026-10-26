@@ -4,11 +4,8 @@ As an administrator, you can use groups to manage users, change their permission
 
 For more information on configuring LDAP, see "Configuring an LDAP identity provider".
 
-<div class="note">
-
-You must have `cluster-admin` privileges to sync groups.
-
-</div>
+> [!NOTE]
+> You must have `cluster-admin` privileges to sync groups.
 
 # About configuring LDAP sync
 
@@ -77,18 +74,18 @@ pageSize: 0
 
 - The `pageSize` field shows the maximum number of LDAP entries the server returns per page. If set to `0`, no page size limit applies. Set this field when a query returns more entries than the client or server allow by default.
 
-| LDAP search scope | Description                                                                             |
-|-------------------|-----------------------------------------------------------------------------------------|
-| `base`            | Only consider the object specified by the base DN given for the query.                  |
-| `one`             | Consider all of the objects on the same level in the tree as the base DN for the query. |
-| `sub`             | Consider the entire subtree rooted at the base DN given for the query.                  |
+| LDAP search scope | Description |
+|----|----|
+| `base` | Only consider the object specified by the base DN given for the query. |
+| `one` | Consider all of the objects on the same level in the tree as the base DN for the query. |
+| `sub` | Consider the entire subtree rooted at the base DN given for the query. |
 
-| Dereferencing behavior | Description                                             |
-|------------------------|---------------------------------------------------------|
-| `never`                | Never dereference any aliases found in the LDAP tree.   |
-| `search`               | Only dereference aliases found while searching.         |
-| `base`                 | Only dereference aliases while finding the base object. |
-| `always`               | Always dereference all aliases found in the LDAP tree.  |
+| Dereferencing behavior | Description |
+|----|----|
+| `never` | Never dereference any aliases found in the LDAP tree. |
+| `search` | Only dereference aliases found while searching. |
+| `base` | Only dereference aliases while finding the base object. |
+| `always` | Always dereference all aliases found in the LDAP tree. |
 
 ## User-defined name mapping
 
@@ -111,11 +108,8 @@ The RFC 2307 schema requires you to provide an LDAP query definition for both us
 
 For clarity, the group you create in OpenShift Container Platform should use attributes other than the distinguished name whenever possible for user-facing or administrator-facing fields. For example, identify the users of an OpenShift Container Platform group by their e-mail, and use the name of the group as the common name. The following configuration file creates these relationships:
 
-<div class="note">
-
-If using user-defined name mappings, your configuration file differs.
-
-</div>
+> [!NOTE]
+> If using user-defined name mappings, your configuration file differs.
 
 ``` yaml
 kind: LDAPSyncConfig
@@ -253,55 +247,11 @@ After you have created a sync configuration file, you can begin to sync. OpenShi
 
 Sync all groups from your LDAP server with OpenShift Container Platform so you can mirror your complete LDAP group membership in the cluster.
 
-- An LDAP sync configuration file exists. This procedure uses an example file named `config.yaml`.
+<div>
 
-- You have access to the cluster as a user with the `cluster-admin` role.
+<div class="title">
 
-<!-- -->
-
-- Sync all groups from the LDAP server with OpenShift Container Platform by running the following command:
-
-  ``` terminal
-  $ oc adm groups sync --sync-config=config.yaml --confirm
-  ```
-
-  <div class="note">
-
-  By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
-
-  </div>
-
-## Sync OpenShift Container Platform groups with the LDAP server
-
-Sync existing OpenShift Container Platform groups with your LDAP server so you can update membership for groups that already exist in the cluster.
-
-You can sync all groups already in OpenShift Container Platform that correspond to groups in the LDAP server specified in the configuration file.
-
-- An LDAP sync configuration file exists. This procedure uses an example file named `config.yaml`.
-
-- You have access to the cluster as a user with the `cluster-admin` role.
-
-<!-- -->
-
-- Sync OpenShift Container Platform groups with the LDAP server by running the following command:
-
-  ``` terminal
-  $ oc adm groups sync --type=openshift --sync-config=config.yaml --confirm
-  ```
-
-  <div class="note">
-
-  By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
-
-  </div>
-
-## Sync subgroups from the LDAP server with OpenShift Container Platform
-
-Sync a subset of LDAP groups with OpenShift Container Platform so you can control which groups are synchronized using allowlist files, denylist files, or both.
-
-<div class="note">
-
-You can use any combination of denylist files, allowlist files, or allowlist literals. Allowlist and denylist files must contain one unique group identifier per line, and you can include allowlist literals directly in the command itself. These guidelines apply to groups found on LDAP servers as well as groups already present in OpenShift Container Platform.
+Prerequisites
 
 </div>
 
@@ -309,7 +259,94 @@ You can use any combination of denylist files, allowlist files, or allowlist lit
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+- Sync all groups from the LDAP server with OpenShift Container Platform by running the following command:
+
+  ``` terminal
+  $ oc adm groups sync --sync-config=config.yaml --confirm
+  ```
+
+  > [!NOTE]
+  > By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
+
+</div>
+
+## Sync OpenShift Container Platform groups with the LDAP server
+
+Sync existing OpenShift Container Platform groups with your LDAP server so you can update membership for groups that already exist in the cluster.
+
+You can sync all groups already in OpenShift Container Platform that correspond to groups in the LDAP server specified in the configuration file.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- An LDAP sync configuration file exists. This procedure uses an example file named `config.yaml`.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+- Sync OpenShift Container Platform groups with the LDAP server by running the following command:
+
+  ``` terminal
+  $ oc adm groups sync --type=openshift --sync-config=config.yaml --confirm
+  ```
+
+  > [!NOTE]
+  > By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
+
+</div>
+
+## Sync subgroups from the LDAP server with OpenShift Container Platform
+
+Sync a subset of LDAP groups with OpenShift Container Platform so you can control which groups are synchronized using allowlist files, denylist files, or both.
+
+> [!NOTE]
+> You can use any combination of denylist files, allowlist files, or allowlist literals. Allowlist and denylist files must contain one unique group identifier per line, and you can include allowlist literals directly in the command itself. These guidelines apply to groups found on LDAP servers as well as groups already present in OpenShift Container Platform.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- An LDAP sync configuration file exists. This procedure uses an example file named `config.yaml`.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To sync groups using an allowlist file, run the following command:
 
@@ -354,15 +391,22 @@ You can use any combination of denylist files, allowlist files, or allowlist lit
                      --confirm
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
 
-  By default, all group synchronization operations are dry-run, so you must set the `--confirm` flag on the `oc adm groups sync` command to make changes to OpenShift Container Platform group records.
-
-  </div>
+</div>
 
 # Run a group pruning job
 
 Run a group pruning job to remove LDAP-synced groups from OpenShift Container Platform when they no longer exist on your LDAP server so you can keep cluster group records aligned with your directory.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Prune groups using a sync configuration file by running the following command:
 
@@ -382,15 +426,35 @@ Run a group pruning job to remove LDAP-synced groups from OpenShift Container Pl
   $ oc adm prune groups --blacklist=/path/to/blacklist.txt --sync-config=/path/to/ldap-sync-config.yaml --confirm
   ```
 
+</div>
+
 # Automatically syncing LDAP groups
 
 Configure a cron job to automatically sync LDAP groups with OpenShift Container Platform so you can keep group membership up to date without running manual sync commands.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You configured an LDAP identity provider (IDP).
 
 - You created an LDAP secret named `ldap-secret` and a config map named `ca-config-map`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a project where the cron job runs by running the following command:
 
@@ -615,19 +679,28 @@ Configure a cron job to automatically sync LDAP groups with OpenShift Container 
     $ oc create -f ldap-sync-cron-job.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring an LDAP identity provider](../authentication/identity_providers/configuring-ldap-identity-provider.xml#configuring-ldap-identity-provider)
 
 - [Creating cron jobs](../nodes/jobs/nodes-nodes-jobs.xml#nodes-nodes-jobs-creating-cron_nodes-nodes-jobs)
+
+</div>
 
 # LDAP group sync examples
 
 Review LDAP group sync examples so you can configure synchronization for RFC 2307, Active Directory, or augmented Active Directory schemas.
 
-<div class="note">
-
-These examples cover only direct group membership. Each user is a direct member of a group, and groups do not contain other groups as members. For information, see "LDAP nested membership sync".
-
-</div>
+> [!NOTE]
+> These examples cover only direct group membership. Each user is a direct member of a group, and groups do not contain other groups as members. For information, see "LDAP nested membership sync".
 
 ## Sync groups using the RFC 2307 schema
 
@@ -639,11 +712,8 @@ For the RFC 2307 schema, the following examples synchronize a group named `admin
 
 - What the resulting group record in OpenShift Container Platform is after synchronization.
 
-<div class="note">
-
-These examples assume that all users are direct members of their respective groups. Specifically, no groups have other groups as members. For information on how to sync nested groups, see "LDAP nested membership sync".
-
-</div>
+> [!NOTE]
+> These examples assume that all users are direct members of their respective groups. Specifically, no groups have other groups as members. For information on how to sync nested groups, see "LDAP nested membership sync".
 
 In the RFC 2307 schema, users and groups exist on the LDAP server as first-class entries, and group membership is stored in attributes on the group. The following snippet of `ldif` defines the users and group for this schema:
 
@@ -687,11 +757,27 @@ Specifies that this group is a first-class entry in the LDAP server.
 `member: cn=Jane,ou=users,dc=example,dc=com`
 Specifies that the members of a group are listed with an identifying reference as attributes on the group.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `rfc2307_config.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync with the `rfc2307_config.yaml` file by running the following command:
 
@@ -732,6 +818,8 @@ Specifies that the members of a group are listed with an identifying reference a
 
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
+
+</div>
 
 ## Sync groups by using the RFC 2307 schema with user-defined name mappings
 
@@ -778,11 +866,27 @@ Specifies the attribute to name OpenShift Container Platform groups with if thei
 `rfc2307.userUIDAttribute`
 Specifies the attribute that uniquely identifies a user on the LDAP server. You cannot specify `usersQuery` filters when using DN for the `userUIDAttribute` parameter. For fine-grained filtering, use an allowlist file, a denylist file, or both.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `rfc2307_config_user_defined.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync groups using the `rfc2307_config_user_defined.yaml` file by running the following command:
 
@@ -812,6 +916,8 @@ Specifies the attribute that uniquely identifies a user on the LDAP server. You 
   `metadata.name`
   Specifies the name of the group as specified by the user-defined name mapping.
 
+</div>
+
 ## Sync groups by using RFC 2307 with user-defined error tolerances
 
 Sync LDAP groups using the RFC 2307 schema with error tolerances so you can complete group synchronization when some members are missing or out of scope.
@@ -829,11 +935,8 @@ Similarly, when the group sync process fails to locate a member for a group, it 
 
 This often indicates a misconfigured `usersQuery` field. However, in cases where the group contains member entries that are known to be missing, setting `tolerateMemberNotFoundErrors: true` allows the group sync to continue. Missing members are ignored.
 
-<div class="warning">
-
-Enabling error tolerances for the LDAP group sync causes the sync process to ignore member entries that cause errors. If the LDAP group sync is not configured correctly, this could result in synced OpenShift Container Platform groups missing members.
-
-</div>
+> [!WARNING]
+> Enabling error tolerances for the LDAP group sync causes the sync process to ignore member entries that cause errors. If the LDAP group sync is not configured correctly, this could result in synced OpenShift Container Platform groups missing members.
 
 The following example shows LDAP entries that use RFC 2307 schema with invalid group membership: `rfc2307_problematic_users.ldif`
 
@@ -914,11 +1017,27 @@ Specifies whether the sync job tolerates groups for which some members were not 
 `rfc2307.tolerateMemberOutOfScopeErrors`
 Specifies whether the sync job tolerates groups for which some members are outside the user scope given in the `usersQuery` `baseDN`. When set to `true`, members outside the member query scope are ignored. The default behavior for the sync job is to fail if a member of a group is out of scope.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `rfc2307_config_tolerating.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync with the `rfc2307_config_tolerating.yaml` file by running the following command:
 
@@ -947,6 +1066,8 @@ Specifies whether the sync job tolerates groups for which some members are outsi
 
   `users`
   Specifies the users that are members of the group, as specified by the sync file. Members for which lookup encountered tolerated errors are absent.
+
+</div>
 
 ## Sync groups using the Active Directory schema
 
@@ -987,11 +1108,27 @@ where:
 `memberOf`
 Specifies that the group memberships of the user are listed as attributes on the user, and the group does not exist as an entry on the server. The `memberOf` attribute does not have to be a literal attribute on the user; in some LDAP servers, the attribute is created during search and returned to the client, but not committed to the database.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `active_directory_config.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync with the `active_directory_config.yaml` file by running the following command:
 
@@ -1032,6 +1169,8 @@ Specifies that the group memberships of the user are listed as attributes on the
 
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
+
+</div>
 
 ## Sync groups using the augmented Active Directory schema
 
@@ -1089,11 +1228,27 @@ Specifies that the group memberships of the user are listed as attributes on the
 `dn: cn=admins,ou=groups,dc=example,dc=com`
 Specifies that the group is a first-class entry on the LDAP server.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `augmented_active_directory_config.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync with the `augmented_active_directory_config.yaml` file by running the following command:
 
@@ -1134,6 +1289,8 @@ Specifies that the group is a first-class entry on the LDAP server.
 
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
+
+</div>
 
 ## LDAP nested membership sync
 
@@ -1277,21 +1434,34 @@ Specifies the attribute to use as the username of the user in the OpenShift Cont
 `augmentedActiveDirectory.groupMembershipAttributes`
 Specifies the attribute on the user that stores the membership information. Note the use of `LDAP_MATCHING_RULE_IN_CHAIN`.
 
-<div class="note">
-
-`mail` or `sAMAccountName` are preferred choices in most installations.
-
-</div>
+> [!NOTE]
+> `mail` or `sAMAccountName` are preferred choices in most installations.
 
 ## LDAP nested membership sync example
 
 Run the nested group LDAP sync example with an allowlisted group so you can verify that members of nested Active Directory groups appear in the resulting OpenShift Container Platform group.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An LDAP sync configuration file exists. This procedure uses an example file named `augmented_active_directory_config_nested.yaml`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Sync with the `augmented_active_directory_config_nested.yaml` file by running the following command:
 
@@ -1302,11 +1472,8 @@ Run the nested group LDAP sync example with an allowlisted group so you can veri
       --confirm
   ```
 
-  <div class="note">
-
-  You must explicitly allowlist the `cn=admins,ou=groups,dc=example,dc=com` group.
-
-  </div>
+  > [!NOTE]
+  > You must explicitly allowlist the `cn=admins,ou=groups,dc=example,dc=com` group.
 
   OpenShift Container Platform creates the following group record as a result of the previous sync operation:
 
@@ -1342,11 +1509,10 @@ Run the nested group LDAP sync example with an allowlisted group so you can veri
   `users`
   Specifies the users that are members of the group, named as specified by the sync file.
 
-  <div class="note">
+  > [!NOTE]
+  > Members of nested groups are included because the group membership is flattened by the Microsoft Active Directory Server.
 
-  Members of nested groups are included because the group membership is flattened by the Microsoft Active Directory Server.
-
-  </div>
+</div>
 
 # LDAP sync configuration specification
 
@@ -1354,93 +1520,100 @@ Review the LDAP group sync configuration specification so you can identify requi
 
 The following sections describe the object specification for the configuration file. Note that the different schema types define different fields. For example, the `v1.ActiveDirectoryConfig` schema type has no `groupsQuery` field, but the `v1.RFC2307Config` and `v1.AugmentedActiveDirectoryConfig` schema types include a `groupsQuery` field.
 
-<div class="important">
-
-There is no support for binary attributes. All attribute data coming from the LDAP server must be in the UTF-8 encoded string format. For example, never use a binary attribute, such as `objectGUID`, as an ID attribute. You must use string attributes, such as `sAMAccountName` or `userPrincipalName`, instead.
-
-</div>
+> [!IMPORTANT]
+> There is no support for binary attributes. All attribute data coming from the LDAP server must be in the UTF-8 encoded string format. For example, never use a binary attribute, such as `objectGUID`, as an ID attribute. You must use string attributes, such as `sAMAccountName` or `userPrincipalName`, instead.
 
 ## v1.LDAPSyncConfig
 
 `LDAPSyncConfig` holds the necessary configuration options to define an LDAP group sync.
 
-| Name                       | Description                                                                                                                                                                                                                                                                                                | Schema                            |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|
-| `kind`                     | A camel case string value that represents the REST resource this object represents. Servers may infer this value from the endpoint that receives client requests. Clients cannot update this value.                                                                                                        | string                            |
-| `apiVersion`               | Defines the versioned schema for this object representation. Servers should convert recognized schemas to the latest internal value and may reject unrecognized values.                                                                                                                                    | string                            |
-| `url`                      | Specifies the scheme, host, and port of the LDAP server to connect to, in the form `scheme://host:port`.                                                                                                                                                                                                   | string                            |
-| `bindDN`                   | Optional DN to bind to the LDAP server with.                                                                                                                                                                                                                                                               | string                            |
-| `bindPassword`             | Optional password to bind with during the search phase.                                                                                                                                                                                                                                                    | v1.StringSource                   |
-| `insecure`                 | If `true`, indicates the connection should not use TLS. If `false`, `ldaps://` URLs connect using TLS, and `ldap://` URLs are upgraded to a TLS connection using `StartTLS` as specified in <https://tools.ietf.org/html/rfc2830>. If you set `insecure` to `true`, you cannot use `ldaps://` URL schemes. | boolean                           |
-| `ca`                       | Optional trusted certificate authority bundle to use when making requests to the server. If empty, the default system roots are used.                                                                                                                                                                      | string                            |
-| `groupUIDNameMapping`      | Optional direct mapping of LDAP group UIDs to OpenShift Container Platform group names.                                                                                                                                                                                                                    | object                            |
-| `rfc2307`                  | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to RFC 2307: first-class group and user entries, with group membership determined by a multi-valued attribute on the group entry that lists the members of the group.                                          | v1.RFC2307Config                  |
-| `activeDirectory`          | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to that used in Active Directory: first-class user entries, with group membership determined by a multi-valued attribute on member entries that lists the groups to which each member belongs.                 | v1.ActiveDirectoryConfig          |
-| `augmentedActiveDirectory` | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to that used in Active Directory as described above, with one addition: first-class group entries exist and are used to hold metadata but not group membership.                                                | v1.AugmentedActiveDirectoryConfig |
+| Name | Description | Schema |
+|----|----|----|
+| `kind` | A camel case string value that represents the REST resource this object represents. Servers may infer this value from the endpoint that receives client requests. Clients cannot update this value. | string |
+| `apiVersion` | Defines the versioned schema for this object representation. Servers should convert recognized schemas to the latest internal value and may reject unrecognized values. | string |
+| `url` | Specifies the scheme, host, and port of the LDAP server to connect to, in the form `scheme://host:port`. | string |
+| `bindDN` | Optional DN to bind to the LDAP server with. | string |
+| `bindPassword` | Optional password to bind with during the search phase. | v1.StringSource |
+| `insecure` | If `true`, indicates the connection should not use TLS. If `false`, `ldaps://` URLs connect using TLS, and `ldap://` URLs are upgraded to a TLS connection using `StartTLS` as specified in <https://tools.ietf.org/html/rfc2830>. If you set `insecure` to `true`, you cannot use `ldaps://` URL schemes. | boolean |
+| `ca` | Optional trusted certificate authority bundle to use when making requests to the server. If empty, the default system roots are used. | string |
+| `groupUIDNameMapping` | Optional direct mapping of LDAP group UIDs to OpenShift Container Platform group names. | object |
+| `rfc2307` | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to RFC 2307: first-class group and user entries, with group membership determined by a multi-valued attribute on the group entry that lists the members of the group. | v1.RFC2307Config |
+| `activeDirectory` | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to that used in Active Directory: first-class user entries, with group membership determined by a multi-valued attribute on member entries that lists the groups to which each member belongs. | v1.ActiveDirectoryConfig |
+| `augmentedActiveDirectory` | Holds the configuration for extracting data from an LDAP server set up in a fashion similar to that used in Active Directory as described above, with one addition: first-class group entries exist and are used to hold metadata but not group membership. | v1.AugmentedActiveDirectoryConfig |
 
 ## v1.StringSource
 
 `StringSource` allows specifying a string inline, or externally via environment variable or file. When it contains only a string value, it marshals to a simple JSON string.
 
-| Name      | Description                                                                                                             | Schema |
-|-----------|-------------------------------------------------------------------------------------------------------------------------|--------|
-| `value`   | Specifies the plain text value, or an encrypted value if `keyFile` is specified.                                        | string |
-| `env`     | Specifies an environment variable containing the plain text value, or an encrypted value if the `keyFile` is specified. | string |
-| `file`    | References a file containing the plain text value, or an encrypted value if a `keyFile` is specified.                   | string |
-| `keyFile` | References a file containing the key to use to decrypt the value.                                                       | string |
+| Name | Description | Schema |
+|----|----|----|
+| `value` | Specifies the plain text value, or an encrypted value if `keyFile` is specified. | string |
+| `env` | Specifies an environment variable containing the plain text value, or an encrypted value if the `keyFile` is specified. | string |
+| `file` | References a file containing the plain text value, or an encrypted value if a `keyFile` is specified. | string |
+| `keyFile` | References a file containing the key to use to decrypt the value. | string |
 
 ## v1.LDAPQuery
 
 `LDAPQuery` holds the options necessary to build an LDAP query.
 
-| Name           | Description                                                                                                                                                                                                                                                          | Schema  |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `baseDN`       | DN of the branch of the directory where all searches should start from.                                                                                                                                                                                              | string  |
-| `scope`        | The optional scope of the search. Can be `base`: only the base object, `one`: all objects on the base level, `sub`: the entire subtree. Defaults to `sub` if not set.                                                                                                | string  |
-| `derefAliases` | The optional behavior of the search with regards to aliases. Can be `never`: never dereference aliases, `search`: only dereference in searching, `base`: only dereference in finding the base object, `always`: always dereference. Defaults to `always` if not set. | string  |
-| `timeout`      | Holds the limit of time in seconds that any request to the server can remain outstanding before the wait for a response is given up. If this is `0`, no client-side limit is imposed.                                                                                | integer |
-| `filter`       | A valid LDAP search filter that retrieves all relevant entries from the LDAP server with the base DN.                                                                                                                                                                | string  |
-| `pageSize`     | Maximum preferred page size, measured in LDAP entries. A page size of `0` means no paging is done.                                                                                                                                                                   | integer |
+| Name | Description | Schema |
+|----|----|----|
+| `baseDN` | DN of the branch of the directory where all searches should start from. | string |
+| `scope` | The optional scope of the search. Can be `base`: only the base object, `one`: all objects on the base level, `sub`: the entire subtree. Defaults to `sub` if not set. | string |
+| `derefAliases` | The optional behavior of the search with regards to aliases. Can be `never`: never dereference aliases, `search`: only dereference in searching, `base`: only dereference in finding the base object, `always`: always dereference. Defaults to `always` if not set. | string |
+| `timeout` | Holds the limit of time in seconds that any request to the server can remain outstanding before the wait for a response is given up. If this is `0`, no client-side limit is imposed. | integer |
+| `filter` | A valid LDAP search filter that retrieves all relevant entries from the LDAP server with the base DN. | string |
+| `pageSize` | Maximum preferred page size, measured in LDAP entries. A page size of `0` means no paging is done. | integer |
 
 ## v1.RFC2307Config
 
 `RFC2307Config` holds the necessary configuration options to define how an LDAP group sync interacts with an LDAP server using the RFC 2307 schema.
 
-| Name                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Schema       |
-|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| `groupsQuery`                    | Holds the template for an LDAP query that returns group entries.                                                                                                                                                                                                                                                                                                                                                                                                                                                 | v1.LDAPQuery |
-| `groupUIDAttribute`              | Defines which attribute on an LDAP group entry is interpreted as the unique identifier of the group. The default value is `ldapGroupUID`.                                                                                                                                                                                                                                                                                                                                                                        | string       |
-| `groupNameAttributes`            | Defines which attributes on an LDAP group entry are interpreted as the name of the group to use for an OpenShift Container Platform group.                                                                                                                                                                                                                                                                                                                                                                       | string array |
-| `groupMembershipAttributes`      | Defines which attributes on an LDAP group entry are interpreted as the members of the group. The values contained in those attributes must be queryable by your `userUIDAttribute` field.                                                                                                                                                                                                                                                                                                                        | string array |
-| `usersQuery`                     | Holds the template for an LDAP query that returns user entries.                                                                                                                                                                                                                                                                                                                                                                                                                                                  | v1.LDAPQuery |
-| `userUIDAttribute`               | Defines which attribute on an LDAP user entry is interpreted as the unique identifier of the user. It must correspond to values that are found from the `groupMembershipAttributes` field.                                                                                                                                                                                                                                                                                                                       | string       |
-| `userNameAttributes`             | Defines which attributes on an LDAP user entry are used, in order, as the OpenShift Container Platform user name of the user. The first attribute with a non-empty value is used. This should match your `PreferredUsername` setting for your `LDAPPasswordIdentityProvider`. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations.                                                             | string array |
-| `tolerateMemberNotFoundErrors`   | Determines the behavior of the LDAP sync job when missing user entries are encountered. If `true`, an LDAP query for users that does not find any is tolerated and only an error is logged. If `false`, the LDAP sync job fails if a query for users does not find any. The default value is `false`. Misconfigured LDAP sync jobs with this flag set to `true` can cause group membership to be removed, so it is recommended to use this flag with caution.                                                    | boolean      |
-| `tolerateMemberOutOfScopeErrors` | Determines the behavior of the LDAP sync job when out-of-scope user entries are encountered. If `true`, an LDAP query for a user that falls outside of the base DN given for the all user query is tolerated and only an error is logged. If `false`, the LDAP sync job fails if a user query searches outside of the base DN specified by the all user query. Misconfigured LDAP sync jobs with this flag set to `true` can result in groups missing users, so it is recommended to use this flag with caution. | boolean      |
+| Name | Description | Schema |
+|----|----|----|
+| `groupsQuery` | Holds the template for an LDAP query that returns group entries. | v1.LDAPQuery |
+| `groupUIDAttribute` | Defines which attribute on an LDAP group entry is interpreted as the unique identifier of the group. The default value is `ldapGroupUID`. | string |
+| `groupNameAttributes` | Defines which attributes on an LDAP group entry are interpreted as the name of the group to use for an OpenShift Container Platform group. | string array |
+| `groupMembershipAttributes` | Defines which attributes on an LDAP group entry are interpreted as the members of the group. The values contained in those attributes must be queryable by your `userUIDAttribute` field. | string array |
+| `usersQuery` | Holds the template for an LDAP query that returns user entries. | v1.LDAPQuery |
+| `userUIDAttribute` | Defines which attribute on an LDAP user entry is interpreted as the unique identifier of the user. It must correspond to values that are found from the `groupMembershipAttributes` field. | string |
+| `userNameAttributes` | Defines which attributes on an LDAP user entry are used, in order, as the OpenShift Container Platform user name of the user. The first attribute with a non-empty value is used. This should match your `PreferredUsername` setting for your `LDAPPasswordIdentityProvider`. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations. | string array |
+| `tolerateMemberNotFoundErrors` | Determines the behavior of the LDAP sync job when missing user entries are encountered. If `true`, an LDAP query for users that does not find any is tolerated and only an error is logged. If `false`, the LDAP sync job fails if a query for users does not find any. The default value is `false`. Misconfigured LDAP sync jobs with this flag set to `true` can cause group membership to be removed, so it is recommended to use this flag with caution. | boolean |
+| `tolerateMemberOutOfScopeErrors` | Determines the behavior of the LDAP sync job when out-of-scope user entries are encountered. If `true`, an LDAP query for a user that falls outside of the base DN given for the all user query is tolerated and only an error is logged. If `false`, the LDAP sync job fails if a user query searches outside of the base DN specified by the all user query. Misconfigured LDAP sync jobs with this flag set to `true` can result in groups missing users, so it is recommended to use this flag with caution. | boolean |
 
 ## v1.ActiveDirectoryConfig
 
 `ActiveDirectoryConfig` holds the necessary configuration options to define how an LDAP group sync interacts with an LDAP server using the Active Directory schema.
 
-| Name                        | Description                                                                                                                                                                                                                                                                                      | Schema       |
-|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| `usersQuery`                | Holds the template for an LDAP query that returns user entries.                                                                                                                                                                                                                                  | v1.LDAPQuery |
-| `userNameAttributes`        | Defines which attributes on an LDAP user entry are interpreted as the OpenShift Container Platform user name of the user. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations. | string array |
-| `groupMembershipAttributes` | Defines which attributes on an LDAP user entry are interpreted as the LDAP groups that include the user as a member.                                                                                                                                                                             | string array |
+| Name | Description | Schema |
+|----|----|----|
+| `usersQuery` | Holds the template for an LDAP query that returns user entries. | v1.LDAPQuery |
+| `userNameAttributes` | Defines which attributes on an LDAP user entry are interpreted as the OpenShift Container Platform user name of the user. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations. | string array |
+| `groupMembershipAttributes` | Defines which attributes on an LDAP user entry are interpreted as the LDAP groups that include the user as a member. | string array |
 
 ## v1.AugmentedActiveDirectoryConfig
 
 The `AugmentedActiveDirectoryConfig` field holds the necessary configuration options to define how an LDAP group sync interacts with an LDAP server using the augmented Active Directory schema.
 
-| Name                        | Description                                                                                                                                                                                                                                                                                      | Schema       |
-|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| `usersQuery`                | Holds the template for an LDAP query that returns user entries.                                                                                                                                                                                                                                  | v1.LDAPQuery |
-| `userNameAttributes`        | Defines which attributes on an LDAP user entry are interpreted as the OpenShift Container Platform user name of the user. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations. | string array |
-| `groupMembershipAttributes` | Defines which attributes on an LDAP user entry are interpreted as the LDAP groups that include the user as a member.                                                                                                                                                                             | string array |
-| `groupsQuery`               | Holds the template for an LDAP query that returns group entries.                                                                                                                                                                                                                                 | v1.LDAPQuery |
-| `groupUIDAttribute`         | Defines which attribute on an LDAP group entry is interpreted as the unique identifier of the group. The default value is `ldapGroupUID`.                                                                                                                                                        | string       |
-| `groupNameAttributes`       | Defines which attributes on an LDAP group entry are interpreted as the name of the group to use for an OpenShift Container Platform group.                                                                                                                                                       | string array |
+| Name | Description | Schema |
+|----|----|----|
+| `usersQuery` | Holds the template for an LDAP query that returns user entries. | v1.LDAPQuery |
+| `userNameAttributes` | Defines which attributes on an LDAP user entry are interpreted as the OpenShift Container Platform user name of the user. The attribute to use as the name of the user in the OpenShift Container Platform group record. `mail` or `sAMAccountName` are preferred choices in most installations. | string array |
+| `groupMembershipAttributes` | Defines which attributes on an LDAP user entry are interpreted as the LDAP groups that include the user as a member. | string array |
+| `groupsQuery` | Holds the template for an LDAP query that returns group entries. | v1.LDAPQuery |
+| `groupUIDAttribute` | Defines which attribute on an LDAP group entry is interpreted as the unique identifier of the group. The default value is `ldapGroupUID`. | string |
+| `groupNameAttributes` | Defines which attributes on an LDAP group entry are interpreted as the name of the group to use for an OpenShift Container Platform group. | string array |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [LDAP nested membership sync](#ldap-syncing-nesting-about_ldap-syncing-groups)
 
 - [Configuring an LDAP identity provider](../authentication/identity_providers/configuring-ldap-identity-provider.xml#configuring-ldap-identity-provider)
+
+</div>

@@ -2,27 +2,39 @@ After a cluster is provisioned, you can apply configuration changes, update firm
 
 You can perform these operations by editing the `ProvisioningRequest` CR directly or through the Provisioning REST API. For more information about using the Provisioning API, see "Update cluster configuration with the Provisioning API".
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Update policy configuration parameters
 
 When workload requirements change — for example, reallocating CPU cores between isolated and reserved sets, adjusting hugepage sizes, or tuning SR-IOV parameters — you can update Day 2 configuration values on a provisioned cluster by modifying the `policyTemplateParameters` field in the `ProvisioningRequest` custom resource (CR). The O-Cloud Manager propagates the updated values to the cluster policy `ConfigMap` CR, and Red Hat Advanced Cluster Management (RHACM) policies re-apply the configuration on the spoke cluster.
 
-<div class="note">
+> [!NOTE]
+> Only policy configuration values exposed in the `spec.templateParameters.policyTemplateParameters` field of the associated `ClusterTemplate` CR can be updated through the `ProvisioningRequest` CR.
 
-Only policy configuration values exposed in the `spec.templateParameters.policyTemplateParameters` field of the associated `ClusterTemplate` CR can be updated through the `ProvisioningRequest` CR.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
 
 - The parameters you want to update are defined in `spec.templateParameters.policyTemplateParameters` field of the associated `ClusterTemplate` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ProvisioningRequest` CR by running the following command:
 
@@ -55,15 +67,27 @@ Only policy configuration values exposed in the `spec.templateParameters.policyT
 
     The O-Cloud Manager updates the `<cluster-name>-pg` `ConfigMap` CR with the new values. RHACM policies referencing these values report a `NonCompliant` status and are re-enforced on the spoke cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the configuration change was applied successfully by running the following command:
 
   ``` terminal
   $ oc get provisioningrequests.clcm.openshift.io <uuid>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -72,9 +96,19 @@ Only policy configuration values exposed in the `spec.templateParameters.policyT
   123e4567-e89b-12d3-a456-426614174000                 90m    fulfilled        Provisioning request has completed successfully
   ```
 
+  </div>
+
   The `provisioningPhase` returns to `fulfilled` after all policies are re-enforced and compliant on the spoke cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - If the `provisioningPhase` shows `failed`, identify which policy is non-compliant by running the following command:
 
@@ -85,17 +119,34 @@ Only policy configuration values exposed in the `spec.templateParameters.policyT
 
   The output lists each policy with its `compliant` status, `policyName`, and `remediationAction`. A policy with `"compliant": "NonCompliant"` indicates the configuration that failed to apply on the spoke cluster.
 
+</div>
+
 # Update cluster labels and annotations
 
 When you need to change how policies target a cluster, for example adding operational metadata to indicate maintenance windows, you can update labels and annotations on a provisioned cluster and its nodes by modifying the `clusterInstanceParameters` field in the `ProvisioningRequest` custom resource (CR). The O-Cloud Manager propagates the changes to the `ManagedCluster` and `BareMetalHost` CRs on the hub cluster.
 
-<div class="note">
+> [!NOTE]
+> `ManagedCluster` and node labels and annotations are the only `clusterInstanceParameters` fields that can be edited after cluster installation. All other fields are immutable and are rejected by the O-Cloud Manager.
 
-`ManagedCluster` and node labels and annotations are the only `clusterInstanceParameters` fields that can be edited after cluster installation. All other fields are immutable and are rejected by the O-Cloud Manager.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ProvisioningRequest` CR to update cluster-level or node-level labels and annotations by running the following command:
 
@@ -150,6 +201,16 @@ When you need to change how policies target a cluster, for example adding operat
 
 2.  Apply the updated `ProvisioningRequest` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the update was applied successfully by running the following command:
 
   ``` terminal
@@ -158,9 +219,11 @@ When you need to change how policies target a cluster, for example adding operat
 
 - `<uuid>`:: Specifies the UUID of the `ProvisioningRequest` CR for the target cluster.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -169,21 +232,40 @@ When you need to change how policies target a cluster, for example adding operat
   123e4567-e89b-12d3-a456-426614174000                 90m   fulfilled        Provisioning request has completed successfully
   ```
 
+  </div>
+
   The `provisioningPhase` returns to `fulfilled` after the label and annotation changes are applied to the spoke cluster.
+
+</div>
 
 # Update ClusterInstance defaults with template versioning
 
 When cluster-wide installation defaults need to change, for example updating NTP servers or base networking configuration across the fleet, you can update the `ClusterInstance` defaults for a provisioned cluster by creating a new version of the defaults ConfigMap resource, a new `ClusterTemplate` custom resource referencing it, and then updating the `ProvisioningRequest` CR to reference the new template version. Because `ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation, each change requires new versions of these resources. This approach preserves the previous configuration as a versioned artifact.
 
-<div class="note">
+> [!NOTE]
+> Some `ClusterInstance` fields are immutable after cluster installation. The SiteConfig Operator rejects changes to fields protected by webhooks from underlying Operators. Editable fields include extra labels, extra annotations, and similar metadata.
 
-Some `ClusterInstance` fields are immutable after cluster installation. The SiteConfig Operator rejects changes to fields protected by webhooks from underlying Operators. Editable fields include extra labels, extra annotations, and similar metadata.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
 
 - The GitOps repository is configured and ArgoCD synchronizes resources to the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new version of the `ClusterInstance` defaults ConfigMap resource with the desired updates:
 
@@ -255,6 +337,16 @@ Some `ClusterInstance` fields are immutable after cluster installation. The Site
 
 5.  The O-Cloud Manager detects the template version change, updates the `ClusterInstance` CR with the new defaults, and the SiteConfig Operator applies the changes to the spoke cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the update succeeds by checking the `ProvisioningRequest` CR status by running the following command:
 
   ``` terminal
@@ -262,6 +354,8 @@ Some `ClusterInstance` fields are immutable after cluster installation. The Site
   ```
 
   The `provisioningPhase` returns to `fulfilled` after the changes are applied. Any issues are reported in `status.conditions`.
+
+</div>
 
 # Update firmware and BIOS settings on running clusters
 
@@ -275,7 +369,13 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
 
 - On multi-node clusters, each node is cordoned and drained before firmware is applied. On single-node OpenShift Container Platform clusters, cordon and drain are skipped.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled` on the `ProvisioningRequest` CR.
 
@@ -286,6 +386,16 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
 - The firmware download URLs in the new `HardwareProfile` CR are accessible from the BMC management network.
 
 - Optional: Adjust the `maxUnavailable` setting on the worker `MachineConfigPool` on the spoke cluster to control how many worker nodes are updated in parallel.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new `HardwareProfile` CR with the desired firmware versions and BIOS settings:
 
@@ -317,11 +427,8 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
     `<target_bmc_version>`
     Specifies the target BMC firmware version.
 
-    <div class="note">
-
-    All firmware fields in the `HardwareProfile` CR are optional. Specify only the components you need to update. For example, define only `spec.bios.attributes` without any firmware version fields to update BIOS settings without changing firmware versions.
-
-    </div>
+    > [!NOTE]
+    > All firmware fields in the `HardwareProfile` CR are optional. Specify only the components you need to update. For example, define only `spec.bios.attributes` without any firmware version fields to update BIOS settings without changing firmware versions.
 
 2.  Apply the new `HardwareProfile` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
 
@@ -345,15 +452,27 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
 
     The O-Cloud Manager detects the profile change and propagates it through the `NodeAllocationRequest` CR to the hardware manager. The hardware manager computes the firmware differences, updates the Metal3 `HostFirmwareSettings` and `HostFirmwareComponents` CRs, and triggers host reboots to apply the updates.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the firmware update completed successfully by running the following command:
 
   ``` terminal
   $ oc get provisioningrequests.clcm.openshift.io <uuid>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -362,9 +481,19 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
   123e4567-e89b-12d3-a456-426614174000                 150m   fulfilled        Provisioning request has completed successfully
   ```
 
+  </div>
+
   The `provisioningPhase` returns to `fulfilled` after all nodes have been updated and validated.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - If the `provisioningPhase` shows `failed`, identify which node encountered an error by running the following command:
 
@@ -375,17 +504,34 @@ The Day 2 firmware update differs from Day 0 provisioning in the following ways:
 
   A node with `reason: Failed` or `reason: TimedOut` indicates the node that requires attention. Check the corresponding `HostFirmwareComponents` and `HostFirmwareSettings` CRs on the affected `BareMetalHost` for further details.
 
+</div>
+
 # Retry a failed configuration change
 
 When a Day 2 configuration change fails due to transient issues such as network connectivity, policy rendering errors, or firmware download timeouts, you can retry the operation by updating the `ProvisioningRequest` custom resource (CR) specifications. The O-Cloud Manager detects the change and starts a new configuration attempt.
 
-<div class="note">
+> [!NOTE]
+> Configuration timeouts and failures can be retried by updating the relevant fields in the `ProvisioningRequest` CR. However, provisioning timeouts and failures cannot be retried. If a provisioning timeout or failure occurs, the `ProvisioningRequest` CR must be deleted and recreated.
 
-Configuration timeouts and failures can be retried by updating the relevant fields in the `ProvisioningRequest` CR. However, provisioning timeouts and failures cannot be retried. If a provisioning timeout or failure occurs, the `ProvisioningRequest` CR must be deleted and recreated.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - A Day 2 configuration change on the `ProvisioningRequest` CR has failed or timed out (`HardwareConfigured` or `ConfigurationApplied` condition shows `reason: TimedOut` or `reason: Failed`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the status conditions by running the following command:
 
@@ -411,11 +557,8 @@ Configuration timeouts and failures can be retried by updating the relevant fiel
     `<bmh_namespace>`
     Specifies the namespace containing the `BareMetalHost` resources.
 
-    <div class="important">
-
-    If a `BareMetalHost` is in `servicing` state, wait for it to complete before retrying. If a `BareMetalHost` is in `servicing error` state, the retry might not succeed, especially for persistent power management errors.
-
-    </div>
+    > [!IMPORTANT]
+    > If a `BareMetalHost` is in `servicing` state, wait for it to complete before retrying. If a `BareMetalHost` is in `servicing error` state, the retry might not succeed, especially for persistent power management errors.
 
 3.  Update the `ProvisioningRequest` spec to trigger a new configuration attempt by running the following command:
 
@@ -427,6 +570,16 @@ Configuration timeouts and failures can be retried by updating the relevant fiel
 
     The O-Cloud Manager increments the internal `ConfigTransactionId`, clears the terminal state, and starts a new configuration attempt.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the configuration attempt succeeds by monitoring the relevant condition by running the following command:
 
   ``` terminal
@@ -435,15 +588,35 @@ Configuration timeouts and failures can be retried by updating the relevant fiel
 
   The `provisioningPhase` transitions from `failed` to `pending` to `progressing` and back to `fulfilled` on successful completion.
 
+</div>
+
 # Update cluster configuration with the Provisioning API
 
 You can update Day 2 configuration on a provisioned cluster through the Provisioning REST API by sending an update request with modified `policyTemplateParameters` values. This method is used by SMO frameworks and external automation systems that manage clusters programmatically. To apply new template defaults, you must first create a new `ClusterTemplate` CR version on the hub cluster because `ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You authenticated to the O-Cloud Manager REST API and set the `MY_TOKEN` environment variable.
 
 - The cluster is fully provisioned with `provisioningPhase: fulfilled`.
 
 - If updating template defaults, a new `ClusterTemplate` CR version with the updated `ConfigMap` CRs exists and is validated on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the O-Cloud Manager API hostname by running the following command:
 
@@ -497,11 +670,8 @@ You can update Day 2 configuration on a provisioned cluster through the Provisio
 
     - To apply new template defaults, update `templateVersion` to reference a new `ClusterTemplate` version with the updated `ConfigMap` defaults.
 
-      <div class="note">
-
-      The `PUT` request replaces the entire provisioning request. Retrieve the current state first, then send the complete modified payload. Do not send partial updates.
-
-      </div>
+      > [!NOTE]
+      > The `PUT` request replaces the entire provisioning request. Retrieve the current state first, then send the complete modified payload. Do not send partial updates.
 
 5.  Send the updated provisioning request by running the following command:
 
@@ -513,6 +683,16 @@ You can update Day 2 configuration on a provisioned cluster through the Provisio
       -d @current-request.json | jq
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Query the provisioning request status and verify that configuration is applied by running the following command:
 
   ``` terminal
@@ -521,3 +701,5 @@ You can update Day 2 configuration on a provisioned cluster through the Provisio
   ```
 
   The `provisioningPhase` transitions from `progressing` to `fulfilled` when the updated policies are applied on the spoke cluster.
+
+</div>

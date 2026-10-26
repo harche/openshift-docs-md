@@ -4,11 +4,8 @@ Configure the `basic-authentication` identity provider. Users can log in to Open
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
-<div class="note">
-
-OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 # About basic authentication
 
@@ -18,19 +15,13 @@ Basic authentication is a generic back-end integration mechanism that allows use
 
 Because basic authentication is generic, you can use this identity provider for advanced authentication configurations.
 
-<div class="important">
-
-Basic authentication must use an HTTPS connection to the remote server to prevent potential snooping of the user ID and password and man-in-the-middle attacks.
-
-</div>
+> [!IMPORTANT]
+> Basic authentication must use an HTTPS connection to the remote server to prevent potential snooping of the user ID and password and man-in-the-middle attacks.
 
 With basic authentication configured, users send their username and password to OpenShift Container Platform during login. OpenShift Container Platform validates those credentials against a remote server. OpenShift Container Platform makes a server-to-server request, passing the credentials as a basic authentication header.
 
-<div class="note">
-
-This only works for username and password login mechanisms, and OpenShift Container Platform must be able to make network requests to the remote authentication server.
-
-</div>
+> [!NOTE]
+> This only works for username and password login mechanisms, and OpenShift Container Platform must be able to make network requests to the remote authentication server.
 
 Usernames and passwords are validated against a remote URL that is protected by basic authentication and returns JSON.
 
@@ -77,6 +68,14 @@ A successful response can optionally provide additional data, such as:
 
 You can create a TLS `Secret` object in the `openshift-config` namespace by using the `oc` CLI or by applying a YAML file to store client certificates and keys that identity providers require for secure communication.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `Secret` object that contains the key and certificate by running the following command:
 
     ``` terminal
@@ -97,9 +96,19 @@ You can create a TLS `Secret` object in the `openshift-config` namespace by usin
       tls.key: <base64_encoded_key>
     ```
 
+</div>
+
 # Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define an OpenShift Container Platform `ConfigMap` object containing the CA by running the following command:
 
@@ -121,6 +130,8 @@ Create a `ConfigMap` object in the `openshift-config` namespace that contains th
     ```
 
     The CA must be stored in the `ca.crt` key of the `ConfigMap` object.
+
+</div>
 
 # Sample basic authentication custom resource
 
@@ -166,11 +177,29 @@ Optional: Specifies a reference to an OpenShift Container Platform `Secret` obje
 `spec.identityProviders.basicAuth.tlsClientKey`
 Specifies a reference to an OpenShift Container Platform `Secret` object containing the key for the client certificate. Required if `tlsClientCert` is specified.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
+
+</div>
 
 # Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to a OpenShift Container Platform cluster.
 
@@ -178,17 +207,24 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
 
 - You are logged in as an administrator.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    <div class="note">
-
-    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
-
-    </div>
+    > [!NOTE]
+    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
 
 2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
 
@@ -201,6 +237,8 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     ``` terminal
     $ oc whoami
     ```
+
+</div>
 
 # Example Apache HTTPD configuration for basic identity providers
 
@@ -275,6 +313,14 @@ Troubleshoot basic authentication by testing backend connectivity and verifying 
 
 The most common issue relates to network connectivity to the backend server. To debug connectivity, run `curl` commands on a control plane node.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To test successful and unsuccessful logins, replace the `<user>` and `<password>` in the following example command with valid or invalid credentials:
 
     ``` terminal
@@ -318,3 +364,5 @@ The most common issue relates to network connectivity to the backend server. To 
     - A `401` response indicates failed authentication.
 
     - A non-`200` status or the presence of a non-empty "error" key indicates an error: `{"error":"Error message"}`
+
+</div>

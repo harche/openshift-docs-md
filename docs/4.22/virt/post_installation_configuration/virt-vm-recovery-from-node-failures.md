@@ -14,13 +14,29 @@ Without the Node Health Check Operator and a remediation Operator such as Self N
 
 - Plan node capacity to ensure that enough resources are available to host VMs that migrate from failed nodes.
 
-## Configuring a VM run strategy by using the CLI
+## Configure VM run strategy
 
 You can configure a run strategy for a virtual machine (VM) by using the command line. The run strategy controls whether a VM automatically restarts after disruptions such as node failures or maintenance events.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the `VirtualMachine` resource by running the following command:
 
@@ -38,15 +54,35 @@ You can configure a run strategy for a virtual machine (VM) by using the command
   # ...
   ```
 
+</div>
+
 # Configuring node health checks for virtual machines
 
 You can configure the Node Health Check Operator to monitor node status and trigger automated remediation when a node becomes unhealthy.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Node Health Check Operator.
 
 - You have installed a remediation operator.
 
 - You have cluster administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `NodeHealthCheck` custom resource (CR) to define the health check criteria and remediation strategy:
 
@@ -117,21 +153,30 @@ You can configure the Node Health Check Operator to monitor node status and trig
     $ oc apply -f nodehealthcheck-sample.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `NodeHealthCheck` CR exists by running the following command:
 
   ``` terminal
   $ oc get nodehealthcheck nodehealthcheck-sample
   ```
 
-<div class="tip">
-
-If remediation does not trigger as expected, verify that the remediation Operator runs correctly, and check the `NodeHealthCheck` CR events for errors:
-
-``` terminal
-$ oc describe nodehealthcheck nodehealthcheck-sample
-```
-
 </div>
+
+> [!TIP]
+> If remediation does not trigger as expected, verify that the remediation Operator runs correctly, and check the `NodeHealthCheck` CR events for errors:
+>
+> ``` terminal
+> $ oc describe nodehealthcheck nodehealthcheck-sample
+> ```
 
 # Node remediation strategies for OpenShift Virtualization
 
@@ -148,6 +193,10 @@ The fastest remediation Operator for workload recovery time. Use FAR when a base
 You must use FAR for hyperconverged storage configurations. For hyperconverged storage, set the Node Health Check `minHealthy` property to your total node count minus one. With this setting, FAR does not remediate more than a single worker-node failure within the same zone, storage placement, and replication group to maintain storage stability.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - Remediation actions start after the node conditions monitored by the Node Health Check Operator exceed the time specified in `spec.unhealthyConditions[].duration`.
 
@@ -226,16 +275,13 @@ Check the current resource use of your nodes:
 $ oc adm top nodes
 ```
 
-<div class="note">
-
-The number of VMs that a node can host depends on the `maxPods` value set in the kubelet configuration:
-
-``` yaml
-kubeletConfig:
-  maxPods: 250
-```
-
-</div>
+> [!NOTE]
+> The number of VMs that a node can host depends on the `maxPods` value set in the kubelet configuration:
+>
+> ``` yaml
+> kubeletConfig:
+>   maxPods: 250
+> ```
 
 # Additional resources
 

@@ -4,11 +4,16 @@ Override the default values of Kopia hashing, encryption, and splitter algorithm
 
 Configure the Data Protection Application (DPA) to override the default Kopia hashing, encryption, and splitter algorithms by setting environment variables in the Velero pod configuration. This helps you improve Kopia performance and compare performance metrics for your backup operations.
 
-<div class="note">
+> [!NOTE]
+> The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
+>
+> To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
 
-The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
+<div>
 
-To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -16,7 +21,15 @@ To use different Kopia algorithms, ensure that the object storage does not conta
 
 - You have created the secret by using the credentials provided by the cloud provider.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Configure the DPA with the environment variables for hashing, encryption, and splitter as shown in the following example.
 
@@ -64,9 +77,19 @@ To use different Kopia algorithms, ensure that the object storage does not conta
   `<splitter_algorithm_name>`
   Specifies a splitter algorithm. For example, `DYNAMIC-8M-RABINKARP`.
 
+</div>
+
 # Use case for overriding Kopia hashing, encryption, and splitter algorithms
 
 Back up an application by using Kopia environment variables for hashing, encryption, and splitter. Store the backup in an AWS S3 bucket and verify the environment variables by connecting to the Kopia repository.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OADP Operator.
 
@@ -77,6 +100,16 @@ Back up an application by using Kopia environment variables for hashing, encrypt
 - You have installed the Kopia client.
 
 - You have an application with persistent volumes running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the Data Protection Application (DPA) as shown in the following example:
 
@@ -193,7 +226,15 @@ Back up an application by using Kopia environment variables for hashing, encrypt
 
     Replace `<backup_name>` with the name of the backup.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Connect to the Kopia repository by running the following command:
 
@@ -231,9 +272,11 @@ Back up an application by using Kopia environment variables for hashing, encrypt
     $ kopia repository status
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -244,15 +287,24 @@ Back up an application by using Kopia environment variables for hashing, encrypt
     Format version:      3
     ```
 
+    </div>
+
+</div>
+
 # Benchmark Kopia hashing, encryption, and splitter algorithms
 
 Run Kopia commands to benchmark the hashing, encryption, and splitter algorithms. Based on the benchmarking results, you can select the most suitable algorithm for your workload. You run the Kopia benchmarking commands from a pod on the cluster. The benchmarking results can vary depending on CPU speed, available RAM, disk speed, current I/O load, and so on.
 
-<div class="note">
+> [!NOTE]
+> The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
+>
+> To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
 
-The configuration of the Kopia algorithms for splitting, hashing, and encryption in the Data Protection Application (DPA) apply only during the initial Kopia repository creation, and cannot be changed later.
+<div>
 
-To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -262,11 +314,23 @@ To use different Kopia algorithms, ensure that the object storage does not conta
 
 - You have run a backup of the application with Container Storage Interface (CSI) snapshots.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure the `must-gather` pod as shown in the following example. Make sure you are using the `oadp-mustgather` image for OADP version 1.3 and later.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod configuration**
+    <div class="title">
+
+    Example pod configuration
 
     </div>
 
@@ -285,6 +349,8 @@ To use different Kopia algorithms, ensure that the object storage does not conta
         args: ["infinity"]
     ```
 
+    </div>
+
     The Kopia client is available in the `oadp-mustgather` image.
 
 2.  Create the pod by running the following command:
@@ -301,15 +367,19 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     $ oc describe pod/oadp-mustgather-pod | grep scc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     openshift.io/scc: anyuid
     ```
+
+    </div>
 
 4.  Connect to the pod via SSH by running the following command:
 
@@ -357,9 +427,11 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     sh-5.1# kopia benchmark hashing
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -370,15 +442,19 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     Fastest option for this machine is: --block-hash=BLAKE3-256
     ```
 
+    </div>
+
 7.  To benchmark the encryption algorithm, run the following command:
 
     ``` terminal
     sh-5.1# kopia benchmark encryption
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -389,15 +465,19 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     Fastest option for this machine is: --encryption=AES256-GCM-HMAC-SHA256
     ```
 
+    </div>
+
 8.  To benchmark the splitter algorithm, run the following command:
 
     ``` terminal
     sh-5.1# kopia benchmark splitter
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -407,3 +487,7 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     DYNAMIC-128K-BUZHASH        718.5 MB/s count:3183 min:3076 10th:80896 25th:104312 50th:157621 75th:249115 90th:262144 max:262144
     DYNAMIC-128K-RABINKARP      164.4 MB/s count:3160 min:9667 10th:80098 25th:106626 50th:162269 75th:250655 90th:262144 max:262144
     ```
+
+    </div>
+
+</div>

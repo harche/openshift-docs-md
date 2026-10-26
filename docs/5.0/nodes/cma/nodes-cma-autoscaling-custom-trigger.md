@@ -12,15 +12,14 @@ You can scale pods based on Prometheus metrics, which can use the installed Open
 
 See "Configuring the custom metrics autoscaler to use OpenShift Container Platform monitoring" for information on the configurations required to use the OpenShift Container Platform monitoring as a source for metrics.
 
-<div class="note">
+> [!NOTE]
+> If Prometheus is collecting metrics from the application that the custom metrics autoscaler is scaling, do not set the minimum replicas to `0` in the custom resource. If there are no application pods, the custom metrics autoscaler does not have any metrics to scale on.
 
-If Prometheus is collecting metrics from the application that the custom metrics autoscaler is scaling, do not set the minimum replicas to `0` in the custom resource. If there are no application pods, the custom metrics autoscaler does not have any metrics to scale on.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example scaled object with a Prometheus target**
+Example scaled object with a Prometheus target
 
 </div>
 
@@ -46,6 +45,8 @@ spec:
       unsafeSsl: "false"
       timeout: 1000
 ```
+
+</div>
 
 where:
 
@@ -87,11 +88,8 @@ Specifies whether the certificate check should be skipped. For example, you migh
 
 - If `true`, the certificate check is not performed.
 
-  <div class="important">
-
-  Skipping the check is not recommended.
-
-  </div>
+  > [!IMPORTANT]
+  > Skipping the check is not recommended.
 
 `spec.triggers[].metadata.timeout`
 Specifies an HTTP request timeout in milliseconds for the HTTP client used by this Prometheus trigger. This value overrides any global timeout setting. This parameter is optional.
@@ -100,9 +98,11 @@ Specifies an HTTP request timeout in milliseconds for the HTTP client used by th
 
 You can use the Custom Metrics Autoscaler with NVIDIA Data Center GPU Manager (DCGM) metrics to scale workloads based on GPU utilization. This is particularly useful for AI and machine learning workloads that require GPU resources.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example scaled object with a Prometheus target for GPU-based autoscaling**
+<div class="title">
+
+Example scaled object with a Prometheus target for GPU-based autoscaling
 
 </div>
 
@@ -131,6 +131,8 @@ spec:
     name: keda-trigger-auth-prometheus
 ```
 
+</div>
+
 where:
 
 `spec.minReplicaCount`
@@ -151,11 +153,8 @@ You can use the installed OpenShift Container Platform Prometheus monitoring as 
 
 For your scaled objects to be able to read the OpenShift Container Platform Prometheus metrics, you must use a trigger authentication or a cluster trigger authentication in order to provide the authentication information required. The following procedure differs depending on which trigger authentication method you use. For more information on trigger authentications, see "Understanding custom metrics autoscaler trigger authentications".
 
-<div class="note">
-
-These steps are not required for an external Prometheus source.
-
-</div>
+> [!NOTE]
+> These steps are not required for an external Prometheus source.
 
 You must perform the following tasks, as described in this section:
 
@@ -169,13 +168,29 @@ You must perform the following tasks, as described in this section:
 
 - Reference the token in the trigger authentication object used by Prometheus.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - OpenShift Container Platform monitoring must be installed.
 
 - Monitoring of user-defined workloads must be enabled in OpenShift Container Platform monitoring, as described in the **Creating a user-defined workload monitoring config map** section.
 
 - The Custom Metrics Autoscaler Operator must be installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the appropriate project:
 
@@ -340,7 +355,19 @@ You must perform the following tasks, as described in this section:
 
         - `triggers.authenticationRef` must point to the trigger authentication resource specified in the previous step
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding custom metrics autoscaler trigger authentications](../../nodes/cma/nodes-cma-autoscaling-custom-trigger-auth.xml#nodes-cma-autoscaling-custom-trigger-auth)
+
+</div>
 
 # Understanding the CPU trigger
 
@@ -349,6 +376,10 @@ You can scale pods based on CPU metrics. This trigger uses cluster metrics as th
 The custom metrics autoscaler scales the pods associated with an object to maintain the CPU usage that you specify. The autoscaler increases or decreases the number of replicas between the minimum and maximum numbers to maintain the specified CPU utilization across all pods. The memory trigger considers the memory utilization of the entire pod. If the pod has multiple containers, the memory trigger considers the total memory utilization of all containers in the pod.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - This trigger cannot be used with the `ScaledJob` custom resource.
 
@@ -400,6 +431,10 @@ The custom metrics autoscaler scales the pods associated with an object to maint
 
 <div class="note">
 
+<div class="title">
+
+</div>
+
 - This trigger cannot be used with the `ScaledJob` custom resource.
 
 - When using a memory trigger to scale an object, the object does not scale to `0`, even if you are using multiple triggers.
@@ -446,19 +481,16 @@ Specifies an individual container to scale, based on the memory utilization of o
 
 You can scale pods based on an Apache Kafka topic or other services that support the Kafka protocol. The custom metrics autoscaler does not scale higher than the number of Kafka partitions, unless you set the `allowIdleConsumers` parameter to `true` in the scaled object or scaled job.
 
-<div class="note">
-
-If the number of consumer groups exceeds the number of partitions in a topic, the extra consumer groups remain idle. To avoid this, by default the number of replicas does not exceed:
-
-- The number of partitions on a topic, if a topic is specified
-
-- The number of partitions of all topics in the consumer group, if no topic is specified
-
-- The `maxReplicaCount` specified in scaled object or scaled job CR
-
-You can use the `allowIdleConsumers` parameter to disable these default behaviors.
-
-</div>
+> [!NOTE]
+> If the number of consumer groups exceeds the number of partitions in a topic, the extra consumer groups remain idle. To avoid this, by default the number of replicas does not exceed:
+>
+> - The number of partitions on a topic, if a topic is specified
+>
+> - The number of partitions of all topics in the consumer group, if no topic is specified
+>
+> - The `maxReplicaCount` specified in scaled object or scaled job CR
+>
+> You can use the `allowIdleConsumers` parameter to disable these default behaviors.
 
 The following example scales the pods associated with this scaled object to maintain the Kafka topic offset lag at 10 messages:
 

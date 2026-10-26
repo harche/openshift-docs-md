@@ -1,42 +1,74 @@
 Explore OpenShift Virtualization by taking guided tours, installing the Operator, and configuring a basic environment. Learn how to migrate from your current platform, then learn more about how to deploy and manage virtual machines (VMs) by following the additional resources links.
 
-<div class="note">
+> [!NOTE]
+> Cluster configuration procedures require `cluster-admin` privileges.
 
-Cluster configuration procedures require `cluster-admin` privileges.
-
-</div>
-
-# Getting started tour
+# Take the Getting started tour
 
 The **Getting started** tour introduces several key aspects of using OpenShift Virtualization. There are two ways to start the tour.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you see the **Welcome to OpenShift Virtualization** dialog, click **Start Tour**.
 
 - Otherwise, go to **Virtualization** → **Settings** → **User** → **Getting started resources** → **Guided tour**.
 
-# Quick start tours
+</div>
+
+# Take a quick start tour
 
 You can explore several OpenShift Virtualization capabilities by taking quick start tours in the web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click the **Help** icon **?** in the menu bar on the header of the OpenShift Container Platform web console.
 
 2.  Select **Quick Starts**. You can filter the list of tours by entering the keyword `virtual` in the **Filter** field.
 
+</div>
+
 # Self-service Technical Supportability Review
 
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
 
-<div class="note">
-
-The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
-
-</div>
+> [!NOTE]
+> The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
 
 The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
 
@@ -60,6 +92,8 @@ Confirm cluster stability ahead of high-traffic business events, such as seasona
 To run a self-service review, upload your cluster’s `must-gather` data to the **Analyze** tab in the **Support** section of the Red Hat Customer Portal. For a direct link, see "Technical Supportability Review with AI tool" in the Additional resources section. The **Analyze** feature generates a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. Review the recommendations and implement the suggested corrective actions to address the identified risks.
 
 The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
+
+## Additional resources
 
 - [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
 

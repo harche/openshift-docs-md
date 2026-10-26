@@ -4,21 +4,20 @@ Some familiarity with Kubernetes and iSCSI is assumed.
 
 The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure.
 
-<div class="important">
+> [!IMPORTANT]
+> High-availability of storage in the infrastructure is left to the underlying storage provider.
 
-High-availability of storage in the infrastructure is left to the underlying storage provider.
+> [!IMPORTANT]
+> When you use iSCSI on Amazon Web Services, you must update the default security policy to include TCP traffic between nodes on the iSCSI ports. By default, they are ports `860` and `3260`.
 
-</div>
+> [!IMPORTANT]
+> Users must ensure that the iSCSI initiator is already configured on all OpenShift Container Platform nodes by installing the `iscsi-initiator-utils` package and configuring their initiator name in `/etc/iscsi/initiatorname.iscsi`. The `iscsi-initiator-utils` package is already installed on deployments that use Red Hat Enterprise Linux CoreOS (RHCOS). For more information, see "Managing Storage Devices".
 
-<div class="important">
+<div>
 
-When you use iSCSI on Amazon Web Services, you must update the default security policy to include TCP traffic between nodes on the iSCSI ports. By default, they are ports `860` and `3260`.
+<div class="title">
 
-</div>
-
-<div class="important">
-
-Users must ensure that the iSCSI initiator is already configured on all OpenShift Container Platform nodes by installing the `iscsi-initiator-utils` package and configuring their initiator name in `/etc/iscsi/initiatorname.iscsi`. The `iscsi-initiator-utils` package is already installed on deployments that use Red Hat Enterprise Linux CoreOS (RHCOS). For more information, see "Managing Storage Devices".
+Additional resources
 
 </div>
 
@@ -26,15 +25,27 @@ Users must ensure that the iSCSI initiator is already configured on all OpenShif
 
 - [Configuring an iSCSI initiator](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/managing_storage_devices/index#configuring-an-iscsi-initiator_managing-storage-devices)
 
+</div>
+
 # Provisioning
 
 You can verify that the storage exists in the underlying infrastructure before mounting it as a volume in OpenShift Container Platform. All that is required for the iSCSI is the iSCSI target portal, a valid iSCSI Qualified Name (IQN), a valid LUN number, the filesystem type, and the `PersistentVolume` API.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Verify that the storage exists in the underlying infrastructure before mounting it as a volume in OpenShift Container Platform by creating the following `PersistentVolume` object definition:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `PersistentVolume` object definition**
+  <div class="title">
+
+  Example `PersistentVolume` object definition
 
   </div>
 
@@ -54,6 +65,10 @@ You can verify that the storage exists in the underlying infrastructure before m
        lun: 0
        fsType: 'ext4'
   ```
+
+  </div>
+
+</div>
 
 # Enforce disk quotas
 
@@ -107,11 +122,21 @@ Specifies the name of `Secret` object with user name and password. This `Secret`
 
 For iSCSI-based storage, you can configure multiple paths by using the same IQN for more than one target portal IP address. Multipathing ensures access to the persistent volume when one or more of the components in a path fail.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To specify multi-paths in the pod specification, specify a value in the `portals` field of the `PersistentVolume` definition object.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `PersistentVolume` object with a value specified in the portals field.**
+  <div class="title">
+
+  Example `PersistentVolume` object with a value specified in the portals field.
 
   </div>
 
@@ -134,20 +159,34 @@ For iSCSI-based storage, you can configure multiple paths by using the same IQN 
       readOnly: false
   ```
 
+  </div>
+
   where:
 
   `spec.iscsi.portals`
   Add additional target portals by using the `portals` field.
 
+</div>
+
 # iSCSI custom initiator IQN
 
 You can configure the custom initiator iSCSI Qualified Name (IQN) if the iSCSI targets are restricted to certain IQNs, but the nodes that the iSCSI PVs are attached to are not guaranteed to have these IQNs.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To specify a custom initiator IQN, update the `initiatorName` field in the `PersistentVolume` definition object.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `PersistentVolume` object with a value specified in the `initiatorName` field.**
+  <div class="title">
+
+  Example `PersistentVolume` object with a value specified in the `initiatorName` field.
 
   </div>
 
@@ -171,7 +210,11 @@ You can configure the custom initiator iSCSI Qualified Name (IQN) if the iSCSI t
       readOnly: false
   ```
 
+  </div>
+
   where:
 
   `spec.iscsi.initiatorName`
   Specifies the name of the initiator.
+
+</div>

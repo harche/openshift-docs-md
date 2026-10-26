@@ -16,11 +16,8 @@ For deployments that use remote S3 buckets located off-cluster with suboptimal d
 
 Ensure that your OpenShift Container Platform network performs optimally and meets OpenShift Container Platform network requirements.
 
-<div class="important">
-
-Although Red Hat provides support for standard backup and restore failures, it does not provide support for failures caused by network settings that do not meet the recommended thresholds.
-
-</div>
+> [!IMPORTANT]
+> Although Red Hat provides support for standard backup and restore failures, it does not provide support for failures caused by network settings that do not meet the recommended thresholds.
 
 # Additional resources
 

@@ -1,18 +1,15 @@
 You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Google Cloud. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
-<div class="important">
-
-You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
-
-Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
-
-To view the platform type for your cluster, run the following command:
-
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
-
-</div>
+> [!IMPORTANT]
+> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+>
+> To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
 # Sample YAML for a compute machine set custom resource on Google Cloud
 
@@ -42,9 +39,11 @@ $ oc -n openshift-machine-api \
   get machineset/<infrastructure_id>-worker-a
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample Google Cloud `MachineSet` values**
+<div class="title">
+
+Sample Google Cloud `MachineSet` values
 
 </div>
 
@@ -111,6 +110,8 @@ spec:
           zone: us-central1-a
 ```
 
+</div>
+
 where:
 
 `<infrastructure_id>`
@@ -141,11 +142,29 @@ Specifies a single service account. Multiple service accounts are not supported.
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -214,11 +233,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -228,6 +244,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -250,13 +276,31 @@ To dynamically manage machine compute resources, you can create your own compute
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
+</div>
+
 # Label GPU machine sets for the cluster autoscaler
 
 Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your cluster uses a cluster autoscaler.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - On the machine set that you want to create machines for the cluster autoscaler to use to deploy GPU-enabled nodes, add a `cluster-api/accelerator` label:
 
@@ -278,21 +322,36 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
   `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
-  <div class="note">
+  > [!NOTE]
+  > You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
 
-  You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
+
+</div>
 
 # Configuring persistent disk types by using machine sets
 
 Configure the persistent disk type for your machine set on Google Cloud to match your workload requirements. Editing the `MachineSet` YAML file allows you to choose between standard, balanced, or SSD persistent disks.
 
 For more information about persistent disk types, compatibility, regional availability, and limitations, see the Google Cloud Compute Engine documentation about [persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
@@ -316,17 +375,34 @@ For more information about persistent disk types, compatibility, regional availa
     `spec.template.spec.providerSpec.value.disks.type`
     Specifies the persistent disk type. Valid values are `pd-ssd`, `pd-standard`, and `pd-balanced`. The default value is `pd-standard`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Using the Google Cloud console, review the details for a machine deployed by the machine set and verify that the `Type` field matches the configured disk type.
 
-# Configure Confidential VM by using machine sets
+</div>
+
+# Configure Confidential VM by using machine sets on Google Cloud
 
 You create machine sets to scale clusters on Google Cloud. By editing the machine set YAML file, you can configure the Confidential VM options that a machine set uses for machines that it deploys.
 
 For more information about Confidential VM features, functions, and compatibility, see the Google Cloud Compute Engine documentation about [Confidential VM](https://cloud.google.com/confidential-computing/confidential-vm/docs/about-cvm#confidential-vm).
 
-<div class="note">
+> [!NOTE]
+> Confidential VMs are currently not supported on 64-bit ARM architectures. If you use Confidential VM, you must ensure that you select a supported region. For details on supported regions and configurations, see the Google Cloud Compute Engine documentation about [supported zones](https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones).
 
-Confidential VMs are currently not supported on 64-bit ARM architectures. If you use Confidential VM, you must ensure that you select a supported region. For details on supported regions and configurations, see the Google Cloud Compute Engine documentation about [supported zones](https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones).
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -357,11 +433,8 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `Enabled`
     Enables Confidential VM with a default selection of Confidential VM technology. The default selection is AMD Secure Encrypted Virtualization (AMD SEV).
 
-    <div class="important">
-
-    The `Enabled` value selects Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV), which is deprecated.
-
-    </div>
+    > [!IMPORTANT]
+    > The `Enabled` value selects Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV), which is deprecated.
 
     `Disabled`
     Disables Confidential VM.
@@ -372,11 +445,8 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `AMDEncryptedVirtualization`
     Enables Confidential VM using AMD SEV. AMD SEV supports c2d, n2d, and c3d machines.
 
-    <div class="important">
-
-    The use of Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV) has been deprecated and will be removed in a future release.
-
-    </div>
+    > [!IMPORTANT]
+    > The use of Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV) has been deprecated and will be removed in a future release.
 
     `IntelTrustedDomainExtensions`
     Enables Confidential VM using Intel Trusted Domain Extensions (Intel TDX). Intel TDX supports n2d machines.
@@ -387,17 +457,26 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `spec.template.spec.providerSpec.value.machineType`
     Specifies a machine type that supports the Confidential VM option that you specified in the `confidentialCompute` field.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - On the Google Cloud console, review the details for a machine deployed by the machine set and verify that the Confidential VM options match the values that you configured.
+
+</div>
 
 # Machine sets that deploy machines as Spot VMs
 
 You can save on costs by creating a compute machine set running on Google Cloud that deploys machines as non-guaranteed Spot VMs. Spot VMs use excess Compute Engine capacity and are less expensive than normal instances. You can use Spot VMs for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
 
-<div class="note">
-
-Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
-
-</div>
+> [!NOTE]
+> Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
 
 Google Cloud Compute Engine can terminate a Spot VM at any time. Compute Engine sends a best-effort preemption notice to the user indicating that an interruption will occur after 30 seconds. OpenShift Container Platform begins to remove the workloads from the affected instances when Compute Engine issues the preemption notice. An ACPI G3 Mechanical Off signal is sent to the operating system after 30 seconds if the instance is not stopped. The Spot VM is then transitioned to a `TERMINATED` state by Compute Engine.
 
@@ -413,6 +492,14 @@ When Google Cloud terminates an instance, a termination handler running on the S
 
 You can save on costs by creating a compute machine set that deploys machines as non-guaranteed instances. To launch a Spot VM on Google Cloud, you add `provisioningModel: "Spot"` to your compute machine set YAML file.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Add the following line under the `providerSpec` field:
 
   ``` yaml
@@ -423,21 +510,17 @@ You can save on costs by creating a compute machine set that deploys machines as
 
   If you specify `provisioningModel: "Spot"`, the machine is labeled as an `interruptible-instance` after the instance is launched.
 
-  <div class="note">
+  > [!NOTE]
+  > This parameter is not compatible with setting the `providerSpec.value.preemptible` value to `true`.
 
-  This parameter is not compatible with setting the `providerSpec.value.preemptible` value to `true`.
-
-  </div>
+</div>
 
 # Machine sets that deploy machines preemptible VM instances
 
 You can save on costs by creating a compute machine set running on Google Cloud that deploys machines as non-guaranteed preemptible VM instances. Preemptible VM instances use excess Compute Engine capacity and are less expensive than normal instances. You can use preemptible VM instances for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
 
-<div class="note">
-
-Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
-
-</div>
+> [!NOTE]
+> Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
 
 Google Cloud Compute Engine can terminate a preemptible VM instance at any time. Compute Engine sends a preemption notice to the user indicating that an interruption will occur after 30 seconds. OpenShift Container Platform begins to remove the workloads from the affected instances when Compute Engine issues the preemption notice. An ACPI G3 Mechanical Off signal is sent to the operating system after 30 seconds if the instance is not stopped. The preemptible VM instance is then transitioned to a `TERMINATED` state by Compute Engine.
 
@@ -455,9 +538,14 @@ When Google Cloud terminates an instance, a termination handler running on the p
 
 You can save on costs by creating a compute machine set that deploys machines as non-guaranteed instances. To launch a preemptible VM instance on Google Cloud, you add `preemptible` to your compute machine set YAML file.
 
-<div class="note">
+> [!NOTE]
+> Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
 
-Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs include new features that preemptible VMs do not support.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -471,17 +559,24 @@ Google Cloud recommends using Spot VMs over preemptible VMs because Spot VMs inc
 
   If `preemptible` is set to `true`, the machine is labeled as an `interruptible-instance` after the instance is launched.
 
-  <div class="note">
+  > [!NOTE]
+  > This parameter is not compatible with setting the `providerSpec.value.provisioningModel` value to `"Spot"`.
 
-  This parameter is not compatible with setting the `providerSpec.value.provisioningModel` value to `"Spot"`.
+</div>
 
-  </div>
-
-# Configuring Shielded VM options by using machine sets
+# Configuring Shielded VM options by using machine sets on Google Cloud
 
 To help secure your cluster instances, you can configure Shielded Virtual Machine (VM) options for your machine sets on Google Cloud by editing the `MachineSet` YAML file.
 
 For more information about Shielded VM features and functionality, see the Google Cloud Compute Engine documentation about [Shielded VM](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
@@ -511,11 +606,8 @@ For more information about Shielded VM features and functionality, see the Googl
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.integrityMonitoring`
     Specifies whether integrity monitoring is enabled. Valid values are `Disabled` or `Enabled`.
 
-    <div class="note">
-
-    When integrity monitoring is enabled, you must not disable virtual trusted platform module (vTPM).
-
-    </div>
+    > [!NOTE]
+    > When integrity monitoring is enabled, you must not disable virtual trusted platform module (vTPM).
 
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.secureBoot`
     Specifies whether UEFI Secure Boot is enabled. Valid values are `Disabled` or `Enabled`.
@@ -523,9 +615,27 @@ For more information about Shielded VM features and functionality, see the Googl
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.virtualizedTrustedPlatformModule`
     Specifies whether vTPM is enabled. Valid values are `Disabled` or `Enabled`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Using the Google Cloud console, review the details for a machine deployed by the machine set and verify that the Shielded VM options match the values that you configured.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [What is Shielded VM?](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm)
 
@@ -535,15 +645,22 @@ For more information about Shielded VM features and functionality, see the Googl
 
 - [Integrity monitoring](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#integrity-monitoring)
 
-# Enable customer-managed encryption keys for a machine set
+</div>
+
+# Enable customer-managed encryption keys for a machine set on Google Cloud Compute Engine
 
 Use Google Cloud Compute Engine to supply an encryption key to encrypt data on disks at rest. The key is used to encrypt the data encryption key, not to encrypt the customer’s data. By default, Compute Engine encrypts this data by using Compute Engine keys.
 
 You can enable encryption with a customer-managed key in clusters that use the Machine API. You must first [create a KMS key](https://cloud.google.com/compute/docs/disks/customer-managed-encryption#before_you_begin) and assign the correct permissions to a service account. The KMS key name, key ring name, and location are required to allow a service account to use your key.
 
-<div class="note">
+> [!NOTE]
+> If you do not want to use a dedicated service account for the KMS encryption, the Compute Engine default service account is used instead. You must grant the default service account permission to access the keys if you do not use a dedicated service account. The Compute Engine default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern.
 
-If you do not want to use a dedicated service account for the KMS encryption, the Compute Engine default service account is used instead. You must grant the default service account permission to access the keys if you do not use a dedicated service account. The Compute Engine default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -598,6 +715,8 @@ If you do not want to use a dedicated service account for the KMS encryption, th
 
     When a new machine is created by using the updated `providerSpec` object configuration, the disk encryption key is encrypted with the KMS key.
 
+</div>
+
 # Enable GPU support for a compute machine set
 
 Use the Google Cloud Compute Engine to add GPUs to Virtual Machine (VM) instances. Workloads that benefit from access to GPU resources can perform better on compute machines with this feature enabled. OpenShift Container Platform on Google Cloud supports NVIDIA GPU models in the A2 and N1 machine series.
@@ -610,14 +729,14 @@ Use the Google Cloud Compute Engine to add GPUs to Virtual Machine (VM) instance
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Model name</th>
 <th style="text-align: left;">GPU type</th>
 <th style="text-align: left;">Machine types <sup>[1]</sup></th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NVIDIA A100</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-a100</code></p></td>
 <td style="text-align: left;"><ul>
@@ -628,7 +747,7 @@ Use the Google Cloud Compute Engine to add GPUs to Virtual Machine (VM) instance
 <li><p><code>a2-megagpu-16g</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>NVIDIA K80</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-k80</code></p></td>
 <td style="text-align: left;"><ul>
@@ -656,22 +775,22 @@ Use the Google Cloud Compute Engine to add GPUs to Virtual Machine (VM) instance
 <li><p><code>n1-highcpu-96</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NVIDIA P100</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-p100</code></p></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>NVIDIA P4</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-p4</code></p></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NVIDIA T4</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-t4</code></p></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>NVIDIA V100</p></td>
 <td style="text-align: left;"><p><code>nvidia-tesla-v100</code></p></td>
 <td></td>
@@ -679,17 +798,20 @@ Use the Google Cloud Compute Engine to add GPUs to Virtual Machine (VM) instance
 </tbody>
 </table>
 
-Supported GPU configurations
-
 1.  For more information about machine types, including specifications, compatibility, regional availability, and limitations, see the Google Cloud Compute Engine documentation about [N1 machine series](https://cloud.google.com/compute/docs/general-purpose-machines#n1_machines), [A2 machine series](https://cloud.google.com/compute/docs/accelerator-optimized-machines#a2_vms), and [GPU regions and zones availability](https://cloud.google.com/compute/docs/gpus/gpu-regions-zones#gpu_regions_and_zones).
 
 You can define which supported GPU to use for an instance by using the Machine API.
 
 You can configure machines in the N1 machine series to deploy with one of the supported GPU types. Machines in the A2 machine series come with associated GPUs, and cannot use guest accelerators.
 
-<div class="note">
+> [!NOTE]
+> GPUs for graphics workloads are not supported.
 
-GPUs for graphics workloads are not supported.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -697,9 +819,11 @@ GPUs for graphics workloads are not supported.
 
 2.  Specify a GPU configuration under the `providerSpec` field in your compute machine set YAML file. See the following examples of valid configurations:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration for the A2 machine series**
+    <div class="title">
+
+    Example configuration for the A2 machine series
 
     </div>
 
@@ -710,6 +834,8 @@ GPUs for graphics workloads are not supported.
           onHostMaintenance: Terminate
           restartPolicy: Always
     ```
+
+    </div>
 
     where
 
@@ -722,9 +848,11 @@ GPUs for graphics workloads are not supported.
     `spec.template.spec.providerSpec.value.restartPolicy`
     Specifies the restart policy for machines deployed by the compute machine set. The allowed values are `Always` or `Never`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration for the N1 machine series**
+    <div class="title">
+
+    Example configuration for the N1 machine series
 
     </div>
 
@@ -738,6 +866,8 @@ GPUs for graphics workloads are not supported.
         onHostMaintenance: Terminate
         restartPolicy: Always
     ```
+
+    </div>
 
     where
 
@@ -756,6 +886,8 @@ GPUs for graphics workloads are not supported.
     `spec.template.spec.providerSpec.value.restartPolicy`
     Specifies the restart policy for machines deployed by the compute machine set. The allowed values are `Always` or `Never`.
 
+</div>
+
 # Add a GPU node to an existing OpenShift Container Platform cluster
 
 You can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the Google Cloud provider. This assists compute-intensive workloads that require hardware acceleration.
@@ -767,6 +899,14 @@ The following table lists the validated instance types:
 | `a2-highgpu-1g` | A100                   | 1                      | x86          |
 | `n1-standard-4` | T4                     | 1                      | x86          |
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Make a copy of an existing `MachineSet` configuration.
 
 2.  In the new copy, change the machine set `name` in `metadata.name` and in both instances of `machine.openshift.io/cluster-api-machineset`.
@@ -776,9 +916,11 @@ The following table lists the validated instance types:
         machineType: a2-highgpu-1g
         onHostMaintenance: Terminate
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `a2-highgpu-1g.json` file**
+    <div class="title">
+
+    Example `a2-highgpu-1g.json` file
 
     </div>
 
@@ -885,15 +1027,19 @@ The following table lists the validated instance types:
     }
     ```
 
+    </div>
+
 4.  View the existing nodes, machines, and machine sets by running the following command. Note that each node is an instance of a machine definition with a specific Google Cloud region and OpenShift Container Platform role.
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -908,15 +1054,19 @@ The following table lists the validated instance types:
     myclustername-2pt9p-worker-gpu-a-wxcr6.c.openshift-qe.internal   Ready      worker                 4h35m   v1.34.2
     ```
 
+    </div>
+
 5.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the Google Cloud region. The installation program automatically load balances compute machines across availability zones.
 
     ``` terminal
     $ oc get machinesets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -928,15 +1078,19 @@ The following table lists the validated instance types:
     myclustername-2pt9p-worker-f       0         0                             8h
     ```
 
+    </div>
+
 6.  View the machines that exist in the `openshift-machine-api` namespace by running the following command. You can only configure one compute machine per set, although you can scale a compute machine set to add a node in a particular region and zone.
 
     ``` terminal
     $ oc get machines -n openshift-machine-api | grep worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -945,6 +1099,8 @@ The following table lists the validated instance types:
     myclustername-2pt9p-worker-b-9pzzn       Running   n2-standard-4   us-central1   us-central1-b   8h
     myclustername-2pt9p-worker-c-6pbg6       Running   n2-standard-4   us-central1   us-central1-c   8h
     ```
+
+    </div>
 
 7.  Make a copy of one of the existing compute `MachineSet` definitions and output the result to a JSON file by running the following command. This will be the basis for the GPU-enabled compute machine set definition.
 
@@ -989,9 +1145,11 @@ The following table lists the validated instance types:
     $ oc get machineset/myclustername-2pt9p-worker-a -n openshift-machine-api -o json | diff ocp_4.17_machineset-a2-highgpu-1g.json -
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1015,15 +1173,19 @@ The following table lists the validated instance types:
     >                         "machineType": "n2-standard-4",
     ```
 
+    </div>
+
 11. Create the GPU-enabled compute machine set from the definition file by running the following command:
 
     ``` terminal
     $ oc create -f ocp_4.17_machineset-a2-highgpu-1g.json
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1031,7 +1193,17 @@ The following table lists the validated instance types:
     machineset.machine.openshift.io/myclustername-2pt9p-worker-gpu-a created
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the machine set you created by running the following command:
 
@@ -1041,9 +1213,11 @@ The following table lists the validated instance types:
 
     The `MachineSet` replica count is set to `1` so a new `Machine` object is created automatically.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1051,15 +1225,19 @@ The following table lists the validated instance types:
     myclustername-2pt9p-worker-gpu-a   1         1         1       1           5h24m
     ```
 
+    </div>
+
 2.  View the `Machine` object that the machine set created by running the following command:
 
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1067,17 +1245,26 @@ The following table lists the validated instance types:
     myclustername-2pt9p-worker-gpu-a-wxcr6   Running   a2-highgpu-1g   us-central1   us-central1-a   5h25m
     ```
 
-<div class="note">
-
-Note that there is no need to specify a namespace for the node. The node definition is cluster scoped.
+    </div>
 
 </div>
+
+> [!NOTE]
+> Note that there is no need to specify a namespace for the node. The node definition is cluster scoped.
 
 # Deploy the Node Feature Discovery Operator
 
 After the GPU-enabled node is created, you need to discover the GPU-enabled node so it can be scheduled. To do this, install the Node Feature Discovery (NFD) Operator.
 
 The NFD Operator identifies hardware device features in nodes. It solves the general problem of identifying and cataloging hardware resources in the infrastructure nodes so they can be made available to OpenShift Container Platform.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the Node Feature Discovery Operator from the software catalog in the OpenShift Container Platform console.
 
@@ -1089,9 +1276,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1101,11 +1290,21 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     nfd-controller-manager-8646fcbb65-x5qgk    2/2      Running 7  (8h ago)   1d
     ```
 
+    </div>
+
 4.  Browse to the installed Operator in the console and select **Create Node Feature Discovery**.
 
 5.  Select **Create** to build a NFD custom resource. This creates NFD pods in the `openshift-nfd` namespace that poll the OpenShift Container Platform nodes for hardware resources and catalog them.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After a successful build, verify that a NFD pod is running on each nodes by running the following command:
 
@@ -1113,9 +1312,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1127,6 +1328,8 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     nfd-worker-xtz9b                           1/1     Running     5 (3d14h ago)   12d
     ```
 
+    </div>
+
     The NFD Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID `10de`.
 
 2.  View the NVIDIA GPU discovered by the NFD Operator by running the following command:
@@ -1135,9 +1338,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc describe node ip-10-0-132-138.us-east-2.compute.internal | egrep 'Roles|pci'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1151,4 +1356,8 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     feature.node.kubernetes.io/pci-1d0f.present=true
     ```
 
+    </div>
+
     `10de` appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
+
+</div>

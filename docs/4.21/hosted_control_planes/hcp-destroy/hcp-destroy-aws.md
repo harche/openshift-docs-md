@@ -4,6 +4,14 @@ You might want to remove a hosted cluster if you are no longer using it, you are
 
 To delete a hosted cluster and its managed cluster resource from hosted control planes on Amazon Web Services (AWS), use the command-line interface (CLI).
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Delete the managed cluster resource on multicluster engine Operator by running the following command:
 
     ``` terminal
@@ -35,12 +43,11 @@ To delete a hosted cluster and its managed cluster resource from hosted control 
 
     - `<base_domain>` specifies your base domain, for example, `example.com`.
 
-      <div class="important">
+      > [!IMPORTANT]
+      > If your session token for AWS Security Token Service (STS) is expired, retrieve the STS credentials in a JSON file named `sts-creds.json` by running the following command:
+      >
+      > ``` terminal
+      > $ aws sts get-session-token --output json > sts-creds.json
+      > ```
 
-      If your session token for AWS Security Token Service (STS) is expired, retrieve the STS credentials in a JSON file named `sts-creds.json` by running the following command:
-
-      ``` terminal
-      $ aws sts get-session-token --output json > sts-creds.json
-      ```
-
-      </div>
+</div>

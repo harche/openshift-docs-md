@@ -2,19 +2,21 @@ Topology Aware Lifecycle Manager supports Red Hat Advanced Cluster Management (
 
 Hub-side cluster templates allow you to define configuration policies that can be dynamically customized to the target clusters. This reduces the need to create separate policies for many clusters with similar configurations but with different values.
 
-<div class="important">
+> [!IMPORTANT]
+> Policy templates are restricted to the same namespace as the namespace where the policy is defined. This means you must create the objects referenced in the hub template in the same namespace where the policy is created.
 
-Policy templates are restricted to the same namespace as the namespace where the policy is defined. This means you must create the objects referenced in the hub template in the same namespace where the policy is created.
+> [!IMPORTANT]
+> Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+>
+> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/5.0/html-single/governance/index#integrate-policy-generator) documentation.
+>
+> For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
-</div>
+<div>
 
-<div class="important">
+<div class="title">
 
-Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
-
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
-
-For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
+Additional resources
 
 </div>
 
@@ -22,7 +24,9 @@ For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyG
 
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
 
-- [RHACM support for template processing in configuration policies](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#template-processing)
+- [RHACM support for template processing in configuration policies](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/5.0/html-single/governance/index#template-processing)
+
+</div>
 
 # Specifying group and site configurations in group PolicyGenerator or PolicyGentemplate CRs
 
@@ -32,13 +36,18 @@ You can group the clusters in a fleet in various categories, depending on the us
 
 The following example shows you how to use three `ConfigMap` CRs and one `PolicyGenerator` CR to apply both site and group configuration to clusters grouped by hardware type and region.
 
-<div class="note">
+> [!NOTE]
+> There is a [1 MiB size limit](https://kubernetes.io/docs/concepts/configuration/configmap/#motivation) (Kubernetes documentation) for `ConfigMap` CRs. The effective size for the `ConfigMap` CRs is further limited by the `last-applied-configuration` annotation. To avoid the `last-applied-configuration` limitation, add the following annotation to the template `ConfigMap`:
+>
+> ``` yaml
+> argocd.argoproj.io/sync-options: Replace=true
+> ```
 
-There is a [1 MiB size limit](https://kubernetes.io/docs/concepts/configuration/configmap/#motivation) (Kubernetes documentation) for `ConfigMap` CRs. The effective size for the `ConfigMap` CRs is further limited by the `last-applied-configuration` annotation. To avoid the `last-applied-configuration` limitation, add the following annotation to the template `ConfigMap`:
+<div>
 
-``` yaml
-argocd.argoproj.io/sync-options: Replace=true
-```
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -47,6 +56,16 @@ argocd.argoproj.io/sync-options: Replace=true
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
 - You have created a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the GitOps ZTP ArgoCD application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create three `ConfigMap` CRs that contain the group and site configuration:
 
@@ -105,11 +124,8 @@ argocd.argoproj.io/sync-options: Replace=true
           du-sno-1-zone-1-sriov-network-vlan-2: "150"
         ```
 
-    <div class="note">
-
-    Each `ConfigMap` CR must be in the same namespace as the policy to be generated from the group `PolicyGenerator` CR.
-
-    </div>
+    > [!NOTE]
+    > Each `ConfigMap` CR must be in the same namespace as the policy to be generated from the group `PolicyGenerator` CR.
 
 2.  Commit the `ConfigMap` CRs in Git, and then push to the Git repository being monitored by the Argo CD application.
 
@@ -312,33 +328,47 @@ argocd.argoproj.io/sync-options: Replace=true
                 resourceName: du_fh
         ```
 
-    <div class="note">
-
-    To retrieve site-specific configuration values, use the `.ManagedClusterName` field. This is a template context value set to the name of the target managed cluster.
-
-    To retrieve group-specific configuration, use the `.ManagedClusterLabels` field. This is a template context value set to the value of the managed cluster’s labels.
-
-    </div>
+    > [!NOTE]
+    > To retrieve site-specific configuration values, use the `.ManagedClusterName` field. This is a template context value set to the name of the target managed cluster.
+    >
+    > To retrieve group-specific configuration, use the `.ManagedClusterLabels` field. This is a template context value set to the value of the managed cluster’s labels.
 
 5.  Commit the site `PolicyGenerator` or `PolicyGentemplate` CR in Git and push to the Git repository that is monitored by the ArgoCD application.
 
-    <div class="note">
+    > [!NOTE]
+    > Subsequent changes to the referenced `ConfigMap` CR are not automatically synced to the applied policies. You need to manually sync the new `ConfigMap` changes to update existing `PolicyGenerator` CRs. See "Syncing new ConfigMap changes to existing PolicyGenerator or PolicyGenTemplate CRs".
+    >
+    > You can use the same `PolicyGenerator` or `PolicyGentemplate` CR for multiple clusters. If there is a configuration change, then the only modifications you need to make are to the `ConfigMap` objects that hold the configuration for each cluster and the labels of the managed clusters.
 
-    Subsequent changes to the referenced `ConfigMap` CR are not automatically synced to the applied policies. You need to manually sync the new `ConfigMap` changes to update existing `PolicyGenerator` CRs. See "Syncing new ConfigMap changes to existing PolicyGenerator or PolicyGenTemplate CRs".
-
-    You can use the same `PolicyGenerator` or `PolicyGentemplate` CR for multiple clusters. If there is a configuration change, then the only modifications you need to make are to the `ConfigMap` objects that hold the configuration for each cluster and the labels of the managed clusters.
-
-    </div>
+</div>
 
 # Syncing new ConfigMap changes to existing PolicyGenerator or PolicyGentemplate CRs
 
 You can sync updated `ConfigMap` CR changes to existing `PolicyGenerator` or `PolicyGentemplate` CRs deployed on the hub cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
 - You have created a `PolicyGenerator` or `PolicyGentemplate` CR that pulls information from a `ConfigMap` CR using hub cluster templates.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the contents of your `ConfigMap` CR, and apply the changes in the hub cluster.
 
@@ -356,11 +386,8 @@ You can sync updated `ConfigMap` CR changes to existing `PolicyGenerator` or `Po
         $ oc annotate policy <policy_name> -n <policy_namespace> policy.open-cluster-management.io/trigger-update="1"
         ```
 
-        <div class="note">
-
-        You must apply the updated policy for the changes to take effect. For more information, see [Special annotation for reprocessing](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html-single/governance/index#special-annotation-processing).
-
-        </div>
+        > [!NOTE]
+        > You must apply the updated policy for the changes to take effect. For more information, see [Special annotation for reprocessing](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/5.0/html-single/governance/index#special-annotation-processing).
 
 3.  Optional: If it exists, delete the `ClusterGroupUpdate` CR that contains the policy. For example:
 
@@ -393,3 +420,5 @@ You can sync updated `ConfigMap` CR changes to existing `PolicyGenerator` or `Po
         ``` terminal
         $ oc apply -f cgr-example.yaml
         ```
+
+</div>

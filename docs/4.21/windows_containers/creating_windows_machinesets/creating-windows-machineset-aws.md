@@ -10,9 +10,11 @@ For example, you might create infrastructure Windows machine sets and related ma
 
   Use one of the following `aws` commands, as appropriate for your Windows Server release, to query valid AMI images:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example Windows Server 2022 command**
+  <div class="title">
+
+  Example Windows Server 2022 command
 
   </div>
 
@@ -20,15 +22,21 @@ For example, you might create infrastructure Windows machine sets and related ma
   $ aws ec2 describe-images --region <aws_region_name> --filters "Name=name,Values=Windows_Server-2022*English*Core*Base*" "Name=is-public,Values=true" --query "reverse(sort_by(Images, &CreationDate))[*].{name: Name, id: ImageId}" --output table
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example Windows Server 2019 command**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example Windows Server 2019 command
 
   </div>
 
   ``` terminal
   $ aws ec2 describe-images --region <aws_region_name> --filters "Name=name,Values=Windows_Server-2019*English*Core*Base*" "Name=is-public,Values=true" --query "reverse(sort_by(Images, &CreationDate))[*].{name: Name, id: ImageId}" --output table
   ```
+
+  </div>
 
   where:
 
@@ -147,11 +155,8 @@ Specify the following parameters:
 
 - `value.ami.id`. Specify the AMI ID of a supported Windows image with a container runtime installed.
 
-  <div class="note">
-
-  For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2 (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html).
-
-  </div>
+  > [!NOTE]
+  > For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2 (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html).
 
 - `value.iamInstanceProfile.id`. Replace the infrastructure ID.
 
@@ -171,6 +176,14 @@ Specify the following parameters:
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
@@ -178,6 +191,16 @@ To dynamically manage machine compute resources, you can create your own compute
 - Log in to `oc` as a user with `cluster-admin` permission.
 
 - In disconnected environments, the image specified in the `MachineSet` custom resource (CR) must have the [OpenSSH server v0.0.1.0 installed](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell#install-openssh-for-windows).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -246,11 +269,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -260,6 +280,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -281,6 +311,8 @@ To dynamically manage machine compute resources, you can create your own compute
   ```
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
+
+</div>
 
 # Additional resources
 

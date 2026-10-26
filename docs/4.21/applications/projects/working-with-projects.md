@@ -1,18 +1,12 @@
 A *project* allows a community of users to organize and manage their content in isolation from other communities.
 
-<div class="note">
+> [!NOTE]
+> Projects starting with `openshift-` and `kube-` are default projects. For more information, see "Default projects". These projects host cluster components that run as pods and other infrastructure components. As such, OpenShift Container Platform does not allow you to create projects starting with `openshift-` or `kube-` using the `oc new-project` command. Cluster administrators can create these projects using the `oc adm new-project` command.
 
-Projects starting with `openshift-` and `kube-` are default projects. For more information, see "Default projects". These projects host cluster components that run as pods and other infrastructure components. As such, OpenShift Container Platform does not allow you to create projects starting with `openshift-` or `kube-` using the `oc new-project` command. Cluster administrators can create these projects using the `oc adm new-project` command.
-
-</div>
-
-<div class="important">
-
-Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
-
-The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
-
-</div>
+> [!IMPORTANT]
+> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+>
+> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
 
 You can complete the following tasks on either the OpenShift Container Platform web console or the OpenShift CLI (`oc`):
 
@@ -24,25 +18,35 @@ You can complete the following tasks on either the OpenShift Container Platform 
 
 - Delete a project.
 
-<div class="important">
-
-When you delete a project, the server updates the project status to **Terminating** from **Active**. The server then clears all content from a project that is in the **Terminating** state before finally removing the project. While a project is in **Terminating** status, you cannot add new content to the project.
-
-</div>
+> [!IMPORTANT]
+> When you delete a project, the server updates the project status to **Terminating** from **Active**. The server then clears all content from a project that is in the **Terminating** state before finally removing the project. While a project is in **Terminating** status, you cannot add new content to the project.
 
 # Creating a project by using the web console
 
 You can use the OpenShift Container Platform web console to create a project in your cluster.
 
-<div class="note">
+> [!NOTE]
+> Projects starting with `openshift-` and `kube-` are considered critical by OpenShift Container Platform. As such, OpenShift Container Platform does not allow you to create projects starting with `openshift-` using the web console.
 
-Projects starting with `openshift-` and `kube-` are considered critical by OpenShift Container Platform. As such, OpenShift Container Platform does not allow you to create projects starting with `openshift-` using the web console.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have the appropriate roles and permissions to create projects, applications, and other workloads in OpenShift Container Platform.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you are using the **Administrator** perspective:
 
@@ -83,17 +87,32 @@ Projects starting with `openshift-` and `kube-` are considered critical by OpenS
 
   4.  Optional: If you have adequate permissions for a project, you can use the **Project Access** tab of the project dashboard to provide or revoke admin, edit, and view privileges for the project.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Customizing the available cluster roles using the web console](../../applications/projects/working-with-projects.xml#odc-customizing-available-cluster-roles-using-the-web-console_projects)
+
+</div>
 
 # Creating a project by using the CLI
 
 If your cluster administrator has provided you with the required permissions, you can create a new project.
 
-<div class="note">
+> [!NOTE]
+> Projects starting with `openshift-` and `kube-` are considered critical by OpenShift Container Platform. OpenShift Container Platform does not allow you to create projects that start with `openshift-` or `kube-` by using the `oc new-project` command. Cluster administrators can create these projects by using the `oc adm new-project` command.
 
-Projects starting with `openshift-` and `kube-` are considered critical by OpenShift Container Platform. OpenShift Container Platform does not allow you to create projects that start with `openshift-` or `kube-` by using the `oc new-project` command. Cluster administrators can create these projects by using the `oc adm new-project` command.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -112,23 +131,27 @@ Projects starting with `openshift-` and `kube-` are considered critical by OpenS
       --display-name="Hello OpenShift"
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > The number of projects that you can create might be limited by the system administrator. After your limit is reached, you might have to delete an existing project to create a new one.
 
-  The number of projects that you can create might be limited by the system administrator. After your limit is reached, you might have to delete an existing project to create a new one.
-
-  </div>
+</div>
 
 # Viewing a project by using the web console
 
 You can view the projects that you have access to by using the OpenShift Container Platform web console.
 
-<div class="important">
+> [!IMPORTANT]
+> Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
+>
+> All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
+>
+> You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
 
-Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
+<div>
 
-All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
+<div class="title">
 
-You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
+Procedure
 
 </div>
 
@@ -158,9 +181,19 @@ You can still enable the **Developer** perspective. On the **Getting Started** p
 
   5.  If you have adequate permissions for a project, select the **Project access** tab to view and update the privileges for the project.
 
+</div>
+
 # Viewing a project using the CLI
 
 When viewing projects, you are restricted to seeing only the projects you have access to view based on the authorization policy.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To view a list of projects, enter the following command:
 
@@ -174,11 +207,31 @@ When viewing projects, you are restricted to seeing only the projects you have a
     $ oc project <project_name>
     ```
 
+</div>
+
 # Providing access permissions to your project using the Developer perspective
 
 You can use the **Project** view in the **Developer** perspective to grant or revoke access permissions to your project. You can add users to your project and provide them with **Admin**, **Edit**, or **View** access.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created a project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Developer** perspective, navigate to the **Project** page.
 
@@ -203,11 +256,10 @@ You can use the **Project** view in the **Developer** perspective to grant or re
 
     - The **Remove Access** icon, to completely remove the access permissions of an existing user to the project.
 
-      <div class="note">
+      > [!NOTE]
+      > Advanced role-based access control is managed in the **Roles** and **Roles Binding** views in the **Administrator** perspective.
 
-      Advanced role-based access control is managed in the **Roles** and **Roles Binding** views in the **Administrator** perspective.
-
-      </div>
+</div>
 
 # Customizing the available cluster roles using the web console
 
@@ -215,7 +267,25 @@ In the **Developer** perspective of the web console, the **Project** → **Proje
 
 As a cluster administrator, you can define which cluster roles are available in the **Project access** page for all projects cluster-wide. You can specify the available roles by customizing the `spec.customization.projectAccess.availableClusterRoles` object in the `Console` configuration resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Administrator** perspective, navigate to **Administration** → **Cluster settings**.
 
@@ -244,7 +314,15 @@ As a cluster administrator, you can define which cluster roles are available in 
 
 6.  Click **Save** to save the changes to the `Console` configuration resource.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the **Developer** perspective, navigate to the **Project** page.
 
@@ -254,11 +332,31 @@ As a cluster administrator, you can define which cluster roles are available in 
 
 4.  Click the menu in the **Role** column and verify that the available roles match the configuration that you applied to the `Console` resource configuration.
 
+</div>
+
 # Adding to a project
 
 You can add items to your project by using the **+Add** page.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created a project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **+Add** page.
 
@@ -266,17 +364,34 @@ You can add items to your project by using the **+Add** page.
 
 3.  Click an item on the **+Add** page and then follow the workflow.
 
-    <div class="note">
+    > [!NOTE]
+    > You can also use the search feature in the **+Add** page to find additional items to add to your project. Click **+** under **Add** at the top of the page and type the name of a component in the search field.
 
-    You can also use the search feature in the **+Add** page to find additional items to add to your project. Click **+** under **Add** at the top of the page and type the name of a component in the search field.
-
-    </div>
+</div>
 
 # Checking project status by using the web console
 
 You can review the status of your project by using the web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created a project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Home** → **Projects**.
 
@@ -284,13 +399,33 @@ You can review the status of your project by using the web console.
 
 3.  Review the project status in the **Overview** page.
 
+</div>
+
 # Checking project status by using the CLI
 
 You can review the status of your project by using the OpenShift CLI (`oc`).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created a project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Switch to your project:
 
@@ -306,15 +441,33 @@ You can review the status of your project by using the OpenShift CLI (`oc`).
     $ oc status
     ```
 
+</div>
+
 # Deleting a project by using the web console
 
 You can delete a project by using the web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have created a project.
 
 - You have the required permissions to delete the project.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you are using the **Administrator** perspective, complete the following steps:
 
@@ -324,11 +477,8 @@ You can delete a project by using the web console.
 
   3.  Click the **Actions** drop-down menu for the project and select **Delete Project**.
 
-      <div class="note">
-
-      The **Delete Project** option is not available if you do not have the required permissions to delete the project.
-
-      </div>
+      > [!NOTE]
+      > The **Delete Project** option is not available if you do not have the required permissions to delete the project.
 
   4.  In the **Delete Project?** pane, confirm the deletion by entering the name of your project.
 
@@ -342,19 +492,26 @@ You can delete a project by using the web console.
 
   3.  Click the **Actions** drop-down menu for the project and select **Delete Project**.
 
-      <div class="note">
-
-      If you do not have the required permissions to delete the project, the **Delete Project** option is not available.
-
-      </div>
+      > [!NOTE]
+      > If you do not have the required permissions to delete the project, the **Delete Project** option is not available.
 
   4.  In the **Delete Project?** pane, confirm the deletion by entering the name of your project.
 
   5.  Click **Delete**.
 
+</div>
+
 # Deleting a project by using the CLI
 
 You can delete a project by using the OpenShift CLI (`oc`).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -362,7 +519,15 @@ You can delete a project by using the OpenShift CLI (`oc`).
 
 - You have the required permissions to delete the project.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Delete your project by entering the following command:
 
@@ -371,6 +536,8 @@ You can delete a project by using the OpenShift CLI (`oc`).
   ```
 
   - Replace `<project_name>` with the name of the project that you want to delete.
+
+</div>
 
 # Additional resources
 

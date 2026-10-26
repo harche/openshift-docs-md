@@ -6,11 +6,29 @@ Install the OpenShift API for Data Protection virtual machine data protection (V
 
 The OADP Operator deploys a download server in the cluster as the `openshift-adp-vmdp-server` service in the `openshift-adp` namespace. A `ConsoleCLIDownload` resource links to the download server routes, and users can access the download links from the OpenShift Container Platform web console or by using HTTP directly.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OADP Operator.
 
 - You have a running VM on OpenShift Virtualization with a supported guest operating system.
 
 - You have installed the `virtctl` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the cluster IP of the VMDP download server by running the following command:
 
@@ -52,6 +70,16 @@ The OADP Operator deploys a download server in the cluster as the `openshift-adp
 
       Replace `<cluster_ip>` with the `CLUSTER-IP` value of the `openshift-adp-vmdp-server` service.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Depending on your operating system, use one of the following steps to verify the installation:
 
   - For Linux VMs, verify that the binary is installed and working by running the following command:
@@ -82,15 +110,35 @@ The OADP Operator deploys a download server in the cluster as the `openshift-adp
     PS> .\oadp-vmdp.exe --help
     ```
 
+</div>
+
 # Create a backup storage location with S3-compatible storage by using the VMDP CLI
 
 Create a backup storage location (BSL) with S3-compatible storage to set up an encrypted repository for storing your virtual machine (VM) backups. This helps you to configure remote S3-compatible storage for your data.
 
 When you create a BSL, the virtual machine data protection (VMDP) command-line interface (CLI) creates a personal encrypted repository in the specified storage backend. You provide the encryption password, which is used to encrypt all backup data. Only users with this password can access the backup data.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the VMDP CLI inside your VM.
 
 - You have the storage credentials for your S3-compatible storage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To create a BSL with S3-compatible storage, run the following command:
 
@@ -144,11 +192,23 @@ When you create a BSL, the virtual machine data protection (VMDP) command-line i
 
 2.  Create an alias for the VMDP binary and name it `oadp-vmdp`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify the BSL connection status, run the following command:
 
   ``` terminal
   $ oadp-vmdp bsl status
   ```
+
+</div>
 
 # Create a backup storage location with file system storage by using the VMDP CLI
 
@@ -156,13 +216,29 @@ Create a backup storage location (BSL) with file system storage to set up an enc
 
 When you create a BSL, the virtual machine data protection (VMDP) command-line interface (CLI) creates a personal encrypted repository in the specified storage backend. You provide the encryption password, which is used to encrypt all backup data. Only users with this password can access the backup data.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the VMDP CLI inside your VM.
 
 - You have created an alias called `oadp-vmdp` for the VMDP CLI binary.
 
 - You have access to a local file system path for backup storage.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To create a BSL with file system storage, run the following command:
 
@@ -173,7 +249,15 @@ When you create a BSL, the virtual machine data protection (VMDP) command-line i
 
   Replace `<storage_directory_path>` with the absolute path to the storage directory.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify the BSL connection status, run the following command:
 
@@ -181,11 +265,21 @@ When you create a BSL, the virtual machine data protection (VMDP) command-line i
   $ oadp-vmdp bsl status
   ```
 
+</div>
+
 # Back up data from a virtual machine by using the VMDP CLI
 
 Back up files and directories from within your virtual machine (VM) by using the OpenShift API for Data Protection VM data protection (VMDP) command-line interface (CLI). This helps you to protect user data, including data accessible over network file systems such as CIFS and NFS shares.
 
 VMDP uses data deduplication to store data efficiently. If the same data exists in multiple locations, subsequent backups complete faster because only unique data blocks are stored.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are connected to your virtual machine (VM) by using SSH.
 
@@ -194,6 +288,16 @@ VMDP uses data deduplication to store data efficiently. If the same data exists 
 - You have created an alias called `oadp-vmdp` for the VMDP CLI binary.
 
 - You have created and connected to a backup storage location.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To create a backup of a directory, run the following command:
 
@@ -217,17 +321,24 @@ VMDP uses data deduplication to store data efficiently. If the same data exists 
 
     Replace `<backup_id>` with the ID of the backup to delete.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > After you delete backups, orphaned data objects such as pack blobs are not automatically cleaned up from the underlying storage backend. You must manually remove these orphaned objects directly from your storage backend, for example, by deleting them from your S3 bucket.
 
-    After you delete backups, orphaned data objects such as pack blobs are not automatically cleaned up from the underlying storage backend. You must manually remove these orphaned objects directly from your storage backend, for example, by deleting them from your S3 bucket.
-
-    </div>
+</div>
 
 # Restore data to a virtual machine by using the VMDP CLI
 
 Restore data from a backup to your virtual machine (VM) by using the OpenShift API for Data Protection VM data protection (VMDP) command-line interface (CLI). This helps you to recover files to the original location or to a different directory.
 
 You can restore from the most recent backup or from a specific backup by specifying its ID. You can also restore to a different VM by connecting to the BSL of the new VM.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are connected to your VM by using SSH.
 
@@ -237,7 +348,15 @@ You can restore from the most recent backup or from a specific backup by specify
 
 - You have connected to the backup storage location that contains the backup.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Depending on your specific use case, use one of the following steps to restore data:
 
@@ -288,6 +407,8 @@ You can restore from the most recent backup or from a specific backup by specify
         ``` terminal
         $ oadp-vmdp restore <path_to_data>
         ```
+
+</div>
 
 # OADP VMDP BSL management commands
 

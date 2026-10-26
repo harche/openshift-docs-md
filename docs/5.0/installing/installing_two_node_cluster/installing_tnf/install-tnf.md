@@ -9,25 +9,21 @@ You provision and manage your own operating system images, networking, storage, 
 Agent-Based Infrastructure
 You use a bootable ISO image containing an agent that automates the deployment on bare metal or pre-provisioned infrastructure. This combines the flexibility of manual setups with the ease of an automated workflow, making it ideal for disconnected environments.
 
-<div class="important">
-
-Configure node access during installation, for example, by including SSH keys in the `install-config.yaml` file. TNF clusters might require manual intervention in specific error scenarios that can only be resolved through direct node access.
-
-</div>
+> [!IMPORTANT]
+> Configure node access during installation, for example, by including SSH keys in the `install-config.yaml` file. TNF clusters might require manual intervention in specific error scenarios that can only be resolved through direct node access.
 
 # Sample install-config.yaml file for a two-node installer-provisioned infrastructure cluster with fencing
 
 You can use the following `install-config.yaml` configuration file as a template for deploying a two-node OpenShift cluster with fencing (TNF) by using the installer-provisioned infrastructure method:
 
-<div class="note">
+> [!NOTE]
+> Back up etcd before proceeding to ensure that you can restore the cluster if an issue occurs.
 
-Back up etcd before proceeding to ensure that you can restore the cluster if an issue occurs.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample `install-config.yaml` configuration**
+Sample `install-config.yaml` configuration
 
 </div>
 
@@ -79,6 +75,8 @@ pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
 
+</div>
+
 - `compute.replicas`: Set this field to `0` because a two-node OpenShift Container Platform cluster with fencing does not include compute nodes.
 
 - `controlPlane.replicas`: Set this field to `2` for a two-node OpenShift Container Platform cluster with fencing deployment.
@@ -101,15 +99,14 @@ sshKey: '<ssh_public_key>'
 
 You can use the following `install-config.yaml` configuration file as a template for deploying a two-node OpenShift Container Platform cluster with fencing by using the user-provisioned infrastructure method:
 
-<div class="note">
+> [!NOTE]
+> Back up etcd before proceeding to ensure that you can restore the cluster if an issue occurs.
 
-Back up etcd before proceeding to ensure that you can restore the cluster if an issue occurs.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample `install-config.yaml` configuration**
+Sample `install-config.yaml` configuration
 
 </div>
 
@@ -139,6 +136,8 @@ platform:
 pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
+
+</div>
 
 - `compute.replicas`: Set this field to `0` because a two-node OpenShift Container Platform cluster with fencing does not include worker nodes.
 
@@ -288,17 +287,11 @@ Specifies the IP address of the node that acts as the rendezvous host during ins
 
 See the following sample `agent-config.yaml` file with host configuration and static networking:
 
-<div class="note">
+> [!NOTE]
+> If your fencing credentials in the `install-config.yaml` use `hostname` to identify nodes, the `hostname` values in the `agent-config.yaml` file must match the `hostname` values in the fencing credentials. If your fencing credentials use `macAddress` instead, the MAC address is matched against the host interfaces and hostname matching is not required.
 
-If your fencing credentials in the `install-config.yaml` use `hostname` to identify nodes, the `hostname` values in the `agent-config.yaml` file must match the `hostname` values in the fencing credentials. If your fencing credentials use `macAddress` instead, the MAC address is matched against the host interfaces and hostname matching is not required.
-
-</div>
-
-<div class="caution">
-
-To prevent installation failures, ensure every `macAddress` in your fencing credentials matches a `hosts[].interfaces[].macAddress` in your `agent-config.yaml` file. The installation program does not flag mismatches. Instead, the installation program creates incomplete host entries that break the installation.
-
-</div>
+> [!CAUTION]
+> To prevent installation failures, ensure every `macAddress` in your fencing credentials matches a `hosts[].interfaces[].macAddress` in your `agent-config.yaml` file. The installation program does not flag mismatches. Instead, the installation program creates incomplete host entries that break the installation.
 
 ``` yaml
 apiVersion: v1beta1

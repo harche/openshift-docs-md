@@ -1,8 +1,16 @@
 The Data Plane Development Kit (DPDK) provides a set of libraries and drivers for fast packet processing. You can configure clusters and virtual machines (VMs) to run ultra-low latency packet processing workloads by using DPDK drivers with SR-IOV hardware.
 
-# Configuring a cluster for DPDK workloads
+# Prepare a cluster for DPDK workloads
 
 You can configure an OpenShift Container Platform cluster to run Data Plane Development Kit (DPDK) workloads for improved network performance.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
@@ -11,6 +19,16 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
 - You have installed the SR-IOV Network Operator.
 
 - You have installed the Node Tuning Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Map your compute nodes topology to determine which Non-Uniform Memory Access (NUMA) CPUs are isolated for DPDK applications and which ones are reserved for the operating system (OS).
 
@@ -74,11 +92,8 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
         topologyPolicy: single-numa-node
     ```
 
-    <div class="note">
-
-    The compute nodes automatically restart after you apply the `MachineConfigPool` and `PerformanceProfile` manifests.
-
-    </div>
+    > [!NOTE]
+    > The compute nodes automatically restart after you apply the `MachineConfigPool` and `PerformanceProfile` manifests.
 
 4.  Retrieve the name of the generated `RuntimeClass` resource from the `status.runtimeClass` field of the `PerformanceProfile` object:
 
@@ -93,11 +108,8 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
         --type='json' -p='[{"op": "add", "path": "/spec/virtualization/virtualMachineOptions/defaultRuntimeClass", "value":"<runtimeclass-name>"}]'
     ```
 
-    <div class="note">
-
-    Editing the `HyperConverged` CR changes a global setting that affects all VMs that are created after the change is applied.
-
-    </div>
+    > [!NOTE]
+    > Editing the `HyperConverged` CR changes a global setting that affects all VMs that are created after the change is applied.
 
 6.  If your DPDK-enabled compute nodes use Simultaneous multithreading (SMT), enable the `AlignCPUs` enabler by editing the `HyperConverged` CR:
 
@@ -107,11 +119,8 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
         "value": {"name": "alignCPUs"}}]'
     ```
 
-    <div class="note">
-
-    Enabling `AlignCPUs` allows OpenShift Virtualization to request up to two additional dedicated CPUs to bring the total CPU count to an even parity when using emulator thread isolation.
-
-    </div>
+    > [!NOTE]
+    > Enabling `AlignCPUs` allows OpenShift Virtualization to request up to two additional dedicated CPUs to bring the total CPU count to an even parity when using emulator thread isolation.
 
 7.  Create an `SriovNetworkNodePolicy` object with the `spec.deviceType` field set to `vfio-pci`.
 
@@ -140,15 +149,35 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
         feature.node.kubernetes.io/network-sriov.capable: "true"
     ```
 
-# Removing a custom machine config pool for high-availability clusters
+</div>
+
+# Remove a custom machine config pool for high-availability clusters
 
 You can delete a custom machine config pool that you previously created for your high-availability cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have created a custom machine config pool by labeling a subset of the compute nodes with a custom role and creating a `MachineConfigPool` manifest with that label.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Remove the `worker-dpdk` label from the compute nodes by running the following command:
 
@@ -162,13 +191,33 @@ You can delete a custom machine config pool that you previously created for your
     $ oc delete mcp worker-dpdk
     ```
 
-# Configuring a project for DPDK workloads
+</div>
+
+# Configure a project for DPDK workloads
 
 You can configure the project to run DPDK workloads on SR-IOV hardware.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your cluster is configured to run DPDK workloads.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for your DPDK applications:
 
@@ -209,15 +258,35 @@ You can configure the project to run DPDK workloads on SR-IOV hardware.
 
     - `spec.resourceName` defines the value of the `spec.resourceName` attribute of the `SriovNetworkNodePolicy` object that was created when configuring the cluster for DPDK workloads.
 
-# Configuring a virtual machine for DPDK workloads
+</div>
 
-You can run Data Packet Development Kit (DPDK) workloads on virtual machines (VMs) to achieve lower latency and higher throughput for faster packet processing in the user space. DPDK uses the SR-IOV network for hardware-based I/O sharing.
+# Configure a VM for DPDK workloads
+
+You can run Data Plane Development Kit (DPDK) workloads on virtual machines (VMs) to achieve lower latency and higher throughput for faster packet processing in the user space. DPDK uses the SR-IOV network for hardware-based I/O sharing.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your cluster is configured to run DPDK workloads.
 
 - You have created and configured the project in which the VM will run.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to include information about the SR-IOV network interface, CPU topology, CRI-O annotations, and huge pages.
 
@@ -323,6 +392,8 @@ You can run Data Packet Development Kit (DPDK) workloads on virtual machines (VM
         ```
 
 5.  Restart the VM to apply the changes.
+
+</div>
 
 # Additional resources
 

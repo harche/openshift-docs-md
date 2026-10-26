@@ -50,13 +50,28 @@ Cluster administrators can allow developers to create their own projects. In mos
 
 This procedure creates a new project called `user-getting-started`. You will use this project throughout the rest of this tutorial.
 
-<div class="important">
+> [!IMPORTANT]
+> If you are using Developer Sandbox to complete this tutorial, skip this procedure. A project has already been created for you.
 
-If you are using Developer Sandbox to complete this tutorial, skip this procedure. A project has already been created for you.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have logged in to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Home** → **Projects**.
 
@@ -66,7 +81,19 @@ If you are using Developer Sandbox to complete this tutorial, skip this procedur
 
 4.  Click **Create**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Viewing a project by using the web console](../applications/projects/working-with-projects.xml#viewing-a-project-using-the-web-console_projects)
+
+</div>
 
 # Grant view permissions
 
@@ -78,7 +105,25 @@ By default, the `default` service account has limited permissions to interact wi
 
 As a requirement of the application, you must assign the `view` role to the `default` service account to allow it to communicate with the OpenShift API to learn about pods, services, and resources within the project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have `cluster-admin` or project-level `admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **User Management** → **RoleBindings**.
 
@@ -88,11 +133,8 @@ As a requirement of the application, you must assign the `view` role to the `def
 
 4.  In the **Namespace** field, search for and select `user-getting-started`.
 
-    <div class="important">
-
-    If you are using a different project, select the name of your project.
-
-    </div>
+    > [!IMPORTANT]
+    > If you are using a different project, select the name of your project.
 
 5.  In the **Role name** field, search for and select `view`.
 
@@ -100,17 +142,26 @@ As a requirement of the application, you must assign the `view` role to the `def
 
 7.  In the **Subject namespace** field, search for and select `user-getting-started`.
 
-    <div class="important">
-
-    If you are using a different project, select the name of your project.
-
-    </div>
+    > [!IMPORTANT]
+    > If you are using a different project, select the name of your project.
 
 8.  In the **Subject name** field, enter `default`.
 
 9.  Click **Create**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [RBAC overview](../authentication/using-rbac.xml#authorization-overview_using-rbac)
+
+</div>
 
 # Deploy the front-end application
 
@@ -119,6 +170,14 @@ Deploy the front-end application that provides the external-facing web component
 The simplest way to deploy an application in OpenShift Container Platform is to run a provided container image.
 
 The following procedure deploys `parksmap`, which is the front-end component of the `national-parks-app` application. The web application displays an interactive map of the locations of national parks across the world.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Quick create** (![fa plus circle](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kEBxE1I4h6BBAAAAD7SURBVDjLpdM9SkNREAXg78UkhS7ATkFrdQFimxcV7QUXIGjpAlJauBotxDRZgYXYxQimM2vQZ2zmwSW+F39yYGCYO+eeucy5me9oo4sca1Ebo487vJuDA4wwrYkR9uvIFyjmkMsocF6lPEt+w1XEpOKSbklu1Yw9SAQGFecvaDdCfdPfsYFOE52kOMFT5I9J/QEfkW9hNfIcbpOxer9Q7iX9Nw0LohkmKXGG3eQJl5FfYyfy7aR/DMc1+/5pC1McNsKez/+Yfoj+Ej7DByfIkobl8MgejrCSnBU4nRVeyMolujFaHXlY7r5EVnFJK5pyrEftNb7z/ex3/gLk42n49JIWlQAAAABJRU5ErkJggg==)) menu in the upper right corner, click **Container images**.
 
@@ -154,7 +213,19 @@ The following procedure deploys `parksmap`, which is the front-end component of 
 
     You are redirected to the **Topology** page where you can see the `parksmap` deployment in the `national-parks-app` application.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Viewing the topology of your application](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-viewing-application-topology_viewing-application-composition-using-topology-view)
+
+</div>
 
 ## View pod details
 
@@ -164,7 +235,25 @@ OpenShift Container Platform uses the Kubernetes concept of a *pod*, which is on
 
 The **Overview** panel enables you to access many features of the `parksmap` deployment. The **Details** and **Resources** tabs enable you to scale application pods and check the status of builds, services, and routes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `parksmap` front-end application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Topology**.
 
@@ -185,11 +274,23 @@ The **Overview** panel enables you to access many features of the `parksmap` dep
 
 3.  To view the logs for a pod, select the **Resources** tab and click **View logs** next to the `parksmap` pod.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Interacting with applications and components](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-interacting-with-applications-and-components_viewing-application-composition-using-topology-view)
 
 - [Scaling application pods and checking builds and routes](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-scaling-application-pods-and-checking-builds-and-routes_viewing-application-composition-using-topology-view)
 
 - [Labels and annotations used for the Topology view](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-labels-and-annotations-used-for-topology-view_viewing-application-composition-using-topology-view)
+
+</div>
 
 ## Scale up the application
 
@@ -201,7 +302,25 @@ When you deploy the `parksmap` image, a deployment resource is created. In this 
 
 The following procedure scales the `parksmap` deployment to use two instances.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `parksmap` front-end application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Topology** and click the `parksmap` deployment.
 
@@ -214,13 +333,22 @@ The following procedure scales the `parksmap` deployment to use two instances.
     <figcaption>Scaling application</figcaption>
     </figure>
 
-    <div class="tip">
+    > [!TIP]
+    > You can use the down arrow to scale your deployment back down to one pod instance.
 
-    You can use the down arrow to scale your deployment back down to one pod instance.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Recommended practices for scaling the cluster](../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-scale-practices_recommended-control-plane-practices)
+
+</div>
 
 # Deploy the back-end application
 
@@ -228,7 +356,25 @@ Deploy the back-end application that provides the service that queries the datab
 
 The following procedure deploys `nationalparks`, which is the back-end component for the `national-parks-app` application. The Python application performs 2D geo-spatial queries against a MongoDB database to locate and return map coordinates of all national parks in the world.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `parksmap` front-end application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Quick create** (![fa plus circle](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kEBxE1I4h6BBAAAAD7SURBVDjLpdM9SkNREAXg78UkhS7ATkFrdQFimxcV7QUXIGjpAlJauBotxDRZgYXYxQimM2vQZ2zmwSW+F39yYGCYO+eeucy5me9oo4sca1Ebo487vJuDA4wwrYkR9uvIFyjmkMsocF6lPEt+w1XEpOKSbklu1Yw9SAQGFecvaDdCfdPfsYFOE52kOMFT5I9J/QEfkW9hNfIcbpOxer9Q7iX9Nw0LohkmKXGG3eQJl5FfYyfy7aR/DMc1+/5pC1McNsKez/+Yfoj+Ej7DByfIkobl8MgejrCSnBU4nRVeyMolujFaHXlY7r5EVnFJK5pyrEftNb7z/ex3/gLk42n49JIWlQAAAABJRU5ErkJggg==)) menu in the upper right corner, click **Import from Git**.
 
@@ -276,7 +422,15 @@ The following procedure deploys `nationalparks`, which is the back-end component
 
     You are redirected to the **Topology** page where you can see the `nationalparks` deployment in the `national-parks-app` application.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Workloads** → **Topology**.
 
@@ -286,17 +440,47 @@ The following procedure deploys `nationalparks`, which is the back-end component
 
     Wait for the build to complete successfully.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding services to your application](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-adding-services-to-your-application_viewing-application-composition-using-topology-view)
 
 - [Importing a codebase from Git to create an application](../applications/creating_applications/odc-creating-applications-using-developer-perspective.xml#odc-importing-codebase-from-git-to-create-application_odc-creating-applications-using-developer-perspective)
+
+</div>
 
 # Deploy the database application
 
 Deploy a MongoDB database application to contain the information that your application requires. For this tutorial, you will deploy a database application called `mongodb-nationalparks` that holds the national park location information.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `parksmap` front-end application.
 
 - You have deployed the `nationalparks` back-end application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Quick create** (![fa plus circle](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kEBxE1I4h6BBAAAAD7SURBVDjLpdM9SkNREAXg78UkhS7ATkFrdQFimxcV7QUXIGjpAlJauBotxDRZgYXYxQimM2vQZ2zmwSW+F39yYGCYO+eeucy5me9oo4sca1Ebo487vJuDA4wwrYkR9uvIFyjmkMsocF6lPEt+w1XEpOKSbklu1Yw9SAQGFecvaDdCfdPfsYFOE52kOMFT5I9J/QEfkW9hNfIcbpOxer9Q7iX9Nw0LohkmKXGG3eQJl5FfYyfy7aR/DMc1+/5pC1McNsKez/+Yfoj+Ej7DByfIkobl8MgejrCSnBU4nRVeyMolujFaHXlY7r5EVnFJK5pyrEftNb7z/ex3/gLk42n49JIWlQAAAABJRU5ErkJggg==)) menu in the upper right corner, click **Container images**.
 
@@ -327,11 +511,8 @@ Deploy a MongoDB database application to contain the information that your appli
 
     Environment variable names and values
 
-    <div class="tip">
-
-    Click **Add value** to add each additional environment variable.
-
-    </div>
+    > [!TIP]
+    > Click **Add value** to add each additional environment variable.
 
 11. In the **Advanced options** section, clear **Create a route**.
 
@@ -340,6 +521,8 @@ Deploy a MongoDB database application to contain the information that your appli
 12. Click **Create**.
 
     You are redirected to the **Topology** page where you can see the `mongodb-nationalparks` deployment in the `national-parks-app` application.
+
+</div>
 
 ## Provide access to the database by creating a secret
 
@@ -353,9 +536,27 @@ You can use a *secret* to store sensitive information, and share that secret wit
 
 The following procedure creates the `nationalparks-mongodb-parameters` secret and mounts it to the `nationalparks` workload.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `nationalparks` back-end application.
 
 - You have deployed the `mongodb-nationalparks` database application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -375,11 +576,8 @@ The following procedure creates the `nationalparks-mongodb-parameters` secret an
 
     Secret keys and values
 
-    <div class="tip">
-
-    Click **Add key/value** to add each additional key/value pair.
-
-    </div>
+    > [!TIP]
+    > Click **Add key/value** to add each additional key/value pair.
 
 5.  Click **Create**.
 
@@ -391,15 +589,45 @@ The following procedure creates the `nationalparks-mongodb-parameters` secret an
 
     This change in configuration triggers a new rollout of the `nationalparks` deployment with the environment variables properly injected.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding secrets](../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets-about_nodes-pods-secrets)
+
+</div>
 
 ## Load data into the database
 
 After you have deployed the `mongodb-nationalparks` database application, load the national park location information into the database.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deployed the `nationalparks` back-end application.
 
 - You have deployed the `mongodb-nationalparks` database application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Topology**.
 
@@ -419,9 +647,11 @@ After you have deployed the `mongodb-nationalparks` database application, load t
     https://nationalparks-user-getting-started.apps.cluster.example.com/ws/data/load
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -429,9 +659,21 @@ After you have deployed the `mongodb-nationalparks` database application, load t
     Items inserted in database: 2893
     ```
 
+    </div>
+
+</div>
+
 # View the application in a web browser
 
 After you have deployed the necessary applications and loaded data into the database, you are now ready view your application through a browser. You can access the application by opening the URL for the front-end application.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have deployed the `parksmap` front-end application.
 
@@ -440,6 +682,16 @@ After you have deployed the necessary applications and loaded data into the data
 - You have deployed the `mongodb-nationalparks` database application.
 
 - You have loaded the data into the `mongodb-nationalparks` database.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Topology**.
 
@@ -458,3 +710,5 @@ After you have deployed the necessary applications and loaded data into the data
     </figure>
 
     If you allow the application to access your location, the map will center on your location.
+
+</div>

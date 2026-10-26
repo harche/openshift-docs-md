@@ -6,11 +6,8 @@ You can access the metrics provided by the Machine Config Daemon by using the Pr
 
 The following table describes this set of metrics. Some entries contain commands for getting specific logs. However, the most comprehensive set of logs is available using the `oc adm must-gather` command.
 
-<div class="note">
-
-Metrics marked with `*` in the **Name** and **Description** columns represent serious errors that might cause performance problems. Such problems might prevent updates and upgrades from proceeding.
-
-</div>
+> [!NOTE]
+> Metrics marked with `*` in the **Name** and **Description** columns represent serious errors that might cause performance problems. Such problems might prevent updates and upgrades from proceeding.
 
 <table>
 <caption>MCO metrics</caption>
@@ -21,7 +18,7 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Name</th>
 <th style="text-align: left;">Format</th>
 <th style="text-align: left;">Description</th>
@@ -29,13 +26,13 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcd_host_os_and_version</code></p></td>
 <td style="text-align: left;"><p><code>[]string{"os", "version"}</code></p></td>
 <td style="text-align: left;"><p>Shows the OS that MCD is running on, such as RHCOS or RHEL. In case of RHCOS, the version is provided.</p></td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mcd_drain_err*</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Logs errors received during failed drain. *</p></td>
@@ -43,7 +40,7 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 <p>For further investigation, see the logs by running:</p>
 <p><code>$ oc logs -f -n openshift-machine-config-operator machine-config-daemon-&lt;hash&gt; -c machine-config-daemon</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcd_pivot_err*</code></p></td>
 <td style="text-align: left;"><p><code>[]string{"err", "node", "pivot_target"}</code></p></td>
 <td style="text-align: left;"><p>Logs errors encountered during pivot. *</p></td>
@@ -51,14 +48,14 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 <p>For further investigation, run this command to see the logs from the <code>machine-config-daemon</code> container:</p>
 <p><code>$ oc logs -f -n openshift-machine-config-operator machine-config-daemon-&lt;hash&gt; -c machine-config-daemon</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mcd_state</code></p></td>
 <td style="text-align: left;"><p><code>[]string{"state", "reason"}</code></p></td>
 <td style="text-align: left;"><p>State of Machine Config Daemon for the indicated node. Possible states are "Done", "Working", and "Degraded". In case of "Degraded", the reason is included.</p></td>
 <td style="text-align: left;"><p>For further investigation, see the logs by running:</p>
 <p><code>$ oc logs -f -n openshift-machine-config-operator machine-config-daemon-&lt;hash&gt; -c machine-config-daemon</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcd_kubelet_state*</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>Logs kubelet health failures. *</p></td>
@@ -66,7 +63,7 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 <p>For further investigation, run this command to access the node and see all its logs:</p>
 <p><code>$ oc debug node/&lt;node&gt; — chroot /host journalctl -u kubelet</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>mcd_reboot_err*</code></p></td>
 <td style="text-align: left;"><p><code>[]string{"message", "err", "node"}</code></p></td>
 <td style="text-align: left;"><p>Logs the failed reboots and the corresponding errors. *</p></td>
@@ -74,7 +71,7 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 <p>For further investigation, see the logs by running:</p>
 <p><code>$ oc logs -f -n openshift-machine-config-operator machine-config-daemon-&lt;hash&gt; -c machine-config-daemon</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mcd_update_state</code></p></td>
 <td style="text-align: left;"><p><code>[]string{"config", "err"}</code></p></td>
 <td style="text-align: left;"><p>Logs success or failure of configuration updates and the corresponding errors.</p></td>
@@ -85,8 +82,16 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 </tbody>
 </table>
 
-MCO metrics
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#gathering-cluster-data)
+
+</div>

@@ -2,13 +2,31 @@ You can use `virtctl` to manage virtual machine states and perform other actions
 
 You can stop, start, restart, reset, pause, and unpause virtual machines from the web console.
 
-# Configuring RBAC permissions for managing VM states by using the web console
+# Configure RBAC permissions for managing VM states
 
-To allow users to manage virtual machine (VM) states by using the OpenShift Container Platform web console, you must create an RBAC cluster role and cluster role binding. The cluster role uses the `subresources.kubevirt.io` API to define which resources can be controlled by certain users or groups.
+You can grant users permission to start and stop virtual machines (VMs) from the OpenShift Container Platform web console. Create a role-based access control (RBAC) cluster role and a cluster role binding to apply the permission.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have cluster administrator access to an OpenShift Container Platform cluster where OpenShift Virtualization is installed.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ClusterRole` object that allows the target user or group to manage VM states:
 
@@ -103,7 +121,15 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
     vm-manager-access-binding   15s
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check if the user can start a VM by running the following command:
 
@@ -129,17 +155,37 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
     yes
     ```
 
-# Enabling confirmations of virtual machine actions
+</div>
 
-The **Stop**, **Restart**, and **Pause** actions can display confirmation dialogs if confirmation is enabled. By default, confirmation is disabled.
+# Enable confirmations of VM actions
+
+You can require a confirmation dialog before the **Stop**, **Restart**, and **Pause** actions run on a virtual machine (VM). Confirmation is disabled by default.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Virtualization** section of the OpenShift Container Platform web console, navigate to **Overview** → **Settings** → **Cluster** → **General settings**.
 
 2.  Toggle the **VirtualMachine actions confirmation** setting to On.
 
-# Starting a virtual machine
+</div>
 
-You can start a virtual machine (VM) from the web console.
+# Start a VM
+
+You can start a virtual machine (VM) from the **VirtualMachines** page, the tree view, or the **VirtualMachine details** page of the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -163,15 +209,22 @@ You can start a virtual machine (VM) from the web console.
 
       2.  Click **Actions** → **Control** → **Start**.
 
-          <div class="note">
+          > [!NOTE]
+          > When you start VM that is provisioned from a `URL` source for the first time, the VM has a status of **Importing** while OpenShift Virtualization imports the container from the URL endpoint. Depending on the size of the image, this process might take several minutes.
 
-          When you start VM that is provisioned from a `URL` source for the first time, the VM has a status of **Importing** while OpenShift Virtualization imports the container from the URL endpoint. Depending on the size of the image, this process might take several minutes.
+</div>
 
-          </div>
+# Stop a VM
 
-# Stopping a virtual machine
+You can stop a virtual machine (VM) from the **VirtualMachines** page, the tree view, or the **VirtualMachine details** page of the OpenShift Container Platform web console.
 
-You can stop a virtual machine (VM) from the web console.
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -201,15 +254,22 @@ You can stop a virtual machine (VM) from the web console.
 
       3.  If action confirmation is enabled, click **Stop** in the confirmation dialog.
 
-# Restarting a virtual machine
+</div>
 
-You can restart a running virtual machine (VM) from the web console.
+# Restart a VM
 
-<div class="important">
+You can restart a running virtual machine (VM) from the OpenShift Container Platform web console. The **Restart** action shuts down the VM and starts a new pod for it.
 
-The **Restart** action shuts down the VM and starts a new pod. This action removes all related resources including the `virt-launcher` pod and recreates them.
+> [!IMPORTANT]
+> The **Restart** action shuts down the VM and starts a new pod. This action removes all related resources including the `virt-launcher` pod and recreates them.
+>
+> To avoid errors, do not restart a VM while it has a status of **Importing**.
 
-To avoid errors, do not restart a VM while it has a status of **Importing**.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -241,11 +301,19 @@ To avoid errors, do not restart a VM while it has a status of **Importing**.
 
       3.  If action confirmation is enabled, click **Restart** in the confirmation dialog.
 
-# Resetting a virtual machine
+</div>
 
-Unlike the **Restart** action, the **Reset** action preserves the pod in which the virtual machine (VM) is running and just hard resets the same VM inside it. When a VM is unresponsive or failed to boot, you can use the **Reset** action to bring it back immediately.
+# Reset a VM
 
-You can reset a VM from the web console.
+You can reset a virtual machine (VM) from the OpenShift Container Platform web console when the VM is unresponsive or has failed to boot. Unlike **Restart**, the **Reset** action keeps the existing pod and hard resets the VM inside it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -275,9 +343,19 @@ You can reset a VM from the web console.
 
       3.  If action confirmation is enabled, click **Reset** in the confirmation dialog.
 
-# Pausing a virtual machine
+</div>
 
-You can pause a virtual machine (VM) from the web console.
+# Pause a VM
+
+You can pause a virtual machine (VM) from the **VirtualMachines** page, the tree view, or the **VirtualMachine details** page of the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -307,11 +385,31 @@ You can pause a virtual machine (VM) from the web console.
 
       3.  If action confirmation is enabled, click **Pause** in the confirmation dialog.
 
-# Unpausing a virtual machine
+</div>
 
-You can unpause a paused virtual machine (VM) from the web console.
+# Unpause a VM
+
+You can unpause a paused virtual machine (VM) from the **VirtualMachines** page, the tree view, or the **VirtualMachine details** page of the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - At least one of your VMs must have a status of **Paused**.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -335,9 +433,19 @@ You can unpause a paused virtual machine (VM) from the web console.
 
       2.  Click **Actions** → **Control** → **Unpause**.
 
-# Controlling the state of multiple virtual machines
+</div>
 
-You can start, stop, restart, pause, and unpause multiple virtual machines (VMs) from the web console.
+# Control the state of multiple VMs
+
+You can start, stop, restart, pause, and unpause several virtual machines (VMs) at once from the OpenShift Container Platform web console. The action applies to every VM in a project or only to the VMs that you select.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -360,6 +468,8 @@ You can start, stop, restart, pause, and unpause multiple virtual machines (VMs)
       2.  Click **Actions** and select the intended action from the menu.
 
       3.  If action confirmation is enabled, confirm the action in the confirmation dialog.
+
+</div>
 
 # Additional resources
 

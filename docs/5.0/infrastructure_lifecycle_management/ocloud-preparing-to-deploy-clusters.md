@@ -1,16 +1,21 @@
 Before you can provision clusters with the O-Cloud Manager, you must install the Operator on the hub cluster, configure the GitOps repository that supplies cluster templates and configuration policies, and set up API authentication. If your environment uses a Service Management and Orchestration (SMO) framework, you must also configure mutual TLS (mTLS) and register with the SMO.
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Install the O-Cloud Manager by using the CLI
 
 You can install the O-Cloud Manager on the hub cluster by creating a `Subscription` custom resource (CR) that deploys the Operator from the Red Hat Ecosystem Catalog.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the hub cluster as a user with `cluster-admin` privileges.
 
@@ -21,6 +26,16 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
 - The SiteConfig Operator is enabled in the `MultiClusterHub` CR.
 
 - A default `StorageClass` that supports `ReadWriteOnce` access mode is configured, with at least 20 Gi of available `PersistentVolume` capacity.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for the O-Cloud Manager by running the following command:
 
@@ -66,7 +81,15 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
     $ oc apply -f <subscription_filename>.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the Operator is installed and running by running the following command:
 
@@ -74,9 +97,11 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
     $ oc get pods -n oran-o2ims
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -92,15 +117,19 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
     resource-server-79d7cd8495-skt45                 1/1     Running   0          114s
     ```
 
+    </div>
+
 2.  Verify that the default `Inventory` CR was created by running the following command:
 
     ``` terminal
     $ oc get inventory -n oran-o2ims
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -109,15 +138,19 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
     default   4m20s
     ```
 
+    </div>
+
 3.  Verify that the API routes are available by running the following command:
 
     ``` terminal
     $ oc get routes -n oran-o2ims
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -130,11 +163,33 @@ You can install the O-Cloud Manager on the hub cluster by creating a `Subscripti
     oran-o2ims-ingress-tkvlh   o2ims.apps.<cluster_domain>   /O2ims_infrastructureCluster        cluster-server        api    reencrypt/Redirect   None
     ```
 
+    </div>
+
+</div>
+
 # Install the O-Cloud Manager by using the web console
 
 As a cluster administrator, you can install the O-Cloud Manager by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -144,7 +199,15 @@ As a cluster administrator, you can install the O-Cloud Manager by using the Ope
 
 4.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To confirm that the installation is successful:
 
@@ -158,13 +221,20 @@ As a cluster administrator, you can install the O-Cloud Manager by using the Ope
 
     2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the Operator namespace that are reporting issues.
 
+</div>
+
 # Configure the GitOps repository for O-Cloud Manager resources
 
 Configure a Git repository with the directory layout required by the O-Cloud Manager, including cluster templates, configuration policy definitions, hardware profiles, and server inventory. ArgoCD synchronizes this repository content to the hub cluster where the O-Cloud Manager uses it for cluster provisioning.
 
-<div class="note">
+> [!NOTE]
+> This repository layout differs from the GitOps Zero Touch Provisioning (ZTP) GitOps layout. In GitOps ZTP, the Git repository contains a `ClusterInstance` CR for each site, representing the full cluster definition. In the O-Cloud Manager flow, the repository contains reusable templates, defaults, and policies. Individual clusters are instantiated by creating a `ProvisioningRequest` CR that references a template and supplies site-specific parameters. The `ProvisioningRequest` CR can be applied directly to the hub cluster or managed through a separate GitOps repository.
 
-This repository layout differs from the GitOps Zero Touch Provisioning (ZTP) GitOps layout. In GitOps ZTP, the Git repository contains a `ClusterInstance` CR for each site, representing the full cluster definition. In the O-Cloud Manager flow, the repository contains reusable templates, defaults, and policies. Individual clusters are instantiated by creating a `ProvisioningRequest` CR that references a template and supplies site-specific parameters. The `ProvisioningRequest` CR can be applied directly to the hub cluster or managed through a separate GitOps repository.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -173,6 +243,16 @@ This repository layout differs from the GitOps Zero Touch Provisioning (ZTP) Git
 - The Red Hat OpenShift GitOps Operator is installed.
 
 - You have a Git repository accessible by ArgoCD on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create your Git repository. See the following recommended directory layout:
 
@@ -306,6 +386,16 @@ This repository layout differs from the GitOps Zero Touch Provisioning (ZTP) Git
 
     - Replace `<clusters_application_filename>.yaml` and `<policies_application_filename>.yaml` with the names of the application CRs.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that ArgoCD has synchronized the cluster templates to the hub cluster:
 
   ``` terminal
@@ -314,15 +404,35 @@ This repository layout differs from the GitOps Zero Touch Provisioning (ZTP) Git
 
   The output lists the `ClusterTemplate` CRs with their validation status. A `ClusterTemplateValidated` condition of `True` indicates that the template is ready for use.
 
+</div>
+
 # Configure mTLS for API access
 
 You can configure mutual TLS (mTLS) to require client certificate authentication for all incoming connections to the O-Cloud Manager REST API. This secures API access for any external client, including SMO frameworks, automation platforms, and custom integrations.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The O-Cloud Manager Operator is installed and running on the hub cluster.
 
 - You have a TLS certificate and private key for the O-Cloud Manager ingress. The certificate must include `server auth` and `client auth` extended key usage.
 
 - You have the CA certificate used to validate incoming client certificates.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a TLS `Secret` containing the O-Cloud Manager certificate and private key. The `tls.crt` field must contain the full certificate chain with the device certificate first, intermediate certificates next, and the root certificate last.
 
@@ -409,11 +519,8 @@ You can configure mutual TLS (mTLS) to require client certificate authentication
     `<subject_pattern>`
     Optional. A regular expression that restricts access to specific certificate subjects, for example `^/O=ORAN/OU=SMO/`. Remove the `allowedSubjectPatterns` field to accept any valid client certificate signed by the configured CA.
 
-    <div class="warning">
-
-    If the ingress controller is shared with other applications, setting `clientCertificatePolicy: Required` enforces client certificates on all incoming connections. Consider creating a secondary ingress controller for the O-Cloud Manager domain to avoid impacting other applications. Set `clientCertificatePolicy: Optional` if you cannot enforce mTLS globally but have OAuth enabled.
-
-    </div>
+    > [!WARNING]
+    > If the ingress controller is shared with other applications, setting `clientCertificatePolicy: Required` enforces client certificates on all incoming connections. Consider creating a secondary ingress controller for the O-Cloud Manager domain to avoid impacting other applications. Set `clientCertificatePolicy: Optional` if you cannot enforce mTLS globally but have OAuth enabled.
 
 4.  Update the `Inventory` CR to reference the TLS certificate by running the following command:
 
@@ -421,6 +528,16 @@ You can configure mutual TLS (mTLS) to require client certificate authentication
     $ oc patch inventory default -n oran-o2ims --type merge \
       -p '{"spec":{"ingress":{"tls":{"secretName":"oran-o2ims-tls-certificate"}}}}'
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the ingress controller is configured for mTLS by running the following command:
 
@@ -431,9 +548,19 @@ You can configure mutual TLS (mTLS) to require client certificate authentication
 
   The output shows the configured `clientCertificatePolicy`, `clientCA`, and any `allowedSubjectPatterns`.
 
+</div>
+
 # Register the O-Cloud Manager with an SMO
 
 Optionally, for telcommunications use cases, you can register the O-Cloud Manager with a Service Management and Orchestration (SMO) system by updating the `Inventory` custom resource (CR) with the SMO endpoint, OAuth credentials, and CA certificate configuration. Registration is a one-time operation that enables the SMO to manage infrastructure through the O2 IMS REST APIs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The O-Cloud Manager Operator is installed and running on the hub cluster.
 
@@ -444,6 +571,16 @@ Optionally, for telcommunications use cases, you can register the O-Cloud Manage
 - You have OAuth2 client credentials for the O-Cloud Manager, obtained from the OAuth2 authorization server administrator.
 
 - You have the CA certificate bundle if the SMO or OAuth2 server uses certificates signed by a non-public CA.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If the SMO or OAuth2 server TLS certificates are signed by a non-public CA, create a `ConfigMap` with the CA certificate bundle and configure the cluster proxy by running the following commands:
 
@@ -462,11 +599,8 @@ Optionally, for telcommunications use cases, you can register the O-Cloud Manage
     `<path_to_ca_bundle>`
     Specifies the local file path to the CA certificate bundle that contains the certificates needed to trust the SMO and OAuth2 server endpoints.
 
-    <div class="warning">
-
-    If the cluster proxy already references a custom CA bundle, append the new certificates to the existing bundle rather than replacing it.
-
-    </div>
+    > [!WARNING]
+    > If the cluster proxy already references a custom CA bundle, append the new certificates to the existing bundle rather than replacing it.
 
 2.  Create a `ConfigMap` with the trust bundle injection label so that the O-Cloud Manager can access both private and public CA certificates:
 
@@ -556,15 +690,27 @@ Optionally, for telcommunications use cases, you can register the O-Cloud Manage
 
     - Replace `<inventory_filename>.yaml` with the name of the file.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that registration with the SMO completed successfully:
 
   ``` terminal
   $ oc describe inventories.ocloud.openshift.io default -n oran-o2ims
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -579,13 +725,35 @@ Optionally, for telcommunications use cases, you can register the O-Cloud Manage
         Type:                  SmoRegistrationCompleted
   ```
 
+  </div>
+
+</div>
+
 # Authenticate using a service account token
 
 You can authenticate to the O-Cloud Manager REST API by using a service account token. This method is suitable for development, testing, and standalone automation environments that do not require OAuth2 with mutual TLS (mTLS).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have `cluster-admin` permissions on the hub cluster.
 
 - You installed the O-Cloud Manager Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a service account with API access permissions by running the following commands:
 
@@ -634,11 +802,31 @@ You can authenticate to the O-Cloud Manager REST API by using a service account 
       "https://${API_BASE_URL}/O2ims_infrastructureInventory/v2" | jq
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - A successful response returns O-Cloud metadata including the unique identifier and supported API versions.
+
+</div>
 
 # Authenticate using OAuth2
 
 In production environments, the O-Cloud Manager REST API supports OAuth2 authentication with mutual TLS (mTLS). This method is used by SMO frameworks and external automation systems that require token-based access. You must acquire a JSON Web Token (JWT) from the OAuth2 authorization server configured in the `Inventory` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The O-Cloud Manager Operator is installed and running on the hub cluster.
 
@@ -647,6 +835,16 @@ In production environments, the O-Cloud Manager REST API supports OAuth2 authent
 - You have the TLS client certificate and private key for API access.
 
 - You have the CA certificate bundle that trusts the OAuth2 server and O-Cloud Manager ingress.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the base URL for all O-Cloud Manager API requests from the ingress routes by running the following command:
 
@@ -699,17 +897,26 @@ In production environments, the O-Cloud Manager REST API supports OAuth2 authent
       "https://${API_BASE_URL}/O2ims_infrastructureInventory/v2" | jq
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - A successful response returns O-Cloud metadata including the unique identifier and supported API versions.
 
-  <div class="note">
+  > [!NOTE]
+  > When using mTLS, include the `--cert`, `--key`, and `--cacert` flags in all subsequent API requests. If the ingress certificate is signed by a publicly trusted CA, the `--cacert` flag can be omitted.
 
-  When using mTLS, include the `--cert`, `--key`, and `--cacert` flags in all subsequent API requests. If the ingress certificate is signed by a publicly trusted CA, the `--cacert` flag can be omitted.
-
-  </div>
+</div>
 
 # Additional resources
 
-- [Cluster lifecycle with multicluster engine operator overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/clusters/cluster_mce_overview)
+- [Cluster lifecycle with multicluster engine operator overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/5.0/html/clusters/cluster_mce_overview)
 
 - [Understanding TLS security profiles](../security/tls-security-profiles.xml#tls-profiles-understanding_tls-security-profiles)
 

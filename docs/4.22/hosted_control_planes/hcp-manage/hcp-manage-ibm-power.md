@@ -6,6 +6,14 @@ An `InfraEnv` resource is an environment where hosts that are starting the live 
 
 You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 bare metal for IBM Power compute nodes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file to configure an `InfraEnv` resource. See the following example:
 
     ``` yaml
@@ -42,9 +50,19 @@ You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 ba
       -o json
     ```
 
+</div>
+
 # Adding IBM Power agents to the InfraEnv resource
 
 You can add agents by manually configuring the machine to start with the live ISO.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Download the live ISO and use it to start a bare metal or a virtual machine (VM) host. You can find the URL for the live ISO in the `status.isoDownloadURL` field in the `InfraEnv` resource. At startup, the host communicates with the Assisted Service and registers as an agent in the same namespace as the `InfraEnv` resource.
 
@@ -54,9 +72,11 @@ You can add agents by manually configuring the machine to start with the live IS
     $ oc -n <hosted_control_plane_namespace> get agents
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -65,6 +85,8 @@ You can add agents by manually configuring the machine to start with the live IS
     86f7ac75-4fc4-4b36-8130-40fa12602218                        auto-assign
     e57a637f-745b-496e-971d-1abbf03341ba                        auto-assign
     ```
+
+    </div>
 
 3.  After each agent is created, you can optionally set the `installation_disk_id` and `hostname` for an agent:
 
@@ -80,15 +102,27 @@ You can add agents by manually configuring the machine to start with the live IS
         $ oc -n <hosted_control_plane_namespace> patch agent <agent_name> -p '{"spec":{"hostname":"<hostname>","approved":true}}' --type merge
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the agents are approved for use, enter the following command:
 
   ``` terminal
   $ oc -n <hosted_control_plane_namespace> get agents
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -98,9 +132,21 @@ You can add agents by manually configuring the machine to start with the live IS
   e57a637f-745b-496e-971d-1abbf03341ba             true       auto-assign
   ```
 
+  </div>
+
+</div>
+
 # Scaling the NodePool object for a hosted cluster on IBM Power
 
 The `NodePool` object is created when you create a hosted cluster. By scaling the `NodePool` object, you can add more compute nodes to hosted control planes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to scale the `NodePool` object to two nodes:
 
@@ -129,9 +175,11 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
       -o jsonpath='{range .items[*]}BMH: {@.metadata.labels.agent-install\.openshift\.io/bmh} Agent: {@.metadata.name} State: {@.status.debugInfo.state}{"\n"}{end}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -140,15 +188,19 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     BMH: Agent: 5e498cd3-542c-e54f-0c58-ed43e28b568a State: insufficient
     ```
 
+    </div>
+
 3.  Run the following command to see the transition phases:
 
     ``` terminal
     $ oc -n <hosted_control_plane_namespace> get agent
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -158,6 +210,8 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     5e498cd3-542c-e54f-0c58-ed43e28b568a                      true           auto-assign
     da503cf1-a347-44f2-875c-4960ddb04091   hosted-forwarder   true           auto-assign
     ```
+
+    </div>
 
 4.  Run the following command to generate the `kubeconfig` file to access the hosted cluster:
 
@@ -172,9 +226,11 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -184,15 +240,19 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     worker-zvm-1.hostedn.example.com Ready    worker   6m3s     v1.24.0+3882f8f
     ```
 
+    </div>
+
 6.  Enter the following command to verify that two machines were created when you scaled up the `NodePool` object:
 
     ``` terminal
     $ oc -n <hosted_control_plane_namespace> get machine.cluster.x-k8s.io
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -202,15 +262,19 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     hosted-forwarder-79558597ff-lfjfk   hosted-forwarder-crqq5   worker-zvm-1.hostedn.example.com   agent://5e498cd3-542c-e54f-0c58-ed43e28b568a   Running   41h   4.15.0
     ```
 
+    </div>
+
 7.  Run the following command to check the cluster version:
 
     ``` terminal
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get clusterversion
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -218,6 +282,8 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
     NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
     clusterversion.config.openshift.io/version   4.15.0        True        False         40h     Cluster version is 4.15.0
     ```
+
+    </div>
 
 8.  Run the following command to check the Cluster Operator status:
 
@@ -241,6 +307,18 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
 
     - `MESSAGE`
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Initial Operator configuration](../../installing/installing_ibm_power/installing-ibm-power.xml#installation-operators-config)
 
 - [Scaling down the data plane to zero](../../hosted_control_planes/hcp-machine-config.xml#scale-down-data-plane_hcp-machine-config)
+
+</div>

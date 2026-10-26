@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
-| `spec`       | `object`                                                                             | spec holds user settable values for configuration                                                                                                                                                                                                                                                    |
-| `status`     | `object`                                                                             | status holds observed values from the cluster. They may not be overridden.                                                                                                                                                                                                                           |
+| Property | Type | Description |
+|----|----|----|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
+| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
+| `spec` | `object` | spec holds user settable values for configuration |
+| `status` | `object` | status holds observed values from the cluster. They may not be overridden. |
 
 ## .spec
 
@@ -34,33 +34,33 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>baseDomain</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>baseDomain is the base domain of the cluster. All managed DNS records will be sub-domains of this base.</p>
 <p>For example, given the base domain <code>openshift.example.com</code>, an API server DNS record may be created for <code>cluster-api.openshift.example.com</code>.</p>
 <p>Once set, this field cannot be changed.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>platform</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>platform holds configuration specific to the underlying infrastructure provider for DNS. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>privateZone</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>privateZone is the location where all the DNS records that are only available internally to the cluster exist.</p>
 <p>If this field is nil, no private records should be created.</p>
 <p>Once set, this field cannot be changed.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>publicZone</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>publicZone is the location where all the DNS records that are publicly accessible to the internet exist.</p>
@@ -88,19 +88,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>aws</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>aws contains DNS configuration specific to the Amazon Web Services cloud provider.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is the underlying infrastructure provider for the cluster. Allowed values: "", "AWS".</p>
@@ -124,14 +124,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>privateZoneIAMRole</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster’s private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.</p>
@@ -159,21 +159,21 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>id</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>id is the identifier that can be used to find the DNS hosted zone.</p>
 <p>on AWS zone can be fetched using <code>ID</code> as id in [1] on Azure zone can be fetched using <code>ID</code> as a pre-determined name in [2], on GCP zone can be fetched using <code>ID</code> as a pre-determined name in [3].</p>
 <p>[1]: <a href="https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options">https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options</a> [2]: <a href="https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show">https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show</a> [3]: <a href="https://cloud.google.com/dns/docs/reference/v1/managedZones/get">https://cloud.google.com/dns/docs/reference/v1/managedZones/get</a></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tags</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>tags can be used to query the DNS hosted zone.</p>
@@ -202,21 +202,21 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>id</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>id is the identifier that can be used to find the DNS hosted zone.</p>
 <p>on AWS zone can be fetched using <code>ID</code> as id in [1] on Azure zone can be fetched using <code>ID</code> as a pre-determined name in [2], on GCP zone can be fetched using <code>ID</code> as a pre-determined name in [3].</p>
 <p>[1]: <a href="https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options">https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options</a> [2]: <a href="https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show">https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show</a> [3]: <a href="https://cloud.google.com/dns/docs/reference/v1/managedZones/get">https://cloud.google.com/dns/docs/reference/v1/managedZones/get</a></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tags</code></p></td>
 <td style="text-align: left;"><p><code>object (string)</code></p></td>
 <td style="text-align: left;"><p>tags can be used to query the DNS hosted zone.</p>
@@ -272,10 +272,10 @@ HTTP method
 Description
 delete collection of DNS
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -285,10 +285,10 @@ HTTP method
 Description
 list objects of kind DNS
 
-| HTTP code          | Reponse body                                                            |
-|--------------------|-------------------------------------------------------------------------|
-| 200 - OK           | [`DNSList`](../objects/index.xml#io-openshift-config-v1-DNSList) schema |
-| 401 - Unauthorized | Empty                                                                   |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNSList`](../objects/index.xml#io-openshift-config-v1-DNSList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -298,25 +298,25 @@ HTTP method
 Description
 create a DNS
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                     | Description |
-|-----------|------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 201 - Created      | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 202 - Accepted     | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 201 - Created | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 202 - Accepted | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -334,17 +334,17 @@ HTTP method
 Description
 delete a DNS
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -354,10 +354,10 @@ HTTP method
 Description
 read the specified DNS
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -367,17 +367,17 @@ HTTP method
 Description
 partially update the specified DNS
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -387,24 +387,24 @@ HTTP method
 Description
 replace the specified DNS
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                     | Description |
-|-----------|------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 201 - Created      | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 201 - Created | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -422,10 +422,10 @@ HTTP method
 Description
 read status of the specified DNS
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -435,17 +435,17 @@ HTTP method
 Description
 partially update status of the specified DNS
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -455,23 +455,23 @@ HTTP method
 Description
 replace status of the specified DNS
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                     | Description |
-|-----------|------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                             |
-|--------------------|------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 201 - Created      | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                    |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 201 - Created | [`DNS`](../config_apis/dns-config-openshift-io-v1.xml#dns-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses

@@ -1,12 +1,9 @@
 You can configure Kubernetes Key Management Service (KMS) v2 on OpenShift Container Platform to centralize encryption key management and meet regulatory compliance requirements.
 
-<div class="important">
-
-Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # About Kubernetes KMS v2 encryption
 
@@ -34,13 +31,20 @@ When you enable KMS encryption, OpenShift Container Platform encrypts the follow
 
 - OAuth authorize tokens
 
-<div class="note">
+> [!NOTE]
+> Resource types, namespaces, and object names are not encrypted.
 
-Resource types, namespaces, and object names are not encrypted.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Using a KMS provider for data encryption](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+
+</div>
 
 # KMS Technology Preview limitations
 

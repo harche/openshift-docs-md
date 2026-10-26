@@ -8,11 +8,8 @@ Windows instances deployed by the WMCO are configured with the containerd contai
 
 You can add Windows nodes either by creating a [compute machine set](../windows_containers/creating_windows_machinesets/creating-windows-machineset-aws.xml#creating-windows-machineset-aws) or by specifying existing Bring-Your-Own-Host (BYOH) Windows instances through a [ConfigMap](../windows_containers/byoh-windows-instance.xml#byoh-windows-instance).
 
-<div class="note">
-
-Compute machine sets are not supported for bare metal or provider agnostic clusters.
-
-</div>
+> [!NOTE]
+> Compute machine sets are not supported for bare metal or provider agnostic clusters.
 
 For workloads including both Linux and Windows, OpenShift Container Platform allows you to deploy Windows workloads running on Windows Server containers while also providing traditional Linux workloads hosted on Red Hat Enterprise Linux CoreOS (RHCOS) or Red Hat Enterprise Linux (RHEL). For more information, see [getting started with Windows container workloads](../windows_containers/understanding-windows-container-workloads.xml#understanding-windows-container-workloads).
 

@@ -6,17 +6,19 @@ You can update clusters from one Extended Update Support (EUS) release to anothe
 
 EUS releases provide 18 months of support and include even-numbered minor versions such as 4.18, 4.20, and 4.22. Control plane and worker nodes can be up to two minor versions apart during EUS-to-EUS updates.
 
-<div class="warning">
-
-Control plane and worker version skew is limited to N-2, or two minor versions. For example, if the control plane is at 4.20, workers must be updated before the control plane reaches 4.22, or they will be in an unsupported configuration. Plan worker updates accordingly to avoid exceeding the version skew policy. For more information about version skew policies, see the Kubernetes version and version skew support policy.
-
-</div>
+> [!WARNING]
+> Control plane and worker version skew is limited to N-2, or two minor versions. For example, if the control plane is at 4.20, workers must be updated before the control plane reaches 4.22, or they will be in an unsupported configuration. Plan worker updates accordingly to avoid exceeding the version skew policy. For more information about version skew policies, see the Kubernetes version and version skew support policy.
 
 The following procedure demonstrates an EUS-to-EUS update using an example cluster.
 
-<div class="note">
+> [!NOTE]
+> The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
 
-The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -33,6 +35,16 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 - You have reviewed the release notes for API deprecations and breaking changes between the source and target EUS versions.
 
 - You have scheduled a maintenance window. EUS-to-EUS updates take 2 to 3 hours.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify the current cluster version is at the latest z-stream of the source EUS by running the following command:
 
@@ -178,11 +190,8 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 
     - `force`: The `force: true` field bypasses the Cincinnati update graph safety checks. Use this field only when the update path has been verified through the update selection tool or release notes. Removing this field or setting it to `false` causes the update to follow the standard update graph, which might not include a direct path for EUS-to-EUS intermediate hops.
 
-    <div class="important">
-
-    For an EUS-to-EUS update, create a policy for each y-stream step. For example, updating from 4.20 to 4.22 requires one policy for 4.20-to-4.21 and another for 4.21-to-4.22. For a complete example of chaining multiple policies across y-stream steps, see "Configuring ClusterGroupUpgrade custom resources for cluster updates".
-
-    </div>
+    > [!IMPORTANT]
+    > For an EUS-to-EUS update, create a policy for each y-stream step. For example, updating from 4.20 to 4.22 requires one policy for 4.20-to-4.21 and another for 4.21-to-4.22. For a complete example of chaining multiple policies across y-stream steps, see "Configuring ClusterGroupUpgrade custom resources for cluster updates".
 
 7.  Apply the policies to RHACM by running the following commands:
 
@@ -292,7 +301,15 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
     $ oc --context=spoke1 get mcp worker -w
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify all nodes are at the target EUS version by running the following command:
 
@@ -316,11 +333,23 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 
 4.  Run comprehensive smoke tests for all CNF workloads.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If the EUS update path is not available, verify you are at the latest z-stream of the source EUS version.
 
 - If the control plane update gets stuck, check for Operator compatibility issues with the target EUS version.
 
 - If worker nodes fail to update after unpause, check the `MachineConfigPool` resource status and node logs.
+
+</div>
 
 # Additional resources
 

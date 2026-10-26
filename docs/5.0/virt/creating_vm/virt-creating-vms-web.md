@@ -4,17 +4,27 @@ You can create virtual machines (VMs) by using the OpenShift Container Platform 
 
 The web console creation wizard provides three workflows for creating a virtual machine (VM). Choose the workflow that matches your situation.
 
-| If you want to                                                                                                                        | Use this workflow                 | Requirements                                                        |
-|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|---------------------------------------------------------------------|
-| Build a VM with a specific combination of compute, storage, and network settings, when no existing template matches your requirements | **Custom configuration**          | A boot source, such as a custom disk image, container image, or URL |
-| Deploy a standardized VM quickly from a preconfigured image and settings                                                              | **Create from Template**          | A template that has an available boot source in the cluster         |
-| Create one or more VMs that duplicate an existing VM and its configuration                                                            | **Clone existing VirtualMachine** | Access to the source VM that you want to clone                      |
+| If you want to | Use this workflow | Requirements |
+|----|----|----|
+| Build a VM with a specific combination of compute, storage, and network settings, when no existing template matches your requirements | **Custom configuration** | A boot source, such as a custom disk image, container image, or URL |
+| Deploy a standardized VM quickly from a preconfigured image and settings | **Create from Template** | A template that has an available boot source in the cluster |
+| Create one or more VMs that duplicate an existing VM and its configuration | **Clone existing VirtualMachine** | Access to the source VM that you want to clone |
 
 VM creation methods
 
 For any method, the creation wizard reference explains how boot source, instance type, and customization options affect the VM.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Virtual machine creation wizard reference](../../virt/creating_vm/virt-creating-vms-web.xml#virt-vm-creation-considerations-web_virt-creating-vms-web)
+
+</div>
 
 # Create a VM with custom configuration by using the web console
 
@@ -28,11 +38,27 @@ Use this workflow when:
 
 - You want to boot from a custom disk image.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **VirtualMachines**.
 
@@ -98,11 +124,31 @@ Use this workflow when:
 
     2.  Click **Create VirtualMachine**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Navigate to **Virtualization** → **VirtualMachines** and verify that the VM is displayed in the list.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Organize virtual machines by using the web console](../../virt/managing_vms/virt-list-vms.xml#virt-organize-vms-web_virt-list-vms)
+
+</div>
 
 # Create a VM from a template by using the web console
 
@@ -116,13 +162,29 @@ Use this workflow when:
 
 - You want to quickly deploy a VM with minimal customization.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
 
 - A template with an available boot source exists in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **VirtualMachines**.
 
@@ -172,11 +234,31 @@ Use this workflow when:
 
     2.  Click **Create VirtualMachine**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Navigate to **Virtualization** → **VirtualMachines** and verify that the VM is displayed in the list.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Organize virtual machines by using the web console](../../virt/managing_vms/virt-list-vms.xml#virt-organize-vms-web_virt-list-vms)
+
+</div>
 
 # Clone an existing VM by using the web console
 
@@ -188,13 +270,29 @@ Use this workflow when:
 
 - You need multiple VMs with a consistent setup.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
 
 - The source VM that you want to clone exists in a project that you can access.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **VirtualMachines**.
 
@@ -230,11 +328,31 @@ Use this workflow when:
 
     5.  Click **Clone VirtualMachine**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Navigate to **Virtualization** → **VirtualMachines** and verify that the VM is displayed in the list.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Organize virtual machines by using the web console](../../virt/managing_vms/virt-list-vms.xml#virt-organize-vms-web_virt-list-vms)
+
+</div>
 
 # Virtual machine creation wizard reference
 
@@ -244,13 +362,13 @@ The virtual machine (VM) creation wizard in the web console presents several opt
 
 On the **Boot source** page, you can select an existing boot volume or click **Add volume** to create one. When you add a volume, the **Source type** list determines where the boot disk image comes from.
 
-| Source type           | Description                                                                        | When to use                                                                                                                 |
-|-----------------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| Volume (upload new)   | Uploads a persistent volume claim (PVC) image or ISO file from your local machine. | You have a disk image or ISO on your workstation. Select **This is an ISO file** for installation media.                    |
-| Volume (use existing) | Reuses a volume that is already available on the cluster.                          | A boot volume is already prepared in the cluster.                                                                           |
-| Volume snapshot       | Creates a boot disk from an existing volume snapshot.                              | You want fast provisioning from a point-in-time image.                                                                      |
-| Registry              | Imports a container disk from a container registry.                                | The image is published to a registry such as Quay. Requires a container image URL and, for private registries, credentials. |
-| URL                   | Imports an image from an HTTP or HTTPS endpoint.                                   | The image is hosted at a web address. Select **TLS certificate required** for endpoints that need a certificate.            |
+| Source type | Description | When to use |
+|----|----|----|
+| Volume (upload new) | Uploads a persistent volume claim (PVC) image or ISO file from your local machine. | You have a disk image or ISO on your workstation. Select **This is an ISO file** for installation media. |
+| Volume (use existing) | Reuses a volume that is already available on the cluster. | A boot volume is already prepared in the cluster. |
+| Volume snapshot | Creates a boot disk from an existing volume snapshot. | You want fast provisioning from a point-in-time image. |
+| Registry | Imports a container disk from a container registry. | The image is published to a registry such as Quay. Requires a container image URL and, for private registries, credentials. |
+| URL | Imports an image from an HTTP or HTTPS endpoint. | The image is hosted at a web address. Select **TLS certificate required** for endpoints that need a certificate. |
 
 Boot source types
 
@@ -275,15 +393,15 @@ Controls how many nodes can mount the volume: shared access (**RWX**), single-us
 
 On the **Compute resources** page, you select an instance type series and then a size. The series determines the CPU and memory characteristics of the VM. Some series require specially configured nodes.
 
-| Series | Name              | Characteristics                                                                                                                                                     | Node requirement                                                                              |
-|--------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| U      | General Purpose   | Neutral, general-purpose resources. VMs share physical CPU cores with other VMs on a time-slice basis.                                                              | None                                                                                          |
-| O      | Overcommitted     | Based on the U series, but memory is overcommitted.                                                                                                                 | None                                                                                          |
-| CX     | Compute Exclusive | Exclusive compute resources for compute-intensive workloads, with dedicated CPUs, isolated emulator threads, and virtual non-uniform memory access (NUMA) topology. | CPU manager enabled and huge pages available on the nodes.                                    |
-| M      | Memory Intensive  | Resources for memory-intensive workloads, with burstable CPU performance.                                                                                           | None                                                                                          |
-| D      | Dedicated vCPU    | Consistent, predictable performance. VMs are assigned exclusive physical CPU cores, which avoids CPU sharing and time-slice contention.                             | None                                                                                          |
-| N      | Network           | Resources for network-intensive Data Plane Development Kit (DPDK) workloads, such as virtual network functions (VNFs).                                              | Nodes capable of running DPDK workloads and labeled with `node-role.kubevirt.io/worker-dpdk`. |
-| RT     | Realtime          | Resources for realtime workloads, such as `oslat`.                                                                                                                  | Nodes capable of running realtime workloads.                                                  |
+| Series | Name | Characteristics | Node requirement |
+|----|----|----|----|
+| U | General Purpose | Neutral, general-purpose resources. VMs share physical CPU cores with other VMs on a time-slice basis. | None |
+| O | Overcommitted | Based on the U series, but memory is overcommitted. | None |
+| CX | Compute Exclusive | Exclusive compute resources for compute-intensive workloads, with dedicated CPUs, isolated emulator threads, and virtual non-uniform memory access (NUMA) topology. | CPU manager enabled and huge pages available on the nodes. |
+| M | Memory Intensive | Resources for memory-intensive workloads, with burstable CPU performance. | None |
+| D | Dedicated vCPU | Consistent, predictable performance. VMs are assigned exclusive physical CPU cores, which avoids CPU sharing and time-slice contention. | None |
+| N | Network | Resources for network-intensive Data Plane Development Kit (DPDK) workloads, such as virtual network functions (VNFs). | Nodes capable of running DPDK workloads and labeled with `node-role.kubevirt.io/worker-dpdk`. |
+| RT | Realtime | Resources for realtime workloads, such as `oslat`. | Nodes capable of running realtime workloads. |
 
 Instance type series
 
@@ -293,20 +411,20 @@ Instance types are named in the format `series.size`, where the size ranges from
 
 The optional **Customization** step groups advanced settings into tabs. The following settings are the ones that most commonly affect VM behavior.
 
-| Setting                        | Tab         | Description                                                                                                                                                                                                                                                                 |
-|--------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Disk interface                 | Storage     | Determines disk performance and compatibility. **VirtIO** offers the best performance but requires additional drivers on Windows. **SATA** has lower performance but is supported by most operating systems, including Windows. **SCSI** supports large numbers of devices. |
-| Ephemeral disk                 | Storage     | Adds a disk from a container image whose changes are lost when the VM reboots.                                                                                                                                                                                              |
-| Use this disk as a boot source | Storage     | Marks a disk as bootable. Only one disk can be bootable at a time.                                                                                                                                                                                                          |
-| Headless mode                  | Details     | Removes the default graphics device. VNC console access is not available when this option is enabled.                                                                                                                                                                       |
-| Deletion protection            | Details     | Prevents the VM from being deleted through the web console.                                                                                                                                                                                                                 |
-| Boot mode                      | Details     | Sets the firmware interface, such as BIOS or UEFI, used to boot the VM.                                                                                                                                                                                                     |
-| Run strategy                   | Scheduling  | Controls how the VM behaves after a failure, shutdown, or restart, such as **Rerun on failure**.                                                                                                                                                                            |
-| Eviction strategy              | Scheduling  | Determines what happens to the VM when its node is drained. **LiveMigrate** moves the VM to another node instead of stopping it.                                                                                                                                            |
-| Network binding                | Network     | Sets how the network interface connects. **Masquerade** is the default for pod networking; **Bridge** connects to an L2 network; **SR-IOV** attaches a virtual function for high performance.                                                                               |
-| Initialization method          | Initial run | Configures first-boot settings by using **cloud-init** for Linux guests or **Sysprep** for Windows guests.                                                                                                                                                                  |
-| Dynamic SSH key injection      | SSH         | Injects a public SSH key that is applied without restarting the VM. When it is not enabled, keys are applied through `virtctl`.                                                                                                                                             |
-| Labels and annotations         | Metadata    | **Labels** are key-value pairs that you can query to organize and select VMs. **Annotations** store arbitrary metadata that cannot be queried.                                                                                                                              |
+| Setting | Tab | Description |
+|----|----|----|
+| Disk interface | Storage | Determines disk performance and compatibility. **VirtIO** offers the best performance but requires additional drivers on Windows. **SATA** has lower performance but is supported by most operating systems, including Windows. **SCSI** supports large numbers of devices. |
+| Ephemeral disk | Storage | Adds a disk from a container image whose changes are lost when the VM reboots. |
+| Use this disk as a boot source | Storage | Marks a disk as bootable. Only one disk can be bootable at a time. |
+| Headless mode | Details | Removes the default graphics device. VNC console access is not available when this option is enabled. |
+| Deletion protection | Details | Prevents the VM from being deleted through the web console. |
+| Boot mode | Details | Sets the firmware interface, such as BIOS or UEFI, used to boot the VM. |
+| Run strategy | Scheduling | Controls how the VM behaves after a failure, shutdown, or restart, such as **Rerun on failure**. |
+| Eviction strategy | Scheduling | Determines what happens to the VM when its node is drained. **LiveMigrate** moves the VM to another node instead of stopping it. |
+| Network binding | Network | Sets how the network interface connects. **Masquerade** is the default for pod networking; **Bridge** connects to an L2 network; **SR-IOV** attaches a virtual function for high performance. |
+| Initialization method | Initial run | Configures first-boot settings by using **cloud-init** for Linux guests or **Sysprep** for Windows guests. |
+| Dynamic SSH key injection | SSH | Injects a public SSH key that is applied without restarting the VM. When it is not enabled, keys are applied through `virtctl`. |
+| Labels and annotations | Metadata | **Labels** are key-value pairs that you can query to organize and select VMs. **Annotations** store arbitrary metadata that cannot be queried. |
 
 Key customization settings
 
@@ -314,13 +432,25 @@ Key customization settings
 
 As a cluster administrator, you can configure project-level network defaults for virtual machine (VM) creation and network interface selection, using namespace annotations in the OpenShift Container Platform project, `kubevirt.io/allow-pod-network` and `kubevirt.io/default-network`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 You have logged in to the OpenShift Container Platform web console as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Projects**.
 
@@ -338,9 +468,11 @@ You have logged in to the OpenShift Container Platform web console as a user wit
 
       The following matrix shows the results of various setting combinations.
 
-      | Pod network                             | Default NAD annotation | VM creation default                | Addition of a new network interface (auto-select) |
-      |-----------------------------------------|------------------------|------------------------------------|---------------------------------------------------|
-      | Allowed (default)                       | Not set                | Pod network                        | Pod network                                       |
-      | Not allowed (`allow-pod-network:false`) | Not set                | First available NAD in the project | First available NAD in the project                |
-      | Allowed (default)                       | Set to NAD name        | Configured NAD                     | Pod network                                       |
-      | Not allowed (`allow-pod-network:false`) | Set to NAD name        | Configured NAD                     | First available NAD in the project                |
+      | Pod network | Default NAD annotation | VM creation default | Addition of a new network interface (auto-select) |
+      |----|----|----|----|
+      | Allowed (default) | Not set | Pod network | Pod network |
+      | Not allowed (`allow-pod-network:false`) | Not set | First available NAD in the project | First available NAD in the project |
+      | Allowed (default) | Set to NAD name | Configured NAD | Pod network |
+      | Not allowed (`allow-pod-network:false`) | Set to NAD name | Configured NAD | First available NAD in the project |
+
+</div>

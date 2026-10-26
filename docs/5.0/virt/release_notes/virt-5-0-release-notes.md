@@ -58,11 +58,8 @@ On IBM Z® and IBM® LinuxONE, you can deploy IBM® Fusion Access for SAN. IBM®
 `VirtualMachineTemplate` custom resource definitions are generally available
 The `template.kubevirt.io/v1beta1` API group and the `VirtualMachineTemplate` custom resource definition (CRD) are generally available. You can define a virtual machine (VM) blueprint as a cluster-native `VirtualMachineTemplate` object and then create VMs from that object. You can use the `VirtualMachineTemplateRequest` CRD to create a `VirtualMachineTemplate` from an existing `VirtualMachine`. This release updates the API group from `v1alpha1` to `v1beta1`.
 
-<div class="note">
-
-You cannot create a `VirtualMachineTemplate` from a `VirtualMachine` that you have never started.
-
-</div>
+> [!NOTE]
+> You cannot create a `VirtualMachineTemplate` from a `VirtualMachine` that you have never started.
 
 [CNV-84116](https://issues.redhat.com/browse/CNV-84116)
 
@@ -232,11 +229,8 @@ The following alerts for the OpenShift Virtualization Operator are included in t
 The `HotplugVolume` feature gate is deprecated
 The `HotplugVolume` feature gate, which allows you to add storage without restarting your VM, is deprecated and will be removed in a future release. This feature gate will be replaced by `DeclarativeHotplugVolumes`.
 
-<div class="note">
-
-`DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
-
-</div>
+> [!NOTE]
+> `DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
 
 [CNV-73301](https://issues.redhat.com/browse/CNV-73301)
 

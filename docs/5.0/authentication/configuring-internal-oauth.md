@@ -14,14 +14,22 @@ The OAuth server supports standard authorization code grant and implicit grant f
 
 When requesting an OAuth token using the implicit grant flow (`response_type=token`) with a client_id configured to request `WWW-Authenticate challenges` (like `openshift-challenging-client`), these are the possible server responses from `/oauth/authorize`, and how they should be handled:
 
-| Status | Content                                                                                               | Client response                                                                                                                                            |
-|--------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 302    | `Location` header containing an `access_token` parameter in the URL fragment (RFC 6749 section 4.2.2) | Use the `access_token` value as the OAuth token.                                                                                                           |
-| 302    | `Location` header containing an `error` query parameter (RFC 6749 section 4.1.2.1)                    | Fail, optionally surfacing the `error` (and optional `error_description`) query values to the user.                                                        |
-| 302    | Other `Location` header                                                                               | Follow the redirect, and process the result using these rules.                                                                                             |
-| 401    | `WWW-Authenticate` header present                                                                     | Respond to challenge if type is recognized (e.g. `Basic`, `Negotiate`, etc), resubmit request, and process the result using these rules.                   |
-| 401    | `WWW-Authenticate` header missing                                                                     | No challenge authentication is possible. Fail and show response body (which might contain links or details on alternate methods to obtain an OAuth token). |
-| Other  | Other                                                                                                 | Fail, optionally surfacing response body to the user.                                                                                                      |
+| Status | Content | Client response |
+|----|----|----|
+| 302 | `Location` header containing an `access_token` parameter in the URL fragment (RFC 6749 section 4.2.2) | Use the `access_token` value as the OAuth token. |
+| 302 | `Location` header containing an `error` query parameter (RFC 6749 section 4.1.2.1) | Fail, optionally surfacing the `error` (and optional `error_description`) query values to the user. |
+| 302 | Other `Location` header | Follow the redirect, and process the result using these rules. |
+| 401 | `WWW-Authenticate` header present | Respond to challenge if type is recognized (e.g. `Basic`, `Negotiate`, etc), resubmit request, and process the result using these rules. |
+| 401 | `WWW-Authenticate` header missing | No challenge authentication is possible. Fail and show response body (which might contain links or details on alternate methods to obtain an OAuth token). |
+| Other | Other | Fail, optionally surfacing response body to the user. |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
 
@@ -31,6 +39,8 @@ When requesting an OAuth token using the implicit grant flow (`response_type=tok
 
 - [Error Response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1)
 
+</div>
+
 # Options for the internal OAuth server
 
 The internal OAuth server provides configuration options for token duration and grant strategies to control authentication behavior.
@@ -39,9 +49,9 @@ The internal OAuth server provides configuration options for token duration and 
 
 The internal OAuth server generates two kinds of tokens:
 
-| Token           | Description                                                               |
-|-----------------|---------------------------------------------------------------------------|
-| Access tokens   | Longer-lived tokens that grant access to the API.                         |
+| Token | Description |
+|----|----|
+| Access tokens | Longer-lived tokens that grant access to the API. |
 | Authorize codes | Short-lived tokens whose only use is to be exchanged for an access token. |
 
 You can configure the default duration for both types of token. If necessary, you can override the duration of the access token by using an `OAuthClient` object definition.
@@ -63,13 +73,18 @@ You can apply the following default methods:
 
 Configure the internal OAuth server to extend or reduce access token validity beyond the default 24-hour lifetime.
 
-<div class="important">
-
-By default, tokens are only valid for 24 hours. Existing sessions expire after this time elapses.
-
-</div>
+> [!IMPORTANT]
+> By default, tokens are only valid for 24 hours. Existing sessions expire after this time elapses.
 
 If the default time is insufficient, then this can be modified using the following procedure.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a configuration file that contains the token duration options. The following file sets this to 48 hours, twice the default.
 
@@ -90,11 +105,8 @@ If the default time is insufficient, then this can be modified using the followi
 
 2.  Apply the new configuration file:
 
-    <div class="note">
-
-    Because you update the existing OAuth server, you must use the `oc apply` command to apply the change.
-
-    </div>
+    > [!NOTE]
+    > Because you update the existing OAuth server, you must use the `oc apply` command to apply the change.
 
     ``` terminal
     $ oc apply -f </path/to/file.yaml>
@@ -106,9 +118,11 @@ If the default time is insufficient, then this can be modified using the followi
     $ oc describe oauth.config.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -120,21 +134,40 @@ If the default time is insufficient, then this can be modified using the followi
     ...
     ```
 
+    </div>
+
+</div>
+
 # Configure token inactivity timeout for the internal OAuth server
 
 Configure the internal OAuth server to automatically expire tokens after a set period of inactivity, improving security by invalidating idle sessions.
 
 By default, no token inactivity timeout is set.
 
-<div class="note">
+> [!NOTE]
+> If the token inactivity timeout is also configured in your OAuth client, that value overrides the timeout that is set in the internal OAuth server configuration.
 
-If the token inactivity timeout is also configured in your OAuth client, that value overrides the timeout that is set in the internal OAuth server configuration.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have configured an identity provider (IDP).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `OAuth` configuration to set a token inactivity timeout.
 
@@ -171,9 +204,11 @@ If the token inactivity timeout is also configured in your OAuth client, that va
 
     Do not continue to the next step until `PROGRESSING` is listed as `False`, as shown in the following output:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -181,6 +216,8 @@ If the token inactivity timeout is also configured in your OAuth client, that va
     NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
     authentication   4.17.0    True        False         False      145m
     ```
+
+    </div>
 
 3.  Check that a new revision of the Kubernetes API server pods has rolled out. This will take several minutes.
 
@@ -190,9 +227,11 @@ If the token inactivity timeout is also configured in your OAuth client, that va
 
     Do not continue to the next step until `PROGRESSING` is listed as `False`, as shown in the following output:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -201,9 +240,19 @@ If the token inactivity timeout is also configured in your OAuth client, that va
     kube-apiserver   4.17.0     True        False         False      145m
     ```
 
+    </div>
+
     If `PROGRESSING` is showing `True`, wait a few minutes and try again.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Log in to the cluster with an identity from your IDP.
 
@@ -215,9 +264,11 @@ If the token inactivity timeout is also configured in your OAuth client, that va
 
     This command should fail because the token should have expired due to inactivity longer than the configured timeout.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -225,21 +276,30 @@ If the token inactivity timeout is also configured in your OAuth client, that va
     error: You must be logged in to the server (Unauthorized)
     ```
 
+    </div>
+
+</div>
+
 # Customize the internal OAuth server URL
 
 Customize the internal OAuth server URL to use a custom hostname and TLS certificate by configuring the cluster Ingress component routes.
 
-<div class="warning">
+> [!WARNING]
+> If you update the internal OAuth server URL, you might break trust from components in the cluster that need to communicate with the OpenShift Container Platform OAuth server to retrieve OAuth access tokens. Components that need to trust the OAuth server will need to include the proper CA bundle when calling OAuth endpoints. For example:
+>
+> ``` terminal
+> $ oc login -u <username> -p <password> --certificate-authority=<path_to_ca.crt>
+> ```
+>
+> \+ For self-signed certificates, the `ca.crt` file must contain the custom CA certificate, otherwise the login will not succeed.
+>
+> The Cluster Authentication Operator publishes the OAuth server’s serving certificate in the `oauth-serving-cert` config map in the `openshift-config-managed` namespace. You can find the certificate in the `data.ca-bundle.crt` key of the config map.
 
-If you update the internal OAuth server URL, you might break trust from components in the cluster that need to communicate with the OpenShift Container Platform OAuth server to retrieve OAuth access tokens. Components that need to trust the OAuth server will need to include the proper CA bundle when calling OAuth endpoints. For example:
+<div>
 
-``` terminal
-$ oc login -u <username> -p <password> --certificate-authority=<path_to_ca.crt>
-```
+<div class="title">
 
-\+ For self-signed certificates, the `ca.crt` file must contain the custom CA certificate, otherwise the login will not succeed.
-
-The Cluster Authentication Operator publishes the OAuth server’s serving certificate in the `oauth-serving-cert` config map in the `openshift-config-managed` namespace. You can find the certificate in the `data.ca-bundle.crt` key of the config map.
+Prerequisites
 
 </div>
 
@@ -247,11 +307,18 @@ The Cluster Authentication Operator publishes the OAuth server’s serving certi
 
 - You have created a secret in the `openshift-config` namespace containing the TLS certificate and key. This is required if the domain for the custom hostname suffix does not match the cluster domain suffix. The secret is optional if the suffix matches.
 
-  <div class="tip">
+  > [!TIP]
+  > You can create a TLS secret by using the `oc create secret tls` command.
 
-  You can create a TLS secret by using the `oc create secret tls` command.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the cluster `Ingress` configuration:
 
@@ -284,6 +351,8 @@ The Cluster Authentication Operator publishes the OAuth server’s serving certi
     Specifies the name of a secret in the `openshift-config` namespace that contains a TLS certificate (`tls.crt`) and key (`tls.key`). This is required if the domain for the custom hostname suffix does not match the cluster domain suffix. The secret is optional if the suffix matches.
 
 3.  Save the file to apply the changes.
+
+</div>
 
 # OAuth server metadata
 
@@ -339,6 +408,14 @@ Specifies a JSON array containing a list of the OAuth 2.0 grant type values that
 `code_challenge_methods_supported`
 Specifies a JSON array containing a list of PKCE RFC 7636 code challenge methods supported by this authorization server. Code challenge method values are used in the `code_challenge_method` parameter defined in Section 4.3 of RFC 7636. The valid code challenge method values are those registered in the IANA PKCE Code Challenge Methods registry.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OAuth 2.0 Authorization Server Metadata](https://tools.ietf.org/html/draft-ietf-oauth-discovery-10)
 
 - [RFC 5785 - Defining Well-Known Uniform Resource Identifiers](https://tools.ietf.org/html/rfc5785)
@@ -352,6 +429,8 @@ Specifies a JSON array containing a list of PKCE RFC 7636 code challenge methods
 - [RFC 7636 Section 4.3 - Client Creates a Code Challenge](https://tools.ietf.org/html/rfc7636#section-4.3)
 
 - [IANA OAuth Parameters](http://www.iana.org/assignments/oauth-parameters)
+
+</div>
 
 # Troubleshoot OAuth API events
 
@@ -367,9 +446,11 @@ The following example warns of a service account that is missing a proper OAuth 
 $ oc get events | grep ServiceAccount
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -377,15 +458,19 @@ $ oc get events | grep ServiceAccount
 1m         1m          1         proxy                    ServiceAccount                                  Warning   NoSAOAuthRedirectURIs   service-account-oauth-client-getter   system:serviceaccount:myproject:proxy has no redirectURIs; set serviceaccounts.openshift.io/oauth-redirecturi.<some-value>=<redirect> or create a dynamic URI using serviceaccounts.openshift.io/oauth-redirectreference.<some-value>=<reference>
 ```
 
+</div>
+
 Running `oc describe sa/<service_account_name>` reports any OAuth events associated with the given service account name.
 
 ``` terminal
 $ oc describe sa/proxy | grep -A5 Events
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -395,6 +480,8 @@ Events:
   ---------     --------        -----   ----                                    -------------   --------        ------                  -------
   3m            3m              1       service-account-oauth-client-getter                     Warning         NoSAOAuthRedirectURIs   system:serviceaccount:myproject:proxy has no redirectURIs; set serviceaccounts.openshift.io/oauth-redirecturi.<some-value>=<redirect> or create a dynamic URI using serviceaccounts.openshift.io/oauth-redirectreference.<some-value>=<reference>
 ```
+
+</div>
 
 The following is a list of the possible event errors:
 
@@ -425,3 +512,7 @@ NoSAOAuthRedirectURIs   [no kind "<name>" is registered for version "v1", system
 Reason                  Message
 NoSAOAuthTokens         system:serviceaccount:myproject:proxy has no tokens
 ```
+
+# Additional resources
+
+- [Configuring proxy settings for the authentication stack](../authentication/configuring-authentication-proxy.xml#configuring-authentication-proxy)

@@ -2,6 +2,14 @@ Create backup hooks to run commands in a container in a pod by editing the `Back
 
 The commands can be configured to performed before any custom action processing (*Pre* hooks), or after all custom actions have been completed and any additional items specified by the custom action have been backed up (*Post* hooks).
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Add a hook to the `spec.hooks` block of the `Backup` CR, as in the following example:
 
   ``` yaml
@@ -71,3 +79,5 @@ The commands can be configured to performed before any custom action processing 
 
   `post`
   Specifies an array of hooks to run after the backup, with the same parameters as the pre-backup hooks.
+
+</div>

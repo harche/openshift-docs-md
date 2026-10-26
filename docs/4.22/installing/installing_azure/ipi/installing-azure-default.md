@@ -4,9 +4,14 @@ You can install an OpenShift Container Platform cluster on Microsoft Azure by us
 
 To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
-<div class="important">
+> [!IMPORTANT]
+> You can run the `create cluster` command of the installation program only once, during initial installation.
 
-You can run the `create cluster` command of the installation program only once, during initial installation.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -17,6 +22,16 @@ You can run the `create cluster` command of the installation program only once, 
 - You have an Azure subscription ID and tenant ID.
 
 - You have the application ID and password of a service principal.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: If you have run the installation program on this computer before, and want to use an alternative service principal, go to the `~/.azure/` directory and delete the `osServicePrincipal.json` configuration file.
 
@@ -41,11 +56,8 @@ You can run the `create cluster` command of the installation program only once, 
 
     1.  Optional: Select an SSH key to use to access your cluster machines.
 
-        <div class="note">
-
-        For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-        </div>
+        > [!NOTE]
+        > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 
     2.  Select **azure** as the platform to target.
 
@@ -67,37 +79,34 @@ You can run the `create cluster` command of the installation program only once, 
 
     6.  Enter a descriptive name for your cluster.
 
-        <div class="important">
-
-        All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve errors for reserved resource names](https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-reserved-resource-name) in the Azure documentation.
-
-        </div>
+        > [!IMPORTANT]
+        > All Azure resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure restricts, see [Resolve errors for reserved resource names](https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/error-reserved-resource-name) in the Azure documentation.
 
     7.  Paste the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
-        <div class="note">
+        > [!NOTE]
+        > If previously not detected, the installation program creates an `osServicePrincipal.json` configuration file and stores this file in the `~/.azure/` directory on your computer. This ensures that the installation program can load the profile when it is creating an OpenShift Container Platform cluster on the target platform.
 
-        If previously not detected, the installation program creates an `osServicePrincipal.json` configuration file and stores this file in the `~/.azure/` directory on your computer. This ensures that the installation program can load the profile when it is creating an OpenShift Container Platform cluster on the target platform.
+</div>
 
-        </div>
+<div class="formalpara">
 
-<div class="formalpara-title">
+<div class="title">
 
-**Verification**
+Verification
 
 </div>
 
 When the cluster deployment completes successfully:
 
+</div>
+
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-  <div class="important">
-
-  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
   The following example shows the expected output:
 
@@ -112,6 +121,10 @@ When the cluster deployment completes successfully:
 
   <div class="important">
 
+  <div class="title">
+
+  </div>
+
   - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
   - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
@@ -124,9 +137,27 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -145,9 +176,11 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     $ oc whoami
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -155,14 +188,36 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     system:admin
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - "Customize your cluster"
 
 - "Remote health reporting"
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
 - [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+
+</div>

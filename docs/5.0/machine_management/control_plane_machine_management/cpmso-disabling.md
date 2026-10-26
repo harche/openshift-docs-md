@@ -8,6 +8,14 @@ When you delete the CR, the Control Plane Machine Set Operator performs cleanup 
 
 To stop managing control plane machines with the control plane machine set on your cluster, you must delete the `ControlPlaneMachineSet` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Delete the control plane machine set CR by running the following command:
 
   ``` terminal
@@ -15,13 +23,31 @@ To stop managing control plane machines with the control plane machine set on yo
     -n openshift-machine-api
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the control plane machine set custom resource state. A result of `Inactive` indicates that the removal and replacement process is successful. A `ControlPlaneMachineSet` CR exists but is not activated.
+
+</div>
 
 # Checking the control plane machine set custom resource state
 
 Check the state of the control plane machine set custom resource to determine if it is active, inactive, or missing before making configuration changes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Determine the state of the CR by running the following command:
 
@@ -36,6 +62,8 @@ Check the state of the control plane machine set custom resource to determine if
 
   - A result of `NotFound` indicates that there is no existing `ControlPlaneMachineSet` CR.
 
+</div>
+
 # Re-enabling the control plane machine set
 
 Restore automated control plane management after previously disabling the control plane machine set.
@@ -44,4 +72,14 @@ To re-enable the control plane machine set, you must ensure that the configurati
 
 For more information, see "Activating the control plane machine set custom resource".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Activating the control plane machine set custom resource](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-activating_cpmso-getting-started)
+
+</div>

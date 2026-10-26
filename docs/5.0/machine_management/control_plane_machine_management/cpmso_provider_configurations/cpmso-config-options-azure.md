@@ -10,11 +10,8 @@ You can update your control plane machines to reflect changes in your underlying
 
 The following example YAML illustrates a valid configuration for a Microsoft Azure cluster.
 
-<div class="note">
-
-When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
-
-</div>
+> [!NOTE]
+> When you create a control plane machine set for an existing cluster, the provider specification must match the `providerSpec` configuration in the control plane machine custom resource (CR) that the installation program creates.
 
 You can omit any field that has a value set in the failure domain section of the CR.
 
@@ -24,9 +21,11 @@ In the following example, the `<cluster_id>` string is the infrastructure ID. Th
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample Azure `providerSpec` values**
+<div class="title">
+
+Sample Azure `providerSpec` values
 
 </div>
 
@@ -80,6 +79,8 @@ spec:
             zone: "1"
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.providerSpec.value.credentialsSecret.name`
@@ -106,11 +107,8 @@ Specifies the disk configuration for the control plane.
 `spec.template.spec.providerSpec.value.publicLoadBalancer`
 Specifies the public load balancer for the control plane.
 
-<div class="note">
-
-You can omit the `publicLoadBalancer` parameter on private OpenShift Container Platform clusters that have user-defined outbound routing.
-
-</div>
+> [!NOTE]
+> You can omit the `publicLoadBalancer` parameter on private OpenShift Container Platform clusters that have user-defined outbound routing.
 
 `spec.template.spec.providerSpec.value.subnet`
 Specifies the subnet for the control plane.
@@ -121,11 +119,8 @@ Specifies the control plane user data secret. Do not change this value.
 `spec.template.spec.providerSpec.value.zone`
 Specifies the zone configuration for clusters that use a single zone for all failure domains.
 
-<div class="note">
-
-If the cluster uses a different zone for each failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using different zones for each failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
-
-</div>
+> [!NOTE]
+> If the cluster uses a different zone for each failure domain, configure this parameter in the failure domain. If you specify this value in the provider specification when using different zones for each failure domain, the Control Plane Machine Set Operator ignores it and uses the value in the failure domain.
 
 # Sample Azure failure domain configuration
 
@@ -141,9 +136,11 @@ When configuring Azure failure domains in the control plane machine set, you mus
 
 - More than one subnet in more than one availability zone.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample Azure failure domain values**
+<div class="title">
+
+Sample Azure failure domain values
 
 </div>
 
@@ -170,16 +167,15 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.template.machines_v1beta1_machine_openshift_io.failureDomains.azure.zone`
 Each instance of `zone` specifies an Azure availability zone for a failure domain.
 
-<div class="note">
-
-If the cluster uses a single zone for all failure domains, the `zone` parameter is in the provider specification instead of in the failure domain configuration.
-
-</div>
+> [!NOTE]
+> If the cluster uses a single zone for all failure domains, the `zone` parameter is in the provider specification instead of in the failure domain configuration.
 
 `spec.template.machines_v1beta1_machine_openshift_io.failureDomains.azure.subnet`
 Optional: Specifies the network subnet in which to create the control plane VM. When omitted, the control plane machine set uses the `subnet` value from the machine `providerSpec` template.

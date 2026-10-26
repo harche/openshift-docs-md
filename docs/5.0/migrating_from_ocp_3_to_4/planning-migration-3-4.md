@@ -114,11 +114,8 @@ OpenShift Container Platform 4 is migrating in-tree volume plugins to their Cont
 
 - VMware vSphere
 
-  <div class="note">
-
-  As of OpenShift Container Platform 4.13, VMware vSphere is not available by default. However, you can opt into VMware vSphere.
-
-  </div>
+  > [!NOTE]
+  > As of OpenShift Container Platform 4.13, VMware vSphere is not available by default. However, you can opt into VMware vSphere.
 
 All aspects of volume lifecycle, such as creation, deletion, mounting, and unmounting, is handled by the CSI driver.
 
@@ -154,11 +151,8 @@ For information on OVN-Kubernetes features that are similar to features in the O
 
 - [Configuring multitenant isolation with network policy](../networking/network_security/network_policy/multitenant-network-policy.xml#multitenant-network-policy)
 
-<div class="warning">
-
-You should install OpenShift Container Platform 4 with the OVN-Kubernetes network plugin because it is not possible to upgrade a cluster to OpenShift Container Platform 4.17 or later if it is using the OpenShift SDN network plugin.
-
-</div>
+> [!WARNING]
+> You should install OpenShift Container Platform 4 with the OVN-Kubernetes network plugin because it is not possible to upgrade a cluster to OpenShift Container Platform 4.17 or later if it is using the OpenShift SDN network plugin.
 
 ## Logging considerations
 

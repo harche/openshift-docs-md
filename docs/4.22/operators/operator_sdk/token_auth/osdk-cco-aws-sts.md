@@ -12,19 +12,21 @@ The CCO performs this detection even when in manual mode. When properly configur
 
 Starting in OpenShift Container Platform 4.14, the CCO can semi-automate this task through an expanded use of `CredentialsRequest` objects, which can request the creation of `Secrets` that contain the information required for STS workflows. Users can provide a role ARN when installing the Operator from either the web console or CLI.
 
-<div class="note">
-
-Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
-
-</div>
+> [!NOTE]
+> Subscriptions with automatic approvals for updates are not recommended because there might be permission changes to make before updating. Subscriptions with manual approvals for updates ensure that administrators have the opportunity to verify the permissions of the later version, take any necessary steps, and then update.
 
 As an Operator author preparing an Operator for use alongside the updated CCO in OpenShift Container Platform 4.14 or later, you should instruct users and add code to handle the divergence from earlier CCO versions, in addition to handling STS token authentication (if your Operator is not already STS-enabled). The recommended method is to provide a `CredentialsRequest` object with the correctly filled STS fields and let the CCO create the `Secret` for you.
 
-<div class="important">
+> [!IMPORTANT]
+> If you plan to support OpenShift Container Platform clusters earlier than version 4.14, consider providing users with instructions on how to manually create a secret with the STS-enabling information by using the CCO utility (`ccoctl`). Earlier CCO versions are unaware of STS mode on the cluster and cannot create secrets for you.
+>
+> Your code should check for secrets that never appear and warn users to follow the fallback instructions you have provided. For more information, see the "Alternative method" subsection.
 
-If you plan to support OpenShift Container Platform clusters earlier than version 4.14, consider providing users with instructions on how to manually create a secret with the STS-enabling information by using the CCO utility (`ccoctl`). Earlier CCO versions are unaware of STS mode on the cluster and cannot create secrets for you.
+<div>
 
-Your code should check for secrets that never appear and warn users to follow the fallback instructions you have provided. For more information, see the "Alternative method" subsection.
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -34,15 +36,22 @@ Your code should check for secrets that never appear and warn users to follow th
 
 - [Installing from OperatorHub using the CLI](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-operator-from-software-catalog-using-cli_olm-adding-operators-to-a-cluster)
 
+</div>
+
 # Enable Operators to support CCO-based workflows with AWS STS
 
 As an Operator author designing your project to run on Operator Lifecycle Manager (OLM), you can enable your Operator to authenticate against AWS on STS-enabled OpenShift Container Platform clusters by customizing your project to support the Cloud Credential Operator (CCO).
 
 With this method, the Operator is responsible for and requires RBAC permissions for creating the `CredentialsRequest` object and reading the resulting `Secret` object.
 
-<div class="note">
+> [!NOTE]
+> By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
 
-By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -52,13 +61,25 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
 - OLM-based Operator project
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Update your Operator project’s `ClusterServiceVersion` (CSV) object:
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `clusterPermissions` list**
+        <div class="title">
+
+        Example `clusterPermissions` list
 
         </div>
 
@@ -82,6 +103,8 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
                 - watch
         ```
 
+        </div>
+
     2.  Add the following annotation to claim support for this method of CCO-based workflow with AWS STS:
 
         ``` yaml
@@ -104,9 +127,11 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied. For example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `CredentialsRequest` object creation**
+        <div class="title">
+
+        Example `CredentialsRequest` object creation
 
         </div>
 
@@ -157,11 +182,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
         Alternatively, if you are starting from a `CredentialsRequest` object in YAML form (for example, as part of your Operator project code), you can handle it differently:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `CredentialsRequest` object creation in YAML form**
+        <div class="title">
+
+        Example `CredentialsRequest` object creation in YAML form
 
         </div>
 
@@ -223,17 +252,18 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        <div class="note">
-
-        Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
-
         </div>
+
+        > [!NOTE]
+        > Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
 
     3.  Add the role ARN and web identity token path to the credentials request and apply it during Operator initialization:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example applying `CredentialsRequest` object during Operator initialization**
+        <div class="title">
+
+        Example applying `CredentialsRequest` object during Operator initialization
 
         </div>
 
@@ -251,11 +281,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example wait for `Secret` object**
+        <div class="title">
+
+        Example wait for `Secret` object
 
         </div>
 
@@ -297,13 +331,17 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
         The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
     5.  Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example AWS configuration creation**
+        <div class="title">
+
+        Example AWS configuration creation
 
         </div>
 
@@ -329,19 +367,20 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        <div class="important">
-
-        The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
-
-        Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
-
         </div>
+
+        > [!IMPORTANT]
+        > The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
+        >
+        > Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
 
     6.  Configure the AWS SDK session, for example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example AWS SDK session configuration**
+        <div class="title">
+
+        Example AWS SDK session configuration
 
         </div>
 
@@ -356,15 +395,21 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
+</div>
+
 # Role specification
 
 To install an Operator that uses AWS Security Token Service (STS), you must specify the IAM role that the Operator requires, ideally as a script that an administrator can run.
 
 The following example shows a script that creates the required AWS IAM role and attaches the trust policy:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example role creation script**
+<div class="title">
+
+Example role creation script
 
 </div>
 
@@ -411,9 +456,19 @@ while IFS= read -r POLICY_ARN; do
 done <<< "$POLICY_ARN_STRINGS"
 ```
 
+</div>
+
 # Troubleshoot authentication failures
 
 If authentication was not successful, ensure you can assume the role with web identity by using the token provided to the Operator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the token from the pod:
 
@@ -439,6 +494,8 @@ If authentication was not successful, ensure you can assume the role with web id
         --role-session-name <session_name> \
         --web-identity-token $TOKEN
     ```
+
+</div>
 
 # Troubleshoot secrets not mounting correctly
 

@@ -6,6 +6,14 @@ Configuring a bastion host provides an entry point for Secure Shell (SSH) traffi
 
 The OpenShift Container Platform installer does not create any public IP addresses for any of the Amazon Elastic Compute Cloud (Amazon EC2) instances that it provisions for your OpenShift Container Platform cluster. After you provisioned your Amazon EC2 instance, you can use SSH to access your OpenShift Container Platform hosts.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a security group that allows SSH access into the virtual private cloud (VPC) that the `openshift-install` command-line interface creates.
 
 2.  Create an Amazon EC2 instance on one of the public subnets the installation program created.
@@ -16,11 +24,8 @@ The OpenShift Container Platform installer does not create any public IP address
 
 4.  After you provisioned your Amazon EC2 instance and can SSH into the instance, add the SSH key that you associated with your OpenShift Container Platform installation. This key can be different from the key for the bastion instance, but this is not a strict requirement.
 
-    <div class="note">
-
-    Use direct SSH access only for disaster recovery. When the Kubernetes API is responsive, run privileged pods instead.
-
-    </div>
+    > [!NOTE]
+    > Use direct SSH access only for disaster recovery. When the Kubernetes API is responsive, run privileged pods instead.
 
 5.  Run `oc get nodes`, inspect the output, and choose one of the nodes that is a control plane. The hostname looks similar to `ip-10-0-1-163.ec2.internal`.
 
@@ -29,3 +34,5 @@ The OpenShift Container Platform installer does not create any public IP address
     ``` terminal
     $ ssh -i <ssh-key-path> core@<control_plane_hostname>
     ```
+
+</div>

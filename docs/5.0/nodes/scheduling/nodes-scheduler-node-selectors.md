@@ -10,34 +10,30 @@ For example, as a cluster administrator, you can create an infrastructure where 
 
 A pod is not scheduled if the `Pod` object contains a node selector, but no node has a matching label.
 
-<div class="important">
-
-If you are using node selectors and node affinity in the same pod configuration, the following rules control pod placement onto nodes:
-
-- If you configure both `nodeSelector` and `nodeAffinity`, both conditions must be satisfied for the pod to be scheduled onto a candidate node.
-
-- If you specify multiple `nodeSelectorTerms` associated with `nodeAffinity` types, then the pod can be scheduled onto a node if one of the `nodeSelectorTerms` is satisfied.
-
-- If you specify multiple `matchExpressions` associated with `nodeSelectorTerms`, then the pod can be scheduled onto a node only if all `matchExpressions` are satisfied.
-
-</div>
+> [!IMPORTANT]
+> If you are using node selectors and node affinity in the same pod configuration, the following rules control pod placement onto nodes:
+>
+> - If you configure both `nodeSelector` and `nodeAffinity`, both conditions must be satisfied for the pod to be scheduled onto a candidate node.
+>
+> - If you specify multiple `nodeSelectorTerms` associated with `nodeAffinity` types, then the pod can be scheduled onto a node if one of the `nodeSelectorTerms` is satisfied.
+>
+> - If you specify multiple `matchExpressions` associated with `nodeSelectorTerms`, then the pod can be scheduled onto a node only if all `matchExpressions` are satisfied.
 
 Node selectors on specific pods and nodes
 You can control which node a specific pod is scheduled on by using node selectors and labels.
 
 To use node selectors and labels, first label the node to avoid pods being descheduled, then add the node selector to the pod.
 
-<div class="note">
-
-You cannot add a node selector directly to an existing scheduled pod. You must label the object that controls the pod, such as deployment config.
-
-</div>
+> [!NOTE]
+> You cannot add a node selector directly to an existing scheduled pod. You must label the object that controls the pod, such as deployment config.
 
 For example, the following `Node` object has the `region: east` label:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `Node` object with a label**
+<div class="title">
+
+Sample `Node` object with a label
 
 </div>
 
@@ -65,13 +61,17 @@ metadata:
 #...
 ```
 
+</div>
+
 In this example, the `region: east` and `type: user-node` labels must match the pod node selector.
 
 A pod has the `type: user-node,region: east` node selector:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `Pod` object with node selectors**
+<div class="title">
+
+Sample `Pod` object with node selectors
 
 </div>
 
@@ -88,6 +88,8 @@ spec:
 #...
 ```
 
+</div>
+
 where:
 
 `spec.nodeSelector`
@@ -100,9 +102,11 @@ With default cluster-wide node selectors, when you create a pod in that cluster,
 
 For example, the following `Scheduler` object has the default cluster-wide `region=east` and `type=user-node` node selectors:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example Scheduler Operator Custom Resource**
+<div class="title">
+
+Example Scheduler Operator Custom Resource
 
 </div>
 
@@ -117,11 +121,15 @@ spec:
 #...
 ```
 
+</div>
+
 A node in that cluster has the `type=user-node,region=east` labels:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Node` object**
+<div class="title">
+
+Example `Node` object
 
 </div>
 
@@ -137,9 +145,13 @@ metadata:
 #...
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example `Pod` object with a node selector**
+<div class="formalpara">
+
+<div class="title">
+
+Example `Pod` object with a node selector
 
 </div>
 
@@ -155,11 +167,15 @@ spec:
 #...
 ```
 
+</div>
+
 When you create the pod using the example pod spec in the example cluster, the pod is created with the cluster-wide node selector and is scheduled on the labeled node:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example pod list with the pod on the labeled node**
+<div class="title">
+
+Example pod list with the pod on the labeled node
 
 </div>
 
@@ -168,11 +184,10 @@ NAME     READY   STATUS    RESTARTS   AGE   IP           NODE                   
 pod-s1   1/1     Running   0          20s   10.131.2.6   ci-ln-qg1il3k-f76d1-hlmhl-worker-b-df2s4   <none>           <none>
 ```
 
-<div class="note">
-
-If the project where you create the pod has a project node selector, that selector takes preference over a cluster-wide node selector. Your pod is not created or scheduled if the pod does not have the project node selector.
-
 </div>
+
+> [!NOTE]
+> If the project where you create the pod has a project node selector, that selector takes preference over a cluster-wide node selector. Your pod is not created or scheduled if the pod does not have the project node selector.
 
 <!-- -->
 
@@ -181,9 +196,11 @@ With project node selectors, when you create a pod in this project, OpenShift Co
 
 For example, the following project has the `region=east` node selector:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Namespace` object**
+<div class="title">
+
+Example `Namespace` object
 
 </div>
 
@@ -197,11 +214,15 @@ metadata:
 #...
 ```
 
+</div>
+
 The following node has the `type=user-node,region=east` labels:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Node` object**
+<div class="title">
+
+Example `Node` object
 
 </div>
 
@@ -217,11 +238,15 @@ metadata:
 #...
 ```
 
+</div>
+
 When you create the pod using the example pod spec in this example project, the pod is created with the project node selectors and is scheduled on the labeled node:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Pod` object**
+<div class="title">
+
+Example `Pod` object
 
 </div>
 
@@ -238,9 +263,13 @@ spec:
 #...
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example pod list with the pod on the labeled node**
+<div class="formalpara">
+
+<div class="title">
+
+Example pod list with the pod on the labeled node
 
 </div>
 
@@ -249,11 +278,15 @@ NAME     READY   STATUS    RESTARTS   AGE   IP           NODE                   
 pod-s1   1/1     Running   0          20s   10.131.2.6   ci-ln-qg1il3k-f76d1-hlmhl-worker-b-df2s4   <none>           <none>
 ```
 
+</div>
+
 A pod in the project is not created or scheduled if the pod contains different node selectors. For example, if you deploy the following pod into the example project, it is not created:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Pod` object with an invalid node selector**
+<div class="title">
+
+Example `Pod` object with an invalid node selector
 
 </div>
 
@@ -269,6 +302,8 @@ spec:
 #...
 ```
 
+</div>
+
 # Use node selectors to control pod placement
 
 You can use node selectors on pods and labels on nodes to control where the pod is scheduled. With node selectors, OpenShift Container Platform schedules the pods on nodes that contain matching labels.
@@ -277,19 +312,20 @@ You add labels to a node, a compute machine set, or a machine config. Adding the
 
 To add node selectors to an existing pod, add a node selector to the controlling object for that pod, such as a `ReplicaSet` object, `DaemonSet` object, `StatefulSet` object, `Deployment` object, or `DeploymentConfig` object. Any existing pods under that controlling object are recreated on a node with a matching label. If you are creating a new pod, you can add the node selector directly to the pod spec. If the pod does not have a controlling object, you must delete the pod, edit the pod spec, and recreate the pod.
 
-<div class="note">
+> [!NOTE]
+> You cannot add a node selector directly to an existing scheduled pod.
 
-You cannot add a node selector directly to an existing scheduled pod.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Prerequisites**
+Prerequisites
 
 </div>
 
 To add a node selector to existing pods, determine the controlling object for that pod. For example, the `router-default-66d5cf9464-m2g75` pod is controlled by the `router-default-66d5cf9464` replica set:
+
+</div>
 
 ``` terminal
 $ oc describe pod router-default-66d5cf9464-7pwkc
@@ -327,6 +363,14 @@ metadata:
 # ...
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add labels to a node by using a compute machine set or editing the node directly:
 
     - Use a `MachineSet` object to add labels to nodes managed by the compute machine set when a node is created:
@@ -343,27 +387,24 @@ metadata:
           $ oc patch MachineSet abc612-msrtw-worker-us-east-1c  --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a compute machine set:
-
-          ``` yaml
-          apiVersion: machine.openshift.io/v1beta1
-          kind: MachineSet
-          metadata:
-            name: xf2bd-infra-us-east-2a
-            namespace: openshift-machine-api
-          spec:
-            template:
-              spec:
-                metadata:
-                  labels:
-                    region: "east"
-                    type: "user-node"
-          # ...
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a compute machine set:
+          >
+          > ``` yaml
+          > apiVersion: machine.openshift.io/v1beta1
+          > kind: MachineSet
+          > metadata:
+          >   name: xf2bd-infra-us-east-2a
+          >   namespace: openshift-machine-api
+          > spec:
+          >   template:
+          >     spec:
+          >       metadata:
+          >         labels:
+          >           region: "east"
+          >           type: "user-node"
+          > # ...
+          > ```
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -408,22 +449,19 @@ metadata:
           $ oc label nodes ip-10-0-142-25.ec2.internal type=user-node region=east
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a node:
-
-          ``` yaml
-          kind: Node
-          apiVersion: v1
-          metadata:
-            name: hello-node-6fbccf8d9
-            labels:
-              type: "user-node"
-              region: "east"
-          # ...
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a node:
+          >
+          > ``` yaml
+          > kind: Node
+          > apiVersion: v1
+          > metadata:
+          >   name: hello-node-6fbccf8d9
+          >   labels:
+          >     type: "user-node"
+          >     region: "east"
+          > # ...
+          > ```
 
       2.  Verify that the labels are added to the node:
 
@@ -431,9 +469,11 @@ metadata:
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -442,13 +482,17 @@ metadata:
           ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.36.3
           ```
 
+          </div>
+
 2.  Add the matching node selector to a pod:
 
     - To add a node selector to existing and future pods, add a node selector to the controlling object for the pods:
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example `ReplicaSet` object with labels**
+      <div class="title">
+
+      Example `ReplicaSet` object with labels
 
       </div>
 
@@ -474,6 +518,8 @@ metadata:
       # ...
       ```
 
+      </div>
+
       where:
 
       `spec.template.spec.nodeSelector`
@@ -481,9 +527,11 @@ metadata:
 
     - To add a node selector to a specific, new pod, add the selector to the `Pod` object directly:
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example `Pod` object with a node selector**
+      <div class="title">
+
+      Example `Pod` object with a node selector
 
       </div>
 
@@ -500,11 +548,12 @@ metadata:
       # ...
       ```
 
-      <div class="note">
-
-      You cannot add a node selector directly to an existing scheduled pod.
-
       </div>
+
+      > [!NOTE]
+      > You cannot add a node selector directly to an existing scheduled pod.
+
+</div>
 
 # Create default cluster-wide node selectors
 
@@ -514,13 +563,18 @@ With cluster-wide node selectors, when you create a pod in that cluster, OpenShi
 
 You configure cluster-wide node selectors by editing the Scheduler Operator custom resource (CR). You add labels to a node, a compute machine set, or a machine config. Adding the label to the compute machine set ensures that if the node or machine goes down, new nodes have the label. Labels added to a node or machine config do not persist if the node or machine goes down.
 
-<div class="note">
-
-You can add additional key/value pairs to a pod. But you cannot add a different value for a default key.
-
-</div>
+> [!NOTE]
+> You can add additional key/value pairs to a pod. But you cannot add a different value for a default key.
 
 The following procedure adds a default cluster-wide node selector.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Scheduler Operator CR to add the default cluster-wide node selectors:
 
@@ -528,9 +582,11 @@ The following procedure adds a default cluster-wide node selector.
     $ oc edit scheduler cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Scheduler Operator CR with a node selector**
+    <div class="title">
+
+    Example Scheduler Operator CR with a node selector
 
     </div>
 
@@ -544,6 +600,8 @@ The following procedure adds a default cluster-wide node selector.
       defaultNodeSelector: type=user-node,region=east
       mastersSchedulable: false
     ```
+
+    </div>
 
     where:
 
@@ -570,26 +628,23 @@ The following procedure adds a default cluster-wide node selector.
           $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a compute machine set:
-
-          ``` yaml
-          apiVersion: machine.openshift.io/v1beta1
-          kind: MachineSet
-          metadata:
-            name: <machineset>
-            namespace: openshift-machine-api
-          spec:
-            template:
-              spec:
-                metadata:
-                  labels:
-                    region: "east"
-                    type: "user-node"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a compute machine set:
+          >
+          > ``` yaml
+          > apiVersion: machine.openshift.io/v1beta1
+          > kind: MachineSet
+          > metadata:
+          >   name: <machineset>
+          >   namespace: openshift-machine-api
+          > spec:
+          >   template:
+          >     spec:
+          >       metadata:
+          >         labels:
+          >           region: "east"
+          >           type: "user-node"
+          > ```
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -599,9 +654,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc edit MachineSet abc612-msrtw-worker-us-east-1c -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example `MachineSet` object**
+          <div class="title">
+
+          Example `MachineSet` object
 
           </div>
 
@@ -621,6 +678,8 @@ The following procedure adds a default cluster-wide node selector.
                     type: user-node
             ...
           ```
+
+          </div>
 
       3.  Redeploy the nodes associated with that compute machine set by scaling down to `0` and scaling up the nodes:
 
@@ -646,9 +705,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc get nodes -l type=user-node
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -656,6 +717,8 @@ The following procedure adds a default cluster-wide node selector.
           NAME                                       STATUS   ROLES    AGE   VERSION
           ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.36.3
           ```
+
+          </div>
 
     - Add labels directly to a node:
 
@@ -671,21 +734,18 @@ The following procedure adds a default cluster-wide node selector.
           $ oc label nodes ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49 type=user-node region=east
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a node:
-
-          ``` yaml
-          kind: Node
-          apiVersion: v1
-          metadata:
-            name: <node_name>
-            labels:
-              type: "user-node"
-              region: "east"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a node:
+          >
+          > ``` yaml
+          > kind: Node
+          > apiVersion: v1
+          > metadata:
+          >   name: <node_name>
+          >   labels:
+          >     type: "user-node"
+          >     region: "east"
+          > ```
 
       2.  Verify that the labels are added to the node using the `oc get` command:
 
@@ -699,9 +759,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -709,6 +771,10 @@ The following procedure adds a default cluster-wide node selector.
           NAME                                       STATUS   ROLES    AGE   VERSION
           ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.36.3
           ```
+
+          </div>
+
+</div>
 
 # Create project-wide node selectors
 
@@ -724,13 +790,18 @@ A pod is not scheduled if the `Pod` object contains a node selector, but no proj
 Error from server (Forbidden): error when creating "pod.yaml": pods "pod-4" is forbidden: pod node label selector conflicts with its project node label selector
 ```
 
-<div class="note">
-
-You can add additional key/value pairs to a pod. But you cannot add a different value for a project key.
-
-</div>
+> [!NOTE]
+> You can add additional key/value pairs to a pod. But you cannot add a different value for a project key.
 
 The following procedure adds a default project node selector.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace or edit an existing namespace to add the `openshift.io/node-selector` parameter:
 
@@ -738,9 +809,11 @@ The following procedure adds a default project node selector.
     $ oc edit namespace <name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -767,6 +840,8 @@ The following procedure adds a default project node selector.
       - kubernetes
     ```
 
+    </div>
+
     Add the `openshift.io/node-selector` annotation with the appropriate `<key>:<value>` pairs.
 
 2.  Add labels to a node by using a compute machine set or editing the node directly:
@@ -785,26 +860,23 @@ The following procedure adds a default project node selector.
           $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a compute machine set:
-
-          ``` yaml
-          apiVersion: machine.openshift.io/v1beta1
-          kind: MachineSet
-          metadata:
-            name: <machineset>
-            namespace: openshift-machine-api
-          spec:
-            template:
-              spec:
-                metadata:
-                  labels:
-                    region: "east"
-                    type: "user-node"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a compute machine set:
+          >
+          > ``` yaml
+          > apiVersion: machine.openshift.io/v1beta1
+          > kind: MachineSet
+          > metadata:
+          >   name: <machineset>
+          >   namespace: openshift-machine-api
+          > spec:
+          >   template:
+          >     spec:
+          >       metadata:
+          >         labels:
+          >           region: "east"
+          >           type: "user-node"
+          > ```
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -814,9 +886,11 @@ The following procedure adds a default project node selector.
           $ oc edit MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -836,6 +910,8 @@ The following procedure adds a default project node selector.
                     region: east
                     type: user-node
           ```
+
+          </div>
 
       3.  Redeploy the nodes associated with that compute machine set:
 
@@ -861,9 +937,11 @@ The following procedure adds a default project node selector.
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -871,6 +949,8 @@ The following procedure adds a default project node selector.
           NAME                                       STATUS   ROLES    AGE   VERSION
           ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.36.3
           ```
+
+          </div>
 
     - Add labels directly to a node:
 
@@ -886,21 +966,18 @@ The following procedure adds a default project node selector.
           $ oc label nodes ci-ln-l8nry52-f76d1-hl7m7-worker-c-tgq49 type=user-node region=east
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a node:
-
-          ``` yaml
-          kind: Node
-          apiVersion: v1
-          metadata:
-            name: <node_name>
-            labels:
-              type: "user-node"
-              region: "east"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a node:
+          >
+          > ``` yaml
+          > kind: Node
+          > apiVersion: v1
+          > metadata:
+          >   name: <node_name>
+          >   labels:
+          >     type: "user-node"
+          >     region: "east"
+          > ```
 
       2.  Verify that the labels are added to the `Node` object using the `oc get` command:
 
@@ -914,9 +991,11 @@ The following procedure adds a default project node selector.
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -925,4 +1004,18 @@ The following procedure adds a default project node selector.
           ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.36.3
           ```
 
+          </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating a project with a node selector and toleration](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-projects_nodes-scheduler-taints-tolerations)
+
+</div>

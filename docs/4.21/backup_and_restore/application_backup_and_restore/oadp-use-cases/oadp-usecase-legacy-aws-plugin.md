@@ -4,9 +4,14 @@ If you are using an AWS S3-compatible backup storage location, you might get a `
 
 In the following use case, you configure the `DataProtectionApplication` CR with the `legacy-aws` Velero plugin and then back up an application.
 
-<div class="note">
+> [!NOTE]
+> Depending on the backup storage location you choose, you can use either the `legacy-aws` or the `aws` plugin in your `DataProtectionApplication` CR. If you use both of the plugins in the `DataProtectionApplication` CR, the following error occurs: `aws and legacy-aws can not be both specified in DPA spec.configuration.velero.defaultPlugins`.
 
-Depending on the backup storage location you choose, you can use either the `legacy-aws` or the `aws` plugin in your `DataProtectionApplication` CR. If you use both of the plugins in the `DataProtectionApplication` CR, the following error occurs: `aws and legacy-aws can not be both specified in DPA spec.configuration.velero.defaultPlugins`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ Depending on the backup storage location you choose, you can use either the `leg
 - You have configured an AWS S3-compatible object storage as a backup location.
 
 - You have an application with a database running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the `DataProtectionApplication` CR to use the `legacy-aws` Velero plugin as shown in the following example:
 
@@ -73,9 +88,11 @@ Depending on the backup storage location you choose, you can use either the `leg
     $ oc get dpa -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -103,6 +120,8 @@ Depending on the backup storage location you choose, you can use either the `leg
     metadata:
       resourceVersion: ""
     ```
+
+    </div>
 
 4.  Verify that the backup storage location (BSL) is available by running the following command:
 
@@ -141,15 +160,27 @@ Depending on the backup storage location you choose, you can use either the `leg
     $ oc apply -f <backup_cr_filename>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the backup object is in the `Completed` phase by running the following command. For more details, see the example output.
 
   ``` terminal
   $ oc describe backups.velero.io test-backup -n openshift-adp
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -172,3 +203,7 @@ Depending on the backup storage location you choose, you can use either the `leg
     Version:            1
   Events:               <none>
   ```
+
+  </div>
+
+</div>

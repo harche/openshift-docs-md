@@ -2,7 +2,17 @@ When you update a custom resource definition (CRD) provided by a cluster extensi
 
 The CRD update must pass the validation checks before the change is allowed to progress on a cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating a cluster extension](../../extensions/ce/managing-ce.xml#olmv1-updating-an-operator_managing-ce)
+
+</div>
 
 # Prohibited CRD upgrade changes
 
@@ -32,11 +42,8 @@ The CRD upgrade safety preflight check blocks an upgrade if it detects any of th
 
 - Adding minimum or maximum constraints to a field that did not previously have them
 
-<div class="note">
-
-Rules for minimum and maximum values apply to the `minimum`, `minLength`, `minProperties`, `minItems`, `maximum`, `maxLength`, `maxProperties`, and `maxItems` constraints.
-
-</div>
+> [!NOTE]
+> Rules for minimum and maximum values apply to the `minimum`, `minLength`, `minProperties`, `minItems`, `maximum`, `maxLength`, `maxProperties`, and `maxItems` constraints.
 
 The preflight check also blocks an upgrade for the following structural changes, which are handled by the Kubernetes API server:
 
@@ -46,11 +53,8 @@ The preflight check also blocks an upgrade for the following structural changes,
 
 If the CRD upgrade safety preflight check detects any prohibited change, it logs an error for each violation.
 
-<div class="tip">
-
-If a CRD change is neither explicitly allowed nor categorized as a known prohibited change, the preflight check blocks the upgrade and logs an "unknown change" error.
-
-</div>
+> [!TIP]
+> If a CRD change is neither explicitly allowed nor categorized as a known prohibited change, the preflight check blocks the upgrade and logs an "unknown change" error.
 
 # Allowed CRD upgrade changes
 
@@ -72,25 +76,37 @@ The following CRD changes are compatible with earlier versions and pass the upgr
 
 You can disable the custom resource definition (CRD) upgrade safety preflight check. In the `ClusterExtension` object that provides the CRD, set the `install.preflight.crdUpgradeSafety.enforcement` field with the value of `None`.
 
-<div class="warning">
-
-Disabling the CRD upgrade safety preflight check could break backwards compatibility with stored versions of the CRD and cause other unintended consequences on the cluster.
-
-</div>
+> [!WARNING]
+> Disabling the CRD upgrade safety preflight check could break backwards compatibility with stored versions of the CRD and cause other unintended consequences on the cluster.
 
 You cannot disable individual field validators. If you disable the CRD upgrade safety preflight check, you disable all field validators.
 
-<div class="note">
+> [!NOTE]
+> If you disable the CRD upgrade safety preflight check in Operator Lifecycle Manager (OLM) v1, the Kubernetes API server still prevents the following operations:
+>
+> - Changing scope from `Cluster` to `Namespace` or from `Namespace` to `Cluster`
+>
+> - Removing an existing stored version of the CRD
 
-If you disable the CRD upgrade safety preflight check in Operator Lifecycle Manager (OLM) v1, the Kubernetes API server still prevents the following operations:
+<div>
 
-- Changing scope from `Cluster` to `Namespace` or from `Namespace` to `Cluster`
+<div class="title">
 
-- Removing an existing stored version of the CRD
+Prerequisites
 
 </div>
 
 - You have a cluster extension installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ClusterExtension` object of the CRD:
 
@@ -100,9 +116,11 @@ If you disable the CRD upgrade safety preflight check in Operator Lifecycle Mana
 
 2.  Set the `install.preflight.crdUpgradeSafety.enforcement` field to `None`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ClusterExtension` object**
+    <div class="title">
+
+    Example `ClusterExtension` object
 
     </div>
 
@@ -126,15 +144,21 @@ If you disable the CRD upgrade safety preflight check in Operator Lifecycle Mana
             enforcement: None
     ```
 
+    </div>
+
+</div>
+
 # Examples of unsafe CRD changes
 
 Review the example unsafe custom resource definition (CRD) changes to recognize modifications that trigger the CRD upgrade safety preflight check.
 
 The following examples use this baseline `CustomResourceDefinition` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CRD object**
+<div class="title">
+
+Example CRD object
 
 </div>
 
@@ -177,13 +201,17 @@ spec:
       status: {}
 ```
 
+</div>
+
 ## Scope change
 
 The following example changes the `spec.scope` field from `Namespaced` to `Cluster`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example scope change in a CRD**
+<div class="title">
+
+Example scope change in a CRD
 
 </div>
 
@@ -200,9 +228,13 @@ spec:
   - name: v1alpha1
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example error output**
+<div class="formalpara">
+
+<div class="title">
+
+Example error output
 
 </div>
 
@@ -210,13 +242,17 @@ spec:
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoScopeChange" validation failed: scope changed from "Namespaced" to "Cluster"
 ```
 
+</div>
+
 ## Removal of a stored version
 
 The following example removes the existing stored version, `v1alpha1`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example removal of a stored version in a CRD**
+<div class="title">
+
+Example removal of a stored version in a CRD
 
 </div>
 
@@ -241,9 +277,13 @@ versions:
       type: object
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example error output**
+<div class="formalpara">
+
+<div class="title">
+
+Example error output
 
 </div>
 
@@ -251,13 +291,17 @@ versions:
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoStoredVersionRemoved" validation failed: stored version "v1alpha1" removed
 ```
 
+</div>
+
 ## Removal of an existing field
 
 The following example removes the `pollInterval` property field from the `v1alpha1` schema:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example removal of an existing field in a CRD**
+<div class="title">
+
+Example removal of an existing field in a CRD
 
 </div>
 
@@ -280,9 +324,13 @@ versions:
       type: object
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example error output**
+<div class="formalpara">
+
+<div class="title">
+
+Example error output
 
 </div>
 
@@ -290,13 +338,17 @@ versions:
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "NoExistingFieldRemoved" validation failed: crd/test.example.com version/v1alpha1 field/^.spec.pollInterval may not be removed
 ```
 
+</div>
+
 ## Addition of a required field
 
 The following example changes the `pollInterval` property to a required field:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example addition of a required field in a CRD**
+<div class="title">
+
+Example addition of a required field in a CRD
 
 </div>
 
@@ -323,12 +375,18 @@ versions:
       - pollInterval
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example error output**
+<div class="formalpara">
+
+<div class="title">
+
+Example error output
 
 </div>
 
 ``` text
 validating upgrade for CRD "test.example.com" failed: CustomResourceDefinition test.example.com failed upgrade safety validation. "ChangeValidator" validation failed: version "v1alpha1", field "^": new required fields added: [pollInterval]
 ```
+
+</div>

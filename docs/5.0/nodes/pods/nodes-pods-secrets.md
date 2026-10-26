@@ -14,9 +14,11 @@ Key properties include:
 
 - Secret data can be shared within a namespace.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**YAML `Secret` object definition**
+<div class="title">
+
+YAML `Secret` object definition
 
 </div>
 
@@ -33,6 +35,8 @@ data:
 stringData:
   hostname: myapp.mydomain.com
 ```
+
+</div>
 
 where:
 
@@ -81,11 +85,8 @@ Specify one of the following types to trigger minimal server-side validation to 
 
 Specify `type: Opaque` if you do not want validation, which means the secret does not claim to conform to any convention for key names or values. An *opaque* secret, allows for unstructured `key:value` pairs that can contain arbitrary values.
 
-<div class="note">
-
-You can specify other arbitrary types, such as `example.com/my-secret-type`. These types are not enforced server-side, but indicate that the creator of the secret intended to conform to the key/value requirements of that type.
-
-</div>
+> [!NOTE]
+> You can specify other arbitrary types, such as `example.com/my-secret-type`. These types are not enforced server-side, but indicate that the creator of the secret intended to conform to the key/value requirements of that type.
 
 For examples of creating different types of secrets, see *Understanding how to create secrets*.
 
@@ -97,13 +98,10 @@ Secret keys must be in a DNS subdomain.
 
 OpenShift Container Platform automatically creates image pull secrets for each service account to integrate the internal image registry with user authentication.
 
-<div class="note">
-
-Prior to OpenShift Container Platform 4.16, a long-lived service account API token secret was also generated for each service account that was created. Starting with OpenShift Container Platform 4.16, this service account API token secret is no longer created.
-
-After upgrading to 4.17, any existing long-lived service account API token secrets are not deleted and will continue to function. For information about detecting long-lived API tokens that are in use in your cluster or deleting them if they are not needed, see "Long-lived service account API tokens in OpenShift Container Platform (Red Hat Knowledgebase)".
-
-</div>
+> [!NOTE]
+> Prior to OpenShift Container Platform 4.16, a long-lived service account API token secret was also generated for each service account that was created. Starting with OpenShift Container Platform 4.16, this service account API token secret is no longer created.
+>
+> After upgrading to 4.17, any existing long-lived service account API token secrets are not deleted and will continue to function. For information about detecting long-lived API tokens that are in use in your cluster or deleting them if they are not needed, see "Long-lived service account API tokens in OpenShift Container Platform (Red Hat Knowledgebase)".
 
 This image pull secret is necessary to integrate the OpenShift image registry into the cluster’s user authentication and authorization system.
 
@@ -131,11 +129,21 @@ Secret API objects reside in a namespace. They can only be referenced by pods in
 
 Individual secrets are limited to 1MB in size. This is to discourage the creation of large secrets that could exhaust apiserver and kubelet memory. However, creation of several smaller secrets could also exhaust memory.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a secret object that contains the data you want to keep secret. The specific data required for each secret type is descibed in the following sections.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML object that creates an opaque secret**
+    <div class="title">
+
+    Example YAML object that creates an opaque secret
 
     </div>
 
@@ -155,6 +163,8 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
         property2=valueB
     ```
 
+    </div>
+
     where:
 
     `type`
@@ -170,9 +180,11 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
 
 2.  Update the pod’s service account to reference the secret:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML of a service account that uses a secret**
+    <div class="title">
+
+    YAML of a service account that uses a secret
 
     </div>
 
@@ -184,11 +196,15 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
     - name: test-secret
     ```
 
+    </div>
+
 3.  Create a pod, which consumes the secret as an environment variable or as a file (using a `secret` volume):
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML of a pod populating files in a volume with secret data**
+    <div class="title">
+
+    YAML of a pod populating files in a volume with secret data
 
     </div>
 
@@ -221,6 +237,8 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
       restartPolicy: Never
     ```
 
+    </div>
+
     where:
 
     `spec.container.volumeMounts`
@@ -235,9 +253,11 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
     `spec.volumes.secret.secretName`
     Specifies the name of the secret.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML of a pod populating environment variables with secret data**
+    <div class="title">
+
+    YAML of a pod populating environment variables with secret data
 
     </div>
 
@@ -268,14 +288,18 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
       restartPolicy: Never
     ```
 
+    </div>
+
     where:
 
     `spec.containers.env.valueFrom.secretKeyRef`
     Specifies the environment variable that consumes the secret key.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML of a build config populating environment variables with secret data**
+    <div class="title">
+
+    YAML of a build config populating environment variables with secret data
 
     </div>
 
@@ -299,14 +323,26 @@ Individual secrets are limited to 1MB in size. This is to discourage the creatio
             name: 'cli:latest'
     ```
 
+    </div>
+
     where:
 
     `spec.strategy.sourceStrategy.env.valueFrom.secretKeyRef`
     Specifies the environment variable that consumes the secret key.
 
+</div>
+
 ## Create an opaque secret
 
 As an administrator, you can create an opaque secret, which allows you to store unstructured `key:value` pairs that can contain arbitrary values.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Secret` object in a YAML file.
 
@@ -340,33 +376,42 @@ As an administrator, you can create an opaque secret, which allows you to store 
 
     2.  Create the pod, which consumes the secret as an environment variable or as a file (using a `secret` volume), as shown in the "Understanding how to create secrets" section.
 
+</div>
+
 ## Create a legacy service account token secret
 
 As an administrator, you can create a legacy service account token secret, which allows you to distribute a service account token to applications that must authenticate to the API.
 
-<div class="warning">
+> [!WARNING]
+> It is recommended to obtain bound service account tokens using the TokenRequest API instead of using legacy service account token secrets. You should create a service account token secret only if you cannot use the TokenRequest API and if the security exposure of a nonexpiring token in a readable API object is acceptable to you.
+>
+> Bound service account tokens are more secure than service account token secrets for the following reasons:
+>
+> - Bound service account tokens have a bounded lifetime.
+>
+> - Bound service account tokens contain audiences.
+>
+> - Bound service account tokens can be bound to pods or secrets and the bound tokens are invalidated when the bound object is removed.
+>
+> Workloads are automatically injected with a projected volume to obtain a bound service account token. If your workload needs an additional service account token, add an additional projected volume in your workload manifest.
+>
+> For more information, see "Configuring bound service account tokens using volume projection".
 
-It is recommended to obtain bound service account tokens using the TokenRequest API instead of using legacy service account token secrets. You should create a service account token secret only if you cannot use the TokenRequest API and if the security exposure of a nonexpiring token in a readable API object is acceptable to you.
+<div>
 
-Bound service account tokens are more secure than service account token secrets for the following reasons:
+<div class="title">
 
-- Bound service account tokens have a bounded lifetime.
-
-- Bound service account tokens contain audiences.
-
-- Bound service account tokens can be bound to pods or secrets and the bound tokens are invalidated when the bound object is removed.
-
-Workloads are automatically injected with a projected volume to obtain a bound service account token. If your workload needs an additional service account token, add an additional projected volume in your workload manifest.
-
-For more information, see "Configuring bound service account tokens using volume projection".
+Procedure
 
 </div>
 
 1.  Create a `Secret` object in a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `Secret` object**
+    <div class="title">
+
+    Example `Secret` object
 
     </div>
 
@@ -379,6 +424,8 @@ For more information, see "Configuring bound service account tokens using volume
         kubernetes.io/service-account.name: "sa-name"
     type: kubernetes.io/service-account-token
     ```
+
+    </div>
 
     where:
 
@@ -400,6 +447,8 @@ For more information, see "Configuring bound service account tokens using volume
 
     2.  Create the pod, which consumes the secret as an environment variable or as a file (using a `secret` volume), as shown in the "Understanding how to create secrets" section.
 
+</div>
+
 ## Create a basic authentication secret
 
 As an administrator, you can create a basic authentication secret, which you can use to store the credentials needed for basic authentication.
@@ -410,17 +459,24 @@ When using this secret type, the `data` parameter of the `Secret` object must co
 
 - `password`: the password or token for authentication
 
-<div class="note">
+> [!NOTE]
+> You can use the `stringData` parameter to use clear text content.
 
-You can use the `stringData` parameter to use clear text content.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a `Secret` object in a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `secret` object**
+    <div class="title">
+
+    Example `secret` object
 
     </div>
 
@@ -435,6 +491,8 @@ You can use the `stringData` parameter to use clear text content.
       username: admin
       password: <password>
     ```
+
+    </div>
 
     where:
 
@@ -456,17 +514,29 @@ You can use the `stringData` parameter to use clear text content.
 
     2.  Create the pod, which consumes the secret as an environment variable or as a file (using a `secret` volume), as shown in the "Understanding how to create secrets" section.
 
+</div>
+
 ## Create an SSH authentication secret
 
 As an administrator, you can create an SSH authentication secret, which you can use to store data used for SSH authentication.
 
 When using this secret type, the `data` parameter of the `Secret` object must contain the SSH credential to use.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `Secret` object in a YAML file on a control plane node:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `secret` object**
+    <div class="title">
+
+    Example `secret` object
 
     </div>
 
@@ -480,6 +550,8 @@ When using this secret type, the `data` parameter of the `Secret` object must co
       ssh-privatekey: |
               MIIEpQIBAAKCAQEAulqb/Y ...
     ```
+
+    </div>
 
     where:
 
@@ -501,6 +573,8 @@ When using this secret type, the `data` parameter of the `Secret` object must co
 
     2.  Create the pod, which consumes the secret as an environment variable or as a file (using a `secret` volume), as shown in the "Understanding how to create secrets" section.
 
+</div>
+
 ## Create a Docker configuration secret
 
 As an administrator, you can create a Docker configuration secret, which allows you to store the credentials for accessing a container image registry.
@@ -509,11 +583,21 @@ As an administrator, you can create a Docker configuration secret, which allows 
 
 - `kubernetes.io/dockerconfigjson`. Use this secret type to store your local Docker configuration JSON file. The `data` parameter of the `secret` object must contain the contents of a `.docker/config.json` file encoded in the base64 format.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `Secret` object in a YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Docker configuration `secret` object**
+    <div class="title">
+
+    Example Docker configuration `secret` object
 
     </div>
 
@@ -528,6 +612,8 @@ As an administrator, you can create a Docker configuration secret, which allows 
       .dockerconfig:bm5ubm5ubm5ubm5ubm5ubm5ubm5ubmdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2cgYXV0aCBrZXlzCg==
     ```
 
+    </div>
+
     where:
 
     `type`
@@ -536,9 +622,11 @@ As an administrator, you can create a Docker configuration secret, which allows 
     `data`
     Specifies the output of a base64-encoded Docker configuration file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Docker configuration JSON `secret` object**
+    <div class="title">
+
+    Example Docker configuration JSON `secret` object
 
     </div>
 
@@ -552,6 +640,8 @@ As an administrator, you can create a Docker configuration secret, which allows 
     data:
       .dockerconfigjson:bm5ubm5ubm5ubm5ubm5ubm5ubm5ubmdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2cgYXV0aCBrZXlzCg==
     ```
+
+    </div>
 
     where:
 
@@ -573,9 +663,19 @@ As an administrator, you can create a Docker configuration secret, which allows 
 
     2.  Create the pod, which consumes the secret as an environment variable or as a file (using a `secret` volume), as shown in the "Understanding how to create secrets" section.
 
+</div>
+
 ## Create a secret using the web console
 
 You can secure sensitive information, such as passwords or tokens, in a secret and add the information to a workload by using the web console. By using secrets, you can manage application credentials and configuration files without including them in your container images.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Workloads** → **Secrets**.
 
@@ -613,6 +713,8 @@ You can secure sensitive information, such as passwords or tokens, in a secret a
 
     2.  Click **Save**.
 
+</div>
+
 # Understand how to update secrets
 
 To update the values in a secret, you must re-create the pods that use that secret. Because running pods do not automatically detect changes to secret data, restarting the pods ensures they consume the updated configuration.
@@ -621,15 +723,20 @@ Updating a secret follows the same workflow as deploying a new container image. 
 
 The `resourceVersion` value in a secret is not specified when it is referenced. Therefore, if a secret is updated at the same time as pods are starting, the version of the secret that is used for the pod is not defined.
 
-<div class="note">
-
-Currently, it is not possible to check the resource version of a secret object that was used when a pod was created. It is planned that pods will report this information, so that a controller could restart ones using an old `resourceVersion`. In the interim, do not update the data of existing secrets, but create new ones with distinct names.
-
-</div>
+> [!NOTE]
+> Currently, it is not possible to check the resource version of a secret object that was used when a pod was created. It is planned that pods will report this information, so that a controller could restart ones using an old `resourceVersion`. In the interim, do not update the data of existing secrets, but create new ones with distinct names.
 
 # Create and use secrets
 
 As an administrator, you can create a service account token secret, which you can distribute to applications that must authenticate to the API.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a service account in your namespace by running the following command:
 
@@ -672,15 +779,19 @@ As an administrator, you can create a service account token secret, which you ca
     $ oc get secret <sa_token_secret> -o jsonpath='{.data.token}' | base64 --decode
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     ayJhbGciOiJSUzI1NiIsImtpZCI6IklOb2dtck1qZ3hCSWpoNnh5YnZhSE9QMkk3YnRZMVZoclFfQTZfRFp1YlUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJ1aWxkZXItdG9rZW4tdHZrbnIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYnVpbGRlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjNmZGU2MGZmLTA1NGYtNDkyZi04YzhjLTNlZjE0NDk3MmFmNyIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmJ1aWxkZXIifQ.OmqFTDuMHC_lYvvEUrjr1x453hlEEHYcxS9VKSzmRkP1SiVZWPNPkTWlfNRp6bIUZD3U6aN3N7dMSN0eI5hu36xPgpKTdvuckKLTCnelMx6cxOdAbrcw1mCmOClNscwjS1KO1kzMtYnnq8rXHiMJELsNlhnRyyIXRTtNBsy4t64T3283s3SLsancyx0gy0ujx-Ch3uKAKdZi5iT-I8jnnQ-ds5THDs2h65RJhgglQEmSxpHrLGZFmyHAQI-_SjvmHZPXEc482x3SkaQHNLqpmrpJorNqh1M8ZHKzlujhZgVooMvJmWPXTb2vnvi3DGn2XI-hZxl1yD2yGH1RBpYUHA
     ```
+
+    </div>
 
     Replace `<sa_token_secret>` with the name of your service token secret.
 
@@ -692,15 +803,19 @@ As an administrator, you can create a service account token secret, which you ca
 
     Replace `<openshift_cluster_api>` with the OpenShift cluster API and replace `<token>` with the service account token that is output in the preceding command.
 
+</div>
+
 # About using signed certificates with secrets
 
 To secure communication to your service, you can configure OpenShift Container Platform to generate a signed serving certificate/key pair that you can add into a secret in a project.
 
 A *service serving certificate secret* is intended to support complex middleware applications that need out-of-the-box certificates. It has the same settings as the server certificates generated by the administrator tooling for nodes and masters.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Service `Pod` spec configured for a service serving certificates secret.**
+<div class="title">
+
+Service `Pod` spec configured for a service serving certificates secret.
 
 </div>
 
@@ -714,6 +829,8 @@ metadata:
 # ...
 ```
 
+</div>
+
 Replace `registry-cert` with a name for the certificate
 
 Other pods can trust cluster-created certificates (which are only signed for internal DNS names), by using the CA bundle in the ***/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt*** file that is automatically mounted in their pod.
@@ -725,6 +842,14 @@ The signature algorithm for this feature is `x509.SHA256WithRSA`. To manually ro
 You can use a signed serving certificate/key pair with a pod by adding the `service.beta.openshift.io/serving-cert-secret-name` annotation to the service, then add the secret to the pod.
 
 Use the following procedure to create a *service serving certificate secret*.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `Pod` spec for your service.
 
@@ -762,9 +887,11 @@ Use the following procedure to create a *service serving certificate secret*.
         $ oc get secrets
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -773,15 +900,19 @@ Use the following procedure to create a *service serving certificate secret*.
         my-cert                  kubernetes.io/tls                     2         9m
         ```
 
+        </div>
+
     2.  View details on your secret:
 
         ``` terminal
         $ oc describe secret my-cert
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -801,6 +932,8 @@ Use the following procedure to create a *service serving certificate secret*.
         tls.key:  1679 bytes
         tls.crt:  2595 bytes
         ```
+
+        </div>
 
 5.  Edit your `Pod` spec with that secret.
 
@@ -838,11 +971,10 @@ Use the following procedure to create a *service serving certificate secret*.
 
     The certificate/key pair is automatically replaced when it gets close to expiration. View the expiration date in the `service.beta.openshift.io/expiry` annotation on the secret, which is in RFC3339 format.
 
-    <div class="note">
+    > [!NOTE]
+    > In most cases, the service DNS name `<service.name>.<service.namespace>.svc` is not externally routable. The primary use of `<service.name>.<service.namespace>.svc` is for intracluster or intraservice communication, and with re-encrypt routes.
 
-    In most cases, the service DNS name `<service.name>.<service.namespace>.svc` is not externally routable. The primary use of `<service.name>.<service.namespace>.svc` is for intracluster or intraservice communication, and with re-encrypt routes.
-
-    </div>
+</div>
 
 # Troubleshoot secrets
 
@@ -872,11 +1004,8 @@ The service that generated the certificate no longer exists, or has a different 
     $ oc annotate service <service_name> service.beta.openshift.io/serving-cert-generation-error-num-
     ```
 
-<div class="note">
-
-The command removing annotation has a `-` after the annotation name to be removed.
-
-</div>
+> [!NOTE]
+> The command removing annotation has a `-` after the annotation name to be removed.
 
 # Additional resources
 

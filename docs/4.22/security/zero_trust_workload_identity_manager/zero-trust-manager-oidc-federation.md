@@ -14,6 +14,14 @@ Integrate Entra ID OpenID Connect (OIDC) with SPIRE to provide workloads with au
 
 Configure the managed OIDC discovery provider route to use an externally managed TLS certificate. By referencing a TLS secret, you can secure the OIDC endpoint with your own certificate credentials.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Zero Trust Workload Identity Manager 0.2.0 or later.
 
 - You have deployed the SPIRE Server, SPIRE Agent, SPIFFEE CSI Driver, and the SPIRE OIDC Discovery Provider operands in the cluster.
@@ -21,6 +29,16 @@ Configure the managed OIDC discovery provider route to use an externally managed
 - You have installed the cert-manager Operator for Red Hat OpenShift. For more information, [Installing the cert-manager Operator for Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/security_and_compliance/index#cert-manager-operator-install).
 
 - You have created a `ClusterIssuer` or `Issuer` configured with a publicly trusted CA service. For example, an Automated Certificate Management Environment (ACME) type `Issuer` with the "Let’s Encrypt ACME" service. For more information, see [Configuring an ACME issuer](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme)
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Role` to provide the router service account permissions to read the referenced secret by running the following command:
 
@@ -50,7 +68,15 @@ Configure the managed OIDC discovery provider route to use an externally managed
     '
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the `SpireOIDCDiscoveryProvider` CR, check if the `ManageRouteReady` condition is set to `True` by running the following command:
 
@@ -79,9 +105,19 @@ Configure the managed OIDC discovery provider route to use an externally managed
     }%
     ```
 
+</div>
+
 ## Disable a managed route
 
 If you want to fully control the behavior of exposing the OIDC Discovery Provider service, you can disable the managed route based on your requirements.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To manually configure the OIDC Discovery Provider, set `managedRoute` to `false` by running the following command:
 
@@ -91,11 +127,31 @@ If you want to fully control the behavior of exposing the OIDC Discovery Provide
     managedRoute: "false"
   ```
 
+</div>
+
 ## Use Entra ID with Microsoft Azure
 
 Configure your Microsoft Azure environment to enable Entra ID integration with Azure. By defining variables and creating a resource group, you establish the infrastructure needed to securely manage workload identities.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the SPIRE OIDC Discovery Provider Route to serve the TLS certificates from a publicly trusted CA.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to Azure by running the following command:
 
@@ -175,9 +231,19 @@ Configure your Microsoft Azure environment to enable Entra ID integration with A
       --location "${LOCATION}"
     ```
 
+</div>
+
 ## Configure Azure blob storage
 
 Create a new Microsoft Azure storage account and container to provide a dedicated location for your content. Configuring this storage ensures that the Zero Trust Workload Identity Manager can successfully store and retrieve blobs for your environment.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new storage account that is used to store content by running the following command:
 
@@ -204,9 +270,19 @@ Create a new Microsoft Azure storage account and container to provide a dedicate
       --auth-mode login
     ```
 
+</div>
+
 ## Configure an Azure user managed identity
 
 Create a user-assigned managed identity in Azure to manage access control for your resources. You must also obtain the Client ID to associate roles with the service principal.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new User Managed Identity and then obtain the Client ID of the related Service Principal associated with the User Managed Identity by running the following command:
 
@@ -235,9 +311,19 @@ Create a user-assigned managed identity in Azure to manage access control for yo
       --scope ${STORAGE_ACCOUNT_ID}
     ```
 
+</div>
+
 ## Create the demonstration application
 
 Create the demonstration application to verify that the entire system functions correctly. This process validates the configuration of your application secrets and namespaces.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the application name and namespace by running the following commands:
 
@@ -274,11 +360,31 @@ Create the demonstration application to verify that the entire system functions 
     EOF
     ```
 
+</div>
+
 ## Deploy the workload application
 
 Deploy the workload application to your cluster to validate the Zero Trust Workload Identity Manager environment. This application confirms that the SPIFFE Workload API is functioning and can successfully retrieve JWT tokens.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The demonstration application has been created and deployed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To deploy the application, copy the entire command block provided and paste it directly into your terminal. Press **Enter**.
 
@@ -360,7 +466,15 @@ Deploy the workload application to your cluster to validate the Zero Trust Workl
     EOF
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Ensure that the `workload-app` pod is running successfully by running the following command:
 
@@ -368,9 +482,11 @@ Deploy the workload application to your cluster to validate the Zero Trust Workl
     $ oc get pods -n $APP_NAMESPACE
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -378,6 +494,8 @@ Deploy the workload application to your cluster to validate the Zero Trust Workl
     NAME                             READY     STATUS      RESTARTS      AGE
     workload-app-5f8b9d685b-abcde    1/1       Running     0             60s
     ```
+
+    </div>
 
 2.  Retrieve the SPIFFE JWT Token (SVID-JWT):
 
@@ -394,9 +512,19 @@ Deploy the workload application to your cluster to validate the Zero Trust Workl
           /opt/app-root/src/get-spiffe-token.py -a "api://AzureADTokenExchange"
         ```
 
+</div>
+
 ## Configure Azure with the SPIFFE identity federation
 
 Configure Microsoft Azure with SPIFFE identity federation to enable password-free, automated authentication for the demonstration application. This federates the User Managed Identity with the SPIFFE identity associated with your workload application.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Federate the identities between the User Managed Identity and the SPIFFE identity associated with the workload application by running the following command:
 
@@ -410,11 +538,31 @@ Configure Microsoft Azure with SPIFFE identity federation to enable password-fre
    --audience api://AzureADTokenExchange
   ```
 
+</div>
+
 ## Verify that the application workload can access the content in the Azure Blob Storage
 
 Verify that your application workload can connect to the Azure Blob Storage. By uploading a test file, you validate the authentication token and ensure that the workload has the correct permissions.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An Azure Blob Storage has been created.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve a JWT token from the SPIFFE Workload API by running the following command:
 
@@ -454,6 +602,16 @@ Verify that your application workload can connect to the Azure Blob Storage. By 
       --auth-mode login
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Confirm the file uploaded successfully by listing the files contained by running the following command:
 
   ``` terminal
@@ -464,6 +622,8 @@ Verify that your application workload can connect to the Azure Blob Storage. By 
     -o table
   ```
 
+</div>
+
 # About Vault OpenID Connect
 
 Use Vault OpenID Connect (OIDC) with SPIRE to securely authenticate workloads. Vault uses SPIRE as a trusted OIDC provider to validate workload identities. This configuration enables workloads to receive short-lived tokens to access secrets and perform actions within Vault.
@@ -472,6 +632,14 @@ Use Vault OpenID Connect (OIDC) with SPIRE to securely authenticate workloads. V
 
 Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This establishes the necessary infrastructure to manage workload identities securely in your Zero Trust Workload Identity Manager environment.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Configure a route. For more information, see [Configuring routes](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ingress_and_load_balancing/routes#nw-configuring-routes)
 
 - Helm is installed.
@@ -479,6 +647,16 @@ Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This esta
 - A command-line JSON processor for easily reading the output from the Vault API.
 
 - A HashiCorp Helm repository is added.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `vault-helm-value.yaml` file.
 
@@ -542,11 +720,18 @@ Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This esta
     $ export VAULT_ADDR="http://$(oc get route vault -n vault -o jsonpath='{.spec.host}')"
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > `http://` is prepended because TLS is disabled.
 
-    `http://` is prepended because TLS is disabled.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To ensure your Vault instance is running, run the following command:
 
@@ -554,9 +739,11 @@ Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This esta
   $ curl -s $VAULT_ADDR/v1/sys/health | jq
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -575,6 +762,10 @@ Install HashiCorp Vault to serve as an OpenID Connect (OIDC) provider. This esta
   }
   ```
 
+  </div>
+
+</div>
+
 ## Initialize and unseal Vault
 
 To prepare a newly installed Vault server for operation, initialize and unseal it. This process loads the primary encryption key into memory so that Vault can decrypt data and protect other encryption keys.
@@ -591,9 +782,27 @@ The steps to initialize a Vault server are:
 
 5.  Authenticate and retrieve the secret
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Ensure that Vault is running.
 
 - Ensure that Vault is not initialized. You can only initialize a Vault server once.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open a remote shell into the `vault` pod by running the following command:
 
@@ -625,15 +834,27 @@ The steps to initialize a Vault server are:
 
 5.  Exit the pod by entering `exit`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the Vault pod is ready, run the following command:
 
   ``` terminal
   $ oc get pod -n vault
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -642,11 +863,33 @@ The steps to initialize a Vault server are:
   vault-0     1/1          Running     0            65d
   ```
 
+  </div>
+
+</div>
+
 ## Enable the key-value secrets engine and store a test secret
 
 Enable the key-value secrets engine to create a secure, centralized location for managing credentials. You can also store a test secret to verify that the engine is working.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Make sure that Vault is initialized and unsealed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open another shell session in the `Vault` pod by running the following command:
 
@@ -678,19 +921,49 @@ Enable the key-value secrets engine to create a secure, centralized location for
     $ vault kv put secret/$NAME version=v0.1.0
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the secret is stored correctly, run the following command:
 
   ``` terminal
   $ vault kv get secret/$NAME
   ```
 
+</div>
+
 ## Configure JSON Web Token authentication with SPIRE
 
 To help your applications securely log in to Vault using SPIFFE identities, configure JSON Web Token (JWT) authentication.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Make sure that Vault is initialized and unsealed.
 
 - Ensure that a test secret is stored in the key-value secrets engine.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On your local machine, retrieve the SPIRE Certificate Authority (CA) bundle and save it to a file by running the following command:
 
@@ -795,9 +1068,19 @@ To help your applications securely log in to Vault using SPIFFE identities, conf
     EOF
     ```
 
+</div>
+
 ## Deploy a demonstration application
 
 Deploy a demonstration application to create a simple client that uses its SPIFFE identity to authenticate with Vault. By doing this you can verify that the client can successfully authenticate using the configured identity.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On your local machine, set the environment variables for your application by running the following commands:
 
@@ -821,15 +1104,27 @@ Deploy a demonstration application to create a simple client that uses its SPIFF
     EOF>>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the client deployment is ready by running the following command:
 
   ``` terminal
   $ oc get deploy -n $APP_NAMESPACE
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -839,9 +1134,21 @@ Deploy a demonstration application to create a simple client that uses its SPIFF
   backend-api      3/3          3               3             120d
   ```
 
+  </div>
+
+</div>
+
 ## Authenticate and retrieve the secret
 
 Use the demonstration application to fetch a JWT token from the SPIFFE Workload API. Use the token to authenticate with Vault so that you can securely retrieve the secret and verify the workflow.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Fetch a JWT-SVID by running the following command inside the running client pod:
 
@@ -870,6 +1177,16 @@ Use the demonstration application to fetch a JWT token from the SPIFFE Workload 
     $ VAULT_TOKEN=$(curl -s --request POST --data '{ "jwt": "'"${IDENTITY_TOKEN}"'", "role": "'"${ROLE}"'"}' "${VAULT_ADDR}"/v1/auth/jwt/login | jq -r '.auth.client_token')
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Use the newly acquired Vault token to read the secret from the KV store by running the following command:
 
   ``` terminal
@@ -877,3 +1194,5 @@ Use the demonstration application to fetch a JWT token from the SPIFFE Workload 
   ```
 
   You should see the contents of the secret (`"version": "v0.1.0"`) in the output, confirming the entire workflow is successful
+
+</div>

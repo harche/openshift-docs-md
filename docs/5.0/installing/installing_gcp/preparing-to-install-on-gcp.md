@@ -6,11 +6,19 @@ Before you install OpenShift Container Platform on Google Cloud, review the requ
 
 - You read the documentation on selecting a cluster installation method and preparing it for users.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
 - [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+</div>
 
 # Requirements for installing OpenShift Container Platform on Google Cloud
 
@@ -18,11 +26,21 @@ Before installing OpenShift Container Platform on Google Cloud, you must create 
 
 If the cloud Identity and Access Management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can configure your cluster to use short-term credentials, manually create long-term credentials, or both. For more information, see "Configuring a Google Cloud cluster to use short-term credentials" and "Manually creating long-term credentials".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account)
 
 - [Configuring a Google Cloud cluster to use short-term credentials](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-with-short-term-creds_installing-gcp-customizations)
 
 - [Manually creating long-term credentials for Google Cloud](../../installing/installing_gcp/installing-gcp-customizations.xml#manually-create-iam_installing-gcp-customizations)
+
+</div>
 
 # Choosing a method to install OpenShift Container Platform on Google Cloud
 
@@ -44,9 +62,17 @@ You can install a cluster on Google Cloud infrastructure that is provisioned by 
 
 - **[Installing a private cluster on an existing VPC](../../installing/installing_gcp/installing-gcp-private.xml#installing-gcp-private)**: You can install a private cluster on an existing Google Cloud VPC. You can use this method to deploy OpenShift Container Platform on an internal network that is not visible to the internet.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Postinstallation configuration](../../post_installation_configuration/cluster-tasks.xml#post-install-cluster-tasks)
+
+</div>
 
 ## User-provisioned infrastructure installation methods
 
@@ -60,6 +86,14 @@ You can install a cluster on Google Cloud infrastructure that you provision, by 
 
 - **[Installing a cluster on Google Cloud in a restricted network with user-provisioned infrastructure](../../installing/installing_gcp/installing-restricted-networks-gcp.xml#installing-restricted-networks-gcp)**: You can install OpenShift Container Platform on Google Cloud in a restricted network with user-provisioned infrastructure. By creating an internal mirror of the installation release content, you can install a cluster that does not require an active internet connection to obtain the software components. You can also use this installation method to ensure that your clusters only use container images that satisfy your organizational controls on external content.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation)
+
+</div>

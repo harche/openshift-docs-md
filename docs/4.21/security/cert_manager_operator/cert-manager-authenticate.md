@@ -4,9 +4,27 @@ To enable the operator to manage components on your cloud provider, authenticate
 
 To securely access AWS resources from your applications, authenticate your workloads on AWS by using the cert-manager Operator for Red Hat OpenShift.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed version 1.11.1 or later of the cert-manager Operator for Red Hat OpenShift.
 
 - You have configured the Cloud Credential Operator to operate in *mint* or *passthrough* mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `CredentialsRequest` resource YAML file, for example, `sample-credential-request.yaml`, as follows:
 
@@ -53,7 +71,15 @@ To securely access AWS resources from your applications, authenticate your workl
     $ oc -n cert-manager-operator patch subscription openshift-cert-manager-operator --type=merge -p '{"spec":{"config":{"env":[{"name":"CLOUD_CREDENTIALS_SECRET_NAME","value":"aws-creds"}]}}}'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Get the name of the redeployed cert-manager controller pod by running the following command:
 
@@ -61,9 +87,11 @@ To securely access AWS resources from your applications, authenticate your workl
     $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -72,15 +100,19 @@ To securely access AWS resources from your applications, authenticate your workl
     cert-manager-bd7fbb9fc-wvbbt  1/1     Running   0          15m39s
     ```
 
+    </div>
+
 2.  Verify that the cert-manager controller pod is updated with AWS credential volumes that are mounted under the path specified in `mountPath` by running the following command:
 
     ``` terminal
     $ oc get -n cert-manager pod/<cert-manager_controller_pod_name> -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -101,13 +133,35 @@ To securely access AWS resources from your applications, authenticate your workl
           secretName: aws-creds
     ```
 
+    </div>
+
+</div>
+
 # Authenticate with AWS Security Token Service
 
 To securely access AWS resources from your applications without managing long-lived keys, authenticate your workloads by using the AWS Security Token Service (STS).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have extracted and prepared the `ccoctl` binary.
 
 - You have configured an OpenShift Container Platform cluster with AWS STS by using the Cloud Credential Operator in manual mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a directory to store a `CredentialsRequest` resource YAML file by running the following command:
 
@@ -157,9 +211,11 @@ To securely access AWS resources from your applications without managing long-li
         --identity-provider-arn <oidc_provider_arn> --output-dir=<path_to_output_dir>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -168,6 +224,8 @@ To securely access AWS resources from your applications without managing long-li
     2023/05/15 18:10:34 Saved credentials configuration to: <path_to_output_dir>/manifests/cert-manager-aws-creds-credentials.yaml
     2023/05/15 18:10:35 Updated Role policy for Role <user_defined_name>-cert-manager-aws-creds
     ```
+
+    </div>
 
     Copy the `<aws_role_arn>` from the output to use in the next step. For example, `"arn:aws:iam::XXXXXXXXXXXX:role/<user_defined_name>-cert-manager-aws-creds"`
 
@@ -185,7 +243,15 @@ To securely access AWS resources from your applications without managing long-li
 
     The AWS credentials are applied to a new cert-manager controller pod within a minute.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Get the name of the updated cert-manager controller pod by running the following command:
 
@@ -193,9 +259,11 @@ To securely access AWS resources from your applications without managing long-li
     $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -204,15 +272,19 @@ To securely access AWS resources from your applications without managing long-li
     cert-manager-bd7fbb9fc-wvbbt  1/1     Running   0          39s
     ```
 
+    </div>
+
 2.  Verify that AWS credentials are updated by running the following command:
 
     ``` terminal
     $ oc set env -n cert-manager po/<cert_manager_controller_pod_name> --list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -223,15 +295,47 @@ To securely access AWS resources from your applications without managing long-li
     AWS_WEB_IDENTITY_TOKEN_FILE=/var/run/secrets/eks.amazonaws.com/serviceaccount/token
     ```
 
+    </div>
+
+</div>
+
+<div id="additional-resources_cert-manager-authenticate-gcp">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the Cloud Credential Operator utility](../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
+
+</div>
 
 # Authenticate on Google Cloud
 
 To securely access Google Cloud resources, authenticate your workloads on Google Cloud by using the cert-manager Operator for Red Hat OpenShift.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed version 1.11.1 or later of the cert-manager Operator for Red Hat OpenShift.
 
 - You have configured the Cloud Credential Operator to operate in *mint* or *passthrough* mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `CredentialsRequest` resource YAML file, such as, `sample-credential-request.yaml` by applying the following yaml:
 
@@ -254,17 +358,14 @@ To securely access Google Cloud resources, authenticate your workloads on Google
       - cert-manager
     ```
 
-    <div class="note">
-
-    The `dns.admin` role provides admin privileges to the service account for managing Google Cloud DNS resources. To ensure that the cert-manager runs with the service account that has the least privilege, you can create a custom role with the following permissions:
-
-    - `dns.resourceRecordSets.*`
-
-    - `dns.changes.*`
-
-    - `dns.managedZones.list`
-
-    </div>
+    > [!NOTE]
+    > The `dns.admin` role provides admin privileges to the service account for managing Google Cloud DNS resources. To ensure that the cert-manager runs with the service account that has the least privilege, you can create a custom role with the following permissions:
+    >
+    > - `dns.resourceRecordSets.*`
+    >
+    > - `dns.changes.*`
+    >
+    > - `dns.managedZones.list`
 
 2.  Create a `CredentialsRequest` resource by running the following command:
 
@@ -278,7 +379,15 @@ To securely access Google Cloud resources, authenticate your workloads on Google
     $ oc -n cert-manager-operator patch subscription openshift-cert-manager-operator --type=merge -p '{"spec":{"config":{"env":[{"name":"CLOUD_CREDENTIALS_SECRET_NAME","value":"gcp-credentials"}]}}}'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Get the name of the redeployed cert-manager controller pod by running the following command:
 
@@ -286,9 +395,11 @@ To securely access Google Cloud resources, authenticate your workloads on Google
     $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -297,15 +408,19 @@ To securely access Google Cloud resources, authenticate your workloads on Google
     cert-manager-bd7fbb9fc-wvbbt               1/1     Running   0          15m39s
     ```
 
+    </div>
+
 2.  Verify that the cert-manager controller pod is updated with Google Cloud credential volumes that are mounted under the path specified in `mountPath` by running the following command:
 
     ``` terminal
     $ oc get -n cert-manager pod/<cert-manager_controller_pod_name> -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -330,15 +445,37 @@ To securely access Google Cloud resources, authenticate your workloads on Google
           secretName: gcp-credentials
     ```
 
+    </div>
+
+</div>
+
 # Authenticate with Google Cloud Workload Identity
 
 To securely access Google Cloud resources from your applications without managing long-lived keys, authenticate your workloads by using Google Cloud Workload Identity.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You extracted and prepared the `ccoctl` binary.
 
 - You have installed version 1.11.1 or later of the cert-manager Operator for Red Hat OpenShift.
 
 - You have configured an OpenShift Container Platform cluster with Google Cloud Workload Identity by using the Cloud Credential Operator in a manual mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a directory to store a `CredentialsRequest` resource YAML file by running the following command:
 
@@ -367,17 +504,14 @@ To securely access Google Cloud resources from your applications without managin
       - cert-manager
     ```
 
-    <div class="note">
-
-    The `dns.admin` role provides admin privileges to the service account for managing Google Cloud DNS resources. To ensure that the cert-manager runs with the service account that has the least privilege, you can create a custom role with the following permissions:
-
-    - `dns.resourceRecordSets.*`
-
-    - `dns.changes.*`
-
-    - `dns.managedZones.list`
-
-    </div>
+    > [!NOTE]
+    > The `dns.admin` role provides admin privileges to the service account for managing Google Cloud DNS resources. To ensure that the cert-manager runs with the service account that has the least privilege, you can create a custom role with the following permissions:
+    >
+    > - `dns.resourceRecordSets.*`
+    >
+    > - `dns.changes.*`
+    >
+    > - `dns.managedZones.list`
 
 3.  Use the `ccoctl` tool to process `CredentialsRequest` objects by running the following command:
 
@@ -390,9 +524,11 @@ To securely access Google Cloud resources from your applications without managin
         --project <gcp_project_id>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -404,6 +540,8 @@ To securely access Google Cloud resources from your applications without managin
         --workload-identity-provider abcde-20230525-4bac2781 \
         --project openshift-gcp-devel
     ```
+
+    </div>
 
 4.  Apply the secrets generated in the manifests directory of your cluster by running the following command:
 
@@ -417,7 +555,15 @@ To securely access Google Cloud resources from your applications without managin
     $ oc -n cert-manager-operator patch subscription openshift-cert-manager-operator --type=merge -p '{"spec":{"config":{"env":[{"name":"CLOUD_CREDENTIALS_SECRET_NAME","value":"gcp-credentials"}]}}}'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Get the name of the redeployed cert-manager controller pod by running the following command:
 
@@ -425,9 +571,11 @@ To securely access Google Cloud resources from your applications without managin
     $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -436,15 +584,19 @@ To securely access Google Cloud resources from your applications without managin
     cert-manager-bd7fbb9fc-wvbbt  1/1     Running   0          15m39s
     ```
 
+    </div>
+
 2.  Verify that the cert-manager controller pod is updated with Google Cloud workload identity credential volumes that are mounted under the path specified in `mountPath` by running the following command:
 
     ``` terminal
     $ oc get -n cert-manager pod/<cert-manager_controller_pod_name> -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -478,8 +630,22 @@ To securely access Google Cloud resources from your applications without managin
           secretName: gcp-credentials
     ```
 
+    </div>
+
+</div>
+
+<div id="additional-resources_cert-manager-authenticate-gcp-workload-identity">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the Cloud Credential Operator utility](../../installing/installing_gcp/installing-gcp-customizations.xml#cco-ccoctl-configuring_installing-gcp-customizations)
 
 - [Manual mode with short-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds)
 
 - [Default behavior of the Cloud Credential Operator](../../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator-default_about-cloud-credential-operator)
+
+</div>

@@ -18,6 +18,14 @@ You can inspect your containers for vulnerabilities and configuration issues at 
 
 Monitoring tools can provide ongoing visibility of your containerized applications.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Cucumber](https://cucumber.io/)
 
 - [JUnit](https://junit.org/)
@@ -29,6 +37,8 @@ Monitoring tools can provide ongoing visibility of your containerized applicatio
 - [Certified vulnerability scanners](https://catalog.redhat.com/software/vulnerability-scanner/search)
 
 - [Sysdig](https://sysdig.com)
+
+</div>
 
 # Manage builds
 
@@ -62,6 +72,14 @@ For example, when building a Node.js application, you can set up your private mi
 
 Using this example scenario, you can add an input secret to a new `BuildConfig` object.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the secret, if it does not exist:
 
     ``` terminal
@@ -89,6 +107,8 @@ Using this example scenario, you can add an input secret to a new `BuildConfig` 
         openshift/nodejs-010-centos7~https://github.com/sclorg/nodejs-ex.git \
         --build-secret secret-npmrc
     ```
+
+</div>
 
 # Design your build process
 

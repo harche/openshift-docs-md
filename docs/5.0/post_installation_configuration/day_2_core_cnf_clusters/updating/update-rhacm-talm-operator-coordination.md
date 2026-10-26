@@ -4,6 +4,14 @@ OLM-managed Operators must be compatible with the target OpenShift Container Pla
 
 You can coordinate Operator Lifecycle Manager (OLM) Operator updates with OpenShift Container Platform cluster updates to ensure Operator compatibility. Incompatible Operators can block cluster updates or cause degraded cluster Operators after updates complete.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an understanding of OLM concepts including subscriptions, channels, and `ClusterServiceVersions` (CSVs).
 
 - You have access to clusters with cluster-admin privileges.
@@ -11,6 +19,16 @@ You can coordinate Operator Lifecycle Manager (OLM) Operator updates with OpenSh
 - Topology Aware Lifecycle Manager (TALM) is installed on the Red Hat Advanced Cluster Management (RHACM) hub cluster.
 
 - A cluster update is planned or in progress.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check installed Operator versions and subscription channels by running the following commands:
 
@@ -194,7 +212,15 @@ You can coordinate Operator Lifecycle Manager (OLM) Operator updates with OpenSh
 
     - PTP Operator: PTP configurations are sensitive to version changes. Validate PTP synchronization after Operator updates.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that all Operators and custom resources are healthy by running the following commands:
 
@@ -205,6 +231,16 @@ You can coordinate Operator Lifecycle Manager (OLM) Operator updates with OpenSh
     ```
 
     All `ClusterServiceVersion` resources must show `Succeeded` phase. All Operator pods must be `Running` and ready. Custom resources must exist and show the expected configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - If an Operator blocks the cluster update, update the Operator subscription channel before updating the cluster.
 
@@ -221,6 +257,8 @@ You can coordinate Operator Lifecycle Manager (OLM) Operator updates with OpenSh
   ```
 
 - If Operator pods are in `CrashLoopBackOff`, check for compatibility issues with the new cluster version.
+
+</div>
 
 # Additional resources
 

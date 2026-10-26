@@ -6,9 +6,27 @@ To clean up unused network configurations or free up network resources in OpenSh
 
 When a secondary network is removed from the cluster, it is not removed from any pods that it is attached to.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Cluster Network Operator (CNO) in your default text editor by running the following command:
 
@@ -47,3 +65,5 @@ When a secondary network is removed from the cluster, it is not removed from any
     ``` terminal
     $ oc get network-attachment-definition --all-namespaces
     ```
+
+</div>

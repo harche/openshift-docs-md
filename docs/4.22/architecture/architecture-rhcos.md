@@ -68,13 +68,10 @@ Here are examples of customizations you could do on day 1:
 
 To accomplish these tasks, you can augment the `openshift-install` process to include additional objects such as `MachineConfig` objects. Those procedures that result in creating machine configs can be passed to the Machine Config Operator after the cluster is up.
 
-<div class="note">
-
-The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
-
-Red Hat recommends that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
-
-</div>
+> [!NOTE]
+> The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+>
+> Red Hat recommends that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
 ## How to deploy RHCOS
 
@@ -136,9 +133,19 @@ The Ignition process for an RHCOS machine in an OpenShift Container Platform clu
 
 At the end of this process, the machine is ready to join the cluster and does not require a reboot.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [cloud-init documentation](https://cloud-init.io/)
 
 - [Kickstart installations](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/installation_guide/index#chap-kickstart-installations)
+
+</div>
 
 # View Ignition configuration files
 
@@ -164,6 +171,14 @@ Here are a few things you can learn from the `bootstrap.ign` file:
 
 - Primitives: Ignition also exposes low-level primitives that other tools can build on.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To see the Ignition config file used to deploy the bootstrap machine, run the following command:
 
     ``` terminal
@@ -174,9 +189,11 @@ Here are a few things you can learn from the `bootstrap.ign` file:
 
 2.  To see the contents of the `bootstrap.ign` file, pipe the file through the `jq` filter.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example snippet from the bootstrap.ign file**
+    <div class="title">
+
+    Example snippet from the bootstrap.ign file
 
     </div>
 
@@ -214,15 +231,19 @@ Here are a few things you can learn from the `bootstrap.ign` file:
     ...
     ```
 
+    </div>
+
 3.  To decode the contents of a file listed in the `bootstrap.ign` file, pipe the base64-encoded data string representing the contents of that file to the `base64-d` command. The following example uses the contents of the `/etc/motd` file added to the bootstrap machine from the output shown above:
 
     ``` terminal
     $ echo VGhpcyBpcyB0aGUgYm9vdHN0cmFwIG5vZGU7IGl0IHdpbGwgYmUgZGVzdHJveWVkIHdoZW4gdGhlIG1hc3RlciBpcyBmdWxseSB1cC4KClRoZSBwcmltYXJ5IHNlcnZpY2VzIGFyZSByZWxlYXNlLWltYWdlLnNlcnZpY2UgZm9sbG93ZWQgYnkgYm9vdGt1YmUuc2VydmljZS4gVG8gd2F0Y2ggdGhlaXIgc3RhdHVzLCBydW4gZS5nLgoKICBqb3VybmFsY3RsIC1iIC1mIC11IHJlbGVhc2UtaW1hZ2Uuc2VydmljZSAtdSBib290a3ViZS5zZXJ2aWNlCg== | base64 --decode
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -234,11 +255,15 @@ Here are a few things you can learn from the `bootstrap.ign` file:
       journalctl -b -f -u release-image.service -u bootkube.service
     ```
 
+    </div>
+
 4.  Repeat the previous commands on the `master.ign` and `worker.ign` files to see the source of Ignition config files for each of those machine types. The output includes a line like the following for the `worker.ign`, identifying how it gets its Ignition config from the bootstrap machine:
 
     ``` terminal
     "source": "https://api.myign.develcluster.example.com:22623/config/worker",
     ```
+
+</div>
 
 # Change Ignition configs after installation
 
@@ -248,15 +273,25 @@ Machine config pools manage a cluster of nodes and their corresponding machine c
 
 The Machine Config Operator acts somewhat differently than Ignition when it comes to applying these machine configs. The machine configs are read in order (from `00*` to `99*`). Labels inside the machine configs identify the type of node each is for (master or worker). If the same file appears in multiple machine config files, the last one wins. So, for example, any file that shows in a `99*` file would replace the same file that appeared in a `00*` file. The input `MachineConfig` objects are unioned into a "rendered" `MachineConfig` object that is used as a target by the Operator and is the value you can see in the machine config pool.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To list all machine config pools that are known, enter the following command:
 
     ``` terminal
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -266,15 +301,19 @@ The Machine Config Operator acts somewhat differently than Ignition when it come
     worker worker-2feef4f8288936489a5a832ca8efe953 False   False    False
     ```
 
+    </div>
+
 2.  To list all machine configs, enter the following command:
 
     ``` terminal
     $ oc get machineconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -291,15 +330,19 @@ The Machine Config Operator acts somewhat differently than Ignition when it come
     worker-2feef4f8288936489a5a832ca8efe953   4.0.0-0.150.0.0-dirty   3.5.0             16m
     ```
 
+    </div>
+
 3.  To see what files are being managed from a machine config, look for "Path:" inside a particular `MachineConfig` object. For example:
 
     ``` terminal
     $ oc describe machineconfigs 01-worker-container-runtime | grep Path:
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -309,4 +352,8 @@ The Machine Config Operator acts somewhat differently than Ignition when it come
                 Path:            /etc/crio/crio.conf
     ```
 
+    </div>
+
     Rememeber to give the machine config file a later name (such as `10-worker-container-runtime`). Also remember that the content of each file is in URL-style data. You can then apply the new machine config to the cluster.
+
+</div>

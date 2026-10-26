@@ -10,9 +10,11 @@ Depending on how you choose to create your application using OpenShift Container
 
 The following example `BuildConfig` results in a new build every time a container image tag or the source code changes:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`BuildConfig` object definition**
+<div class="title">
+
+`BuildConfig` object definition
 
 </div>
 
@@ -49,13 +51,15 @@ spec:
       script: "bundle exec rake test"
 ```
 
+</div>
+
 - This specification creates a new `BuildConfig` named `ruby-sample-build`.
 
 - The `runPolicy` field controls whether builds created from this build configuration can be run simultaneously. The default value is `Serial`, which means new builds run sequentially, not simultaneously.
 
 - You can specify a list of triggers, which cause a new build to be created.
 
-- The `source` section defines the source of the build. The source type determines the primary source of input, and can be either `Git`, to point to a code repository location, `Dockerfile`, to build from an inline Dockerfile, or `Binary`, to accept binary payloads. It is possible to have multiple sources at once. See the documentation for each source type for details.
+- The `source` section defines the source of the build. The source type determines the primary source of input, and can be either `Git`, to point to a code repository location, `Dockerfile`, to build from an inline Dockerfile, or `Binary`, to accept binary payloads. It is possible to have multiple sources at once. For more information about each source type, see "Creating build inputs".
 
 - The `strategy` section describes the build strategy used to execute the build. You can specify a `Source` , `Docker`, or `Custom` strategy here. This example uses the `ruby-20-centos7` container image that Source-to-image (S2I) uses for the application build.
 

@@ -2,7 +2,7 @@ You can configure CPU models for your virtual machines at both the cluster level
 
 # Configure the default CPU model
 
-Use the `defaultCPUModel` setting in the `HyperConverged` custom resource (CR) to define a cluster-wide default CPU model.
+Define a cluster-wide default CPU model. Every new virtual machine (VM) that does not specify its own CPU model uses the default, and runs only on nodes that support it.
 
 When you set a cluster-wide default CPU model:
 
@@ -12,15 +12,30 @@ When you set a cluster-wide default CPU model:
 
 - Nodes that do not support the selected CPU model are not considered during VM scheduling.
 
-<div class="note">
-
-The `defaultCPUModel` is case sensitive and must match a CPU model supported by nodes in your cluster.
-
-</div>
+> [!NOTE]
+> The `defaultCPUModel` is case sensitive and must match a CPU model supported by nodes in your cluster.
 
 A CPU model configured at the VM level always takes precedence over the cluster-wide default CPU model.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR by running the following command:
 
@@ -47,9 +62,11 @@ A CPU model configured at the VM level always takes precedence over the cluster-
 
 3.  Apply the YAML file to your cluster.
 
-# Configure a CPU model per-VM
+</div>
 
-You can specify a named CPU model in the virtual machine (VM) specification. This per-VM configuration takes precedence over any cluster-wide default CPU model.
+# Configure a CPU model for a single VM
+
+Set a named CPU model on a single virtual machine (VM) when that VM needs a different CPU type from the cluster-wide default. A per-VM model always takes precedence over the default.
 
 The VM CPU model depends on the availability of CPU models within the VM and the cluster.
 
@@ -59,9 +76,25 @@ The VM CPU model depends on the availability of CPU models within the VM and the
 
 - If neither the VM nor the cluster have a defined CPU model, the host-model is automatically set using the CPU model defined at the host level.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To configure a named CPU model for a specific VM, edit the `VirtualMachine` custom resource (CR):
 
@@ -81,3 +114,5 @@ The VM CPU model depends on the availability of CPU models within the VM and the
     - `spec.template.spec.domain.cpu.model` defines the named CPU model for the VM.
 
 2.  Apply the CR to your cluster.
+
+</div>

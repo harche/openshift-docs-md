@@ -4,15 +4,35 @@ You can install an OpenShift Container Platform cluster on vSphere by using a va
 
 You can install OpenShift Container Platform with the Assisted Installer. This method requires no setup for the installation program and is ideal for connected environments such as vSphere. Installing with the Assisted Installer also provides integration with vSphere, enabling autoscaling.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Assisted Installer](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
 - [Installing an on-premise cluster using the Assisted Installer](../../installing/installing_on_prem_assisted/installing-on-prem-assisted.xml#installing-on-prem-assisted)
+
+</div>
 
 # Agent-based Installer
 
 You can install an OpenShift Container Platform cluster on vSphere by using the Agent-based Installer, which boots on-premise servers in disconnected environments with a bootable image and supports custom network configurations.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Preparing to install with the Agent-based Installer](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#preparing-to-install-with-agent-based-installer)
+
+</div>
 
 # Installer-provisioned infrastructure installation
 
@@ -26,13 +46,21 @@ You can install OpenShift Container Platform on vSphere by using installer-provi
 
   You can use this method to deploy OpenShift Container Platform on an internal network that is not visible to the internet.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing a cluster on vSphere](../../installing/installing_vsphere/ipi/installing-vsphere-installer-provisioned.xml#installing-vsphere-installer-provisioned)
 
 - [Installing a cluster on vSphere with customizations](../../installing/installing_vsphere/ipi/installing-vsphere-installer-provisioned-customizations.xml#installing-vsphere-installer-provisioned-customizations)
 
 - [Installing a cluster on vSphere in a disconnected environment](../../installing/installing_vsphere/ipi/installing-restricted-networks-installer-provisioned-vsphere.xml#installing-restricted-networks-installer-provisioned-vsphere)
+
+</div>
 
 # User-provisioned infrastructure installation
 
@@ -42,9 +70,14 @@ You can install OpenShift Container Platform on vSphere by using user-provisione
 
 - **Installing a cluster on vSphere in a restricted network with user-provisioned infrastructure**: OpenShift Container Platform can be installed on VMware vSphere infrastructure that you provision in a restricted network.
 
-<div class="important">
+> [!IMPORTANT]
+> The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the vSphere platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
 
-The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the vSphere platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -53,3 +86,5 @@ The steps for performing a user-provisioned infrastructure installation are prov
 - [Installing a cluster on vSphere in a disconnected environment with user-provisioned infrastructure](../../installing/installing_vsphere/upi/installing-restricted-networks-vsphere.xml#installing-restricted-networks-vsphere)
 
 - [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation)
+
+</div>

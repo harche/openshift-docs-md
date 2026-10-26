@@ -4,11 +4,8 @@ The credential must have permissions to perform the installation and complete th
 
 Passthrough mode is supported for Amazon Web Services (AWS), Microsoft Azure, Google Cloud, Red Hat OpenStack Platform (RHOSP), and VMware vSphere.
 
-<div class="note">
-
-Manual mode is the only supported CCO configuration for Microsoft Azure Stack Hub.
-
-</div>
+> [!NOTE]
+> Manual mode is the only supported CCO configuration for Microsoft Azure Stack Hub.
 
 # Passthrough mode permissions requirements
 
@@ -62,9 +59,11 @@ Each cloud provider uses a credentials root secret in the `kube-system` namespac
 
 The format for the secret varies by cloud, and is also used for each `CredentialsRequest` secret.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Amazon Web Services (AWS) secret format**
+<div class="title">
+
+Amazon Web Services (AWS) secret format
 
 </div>
 
@@ -79,9 +78,13 @@ stringData:
   aws_secret_access_key: <base64-encoded_secret_access_key>
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Microsoft Azure secret format**
+<div class="formalpara">
+
+<div class="title">
+
+Microsoft Azure secret format
 
 </div>
 
@@ -101,21 +104,27 @@ stringData:
   azure_region: <base64-encoded_region>
 ```
 
+</div>
+
 On Microsoft Azure, the credentials secret format includes two properties that must contain the cluster’s infrastructure ID, generated randomly for each cluster installation. This value can be found after running create manifests:
 
 ``` terminal
 $ cat .openshift_install_state.json | jq '."*installconfig.ClusterID".InfraID' -r
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
 ``` terminal
 mycluster-2mpcn
 ```
+
+</div>
 
 This value would be used in the secret data as follows:
 
@@ -124,9 +133,11 @@ azure_resource_prefix: mycluster-2mpcn
 azure_resourcegroup: mycluster-2mpcn-rg
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Google Cloud secret format**
+<div class="title">
+
+Google Cloud secret format
 
 </div>
 
@@ -140,9 +151,13 @@ stringData:
   service_account.json: <base64-encoded_service_account>
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Red Hat OpenStack Platform (RHOSP) secret format**
+<div class="formalpara">
+
+<div class="title">
+
+Red Hat OpenStack Platform (RHOSP) secret format
 
 </div>
 
@@ -157,9 +172,13 @@ data:
   clouds.conf: <base64-encoded_cloud_creds_init>
 ```
 
-<div class="formalpara-title">
+</div>
 
-**VMware vSphere secret format**
+<div class="formalpara">
+
+<div class="title">
+
+VMware vSphere secret format
 
 </div>
 
@@ -174,11 +193,21 @@ data:
  vsphere.openshift.example.com.password: <base64-encoded_password>
 ```
 
+</div>
+
 ## Maintaining cloud provider credentials
 
 If your cloud provider credentials are changed for any reason, you must manually update the secret that the Cloud Credential Operator (CCO) uses to manage cloud provider credentials.
 
 The process for rotating cloud credentials depends on the mode that the CCO is configured to use. After you rotate credentials for a cluster that is using mint mode, you must manually remove the component credentials that were created by the removed credential.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your cluster is installed on a platform that supports rotating cloud credentials manually with the CCO mode that you are using:
 
@@ -187,6 +216,16 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 - You have changed the credentials that are used to interface with your cloud provider.
 
 - The new credentials have sufficient permissions for the mode CCO is configured to use in your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
@@ -208,11 +247,8 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 
 6.  If you are updating the credentials for a vSphere cluster that does not have the vSphere CSI Driver Operator enabled, you must force a rollout of the Kubernetes controller manager to apply the updated credentials.
 
-    <div class="note">
-
-    If the vSphere CSI Driver Operator is enabled, this step is not required.
-
-    </div>
+    > [!NOTE]
+    > If the vSphere CSI Driver Operator is enabled, this step is not required.
 
     To apply the updated vSphere credentials, log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role and run the following command:
 
@@ -228,13 +264,33 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
     $ oc get co kube-controller-manager
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
 2.  Verify that the contents of the **Value** field or fields have changed.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [vSphere CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml)
+
+</div>
 
 ## Reduce permissions after installation
 

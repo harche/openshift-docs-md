@@ -2,13 +2,10 @@ KubeVirt Redfish exposes OpenShift Virtualization virtual machines (VMs) through
 
 Use KubeVirt Redfish when you need programmatic control over VMs using Redfish, such as deploying virtualized control planes or automating VM lifecycle management.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # About KubeVirt Redfish
 
@@ -40,11 +37,29 @@ The two are complementary and can be used together in environments with mixed ph
 
 Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a series of custom resources (CRs). These CRs create the namespace, permissions, configuration, and deployment required to expose VMs through the Redfish API.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a OpenShift Container Platform cluster with OpenShift Virtualization installed.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in to OpenShift Container Platform as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `Namespace` CR for KubeVirt Redfish by creating a YAML file with content such as the following example:
 
@@ -211,11 +226,8 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc apply -f secret.yaml
     ```
 
-    <div class="warning">
-
-    The credentials defined in this `Secret` CR enable full management control over the VMs exposed through KubeVirt Redfish, independently of any OpenShift Container Platform privileges.
-
-    </div>
+    > [!WARNING]
+    > The credentials defined in this `Secret` CR enable full management control over the VMs exposed through KubeVirt Redfish, independently of any OpenShift Container Platform privileges.
 
 11. Create the `Deployment` CR by creating a YAML file with content such as the following example:
 
@@ -361,7 +373,15 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc apply -f route.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the pods are running by running the following command:
 
@@ -369,9 +389,11 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc get pods -n kubevirt-redfish
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -379,6 +401,8 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     NAME                                READY   STATUS    RESTARTS   AGE
     kubevirt-redfish-587cd94988-xthml   1/1     Running   0          2m
     ```
+
+    </div>
 
 2.  Get the route hostname by running the following command:
 
@@ -406,28 +430,27 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     }
     ```
 
+</div>
+
 # Supported Redfish API endpoints
 
 KubeVirt Redfish implements a subset of the Redfish standard for managing virtual machines. The following table lists the supported API endpoints.
 
 Access these endpoints using the full URL format `https://<route_hostname>/<endpoint_path>`, where `<route_hostname>` is the KubeVirt Redfish Route hostname.
 
-<div class="note">
+> [!NOTE]
+> In endpoint paths, `{system_id}` refers to the VM identifier. With the `enhanced` system ID convention, this is `<namespace>.<vm-name>`. With the `legacy` convention, this is `<vm-name>` only.
 
-In endpoint paths, `{system_id}` refers to the VM identifier. With the `enhanced` system ID convention, this is `<namespace>.<vm-name>`. With the `legacy` convention, this is `<vm-name>` only.
-
-</div>
-
-| Method | Endpoint                                                                           | Description                                                                                                                                             |
-|--------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GET    | `/redfish/v1/`                                                                     | Service root. Returns available resource collections.                                                                                                   |
-| GET    | `/redfish/v1/Systems`                                                              | List all VMs exposed as Redfish systems.                                                                                                                |
-| GET    | `/redfish/v1/Systems/{system_id}`                                                  | Get details for a specific VM, including power state and boot settings.                                                                                 |
-| POST   | `/redfish/v1/Systems/{system_id}/Actions/ComputerSystem.Reset`                     | Power operations. Supported `ResetType` values: `On`, `ForceOff`, `GracefulShutdown`.                                                                   |
-| GET    | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd`                                  | Get VirtualMedia status for the VM’s virtual CD drive.                                                                                                  |
-| POST   | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd/Actions/VirtualMedia.InsertMedia` | Attach an ISO image to the VM. Requires `Image` URL parameter.                                                                                          |
-| POST   | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd/Actions/VirtualMedia.EjectMedia`  | Detach the ISO image from the VM.                                                                                                                       |
-| PATCH  | `/redfish/v1/Systems/{system_id}`                                                  | Modify boot settings. Set `Boot.BootSourceOverrideTarget` (`Cd`, `Hdd`, `Pxe`) and `Boot.BootSourceOverrideEnabled` (`Once`, `Continuous`, `Disabled`). |
+| Method | Endpoint | Description |
+|----|----|----|
+| GET | `/redfish/v1/` | Service root. Returns available resource collections. |
+| GET | `/redfish/v1/Systems` | List all VMs exposed as Redfish systems. |
+| GET | `/redfish/v1/Systems/{system_id}` | Get details for a specific VM, including power state and boot settings. |
+| POST | `/redfish/v1/Systems/{system_id}/Actions/ComputerSystem.Reset` | Power operations. Supported `ResetType` values: `On`, `ForceOff`, `GracefulShutdown`. |
+| GET | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd` | Get VirtualMedia status for the VM’s virtual CD drive. |
+| POST | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd/Actions/VirtualMedia.InsertMedia` | Attach an ISO image to the VM. Requires `Image` URL parameter. |
+| POST | `/redfish/v1/Systems/{system_id}/VirtualMedia/Cd/Actions/VirtualMedia.EjectMedia` | Detach the ISO image from the VM. |
+| PATCH | `/redfish/v1/Systems/{system_id}` | Modify boot settings. Set `Boot.BootSourceOverrideTarget` (`Cd`, `Hdd`, `Pxe`) and `Boot.BootSourceOverrideEnabled` (`Once`, `Continuous`, `Disabled`). |
 
 Supported Redfish API endpoints
 

@@ -4,6 +4,14 @@ To troubleshoot some issues with nodes, establish the kubelet’s log level verb
 
 To modify the kubelet in a one-time scenario without rebooting the node due to the change of `machine-config(spec":{"paused":false}})`, allowing you to modify the kubelet without affecting the service, follow this procedure.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Connect to the node in debug mode:
 
     ``` terminal
@@ -22,9 +30,11 @@ To modify the kubelet in a one-time scenario without rebooting the node due to t
     $ systemctl cat kubelet
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -33,6 +43,8 @@ To modify the kubelet in a one-time scenario without rebooting the node due to t
     [Service]
     Environment="KUBELET_LOG_LEVEL=2"
     ```
+
+    </div>
 
 3.  Define the new verbosity required in a new `/etc/systemd/system/kubelet.service.d/30-logging.conf` file, which overrides `/etc/systemd/system/kubelet.service.d/20-logging.conf`. In this example, the verbosity is changed from `2` to `8`:
 
@@ -64,7 +76,17 @@ To modify the kubelet in a one-time scenario without rebooting the node due to t
     $ systemctl restart kubelet
     ```
 
+</div>
+
 # Persistent kubelet log level configuration
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Use the following `MachineConfig` object for persistent kubelet log level configuration:
 
@@ -92,20 +114,30 @@ To modify the kubelet in a one-time scenario without rebooting the node due to t
 
   Generally, it is recommended to apply `0-4` as debug-level logs and `5-8` as trace-level logs.
 
+</div>
+
 # Log verbosity descriptions
 
-| Log verbosity | Description                                                                                                                                                                        |
-|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--v=0`       | Always visible to an Operator.                                                                                                                                                     |
-| `--v=1`       | A reasonable default log level if you do not want verbosity.                                                                                                                       |
-| `--v=2`       | Useful steady state information about the service and important log messages that might correlate to significant changes in the system. This is the recommended default log level. |
-| `--v=3`       | Extended information about changes.                                                                                                                                                |
-| `--v=4`       | Debug level verbosity.                                                                                                                                                             |
-| `--v=6`       | Display requested resources.                                                                                                                                                       |
-| `--v=7`       | Display HTTP request headers.                                                                                                                                                      |
-| `--v=8`       | Display HTTP request contents.                                                                                                                                                     |
+| Log verbosity | Description |
+|----|----|
+| `--v=0` | Always visible to an Operator. |
+| `--v=1` | A reasonable default log level if you do not want verbosity. |
+| `--v=2` | Useful steady state information about the service and important log messages that might correlate to significant changes in the system. This is the recommended default log level. |
+| `--v=3` | Extended information about changes. |
+| `--v=4` | Debug level verbosity. |
+| `--v=6` | Display requested resources. |
+| `--v=7` | Display HTTP request headers. |
+| `--v=8` | Display HTTP request contents. |
 
 # Gathering kubelet logs
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - After the kubelet’s log level verbosity is configured properly, you can gather logs by running the following commands:
 
@@ -134,3 +166,5 @@ To modify the kubelet in a one-time scenario without rebooting the node due to t
   ``` terminal
   - for n in $(oc get node --no-headers | awk '{print $1}'); do oc adm node-logs $n | gzip > $n.log.gz; done
   ```
+
+</div>

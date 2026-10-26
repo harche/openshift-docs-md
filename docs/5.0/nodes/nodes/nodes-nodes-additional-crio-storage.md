@@ -69,11 +69,8 @@ External BYOS plugins, such as stargz-snapshotter and nydus-storage-plugin, serv
 
 When CRI-O needs an image, it accesses the plugin’s FUSE file system, triggering metadata download and lazy pulling. The container starts after downloading only the required chunks.
 
-<div class="note">
-
-If you are using the Linux native zstd:chunked format for partial pulling, you do not need to configure the `additionalLayerStores` field. With partial pulling, CRI-O retrieves the chunk metadata, determines which chunks are needed, and fetches only those chunks by using HTTP range requests rather than downloading the entire compressed layer.
-
-</div>
+> [!NOTE]
+> If you are using the Linux native zstd:chunked format for partial pulling, you do not need to configure the `additionalLayerStores` field. With partial pulling, CRI-O retrieves the chunk metadata, determines which chunks are needed, and fetches only those chunks by using HTTP range requests rather than downloading the entire compressed layer.
 
 To use lazy pulling, you must install a BYOS plugin on your nodes. Then, create a container runtime config to configure the FUSE mount paths.
 
@@ -119,9 +116,17 @@ The following limitations and known issues have been identified for additional C
 
 - If you need to downgrade your cluster to OpenShift Container Platform version 4.21 or earlier, before you downgrade, delete any `ContainerRuntimeConfig` resource that includes the `additionalArtifactStores`, `additionalImageStores`, or `additionalLayerStores` fields.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Troubleshoot additional CRI-O storage locations](../../nodes/nodes/nodes-nodes-additional-crio-storage.xml#nodes-nodes-additional-crio-storage-troubleshooting_nodes-nodes-additional-crio-storage)
+
+</div>
 
 # Configuring additional CRI-O storage locations
 
@@ -129,9 +134,14 @@ To reduce application startup time and make your applications run more efficient
 
 Use the `additionalArtifactStores`, `additionalImageStores`, and `additionalLayerStores` fields in a `ContainerRuntimeConfig` to specify read-only locations where CRI-O stores and resolves OCI artifacts, container images, or container image layers. CRI-O checks these locations in order before falling back to the default storage location.
 
-<div class="important">
+> [!IMPORTANT]
+> When using multiple `ContainerRuntimeConfig` resources, merge all additional storage configurations into a single `ContainerRuntimeConfig` for each machine config pool. Multiple `ContainerRuntimeConfig` resources affecting the same configuration file might result in only a subset of the changes taking effect.
 
-When using multiple `ContainerRuntimeConfig` resources, merge all additional storage configurations into a single `ContainerRuntimeConfig` for each machine config pool. Multiple `ContainerRuntimeConfig` resources affecting the same configuration file might result in only a subset of the changes taking effect.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -150,6 +160,16 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
   - You converted the container images to a lazy-pull-compatible format, such as eStargz or Nydus. See "eStargz format" or "Nydus format" for more information.
 
   - Your container registry must support HTTP range requests.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for the `ContainerRuntimeConfig` CR similar to the following example:
 
@@ -201,11 +221,8 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
 
     For a layer store, the MCO automatically appends the `:ref` suffix to the path when writing to the `storage.conf` file. This suffix switches the container storage library from storing actual image layers (blobs) to storing references (pointers) to where those layers can be found, which is required for the lazy-pulling plugins. You do not need to include the suffix in the `ContainerRuntimeConfig` path.
 
-    <div class="note">
-
-    If a path does not exist or is inaccessible at runtime, CRI-O generates a warning and continues with the remaining stores. The default storage location is always used as a fallback.
-
-    </div>
+    > [!NOTE]
+    > If a path does not exist or is inaccessible at runtime, CRI-O generates a warning and continues with the remaining stores. The default storage location is always used as a fallback.
 
 2.  Create the `ContainerRuntimeConfig` CR by running the following command:
 
@@ -217,7 +234,15 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
 
     After you configure any of these new storage locations, the Machine Config Operator (MCO) reboots the affected nodes with the new configuration.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After the nodes have returned to the `Ready` status, check that the new stores have been added to the node configuration:
 
@@ -241,9 +266,11 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
           sh-5.1# cat /etc/crio/crio.conf.d/01-ctrcfg-additionalArtifactStores
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -253,15 +280,19 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
               additional_artifact_stores = ["/mnt/ssd-artifacts", "/mnt/nfs-shared-artifacts"]
           ```
 
+          </div>
+
         - For an image store, review the contents of the `/etc/containers/storage.conf` file by running the following command:
 
           ``` terminal
           sh-5.1# cat /etc/containers/storage.conf
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -271,15 +302,19 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
              additionalimagestores = ["/mnt/nfs-image-cache", "/mnt/ssd-images"]
           ```
 
+          </div>
+
         - For a layer store, review the contents of the `/etc/containers/storage.conf` file by running the following command:
 
           ``` terminal
           sh-5.1# cat /etc/containers/storage.conf
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -288,6 +323,10 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
             [storage.options]
              additionallayerstores = ["/var/lib/stargz-store:ref"]
           ```
+
+          </div>
+
+</div>
 
 # Troubleshoot additional CRI-O storage locations
 

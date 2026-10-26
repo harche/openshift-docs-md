@@ -10,9 +10,14 @@ You can use the `openshift-install` program to configure and deploy a host that 
 
 The `openshift-install` program uses these resources to generate a configuration ISO that you attach to the preinstalled target host to complete the deployment.
 
-<div class="note">
+> [!NOTE]
+> For more information about the specifications for the `image-based-config.yaml` manifest, see "Reference specifications for the image-based-config.yaml manifest".
 
-For more information about the specifications for the `image-based-config.yaml` manifest, see "Reference specifications for the image-based-config.yaml manifest".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -21,6 +26,16 @@ For more information about the specifications for the `image-based-config.yaml` 
 - You downloaded the latest version of the `openshift-install` program.
 
 - You created a pull secret to authenticate pull requests. For more information, see "Using image pull secrets".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a working directory by running the following:
 
@@ -63,15 +78,12 @@ For more information about the specifications for the `image-based-config.yaml` 
 
         \+ For dual-stack networking, you can specify both IPv4 and IPv6 CIDRs using a list format in the `machineNetwork` field. The first CIDR in the list is the primary address family and must match the primary address family of the seed cluster.
 
-        <div class="important">
-
-        If your cluster deployment requires a proxy configuration, you must do the following:
-
-        - Create a seed image from a seed cluster featuring a proxy configuration. The proxy configurations do not have to match.
-
-        - Configure the `machineNetwork` field in your installation manifest.
-
-        </div>
+        > [!IMPORTANT]
+        > If your cluster deployment requires a proxy configuration, you must do the following:
+        >
+        > - Create a seed image from a seed cluster featuring a proxy configuration. The proxy configurations do not have to match.
+        >
+        > - Configure the `machineNetwork` field in your installation manifest.
 
     2.  Save the file in your working directory.
 
@@ -197,13 +209,19 @@ For more information about the specifications for the `image-based-config.yaml` 
 
 6.  Attach the `imagebasedconfig.iso` to the preinstalled host using your preferred method and restart the host to complete the configuration process and deploy the cluster.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 When the configuration process completes on the host, access the cluster to verify its status.
+
+</div>
 
 1.  Export the `kubeconfig` environment variable to your kubeconfig file by running the following command:
 
@@ -224,9 +242,19 @@ When the configuration process completes on the host, access the cluster to veri
     node/sno-cluster-name.host.example.com       Ready    control-plane,master   5h15m   v1.34.2
     ```
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using image pull secrets](../../../openshift_images/managing_images/using-image-pull-secrets.xml)
 
 - [Reference specifications for the `image-based-installation-config.yaml` manifest](../../../edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.xml#ibi-installer-configuration-config_ibi-edge-image-based-install)
+
+</div>
 
 ## Reference specifications for the image-based-config.yaml manifest
 
@@ -234,9 +262,9 @@ The following content describes the specifications for the `image-based-config.y
 
 The `openshift-install` program uses the `image-based-config.yaml` manifest to create a site-specific configuration ISO for image-based deployments of single-node OpenShift.
 
-| Specification | Type     | Description                                                        |
-|---------------|----------|--------------------------------------------------------------------|
-| `hostname`    | `string` | Define the name of the node for the single-node OpenShift cluster. |
+| Specification | Type | Description |
+|----|----|----|
+| `hostname` | `string` | Define the name of the node for the single-node OpenShift cluster. |
 
 Required specifications
 
@@ -248,14 +276,14 @@ Required specifications
 <col style="width: 57%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Specification</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>networkConfig</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies networking configurations for the host, for example:</p>
@@ -267,20 +295,22 @@ Required specifications
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">        ...</span></span></code></pre></div>
 <p>If you require static networking, you must install the <code>nmstatectl</code> library on the host that creates the live installation ISO. For further information about defining network configurations by using <code>nmstate</code>, see <a href="https://nmstate.io/">nmstate.io</a>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>The name of the interface must match the actual NIC name as shown in the operating system.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>additionalNTPSources</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a list of NTP sources for all cluster hosts. These NTP sources are added to any existing NTP sources in the cluster. You can use the hostname or IP address for the NTP source.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>releaseRegistry</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the container image registry that you used for the release image of the seed cluster.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>nodeLabels</code></p></td>
 <td style="text-align: left;"><p><code>map[string]string</code></p></td>
 <td style="text-align: left;"><p>Specifies custom node labels for the single-node OpenShift node, for example:</p>
@@ -291,29 +321,39 @@ Required specifications
 </tbody>
 </table>
 
-Optional specifications
-
 # Configuring resources for extra manifests
 
 You can optionally define additional resources in an image-based deployment for single-node OpenShift clusters.
 
 Create the additional resources in an `extra-manifests` folder in the same working directory that has the `install-config.yaml` and `image-based-config.yaml` manifests.
 
-<div class="note">
-
-Filenames for additional resources in the `extra-manifests` directory must not exceed 30 characters. Longer filenames might cause deployment failures.
-
-</div>
+> [!NOTE]
+> Filenames for additional resources in the `extra-manifests` directory must not exceed 30 characters. Longer filenames might cause deployment failures.
 
 The following example shows how to create a resource in the `extra-manifests` folder of your working directory to add an single-root I/O virtualization (SR-IOV) network to the deployment.
 
-<div class="note">
+> [!NOTE]
+> If you add more than one extra manifest, and the manifests must be applied in a specific order, you must prefix the filenames of the manifests with numbers that represent the required order. For example, `00-namespace.yaml`, `01-sriov-extra-manifest.yaml`, and so on.
 
-If you add more than one extra manifest, and the manifests must be applied in a specific order, you must prefix the filenames of the manifests with numbers that represent the required order. For example, `00-namespace.yaml`, `01-sriov-extra-manifest.yaml`, and so on.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You created a working directory with the `install-config.yaml` and `image-based-config.yaml` manifests
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to your working directory and create the `extra-manifests` folder by running the following command:
 
@@ -325,11 +365,8 @@ If you add more than one extra manifest, and the manifests must be applied in a 
 
     1.  Create a YAML file that defines the resources, as shown in the following example:
 
-        <div class="note">
-
-        If the cluster nodes include Intel vRAN Boost (VRB1 or VRB2) hardware, you can include a `SriovVrbClusterConfig` resource in the extra manifests to configure the hardware.
-
-        </div>
+        > [!NOTE]
+        > If the cluster nodes include Intel vRAN Boost (VRB1 or VRB2) hardware, you can include a `SriovVrbClusterConfig` resource in the extra manifests to configure the hardware.
 
         ``` yaml
         apiVersion: sriovnetwork.openshift.io/v1
@@ -411,6 +448,16 @@ If you add more than one extra manifest, and the manifests must be applied in a 
                   numQueueGroups: 4
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - When you create the configuration ISO, you can view the reference to the extra manifests in the `.openshift_install_state.json` file in your working directory:
 
   ``` json
@@ -423,3 +470,5 @@ If you add more than one extra manifest, and the manifests must be applied in a 
           ]
       }
   ```
+
+</div>

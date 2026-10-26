@@ -1,24 +1,36 @@
 You can disable KMS encryption and migrate to local etcd encryption to simplify operations or resolve external KMS connectivity issues.
 
-<div class="important">
-
-Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Disable KMS encryption
 
 You can disable external KMS encryption and migrate to local encryption to simplify operations or resolve KMS connectivity issues.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have created an etcd backup.
 
-<div class="warning">
+</div>
 
-Re-encryption of all etcd data will occur.
+> [!WARNING]
+> Re-encryption of all etcd data will occur.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -82,7 +94,15 @@ Re-encryption of all etcd data will occur.
 
 8.  After backup retention period passes, decommission the KMS key.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the encryption type by entering the following command:
 
@@ -118,11 +138,10 @@ Re-encryption of all etcd data will occur.
         $ oc delete secret encryption-test -n default
         ```
 
-<div class="note">
-
-Do not delete the KMS key until migration completes successfully.
-
 </div>
+
+> [!NOTE]
+> Do not delete the KMS key until migration completes successfully.
 
 # Additional resources
 

@@ -34,7 +34,13 @@ The following prerequisites apply to the management cluster:
 
 - You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About installing OADP](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
 
@@ -44,19 +50,39 @@ The following prerequisites apply to the management cluster:
 
 - [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api)
 
+</div>
+
 # Configuring OADP to automate disaster recovery for hosted control planes
 
 Before you can automate disaster recovery by using OpenShift API for Data Protection (OADP), you need to configure it for your hosted control planes platform.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If your hosted cluster is on AWS, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage" to configure OADP.
 
 - If your hosted cluster is on a bare metal, follow the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway" to configure OADP.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring the OpenShift API for Data Protection with AWS S3 compatible storage](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
 
 - [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+
+</div>
 
 # Automation of the backup and restore process with a DPA
 
@@ -67,6 +93,14 @@ You can automate parts of the backup and restore process by using a Data Protect
 Automate parts of the backup and restore process on bare metal by creating a Data Protection Application (DPA). A DPA defines information including backup locations and Velero pod configurations.
 
 You can create a DPA by defining a `DataProtectionApplication` object.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file similar to the following example:
 
@@ -141,13 +175,33 @@ You can create a DPA by defining a `DataProtectionApplication` object.
 
     After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Back up the data plane workload.
+
+</div>
 
 ## Creating a Data Protection Application for AWS
 
 Automate parts of the backup and restore process on AWS by creating a Data Protection Application (DPA). A DPA defines information including backup locations and Velero pod configurations.
 
 You can create a DPA by defining a `DataProtectionApplication` object.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file similar to the following example:
 
@@ -212,7 +266,19 @@ You can create a DPA by defining a `DataProtectionApplication` object.
 
     After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Back up the data plane workload.
+
+</div>
 
 # Backing up the data plane workload by using the OADP Operator
 
@@ -220,17 +286,43 @@ You can back up the data plane workload by using the OADP Operator.
 
 However, if the data plane workload is not important, you can skip this procedure.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To back up the data plane workload, follow the steps in "Backing up applications".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Backing up applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
+
+</div>
 
 # Backing up the control plane workload
 
 You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
 To monitor and observe the backup process, see "Observing the backup and restore process".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that defines the `Backup` CR:
 
@@ -293,17 +385,24 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
     - `spec.defaultVolumesToFsBackup` specifies that the `fs-backup` backing up method for persistent volumes (PVs) is not used.
 
-      <div class="note">
-
-      If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
-
-      </div>
+      > [!NOTE]
+      > If you want to use CSI volume snapshots, you must add the `backup.velero.io/backup-volumes-excludes=<pv_name>` annotation to your PVs.
 
 2.  Apply the `Backup` CR by running the following command:
 
     ``` terminal
     $ oc apply -f backup-control-plane.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the value of the `status.phase` is `Completed` by running the following command:
 
@@ -312,9 +411,19 @@ To monitor and observe the backup process, see "Observing the backup and restore
     -o jsonpath='{.status.phase}'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - Restore the hosted cluster by using OADP.
+
+</div>
 
 # Restoring a hosted cluster by using OADP
 
@@ -324,9 +433,14 @@ You can restore the hosted cluster by creating the `Restore` custom resource (CR
 
 - If you are using a replace update, you need some spare nodes for the `InfraEnv` resource to deploy the worker nodes.
 
-<div class="important">
+> [!IMPORTANT]
+> After you back up your hosted cluster, you must delete it to start the restoring process. To start node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
 
-After you back up your hosted cluster, you must delete it to start the restoring process. To start node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -334,7 +448,17 @@ After you back up your hosted cluster, you must delete it to start the restoring
 
 - You completed the steps in [Removing remaining resources after removing a cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/clusters/cluster_mce_overview#removing-a-cluster-from-management-in-special-cases) (RHACM documentation).
 
+</div>
+
 To monitor and observe the backup process, see "Observing the backup and restore process".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that no pods and persistent volume claims (PVCs) are present in the hosted control plane namespace by running the following command:
 
@@ -342,15 +466,19 @@ To monitor and observe the backup process, see "Observing the backup and restore
     $ oc get pod pvc -n <hosted_control_plane_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
     ``` terminal
     No resources found
     ```
+
+    </div>
 
 2.  Create a YAML file that defines the `Restore` CR:
 
@@ -381,11 +509,8 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
     - `spec.existingResourcePolicy: update` ensures that the existing objects are overwritten with the backed up content.
 
-      <div class="important">
-
-      You must create the `InfraEnv` resource in a separate namespace. Do not delete the `InfraEnv` resource during the restore process. The `InfraEnv` resource is mandatory for the new nodes to be reprovisioned.
-
-      </div>
+      > [!IMPORTANT]
+      > You must create the `InfraEnv` resource in a separate namespace. Do not delete the `InfraEnv` resource during the restore process. The `InfraEnv` resource is mandatory for the new nodes to be reprovisioned.
 
 3.  Apply the `Restore` CR by running the following command:
 
@@ -400,9 +525,19 @@ To monitor and observe the backup process, see "Observing the backup and restore
       -o jsonpath='{.status.phase}'
     ```
 
+</div>
+
 # Observing the backup and restore process
 
 When you use OpenShift API for Data Protection (OADP) to back up and restore a hosted cluster, you can monitor and observe the process.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Observe the backup process by running the following command:
 
@@ -428,9 +563,19 @@ When you use OpenShift API for Data Protection (OADP) to back up and restore a h
     $ watch "echo BackupRepositories:;echo;oc get backuprepositories.velero.io -A;echo; echo BackupStorageLocations: ;echo; oc get backupstoragelocations.velero.io -A;echo;echo DataUploads: ;echo;oc get datauploads.velero.io -A;echo;echo DataDownloads: ;echo;oc get datadownloads.velero.io -n openshift-adp; echo;echo VolumeSnapshotLocations: ;echo;oc get volumesnapshotlocations.velero.io -A;echo;echo Backups:;echo;oc get backup -A; echo;echo Restores:;echo;oc get restore -A"
     ```
 
+</div>
+
 # Using the OADP CLI to describe the Backup and Restore resources
 
 When you use OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the OADP command-line interface (CLI).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get details of your `Restore` custom resource (CR) by running the following command:
 
@@ -447,3 +592,5 @@ When you use OpenShift API for Data Protection, you can get more details of the 
     ```
 
     Replace `<backup_resource_name>` with the name of your `Backup` resource.
+
+</div>

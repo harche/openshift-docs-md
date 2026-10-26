@@ -1,10 +1,7 @@
 The release notes for OpenShift API for Data Protection (OADP) 1.5 describe new features and enhancements, deprecated features, product recommendations, known issues, and resolved issues.
 
-<div class="note">
-
-For additional information about OADP, see *OpenShift API for Data Protection (OADP) FAQ*.
-
-</div>
+> [!NOTE]
+> For additional information about OADP, see *OpenShift API for Data Protection (OADP) FAQ*.
 
 # OADP 1.5.8 release notes
 
@@ -71,11 +68,8 @@ To work around this problem, use an existing Google Cloud bucket. As a result, t
 
 OpenShift API for Data Protection (OADP) 1.5.7 release notes list resolved issues.
 
-<div class="note">
-
-There is no OADP 1.5.6 release. The version numbering skips from 1.5.5 to 1.5.7 due to an internal process reason.
-
-</div>
+> [!NOTE]
+> There is no OADP 1.5.6 release. The version numbering skips from 1.5.5 to 1.5.7 due to an internal process reason.
 
 ## Resolved issues
 
@@ -413,11 +407,8 @@ By default, only one thread processes an item block. Velero 1.16 supports a para
 
 You can use the optional Velero server parameter `--item-block-worker-count` to run additional worker threads to process items in parallel. To enable this in OADP, set the `dpa.Spec.Configuration.Velero.ItemBlockWorkerCount` parameter to an integer value greater than zero.
 
-<div class="note">
-
-Running multiple full backups in parallel is not yet supported.
-
-</div>
+> [!NOTE]
+> Running multiple full backups in parallel is not yet supported.
 
 [OADP-5635](https://issues.redhat.com/browse/OADP-5635)
 

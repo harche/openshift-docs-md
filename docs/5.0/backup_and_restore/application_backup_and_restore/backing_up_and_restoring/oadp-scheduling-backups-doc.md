@@ -2,17 +2,32 @@ Schedule backup operations by creating a `Schedule` custom resource (CR) with a 
 
 You schedule backups by creating a `Schedule` custom resource (CR) instead of a `Backup` CR.
 
-<div class="warning">
+> [!WARNING]
+> Leave enough time in your backup schedule for a backup to finish before another backup is created.
+>
+> For example, if a backup of a namespace typically takes 10 minutes, do not schedule backups more frequently than every 15 minutes.
 
-Leave enough time in your backup schedule for a backup to finish before another backup is created.
+<div>
 
-For example, if a backup of a namespace typically takes 10 minutes, do not schedule backups more frequently than every 15 minutes.
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
 - The `DataProtectionApplication` CR must be in a `Ready` state.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the `backupStorageLocations` CRs:
 
@@ -51,17 +66,14 @@ For example, if a backup of a namespace typically takes 10 minutes, do not sched
     `schedule: 0 7 * * *`
     Specifies the `cron` expression to schedule the backup, for example, `0 7 * * *` to perform a backup every day at 7:00.
 
-    <div class="note">
-
-    To schedule a backup at specific intervals, enter the `<duration_in_minutes>` in the following format:
-
-    ``` terminal
-      schedule: "*/10 * * * *"
-    ```
-
-    Enter the minutes value between quotation marks (`" "`).
-
-    </div>
+    > [!NOTE]
+    > To schedule a backup at specific intervals, enter the `<duration_in_minutes>` in the following format:
+    >
+    > ``` terminal
+    >   schedule: "*/10 * * * *"
+    > ```
+    >
+    > Enter the minutes value between quotation marks (`" "`).
 
     `<namespace>`
     Specifies an array of namespaces to back up.
@@ -72,8 +84,20 @@ For example, if a backup of a namespace typically takes 10 minutes, do not sched
     `defaultVolumesToFsBackup: true`
     Optional: In OADP version 1.2 and later, add the `defaultVolumesToFsBackup: true` key-value pair to your configuration when performing backups of volumes with Restic. In OADP version 1.1, add the `defaultVolumesToRestic: true` key-value pair when you back up volumes with Restic.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the status of the `Schedule` CR is `Completed` after the scheduled backup runs:
 
   ``` terminal
   $ oc get schedule -n openshift-adp <schedule> -o jsonpath='{.status.phase}'
   ```
+
+</div>

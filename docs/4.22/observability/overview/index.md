@@ -14,11 +14,8 @@ Red Hat OpenShift Observability provides real-time visibility, monitoring, and 
 
 Red Hat OpenShift Observability connects open-source observability tools and technologies to create a unified Observability solution. The components of Red Hat OpenShift Observability work together to help you collect, store, deliver, analyze, and visualize data.
 
-<div class="note">
-
-With the exception of monitoring, Red Hat OpenShift Observability components have distinct release cycles separate from the core OpenShift Container Platform release cycles. See the Red Hat [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) page for their release compatibility.
-
-</div>
+> [!NOTE]
+> With the exception of monitoring, Red Hat OpenShift Observability components have distinct release cycles separate from the core OpenShift Container Platform release cycles. See the Red Hat [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) page for their release compatibility.
 
 # Monitoring
 

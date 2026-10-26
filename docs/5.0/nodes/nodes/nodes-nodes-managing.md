@@ -1,10 +1,7 @@
 OpenShift Container Platform uses a KubeletConfig custom resource (CR) to manage the configuration of nodes. By creating an instance of a `KubeletConfig` object, a managed machine config is created to override setting on the node.
 
-<div class="note">
-
-Logging in to remote machines for the purpose of changing their configuration is not supported.
-
-</div>
+> [!NOTE]
+> Logging in to remote machines for the purpose of changing their configuration is not supported.
 
 # Modifying nodes
 
@@ -20,15 +17,17 @@ Most [Kubelet Configuration options](https://kubernetes.io/docs/reference/config
 
 - StaticPodPath
 
-<div class="note">
+> [!NOTE]
+> If a single node contains more than 50 images, pod scheduling might be imbalanced across nodes. This is because the list of images on a node is shortened to 50 by default. You can disable the image limit by editing the `KubeletConfig` object and setting the value of `nodeStatusMaxImages` to `-1`.
 
-If a single node contains more than 50 images, pod scheduling might be imbalanced across nodes. This is because the list of images on a node is shortened to 50 by default. You can disable the image limit by editing the `KubeletConfig` object and setting the value of `nodeStatusMaxImages` to `-1`.
+> [!NOTE]
+> Because the fields in a `kubeletConfig` object are passed directly to the kubelet from upstream Kubernetes, the validation of those fields is handled directly by the kubelet itself. Please refer to the relevant Kubernetes documentation for the valid values for these fields. Invalid values in the `kubeletConfig` object can render cluster nodes unusable.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-Because the fields in a `kubeletConfig` object are passed directly to the kubelet from upstream Kubernetes, the validation of those fields is handled directly by the kubelet itself. Please refer to the relevant Kubernetes documentation for the valid values for these fields. Invalid values in the `kubeletConfig` object can render cluster nodes unusable.
+Procedure
 
 </div>
 
@@ -42,9 +41,11 @@ Because the fields in a `kubeletConfig` object are passed directly to the kubele
         $  oc get machineconfigpool  --show-labels
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -53,6 +54,8 @@ Because the fields in a `kubeletConfig` object are passed directly to the kubele
         master    rendered-master-e05b81f5ca4db1d249a1bf32f9ec24fd   True      False      False      operator.machineconfiguration.openshift.io/required-for-upgrade=
         worker    rendered-worker-f50e78e1bc06d8e82327763145bfcf62   True      False      False
         ```
+
+        </div>
 
     2.  Add a custom label to the desired machine config pool.
 
@@ -105,23 +108,27 @@ Because the fields in a `kubeletConfig` object are passed directly to the kubele
     $ oc create -f master-kube-config.yaml
     ```
 
+</div>
+
 # Configuring control plane nodes as schedulable
 
 You can configure control plane nodes to be schedulable, meaning that new pods are allowed for placement on the control plane nodes.
 
 By default, control plane nodes are not schedulable. You can set the control plane nodes to be schedulable, but you must retain the compute nodes.
 
-<div class="note">
-
-You can deploy OpenShift Container Platform with no compute nodes on a bare-metal cluster. In this case, the control plane nodes are marked schedulable by default.
-
-</div>
+> [!NOTE]
+> You can deploy OpenShift Container Platform with no compute nodes on a bare-metal cluster. In this case, the control plane nodes are marked schedulable by default.
 
 You can allow or disallow control plane nodes to be schedulable by configuring the `mastersSchedulable` field.
 
-<div class="important">
+> [!IMPORTANT]
+> When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
 
-When you configure control plane nodes from the default unschedulable to schedulable, additional subscriptions are required. This is because control plane nodes then become compute nodes.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -156,11 +163,31 @@ When you configure control plane nodes from the default unschedulable to schedul
 
 3.  Save the file to apply the changes.
 
+</div>
+
 # Setting SELinux booleans
 
 OpenShift Container Platform allows you to enable and disable an SELinux boolean on a Red Hat Enterprise Linux CoreOS (RHCOS) node. The following procedure explains how to modify SELinux booleans on nodes using the Machine Config Operator (MCO). This procedure uses `container_manage_cgroup` as the example boolean. You can modify this value to whichever boolean you need.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file with a `MachineConfig` object, displayed in the following example:
 
@@ -200,11 +227,10 @@ OpenShift Container Platform allows you to enable and disable an SELinux boolean
     $ oc create -f 99-worker-setsebool.yaml
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > Applying any changes to the `MachineConfig` object causes all affected nodes to gracefully reboot after the change is applied.
 
-    Applying any changes to the `MachineConfig` object causes all affected nodes to gracefully reboot after the change is applied.
-
-    </div>
+</div>
 
 # Add kernel arguments to nodes
 
@@ -212,11 +238,8 @@ In some special cases, you can add kernel arguments to a set of nodes in your cl
 
 You should add kernel arguments with caution and a clear understanding of the implications of the arguments you set.
 
-<div class="warning">
-
-Improper use of kernel arguments can result in your systems becoming unbootable.
-
-</div>
+> [!WARNING]
+> Improper use of kernel arguments can result in your systems becoming unbootable.
 
 Examples of kernel arguments you could set include:
 
@@ -224,11 +247,8 @@ Examples of kernel arguments you could set include:
 
 - **enforcing=0**: Configures Security Enhanced Linux (SELinux) to run in permissive mode. In permissive mode, the system acts as if SELinux is enforcing the loaded security policy, including labeling objects and emitting access denial entries in the logs, but it does not actually deny any operations. While not supported for production systems, permissive mode can be helpful for debugging.
 
-  <div class="warning">
-
-  Disabling SELinux on RHCOS in production is not supported. After SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
-
-  </div>
+  > [!WARNING]
+  > Disabling SELinux on RHCOS in production is not supported. After SELinux has been disabled on a node, it must be re-provisioned before re-inclusion in a production cluster.
 
 See [Kernel.org kernel parameters](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt) for a list and descriptions of kernel arguments.
 
@@ -240,11 +260,27 @@ In the following procedure, you create a `MachineConfig` object that identifies:
 
 - A label that indicates where in the list of machine configs the change is applied.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have `cluster-admin` privileges.
 
 - Your cluster is running.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List existing `MachineConfig` objects for your OpenShift Container Platform cluster to determine how to label your machine config:
 
@@ -252,9 +288,11 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     $ oc get MachineConfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -273,6 +311,8 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     rendered-master-23e785de7587df95a4b517e0647e5ab7   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     rendered-worker-5d596d9293ca3ea80c896a1191735bb1   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     ```
+
+    </div>
 
 2.  Create a `MachineConfig` object file that identifies the kernel argument (for example, `05-worker-kernelarg-selinuxpermissive.yaml`)
 
@@ -311,9 +351,11 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     $ oc get MachineConfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -334,15 +376,19 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     rendered-worker-5d596d9293ca3ea80c896a1191735bb1   52dd3ba6a9a527fc3ab42afac8d12b693534c8c9   3.5.0             33m
     ```
 
+    </div>
+
 5.  Check the nodes:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -356,6 +402,8 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.36.3
     ```
 
+    </div>
+
     You can see that scheduling on each worker node is disabled as the change is being applied.
 
 6.  Check that the kernel argument worked by going to one of the worker nodes and listing the kernel command-line arguments (in `/proc/cmdline` on the host):
@@ -364,9 +412,11 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     $ oc debug node/ip-10-0-141-105.ec2.internal
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -382,7 +432,11 @@ In the following procedure, you create a `MachineConfig` object that identifies:
     sh-4.2# exit
     ```
 
+    </div>
+
     You should see the `enforcing=0` argument added to the other kernel arguments.
+
+</div>
 
 # About configuring parallel container image pulls
 
@@ -400,9 +454,27 @@ To force serial image pulls, use a kubelet configuration to set `serializeImageP
 
 You can control the number of images that can be pulled by your workload simultaneously by using a kubelet configuration. You can set a maximum number of images that can be pulled or force workloads to pull images one at a time.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a running OpenShift Container Platform cluster.
 
 - You are logged in to the cluster as a user with administrative privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Apply a custom label to the machine config pool where you want to configure parallel pulls by running a command similar to the following.
 
@@ -442,7 +514,15 @@ You can control the number of images that can be pulled by your workload simulta
     $ oc create -f <file_name>.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the machine configs to see that a new one was added by running the following command:
 
@@ -505,15 +585,22 @@ You can control the number of images that can be pulled by your workload simulta
         maxParallelImagePulls: 3
         ```
 
+</div>
+
 # Migrating control plane nodes from one RHOSP host to another manually
 
 If control plane machine sets are not enabled on your cluster, you can run a script that moves a control plane node from one Red Hat OpenStack Platform (RHOSP) node to another.
 
-<div class="note">
+> [!NOTE]
+> Control plane machine sets are not enabled on clusters that run on user-provisioned infrastructure.
+>
+> For information about control plane machine sets, see "Managing control plane machines with control plane machine sets".
 
-Control plane machine sets are not enabled on clusters that run on user-provisioned infrastructure.
+<div>
 
-For information about control plane machine sets, see "Managing control plane machines with control plane machine sets".
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -521,7 +608,15 @@ For information about control plane machine sets, see "Managing control plane ma
 
 - The environment variable `KUBECONFIG` refers to a configuration that contains administrative OpenShift Container Platform credentials.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - From a command line, run the following script:
 
@@ -582,17 +677,34 @@ For information about control plane machine sets, see "Managing control plane ma
 
   If the script completes, the control plane machine is migrated to a new RHOSP node.
 
+</div>
+
 # Enabling Pressure Stall Information (PSI) monitoring
 
 You can enable Linux Pressure Stall Information (PSI) monitoring by using a `MachineConfig` object. Enabling PSI monitoring makes PSI metrics for CPU, memory, and I/O available for your cluster. You can use the metrics to help identify disruptions caused by CPU, memory, and I/O resource issues for better scheduling and eviction decisions.
 
-<div class="important">
+> [!IMPORTANT]
+> The performance impact of enabling PSI is negligible. However, for latency-sensitive environments, you can enable PSI in a test environment to determine its impact before enabling it on production clusters. Or, you can enable the PSI on one worker node and monitor for the performance impact. Then, gradually enable the feature on more worker nodes. Enabling PSI introduces new container metrics that can increase the RSS memory usage of `prometheus-k8s` pods. On a cluster with a large number of containers, monitor the memory usage of the `prometheus-k8s` pods and adjust resource as needed.
 
-The performance impact of enabling PSI is negligible. However, for latency-sensitive environments, you can enable PSI in a test environment to determine its impact before enabling it on production clusters. Or, you can enable the PSI on one worker node and monitor for the performance impact. Then, gradually enable the feature on more worker nodes. Enabling PSI introduces new container metrics that can increase the RSS memory usage of `prometheus-k8s` pods. On a cluster with a large number of containers, monitor the memory usage of the `prometheus-k8s` pods and adjust resource as needed.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have obtained the label associated with the static `MachineConfigPool` CR for the type of node you want to configure.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file similar to the following that contains the machine configuration:
 
@@ -624,7 +736,15 @@ The performance impact of enabling PSI is negligible. However, for latency-sensi
 
     The nodes with the specified role reboot while the changes are applied.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After the nodes return to the `Ready` state, start a debug session for a node by running the following command:
 
@@ -646,15 +766,19 @@ The performance impact of enabling PSI is negligible. However, for latency-sensi
       sh-5.1# cat /proc/cmdline | grep psi=1
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
       ``` terminal
       BOOT_IMAGE=(hd0,gpt3)/boot/ostree/rhcos-462f0c234e81f17224d7dbd4dc22d3f7046f70179e259c41a0a807e8b2f99428/vmlinuz-5.14.0-570.80.1.el9_6.x86_64 rw ostree=/ostree/boot.0/rhcos/462f0c234e81f17224d7dbd4dc22d3f7046f70179e259c41a0a807e8b2f99428/0 ignition.platform.id=gcp console=tty0 console=ttyS0,115200n8 root=UUID=d8254ef4-668e-49c5-b430-a45eefb834d7 rw rootflags=prjquota boot=UUID=22972ae8-ed08-43ff-931d-49e6d737c542 systemd.unified_cgroup_hierarchy=1 cgroup_no_v1=all psi=1
       ```
+
+      </div>
 
       where:
 
@@ -667,15 +791,19 @@ The performance impact of enabling PSI is negligible. However, for latency-sensi
       sh-5.1# ls /proc/pressure/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
       ``` terminal
       cpu  io  irq  memory
       ```
+
+      </div>
 
       where:
 
@@ -688,15 +816,19 @@ The performance impact of enabling PSI is negligible. However, for latency-sensi
       # cat /proc/pressure/cpu
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
       ``` terminal
       some avg10=0.91 avg60=1.05 avg300=1.28 total=61523749                                                                                                                                                                                                      full avg10=0.00 avg60=0.00 avg300=0.00 total=0
       ```
+
+      </div>
 
       where:
 
@@ -707,6 +839,8 @@ The performance impact of enabling PSI is negligible. However, for latency-sensi
       Specifies the share of time in which all non-idle tasks are stalled while waiting for CPU.
 
       For more information on using PSI metrics, see "PSI - Pressure Stall Information" in the Linux Kernel documentation.
+
+</div>
 
 # Additional resources
 

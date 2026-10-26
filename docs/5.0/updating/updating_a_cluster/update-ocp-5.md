@@ -4,11 +4,8 @@ Updating an OpenShift Container Platform cluster from a 4.x release to version 5
 
 Updates to version 5.0 are available on the `stable-5.0` and `candidate-5.0` channels.
 
-<div class="important">
-
-For production clusters, you must subscribe to a `stable-*`, `eus-*`, or `fast-*` channel.
-
-</div>
+> [!IMPORTANT]
+> For production clusters, you must subscribe to a `stable-*`, `eus-*`, or `fast-*` channel.
 
 # Additional resources
 

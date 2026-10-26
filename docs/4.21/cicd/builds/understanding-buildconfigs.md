@@ -10,9 +10,11 @@ Depending on how you choose to create your application using OpenShift Container
 
 The following example `BuildConfig` results in a new build every time a container image tag or the source code changes:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`BuildConfig` object definition**
+<div class="title">
+
+`BuildConfig` object definition
 
 </div>
 
@@ -48,6 +50,8 @@ spec:
   postCommit:
       script: "bundle exec rake test"
 ```
+
+</div>
 
 - This specification creates a new `BuildConfig` named `ruby-sample-build`.
 

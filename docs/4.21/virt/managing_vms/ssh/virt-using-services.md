@@ -2,9 +2,9 @@ You can create a service for a virtual machine (VM) and connect to the IP addres
 
 After you create a service with `virtctl`, you must add `special: key` to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest. If the cluster network cannot handle the traffic load, consider using a secondary network for VM access.
 
-# About services
+# Service types for VM network access
 
-A Kubernetes service exposes network access for clients to an application running on a set of pods. Services offer abstraction, load balancing, and, in the case of the `NodePort` and `LoadBalancer` types, exposure to the outside world.
+A Kubernetes service exposes an application running on a set of pods to network clients. Services provide abstraction and load balancing, and the `NodePort` and `LoadBalancer` types also expose the application outside the cluster.
 
 `ClusterIP`
 Exposes the service on an internal IP address and as a DNS name to other applications within the cluster. A single service can map to multiple virtual machines. When a client tries to connect to the service, the client’s request is load balanced among available backends. `ClusterIP` is the default service type.
@@ -15,21 +15,36 @@ Exposes the service on the same port of each selected node in the cluster. `Node
 `LoadBalancer`
 Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP address to the service.
 
-<div class="note">
+> [!NOTE]
+> For on-premise clusters, you can configure a load balancing service by deploying the MetalLB Operator.
 
-For on-premise clusters, you can configure a load balancing service by deploying the MetalLB Operator.
+# Enable load balancer services by using the web console
+
+You can enable the creation of load balancer services for a virtual machine (VM) from the OpenShift Container Platform web console. This setting must be on before you can create a load balancer service for SSH access.
+
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
-
-# Enabling load balancer service creation by using the web console
-
-You can enable the creation of load balancer services for a virtual machine (VM) by using the OpenShift Container Platform web console.
 
 - You have configured a load balancer for the cluster.
 
 - You have logged in as a user with the `cluster-admin` role.
 
 - You created a network attachment definition for the network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to **Virtualization** → **Overview**.
 
@@ -39,13 +54,33 @@ You can enable the creation of load balancer services for a virtual machine (VM)
 
 4.  Set **SSH over LoadBalancer service** to on.
 
-# Create a service with the web console
+</div>
 
-You can create a node port or load balancer service for a virtual machine (VM) by using the OpenShift Container Platform web console.
+# Create a service by using the web console
+
+You can create a node port or load balancer service for a virtual machine (VM) from the OpenShift Container Platform web console. A service gives clients outside the cluster a way to reach the VM over SSH.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You configured the cluster network to support either a load balancer or a node port.
 
 - To create a load balancer service, you enabled the creation of load balancer services.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **VirtualMachines** and select a virtual machine to view the **VirtualMachine details** page.
 
@@ -53,11 +88,31 @@ You can create a node port or load balancer service for a virtual machine (VM) b
 
 3.  Optional: Click the copy icon to copy the `SSH` command to your clipboard.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the **Services** pane on the **Details** tab to view the new service.
 
-# Create a service with virtctl
+</div>
 
-You can create a service for a virtual machine (VM) by using the `virtctl` command-line tool.
+# Create a service by using virtctl
+
+You can create a service for a virtual machine (VM) with a single `virtctl` command. Choose the service type and the port to expose, such as port 22 for SSH access.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the `virtctl` command-line tool.
 
@@ -65,7 +120,15 @@ You can create a service for a virtual machine (VM) by using the `virtctl` comma
 
 - The environment where you installed `virtctl` has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a service by running the following command:
 
@@ -93,7 +156,15 @@ You can create a service for a virtual machine (VM) by using the `virtctl` comma
   $ virtctl expose vm example-vm --name example-service --type NodePort --port 22
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the service by running the following command:
 
@@ -101,13 +172,33 @@ You can create a service for a virtual machine (VM) by using the `virtctl` comma
   $ oc get service
   ```
 
-# Creating a service by using the CLI
+</div>
 
-You can create a service and associate it with a virtual machine (VM) by using the command line.
+# Expose a VM as a service by using the CLI
+
+You can use the command line to create a service and associate it with a virtual machine (VM). You must create a label on the VM that matches the selector in the `Service` manifest.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You configured the cluster network to support the service.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to add the label for service creation. Add `special: key` to the `spec.template.metadata.labels` stanza:
 
@@ -126,11 +217,8 @@ You can create a service and associate it with a virtual machine (VM) by using t
     # ...
     ```
 
-    <div class="note">
-
-    Labels on a virtual machine pass through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
-
-    </div>
+    > [!NOTE]
+    > Labels on a virtual machine pass through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -170,15 +258,35 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
 6.  Restart the VM to apply the changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Query the `Service` object to verify that it is available:
 
   ``` terminal
   $ oc get service -n example-namespace
   ```
 
-# Connecting to a VM exposed by a service by using SSH
+</div>
+
+# Connect to a VM through a service
 
 You can connect to a virtual machine (VM) that a service exposes by using SSH.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created a service to expose the VM.
 
@@ -186,7 +294,15 @@ You can connect to a virtual machine (VM) that a service exposes by using SSH.
 
 - You are logged in to the cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following command to access the VM:
 
@@ -198,3 +314,5 @@ You can connect to a virtual machine (VM) that a service exposes by using SSH.
 
   `<ip_address>`
   Specifies the cluster IP for a cluster IP service, the node IP for a node port service, or the external IP address for a load balancer service.
+
+</div>

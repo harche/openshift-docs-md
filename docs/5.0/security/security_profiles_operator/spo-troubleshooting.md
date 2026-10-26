@@ -4,15 +4,25 @@ Troubleshoot the Security Profiles Operator to diagnose a problem or provide inf
 
 Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user cannot abuse the system by not allowing other workloads to map any part of the path `/var/lib/kubelet/seccomp/operator`.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Confirm that the profile is reconciled by running the following command:
 
     ``` terminal
     $ oc -n openshift-security-profiles logs openshift-security-profiles-<id>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -28,6 +38,8 @@ Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user ca
     I1019 19:34:15.453618       1 profile.go:148] profile "msg"="Reconciled profile from SeccompProfile" "namespace"="openshift-security-profiles" "profile"="openshift-security-profiles" "name"="openshift-security-profiles" "resource version"="729"
     ```
 
+    </div>
+
 2.  Confirm that the `seccomp` profiles are saved into the correct path by running the following command:
 
     ``` terminal
@@ -35,9 +47,11 @@ Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user ca
         -- ls /var/lib/kubelet/seccomp/operator/my-namespace/my-workload
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -45,3 +59,7 @@ Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user ca
     profile-block.json
     profile-complain.json
     ```
+
+    </div>
+
+</div>

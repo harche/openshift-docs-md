@@ -31,6 +31,14 @@ Mirrors `HostedCluster` conditions to `DPFHCPProvisioner` status without exposin
 
 You can install the DPF HCP Provisioner Operator by using a Helm chart. The operator manages the lifecycle of hosted clusters for DPU environments.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Multicluster Engine (MCE) Operator is installed and hosted control plane is enabled.
 
 - The MetalLB Operator is installed and a `MetalLB` instance is created.
@@ -42,6 +50,16 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
 - The Helm CLI (`helm`) is installed on your workstation.
 
 - You have a pull secret file that includes credentials for `registry.redhat.io`. Helm reads its registry credentials from this file, which is separate from the container runtime configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the `OPENSHIFT_PULL_SECRET` environment variable to the path of your pull secret file:
 
@@ -61,9 +79,11 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
         --set provisionerConfig.manageDPUServiceTemplates=true
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -74,11 +94,20 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
     STATUS: deployed
     ```
 
-    <div class="note">
-
-    The Helm chart creates a `DPFHCPProvisionerConfig` singleton custom resource named `default` that defines the Operator-wide configuration. This resource controls settings such as the BlueField OpenShift Container Platform layer image repository, MetalLB integration, and `DPUServiceTemplate` management. To customize these settings, modify the `provisionerConfig` section in your Helm `values.yaml` file before running the `helm upgrade --install` command.
-
     </div>
+
+    > [!NOTE]
+    > The Helm chart creates a `DPFHCPProvisionerConfig` singleton custom resource named `default` that defines the Operator-wide configuration. This resource controls settings such as the BlueField OpenShift Container Platform layer image repository, MetalLB integration, and `DPUServiceTemplate` management. To customize these settings, modify the `provisionerConfig` section in your Helm `values.yaml` file before running the `helm upgrade --install` command.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the Operator pod is running:
 
@@ -86,9 +115,11 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
   $ oc get pods -n dpf-hcp-provisioner-system
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -97,15 +128,19 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
   dpf-hcp-provisioner-operator-xxx-yyy            1/1     Running   0          1m
   ```
 
+  </div>
+
 - Verify that the `DPFHCPProvisionerConfig` singleton resource was created and that `manageDPUServiceTemplates` is set to `true`:
 
   ``` terminal
   $ oc get dpfhcpprovisionerconfigs.provisioning.dpu.hcp.io default -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -123,6 +158,8 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
     manageDPUServiceTemplates: true
   ```
 
+  </div>
+
   where:
 
   `blueFieldOCPLayerRepo`
@@ -134,23 +171,25 @@ You can install the DPF HCP Provisioner Operator by using a Helm chart. The oper
   `manageDPUServiceTemplates`
   Controls whether the operator creates and manages the `DPUServiceTemplate` resources for OVN-Kubernetes, DTS, and HBN in the `DPUCluster` namespace. This value must be `true` otherwise DPU provisioning fails because the required `DPUServiceTemplate` resources are missing. This field is deprecated and will be removed in a future release, at which point `DPUServiceTemplate` management is always enabled.
 
+</div>
+
 # Hosted cluster provisioning environment variables
 
 The following environment variables are used throughout the hosted cluster provisioning procedures. These environment variables must be set before you create secrets, the `DPUCluster` resource, or the `DPFHCPProvisioner` resource.
 
-| Variable                | Description                                                                                              | Example value                                            |
-|-------------------------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `HOSTED_CLUSTER_NAME`   | The name of the hosted DPU cluster.                                                                      | `dpf-hosted`                                             |
-| `OPENSHIFT_VERSION`     | The OpenShift Container Platform version for the hosted cluster.                                         | `4.22.7`                                                 |
-| `CLUSTERS_NAMESPACE`    | The namespace where hosted cluster resources are created.                                                | `clusters`                                               |
-| `BASE_DOMAIN`           | The base DNS domain for the hosted cluster.                                                              | `example.com`                                            |
-| `ETCD_STORAGE_CLASS`    | The storage class used for etcd persistent volume claims.                                                | `lvms-vg1`                                               |
-| `OCP_RELEASE_IMAGE`     | The OpenShift Container Platform release image for the hosted cluster. Derived from `OPENSHIFT_VERSION`. | `quay.io/openshift-release-dev/ocp-release:4.22.7-multi` |
-| `PULL_SECRET_NAME`      | The name of the Kubernetes secret that contains the pull secret for the hosted cluster.                  | `pull-secret`                                            |
-| `OPENSHIFT_PULL_SECRET` | The file path to the pull secret JSON file on your workstation.                                          | `/root/pull-secret.txt`                                  |
-| `SSH_KEY_SECRET_NAME`   | The name of the Kubernetes secret that contains the SSH public key for the hosted cluster.               | `ssh-key`                                                |
-| `SSH_KEY`               | The file path to the SSH public key file on your workstation. Use ed25519 keys for better security.      | `/root/.ssh/id_ed25519.pub`                              |
-| `HOSTED_CLUSTER_VIP`    | The virtual IP address for the hosted cluster API server, allocated from the management cluster subnet.  | `192.168.1.200`                                          |
+| Variable | Description | Example value |
+|----|----|----|
+| `HOSTED_CLUSTER_NAME` | The name of the hosted DPU cluster. | `dpf-hosted` |
+| `OPENSHIFT_VERSION` | The OpenShift Container Platform version for the hosted cluster. | `4.22.7` |
+| `CLUSTERS_NAMESPACE` | The namespace where hosted cluster resources are created. | `clusters` |
+| `BASE_DOMAIN` | The base DNS domain for the hosted cluster. | `example.com` |
+| `ETCD_STORAGE_CLASS` | The storage class used for etcd persistent volume claims. | `lvms-vg1` |
+| `OCP_RELEASE_IMAGE` | The OpenShift Container Platform release image for the hosted cluster. Derived from `OPENSHIFT_VERSION`. | `quay.io/openshift-release-dev/ocp-release:4.22.7-multi` |
+| `PULL_SECRET_NAME` | The name of the Kubernetes secret that contains the pull secret for the hosted cluster. | `pull-secret` |
+| `OPENSHIFT_PULL_SECRET` | The file path to the pull secret JSON file on your workstation. | `/root/pull-secret.txt` |
+| `SSH_KEY_SECRET_NAME` | The name of the Kubernetes secret that contains the SSH public key for the hosted cluster. | `ssh-key` |
+| `SSH_KEY` | The file path to the SSH public key file on your workstation. Use ed25519 keys for better security. | `/root/.ssh/id_ed25519.pub` |
+| `HOSTED_CLUSTER_VIP` | The virtual IP address for the hosted cluster API server, allocated from the management cluster subnet. | `192.168.1.200` |
 
 Hosted cluster provisioning environment variables
 
@@ -178,9 +217,14 @@ $ export FLANNEL_POD_CIDR="10.132.0.0/14"
 
 You must create a pull secret and an SSH key secret in the clusters namespace before provisioning the hosted cluster. The `DPFHCPProvisioner` resource references these secrets during hosted cluster creation.
 
-<div class="note">
+> [!NOTE]
+> The BlueField OpenShift Container Platform layer image that the Operator resolves automatically might require authentication to the Quay or Red Hat registry. Ensure that the pull secret includes credentials for that image registry.
 
-The BlueField OpenShift Container Platform layer image that the Operator resolves automatically might require authentication to the Quay or Red Hat registry. Ensure that the pull secret includes credentials for that image registry.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -189,6 +233,16 @@ The BlueField OpenShift Container Platform layer image that the Operator resolve
 - You have a valid OpenShift Container Platform pull secret file at the path specified by `OPENSHIFT_PULL_SECRET`.
 
 - You have an SSH public key file at the path specified by `SSH_KEY`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the clusters namespace:
 
@@ -214,11 +268,18 @@ The BlueField OpenShift Container Platform layer image that the Operator resolve
         -n $CLUSTERS_NAMESPACE
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The `id_rsa.pub` secret data key is a fixed name that the provisioner expects and it does not require an RSA key. The `SSH_KEY` variable can point to any supported public key file, such as an Ed25519 key.
 
-    The `id_rsa.pub` secret data key is a fixed name that the provisioner expects and it does not require an RSA key. The `SSH_KEY` variable can point to any supported public key file, such as an Ed25519 key.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the secrets were created in the clusters namespace:
 
@@ -226,9 +287,11 @@ The BlueField OpenShift Container Platform layer image that the Operator resolve
   $ oc get secrets -n $CLUSTERS_NAMESPACE
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -238,15 +301,37 @@ The BlueField OpenShift Container Platform layer image that the Operator resolve
   my-ssh-key       Opaque   1      5s
   ```
 
+  </div>
+
+</div>
+
 # Create the DPUCluster custom resource
 
 The `DPUCluster` resource tells the DPF Operator about the hosted cluster where DPU services will run.
 
 Do not set the `spec.kubeconfig` field. After you create the hosted cluster, the DPF HCP Provisioner Operator automatically creates the admin kubeconfig secret in the `dpf-operator-system` namespace and sets the `spec.kubeconfig` field of this resource to reference it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have set the environment variables described in "Hosted cluster provisioning environment variables".
 
 - You have installed the DPF Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpucluster.yaml` with the following content:
 
@@ -267,9 +352,19 @@ Do not set the `spec.kubeconfig` field. After you create the hosted cluster, the
     $ envsubst < dpucluster.yaml | oc apply -f -
     ```
 
+</div>
+
 # Create the DPFHCPProvisioner custom resource
 
 The `DPFHCPProvisioner` custom resource triggers the creation of the complete hosted cluster infrastructure. This includes the `HostedCluster`, the MetalLB `IPAddressPool`, the `L2Advertisement`, and kubeconfig injection into the `DPUCluster`.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have set the environment variables described in "Hosted cluster provisioning environment variables".
 
@@ -278,6 +373,16 @@ The `DPFHCPProvisioner` custom resource triggers the creation of the complete ho
 - You have created the pull secret and SSH key secret in the clusters namespace.
 
 - You have created the `DPUCluster` resource in the `dpf-operator-system` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpfhcpprovisioner.yaml` with the following content:
 
@@ -356,11 +461,31 @@ The `DPFHCPProvisioner` custom resource triggers the creation of the complete ho
     $ envsubst < dpfhcpprovisioner.yaml | oc apply -f -
     ```
 
+</div>
+
 # Verify hosted cluster creation
 
 After creating the `DPFHCPProvisioner` resource, you can monitor its status to verify that the hosted cluster is provisioned and becomes ready. The provisioning process can take up to 30 minutes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created the `DPFHCPProvisioner` resource in the clusters namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Monitor the `DPFHCPProvisioner` status:
 
@@ -368,9 +493,11 @@ After creating the `DPFHCPProvisioner` resource, you can monitor its status to v
     $ oc get dpfhcpprovisioner -n ${CLUSTERS_NAMESPACE}
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -379,6 +506,8 @@ After creating the `DPFHCPProvisioner` resource, you can monitor its status to v
     dpf-hosted   Provisioning   False   dpf-hosted      2m
     ```
 
+    </div>
+
 2.  Wait for the `DPFHCPProvisioner` to reach the `Ready` phase:
 
     ``` terminal
@@ -386,15 +515,29 @@ After creating the `DPFHCPProvisioner` resource, you can monitor its status to v
         --for=jsonpath='{.status.phase}'=Ready --timeout=30m
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     dpfhcpprovisioner.provisioning.dpu.hcp.io/dpf-hosted condition met
     ```
+
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Confirm that the `DPUCluster` is ready:
 
@@ -410,9 +553,11 @@ After creating the `DPFHCPProvisioner` resource, you can monitor its status to v
   $ oc get secret ${HOSTED_CLUSTER_NAME}-admin-kubeconfig -n dpf-operator-system
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -420,6 +565,10 @@ After creating the `DPFHCPProvisioner` resource, you can monitor its status to v
   NAME                          TYPE     DATA   AGE
   dpf-hosted-admin-kubeconfig   Opaque   1      10m
   ```
+
+  </div>
+
+</div>
 
 # Verify DPU service reconciliation
 

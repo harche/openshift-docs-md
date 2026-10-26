@@ -4,6 +4,14 @@ To create containerized applications in OpenShift Container Platform without man
 
 You can access S2I builder images through the Developer Console in the web console. You need these images to build containerized applications from your source code.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the OpenShift Container Platform web console using your login credentials. The default view for the OpenShift Container Platform web console is the **Administrator** perspective.
 
 2.  Use the perspective switcher to switch to the **Developer** perspective.
@@ -13,6 +21,8 @@ You can access S2I builder images through the Developer Console in the web conso
 4.  Click **All services** in the **Developer Catalog** tile.
 
 5.  Click **Builder Images** under **Type** to see the available S2I images.
+
+</div>
 
 # Source-to-image build process overview
 

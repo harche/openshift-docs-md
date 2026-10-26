@@ -6,9 +6,14 @@ You cannot reduce the size of a VM disk.
 
 You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can use the **VirtualMachines** page in the web console, with the VM running.
 
-<div class="note">
+> [!NOTE]
+> If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
 
-If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -24,25 +29,39 @@ If the PVC uses the file system volume mode, the disk image file expands to the 
 
 5.  In the **PersistentVolumeClaim size** field, enter the desired size.
 
-    <div class="note">
-
-    You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
-
-    </div>
+    > [!NOTE]
+    > You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
 
 6.  Click **Save**.
+
+</div>
 
 # Expanding a VM disk PVC by using the CLI
 
 You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can edit the `PersistentVolumeClaim` manifest by using the OpenShift CLI (`oc`).
 
-<div class="note">
+> [!NOTE]
+> If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
 
-If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `PersistentVolumeClaim` manifest of the VM disk that you want to expand:
 
@@ -68,13 +87,33 @@ If the PVC uses the file system volume mode, the disk image file expands to the 
 
     - `spec.resources.requests.storage` specifies the new disk size.
 
+</div>
+
 # Expanding available virtual storage by adding blank data volumes
 
 You can expand the available storage of a virtual machine (VM) by adding blank data volumes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have at least one persistent volume.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `DataVolume` manifest as shown in the following example:
 
@@ -102,6 +141,8 @@ You can expand the available storage of a virtual machine (VM) by adding blank d
     ``` terminal
     $ oc create -f <blank-image-datavolume>.yaml
     ```
+
+</div>
 
 # Additional resources
 

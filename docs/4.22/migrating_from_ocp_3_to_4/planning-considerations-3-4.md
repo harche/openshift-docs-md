@@ -10,6 +10,14 @@ To preserve the source DNS domain of migrated applications, select one of the tw
 
 You can allow the clients' requests sent to the DNS domain of the source cluster to reach the DNS domain of the target cluster without exposing the target cluster to the clients.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Place an exterior network component, such as an application load balancer or a reverse proxy, between the clients and the target cluster.
 
 2.  Update the application FQDN on the source cluster in the DNS server to return the IP address of the exterior network component.
@@ -20,7 +28,13 @@ You can allow the clients' requests sent to the DNS domain of the source cluster
 
 5.  Create a DNS record for each application that points to the IP address of the exterior network component in front of the target cluster. A specific DNS record has higher priority than a wildcard record, so no conflict arises when the application FQDN is resolved.
 
+</div>
+
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - The exterior network component must terminate all secure TLS connections. If the connections pass through to the target cluster load balancer, the FQDN of the target application is exposed to the client and certificate errors occur.
 
@@ -32,13 +46,17 @@ You can allow the clients' requests sent to the DNS domain of the source cluster
 
 You can set up the target cluster to accept requests for a migrated application in the DNS domain of the source cluster.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Procedure**
+<div class="title">
+
+Procedure
 
 </div>
 
 For both non-secure HTTP access and secure HTTPS access, perform the following steps:
+
+</div>
 
 1.  Create a route in the target cluster’s project that is configured to accept requests addressed to the application’s FQDN in the source cluster:
 
@@ -61,7 +79,17 @@ For secure HTTPS access, perform the following additional step:
 
     The new certificate is valid for securing connections made using either DNS domain.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - See [Replacing the default ingress certificate](../security/certificates/replacing-default-ingress-certificate.xml#replacing-default-ingress) for more information.
+
+</div>
 
 # Network traffic redirection strategies
 

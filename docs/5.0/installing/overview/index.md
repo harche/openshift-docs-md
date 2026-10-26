@@ -95,21 +95,15 @@ In OpenShift Container Platform 4.17, the installation program is a Go binary fi
 
 The installation program uses three sets of files during installation: an installation configuration file that is named `install-config.yaml`, Kubernetes manifests, and Ignition config files for your machine types.
 
-<div class="important">
-
-You can modify Kubernetes and the Ignition config files that control the underlying RHCOS operating system during installation. However, no validation is available to confirm the suitability of any modifications that you make to these objects. If you modify these objects, you might render your cluster non-functional. Because of this risk, modifying Kubernetes and Ignition config files is not supported unless you are following documented procedures or are instructed to do so by Red Hat support.
-
-</div>
+> [!IMPORTANT]
+> You can modify Kubernetes and the Ignition config files that control the underlying RHCOS operating system during installation. However, no validation is available to confirm the suitability of any modifications that you make to these objects. If you modify these objects, you might render your cluster non-functional. Because of this risk, modifying Kubernetes and Ignition config files is not supported unless you are following documented procedures or are instructed to do so by Red Hat support.
 
 The installation configuration file is transformed into Kubernetes manifests, and then the manifests are wrapped into Ignition config files. The installation program uses these Ignition config files to create the cluster.
 
 The installation configuration files are all pruned when you run the installation program, ensure you back up all the configuration files that you want to use again.
 
-<div class="important">
-
-You cannot modify the parameters that you set during installation, but you can modify many cluster attributes after installation.
-
-</div>
+> [!IMPORTANT]
+> You cannot modify the parameters that you set during installation, but you can modify many cluster attributes after installation.
 
 The installation process with the Assisted Installer
 Installation with the Assisted Installer involves creating a cluster configuration interactively by using the web-based user interface or the RESTful API. The Assisted Installer user interface prompts you for required values and provides reasonable default values for the remaining parameters, unless you change them in the user interface or with the API. The Assisted Installer generates a discovery image, which you download and use to boot the cluster machines. The image installs RHCOS and an agent, and the agent handles the provisioning for you. You can install OpenShift Container Platform with the Assisted Installer and full integration on Nutanix, vSphere, and bare metal. Additionally, you can install OpenShift Container Platform with the Assisted Installer on other platforms without integration.
@@ -147,11 +141,21 @@ If you do not use infrastructure that the installation program provisioned, you 
 
   If your cluster uses user-provisioned infrastructure, you have the option of adding RHEL compute machines to your cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
 - [Control plane node sizing](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#master-node-sizing_recommended-control-plane-practices)
 
 - [Red Hat OpenShift Network Calculator](https://access.redhat.com/labs/ocpnc/)
+
+</div>
 
 ## Verify node state after installation
 
@@ -163,15 +167,30 @@ The OpenShift Container Platform installation completes when the following insta
 
 - All cluster Operators are available.
 
-<div class="note">
-
-After the installation completes, the specific cluster Operators responsible for the worker nodes continuously attempt to provision all worker nodes. Some time is required before all worker nodes report as `READY`. For installations on bare metal, wait a minimum of 60 minutes before troubleshooting a worker node. For installations on all other platforms, wait a minimum of 40 minutes before troubleshooting a worker node. A `DEGRADED` state for the cluster Operators responsible for the worker nodes depends on the Operators' own resources and not on the state of the nodes.
-
-</div>
+> [!NOTE]
+> After the installation completes, the specific cluster Operators responsible for the worker nodes continuously attempt to provision all worker nodes. Some time is required before all worker nodes report as `READY`. For installations on bare metal, wait a minimum of 60 minutes before troubleshooting a worker node. For installations on all other platforms, wait a minimum of 40 minutes before troubleshooting a worker node. A `DEGRADED` state for the cluster Operators responsible for the worker nodes depends on the Operators' own resources and not on the state of the nodes.
 
 After your installation completes, you can continue to monitor the condition of the nodes in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The installation program resolves successfully in the terminal.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Show the status of all worker nodes:
 
@@ -179,9 +198,11 @@ After your installation completes, you can continue to monitor the condition of 
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -195,15 +216,19 @@ After your installation completes, you can continue to monitor the condition of 
     example-control3.example.com   Ready    master   55m   v1.21.6+bb8d50a
     ```
 
+    </div>
+
 2.  Show the phase of all worker machine nodes:
 
     ``` terminal
     $ oc get machines -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -218,6 +243,18 @@ After your installation completes, you can continue to monitor the condition of 
     openshift-machine-api   example-zbbt6-worker-0-qrl5b   Running                              49m
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Getting the BareMetalHost resource](../../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-getting-the-baremetalhost-resource_bare-metal-postinstallation-configuration)
 
 - [Following the progress of the installation](../../installing/installing_bare_metal/ipi/ipi-install-installing-a-cluster.xml#ipi-install-following-the-progress-of-the-installation_ipi-install-installing-a-cluster)
@@ -228,11 +265,23 @@ After your installation completes, you can continue to monitor the condition of 
 
 - [Assisted Installer for OpenShift Container Platform](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
+</div>
+
 ## Installation scope
 
 The scope of the OpenShift Container Platform installation program is intentionally narrow. It is designed for simplicity and ensured success. You can complete many more configuration tasks after installation completes.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Available cluster customizations](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+</div>
 
 ## OpenShift Local overview
 
@@ -244,29 +293,39 @@ Regardless of the programming language you use, OpenShift Local hosts your appli
 
 On a hosted environment, OpenShift Local can create microservices, convert them into images, and run them in Kubernetes-hosted containers directly on your laptop or desktop running Linux, macOS, or Windows 10 or later.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat OpenShift Local Overview](https://developers.redhat.com/products/openshift-local/overview)
+
+</div>
 
 # Supported platforms for OpenShift Container Platform clusters
 
 Review the platform support matrix to choose the installation method that meets your requirements.
 
-| Platform                                                | Installer-provisioned infrastructure <sup>\[1\]</sup> | User-provisioned infrastructure <sup>\[2\]</sup> | Agent-based Installer | Assisted Installer |
-|---------------------------------------------------------|-------------------------------------------------------|--------------------------------------------------|-----------------------|--------------------|
-| **Amazon Web Services (AWS)**                           | X                                                     | X                                                |                       |                    |
-| **Bare metal**                                          | X                                                     | X                                                | X                     | X                  |
-| **External**                                            |                                                       |                                                  | X                     | X                  |
-| **Google Cloud**                                        | X                                                     | X                                                |                       |                    |
-| **IBM Cloud® Classic**                                  | X                                                     |                                                  |                       |                    |
-| **IBM Cloud® Virtual Private Cloud (VPC)**              | X                                                     |                                                  |                       |                    |
-| **IBM Power®**                                          |                                                       | X                                                | X                     | X                  |
-| **IBM Z® or IBM® LinuxONE**                             |                                                       | X                                                | X                     | X                  |
-| **Microsoft Azure**                                     | X                                                     | X                                                |                       |                    |
-| **Microsoft Azure Stack Hub**                           | X                                                     | X                                                |                       |                    |
-| **None**                                                |                                                       |                                                  | X                     | X                  |
-| **Nutanix**                                             | X                                                     |                                                  |                       | X                  |
-| **Oracle Cloud Infrastructure (OCI)**                   |                                                       |                                                  | X                     | X                  |
-| **Red Hat OpenStack Platform (RHOSP) <sup>\[3\]</sup>** | X                                                     | X                                                |                       |                    |
-| **VMware vSphere**                                      | X                                                     | X                                                | X                     | X                  |
+| Platform | Installer-provisioned infrastructure <sup>\[1\]</sup> | User-provisioned infrastructure <sup>\[2\]</sup> | Agent-based Installer | Assisted Installer |
+|----|----|----|----|----|
+| **Amazon Web Services (AWS)** | X | X |  |  |
+| **Bare metal** | X | X | X | X |
+| **External** |  |  | X | X |
+| **Google Cloud** | X | X |  |  |
+| **IBM Cloud® Classic** | X |  |  |  |
+| **IBM Cloud® Virtual Private Cloud (VPC)** | X |  |  |  |
+| **IBM Power®** |  | X | X | X |
+| **IBM Z® or IBM® LinuxONE** |  | X | X | X |
+| **Microsoft Azure** | X | X |  |  |
+| **Microsoft Azure Stack Hub** | X | X |  |  |
+| **None** |  |  | X | X |
+| **Nutanix** | X |  |  | X |
+| **Oracle Cloud Infrastructure (OCI)** |  |  | X | X |
+| **Red Hat OpenStack Platform (RHOSP) <sup>\[3\]</sup>** | X | X |  |  |
+| **VMware vSphere** | X | X | X | X |
 
 Supported platforms
 
@@ -274,15 +333,12 @@ The following list describes three different deployment pathways and their prere
 
 - For installer-provisioned infrastructure: All machines, including the computer that you run the installation process on, must have direct internet access to pull images for platform containers and provide telemetry data to Red Hat.
 
-  <div class="important">
-
-  After installation, the following changes are not supported:
-
-  - Mixing cloud provider platforms.
-
-  - Mixing cloud provider components. For example, using a persistent storage framework from another platform on the platform where you installed the cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > After installation, the following changes are not supported:
+  >
+  > - Mixing cloud provider platforms.
+  >
+  > - Mixing cloud provider components. For example, using a persistent storage framework from another platform on the platform where you installed the cluster.
 
 - For user-provisioned infrastructure: Depending on the supported cases for the platform, you can perform installations on user-provisioned infrastructure so that you can run machines with full internet access, place your cluster behind a proxy, or perform a disconnected installation.
 
@@ -290,10 +346,18 @@ The following list describes three different deployment pathways and their prere
 
 - For Red Hat OpenStack Platform (RHOSP): The latest OpenShift Container Platform release supports both the latest RHOSP long-life release and intermediate release. For complete RHOSP release compatibility, see "OpenShift Container Platform on RHOSP support matrix". See "OpenShift Container Platform 4.x Tested Integrations" for details about integration testing for different platforms.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Supported installation methods for different platforms](../../installing/overview/installing-preparing.xml#installing-preparing-supported-installation-methods-reference_installing-preparing)
 
 - [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
 
 - [Red Hat OpenShift Network Calculator](https://access.redhat.com/labs/ocpnc/)
+
+</div>

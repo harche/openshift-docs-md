@@ -4,9 +4,14 @@ To remove a OpenShift Container Platform cluster that you deployed on IBM Power�
 
 To remove an OpenShift Container Platform cluster that uses installer-provisioned infrastructure, you can use the installation program and the installation files from your original deployment to uninstall the cluster from your cloud platform.
 
-<div class="note">
+> [!NOTE]
+> After uninstallation, check your cloud provider for any resources that were not removed properly, especially with user-provisioned infrastructure clusters. Some resources might exist because either the installation program did not create the resource or could not access the resource.
 
-After uninstallation, check your cloud provider for any resources that were not removed properly, especially with user-provisioned infrastructure clusters. Some resources might exist because either the installation program did not create the resource or could not access the resource.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -17,6 +22,16 @@ After uninstallation, check your cloud provider for any resources that were not 
 - You have configured the `ccoctl` binary.
 
 - You have installed the IBM Cloud® CLI and installed or updated the VPC infrastructure service plugin. For more information see "Prerequisites" in the [IBM Cloud® CLI documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-infrastructure-cli-plugin-vpc-reference&interface=ui#cli-ref-prereqs).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If the following conditions are met, this step is required:
 
@@ -50,11 +65,8 @@ After uninstallation, check your cloud provider for any resources that were not 
     $ export IBMCLOUD_API_KEY=<api_key>
     ```
 
-    <div class="note">
-
-    You must set the variable name exactly as specified. The installation program expects the variable name to be present to remove the service IDs that were created when the cluster was installed.
-
-    </div>
+    > [!NOTE]
+    > You must set the variable name exactly as specified. The installation program expects the variable name to be present to remove the service IDs that were created when the cluster was installed.
 
 3.  From the directory that has the installation program on the computer that you used to install the cluster, run the following command:
 
@@ -73,6 +85,10 @@ After uninstallation, check your cloud provider for any resources that were not 
 
     <div class="note">
 
+    <div class="title">
+
+    </div>
+
     - You must specify the directory that has the cluster definition files for your cluster. The installation program requires the `metadata.json` file in this directory to delete the cluster.
 
     - You might have to run the `openshift-install destroy` command up to three times to ensure a proper cleanup.
@@ -87,10 +103,9 @@ After uninstallation, check your cloud provider for any resources that were not 
         --name <cluster_name>
     ```
 
-    <div class="note">
-
-    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
-
-    </div>
+    > [!NOTE]
+    > If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
 
 5.  Optional: Delete the `<installation_directory>` directory and the OpenShift Container Platform installation program.
+
+</div>

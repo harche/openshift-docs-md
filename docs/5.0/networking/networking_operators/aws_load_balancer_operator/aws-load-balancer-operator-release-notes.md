@@ -1,20 +1,24 @@
 The release notes for the AWS Load Balancer (ALB) Operator summarize all new features and enhancements, notable technical changes, major corrections from the previous version, and any known bugs upon general availability.
 
-<div class="important">
-
-The AWS Load Balancer (ALB) Operator is only supported on the `x86_64` architecture.
-
-</div>
+> [!IMPORTANT]
+> The AWS Load Balancer (ALB) Operator is only supported on the `x86_64` architecture.
 
 These release notes track the development of the AWS Load Balancer Operator in OpenShift Container Platform.
 
-<div class="note">
+> [!NOTE]
+> AWS Load Balancer Operator currently does not support AWS GovCloud.
 
-AWS Load Balancer Operator currently does not support AWS GovCloud.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [AWS Load Balancer Operator in OpenShift Container Platform](../../../networking/networking_operators/aws_load_balancer_operator/understanding-aws-load-balancer-operator.xml#aws-load-balancer-operator)
+
+</div>
 
 # AWS Load Balancer Operator 1.2.0
 
@@ -84,11 +88,8 @@ The following advisory is available for the AWS Load Balancer Operator version 1
 
 - [RHEA-2023:1954 Release of AWS Load Balancer Operator on OperatorHub Enhancement Advisory Update](https://access.redhat.com/errata/RHEA-2023:1954)
 
-<div class="important">
-
-The AWS Load Balancer (ALB) Operator version 1.x.x cannot upgrade automatically from the Technology Preview version 0.x.x. To upgrade from an earlier version, you must uninstall the ALB operands and delete the `aws-load-balancer-operator` namespace.
-
-</div>
+> [!IMPORTANT]
+> The AWS Load Balancer (ALB) Operator version 1.x.x cannot upgrade automatically from the Technology Preview version 0.x.x. To upgrade from an earlier version, you must uninstall the ALB operands and delete the `aws-load-balancer-operator` namespace.
 
 Notable changes
 - This release uses the new `v1` API version.

@@ -56,21 +56,15 @@ When discussing high availability (HA) features in the context of OpenShift Virt
 
 If you plan to use OpenShift Virtualization HA features, you must have three control plane nodes at the time of cluster installation. The `controlPlaneTopology` status in the `Infrastructure` CR for the cluster must be `HighlyAvailable`.
 
-<div class="note">
-
-You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support HA features.
-
-</div>
+> [!NOTE]
+> You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support HA features.
 
 ## Live migration requirements for OpenShift Virtualization
 
 - If you plan to use live migration, you must have multiple worker nodes. The `infrastructureTopology` status in the `Infrastructure` CR for the cluster must be `HighlyAvailable`. A minimum of three worker nodes is recommended.
 
-  <div class="note">
-
-  You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support live migration.
-
-  </div>
+  > [!NOTE]
+  > You can install OpenShift Virtualization on a single-node cluster, but single-node OpenShift does not support live migration.
 
 - Live migration requires shared storage. Storage for OpenShift Virtualization must support and use the ReadWriteMany (RWX) access mode.
 
@@ -84,25 +78,19 @@ You can partition a single, high-speed dual port NIC into multiple virtual funct
 
 This feature supports the use of bonds for high availability with the Link Aggregation Control Protocol (LACP).
 
-<div class="note">
-
-Only one LACP can be declared by physical NIC.
-
-</div>
+> [!NOTE]
+> Only one LACP can be declared by physical NIC.
 
 An OpenShift Container Platform cluster can be deployed on a bond interface with 2 VFs on 2 physical functions (PFs) using the following methods:
 
 - Agent-based installer
 
-  <div class="note">
-
-  The minimum required version of `nmstate` is:
-
-  - `1.4.2-4` for RHEL 8 versions
-
-  - `2.2.7` for RHEL 9 versions
-
-  </div>
+  > [!NOTE]
+  > The minimum required version of `nmstate` is:
+  >
+  > - `1.4.2-4` for RHEL 8 versions
+  >
+  > - `2.2.7` for RHEL 9 versions
 
 - Installer-provisioned infrastructure installation
 

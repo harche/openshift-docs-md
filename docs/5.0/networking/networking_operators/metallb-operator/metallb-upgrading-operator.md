@@ -8,11 +8,29 @@ If you need to manually control upgrading the MetalLB Operator, set the `install
 
 To manually control when the MetalLB Operator upgrades in OpenShift Container Platform, you set `installPlanApproval` to Manual in the Subscription custom resource and approve the install plan. You then verify the upgrade by using the `ClusterServiceVersion` status.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You updated your cluster to the latest z-stream release.
 
 - You used the software catalog to install the MetalLB Operator.
 
 - Access the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the YAML definition of the `metallb-operator` subscription in the `metallb-system` namespace by entering the following command:
 
@@ -66,17 +84,26 @@ To manually control when the MetalLB Operator upgrades in OpenShift Container Pl
 
     1.  With the install plan open in your editor, set the `spec.approval` parameter to `Manual` and set the `spec.approved` parameter to `true`.
 
-        <div class="note">
+        > [!NOTE]
+        > After you edit the install plan, the upgrade operation starts. If you enter the `oc -n metallb-system get csv` command during the upgrade operation, the output might show the `Replacing` or the `Pending` status.
 
-        After you edit the install plan, the upgrade operation starts. If you enter the `oc -n metallb-system get csv` command during the upgrade operation, the output might show the `Replacing` or the `Pending` status.
+</div>
 
-        </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the Operator is upgraded, enter the following command and then check that output shows `Succeeded` for the Operator:
 
   ``` terminal
   $ oc -n metallb-system get csv
   ```
+
+</div>
 
 # Additional resources
 

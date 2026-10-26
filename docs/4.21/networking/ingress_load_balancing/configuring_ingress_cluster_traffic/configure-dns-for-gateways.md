@@ -30,11 +30,8 @@ If you create the `Gateway` object in any other namespace, note the following li
 
 When you deploy a `Gateway` object in the `openshift-ingress` namespace to use automatic DNS management, you must configure listener route attachment rules to support multi-namespace deployments.
 
-<div class="note">
-
-Setting the `spec.listeners[*].allowedRoutes.namespaces.from` field to `Same` on a Gateway in the `openshift-ingress` namespace restricts route attachment to that namespace. If you do not set that field, the Gateway defaults to this same behavior and only accepts route attachments from its own namespace. If you deploy `HTTPRoute`, `GRPCRoute` or `TLSRoute` objects in user namespaces, you cannot attach routes to the Gateway.
-
-</div>
+> [!NOTE]
+> Setting the `spec.listeners[*].allowedRoutes.namespaces.from` field to `Same` on a Gateway in the `openshift-ingress` namespace restricts route attachment to that namespace. If you do not set that field, the Gateway defaults to this same behavior and only accepts route attachments from its own namespace. If you deploy `HTTPRoute`, `GRPCRoute` or `TLSRoute` objects in user namespaces, you cannot attach routes to the Gateway.
 
 The following example creates a Gateway in the `openshift-ingress` namespace with a listener hostname under the cluster base domain, enabling automatic DNS management. The example also sets the `allowedRoutes.namespaces.from` field to `Selector` to allow route attachment from labeled application namespaces.
 
@@ -84,9 +81,11 @@ When you deploy a `Gateway` in the `openshift-ingress` namespace, the Ingress Op
 $ oc -n openshift-ingress get gateway managed-dns-gateway -o jsonpath='{.status.conditions[?(@.type=="DNSReady")]}' | jq
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -99,6 +98,8 @@ $ oc -n openshift-ingress get gateway managed-dns-gateway -o jsonpath='{.status.
   "type": "DNSReady"
 }
 ```
+
+</div>
 
 If `DNSReady` is `False`, inspect the listener-level conditions for specific failure reasons. For more information, see "Verifying Gateway infrastructure status".
 

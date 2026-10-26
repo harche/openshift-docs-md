@@ -4,6 +4,14 @@ Configure multiple Volume Snapshot Locations (VSLs) in the Data Protection Appli
 
 Configure the `DataProtectionApplication` (DPA) custom resource (CR) with multiple Volume Snapshot Locations (VSLs) using provider-specific credentials in the same region as your persistent volumes. This provides volume snapshot distribution across different storage targets.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Configure the DPA CR with more than one VSL as shown in the following example:
 
   ``` yaml
@@ -37,3 +45,5 @@ Configure the `DataProtectionApplication` (DPA) custom resource (CR) with multip
 
   `<custom_credential>`
   Specifies the custom credential name.
+
+</div>

@@ -4,11 +4,29 @@ A self validation checkup runs conformance tests on critical subsystems to verif
 
 Running a self validation checkup streamlines the process of running functional tests, which enables you to validate the stability, health, and compliance of an OpenShift Virtualization installation before deploying workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have cluster administrator permissions.
 
 - You have access to an OpenShift Container Platform cluster where OpenShift Virtualization is installed.
 
 - You are logged in to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Checkups**.
 
@@ -27,3 +45,5 @@ Running a self validation checkup streamlines the process of running functional 
 7.  After the test is complete, you can view high-level results in the **Self validation checkup details** page, including the names of any failing tests.
 
 8.  Optional: You can download detailed results as a ZIP file by clicking **Download results** in the **Self validation checkup details** page.
+
+</div>

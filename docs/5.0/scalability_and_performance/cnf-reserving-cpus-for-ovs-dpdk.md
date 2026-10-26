@@ -1,12 +1,9 @@
 Reserve CPUs for Open vSwitch Data Plane Development Kit (OVS-DPDK) poll mode driver (PMD) threads by using a `PerformanceProfile` custom resource (CR). The Node Tuning Operator applies multi-layer CPU isolation so that those host-side threads can run with reduced interference from the operating system and Kubernetes scheduling.
 
-<div class="important">
-
-OVS-DPDK CPU reservation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OVS-DPDK CPU reservation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # OVS-DPDK CPU isolation
 
@@ -24,11 +21,8 @@ Because OVS-DPDK runs as a daemon on the host, the profile needs a third CPU set
 
 When you set `spec.cpu.ovsDpdk`, the Node Tuning Operator ensures that pods of any QoS class are not placed on these CPUs. The Node Tuning Operator also bans them from `irqbalance`, removes them from `systemd` CPU affinity, adds them to kernel isolation parameters, and places them under the OVS cgroup hierarchy.
 
-<div class="important">
-
-The `ovsDpdk` CPU set is specific to OVS-DPDK. Do not use it as a generic pool for other DPDK applications. The Node Tuning Operator places these CPUs under the existing `ovs.slice` hierarchy for `ovs-vswitchd`.
-
-</div>
+> [!IMPORTANT]
+> The `ovsDpdk` CPU set is specific to OVS-DPDK. Do not use it as a generic pool for other DPDK applications. The Node Tuning Operator places these CPUs under the existing `ovs.slice` hierarchy for `ovs-vswitchd`.
 
 For the CPU set listed in `spec.cpu.ovsDpdk`, the Node Tuning Operator applies configuration across several layers, including the following:
 
@@ -58,21 +52,36 @@ Choose one of the following options:
 
 - **Alternative:** Configure `strict-cpu-reservation` using the `kubeletconfig.experimental` annotation in your OVS-DPDK performance profile. Use this option only if workload partitioning was not enabled during cluster installation.
 
-<div class="note">
-
-You must choose NUMA-aligned CPUs for your OVS-DPDK NICs. The Operator does not automatically assign CPUs based on NIC locality.
-
-</div>
+> [!NOTE]
+> You must choose NUMA-aligned CPUs for your OVS-DPDK NICs. The Operator does not automatically assign CPUs based on NIC locality.
 
 # Reserve OVS-DPDK CPUs with a performance profile
 
 Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs for OVS-DPDK by setting `spec.cpu.ovsDpdk`. You can optionally add the `performance.openshift.io/cpu-load-balancing-ovs-dpdk` annotation in the same CR to disable kernel scheduler load balancing on the OVS-DPDK CPUs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have identified whether workload partitioning was enabled at cluster installation (`cpuPartitioningMode: AllNodes`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate a base performance profile by using the Performance Profile Creator (PPC) tool with `must-gather` data from your cluster:
 
@@ -111,11 +120,8 @@ Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs 
         `<ovs_dpdk_count>`
         Replace with the number of CPUs to reserve for OVS-DPDK. When you specify this parameter, the PPC tool populates `spec.cpu.ovsDpdk` with the specified number of CPUs.
 
-        <div class="note">
-
-        For more information about other PPC arguments, see "Running the Performance Profile Creator using Podman".
-
-        </div>
+        > [!NOTE]
+        > For more information about other PPC arguments, see "Running the Performance Profile Creator using Podman".
 
 2.  Review and edit the generated profile to ensure that the CPUs in `spec.cpu.ovsDpdk` are on the same NUMA node as the OVS-DPDK NICs by running the following command:
 
@@ -148,11 +154,8 @@ Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs 
         node-role.kubernetes.io/worker: ""
     ```
 
-    <div class="note">
-
-    If workload partitioning is enabled, skip this step.
-
-    </div>
+    > [!NOTE]
+    > If workload partitioning is enabled, skip this step.
 
 4.  Optional: To disable kernel scheduler load balancing on the OVS-DPDK CPUs, add the `performance.openshift.io/cpu-load-balancing-ovs-dpdk` annotation set to `disable`:
 
@@ -194,7 +197,15 @@ Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs 
 
     The pool that matches your profile selector must show `UPDATED=True` and `UPDATING=False`. Press Ctrl+C to stop watching.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the performance profile is available by running the following command:
 
@@ -216,11 +227,8 @@ Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs 
       runtimeClass: performance-ovs-dpdk-isolation
     ```
 
-    <div class="note">
-
-    If the `Degraded` condition shows `status: "True"` with `reason: OvsDpdkCPUsPrerequisiteNotMet`, the OVS-DPDK CPU feature requires strict CPU reservation. Verify that workload partitioning is enabled or that you have added the `kubeletconfig.experimental` annotation to configure `strict-cpu-reservation` in the performance profile, then reapply the profile.
-
-    </div>
+    > [!NOTE]
+    > If the `Degraded` condition shows `status: "True"` with `reason: OvsDpdkCPUsPrerequisiteNotMet`, the OVS-DPDK CPU feature requires strict CPU reservation. Verify that workload partitioning is enabled or that you have added the `kubeletconfig.experimental` annotation to configure `strict-cpu-reservation` in the performance profile, then reapply the profile.
 
 2.  Verify that `kubelet` reserved system CPUs are the union of `reserved` and `ovsDpdk` by running the following command:
 
@@ -281,15 +289,22 @@ Create or update a `PerformanceProfile` custom resource (CR) that reserves CPUs 
 
     The output must match the `ovsDpdk` value from the performance profile. For example, with `ovsDpdk: "2-3"`, the output is `2-3`.
 
-<div class="note">
-
-These checks confirm that the platform configuration for OVS-DPDK CPU isolation is in place. Measuring OVS-DPDK dataplane throughput and packet loss requires your OVS-DPDK application test environment.
-
 </div>
+
+> [!NOTE]
+> These checks confirm that the platform configuration for OVS-DPDK CPU isolation is in place. Measuring OVS-DPDK dataplane throughput and packet loss requires your OVS-DPDK application test environment.
 
 # Update or remove OVS-DPDK CPU reservation
 
 Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field when you no longer need OVS-DPDK CPU isolation. Keep CPU sets disjoint, wait for the Machine Config Operator (MCO) to apply changes, and re-verify isolation or cleanup on the node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -299,13 +314,25 @@ Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field whe
 
 - You have workload partitioning enabled, or the `kubelet` CPU Manager `strict-cpu-reservation` policy option configured on the target nodes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Choose one of the following options:
 
     - To change the OVS-DPDK CPU set, edit the performance profile and replace `spec.cpu.ovsDpdk` with the new CPU list. Adjust `spec.cpu.isolated` and `spec.cpu.reserved` so that the sets do not overlap.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example expansion of the OVS-DPDK set (before)**
+      <div class="title">
+
+      Example expansion of the OVS-DPDK set (before)
 
       </div>
 
@@ -317,9 +344,13 @@ Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field whe
           reserved: "0-1"
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example expansion of the OVS-DPDK set (after)**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example expansion of the OVS-DPDK set (after)
 
       </div>
 
@@ -330,6 +361,8 @@ Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field whe
           ovsDpdk: "2-5"
           reserved: "0-1"
       ```
+
+      </div>
 
     - To remove OVS-DPDK CPU reservation, edit the performance profile, delete `spec.cpu.ovsDpdk`, remove the `performance.openshift.io/cpu-load-balancing-ovs-dpdk` annotation if present, and move the former OVS-DPDK CPUs into `isolated` or another appropriate set so that your CPU layout remains valid.
 
@@ -347,6 +380,16 @@ Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field whe
 
     The pool that matches your profile selector must show `UPDATED=True` and `UPDATING=False`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - For an updated `ovsDpdk` set, repeat the verification checks from *Reserve OVS-DPDK CPUs with a performance profile* against the new CPU list. Additionally, confirm that CPUs that left the `ovsDpdk` set are no longer banned or exclusively assigned for OVS-DPDK, and they match their new role in `isolated` or `reserved`.
 
 - For a removed `ovsDpdk` field, confirm that no OVS-DPDK isolation artifacts remain:
@@ -358,6 +401,8 @@ Change the `spec.cpu.ovsDpdk` CPU set on a Day 2 retune, or remove the field whe
   - The `ovsdpdk.slice` directory under `ovs.slice/ovs-vswitchd.service/` is gone.
 
   - Former `ovsDpdk` CPUs behave according to their new role in the performance profile.
+
+</div>
 
 # OVS-DPDK performance profile fields
 
@@ -371,24 +416,24 @@ Use the following reference when you reserve OVS-DPDK CPUs in a `PerformanceProf
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field or annotation</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.cpu.ovsDpdk</code></p></td>
 <td style="text-align: left;"><p>string (CPU set)</p></td>
 <td style="text-align: left;"><p>Optional. CPUs reserved for OVS-DPDK PMD threads. Example value: <code>"2-3,8-9"</code>. Must not overlap <code>reserved</code>, <code>isolated</code>, <code>shared</code>, or <code>offlined</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>metadata.annotations["performance.openshift.io/cpu-load-balancing-ovs-dpdk"]</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>Optional. Set to <code>disable</code> to exclude <code>ovsDpdk</code> CPUs from kernel scheduler load balancing and scheduling domains, and to set the OVS-DPDK cgroup partition to <code>isolated</code>. Omit the annotation or set it to <code>enable</code> to keep the default <code>member</code> partition.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>metadata.annotations["kubeletconfig.experimental"]</code></p></td>
 <td style="text-align: left;"><p>string (JSON)</p></td>
 <td style="text-align: left;"><p>Required if workload partitioning is not enabled. Configure kubelet settings as a JSON string. To satisfy the OVS-DPDK prerequisite when workload partitioning is disabled, set <code>cpuManagerPolicyOptions</code> with <code>strict-cpu-reservation</code> to <code>true</code>. Example:</p>
@@ -396,8 +441,6 @@ Use the following reference when you reserve OVS-DPDK CPUs in a `PerformanceProf
 </tr>
 </tbody>
 </table>
-
-OVS-DPDK performance profile fields
 
 # Additional resources
 

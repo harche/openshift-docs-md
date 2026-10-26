@@ -2,17 +2,22 @@ A multi-project quota, defined by a `ClusterResourceQuota` object, shares quotas
 
 This guide describes how cluster administrators can set and manage resource quotas across multiple projects.
 
-<div class="important">
-
-Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
-
-The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
-
-</div>
+> [!IMPORTANT]
+> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+>
+> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
 
 # Selecting multiple projects during quota creation
 
 To aggregate resource usage and enforce consistent limits across multiple namespaces, you can select target projects by using annotation or label selectors when creating a `ClusterResourceQuota` object.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To select projects based on annotations, run the following command:
 
@@ -113,9 +118,19 @@ To aggregate resource usage and enforce consistent limits across multiple namesp
             name: frontend
     ```
 
+</div>
+
 # Viewing applicable cluster resource quotas
 
 View the multi-project quota documents applied to your project by using the `AppliedClusterResourceQuota` resource. Although, as an administrator, you cannot create or modify multi-project quotas, you can monitor your project’s resource limits.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To view quotas applied to a project, run:
 
@@ -123,9 +138,11 @@ View the multi-project quota documents applied to your project by using the `App
   $ oc describe AppliedClusterResourceQuota
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -142,6 +159,10 @@ View the multi-project quota documents applied to your project by using the `App
   pods        1     10
   secrets     9     20
   ```
+
+  </div>
+
+</div>
 
 # Selection granularity
 

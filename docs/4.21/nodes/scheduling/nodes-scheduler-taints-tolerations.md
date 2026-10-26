@@ -6,9 +6,11 @@ You can use a *taint* on a node to allow that node to refuse a pod to be schedul
 
 You apply taints to a node through the `Node` specification (`NodeSpec`) and apply tolerations to a pod through the `Pod` specification (`PodSpec`). When you apply a taint to a node, the scheduler cannot place a pod on that node unless the pod can tolerate the taint.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example taint in a node specification**
+<div class="title">
+
+Example taint in a node specification
 
 </div>
 
@@ -26,9 +28,13 @@ spec:
 #...
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example toleration in a `Pod` spec**
+<div class="formalpara">
+
+<div class="title">
+
+Example toleration in a `Pod` spec
 
 </div>
 
@@ -48,30 +54,32 @@ spec:
 #...
 ```
 
+</div>
+
 Taints and tolerations consist of a key, value, and effect.
 
-<table>
+<table id="taint-components-table_nodes-scheduler-taints-tolerations">
 <caption>Taint and toleration components</caption>
 <colgroup>
 <col style="width: 27%" />
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p>The <code>key</code> is any string, up to 253 characters. The key must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p>The <code>value</code> is any string, up to 63 characters. The value must begin with a letter or number, and may contain letters, numbers, hyphens, dots, and underscores.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>effect</code></p></td>
 <td style="text-align: left;"><p>The effect is one of the following:</p>
 <table>
@@ -80,21 +88,21 @@ Taints and tolerations consist of a key, value, and effect.
 <col style="width: 60%" />
 </colgroup>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>NoSchedule</code> <sup>[1]</sup></p></td>
 <td style="text-align: left;"><ul>
 <li><p>New pods that do not match the taint are not scheduled onto that node.</p></li>
 <li><p>Existing pods on the node remain.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>PreferNoSchedule</code></p></td>
 <td style="text-align: left;"><ul>
 <li><p>New pods that do not match the taint might be scheduled onto that node, but the scheduler tries not to.</p></li>
 <li><p>Existing pods on the node remain.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>NoExecute</code></p></td>
 <td style="text-align: left;"><ul>
 <li><p>New pods that do not match the taint cannot be scheduled onto that node.</p></li>
@@ -104,7 +112,7 @@ Taints and tolerations consist of a key, value, and effect.
 </tbody>
 </table></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>operator</code></p></td>
 <td style="text-align: left;"><table>
 <colgroup>
@@ -112,11 +120,11 @@ Taints and tolerations consist of a key, value, and effect.
 <col style="width: 60%" />
 </colgroup>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>Equal</code></p></td>
 <td style="text-align: left;"><p>The <code>key</code>/<code>value</code>/<code>effect</code> parameters must match. This is the default.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>Exists</code></p></td>
 <td style="text-align: left;"><p>The <code>key</code>/<code>effect</code> parameters must match. You must leave a blank <code>value</code> parameter, which matches any.</p></td>
 </tr>
@@ -125,8 +133,6 @@ Taints and tolerations consist of a key, value, and effect.
 </tr>
 </tbody>
 </table>
-
-Taint and toleration components
 
 1.  If you add a `NoSchedule` taint to a control plane node, the node must have the `node-role.kubernetes.io/master=:NoSchedule` taint, which is added by default.
 
@@ -182,19 +188,18 @@ The following taints are built into OpenShift Container Platform:
 
 - `node.kubernetes.io/pid-pressure`: The node has pid pressure. This corresponds to the node condition `PIDPressure=True`.
 
-  <div class="important">
-
-  OpenShift Container Platform does not set a default pid.available `evictionHard`.
-
-  </div>
+  > [!IMPORTANT]
+  > OpenShift Container Platform does not set a default pid.available `evictionHard`.
 
 ## Understanding how to use toleration seconds to delay pod evictions
 
 You can specify how long a pod can remain bound to a node before being evicted by specifying the `tolerationSeconds` parameter in the `Pod` specification or `MachineSet` object. If a taint with the `NoExecute` effect is added to a node, a pod that does tolerate the taint, which has the `tolerationSeconds` parameter, the pod is not evicted until that time period expires.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -213,6 +218,8 @@ spec:
     tolerationSeconds: 3600
 #...
 ```
+
+</div>
 
 Here, if this pod is running but does not have a matching toleration, the pod stays bound to the node for 3,600 seconds and then be evicted. If the taint is removed before that time, the pod is not evicted.
 
@@ -293,11 +300,8 @@ To ensure backward compatibility, the daemon set controller automatically adds t
 
 You can also add arbitrary tolerations to daemon sets.
 
-<div class="note">
-
-The control plane also adds the `node.kubernetes.io/memory-pressure` toleration on pods that have a QoS class. This is because Kubernetes manages pods in the `Guaranteed` or `Burstable` QoS classes. The new `BestEffort` pods do not get scheduled onto the affected node.
-
-</div>
+> [!NOTE]
+> The control plane also adds the `node.kubernetes.io/memory-pressure` toleration on pods that have a QoS class. This is because Kubernetes manages pods in the `Guaranteed` or `Burstable` QoS classes. The new `BestEffort` pods do not get scheduled onto the affected node.
 
 ## Understanding evicting pods by condition (taint-based evictions)
 
@@ -309,15 +313,12 @@ The `tolerationSeconds` parameter allows you to specify how long a pod stays bou
 
 If you use the `tolerationSeconds` parameter with no value, pods are never evicted because of the not ready and unreachable node conditions.
 
-<div class="note">
-
-OpenShift Container Platform evicts pods in a rate-limited way to prevent massive pod evictions in scenarios such as the master becoming partitioned from the nodes.
-
-By default, if more than 55% of nodes in a given zone are unhealthy, the node lifecycle controller changes that zone’s state to `PartialDisruption` and the rate of pod evictions is reduced. For small clusters (by default, 50 nodes or less) in this state, nodes in this zone are not tainted and evictions are stopped.
-
-For more information, see "Rate limits on eviction" in the Kubernetes documentation.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform evicts pods in a rate-limited way to prevent massive pod evictions in scenarios such as the master becoming partitioned from the nodes.
+>
+> By default, if more than 55% of nodes in a given zone are unhealthy, the node lifecycle controller changes that zone’s state to `PartialDisruption` and the rate of pod evictions is reduced. For small clusters (by default, 50 nodes or less) in this state, nodes in this zone are not tainted and evictions are stopped.
+>
+> For more information, see "Rate limits on eviction" in the Kubernetes documentation.
 
 OpenShift Container Platform automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, unless the `Pod` configuration specifies either toleration.
 
@@ -356,9 +357,11 @@ As a result, daemon set pods are never evicted because of these node conditions.
 
 You can configure a pod to tolerate all taints by adding an `operator: "Exists"` toleration with no `key` and `values` parameters. Pods with this toleration are not removed from a node that has taints.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`Pod` spec for tolerating all taints**
+<div class="title">
+
+`Pod` spec for tolerating all taints
 
 </div>
 
@@ -374,17 +377,29 @@ spec:
 #...
 ```
 
+</div>
+
 # Add taints and tolerations
 
 You can add tolerations to pods and taints to nodes to allow the node to control which pods should or should not be scheduled on that node.
 
 For existing pods and nodes, you should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add a toleration to a pod by editing the `Pod` spec to include a `tolerations` stanza:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample pod configuration file with an Equal operator**
+    <div class="title">
+
+    Sample pod configuration file with an Equal operator
 
     </div>
 
@@ -404,6 +419,8 @@ For existing pods and nodes, you should add the toleration to the pod first, the
     #...
     ```
 
+    </div>
+
     where:
 
     `spec.tolerations`
@@ -414,9 +431,11 @@ For existing pods and nodes, you should add the toleration to the pod first, the
 
     For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample pod configuration file with an Exists operator**
+    <div class="title">
+
+    Sample pod configuration file with an Exists operator
 
     </div>
 
@@ -434,6 +453,8 @@ For existing pods and nodes, you should add the toleration to the pod first, the
           tolerationSeconds: 3600
     #...
     ```
+
+    </div>
 
     The `Exists` operator does not take a `value`.
 
@@ -453,31 +474,30 @@ For existing pods and nodes, you should add the toleration to the pod first, the
 
     This command places a taint on `node1` that has key `key1`, value `value1`, and effect `NoExecute`.
 
-    <div class="note">
-
-    If you add a `NoSchedule` taint to a control plane node, the node must have the `node-role.kubernetes.io/master=:NoSchedule` taint, which is added by default.
-
-    For example:
-
-    ``` yaml
-    apiVersion: v1
-    kind: Node
-    metadata:
-      annotations:
-        machine.openshift.io/machine: openshift-machine-api/ci-ln-62s7gtb-f76d1-v8jxv-master-0
-        machineconfiguration.openshift.io/currentConfig: rendered-master-cdc1ab7da414629332cc4c3926e6e59c
-      name: my-node
-    #...
-    spec:
-      taints:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
-    #...
-    ```
-
-    </div>
+    > [!NOTE]
+    > If you add a `NoSchedule` taint to a control plane node, the node must have the `node-role.kubernetes.io/master=:NoSchedule` taint, which is added by default.
+    >
+    > For example:
+    >
+    > ``` yaml
+    > apiVersion: v1
+    > kind: Node
+    > metadata:
+    >   annotations:
+    >     machine.openshift.io/machine: openshift-machine-api/ci-ln-62s7gtb-f76d1-v8jxv-master-0
+    >     machineconfiguration.openshift.io/currentConfig: rendered-master-cdc1ab7da414629332cc4c3926e6e59c
+    >   name: my-node
+    > #...
+    > spec:
+    >   taints:
+    >   - effect: NoSchedule
+    >     key: node-role.kubernetes.io/master
+    > #...
+    > ```
 
     The tolerations on the pod match the taint on the node. A pod with either toleration can be scheduled onto `node1`.
+
+</div>
 
 ## Add taints and tolerations using a compute machine set
 
@@ -485,11 +505,21 @@ You can add taints to groups of nodes by using a compute machine set. All nodes 
 
 Tolerations respond to taints added by a compute machine set in the same manner as taints added directly to the nodes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add a toleration to a pod by editing the `Pod` spec to include a `tolerations` stanza:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample pod configuration file with `Equal` operator**
+    <div class="title">
+
+    Sample pod configuration file with `Equal` operator
 
     </div>
 
@@ -509,6 +539,8 @@ Tolerations respond to taints added by a compute machine set in the same manner 
     #...
     ```
 
+    </div>
+
     where:
 
     `spec.tolerations`
@@ -519,9 +551,11 @@ Tolerations respond to taints added by a compute machine set in the same manner 
 
     For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample pod configuration file with `Exists` operator**
+    <div class="title">
+
+    Sample pod configuration file with `Exists` operator
 
     </div>
 
@@ -540,6 +574,8 @@ Tolerations respond to taints added by a compute machine set in the same manner 
     #...
     ```
 
+    </div>
+
 2.  Add the taint to the `MachineSet` object:
 
     1.  Edit the `MachineSet` YAML for the nodes you want to taint or you can create a new `MachineSet` object:
@@ -550,9 +586,11 @@ Tolerations respond to taints added by a compute machine set in the same manner 
 
     2.  Add the taint to the `spec.template.spec` section:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example taint in a compute machine set specification**
+        <div class="title">
+
+        Example taint in a compute machine set specification
 
         </div>
 
@@ -574,6 +612,8 @@ Tolerations respond to taints added by a compute machine set in the same manner 
         #...
         ```
 
+        </div>
+
         This example places a taint that has the key `key1`, value `value1`, and taint effect `NoExecute` on the nodes.
 
     3.  Scale down the compute machine set to 0:
@@ -582,21 +622,18 @@ Tolerations respond to taints added by a compute machine set in the same manner 
         $ oc scale --replicas=0 machineset <machineset> -n openshift-machine-api
         ```
 
-        <div class="tip">
-
-        You can alternatively apply the following YAML to scale the compute machine set:
-
-        ``` yaml
-        apiVersion: machine.openshift.io/v1beta1
-        kind: MachineSet
-        metadata:
-          name: <machineset>
-          namespace: openshift-machine-api
-        spec:
-          replicas: 0
-        ```
-
-        </div>
+        > [!TIP]
+        > You can alternatively apply the following YAML to scale the compute machine set:
+        >
+        > ``` yaml
+        > apiVersion: machine.openshift.io/v1beta1
+        > kind: MachineSet
+        > metadata:
+        >   name: <machineset>
+        >   namespace: openshift-machine-api
+        > spec:
+        >   replicas: 0
+        > ```
 
         Wait for the machines to be removed.
 
@@ -614,6 +651,8 @@ Tolerations respond to taints added by a compute machine set in the same manner 
 
         Wait for the machines to start. The taint is added to the nodes associated with the `MachineSet` object.
 
+</div>
+
 ## Bind a user to a node using taints and tolerations
 
 You can use taints and tolerations to dedicate a set of nodes for exclusive use by a particular set of users.
@@ -624,6 +663,14 @@ If you want ensure the pods are scheduled to only those tainted nodes, also add 
 
 Use the following procedure to configure a node so that users can use only that node.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add a corresponding taint to those nodes:
 
     For example:
@@ -632,41 +679,60 @@ Use the following procedure to configure a node so that users can use only that 
     $ oc adm taint nodes node1 dedicated=groupName:NoSchedule
     ```
 
-    <div class="tip">
-
-    You can alternatively apply the following YAML to add the taint:
-
-    ``` yaml
-    kind: Node
-    apiVersion: v1
-    metadata:
-      name: my-node
-    #...
-    spec:
-      taints:
-        - key: dedicated
-          value: groupName
-          effect: NoSchedule
-    #...
-    ```
-
-    </div>
+    > [!TIP]
+    > You can alternatively apply the following YAML to add the taint:
+    >
+    > ``` yaml
+    > kind: Node
+    > apiVersion: v1
+    > metadata:
+    >   name: my-node
+    > #...
+    > spec:
+    >   taints:
+    >     - key: dedicated
+    >       value: groupName
+    >       effect: NoSchedule
+    > #...
+    > ```
 
 2.  Add a toleration to the pods by writing a custom admission controller.
+
+</div>
 
 ## Create a project with a node selector and toleration
 
 You can create a project that uses a node selector and toleration, which are set as annotations, to control the placement of pods onto specific nodes. Any subsequent resources created in the project are then scheduled on nodes that have a taint matching the toleration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A label for node selection has been added to one or more nodes by using a compute machine set or editing the node directly.
 
 - A taint has been added to one or more nodes by using a compute machine set or editing the node directly.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `Project` resource definition, specifying a node selector and toleration in the `metadata.annotations` section:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `project.yaml` file**
+    <div class="title">
+
+    Example `project.yaml` file
 
     </div>
 
@@ -682,6 +748,8 @@ You can create a project that uses a node selector and toleration, which are set
           "<key_name>"}
           ]
     ```
+
+    </div>
 
     where:
 
@@ -702,6 +770,8 @@ You can create a project that uses a node selector and toleration, which are set
 
     Any subsequent resources created in the `<project_name>` namespace should now be scheduled on the specified nodes.
 
+</div>
+
 ## Control nodes with special hardware using taints and tolerations
 
 In a cluster that has specialized hardware, you can use taints and tolerations to either keep pods that do not need the specialized hardware off of those nodes or require pods that need specialized hardware to use specific nodes.
@@ -709,6 +779,14 @@ In a cluster that has specialized hardware, you can use taints and tolerations t
 You can achieve this by adding a toleration to pods that need the special hardware and tainting the nodes that have the specialized hardware.
 
 Use the following procedure to ensure nodes with specialized hardware are reserved for specific pods.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add a toleration to pods that need the special hardware.
 
@@ -742,25 +820,24 @@ Use the following procedure to ensure nodes with specialized hardware are reserv
     $ oc adm taint nodes <node-name> disktype=ssd:PreferNoSchedule
     ```
 
-    <div class="tip">
+    > [!TIP]
+    > You can alternatively apply the following YAML to add the taint:
+    >
+    > ``` yaml
+    > kind: Node
+    > apiVersion: v1
+    > metadata:
+    >   name: my_node
+    > #...
+    > spec:
+    >   taints:
+    >     - key: disktype
+    >       value: ssd
+    >       effect: PreferNoSchedule
+    > #...
+    > ```
 
-    You can alternatively apply the following YAML to add the taint:
-
-    ``` yaml
-    kind: Node
-    apiVersion: v1
-    metadata:
-      name: my_node
-    #...
-    spec:
-      taints:
-        - key: disktype
-          value: ssd
-          effect: PreferNoSchedule
-    #...
-    ```
-
-    </div>
+</div>
 
 # Remove taints and tolerations
 
@@ -769,6 +846,14 @@ You can remove taints from nodes and tolerations from pods as needed if you no l
 You should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
 
 Use the following procedure to remove taints and tolerations.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To remove a taint from a node:
 
@@ -782,15 +867,19 @@ Use the following procedure to remove taints and tolerations.
     $ oc adm taint nodes ip-10-0-132-248.ec2.internal key1-
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     node/ip-10-0-132-248.ec2.internal untainted
     ```
+
+    </div>
 
 2.  To remove a toleration from a pod, edit the `Pod` spec to remove the toleration:
 
@@ -808,6 +897,8 @@ Use the following procedure to remove taints and tolerations.
         tolerationSeconds: 3600
     #...
     ```
+
+</div>
 
 # Additional resources
 

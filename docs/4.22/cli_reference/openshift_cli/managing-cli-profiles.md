@@ -6,9 +6,11 @@ You can use contexts to easily switch between users across multiple OpenShift Co
 
 After a user logs in with the `oc` CLI for the first time, OpenShift Container Platform creates a `~/.kube/config` file if one does not already exist. As more authentication and connection details are provided to the CLI, the updated information is stored in the configuration file:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**CLI configuration file**
+<div class="title">
+
+CLI configuration file
 
 </div>
 
@@ -43,6 +45,8 @@ users:
     token: xZHd2piv5_9vQrg-SKXRJ2Dsl9SceNJdhNTljEKTb8k
 ```
 
+</div>
+
 where:
 
 `clusters`
@@ -59,9 +63,11 @@ Specifies user credentials. In this example, the user nickname `alice/openshift1
 
 The CLI can support multiple configuration files which are loaded at runtime and merged together along with any override options specified from the command line. After you are logged in, you can use the `oc status` or `oc project` command to verify your current working environment:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Verify the current working environment**
+<div class="title">
+
+Verify the current working environment
 
 </div>
 
@@ -69,9 +75,13 @@ The CLI can support multiple configuration files which are loaded at runtime and
 $ oc status
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example output**
+<div class="formalpara">
+
+<div class="title">
+
+Example output
 
 </div>
 
@@ -91,9 +101,13 @@ To see more information about a service or deployment, use 'oc describe service 
 You can use 'oc get all' to see lists of each of the types described in this example.
 ```
 
-<div class="formalpara-title">
+</div>
 
-**List the current project**
+<div class="formalpara">
+
+<div class="title">
+
+List the current project
 
 </div>
 
@@ -101,9 +115,13 @@ You can use 'oc get all' to see lists of each of the types described in this exa
 $ oc project
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example output**
+<div class="formalpara">
+
+<div class="title">
+
+Example output
 
 </div>
 
@@ -111,15 +129,19 @@ $ oc project
 Using project "joe-project" from context named "joe-project/openshift1.example.com:8443/alice" on server "https://openshift1.example.com:8443".
 ```
 
+</div>
+
 You can run the `oc login` command again and supply the required information during the interactive process, to log in using any other combination of user credentials and cluster details. A context is constructed based on the supplied information if one does not already exist. If you are already logged in and want to switch to another project the current user already has access to, use the `oc project` command and enter the name of the project:
 
 ``` terminal
 $ oc project alice-project
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -127,31 +149,35 @@ $ oc project alice-project
 Now using project "alice-project" on server "https://openshift1.example.com:8443".
 ```
 
+</div>
+
 At any time, you can use the `oc config view` command to view your current CLI configuration, as seen in the output. Additional CLI configuration commands are also available for more advanced usage.
 
-<div class="note">
-
-If you have access to administrator credentials but are not logged in as the default system user `system:admin`, you can log back in as this user as long as the credentials are present in your CLI configuration file.
-
-The following command logs in and switches to the default project:
-
-``` terminal
-$ oc login -u system:admin -n default
-```
-
-</div>
+> [!NOTE]
+> If you have access to administrator credentials but are not logged in as the default system user `system:admin`, you can log back in as this user as long as the credentials are present in your CLI configuration file.
+>
+> The following command logs in and switches to the default project:
+>
+> ``` terminal
+> $ oc login -u system:admin -n default
+> ```
 
 # Configure CLI profiles manually
 
 If you want to manually configure your CLI configuration files, you can use the `oc config` command instead of directly modifying the files.
 
-<div class="note">
-
-This section covers more advanced usage of CLI configurations. In most situations, you can use the `oc login` and `oc project` commands to log in and switch between contexts and projects.
-
-</div>
+> [!NOTE]
+> This section covers more advanced usage of CLI configurations. In most situations, you can use the `oc login` and `oc project` commands to log in and switch between contexts and projects.
 
 For more details on the available `oc config` subcommands, see the "CLI configuration subcommands" table.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in as a user that uses an access token. This token is used by the `alice` user:
 
@@ -165,9 +191,11 @@ For more details on the available `oc config` subcommands, see the "CLI configur
     $ oc config view
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -193,6 +221,8 @@ For more details on the available `oc config` subcommands, see the "CLI configur
         token: ns7yVhuRNpDM9cgzfhhxQ7bM5s7N2ZVrkZepSRf4LC0
     ```
 
+    </div>
+
 3.  Update the current context to have users log in to the desired namespace:
 
     ``` terminal
@@ -207,6 +237,8 @@ For more details on the available `oc config` subcommands, see the "CLI configur
 
     All subsequent CLI operations uses the new context, unless otherwise specified by overriding CLI options or until the context is switched.
 
+</div>
+
 ## Manual configuration of CLI profiles
 
 You can manually configure CLI profiles by using `oc config` subcommands to set clusters, contexts, and individual configuration values.
@@ -218,43 +250,43 @@ You can manually configure CLI profiles by using `oc config` subcommands to set 
 <col style="width: 88%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Subcommand</th>
 <th style="text-align: left;">Usage</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>set-cluster</code></p></td>
 <td style="text-align: left;"><p>Sets a cluster entry in the CLI configuration file. If the referenced cluster nickname already exists, the specified information is merged in.</p>
 <pre class="terminal"><code>$ oc config set-cluster &lt;cluster_nickname&gt; [--server=&lt;master_ip_or_fqdn&gt;]
 [--certificate-authority=&lt;path/to/certificate/authority&gt;]
 [--api-version=&lt;apiversion&gt;] [--insecure-skip-tls-verify=true]</code></pre></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>set-context</code></p></td>
 <td style="text-align: left;"><p>Sets a context entry in the CLI configuration file. If the referenced context nickname already exists, the specified information is merged in.</p>
 <pre class="terminal"><code>$ oc config set-context &lt;context_nickname&gt; [--cluster=&lt;cluster_nickname&gt;]
 [--user=&lt;user_nickname&gt;] [--namespace=&lt;namespace&gt;]</code></pre></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>use-context</code></p></td>
 <td style="text-align: left;"><p>Sets the current context using the specified context nickname.</p>
 <pre class="terminal"><code>$ oc config use-context &lt;context_nickname&gt;</code></pre></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>set</code></p></td>
 <td style="text-align: left;"><p>Sets an individual value in the CLI configuration file.</p>
 <pre class="terminal"><code>$ oc config set &lt;property_name&gt; &lt;property_value&gt;</code></pre>
 <p>The <code>&lt;property_name&gt;</code> is a dot-delimited name where each token represents either an attribute name or a map key. The <code>&lt;property_value&gt;</code> is the new value being set.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>unset</code></p></td>
 <td style="text-align: left;"><p>Unsets individual values in the CLI configuration file.</p>
 <pre class="terminal"><code>$ oc config unset &lt;property_name&gt;</code></pre>
 <p>The <code>&lt;property_name&gt;</code> is a dot-delimited name where each token represents either an attribute name or a map key.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>view</code></p></td>
 <td style="text-align: left;"><p>Displays the merged CLI configuration currently in use.</p>
 <pre class="terminal"><code>$ oc config view</code></pre>
@@ -263,8 +295,6 @@ You can manually configure CLI profiles by using `oc config` subcommands to set 
 </tr>
 </tbody>
 </table>
-
-CLI configuration subcommands
 
 # Load and merge rules
 

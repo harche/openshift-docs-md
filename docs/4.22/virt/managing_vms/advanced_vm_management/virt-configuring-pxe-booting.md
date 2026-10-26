@@ -1,16 +1,34 @@
 PXE booting, or network booting, allows a computer to boot and load an operating system or other program without requiring a locally attached storage device. For example, you can use it to choose your desired OS image from a PXE server when deploying a new host.
 
-# PXE booting with a specified MAC address
+# PXE boot a VM with a specified MAC address
 
-As an administrator, you can boot a client over the network by first creating a `NetworkAttachmentDefinition` object for your PXE network. Then, reference the network attachment definition in your virtual machine instance configuration file before you start the virtual machine instance.
+You can boot a virtual machine (VM) over the network by creating a `NetworkAttachmentDefinition` object for your PXE network. Then, reference the `NetworkAttachmentDefinition` in your VM instance configuration file, `VirtualMachine`, before you start the VM instance.
 
-You can also specify a MAC address in the virtual machine instance configuration file, if required by the PXE server.
+You can also specify a MAC address in the `VirtualMachine` configuration, if required by the PXE server.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - A Linux bridge must be connected.
 
 - The PXE server must be connected to the same VLAN as the bridge.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure a PXE network on the cluster:
 
@@ -71,11 +89,8 @@ You can also specify a MAC address in the virtual machine instance configuration
           bootOrder: 1
         ```
 
-        <div class="note">
-
-        Boot order is global for interfaces and disks.
-
-        </div>
+        > [!NOTE]
+        > Boot order is global for interfaces and disks.
 
     2.  Assign a boot device number to the disk to ensure proper booting after operating system provisioning.
 
@@ -134,7 +149,15 @@ You can also specify a MAC address in the virtual machine instance configuration
     $ virtctl console vmi-pxe-boot
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the interfaces and MAC address on the virtual machine and that the interface connected to the bridge has the specified MAC address. In this case, we used `eth1` for the PXE boot, without an IP address. The other interface, `eth0`, got an IP address from OpenShift Container Platform.
 
@@ -149,6 +172,8 @@ You can also specify a MAC address in the virtual machine instance configuration
     3. eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
        link/ether de:00:00:00:00:de brd ff:ff:ff:ff:ff:ff
     ```
+
+</div>
 
 # OpenShift Virtualization networking glossary
 

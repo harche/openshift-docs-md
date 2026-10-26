@@ -6,11 +6,8 @@ After installing OpenShift Container Platform, you can further expand and custom
 
 You complete most of the cluster configuration and customization after you deploy your OpenShift Container Platform cluster. Several *configuration resources* are available.
 
-<div class="note">
-
-If you install your cluster on IBM Z®, not all features and functions are available.
-
-</div>
+> [!NOTE]
+> If you install your cluster on IBM Z®, not all features and functions are available.
 
 You modify the configuration resources to configure the major features of the cluster, such as the image registry, networking configuration, image build behavior, and the identity provider.
 
@@ -22,19 +19,19 @@ Review the globally scoped cluster configuration resources that control major fe
 
 All cluster configuration resources are globally scoped (not namespaced) and named `cluster`.
 
-| Resource name                        | Description                                                                                                                                                                                      |
-|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiserver.config.openshift.io`      | Provides API server configuration such as [certificates and certificate authorities](../security/certificates/api-server.xml#api-server-certificates).                                           |
-| `authentication.config.openshift.io` | Controls the [identity provider](../authentication/understanding-identity-provider.xml#understanding-identity-provider) and authentication configuration for the cluster.                        |
-| `build.config.openshift.io`          | Controls default and enforced [configuration](../cicd/builds/build-configuration.xml#build-configuration) for all builds on the cluster.                                                         |
-| `console.config.openshift.io`        | Configures the behavior of the web console interface, including the [logout behavior](../web_console/configuring-web-console.xml#configuring-web-console).                                       |
-| `featuregate.config.openshift.io`    | Enables [FeatureGates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features) so that you can use Tech Preview features.                                         |
-| `image.config.openshift.io`          | Configures how specific [image registries](../openshift_images/image-configuration.xml#image-configuration) should be treated (allowed, disallowed, insecure, CA details).                       |
-| `ingress.config.openshift.io`        | Configuration details related to [routing](../networking/networking_operators/ingress-operator.xml#nw-installation-ingress-config-asset_ingress-operator) such as the default domain for routes. |
-| `oauth.config.openshift.io`          | Configures identity providers and other behavior related to [internal OAuth server](../authentication/configuring-internal-oauth.xml#configuring-internal-oauth) flows.                          |
-| `project.config.openshift.io`        | Configures [how projects are created](../applications/projects/configuring-project-creation.xml#configuring-project-creation) including the project template.                                    |
-| `proxy.config.openshift.io`          | Defines proxies to be used by components needing external network access. Note: not all components currently consume this value.                                                                 |
-| `scheduler.config.openshift.io`      | Configures [scheduler](../nodes/scheduling/nodes-scheduler-profiles.xml#nodes-scheduler-profiles) behavior such as profiles and default node selectors.                                          |
+| Resource name | Description |
+|----|----|
+| `apiserver.config.openshift.io` | Provides API server configuration such as [certificates and certificate authorities](../security/certificates/api-server.xml#api-server-certificates). |
+| `authentication.config.openshift.io` | Controls the [identity provider](../authentication/understanding-identity-provider.xml#understanding-identity-provider) and authentication configuration for the cluster. |
+| `build.config.openshift.io` | Controls default and enforced [configuration](../cicd/builds/build-configuration.xml#build-configuration) for all builds on the cluster. |
+| `console.config.openshift.io` | Configures the behavior of the web console interface, including the [logout behavior](../web_console/configuring-web-console.xml#configuring-web-console). |
+| `featuregate.config.openshift.io` | Enables [FeatureGates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features) so that you can use Tech Preview features. |
+| `image.config.openshift.io` | Configures how specific [image registries](../openshift_images/image-configuration.xml#image-configuration) should be treated (allowed, disallowed, insecure, CA details). |
+| `ingress.config.openshift.io` | Configuration details related to [routing](../networking/networking_operators/ingress-operator.xml#nw-installation-ingress-config-asset_ingress-operator) such as the default domain for routes. |
+| `oauth.config.openshift.io` | Configures identity providers and other behavior related to [internal OAuth server](../authentication/configuring-internal-oauth.xml#configuring-internal-oauth) flows. |
+| `project.config.openshift.io` | Configures [how projects are created](../applications/projects/configuring-project-creation.xml#configuring-project-creation) including the project template. |
+| `proxy.config.openshift.io` | Defines proxies to be used by components needing external network access. Note: not all components currently consume this value. |
+| `scheduler.config.openshift.io` | Configures [scheduler](../nodes/scheduling/nodes-scheduler-profiles.xml#nodes-scheduler-profiles) behavior such as profiles and default node selectors. |
 
 ## Operator configuration resources
 
@@ -42,11 +39,11 @@ Review the cluster-scoped Operator configuration resources that control the beha
 
 These configuration resources are cluster-scoped instances, named `cluster`, which control the behavior of a specific component as owned by a particular Operator.
 
-| Resource name                                | Description                                                                                                                                                                                                                                                                               |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `consoles.operator.openshift.io`             | Controls console appearance such as branding customizations                                                                                                                                                                                                                               |
+| Resource name | Description |
+|----|----|
+| `consoles.operator.openshift.io` | Controls console appearance such as branding customizations |
 | `config.imageregistry.operator.openshift.io` | Configures [OpenShift image registry settings](../registry/configuring-registry-operator.xml#registry-operator-configuration-resource-overview_configuring-registry-operator) such as public routing, log levels, proxy settings, resource constraints, replica counts, and storage type. |
-| `config.samples.operator.openshift.io`       | Configures the [Samples Operator](../openshift_images/configuring-samples-operator.xml#configuring-samples-operator) to control which example image streams and templates are installed on the cluster.                                                                                   |
+| `config.samples.operator.openshift.io` | Configures the [Samples Operator](../openshift_images/configuring-samples-operator.xml#configuring-samples-operator) to control which example image streams and templates are installed on the cluster. |
 
 ## Additional configuration resources
 
@@ -54,10 +51,10 @@ Review the additional configuration resources that represent a single instance o
 
 These configuration resources represent a single instance of a particular component. In some cases, you can request multiple instances by creating multiple instances of the resource. In other cases, the Operator can use only a specific resource instance name in a specific namespace. Reference the component-specific documentation for details on how and when you can create additional resource instances.
 
-| Resource name                             | Instance name | Namespace                    | Description                                                                                                                                                                                                               |
-|-------------------------------------------|---------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `alertmanager.monitoring.coreos.com`      | `main`        | `openshift-monitoring`       | Controls the [Alertmanager](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) deployment parameters. |
-| `ingresscontroller.operator.openshift.io` | `default`     | `openshift-ingress-operator` | Configures [Ingress Operator](../networking/networking_operators/ingress-operator.xml#configuring-ingress-controller) behavior such as domain, number of replicas, certificates, and controller placement.                |
+| Resource name | Instance name | Namespace | Description |
+|----|----|----|----|
+| `alertmanager.monitoring.coreos.com` | `main` | `openshift-monitoring` | Controls the [Alertmanager](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) deployment parameters. |
+| `ingresscontroller.operator.openshift.io` | `default` | `openshift-ingress-operator` | Configures [Ingress Operator](../networking/networking_operators/ingress-operator.xml#configuring-ingress-controller) behavior such as domain, number of replicas, certificates, and controller placement. |
 
 ## Informational resources
 
@@ -65,12 +62,12 @@ Review the informational resources that you can use to retrieve information abou
 
 You use these resources to retrieve information about the cluster. Some configurations might require you to edit these resources directly.
 
-| Resource name                        | Instance name | Description                                                                                                                                                                                                                                                          |
-|--------------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `clusterversion.config.openshift.io` | `version`     | In OpenShift Container Platform 4.17, you must not customize the `ClusterVersion` resource for production clusters. Instead, follow the process to [update a cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console). |
-| `dns.config.openshift.io`            | `cluster`     | You cannot modify the DNS settings for your cluster. You can [check the DNS Operator status](../networking/networking_operators/dns-operator.xml#nw-dns-operator-status_dns-operator).                                                                               |
-| `infrastructure.config.openshift.io` | `cluster`     | Configuration details allowing the cluster to interact with its cloud provider.                                                                                                                                                                                      |
-| `network.config.openshift.io`        | `cluster`     | You cannot modify your cluster networking after installation. To customize your network, follow the process to [customize networking during installation](../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations).         |
+| Resource name | Instance name | Description |
+|----|----|----|
+| `clusterversion.config.openshift.io` | `version` | In OpenShift Container Platform 4.17, you must not customize the `ClusterVersion` resource for production clusters. Instead, follow the process to [update a cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console). |
+| `dns.config.openshift.io` | `cluster` | You cannot modify the DNS settings for your cluster. You can [check the DNS Operator status](../networking/networking_operators/dns-operator.xml#nw-dns-operator-status_dns-operator). |
+| `infrastructure.config.openshift.io` | `cluster` | Configuration details allowing the cluster to interact with its cloud provider. |
+| `network.config.openshift.io` | `cluster` | You cannot modify your cluster networking after installation. To customize your network, follow the process to [customize networking during installation](../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations). |
 
 # Adding worker nodes
 
@@ -88,7 +85,17 @@ You can add one or more nodes at a time while customizing each node with more co
 
 Preflight validation checks are also performed when booting the ISO image to inform you of failure-causing issues before you attempt to boot each node.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding worker nodes to an on-premise cluster](../nodes/nodes/nodes-nodes-adding-node-iso.xml#adding-node-iso)
+
+</div>
 
 ## Adding worker nodes to installer-provisioned infrastructure clusters
 
@@ -98,11 +105,21 @@ For installer-provisioned infrastructure clusters, you can manually or automatic
 
 To add a bare-metal host, you must configure all network prerequisites, configure an associated `baremetalhost` object, then provision the worker node to the cluster. You can add a bare-metal host manually or by using the web console.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding worker nodes using the web console](../scalability_and_performance/managing-bare-metal-hosts.xml#adding-bare-metal-host-to-cluster-using-web-console_managing-bare-metal-hosts)
 
 - [Adding worker nodes using YAML in the web console](../scalability_and_performance/managing-bare-metal-hosts.xml#adding-bare-metal-host-to-cluster-using-yaml_managing-bare-metal-hosts)
 
 - [Manually adding a worker node to an installer-provisioned infrastructure cluster](../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#preparing-the-bare-metal-node_bare-metal-expanding)
+
+</div>
 
 ## Adding worker nodes to user-provisioned infrastructure clusters
 
@@ -110,7 +127,17 @@ Add worker nodes to user-provisioned infrastructure clusters by using an ISO ima
 
 For user-provisioned infrastructure clusters, you can add worker nodes by using a RHEL or RHCOS ISO image and connecting it to your cluster using cluster Ignition config files. For RHEL worker nodes, the following example uses Ansible playbooks to add worker nodes to the cluster. For RHCOS worker nodes, the following example uses an ISO image and network booting to add worker nodes to the cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding RHCOS worker nodes to a user-provisioned infrastructure cluster](../post_installation_configuration/node-tasks.xml#post-install-config-adding-fcos-compute)
+
+</div>
 
 ## Adding worker nodes to clusters managed by the Assisted Installer
 
@@ -118,11 +145,21 @@ Add worker nodes to Assisted Installer clusters by using Red Hat OpenShift Clust
 
 For clusters managed by the Assisted Installer, you can add worker nodes by using the Red Hat OpenShift Cluster Manager console, the Assisted Installer REST API or you can manually add worker nodes using an ISO image and cluster Ignition config files.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding worker nodes using OpenShift Cluster Manager](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-sno-clusters_add-workers)
 
 - [Adding worker nodes using the Assisted Installer REST API](../nodes/nodes/nodes-sno-worker-nodes.xml#adding-worker-nodes-using-the-assisted-installer-api)
 
 - [Manually adding worker nodes to a single-node OpenShift cluster](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-single-node-clusters-manually_add-workers)
+
+</div>
 
 ## Adding worker nodes to clusters managed by the multicluster engine for Kubernetes
 
@@ -130,7 +167,17 @@ Add worker nodes to multicluster engine for Kubernetes clusters by using the ded
 
 For clusters managed by the multicluster engine for Kubernetes, you can add worker nodes by using the dedicated multicluster engine console.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating your cluster with the console](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#on-prem-creating-your-cluster-with-the-console)
+
+</div>
 
 # Adjust worker nodes
 
@@ -156,9 +203,27 @@ To add or remove an instance of a machine in a compute machine set, you can manu
 
 This guidance is relevant to fully automated, installer-provisioned infrastructure installations. Customized, user-provisioned infrastructure installations do not have compute machine sets.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install an OpenShift Container Platform cluster and the `oc` command line.
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the compute machine sets that are in the cluster by running the following command:
 
@@ -192,37 +257,43 @@ This guidance is relevant to fully automated, installer-provisioned infrastructu
     $ oc edit machinesets.machine.openshift.io <machineset> -n openshift-machine-api
     ```
 
-    <div class="tip">
-
-    You can alternatively apply the following YAML to scale the compute machine set:
-
-    ``` yaml
-    apiVersion: machine.openshift.io/v1beta1
-    kind: MachineSet
-    metadata:
-      name: <machineset>
-      namespace: openshift-machine-api
-    spec:
-      replicas: 2
-    ```
-
-    </div>
+    > [!TIP]
+    > You can alternatively apply the following YAML to scale the compute machine set:
+    >
+    > ``` yaml
+    > apiVersion: machine.openshift.io/v1beta1
+    > kind: MachineSet
+    > metadata:
+    >   name: <machineset>
+    >   namespace: openshift-machine-api
+    > spec:
+    >   replicas: 2
+    > ```
 
     You can scale the compute machine set up or down. It takes several minutes for the new machines to be available.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
+    >
+    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
 
-    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
+</div>
 
-    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
+<div>
 
-    </div>
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the deletion of the intended machine by running the following command:
 
   ``` terminal
   $ oc get machines.machine.openshift.io
   ```
+
+</div>
 
 ## The compute machine set deletion policy
 
@@ -238,17 +309,11 @@ spec:
 
 Specific machines can also be prioritized for deletion by adding the annotation `machine.openshift.io/delete-machine=true` to the machine of interest, regardless of the deletion policy.
 
-<div class="important">
+> [!IMPORTANT]
+> By default, the OpenShift Container Platform router pods are deployed on workers. Because the router is required to access some cluster resources, including the web console, do not scale the worker compute machine set to `0` unless you first relocate the router pods.
 
-By default, the OpenShift Container Platform router pods are deployed on workers. Because the router is required to access some cluster resources, including the web console, do not scale the worker compute machine set to `0` unless you first relocate the router pods.
-
-</div>
-
-<div class="note">
-
-Custom compute machine sets can be used for use cases requiring that services run on specific nodes and that those services are ignored by the controller when the worker compute machine sets are scaling down. This prevents service disruption.
-
-</div>
+> [!NOTE]
+> Custom compute machine sets can be used for use cases requiring that services run on specific nodes and that those services are ignored by the controller when the worker compute machine sets are scaling down. This prevents service disruption.
 
 ## Create default cluster-wide node selectors
 
@@ -258,13 +323,18 @@ With cluster-wide node selectors, when you create a pod in that cluster, OpenShi
 
 You configure cluster-wide node selectors by editing the Scheduler Operator custom resource (CR). You add labels to a node, a compute machine set, or a machine config. Adding the label to the compute machine set ensures that if the node or machine goes down, new nodes have the label. Labels added to a node or machine config do not persist if the node or machine goes down.
 
-<div class="note">
-
-You can add additional key/value pairs to a pod. But you cannot add a different value for a default key.
-
-</div>
+> [!NOTE]
+> You can add additional key/value pairs to a pod. But you cannot add a different value for a default key.
 
 The following procedure adds a default cluster-wide node selector.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Scheduler Operator CR to add the default cluster-wide node selectors:
 
@@ -272,9 +342,11 @@ The following procedure adds a default cluster-wide node selector.
     $ oc edit scheduler cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Scheduler Operator CR with a node selector**
+    <div class="title">
+
+    Example Scheduler Operator CR with a node selector
 
     </div>
 
@@ -288,6 +360,8 @@ The following procedure adds a default cluster-wide node selector.
       defaultNodeSelector: type=user-node,region=east
       mastersSchedulable: false
     ```
+
+    </div>
 
     where:
 
@@ -314,26 +388,23 @@ The following procedure adds a default cluster-wide node selector.
           $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a compute machine set:
-
-          ``` yaml
-          apiVersion: machine.openshift.io/v1beta1
-          kind: MachineSet
-          metadata:
-            name: <machineset>
-            namespace: openshift-machine-api
-          spec:
-            template:
-              spec:
-                metadata:
-                  labels:
-                    region: "east"
-                    type: "user-node"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a compute machine set:
+          >
+          > ``` yaml
+          > apiVersion: machine.openshift.io/v1beta1
+          > kind: MachineSet
+          > metadata:
+          >   name: <machineset>
+          >   namespace: openshift-machine-api
+          > spec:
+          >   template:
+          >     spec:
+          >       metadata:
+          >         labels:
+          >           region: "east"
+          >           type: "user-node"
+          > ```
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -343,9 +414,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc edit MachineSet abc612-msrtw-worker-us-east-1c -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example `MachineSet` object**
+          <div class="title">
+
+          Example `MachineSet` object
 
           </div>
 
@@ -365,6 +438,8 @@ The following procedure adds a default cluster-wide node selector.
                     type: user-node
             ...
           ```
+
+          </div>
 
       3.  Redeploy the nodes associated with that compute machine set by scaling down to `0` and scaling up the nodes:
 
@@ -390,9 +465,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc get nodes -l type=user-node
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -400,6 +477,8 @@ The following procedure adds a default cluster-wide node selector.
           NAME                                       STATUS   ROLES    AGE   VERSION
           ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.36.3
           ```
+
+          </div>
 
     - Add labels directly to a node:
 
@@ -415,21 +494,18 @@ The following procedure adds a default cluster-wide node selector.
           $ oc label nodes ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49 type=user-node region=east
           ```
 
-          <div class="tip">
-
-          You can alternatively apply the following YAML to add labels to a node:
-
-          ``` yaml
-          kind: Node
-          apiVersion: v1
-          metadata:
-            name: <node_name>
-            labels:
-              type: "user-node"
-              region: "east"
-          ```
-
-          </div>
+          > [!TIP]
+          > You can alternatively apply the following YAML to add labels to a node:
+          >
+          > ``` yaml
+          > kind: Node
+          > apiVersion: v1
+          > metadata:
+          >   name: <node_name>
+          >   labels:
+          >     type: "user-node"
+          >     region: "east"
+          > ```
 
       2.  Verify that the labels are added to the node using the `oc get` command:
 
@@ -443,9 +519,11 @@ The following procedure adds a default cluster-wide node selector.
           $ oc get nodes -l type=user-node,region=east
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -453,6 +531,10 @@ The following procedure adds a default cluster-wide node selector.
           NAME                                       STATUS   ROLES    AGE   VERSION
           ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.36.3
           ```
+
+          </div>
+
+</div>
 
 # Improving cluster stability in high latency environments using worker latency profiles
 
@@ -484,11 +566,8 @@ Review the following information to learn about worker latency profiles, which a
 
 Worker latency profiles are four different categories of carefully-tuned parameters. The four parameters which implement these values are `node-status-update-frequency`, `node-monitor-grace-period`, `default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds`.
 
-<div class="important">
-
-Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
-
-</div>
+> [!IMPORTANT]
+> Setting these parameters manually is not supported. Incorrect parameter settings adversely affect cluster stability.
 
 All worker latency profiles configure the following parameters:
 
@@ -521,12 +600,12 @@ The Kubernetes Controller Manager waits 40 seconds (`node-monitor-grace-period`)
 
 If a pod is on a node that has the `NoExecute` taint, the pod runs according to `tolerationSeconds`. If the node has no taint, it will be evicted in 300 seconds (`default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds` settings of the `Kube API Server`).
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| Default                        | kubelet                                  | `node-status-update-frequency` | 10s   |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 40s                            |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 300s                           |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 300s                           |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| Default | kubelet | `node-status-update-frequency` | 10s |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 40s |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 300s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 300s |  |
 
 Medium worker latency profile
 Use the `MediumUpdateAverageReaction` profile if the network latency is slightly higher than usual.
@@ -535,12 +614,12 @@ The `MediumUpdateAverageReaction` profile reduces the frequency of kubelet updat
 
 The Kubernetes Controller Manager waits for 2 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| MediumUpdateAverageReaction    | kubelet                                  | `node-status-update-frequency` | 20s   |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 2m                             |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| MediumUpdateAverageReaction | kubelet | `node-status-update-frequency` | 20s |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 2m |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 60s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s |  |
 
 Low worker latency profile
 Use the `LowUpdateSlowReaction` profile if the network latency is extremely high.
@@ -549,18 +628,15 @@ The `LowUpdateSlowReaction` profile reduces the frequency of kubelet updates to 
 
 The Kubernetes Controller Manager waits for 5 minutes to consider a node unhealthy. In another minute, the eviction process starts.
 
-| Profile                        | Component                                | Parameter                      | Value |
-|--------------------------------|------------------------------------------|--------------------------------|-------|
-| LowUpdateSlowReaction          | kubelet                                  | `node-status-update-frequency` | 1m    |
-| Kubelet Controller Manager     | `node-monitor-grace-period`              | 5m                             |       |
-| Kubernetes API Server Operator | `default-not-ready-toleration-seconds`   | 60s                            |       |
-| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s                            |       |
+| Profile | Component | Parameter | Value |
+|----|----|----|----|
+| LowUpdateSlowReaction | kubelet | `node-status-update-frequency` | 1m |
+| Kubelet Controller Manager | `node-monitor-grace-period` | 5m |  |
+| Kubernetes API Server Operator | `default-not-ready-toleration-seconds` | 60s |  |
+| Kubernetes API Server Operator | `default-unreachable-toleration-seconds` | 60s |  |
 
-<div class="note">
-
-The latency profiles do not support custom machine config pools, only the default worker machine config pools.
-
-</div>
+> [!NOTE]
+> The latency profiles do not support custom machine config pools, only the default worker machine config pools.
 
 ## Use and change worker latency profiles
 
@@ -568,9 +644,14 @@ You can change a worker latency profile to deal with network latency at any time
 
 You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile and then to the `LowUpdateSlowReaction` profile. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
 
-<div class="note">
+> [!NOTE]
+> You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
 
-You can also configure worker latency profiles upon installing an OpenShift Container Platform cluster.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -584,9 +665,11 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
     2.  Add `spec.workerLatencyProfile: MediumUpdateAverageReaction`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `node.config` object**
+        <div class="title">
+
+        Example `node.config` object
 
         </div>
 
@@ -614,6 +697,8 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         # ...
         ```
 
+        </div>
+
         where:
 
         `spec.workerLatencyProfile.MediumUpdateAverageReaction`
@@ -631,9 +716,11 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
     2.  Change the `spec.workerLatencyProfile` value to `LowUpdateSlowReaction`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `node.config` object**
+        <div class="title">
+
+        Example `node.config` object
 
         </div>
 
@@ -661,6 +748,8 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         # ...
         ```
 
+        </div>
+
         where:
 
         `spec.workerLatencyProfile.LowUpdateSlowReaction`
@@ -668,15 +757,27 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
         Scheduling on each compute node is disabled as the change is being applied.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - When all nodes return to the `Ready` condition, you can use the following command to look in the Kubernetes Controller Manager to ensure it was applied:
 
   ``` terminal
   $ oc get KubeControllerManager -o yaml | grep -i workerlatency -A 5 -B 5
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -700,6 +801,8 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
   # ...
   ```
 
+  </div>
+
   where:
 
   `status.message: all static pod revision(s) have updated latency profile`
@@ -707,23 +810,53 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
   To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
 
+</div>
+
 # Managing control plane machines
 
 Use control plane machine sets to manage control plane machines with capabilities similar to compute machine sets.
 
 Control plane machine sets provide management capabilities for control plane machines that are similar to what compute machine sets provide for compute machines. The availability and initial status of control plane machine sets on your cluster depend on your cloud provider and the version of OpenShift Container Platform that you installed.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Control plane machine sets](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
 
 - [Getting started with control plane machine sets](../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-getting-started)
+
+</div>
 
 ## Adding a control plane node to your cluster
 
 Add a control plane node to recover from a degraded state, perform deep-level debugging, or ensure stability and security of the control plane in complex bare metal scenarios.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed a healthy cluster with at least three control plane nodes.
 
 - You have created a single control plane node that you intend to add to your cluster as a postinstalltion task.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve pending Certificate Signing Requests (CSRs) for the new control plane node by entering the following command:
 
@@ -737,11 +870,8 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
     ```
 
-    <div class="important">
-
-    You must approve the CSRs to complete the installation.
-
-    </div>
+    > [!IMPORTANT]
+    > You must approve the CSRs to complete the installation.
 
 3.  Confirm that the control plane node is in the `Ready` status by entering the following command:
 
@@ -749,11 +879,8 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get nodes
     ```
 
-    <div class="note">
-
-    On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
-
-    </div>
+    > [!NOTE]
+    > On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
 
 4.  Create the `BareMetalHost` and `Machine` CRs and link them to the `Node` CR of the control plane node.
 
@@ -1009,13 +1136,18 @@ Add a control plane node to recover from a degraded state, perform deep-level de
             $ bash link-machine-and-node.sh node-5 node-5
             ```
 
-            <div class="note">
+            > [!NOTE]
+            > The first `node-5` instance represents the machine, and the second instance represents the node.
 
-            The first `node-5` instance represents the machine, and the second instance represents the node.
+</div>
 
-            </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Confirm members of etcd by executing into one of the pre-existing control plane nodes:
 
@@ -1069,9 +1201,11 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get ClusterVersion
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1079,6 +1213,10 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   OpenShift Container Platform.5    True        False         5h57m   Cluster version is OpenShift Container Platform.5
     ```
+
+    </div>
+
+</div>
 
 # Creating infrastructure machine sets for production environments
 
@@ -1094,6 +1232,14 @@ For sample machine sets that you can use with these procedures, see "Creating ma
 
 Applying a specific node selector to all infrastructure components causes OpenShift Container Platform to schedule those workloads on nodes with that label; see "Schedule infrastructure workloads using node selectors".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating infrastructure machine sets](../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets)
 
 - [Use a machine set to create an infrastructure node](../post_installation_configuration/cluster-tasks.xml#machineset-creating_post-install-cluster-tasks)
@@ -1106,15 +1252,35 @@ Applying a specific node selector to all infrastructure components causes OpenSh
 
 - [Schedule infrastructure workloads using node selectors](../post_installation_configuration/cluster-tasks.xml#moving-resources-to-infrastructure-machinesets_post-install-cluster-tasks)
 
+</div>
+
 ## Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -1183,11 +1349,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -1197,6 +1360,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -1219,6 +1392,8 @@ To dynamically manage machine compute resources, you can create your own compute
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
+</div>
+
 ## Create an infrastructure node
 
 To reduce subscription costs, you can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources.
@@ -1229,6 +1404,10 @@ You can optionally create a default cluster-wide node selector. The default node
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the Machine API.
 
 - If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
@@ -1236,6 +1415,14 @@ You can optionally create a default cluster-wide node selector. The default node
   However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
 
   You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -1277,15 +1464,32 @@ You can optionally create a default cluster-wide node selector. The default node
 
     You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors)
+
+</div>
 
 ## Create a machine config pool for infrastructure machines
 
 You can create a machine configuration pool for infrastructure machines to apply dedicated configuration to infra machines. You might want to apply dedicated configuration to infra machines because they run distinct workloads from other nodes in the cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> Creating a custom machine configuration pool overrides default worker pool configurations if they refer to the same file or unit.
 
-Creating a custom machine configuration pool overrides default worker pool configurations if they refer to the same file or unit.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -1320,11 +1524,8 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
     - Add the label you added to the node in the `spec.nodeSelector.matchLabels` field.
 
-      <div class="note">
-
-      Custom machine config pools inherit machine configs from the worker pool. Custom pools use any machine config targeted for the worker pool, but add the ability to also deploy changes that are targeted at only the custom pool. Because a custom pool inherits resources from the worker pool, any change to the worker pool also affects the custom pool.
-
-      </div>
+      > [!NOTE]
+      > Custom machine config pools inherit machine configs from the worker pool. Custom pools use any machine config targeted for the worker pool, but add the ability to also deploy changes that are targeted at only the custom pool. Because a custom pool inherits resources from the worker pool, any change to the worker pool also affects the custom pool.
 
 3.  After you have the YAML file, you can create the machine config pool by specifying the file you created in the following command:
 
@@ -1338,9 +1539,11 @@ Creating a custom machine configuration pool overrides default worker pool confi
     $ oc get machineconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1352,15 +1555,14 @@ Creating a custom machine configuration pool overrides default worker pool confi
     rendered-infra-4e48906dca84ee702959c71a53ee80e7             365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             23m
     ```
 
+    </div>
+
     You should see a new machine config, with the `rendered-infra-*` prefix.
 
 5.  Optional: To deploy changes to a custom pool, create a machine config that uses the custom pool name as the label, such as `infra`. Note that this is not required and only shown for instructional purposes. In this manner, you can apply any custom configurations specific to only your infra nodes.
 
-    <div class="note">
-
-    After you create the new machine config pool, the MCO generates a new rendered config for that pool, and associated nodes of that pool reboot to apply the new configuration.
-
-    </div>
+    > [!NOTE]
+    > After you create the new machine config pool, the MCO generates a new rendered config for that pool, and associated nodes of that pool reboot to apply the new configuration.
 
     1.  Create a YAML file that defines the machine config pool, as in the following example:
 
@@ -1368,9 +1570,11 @@ Creating a custom machine configuration pool overrides default worker pool confi
         $ cat infra.mc.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1393,6 +1597,8 @@ Creating a custom machine configuration pool overrides default worker pool confi
                   source: data:,infra
         ```
 
+        </div>
+
         where:
 
         `role`
@@ -1410,9 +1616,11 @@ Creating a custom machine configuration pool overrides default worker pool confi
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1423,9 +1631,23 @@ Creating a custom machine configuration pool overrides default worker pool confi
     worker   rendered-worker-60e35c2e99f42d976e084fa94da4d0fc   True      False      False      2              2                   2                     0                      91m
     ```
 
+    </div>
+
     In this example, the role of the node was changes from `worker` to `infra`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane)
+
+</div>
 
 # Assigning machine set resources to infrastructure nodes
 
@@ -1441,13 +1663,28 @@ To avoid user workloads being inadvertently assigned to an infra node, you can a
 
 Nodes with the `infra` role applied are not counted toward the total number of subscriptions that are required to run the environment, even when the `worker` role is also applied. If you have an infrastructure node that has the `infra` and `worker` roles assigned, you must configure the node so that user workloads are not assigned to it.
 
-<div class="important">
+> [!IMPORTANT]
+> It is recommended that you preserve the dual `infra,worker` label that is created for infrastructure nodes and use taints and tolerations to manage nodes that user workloads are scheduled on. If you remove the `worker` label from the node, you must create a custom pool to manage it. A node with a label other than `master` or `worker` is not recognized by the MCO without a custom pool. Maintaining the `worker` label allows the node to be managed by the default worker machine config pool, if no custom pools that select the custom label exists. The `infra` label communicates to the cluster that it does not count toward the total number of subscriptions.
 
-It is recommended that you preserve the dual `infra,worker` label that is created for infrastructure nodes and use taints and tolerations to manage nodes that user workloads are scheduled on. If you remove the `worker` label from the node, you must create a custom pool to manage it. A node with a label other than `master` or `worker` is not recognized by the MCO without a custom pool. Maintaining the `worker` label allows the node to be managed by the default worker machine config pool, if no custom pools that select the custom label exists. The `infra` label communicates to the cluster that it does not count toward the total number of subscriptions.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Configure additional `MachineSet` objects in your OpenShift Container Platform cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add a taint to the infrastructure node to prevent scheduling user workloads on it:
 
@@ -1457,9 +1694,11 @@ It is recommended that you preserve the dual `infra,worker` label that is create
         $ oc describe nodes <node_name>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Sample output**
+        <div class="title">
+
+        Sample output
 
         </div>
 
@@ -1471,6 +1710,8 @@ It is recommended that you preserve the dual `infra,worker` label that is create
         Taints:             node-role.kubernetes.io/infra=reserved:NoSchedule
          ...
         ```
+
+        </div>
 
         This example shows that the node has a taint. You can proceed with adding a toleration to your pod in the next step.
 
@@ -1486,33 +1727,27 @@ It is recommended that you preserve the dual `infra,worker` label that is create
         $ oc adm taint nodes node1 node-role.kubernetes.io/infra=reserved:NoSchedule
         ```
 
-        <div class="tip">
-
-        You can alternatively edit the pod specification to add the taint:
-
-        ``` yaml
-        apiVersion: v1
-        kind: Node
-        metadata:
-          name: node1
-        # ...
-        spec:
-          taints:
-            - key: node-role.kubernetes.io/infra
-              value: reserved
-              effect: NoSchedule
-        # ...
-        ```
-
-        </div>
+        > [!TIP]
+        > You can alternatively edit the pod specification to add the taint:
+        >
+        > ``` yaml
+        > apiVersion: v1
+        > kind: Node
+        > metadata:
+        >   name: node1
+        > # ...
+        > spec:
+        >   taints:
+        >     - key: node-role.kubernetes.io/infra
+        >       value: reserved
+        >       effect: NoSchedule
+        > # ...
+        > ```
 
         These examples place a taint on `node1` that has the `node-role.kubernetes.io/infra` key and the `NoSchedule` taint effect. Nodes with the `NoSchedule` effect schedule only pods that tolerate the taint, but allow existing pods to remain scheduled on the node. If you added a `NoSchedule` taint to the infrastructure node, any pods that are controlled by a daemon set on that node are marked as `misscheduled`. You must either delete the pods or add a toleration to the pods as shown in the Red Hat Knowledgebase solution [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171). Note that you cannot add a toleration to a daemon set object that is managed by an operator.
 
-        <div class="note">
-
-        If a descheduler is used, pods violating node taints could be evicted from the cluster.
-
-        </div>
+        > [!NOTE]
+        > If a descheduler is used, pods violating node taints could be evicted from the cluster.
 
 2.  Add tolerations to the pods that you want to schedule on the infrastructure node, such as the router, registry, and monitoring workloads. Referencing the previous examples, add the following tolerations to the `Pod` object specification:
 
@@ -1548,17 +1783,26 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
     This toleration matches the taint created by the `oc adm taint` command. A pod with this toleration can be scheduled onto the infrastructure node.
 
-    <div class="note">
-
-    Moving pods for an Operator installed via OLM to an infrastructure node is not always possible. The capability to move Operator pods depends on the configuration of each Operator.
-
-    </div>
+    > [!NOTE]
+    > Moving pods for an Operator installed via OLM to an infrastructure node is not always possible. The capability to move Operator pods depends on the configuration of each Operator.
 
 3.  Schedule the pod to the infrastructure node by using a scheduler. See the documentation for "Controlling pod placement using the scheduler" for details.
 
 4.  Remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
+
+</div>
 
 # Moving resources to infrastructure machine sets
 
@@ -1570,7 +1814,25 @@ Some of the infrastructure resources are deployed in your cluster by default. Yo
 
 Deploying the router pod on an infrastructure node can reduce your OpenShift Container Platform subscription size. Move the router pod by editing the `IngressController` object in the `openshift-ingress-operator` namespace. By default, the pod is deployed to a worker node.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Configure additional compute machine sets in your OpenShift Container Platform cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the `IngressController` custom resource for the router Operator by running the following command:
 
@@ -1578,9 +1840,11 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
     $ oc get ingresscontroller default -n openshift-ingress-operator -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1610,15 +1874,19 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
       selector: ingresscontroller.operator.openshift.io/deployment-ingresscontroller=default
     ```
 
+    </div>
+
 2.  Edit the `ingresscontroller` resource and change the `nodeSelector` to use the `infra` label by running the following command:
 
     ``` terminal
     $ oc edit ingresscontroller default -n openshift-ingress-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1644,7 +1912,19 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
     # ...
     ```
 
+    </div>
+
     Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Confirm that the router pod is running on the `infra` node.
 
@@ -1654,9 +1934,11 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
       $ oc get pod -n openshift-ingress -o wide
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1665,6 +1947,8 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
       router-default-86798b4b5d-bdlvd   1/1      Running       0          28s       10.130.2.4   ip-10-0-217-226.ec2.internal   <none>           <none>
       router-default-955d875f4-255g8    0/1      Terminating   0          19h       10.129.2.4   ip-10-0-148-172.ec2.internal   <none>           <none>
       ```
+
+      </div>
 
       In this example, the running pod is on the `ip-10-0-217-226.ec2.internal` node.
 
@@ -1676,9 +1960,11 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
 
       Specify the `<node_name>` that you obtained from the pod list.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1687,13 +1973,35 @@ Deploying the router pod on an infrastructure node can reduce your OpenShift Con
       ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.36.3
       ```
 
+      </div>
+
       Because the role list includes `infra`, the pod is running on the correct node.
+
+</div>
 
 ## Move the default registry
 
 Deploying the registry pod on an infrastructure node can reduce your OpenShift Container Platform subscription size. Move the registry pod by editing the `configs.imageregistry.operator.openshift.io/cluster` config object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Configure additional compute machine sets in your OpenShift Container Platform cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `configs.imageregistry.operator.openshift.io/cluster` object by running the following command:
 
@@ -1722,6 +2030,16 @@ Deploying the registry pod on an infrastructure node can reduce your OpenShift C
 
     You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify the registry pod has been moved to the infrastructure node.
 
   1.  Identify the node where the registry pod is located by running the following command:
@@ -1741,17 +2059,37 @@ Deploying the registry pod on an infrastructure node can reduce your OpenShift C
       `<node_name>`
       Specifies the name of the node that you modified. Review the command output and confirm that `node-role.kubernetes.io/infra` is in the `LABELS` list.
 
+</div>
+
 ## Move the monitoring solution
 
 Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes.
 
 The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
 - You have created the `cluster-monitoring-config` `ConfigMap` object.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `cluster-monitoring-config` config map and change the `nodeSelector` to use the `infra` label by running the following command:
 
@@ -1848,6 +2186,8 @@ The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and 
 
     The component from the deleted pod is re-created on the `infra` node.
 
+</div>
+
 # The cluster autoscaler
 
 The cluster autoscaler adjusts the size of an OpenShift Container Platform cluster to meet its current deployment needs. It uses declarative, Kubernetes-style arguments to provide infrastructure management that does not rely on objects of a specific cloud provider.
@@ -1856,11 +2196,8 @@ The cluster autoscaler increases the size of the cluster when there are pods tha
 
 The cluster autoscaler computes the total memory, CPU, and GPU on all nodes the cluster, even though it does not manage the control plane nodes. These values are not single-machine oriented. They are an aggregation of all the resources in the entire cluster. For example, if you set the maximum memory resource limit, the cluster autoscaler includes all the nodes in the cluster when calculating the current memory usage. That calculation is then used to determine if the cluster autoscaler has the capacity to add more worker resources.
 
-<div class="important">
-
-Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` custom resource (CR) that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to.
-
-</div>
+> [!IMPORTANT]
+> Ensure that the `maxNodesTotal` value in the `ClusterAutoscaler` custom resource (CR) that you create is large enough to account for the total possible number of machines in your cluster. This value must encompass the number of control plane machines and the possible number of compute machines that you might scale to.
 
 ## Automatic node removal
 
@@ -1890,11 +2227,8 @@ If the following types of pods are present on a node, the cluster autoscaler wil
 
 For example, you set the maximum CPU limit to 64 cores and configure the cluster autoscaler to only create machines that have 8 cores each. If your cluster starts with 30 cores, the cluster autoscaler can add up to 4 more nodes with 32 cores, for a total of 62.
 
-<div class="note">
-
-By default, when the cluster autoscaler removes a node, it does not cordon the node when draining the pods from the node. You can configure the cluster autoscaler to cordon the node before draining and moving the pods by setting the `spec.scaleDown.cordonNodeBeforeTerminating` parameter to `enabled` in the `ClusterAutoscaler` CR. This parameter is disabled by default. It is recommended to enable this parameter in production clusters because of the risk of data loss, application errors, pods getting stuck in the terminating state, or other issues if the cluster autoscaler removes a node when the parameter is disabled. Leaving this parameter disabled, which can result in faster node removal, might be appropriate in clusters that run only stateless workloads.
-
-</div>
+> [!NOTE]
+> By default, when the cluster autoscaler removes a node, it does not cordon the node when draining the pods from the node. You can configure the cluster autoscaler to cordon the node before draining and moving the pods by setting the `spec.scaleDown.cordonNodeBeforeTerminating` parameter to `enabled` in the `ClusterAutoscaler` CR. This parameter is disabled by default. It is recommended to enable this parameter in production clusters because of the risk of data loss, application errors, pods getting stuck in the terminating state, or other issues if the cluster autoscaler removes a node when the parameter is disabled. Leaving this parameter disabled, which can result in faster node removal, might be appropriate in clusters that run only stateless workloads.
 
 ## Limitations
 
@@ -1910,11 +2244,8 @@ If you configure the cluster autoscaler, additional usage restrictions apply:
 
 - Do not run additional node group autoscalers, especially the ones offered by your cloud provider.
 
-<div class="note">
-
-The cluster autoscaler only adds nodes in autoscaled node groups if doing so would result in a schedulable pod. If the available node types cannot meet the requirements for a pod request, or if the node groups that could meet these requirements are at their maximum size, the cluster autoscaler cannot scale up.
-
-</div>
+> [!NOTE]
+> The cluster autoscaler only adds nodes in autoscaled node groups if doing so would result in a schedulable pod. If the available node types cannot meet the requirements for a pod request, or if the node groups that could meet these requirements are at their maximum size, the cluster autoscaler cannot scale up.
 
 ## Interaction with other scheduling features
 
@@ -1928,11 +2259,8 @@ Pods with priority lower than the cutoff value do not cause the cluster to scale
 
 This `ClusterAutoscaler` resource definition shows the parameters and sample values for the cluster autoscaler.
 
-<div class="note">
-
-When you change the configuration of an existing cluster autoscaler, it restarts.
-
-</div>
+> [!NOTE]
+> When you change the configuration of an existing cluster autoscaler, it restarts.
 
 ``` yaml
 apiVersion: "autoscaling.openshift.io/v1"
@@ -1975,13 +2303,13 @@ spec:
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>enforceNodeGroupMinSize</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies whether the cluster autoscaler maintains the minimum size of a node group.</p>
 <ul>
@@ -1989,43 +2317,43 @@ spec:
 <li><p><code>Disabled</code>: The cluster autoscaler can scale the node group below the configured minimum size if nodes are deemed unneeded. This is the default.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>podPriorityThreshold</code></p></td>
 <td style="text-align: left;"><p>Specify the priority that a pod must exceed to cause the cluster autoscaler to deploy additional nodes. Enter a 32-bit integer value. The <code>podPriorityThreshold</code> value is compared to the value of the <code>PriorityClass</code> that you assign to each pod.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>maxNodesTotal</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of nodes to deploy. This value is the total number of machines that are deployed in your cluster, not just the ones that the autoscaler controls. Ensure that this value is large enough to account for all of your control plane and compute machines and the total number of replicas that you specify in your <code>MachineAutoscaler</code> resources.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>cores.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>cores.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of cores to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>memory.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>memory.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum amount of memory, in GiB, in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>gpus.type</code></p></td>
 <td style="text-align: left;"><p>Optional: To configure the cluster autoscaler to deploy GPU-enabled nodes, specify a <code>type</code> value. This value must match the value of the <code>spec.template.spec.metadata.labels[cluster-api/accelerator]</code> label in the machine set that manages the GPU-enabled nodes of that type. For example, this value might be <code>nvidia-t4</code> to represent Nvidia T4 GPUs, or <code>nvidia-a10g</code> for A10G GPUs. For more information, see "Labeling GPU machine sets for the cluster autoscaler".</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>gpus.min</code></p></td>
 <td style="text-align: left;"><p>Specify the minimum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>gpus.max</code></p></td>
 <td style="text-align: left;"><p>Specify the maximum number of GPUs of the specified type to deploy in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>logVerbosity</code></p></td>
 <td style="text-align: left;"><p>Specify the logging verbosity level between <code>0</code> and <code>10</code>. The following log level thresholds are provided for guidance:</p>
 <ul>
@@ -2035,11 +2363,11 @@ spec:
 </ul>
 <p>If you do not specify a value, the default value of <code>1</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait for each action by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.cordonNodeBeforeTerminating</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify whether the cluster autoscaler should cordon a node before removing that node by using one of the following values:</p>
 <ul>
@@ -2047,40 +2375,40 @@ spec:
 <li><p><code>Disabled</code>: The cluster autoscaler does not cordon the node before draining any pods and removing that node. This is the default.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.enabled</code></p></td>
 <td style="text-align: left;"><p>Specify whether the cluster autoscaler can remove unnecessary nodes.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.delayAfterAdd</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>added</em>. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.delayAfterDelete</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a node has recently been <em>deleted</em>. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.delayAfterFailure</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to wait before deleting a node after a scale down failure occurred. If you do not specify a value, the default value of <code>3m</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.unneededTime</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify a period of time before an unnecessary node is eligible for deletion. If you do not specify a value, the default value of <code>10m</code> is used.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>scaleDown.utilizationThreshold</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the <em>node utilization level</em>. Nodes below this utilization level are eligible for deletion.</p>
 <p>The node utilization level is the sum of the requested resources divided by the allocated resources for the node, and must be a value greater than <code>"0"</code> but less than <code>"1"</code>. If you do not specify a value, the cluster autoscaler uses a default value of <code>"0.5"</code>, which corresponds to 50% utilization. You must express this value as a string.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>scaleUp</code></p></td>
 <td style="text-align: left;"><p>In this section, you can specify the period to wait before recognizing newly pending pods by using any valid <a href="https://golang.org/pkg/time/#ParseDuration">ParseDuration</a> interval, including <code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, and <code>h</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>scaleUp.newPodScaleUpDelay</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify the period to ignore a new unschedulable pod before adding a new node. If you do not specify a value, the default value of <code>0s</code> is used.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>expanders</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify any expanders that you want the cluster autoscaler to use. The following values are valid:</p>
 <ul>
@@ -2095,19 +2423,22 @@ spec:
 </tbody>
 </table>
 
-Cluster autoscaler parameters
-
-<div class="note">
-
-When performing a scaling operation, the cluster autoscaler remains within the ranges set in the `ClusterAutoscaler` resource definition, such as the minimum and maximum number of cores to deploy or the amount of memory in the cluster. However, the cluster autoscaler does not correct the current values in your cluster to be within those ranges.
-
-The minimum and maximum CPUs, memory, and GPU values are determined by calculating those resources on all nodes in the cluster, even if the cluster autoscaler does not manage the nodes. For example, the control plane nodes are considered in the total memory in the cluster, even though the cluster autoscaler does not manage the control plane nodes.
-
-</div>
+> [!NOTE]
+> When performing a scaling operation, the cluster autoscaler remains within the ranges set in the `ClusterAutoscaler` resource definition, such as the minimum and maximum number of cores to deploy or the amount of memory in the cluster. However, the cluster autoscaler does not correct the current values in your cluster to be within those ranges.
+>
+> The minimum and maximum CPUs, memory, and GPU values are determined by calculating those resources on all nodes in the cluster, even if the cluster autoscaler does not manage the nodes. For example, the control plane nodes are considered in the total memory in the cluster, even though the cluster autoscaler does not manage the control plane nodes.
 
 ## Deploy a cluster autoscaler
 
 To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler` resource.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for a `ClusterAutoscaler` resource that contains the custom resource definition.
 
@@ -2122,13 +2453,25 @@ To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler
     `<filename>`
     Specifies the name of the YAML file you created.
 
+</div>
+
 # Applying autoscaling to your cluster
 
 Deploy a cluster autoscaler and machine autoscalers to apply autoscaling across machine types in your cluster.
 
 Applying autoscaling to an OpenShift Container Platform cluster involves deploying a cluster autoscaler and then deploying machine autoscalers for each machine type in your cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Applying autoscaling to an OpenShift Container Platform cluster](../machine_management/applying-autoscaling.xml#applying-autoscaling)
+
+</div>
 
 # Enabling Technology Preview features using FeatureGates
 
@@ -2146,15 +2489,14 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
 - `TechPreviewNoUpgrade`. This feature set is a subset of the current Technology Preview features. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them, while leaving the features disabled on production clusters.
 
-  <div class="warning">
-
-  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
-
-  </div>
+  > [!WARNING]
+  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
   The following Technology Preview features are enabled by this feature set:
 
   - `AdditionalStorageConfig`
+
+  - `AuthenticationComponentProxy`
 
   - `AutomatedEtcdBackup`
 
@@ -2214,15 +2556,11 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ConfigurablePKI`
 
-  - `ConsolePluginContentSecurityPolicy`
-
   - `CRDCompatibilityRequirementOperator`
 
   - `CRIOCredentialProviderConfig`
 
   - `DNSNameResolver`
-
-  - `DRAPartitionableDevices`
 
   - `DualReplica`
 
@@ -2232,15 +2570,23 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `EventTTL`
 
+  - `EVPN`
+
   - `Example`
 
   - `ExternalOIDC`
+
+  - `ExternalOIDCExternalClaimsSourcing`
 
   - `ExternalOIDCWithUIDAndExtraClaimMappings`
 
   - `ExternalOIDCWithUpstreamParity`
 
+  - `ExternalSnapshotMetadata`
+
   - `GatewayAPIWithoutOLM`
+
+  - `GatewayAPIManagementMode`
 
   - `GCPCustomAPIEndpoints`
 
@@ -2248,13 +2594,19 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `GCPDualStackInstall`
 
+  - `GCPSovereignCloudInstall`
+
   - `HyperShiftOnlyDynamicResourceAllocation`
 
   - `ImageModeStatusReporting`
 
   - `ImageStreamImportMode`
 
+  - `IngressComponentRouteLabels`
+
   - `IngressControllerDynamicConfigurationManager`
+
+  - `IngressControllerMultipleHAProxyVersions`
 
   - `InsightsConfig`
 
@@ -2278,15 +2630,13 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `MetricsCollectionProfiles`
 
-  - `MinimumKubeletVersion`
-
-  - `MixedCPUsAllocation`
-
-  - `MultiDiskSetup`
+  - \`MinimumKubeletVersion\`GCPSovereignCloudInstall
 
   - `MutableCSINodeAllocatableCount`
 
   - `MutatingAdmissionPolicy`
+
+  - `NetworkObservabilityInstall`
 
   - `NewOLM`
 
@@ -2298,8 +2648,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `NewOLMOwnSingleNamespace`
 
-  - `NewOLMPreflightPermissionChecks`
-
   - `NewOLMWebhookProviderOpenshiftServiceCA`
 
   - `NoOverlayMode`
@@ -2307,6 +2655,8 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `NoRegistryClusterInstall`
 
   - `NutanixMultiSubnets`
+
+  - `OLMLifecycleAndCompatibility`
 
   - `OnPremDNSRecords`
 
@@ -2316,9 +2666,9 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `OVNObservability`
 
-  - `RouteExternalCertificate`
-
   - `SELinuxMount`
+
+  - `SELinuxMountGAReadiness`
 
   - `ServiceAccountTokenNodeBinding`
 
@@ -2332,11 +2682,9 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `TLSAdherence`
 
+  - `TLSGroupPreferences`
+
   - `UpgradeStatus`
-
-  - `UserNamespacesPodSecurityStandards`
-
-  - `UserNamespacesSupport`
 
   - `VolumeGroupSnapshot`
 
@@ -2350,9 +2698,19 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `VSphereMultiNetworks`
 
+  - `VSphereMultiVCenterDay2`
+
 ## Enabling feature sets using the web console
 
 You can use the OpenShift Container Platform web console to enable feature sets for all of the nodes in a cluster by editing the `FeatureGate` custom resource (CR). Completing this task enables non-default features in your cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, switch to the **Administration** → **Custom Resource Definitions** page.
 
@@ -2364,15 +2722,14 @@ You can use the OpenShift Container Platform web console to enable feature sets 
 
 5.  Edit the **cluster** instance to add specific feature sets:
 
-    <div class="warning">
+    > [!WARNING]
+    > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
-    Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Sample Feature Gate custom resource**
+    Sample Feature Gate custom resource
 
     </div>
 
@@ -2386,6 +2743,8 @@ You can use the OpenShift Container Platform web console to enable feature sets 
       featureSet: TechPreviewNoUpgrade
     ```
 
+    </div>
+
     where:
 
     `metadata.name`
@@ -2398,13 +2757,19 @@ You can use the OpenShift Container Platform web console to enable feature sets 
 
     After you save the changes, new machine configs are created, the machine config pools are updated, and scheduling on each node is disabled while the change is being applied.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 You can verify that the feature gates are enabled by looking at the `kubelet.conf` file on a node after the nodes return to the ready state.
+
+</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Compute** → **Nodes**.
 
@@ -2424,9 +2789,11 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     sh-4.2# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample output**
+    <div class="title">
+
+    Sample output
 
     </div>
 
@@ -2438,21 +2805,36 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     # ...
     ```
 
+    </div>
+
     The features that are listed as `true` are enabled on your cluster.
 
-    <div class="note">
-
-    The features listed vary depending upon the OpenShift Container Platform version.
-
-    </div>
+    > [!NOTE]
+    > The features listed vary depending upon the OpenShift Container Platform version.
 
 ## Enabling feature sets using the CLI
 
 You can use the OpenShift CLI (`oc`) to enable feature sets for all of the nodes in a cluster by editing the `FeatureGate` custom resource (CR). Completing this task enables non-default features in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the `FeatureGate` CR named `cluster`:
 
@@ -2460,15 +2842,14 @@ You can use the OpenShift CLI (`oc`) to enable feature sets for all of the nodes
   $ oc edit featuregate cluster
   ```
 
-  <div class="warning">
+  > [!WARNING]
+  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
 
-  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. You should not enable this feature set on production clusters.
+  <div class="formalpara">
 
-  </div>
+  <div class="title">
 
-  <div class="formalpara-title">
-
-  **Sample FeatureGate custom resource**
+  Sample FeatureGate custom resource
 
   </div>
 
@@ -2482,6 +2863,8 @@ You can use the OpenShift CLI (`oc`) to enable feature sets for all of the nodes
     featureSet: TechPreviewNoUpgrade
   ```
 
+  </div>
+
   where:
 
   `metadata.name`
@@ -2494,13 +2877,19 @@ You can use the OpenShift CLI (`oc`) to enable feature sets for all of the nodes
 
   After you save the changes, new machine configs are created, the machine config pools are updated, and scheduling on each node is disabled while the change is being applied.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 You can verify that the feature gates are enabled by looking at the `kubelet.conf` file on a node after the nodes return to the ready state.
+
+</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Compute** → **Nodes**.
 
@@ -2520,9 +2909,11 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     sh-4.2# cat /etc/kubernetes/kubelet.conf
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample output**
+    <div class="title">
+
+    Sample output
 
     </div>
 
@@ -2534,25 +2925,31 @@ You can verify that the feature gates are enabled by looking at the `kubelet.con
     # ...
     ```
 
+    </div>
+
     The features that are listed as `true` are enabled on your cluster.
 
-    <div class="note">
-
-    The features listed vary depending upon the OpenShift Container Platform version.
-
-    </div>
+    > [!NOTE]
+    > The features listed vary depending upon the OpenShift Container Platform version.
 
 # etcd tasks
 
 Back up etcd, enable or disable etcd encryption, or defragment etcd data.
 
-<div class="note">
+> [!NOTE]
+> If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as part of your post-installation tasks.
 
-If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as part of your post-installation tasks.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Node scaling for etcd](../etcd/etcd-performance.xml#etcd-node-scaling_etcd-performance)
+
+</div>
 
 ## etcd encryption
 
@@ -2574,13 +2971,10 @@ When you enable etcd encryption, the following OpenShift API server and Kubernet
 
 When you enable etcd encryption, encryption keys are created. You must have these keys to restore from an etcd backup.
 
-<div class="note">
-
-etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
-
-If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
-
-</div>
+> [!NOTE]
+> etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
+>
+> If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
 
 ## Supported encryption types
 
@@ -2600,29 +2994,41 @@ The etcd encryption keys are rotated every 7 days. Up to 10 historical encryptio
 
 Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
-<div class="warning">
-
-Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
-
-After you enable etcd encryption, several changes can occur:
-
-- The etcd encryption might affect the memory consumption of a few resources.
-
-- You might notice a transient effect on backup performance because the leader must serve the backup.
-
-- A disk I/O can affect the node that receives the backup state.
-
-</div>
+> [!WARNING]
+> Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
+>
+> After you enable etcd encryption, several changes can occur:
+>
+> - The etcd encryption might affect the memory consumption of a few resources.
+>
+> - You might notice a transient effect on backup performance because the leader must serve the backup.
+>
+> - A disk I/O can affect the node that receives the backup state.
 
 You can encrypt the etcd database in either AES-GCM or AES-CBC encryption.
 
-<div class="note">
+> [!NOTE]
+> To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
 
-To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the `APIServer` object:
 
@@ -2643,6 +3049,16 @@ To migrate your etcd database from one encryption type to the other, you can mod
 3.  Save the file to apply the changes.
 
     The encryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of the etcd database.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
 
@@ -2689,11 +3105,31 @@ To migrate your etcd database from one encryption type to the other, you can mod
 
   If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
+</div>
+
 ## Disable etcd encryption
 
 Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the `APIServer` object:
 
@@ -2714,6 +3150,16 @@ Disable etcd encryption when you no longer need to encrypt sensitive cluster res
 3.  Save the file to apply the changes.
 
     The decryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
 
@@ -2760,27 +3206,41 @@ Disable etcd encryption when you no longer need to encrypt sensitive cluster res
 
   If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
+</div>
+
 ## Backing up etcd data
 
 You can back up etcd data by creating an etcd snapshot and saving the static pod resources on a control plane host. This backup preserves the cluster state and provides the resources required to restore etcd at a later time.
 
-<div class="important">
-
-Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
-
-</div>
+> [!IMPORTANT]
+> Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
 
 For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data on only one node in the cluster. The cluster restore process is driven by data from a single node, so you can perform the etcd backup steps on only one node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have verified whether the cluster-wide proxy is enabled.
 
-  <div class="tip">
+  > [!TIP]
+  > You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
 
-  You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug session as root for a control plane node:
 
@@ -2810,19 +3270,18 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
 
 4.  Run the `cluster-backup.sh` script with the path to the directory where you want to save the backup:
 
-    <div class="tip">
-
-    The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
-
-    </div>
+    > [!TIP]
+    > The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
 
     ``` terminal
     sh-4.4# /usr/local/bin/cluster-backup.sh /home/core/assets/backup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example script output**
+    <div class="title">
+
+    Example script output
 
     </div>
 
@@ -2845,19 +3304,20 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
     snapshot db and kube resources are successfully saved to /home/core/assets/backup
     ```
 
+    </div>
+
     In this example, two files are created in the `/home/core/assets/backup/` directory on the control plane host:
 
     - `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The `cluster-backup.sh` script confirms the validity of the snapshot.
 
     - `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
 
-      <div class="note">
+      > [!NOTE]
+      > If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+      >
+      > The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
 
-      If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
-
-      The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
-
-      </div>
+</div>
 
 ## Data defragmentation for etcd
 
@@ -2883,11 +3343,8 @@ Defragmentation occurs automatically, but you can also trigger it manually.
 
 When etcd database growth affects performance, the etcd Operator can automatically defragment member disks based on cluster metrics.
 
-<div class="note">
-
-Automatic defragmentation works well in most cases because the etcd Operator uses cluster metrics to choose the most efficient defragmentation approach.
-
-</div>
+> [!NOTE]
+> Automatic defragmentation works well in most cases because the etcd Operator uses cluster metrics to choose the most efficient defragmentation approach.
 
 The etcd Operator automatically defragments disks. No manual intervention is needed.
 
@@ -2899,11 +3356,8 @@ Verify that defragmentation succeeded by checking one of these logs:
 
 - operator status error log
 
-<div class="warning">
-
-Automatic defragmentation can cause leader election failure in various OpenShift Container Platform core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
-
-</div>
+> [!WARNING]
+> Automatic defragmentation can cause leader election failure in various OpenShift Container Platform core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
 
 The following is example log output for successful defragmentation:
 
@@ -2929,15 +3383,30 @@ A Prometheus alert indicates when you need to use manual defragmentation. The al
 
 You can also determine whether defragmentation is needed by checking the etcd database size in MB that will be freed by defragmentation with the PromQL expression: `(etcd_mvcc_db_total_size_in_bytes - etcd_mvcc_db_total_size_in_use_in_bytes)/1024/1024`
 
-<div class="warning">
-
-Defragmenting etcd is a blocking action. The etcd member does not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
-
-</div>
+> [!WARNING]
+> Defragmenting etcd is a blocking action. The etcd member does not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
 
 Follow this procedure to defragment etcd data on each etcd member.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Determine which etcd member is the leader, because the leader should be defragmented last.
 
@@ -3049,6 +3518,8 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl alarm disarm
         ```
 
+</div>
+
 ## Restoring to an earlier cluster state for more than one node
 
 To restore your OpenShift Container Platform cluster with more than one control plane node to an earlier state, use a saved etcd snapshot after quorum loss or critical data deletion.
@@ -3063,15 +3534,17 @@ Before you restore from backup on the recovery host, shut down etcd on enough co
 
 If too few hosts are shut down, the other etcd members might still form a quorum and continue service while you restore.
 
-<div class="note">
+> [!NOTE]
+> If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in the control plane machine set troubleshooting topic for an etcd recovery procedure. For OpenShift Container Platform on a single node, follow the procedure to restore to an earlier cluster state for a single node.
 
-If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in the control plane machine set troubleshooting topic for an etcd recovery procedure. For OpenShift Container Platform on a single node, follow the procedure to restore to an earlier cluster state for a single node.
+> [!IMPORTANT]
+> When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
 
-</div>
+<div>
 
-<div class="important">
+<div class="title">
 
-When you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.2 cluster must use an etcd backup that was taken from 4.17.2.
+Prerequisites
 
 </div>
 
@@ -3085,9 +3558,16 @@ When you restore your cluster, you must use an etcd backup that was taken from t
 
 - Control plane nodes are accessible or bootable.
 
-<div class="important">
+</div>
 
-For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
+> [!IMPORTANT]
+> For non-recovery control plane nodes, it is not required to establish SSH connectivity or to stop the static pods. You can delete and re-create other non-recovery, control plane machines, one by one.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -3097,11 +3577,8 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     `kube-apiserver` becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. Establish SSH connectivity to each control plane host in a separate terminal.
 
-    <div class="important">
-
-    If you do not complete this step, you cannot access the control plane hosts to complete the restore procedure, and you cannot recover your cluster from this state.
-
-    </div>
+    > [!IMPORTANT]
+    > If you do not complete this step, you cannot access the control plane hosts to complete the restore procedure, and you cannot recover your cluster from this state.
 
 3.  Using SSH, connect to each control plane node to disable etcd by running the following command:
 
@@ -3127,17 +3604,14 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
     ```
 
-    <div class="important">
-
-    For a TNF setup, do not:
-
-    - Change the etcd Operator quorum setting.
-
-    - Turn the etcd Operator quorum off.
-
-    - Turn the etcd Operator quorum back on.
-
-    </div>
+    > [!IMPORTANT]
+    > For a TNF setup, do not:
+    >
+    > - Change the etcd Operator quorum setting.
+    >
+    > - Turn the etcd Operator quorum off.
+    >
+    > - Turn the etcd Operator quorum back on.
 
 8.  Monitor the recovery progress of the control plane by running the following command:
 
@@ -3145,11 +3619,8 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
     $ oc adm wait-for-stable-cluster
     ```
 
-    <div class="note">
-
-    It can take up to 15 minutes for the control plane to recover. Wait for the control plane to recover before using the next step.
-
-    </div>
+    > [!NOTE]
+    > It can take up to 15 minutes for the control plane to recover. Wait for the control plane to recover before using the next step.
 
 9.  Enable the quorum guard by running the following command:
 
@@ -3157,17 +3628,31 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Troubleshooting**
+<div class="formalpara">
+
+<div class="title">
+
+Troubleshooting
 
 </div>
 
 If the etcd static pods do not roll out, you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
 
+</div>
+
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge
 ```
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Recommended etcd practices](../etcd/etcd-practices.xml#recommended-etcd-practices)
 
@@ -3175,17 +3660,16 @@ $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(d
 
 - [Replacing a bare-metal control plane node](../installing/overview/index.xml#replacing-a-bare-metal-control-plane-node_bare-metal-expanding)
 
+</div>
+
 ## Issues and workarounds for restoring a persistent storage state
 
 To restore workloads safely after an etcd snapshot restore, identify and resolve outdated persistent storage references, including volumes, credentials, attachments, and devices on your OpenShift Container Platform cluster.
 
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 
-<div class="important">
-
-The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
-
-</div>
+> [!IMPORTANT]
+> The contents of persistent volumes (PVs) are never part of the etcd snapshot. When you restore an OpenShift Container Platform cluster from an etcd snapshot, non-critical workloads might gain access to critical data, or vice-versa.
 
 The following are some example scenarios that produce an out-of-date status:
 
@@ -3225,19 +3709,13 @@ A `PodDisruptionBudget` object’s configuration consists of the following key p
 
   - `maxUnavailable` is the number of pods can be unavailable during a disruption.
 
-<div class="note">
+> [!NOTE]
+> `Available` refers to the number of pods that has condition `Ready=True`. `Ready=True` refers to the pod that is able to serve requests and should be added to the load balancing pools of all matching services.
+>
+> A `maxUnavailable` of `0%` or `0` or a `minAvailable` of `100%` or equal to the number of replicas is permitted but can block nodes from being drained.
 
-`Available` refers to the number of pods that has condition `Ready=True`. `Ready=True` refers to the pod that is able to serve requests and should be added to the load balancing pools of all matching services.
-
-A `maxUnavailable` of `0%` or `0` or a `minAvailable` of `100%` or equal to the number of replicas is permitted but can block nodes from being drained.
-
-</div>
-
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 You can check for pod disruption budgets across all projects with the following:
 
@@ -3245,15 +3723,14 @@ You can check for pod disruption budgets across all projects with the following:
 $ oc get poddisruptionbudget --all-namespaces
 ```
 
-<div class="note">
+> [!NOTE]
+> The following example contains some values that are specific to OpenShift Container Platform on AWS.
 
-The following example contains some values that are specific to OpenShift Container Platform on AWS.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example output**
+Example output
 
 </div>
 
@@ -3269,19 +3746,26 @@ openshift-console                      console                                 N
 #...
 ```
 
+</div>
+
 The `PodDisruptionBudget` is considered healthy when there are at least `minAvailable` pods running in the system. Every pod above that limit can be evicted.
 
-<div class="note">
-
-Depending on your pod priority and preemption settings, lower-priority pods might be removed despite their pod disruption budget requirements.
-
-</div>
+> [!NOTE]
+> Depending on your pod priority and preemption settings, lower-priority pods might be removed despite their pod disruption budget requirements.
 
 ## Specify the number of pods that must be up with pod disruption budgets
 
 You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time. This ensures pod availability during voluntary disruptions such as node maintenance or cluster updates.
 
 The following procedure shows how to configure a pod disruption budget.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file with the an object definition similar to the following:
 
@@ -3339,6 +3823,8 @@ The following procedure shows how to configure a pod disruption budget.
     $ oc create -f </path/to/file> -n <project_name>
     ```
 
+</div>
+
 ## Specify the eviction policy for unhealthy pods
 
 When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction. The eviction policy determines which pods the cluster can evict.
@@ -3351,17 +3837,24 @@ Running pods that are not yet healthy can be evicted only if the guarded applica
 AlwaysAllow
 Running pods that are not yet healthy can be evicted regardless of whether the criteria in the pod disruption budget is met. This policy can help evict malfunctioning applications, such as ones with pods stuck in the `CrashLoopBackOff` state or failing to report the `Ready` status.
 
-<div class="note">
+> [!NOTE]
+> It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow` in the `PodDisruptionBudget` object to support the eviction of misbehaving applications during a node drain. The default behavior is to wait for the application pods to become healthy before the drain can proceed.
 
-It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow` in the `PodDisruptionBudget` object to support the eviction of misbehaving applications during a node drain. The default behavior is to wait for the application pods to become healthy before the drain can proceed.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a YAML file that defines a `PodDisruptionBudget` object and specify the unhealthy pod eviction policy:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `pod-disruption-budget.yaml` file**
+    <div class="title">
+
+    Example `pod-disruption-budget.yaml` file
 
     </div>
 
@@ -3378,6 +3871,8 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
       unhealthyPodEvictionPolicy: AlwaysAllow
     ```
 
+    </div>
+
     where:
 
     `spec.unhealthyPodEvictionPolicy`
@@ -3391,6 +3886,18 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
 
     With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 - [Unhealthy Pod Eviction Policy in the Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy)
+
+</div>

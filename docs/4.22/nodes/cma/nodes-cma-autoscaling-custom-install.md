@@ -14,15 +14,20 @@ The installation creates the following five CRDs:
 
 The installation process also creates the `KedaController` custom resource (CR). You can modify the default `KedaController` CR, if needed. For more information, see "Editing the Keda Controller CR".
 
-<div class="note">
-
-If you are installing a Custom Metrics Autoscaler Operator version lower than 2.17.2, you must manually create the Keda Controller CR. You can use the procedure described in "Editing the Keda Controller CR" to create the CR.
-
-</div>
+> [!NOTE]
+> If you are installing a Custom Metrics Autoscaler Operator version lower than 2.17.2, you must manually create the Keda Controller CR. You can use the procedure described in "Editing the Keda Controller CR" to create the CR.
 
 # Install the custom metrics autoscaler
 
 You can use the following procedure to install the Custom Metrics Autoscaler Operator.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Remove any previously-installed Technology Preview versions of the Cluster Metrics Autoscaler Operator.
 
@@ -43,6 +48,16 @@ You can use the following procedure to install the Custom Metrics Autoscaler Ope
   ``` terminal
   $ oc create configmap -n openshift-keda thanos-cert  --from-file=ca-cert.pem
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Software Catalog**.
 
@@ -70,9 +85,11 @@ You can use the following procedure to install the Custom Metrics Autoscaler Ope
 
     The output appears similar to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -87,9 +104,21 @@ You can use the following procedure to install the Custom Metrics Autoscaler Ope
     replicaset.apps/custom-metrics-autoscaler-operator-5fd8d9ffd8   1         1         1       18m
     ```
 
+    </div>
+
+</div>
+
 # Edit the Keda Controller CR
 
 You can use the following procedure to modify the `KedaController` custom resource (CR), which is automatically installed during the installation of the Custom Metrics Autoscaler Operator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Ecosystem** → **Installed Operators**.
 
@@ -164,3 +193,5 @@ You can use the following procedure to modify the `KedaController` custom resour
     Specifies the audit logging configuration for the Custom Metrics Autoscaler Operator and the audit policy to use, as described in the "Configuring audit logging" section.
 
 5.  Click **Save** to save the changes.
+
+</div>

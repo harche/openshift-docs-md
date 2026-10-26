@@ -1,5 +1,13 @@
 Back up Kubernetes resources, internal images, and persistent volumes (PVs) by creating a `Backup` custom resource (CR). This helps you to protect your application data and configuration for disaster recovery.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
 - The `DataProtectionApplication` CR must be in a `Ready` state.
@@ -17,6 +25,16 @@ Back up Kubernetes resources, internal images, and persistent volumes (PVs) by c
   - For CSI snapshots, you must create a `VolumeSnapshotClass` CR to register the CSI driver.
 
   - You must have a volume location configured in the `DataProtectionApplication` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the `backupStorageLocations` CRs by entering the following command:
 
@@ -84,3 +102,5 @@ Back up Kubernetes resources, internal images, and persistent volumes (PVs) by c
     ``` terminal
     $ oc get backups.velero.io -n openshift-adp <backup> -o jsonpath='{.status.phase}'
     ```
+
+</div>

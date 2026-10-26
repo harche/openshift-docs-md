@@ -6,10 +6,17 @@ After you use the oc-mirror plugin for the OpenShift CLI (`oc`) to mirror images
 
 oc-mirror plugin v2 automatically generates `ImageDigestMirrorSet`, `ImageTagMirrorSet`, and `ClusterCatalog` resources.
 
-<div class="note">
+> [!NOTE]
+> The oc-mirror plugin v2 is the recommended version for mirroring.
 
-The oc-mirror plugin v2 is the recommended version for mirroring.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
+</div>

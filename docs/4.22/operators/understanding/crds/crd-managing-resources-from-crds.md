@@ -10,23 +10,40 @@ A *custom resource definition* (CRD) object defines a new, unique object type, c
 
 Operators in particular make use of CRDs by packaging them with any required RBAC policy and other software-specific logic. Cluster administrators can also add CRDs manually to the cluster outside of the lifecycle of an Operator, making them available to all users.
 
-<div class="note">
-
-While only cluster administrators can create CRDs, developers can create the CR from an existing CRD if they have read and write permission to it.
-
-</div>
+> [!NOTE]
+> While only cluster administrators can create CRDs, developers can create the CR from an existing CRD if they have read and write permission to it.
 
 # Creating custom resources from a file
 
 After you add a custom resource definition (CRD) to the cluster, you can create custom resources (CRs) from a file by using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - CRD added to the cluster by a cluster administrator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for the CR. In the following example definition, the `cronSpec` and `image` custom fields are set in a CR of `Kind: CronTab`. The `Kind` comes from the `spec.kind` field of the CRD object:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file for a CR**
+    <div class="title">
+
+    Example YAML file for a CR
 
     </div>
 
@@ -41,6 +58,8 @@ After you add a custom resource definition (CRD) to the cluster, you can create 
       cronSpec: "* * * * /5"
       image: my-awesome-cron-image
     ```
+
+    </div>
 
     where:
 
@@ -65,11 +84,31 @@ After you add a custom resource definition (CRD) to the cluster, you can create 
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
 # Inspecting custom resources
 
 You can inspect custom resource (CR) objects that exist in your cluster using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A CR object exists in a namespace to which you have access.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To get information on a specific kind of a CR, run:
 
@@ -83,9 +122,11 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     $ oc get crontab
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -93,6 +134,8 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     NAME                 KIND
     my-new-cron-object   CronTab.v1.stable.example.com
     ```
+
+    </div>
 
     Resource names are not case-sensitive, and you can use either the singular or plural forms defined in the CRD, as well as any short name. For example:
 
@@ -120,9 +163,11 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     $ oc get ct -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -146,4 +191,8 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
         image: my-awesome-cron-image
     ```
 
+    </div>
+
     The `spec` section in the output displays the custom configuration settings, such as `cronSpec` and `image`, that you defined when creating the object.
+
+</div>

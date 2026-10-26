@@ -14,27 +14,42 @@ Cluster administrators can configure HSTS to do the following:
 
 - Enforce HSTS per-domain, for a set of domains, or use namespace labels in combination with domains
 
-<div class="important">
-
-HSTS works only with secure routes, either edge-terminated or re-encrypt. The configuration is ineffective on HTTP or passthrough routes.
-
-</div>
+> [!IMPORTANT]
+> HSTS works only with secure routes, either edge-terminated or re-encrypt. The configuration is ineffective on HTTP or passthrough routes.
 
 ## Enable HTTP Strict Transport Security per-route
 
 To enforce secure HTTPS connections for specific applications, enable HTTP Strict Transport Security (HSTS) on a per-route basis. Applying the `haproxy.router.openshift.io/hsts_header` annotation to edge and re-encrypt routes ensures that browsers reject unencrypted traffic.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster with a user with administrator privileges for the project.
 
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To enable HSTS on a route, add the `haproxy.router.openshift.io/hsts_header` value to the edge-terminated or re-encrypt route. You can use the `oc annotate` tool to do this by running the following command. To properly run the command, ensure that the semicolon (`;`) in the `haproxy.router.openshift.io/hsts_header` route annotation is also surrounded by double quotation marks (`""`).
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `annotate` command that sets the maximum age to `31536000` ms (approximately 8.5 hours)**
+  <div class="title">
+
+  Example `annotate` command that sets the maximum age to `31536000` ms (approximately 8.5 hours)
 
   </div>
 
@@ -43,9 +58,13 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   includeSubDomains;preload"
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example route configured with an annotation**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example route configured with an annotation
 
   </div>
 
@@ -65,6 +84,8 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   # ...
   ```
 
+  </div>
+
   where:
 
   `max-age`
@@ -76,15 +97,33 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   `preload`
   Specifies that the site is included in the HSTS preload list when `max-age` is greater than `0`. For example, sites such as Google can construct a list of sites that have `preload` set. Browsers can then use these lists to determine which sites they can communicate with over HTTPS, even before they have interacted with the site. Without `preload` set, browsers must have interacted with the site over HTTPS, at least once, to get the header. Optional parameter.
 
+</div>
+
 ## Disable HTTP Strict Transport Security per-route
 
 To allow unencrypted connections or troubleshoot access issues, disable HTTP Strict Transport Security (HSTS) for a specific route. Setting the `max-age` route annotation to `0` instructs browsers to stop enforcing HTTPS requirements on the route host.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster with a user with administrator privileges for the project.
 
 - You installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To disable HSTS, enter the following to set the `max-age` value in the route annotation to `0`:
 
@@ -92,19 +131,16 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc annotate route <route_name> -n <namespace> --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=0"
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to create the config map for disabling HSTS per-route:
-
-  ``` yaml
-  kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    annotations:
-      haproxy.router.openshift.io/hsts_header: max-age=0
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to create the config map for disabling HSTS per-route:
+  >
+  > ``` yaml
+  > kind: Route
+  > apiVersion: route.openshift.io/v1
+  > metadata:
+  >   annotations:
+  >     haproxy.router.openshift.io/hsts_header: max-age=0
+  > ```
 
 - To disable HSTS for every route in a namespace, enter the following command:
 
@@ -112,7 +148,15 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc annotate route --all -n <namespace> --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=0"
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To query the annotation for all routes, enter the following command:
 
@@ -120,9 +164,11 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   $ oc get route  --all-namespaces -o go-template='{{range .items}}{{if .metadata.annotations}}{{$a := index .metadata.annotations "haproxy.router.openshift.io/hsts_header"}}{{$n := .metadata.name}}{{with $a}}Name: {{$n}} HSTS: {{$a}}{{"\n"}}{{else}}{{""}}{{end}}{{end}}{{end}}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -130,27 +176,30 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
   Name: routename HSTS: max-age=0
   ```
 
+  </div>
+
+</div>
+
 ## Enforce HTTP Strict Transport Security per-domain
 
 To enforce HTTP Strict Transport Security (HSTS) per-domain for secure routes, add a `requiredHSTSPolicies` record to the Ingress spec to capture the configuration of the HSTS policy.
 
 If you configure a `requiredHSTSPolicy` to enforce HSTS, then any newly created route must be configured with a compliant HSTS policy annotation.
 
-<div class="note">
+> [!NOTE]
+> To handle upgraded clusters with non-compliant HSTS routes, you can update the manifests at the source and apply the updates.
 
-To handle upgraded clusters with non-compliant HSTS routes, you can update the manifests at the source and apply the updates.
+> [!NOTE]
+> You cannot use `oc expose route` or `oc create route` commands to add a route in a domain that enforces HSTS, because the API for these commands does not accept annotations.
 
-</div>
+> [!IMPORTANT]
+> HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested for all routes globally.
 
-<div class="note">
+<div>
 
-You cannot use `oc expose route` or `oc create route` commands to add a route in a domain that enforces HSTS, because the API for these commands does not accept annotations.
+<div class="title">
 
-</div>
-
-<div class="important">
-
-HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested for all routes globally.
+Prerequisites
 
 </div>
 
@@ -158,15 +207,27 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
 
 - You installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Edit the Ingress configuration YAML by running the following command and updating fields as needed:
 
     ``` terminal
     $ oc edit ingresses.config.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example HSTS policy**
+    <div class="title">
+
+    Example HSTS policy
 
     </div>
 
@@ -198,6 +259,8 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
         preloadPolicy: NoOpinion
         includeSubDomainsPolicy: RequireNoIncludeSubDomains
     ```
+
+    </div>
 
     where:
 
@@ -249,13 +312,19 @@ HSTS cannot be applied to insecure, or non-TLS routes, even if HSTS is requested
       $ oc annotate route --all -n my-namespace --overwrite=true "haproxy.router.openshift.io/hsts_header"="max-age=31536000"
       ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 You can review the HSTS policy you configured. For example:
+
+</div>
 
 - To review the `maxAge` set for required HSTS policies, enter the following command:
 
@@ -269,12 +338,16 @@ You can review the HSTS policy you configured. For example:
   $ oc get route  --all-namespaces -o go-template='{{range .items}}{{if .metadata.annotations}}{{$a := index .metadata.annotations "haproxy.router.openshift.io/hsts_header"}}{{$n := .metadata.name}}{{with $a}}Name: {{$n}} HSTS: {{$a}}{{"\n"}}{{else}}{{""}}{{end}}{{end}}{{end}}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Name: <_routename_> HSTS: max-age=31536000;preload;includeSubDomains
   ```
+
+  </div>

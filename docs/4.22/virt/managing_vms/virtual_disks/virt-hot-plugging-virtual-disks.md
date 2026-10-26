@@ -4,13 +4,10 @@ Only data volumes and persistent volume claims (PVCs) can be hot plugged and hot
 
 A hot plugged disk remains attached to the VM even after reboot. You must unplug the disk to remove it from the VM.
 
-<div class="note">
-
-Each VM has a `virtio-scsi` controller so that hot plugged disks can use the SCSI bus. The `virtio-scsi` controller overcomes the limitations of VirtIO while retaining its performance advantages. It is highly scalable and supports hot plugging over 4 million disks.
-
-When you hot plug disks to the VirtIO (`virtio-blk`) bus, each disk uses a PCI Express (PCIe) slot in the VM. The number of PCIe slots is limited and pre-set automatically at the VM creation as specified in the "Available VirtIO Ports" table. Therefore, you can use `virtio-blk` for a small number of disks that does not exceed the number of available slots.
-
-</div>
+> [!NOTE]
+> Each VM has a `virtio-scsi` controller so that hot plugged disks can use the SCSI bus. The `virtio-scsi` controller overcomes the limitations of VirtIO while retaining its performance advantages. It is highly scalable and supports hot plugging over 4 million disks.
+>
+> When you hot plug disks to the VirtIO (`virtio-blk`) bus, each disk uses a PCI Express (PCIe) slot in the VM. The number of PCIe slots is limited and pre-set automatically at the VM creation as specified in the "Available VirtIO Ports" table. Therefore, you can use `virtio-blk` for a small number of disks that does not exceed the number of available slots.
 
 # Hot plugging and hot unplugging a disk by using the web console
 
@@ -18,7 +15,25 @@ You can hot plug a disk by attaching it to a virtual machine (VM) while the VM i
 
 The hot plugged disk remains attached to the VM until you unplug it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a data volume or persistent volume claim (PVC) available for hot plugging.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -46,15 +61,33 @@ The hot plugged disk remains attached to the VM until you unplug it.
 
     2.  Click **Detach**.
 
+</div>
+
 # Hot plug and hot unplug a disk by using the CLI
 
 You can hot plug and hot unplug a disk while a virtual machine (VM) is running by using the command line.
 
 The hot plugged disk remains attached to the VM until you unplug it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have at least one data volume or persistent volume claim (PVC) available for hot plugging.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Hot plug a disk by running the following command:
 
@@ -81,6 +114,8 @@ The hot plugged disk remains attached to the VM until you unplug it.
   $ virtctl removevolume <virtual-machine|virtual-machine-instance> \
     --volume-name=<datavolume|PVC>
   ```
+
+</div>
 
 # Additional resources
 

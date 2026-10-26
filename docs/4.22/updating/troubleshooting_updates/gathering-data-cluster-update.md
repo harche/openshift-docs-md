@@ -6,13 +6,10 @@ Use the `oc adm must-gather` command to collect cluster data and logs. Red Hat S
 
 # Changing CVO log level (Technology Preview)
 
-<div class="important">
-
-Changing the CVO log level is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Changing the CVO log level is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 Adjust the verbosity of the Cluster Version Operator (CVO) log to troubleshoot update issues or diagnose errors by using four available log levels.
 
@@ -26,9 +23,14 @@ The following list outlines the four log levels:
 
 - `TraceAll` - Used to get the complete body content of the logs.
 
-<div class="note">
+> [!NOTE]
+> If `TraceAll` is turned on in a production cluster it may cause widespread performance issues and large log files.
 
-If `TraceAll` is turned on in a production cluster it may cause widespread performance issues and large log files.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -38,15 +40,27 @@ If `TraceAll` is turned on in a production cluster it may cause widespread perfo
 
 - You have the `TechPreviewNoUpgrade` feature set enabled.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Enter the following command into the CLI to change the log level:
 
     ``` terminal
     $ oc patch clusterversionoperator/cluster --type=merge --patch '{"spec":{"operatorLogLevel":"<log_level>"}}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -54,15 +68,16 @@ If `TraceAll` is turned on in a production cluster it may cause widespread perfo
     clusterversionoperator.operator.openshift.io/cluster patched
     ```
 
+    </div>
+
+</div>
+
 # Gathering ClusterVersion history
 
 The Cluster Version Operator (CVO) records updates made to a cluster, known as the ClusterVersion history. The entries can reveal correlation between changes in cluster behavior with potential triggers, although correlation does not imply causation.
 
-<div class="note">
-
-The initial, minor, and z-stream version updates are stored by the ClusterVersion history. However, the ClusterVersion history has a size limit. If the limit is reached, the oldest z-stream updates in previous minor versions are pruned to accommodate the limit.
-
-</div>
+> [!NOTE]
+> The initial, minor, and z-stream version updates are stored by the ClusterVersion history. However, the ClusterVersion history has a size limit. If the limit is reached, the oldest z-stream updates in previous minor versions are pruned to accommodate the limit.
 
 You can view the ClusterVersion history by using the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).
 
@@ -70,21 +85,57 @@ You can view the ClusterVersion history by using the OpenShift Container Platfor
 
 You can view the ClusterVersion history and status information in the OpenShift Container Platform web console. Use the history to verify successful updates and to troubleshoot failures.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - From the web console, click **Administration** → **Cluster Settings** and review the contents of the **Details** tab.
+
+</div>
 
 ## Gathering ClusterVersion history using the OpenShift CLI (`oc`)
 
 Use the OpenShift CLI (`oc`) to view ClusterVersion history. You can use the history to troubleshoot update issues or to verify completed updates.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the cluster update history by entering the following command:
 
@@ -92,9 +143,11 @@ Use the OpenShift CLI (`oc`) to view ClusterVersion history. You can use the his
     $ oc describe clusterversions/version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -133,4 +186,18 @@ Use the OpenShift CLI (`oc`) to view ClusterVersion history. You can use the his
     Events:                 <none>
     ```
 
+    </div>
+
+</div>
+
+<div id="additional-resources_gathering-cluster-data">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Gathering data about your cluster for Red Hat Support](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
+
+</div>

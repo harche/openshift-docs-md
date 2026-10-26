@@ -4,7 +4,7 @@ The factory-precaching-cli tool does the following:
 
 - Downloads the RHCOS rootfs image that is required by the minimal ISO to boot.
 
-- Creates a partition from the installation disk labelled as `data`.
+- Creates a partition from the installation disk labeled as `data`.
 
 - Formats the disk in xfs.
 
@@ -16,17 +16,22 @@ The factory-precaching-cli tool does the following:
 
 - Optional: Copies Day-2 Operators to the partition.
 
-<div class="important">
-
-The factory-precaching-cli tool is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The factory-precaching-cli tool is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Getting the factory-precaching-cli tool
 
 The factory-precaching-cli tool Go binary is publicly available in [the {rds-first} tools container image](https://quay.io/openshift-kni/telco-ran-tools:latest). The factory-precaching-cli tool Go binary in the container image is executed on the server running an RHCOS live image using `podman`. If you are working in a disconnected environment or have a private registry, you need to copy the image there so you can download the image to the server.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Pull the factory-precaching-cli tool image by running the following command:
 
@@ -34,7 +39,15 @@ The factory-precaching-cli tool Go binary is publicly available in [the {rds-fir
   # podman pull quay.io/openshift-kni/telco-ran-tools:latest
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To check that the tool is available, query the current version of the factory-precaching-cli tool Go binary:
 
@@ -48,15 +61,14 @@ The factory-precaching-cli tool Go binary is publicly available in [the {rds-fir
   factory-precaching-cli version 20221018.120852+main.feecf17
   ```
 
+</div>
+
 # Booting from a live operating system image
 
 You can use the factory-precaching-cli tool to boot servers where only one disk is available and an external disk drive cannot be attached to the server.
 
-<div class="warning">
-
-RHCOS requires the disk to not be in use when the disk is about to be written with an RHCOS image.
-
-</div>
+> [!WARNING]
+> RHCOS requires the disk to not be in use when the disk is about to be written with an RHCOS image.
 
 Depending on the server hardware, you can mount the RHCOS live ISO on the blank server using one of the following methods:
 
@@ -68,11 +80,29 @@ Depending on the server hardware, you can mount the RHCOS live ISO on the blank 
 
 It is recommended to automate the mounting procedure. To automate the procedure, you need to pull the required images and host them on a local HTTP server.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You powered up the host.
 
 - You have network connectivity to the host.
 
+</div>
+
 The following example procedure uses the Redfish BMC API to mount the RHCOS live ISO.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Mount the RHCOS live ISO:
 
@@ -98,6 +128,16 @@ The following example procedure uses the Redfish BMC API to mount the RHCOS live
 
 2.  Reboot and ensure that the server is booting from virtual media.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane-about_installing-customizing)
 
 - [Creating a custom live RHCOS ISO for remote server access](../installing/installing_sno/install-sno-installing-sno.xml#create-custom-live-rhcos-iso_install-sno-installing-sno-with-the-assisted-installer)
@@ -108,11 +148,21 @@ The following example procedure uses the Redfish BMC API to mount the RHCOS live
 
 - [Booting from an HTTP-hosted ISO image using the Redfish API](../installing/installing_sno/install-sno-installing-sno.xml#install-booting-from-an-iso-over-http-redfish_install-sno-installing-sno-with-the-assisted-installer)
 
+</div>
+
 # Partitioning the disk
 
 To run the full pre-caching process, you have to boot from a live ISO and use the factory-precaching-cli tool from a container image to partition and pre-cache all the artifacts required.
 
 A live ISO or RHCOS live ISO is required because the disk must not be in use when the operating system (RHCOS) is written to the device during the provisioning. Single-disk servers can also be enabled with this procedure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a disk that is not partitioned.
 
@@ -123,6 +173,16 @@ A live ISO or RHCOS live ISO is required because the disk must not be in use whe
 - The container must run as `privileged` due to formatting host devices.
 
 - You have to mount the `/dev` folder so that the process can be executed inside the container.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the disk is cleared:
 
@@ -154,19 +214,13 @@ A live ISO or RHCOS live ISO is required because the disk must not be in use whe
     /dev/nvme0n1: 2 bytes were erased at offset 0x000001fe (PMBR): 55 aa
     ```
 
-    <div class="important">
-
-    The tool fails if the disk is not empty because it uses partition number 1 of the device for pre-caching the artifacts.
-
-    </div>
+    > [!IMPORTANT]
+    > The tool fails if the disk is not empty because it uses partition number 1 of the device for pre-caching the artifacts.
 
     Create a single partition and a GPT partition table. The partition is automatically labelled as `data` and created at the end of the device. Otherwise, the partition will be overridden by the `coreos-installer`.
 
-    <div class="important">
-
-    The `coreos-installer` requires the partition to be created at the end of the device and to be labelled as `data`. Both requirements are necessary to save the partition when writing the RHCOS image to the disk.
-
-    </div>
+    > [!IMPORTANT]
+    > The `coreos-installer` requires the partition to be created at the end of the device and to be labelled as `data`. Both requirements are necessary to save the partition when writing the RHCOS image to the disk.
 
 3.  Run the container as `privileged` and partition the disk. In the following example, the size of the partition is 250 GiB to allow pre-caching the DU profile for Day 2 Operators:
 
@@ -205,11 +259,8 @@ A live ISO or RHCOS live ISO is required because the disk must not be in use whe
 
     After verifying that the disk is partitioned correctly, mount the device into `/mnt`.
 
-    <div class="important">
-
-    It is recommended to mount the device into `/mnt` because that mounting point is used during GitOps ZTP preparation.
-
-    </div>
+    > [!IMPORTANT]
+    > It is recommended to mount the device into `/mnt` because that mounting point is used during GitOps ZTP preparation.
 
 5.  Verify that the partition is formatted as `xfs`:
 
@@ -230,6 +281,16 @@ A live ISO or RHCOS live ISO is required because the disk must not be in use whe
     ``` terminal
     # mount /dev/nvme0n1p1 /mnt/
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the device has a GPT partition table, the partition uses the latest sectors of the device, and the partition is correctly labeled as `data`. Query the disk status to verify that the disk is partitioned as expected:
 
@@ -282,6 +343,8 @@ A live ISO or RHCOS live ISO is required because the disk must not be in use whe
 
   The mount point is `/var/mnt` because the `/mnt` folder in RHCOS is a link to `/var/mnt`.
 
+</div>
+
 # Downloading the images
 
 The factory-precaching-cli tool allows you to download the following images to your partitioned server:
@@ -292,27 +355,29 @@ The factory-precaching-cli tool allows you to download the following images to y
 
 - Operator images from disconnected registries
 
-<div class="note">
-
-The list of available Operator images can vary in different OpenShift Container Platform releases.
-
-</div>
+> [!NOTE]
+> The list of available Operator images can vary in different OpenShift Container Platform releases.
 
 The factory-precaching-cli tool uses parallel workers to download multiple images simultaneously. You can configure the number of workers with the `--parallel` or `-p` option. The default number is set to 80% of the available CPUs to the server.
 
-<div class="note">
-
-Your login shell may be restricted to a subset of CPUs, which reduces the CPUs available to the container. To remove this restriction, you can precede your commands with `taskset 0xffffffff`, for example:
-
-``` terminal
-# taskset 0xffffffff podman run --rm quay.io/openshift-kni/telco-ran-tools:latest factory-precaching-cli download --help
-```
-
-</div>
+> [!NOTE]
+> Your login shell may be restricted to a subset of CPUs, which reduces the CPUs available to the container. To remove this restriction, you can precede your commands with `taskset 0xffffffff`, for example:
+>
+> ``` terminal
+> # taskset 0xffffffff podman run --rm quay.io/openshift-kni/telco-ran-tools:latest factory-precaching-cli download --help
+> ```
 
 ## Preparing to download the OpenShift Container Platform images
 
 To download OpenShift Container Platform container images, you need to know the multicluster engine version. When you use the `--du-profile` flag, you also need to specify the Red Hat Advanced Cluster Management (RHACM) version running in the hub cluster that is going to provision the single-node OpenShift.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have RHACM and the multicluster engine Operator installed.
 
@@ -323,6 +388,16 @@ To download OpenShift Container Platform container images, you need to know the 
 - You connected the bare-metal server to the Internet.
 
 - You have a valid pull secret.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the RHACM version and the multicluster engine version by running the following commands in the hub cluster:
 
@@ -365,19 +440,36 @@ To download OpenShift Container Platform container images, you need to know the 
 
         `/root/.docker/config.json` is the default path where `podman` checks for the login credentials for the registry.
 
-    <div class="note">
+    > [!NOTE]
+    > If you use a different registry to pull the required artifacts, you need to copy the proper pull secret. If the local registry uses TLS, you need to include the certificates from the registry as well.
 
-    If you use a different registry to pull the required artifacts, you need to copy the proper pull secret. If the local registry uses TLS, you need to include the certificates from the registry as well.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [OpenShift installation customization tools](https://console.redhat.com/openshift/downloads#tool-pull-secret)
 
 - [About cluster lifecycle with the multicluster engine operator](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#mce-intro)
 
+</div>
+
 ## Downloading the OpenShift Container Platform images
 
 The factory-precaching-cli tool allows you to pre-cache all the container images required to provision a specific OpenShift Container Platform release.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Pre-cache the release by running the following command:
 
@@ -430,7 +522,15 @@ The factory-precaching-cli tool allows you to pre-cache all the container images
     Workers:                            83
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check that all the images are compressed in the target folder of the server. It is recommended that you pre-cache the images in the `/mnt` folder:
 
@@ -460,13 +560,20 @@ The factory-precaching-cli tool allows you to pre-cache all the container images
   -rw-r--r--. 1 root root  306643814 Oct 31 15:11 troubleshoot@sha256_b86b8aea29a818a9c22944fd18243fa0347c7a2bf1ad8864113ff2bb2d8e0726.tgz
   ```
 
+</div>
+
 ## Downloading the Operator images
 
 You can also pre-cache Day-2 Operators used in the 5G Radio Access Network (RAN) Distributed Unit (DU) cluster configuration. The Day-2 Operators depend on the installed OpenShift Container Platform version.
 
-<div class="important">
+> [!IMPORTANT]
+> You need to include the RHACM hub and multicluster engine Operator versions by using the `--acm-version` and `--mce-version` flags so the factory-precaching-cli tool can pre-cache the appropriate containers images for RHACM and the multicluster engine Operator.
 
-You need to include the RHACM hub and multicluster engine Operator versions by using the `--acm-version` and `--mce-version` flags so the factory-precaching-cli tool can pre-cache the appropriate containers images for RHACM and the multicluster engine Operator.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -520,6 +627,8 @@ You need to include the RHACM hub and multicluster engine Operator versions by u
     Workers:                            83
     ```
 
+</div>
+
 ## Pre-caching custom images in disconnected environments
 
 The `--generate-imageset` argument stops the factory-precaching-cli tool after the `ImageSetConfiguration` custom resource (CR) is generated. This allows you to customize the `ImageSetConfiguration` CR before downloading any images. After you customized the CR, you can use the `--skip-imageset` argument to download the images that you specified in the `ImageSetConfiguration` CR.
@@ -531,6 +640,14 @@ You can customize the `ImageSetConfiguration` CR in the following ways:
 - Remove Operators and additional images
 
 - Change Operator and catalog sources to local or disconnected registries
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Pre-cache the images:
 
@@ -702,6 +819,8 @@ You can customize the `ImageSetConfiguration` CR in the following ways:
     --du-profile -s \
     --skip-imageset
     ```
+
+</div>
 
 # Pre-caching images in GitOps ZTP
 
@@ -923,22 +1042,16 @@ OPTIONS:
 
 Similarly to `spec.ignitionConfigOverride`, the `spec.nodes[].ignitionConfigOverride` field allows the addition of configurations in Ignition format to the `coreos-installer` utility, but at the OpenShift Container Platform installation stage. When the RHCOS is written to disk, the extra configuration included in the GitOps ZTP discovery ISO is no longer available. During the discovery stage, the extra configuration is stored in the memory of the live OS.
 
-<div class="note">
-
-At this stage, the number of container images extracted and loaded is bigger than in the discovery stage. Depending on the OpenShift Container Platform release and whether you install the Day-2 Operators, the installation time can vary.
-
-</div>
+> [!NOTE]
+> At this stage, the number of container images extracted and loaded is bigger than in the discovery stage. Depending on the OpenShift Container Platform release and whether you install the Day-2 Operators, the installation time can vary.
 
 At the installation stage, the `var-mnt.mount` and `precache-ocp.services` `systemd` services are used.
 
 `precache-ocp.service`
 The `precache-ocp.service` depends on the disk partition to be mounted in `/var/mnt` by the `var-mnt.mount` unit. The `precache-ocp.service` service calls a script called `extract-ocp.sh`.
 
-<div class="important">
-
-To extract all the images before the OpenShift Container Platform installation, you must execute `precache-ocp.service` before executing the `machine-config-daemon-pull.service` and `nodeip-configuration.service` services.
-
-</div>
+> [!IMPORTANT]
+> To extract all the images before the OpenShift Container Platform installation, you must execute `precache-ocp.service` before executing the `machine-config-daemon-pull.service` and `nodeip-configuration.service` services.
 
 `extract-ocp.sh`
 The `extract-ocp.sh` script extracts and loads the required images from the disk partition to the local container storage.
@@ -949,11 +1062,8 @@ When you commit the `ClusterInstance` and optional `PolicyGenerator` or `PolicyG
 
 When you download images by using a local or disconnected registry, you might see the `The rendered catalog is invalid` error. This means that you are missing certificates of the new registry you want to pull content from.
 
-<div class="note">
-
-The factory-precaching-cli tool image is built on a UBI RHEL image. Certificate paths and locations are the same on RHCOS.
-
-</div>
+> [!NOTE]
+> The factory-precaching-cli tool image is built on a UBI RHEL image. Certificate paths and locations are the same on RHCOS.
 
 The following example shows the error output:
 
@@ -975,6 +1085,14 @@ Run "oc-mirror list operators --catalog CATALOG-NAME --package PACKAGE-NAME" for
 error: error rendering new refs: render reference "eko4.cloud.lab.eng.bos.redhat.com:8443/redhat/redhat-operator-index:v4.11": error resolving name : failed to do request: Head "https://eko4.cloud.lab.eng.bos.redhat.com:8443/v2/redhat/redhat-operator-index/manifests/v4.11": x509: certificate signed by unknown authority
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Copy the registry certificate into your server:
 
     ``` terminal
@@ -995,3 +1113,5 @@ error: error rendering new refs: render reference "eko4.cloud.lab.eng.bos.redhat
        --mce-version 2.0.4 -f /mnt \--img quay.io/custom/repository
        --du-profile -s --skip-imageset
     ```
+
+</div>

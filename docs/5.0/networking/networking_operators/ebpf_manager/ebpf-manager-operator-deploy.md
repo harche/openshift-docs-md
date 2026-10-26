@@ -8,13 +8,10 @@ First, it creates basic Kubernetes objects like `Namespace`, `ServiceAccount`, a
 
 Second, it creates a daemon set which runs a user space program that reads the eBPF maps that the eBPF program is populating. This eBPF map is volume mounted using a Container Storage Interface (CSI) driver. By volume mounting the eBPF map in the container in lieu of accessing it on the host, the application pod can access the eBPF maps without being privileged. For more information on how the CSI is configured, see See [Deploying an eBPF enabled application On Kubernetes](https://bpfman.io/main/getting-started/example-bpf-k8s/#deploying-an-ebpf-enabled-application-on-kubernetes).
 
-<div class="important">
-
-eBPF Manager Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> eBPF Manager Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Deploy a containerized eBPF program
 
@@ -22,11 +19,29 @@ To run custom networking or security logic on your cluster nodes, you can deploy
 
 As a cluster administrator, you can deploy an eBPF program to nodes on your cluster. In this procedure, a sample containerized eBPF program is installed in the `go-xdp-counter` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an account with administrator privileges.
 
 - You have installed the eBPF Manager Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To download the manifest, enter the following command:
 
@@ -40,9 +55,11 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
     $ oc create -f go-xdp-counter-install-selinux.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -55,15 +72,19 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
     selinuxprofile.security-profiles-operator.x-k8s.io/bpfman-secure created
     ```
 
+    </div>
+
 3.  To confirm that the eBPF sample application deployed successfully, enter the following command:
 
     ``` terminal
     $ oc get all -o wide -n go-xdp-counter
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -77,15 +98,19 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
     daemonset.apps/go-xdp-counter-ds   3         3         3       3            3           <none>          44s   go-xdp-counter   quay.io/bpfman-userspace/go-xdp-counter:v0.5.0   name=go-xdp-counter
     ```
 
+    </div>
+
 4.  To confirm that the example XDP program is running, enter the following command:
 
     ``` terminal
     $ oc get xdpprogram go-xdp-counter-example
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -93,6 +118,8 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
     NAME                     BPFFUNCTIONNAME   NODESELECTOR   STATUS
     go-xdp-counter-example   xdp_stats         {}             ReconcileSuccess
     ```
+
+    </div>
 
 5.  To confirm that the XDP program is collecting data, enter the following command:
 
@@ -102,9 +129,11 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
 
     Replace `<pod_name>` with the name of an XDP program pod, such as `go-xdp-counter-ds-4m9cw`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -113,3 +142,7 @@ As a cluster administrator, you can deploy an eBPF program to nodes on your clus
     2024/08/13 15:20:06 93581579 bytes received
     ...
     ```
+
+    </div>
+
+</div>

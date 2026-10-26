@@ -42,6 +42,14 @@ You create an init container by creating a pod spec that contains an `initContai
 
 The following example outlines a simple pod which has two init containers. The first init continer waits for the `myservice` service to complete. After that, the second waits for `mydb` service to complete. After both init containers complete, the pod begins.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the pod for the Init Container:
 
     1.  Create a YAML file similar to the following:
@@ -95,9 +103,11 @@ The following example outlines a simple pod which has two init containers. The f
         $ oc get pods
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -105,6 +115,8 @@ The following example outlines a simple pod which has two init containers. The f
         NAME                          READY     STATUS              RESTARTS   AGE
         myapp-pod                     0/1       Init:0/2            0          5s
         ```
+
+        </div>
 
         The pod status, `Init:0/2`, indicates it is waiting for the two services.
 
@@ -136,9 +148,11 @@ The following example outlines a simple pod which has two init containers. The f
         $ oc get pods
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -146,6 +160,8 @@ The following example outlines a simple pod which has two init containers. The f
         NAME                          READY     STATUS              RESTARTS   AGE
         myapp-pod                     0/1       Init:1/2            0          5s
         ```
+
+        </div>
 
         The pod status, `Init:1/2`, indicates it is waiting for one service, in this case the `mydb` service.
 
@@ -177,9 +193,11 @@ The following example outlines a simple pod which has two init containers. The f
         $ oc get pods
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -188,7 +206,11 @@ The following example outlines a simple pod which has two init containers. The f
         myapp-pod                     1/1       Running             0          2m
         ```
 
+        </div>
+
         The pod status, `Running`, indicates that it is no longer waiting for the services and is running.
+
+</div>
 
 # Additional resources
 

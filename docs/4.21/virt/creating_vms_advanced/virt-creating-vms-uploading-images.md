@@ -2,19 +2,34 @@ You can create virtual machines (VMs) by uploading operating system images from 
 
 You can create a Windows VM by uploading a Windows image to a PVC. Then you clone the PVC when you create the VM.
 
-<div class="important">
-
-You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
-
-You must also install VirtIO drivers on Windows VMs.
-
-</div>
+> [!IMPORTANT]
+> You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
+>
+> You must also install VirtIO drivers on Windows VMs.
 
 # Creating a VM from an uploaded image by using the web console
 
 You can create a virtual machine (VM) from an uploaded operating system image by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have an `IMG`, `ISO`, or `QCOW2` image file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -30,17 +45,37 @@ You can create a virtual machine (VM) from an uploaded operating system image by
 
 7.  Click **Create VirtualMachine**.
 
+</div>
+
 ## Generalizing a VM image
 
 You can generalize a Red Hat Enterprise Linux (RHEL) image to remove all system-specific configuration data before you use the image to create a golden image, a preconfigured snapshot of a virtual machine (VM). You can use a golden image to deploy new VMs.
 
 You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-sysprep` tools.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a RHEL virtual machine (VM) to use as a base VM.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the `virtctl` tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop the RHEL VM if it is running, by entering the following command:
 
@@ -75,13 +110,10 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
     <my_vm_volume> Bound  …
     ```
 
-    <div class="note">
-
-    If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a golden image.
-
-    If you are creating a golden image by cloning a PVC, continue with the next steps, using the cloned PVC.
-
-    </div>
+    > [!NOTE]
+    > If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a golden image.
+    >
+    > If you are creating a golden image by cloning a PVC, continue with the next steps, using the cloned PVC.
 
 5.  Deploy a new interactive container with `libguestfs-tools` and attach the PVC to it by running the following command:
 
@@ -119,21 +151,45 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 
     8.  Click **Save**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 The new volume appears in the **Select volume to boot from** list. This is your new golden image. You can use this volume to create new VMs.
 
+</div>
+
 # Creating a Windows VM
 
 You can create a Windows virtual machine (VM) by uploading a Windows image to a persistent volume claim (PVC) and then cloning the PVC when you create a VM by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created a Windows installation DVD or USB with the Windows Media Creation Tool. See [Create Windows 10 installation media](https://www.microsoft.com/en-us/software-download/windows10) in the Microsoft documentation.
 
 - You created an `autounattend.xml` answer file. See [Answer files (unattend.xml)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs) in the Microsoft documentation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Upload the Windows image as a new PVC:
 
@@ -177,13 +233,33 @@ You can create a Windows virtual machine (VM) by uploading a Windows image to a 
 
     The VM boots from the `sysprep` disk containing the `autounattend.xml` answer file.
 
+</div>
+
 ## Generalizing a Windows VM image
 
 You can generalize a Windows operating system image to remove all system-specific configuration data before you use the image to create a new virtual machine (VM).
 
 Before generalizing the VM, you must ensure the `sysprep` tool cannot detect an answer file after the unattended Windows installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A running Windows VM with the QEMU guest agent installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines**.
 
@@ -205,21 +281,45 @@ Before generalizing the VM, you must ensure the `sysprep` tool cannot detect an 
 
 8.  After the `sysprep` tool completes, the Windows VM shuts down. The disk image of the VM is now available to use as an installation image for Windows VMs.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 You can now specialize the VM.
 
+</div>
+
 ## Specializing a Windows VM image
 
 Specializing a Windows virtual machine (VM) configures the computer-specific information from a generalized Windows image onto the VM.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a generalized Windows disk image.
 
 - You must create an `unattend.xml` answer file. See the [Microsoft documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) for details.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **Catalog**.
 
@@ -237,17 +337,31 @@ Specializing a Windows virtual machine (VM) configures the computer-specific inf
 
 8.  Click **Create VirtualMachine**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 During the initial boot, Windows uses the `unattend.xml` answer file to specialize the VM. The VM is now ready to use.
 
+</div>
+
 # Uploading a virtual machine image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have an `ISO`, `IMG`, or `QCOW2` operating system image file.
 
@@ -258,6 +372,16 @@ You can upload an operating system image by using the `virtctl` command-line too
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Upload the image by running the `virtctl image-upload` command:
 
@@ -278,6 +402,10 @@ You can upload an operating system image by using the `virtctl` command-line too
 
     <div class="note">
 
+    <div class="title">
+
+    </div>
+
     - If you do not want to create a new data volume, omit the `--size` parameter and include the `--no-create` flag.
 
     - When uploading a disk image to a PVC, the PVC size must be larger than the size of the uncompressed virtual disk.
@@ -291,6 +419,8 @@ You can upload an operating system image by using the `virtctl` command-line too
     ``` terminal
     $ oc get dvs
     ```
+
+</div>
 
 # Additional resources
 

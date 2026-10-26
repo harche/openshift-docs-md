@@ -12,6 +12,14 @@ When you encounter a problem, the first step is to find the specific area where 
 
 Get information about your cluster so that you can more accurately find potential problems.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Switch into a project by running the following command:
 
     ``` terminal
@@ -71,13 +79,33 @@ Get information about your cluster so that you can more accurately find potentia
 
     For more information, see "oc get" and "Reviewing pod status".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [oc get](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-get)
 
 - [Reviewing pod status](../../../support/troubleshooting/investigating-pod-issues.xml#reviewing-pod-status_investigating-pod-issues)
 
+</div>
+
 # Checking pod logs
 
 Get logs from the pod so that you can review the logs for issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the pods by running the following command:
 
@@ -101,15 +129,35 @@ Get logs from the pod so that you can review the logs for issues.
 
     For more information, see "oc logs", "Logging", and "Inspecting pod and container logs".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [oc logs](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-logs)
 
 - [Logging](../../../security/container_security/security-monitoring.xml#security-monitoring-cluster-logging_security-monitoring)
 
 - [Inspecting pod and container logs](../../../support/troubleshooting/investigating-pod-issues.xml#inspecting-pod-and-container-logs_investigating-pod-issues)
 
+</div>
+
 # Describing a pod
 
 To troubleshoot pod issues and view detailed information about a pod in OpenShift Container Platform, you can describe a pod using the `oc describe pod` command. The **Events** section in the output provides detailed information about the pod and the containers inside of it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Describe a pod by running the following command:
 
@@ -117,9 +165,11 @@ To troubleshoot pod issues and view detailed information about a pod in OpenShif
   $ oc describe pod -n <namespace> busybox-1
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -142,13 +192,33 @@ To troubleshoot pod issues and view detailed information about a pod in OpenShif
     Normal  Started  41m (x170 over 7d1h)  kubelet  Started container busybox
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [oc describe](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-describe)
+
+</div>
 
 # Reviewing events
 
 You can review the events in a given namespace to find potential issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check for events in your namespace by running the following command:
 
@@ -187,15 +257,32 @@ You can review the events in a given namespace to find potential issues.
 
     For more information, see "Watching cluster events".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Watching cluster events](../../../security/container_security/security-monitoring.xml#security-monitoring-events_security-monitoring)
+
+</div>
 
 # Connecting to a pod
 
 You can directly connect to a currently running pod with the `oc rsh` command, which provides you with a shell on that pod.
 
-<div class="warning">
+> [!WARNING]
+> In pods that run a low-latency application, latency issues can occur when you run the `oc rsh` command. Use the `oc rsh` command only if you cannot connect to the node by using the `oc debug` command.
 
-In pods that run a low-latency application, latency issues can occur when you run the `oc rsh` command. Use the `oc rsh` command only if you cannot connect to the node by using the `oc debug` command.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -207,17 +294,35 @@ In pods that run a low-latency application, latency issues can occur when you ru
 
   For more information, see "oc rsh" and "Accessing running pods".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [oc rsh](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-rsh)
 
 - [Accessing running pods](../../../support/troubleshooting/investigating-pod-issues.xml#accessing-running-pods_investigating-pod-issues)
+
+</div>
 
 # Debugging a pod
 
 In certain cases, you do not want to directly interact with your pod that is in production.
 
 To avoid interfering with running traffic, you can use a secondary pod that is a copy of your original pod. The secondary pod uses the same components as that of the original pod but does not have running traffic.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the pods by running the following command:
 
@@ -248,17 +353,34 @@ To avoid interfering with running traffic, you can use a secondary pod that is a
 
     For more information, see "oc debug" and "Starting debug pods with root access".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [oc debug](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-debug)
 
 - [Starting debug pods with root access](../../../support/troubleshooting/investigating-pod-issues.xml#starting-debug-pods-with-root-access_investigating-pod-issues)
+
+</div>
 
 # Running a command on a pod
 
 If you want to run a command or set of commands on a pod without directly logging into it, you can use the `oc exec -it` command. You can interact with the pod quickly to get process or output information from the pod. A common use case is to run the `oc exec -it` command inside a script to run the same command on multiple pods in a replica set or deployment.
 
-<div class="warning">
+> [!WARNING]
+> In pods that run a low-latency application, the `oc exec` command can cause latency issues.
 
-In pods that run a low-latency application, the `oc exec` command can cause latency issues.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -270,8 +392,18 @@ In pods that run a low-latency application, the `oc exec` command can cause late
 
   For more information, see "oc exec" and "Executing remote commands in containers".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [oc exec](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-exec)
 
 - [Executing remote commands in containers](../../../nodes/containers/nodes-containers-remote-commands.xml#nodes-containers-remote-commands-about_nodes-containers-remote-commands)
+
+</div>

@@ -42,9 +42,25 @@ For the Bare Metal Operator (BMO) to manage `BareMetalHost` resources across all
 
 This configuration is important to avoid mixing non-OpenShift Container Platform workloads with other components in the same namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - If you are using user-provisioned installation and the Provisioning CR does not exist, you must create it manually. For instructions, see [Configuring a provisioning resource to scale user-provisioned clusters](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/installing_on_bare_metal/index#scaling-a-user-provisioned-cluster-with-the-bare-metal-operator). For installer-provisioned installations, the installation program creates the Provisioning custom resource (CR) automatically.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Patch the provisioning configuration to enable watching all namespaces by running the following command:
 
@@ -55,11 +71,31 @@ This configuration is important to avoid mixing non-OpenShift Container Platform
 
   The BMO applies this change automatically.
 
+</div>
+
 # Setting up a dedicated namespace
 
 To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for OpenShift workloads and the OpenShift Container Platform infrastructure, set up a dedicated namespace. Repeat this procedure for every project where you intend to use Red Hat Bare-Metal-as-a-Service for OpenShift.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have [configured an identify provider](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/authentication_and_authorization/index#configuring-identity-providers).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure a `bmadmin` user in the identity provider and create a secret in OpenShift:
 
@@ -109,13 +145,13 @@ To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for 
         <col style="width: 50%" />
         </colgroup>
         <thead>
-        <tr class="header">
+        <tr>
         <th style="text-align: left;">Type</th>
         <th style="text-align: left;">Example</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="odd">
+        <tr>
         <td style="text-align: left;"><p>htpasswd</p></td>
         <td style="text-align: left;"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
         <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my_bmaas_provider</span></span>
@@ -126,7 +162,7 @@ To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for 
         <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> &lt;secret&gt;</span></span>
         <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div></td>
         </tr>
-        <tr class="even">
+        <tr>
         <td style="text-align: left;"><p>LDAP</p></td>
         <td style="text-align: left;"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
         <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my_bmaas_provider</span></span>
@@ -144,7 +180,7 @@ To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for 
         <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> uid</span></span>
         <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div></td>
         </tr>
-        <tr class="odd">
+        <tr>
         <td style="text-align: left;"><p>GitHub</p></td>
         <td style="text-align: left;"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
         <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my_bmaas_provider</span></span>
@@ -167,8 +203,6 @@ To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for 
         </tr>
         </tbody>
         </table>
-
-        Identity provider configuration examples
 
         For more information about identify providers, see [Authentication and authorization](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/authentication_and_authorization/index).
 
@@ -225,9 +259,19 @@ To prevent accidental interference between Red Hat Bare-Metal-as-a-Service for 
     `<api_server_url>`
     The URL to the Kubernetes API.
 
+</div>
+
 # Creating a BMC secret
 
 To deploy a bare-metal host, you must create a secret to access the baseboard management controller (BMC). This means you can remotely provision or manage the physical hardware.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a BMC secret file by running the following command:
 
@@ -263,11 +307,31 @@ To deploy a bare-metal host, you must create a secret to access the baseboard ma
     $ oc apply -f bmaas-<name>-bmc-secret.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About BMC addressing](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#bmc-addressing_ipi-install-installation-workflow)
+
+</div>
 
 # Creating a bare-metal host resource
 
 To deploy a bare-metal host, you must create a `BareMetalHost` resource.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `BareMetalHost` custom resource (CR) file by running the following command:
 
@@ -306,6 +370,16 @@ To deploy a bare-metal host, you must create a `BareMetalHost` resource.
     $ oc apply -f bmaas-<name>-bmh.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the `BareMetalHost` state by running the following command:
 
   ``` terminal
@@ -314,9 +388,19 @@ To deploy a bare-metal host, you must create a `BareMetalHost` resource.
 
   The state progresses from **registering**, to **inspecting**, and finally to **available**.
 
+</div>
+
 # Configuring users for Red Hat Bare-Metal-as-a-Service for OpenShift hosts
 
 Configure bare-metal host users and add them to a Kubernetes secret. Then, create and apply the secret to customize the host. With configured users you can access or manage the bare-metal host after it is provisioned.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `<hostname>-user-data.yaml`, where `<hostname>` is the name of the bare-metal host, with the following content:
 
@@ -353,9 +437,11 @@ Configure bare-metal host users and add them to a Kubernetes secret. Then, creat
     `users.lock_passwd`
     Whether the user password is locked. If `true`, the user cannot log in by using the password, but can still use SSH.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example user**
+    <div class="title">
+
+    Example user
 
     </div>
 
@@ -369,6 +455,8 @@ Configure bare-metal host users and add them to a Kubernetes secret. Then, creat
         groups: [adm, sudo]
         lock_passwd: true
     ```
+
+    </div>
 
 2.  Create a secret from the `<hostname>-user-data.yaml` file by running the following command:
 
@@ -390,11 +478,21 @@ Configure bare-metal host users and add them to a Kubernetes secret. Then, creat
     `<hostname>`
     The name of the bare-metal host.
 
+</div>
+
 # Configuring the networkData parameter in the BareMetalHost resource
 
 The `networkData` field in the `BareMetalHost` custom resource (CR) allows you to control the network configuration of the bare-metal host at creation time.
 
 For most operating systems, this is achieved using a configuration file encapsulated in a Kubernetes secret. Then, the `cloud-init` service uses it to customize services.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `network-data.yaml` with the following content:
 
@@ -438,11 +536,21 @@ For most operating systems, this is achieved using a configuration file encapsul
       --type merge -p '{"spec":{"networkData":{"name":"<hostname>-network-data"}}}'
     ```
 
+</div>
+
 # Deploying an image to the bare-metal host
 
 To deploy the image to the host, update the `image` field in the `spec` section of the `BareMetalHost` resource. Once you update the `image` field, provisioning begins immediately.
 
 Deploying an image transforms bare hardware into a functional system ready to run your workloads, in an automated and repeatable way.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the `image` field in the `BareMetalHost` CR by running the following command:
 
@@ -459,3 +567,5 @@ Deploying an image transforms bare hardware into a functional system ready to ru
 
   `<checksum_url>`
   The URL of the checksum file for the image.
+
+</div>

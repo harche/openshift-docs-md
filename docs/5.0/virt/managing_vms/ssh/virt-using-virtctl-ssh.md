@@ -1,30 +1,21 @@
 You can add a public SSH key to a virtual machine (VM) and connect to the VM by running the `virtctl ssh` command, or add the `virtctl port-foward` command to your `.ssh/config` file and connect to the VM by using OpenSSH.
 
-<div class="important">
-
-The `virtctl ssh` command method is not recommended for high traffic loads because it places a burden on the API server.
-
-</div>
+> [!IMPORTANT]
+> The `virtctl ssh` command method is not recommended for high traffic loads because it places a burden on the API server.
 
 You can add public SSH keys to Red Hat Enterprise Linux (RHEL) 9 VMs at runtime or at first boot to VMs with guest operating systems that can be configured by using a cloud-init data source.
 
-<div class="tip">
-
-You can copy the `virtctl ssh` command in the web console by selecting **Copy SSH command** from the options ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) menu beside a VM on the **VirtualMachines** page.
-
-Alternatively, right-click the VM in the tree view and select **Copy SSH command** from the menu to copy the `virtctl ssh` command.
-
-</div>
+> [!TIP]
+> You can copy the `virtctl ssh` command in the web console by selecting **Copy SSH command** from the options ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) menu beside a VM on the **VirtualMachines** page.
+>
+> Alternatively, right-click the VM in the tree view and select **Copy SSH command** from the menu to copy the `virtctl ssh` command.
 
 # About static and dynamic SSH key management
 
-You can add public SSH keys to virtual machines (VMs) statically at first boot or dynamically at runtime.
+You can add public SSH keys to virtual machines (VMs) statically at first boot or dynamically at runtime. A dynamically managed key can also be updated or revoked while the VM runs.
 
-<div class="note">
-
-Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
-
-</div>
+> [!NOTE]
+> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
 
 ## Static SSH key management
 
@@ -66,23 +57,38 @@ Use cases:
 
 # Manage static keys
 
-You can add a statically managed public SSH key when you create a virtual machine (VM) by using the OpenShift Container Platform web console or the command line. The key is added as a cloud-init data source when the VM boots for the first time.
+You can add a statically managed public SSH key when you create a virtual machine (VM) by using the OpenShift Container Platform web console or the command line. Save the key to a project to add it automatically to every VM that you create there.
 
 You can also add a public SSH key to a project when you create a VM by using the web console. The key is saved as a secret and is added automatically to all VMs that you create.
 
-<div class="note">
+> [!NOTE]
+> If you add a secret to a project and then delete the VM, the secret is retained because it is a namespace resource. You must delete the secret manually.
 
-If you add a secret to a project and then delete the VM, the secret is retained because it is a namespace resource. You must delete the secret manually.
+## Add a static SSH key by using the web console
 
-</div>
-
-## Adding a static SSH key when creating a VM by using the web console
-
-You can add a statically managed public SSH key when you create a virtual machine (VM) by using the web console creation wizard. The key is added to the VM as a cloud-init data source at first boot. This method does not affect cloud-init user data.
+You can add a statically managed public SSH key to a virtual machine (VM) in the creation wizard of the OpenShift Container Platform web console. The key is added at first boot and does not affect the cloud-init user data.
 
 You can also save the key to the project as a secret so that it is added automatically to the VMs that you create in the project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You generated an SSH key pair by using the `ssh-keygen` command.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, start creating a VM by using the creation wizard until you reach the **Customization** page.
 
@@ -106,15 +112,35 @@ You can also save the key to the project as a secret so that it is added automat
 
 6.  Complete the remaining wizard steps to create the VM.
 
-## Adding a key when creating a VM by using the CLI
+</div>
 
-You can add a statically managed public SSH key when you create a virtual machine (VM) by using the command line. The key is added to the VM at first boot.
+## Add a static SSH key by using the CLI
+
+You can add a statically managed public SSH key when you create a virtual machine (VM) by using the command line. The key is added at first boot and does not affect the cloud-init user data.
 
 The key is added to the VM as a cloud-init data source. This method separates the access credentials from the application data in the cloud-init user data. This method does not affect cloud-init user data.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You generated an SSH key pair by running the `ssh-keygen` command.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file for a `VirtualMachine` object and a `Secret` object.
 
@@ -189,6 +215,16 @@ The key is added to the VM as a cloud-init data source. This method separates th
     $ virtctl start vm example-vm -n example-namespace
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Get the VM configuration:
 
   ``` terminal
@@ -216,25 +252,42 @@ The key is added to the VM as a cloud-init data source. This method separates th
   # ...
   ```
 
+</div>
+
 # Manage dynamic keys
 
-You can enable dynamic key injection for a virtual machine (VM) by using the OpenShift Container Platform web console or the command line. Then, you can update the key at runtime.
+You can enable dynamic SSH key injection for a virtual machine (VM) that runs Red Hat Enterprise Linux (RHEL) 9, and then update the public SSH key while the VM is running.
 
-<div class="note">
-
-Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
-
-</div>
+> [!NOTE]
+> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
 
 If you disable dynamic key injection, the VM inherits the key management method of the image from which it was created.
 
-## Enabling dynamic SSH key injection by using the web console
+## Enable dynamic SSH key injection by using the web console
 
-You can enable dynamic key injection for a virtual machine (VM) by using the OpenShift Container Platform web console. Then, you can update the public SSH key at runtime.
+You can enable dynamic SSH key injection in the OpenShift Container Platform web console for a virtual machine (VM) that runs Red Hat Enterprise Linux (RHEL) 9, and then update the public SSH key while the VM is running.
 
 The key is added to the VM by the QEMU guest agent, which is installed with Red Hat Enterprise Linux (RHEL) 9 and later.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The guest operating system is RHEL 9 or later.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -258,21 +311,38 @@ The key is added to the VM by the QEMU guest agent, which is installed with Red�
 
 6.  Click **Save**.
 
-## Enabling dynamic key injection by using the CLI
-
-You can enable dynamic key injection for a virtual machine (VM) by using the command line. Then, you can update the public SSH key at runtime.
-
-<div class="note">
-
-Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
-
 </div>
 
+## Enable dynamic SSH key injection by using the CLI
+
+You can enable dynamic SSH key injection from the command line for a virtual machine (VM) that runs Red Hat Enterprise Linux (RHEL) 9, and then update the public SSH key while the VM is running.
+
+> [!NOTE]
+> Only Red Hat Enterprise Linux (RHEL) 9 supports dynamic key injection.
+
 The key is added to the VM by the QEMU guest agent, which is installed automatically with RHEL 9.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You generated an SSH key pair by running the `ssh-keygen` command.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a manifest file for a `VirtualMachine` object and a `Secret` object.
 
@@ -349,6 +419,16 @@ The key is added to the VM by the QEMU guest agent, which is installed automatic
     $ virtctl start vm example-vm -n example-namespace
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Get the VM configuration by running the following command:
 
   ``` terminal
@@ -377,9 +457,19 @@ The key is added to the VM by the QEMU guest agent, which is installed automatic
   # ...
   ```
 
-## Using the virtctl ssh command
+</div>
 
-You can use the `virtctl ssh` command to access a running virtual machine instance (VMI). The command accepts VM or VMI targets.
+## Connect to a VM by using the virtctl ssh command
+
+You can open an SSH session to a running virtual machine (VM) by using the `virtctl ssh` command. The command accepts a VM or a virtual machine instance (VMI) as the target.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the `virtctl` command-line tool.
 
@@ -388,6 +478,16 @@ You can use the `virtctl ssh` command to access a running virtual machine instan
 - You have an SSH client installed.
 
 - The environment where you installed the `virtctl` tool has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the `virtctl ssh` command:
 
@@ -403,17 +503,37 @@ You can use the `virtctl ssh` command to access a running virtual machine instan
     $ virtctl -n my-namespace ssh cloud-user@vm/example-vm -i my-key
     ```
 
-# Using the virtctl port-forward command
+</div>
 
-You can use your local OpenSSH client and the `virtctl port-forward` command to connect to a running virtual machine (VM). You can use this method with Ansible to automate the configuration of VMs.
+# Connect to a VM by using the virtctl port-forward command
+
+You can use your local OpenSSH client and the `virtctl port-forward` command to connect to a running virtual machine (VM). Use this method with Ansible to automate the configuration of VMs.
 
 This method is recommended for low-traffic applications because port-forwarding traffic is sent over the control plane. This method is not recommended for high-traffic applications such as Rsync or Remote Desktop Protocol because it places a heavy burden on the API server.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the `virtctl` client.
 
 - The virtual machine you want to access is running.
 
 - The environment where you installed the `virtctl` tool has the cluster permissions required to access the VM. For example, you ran `oc login` or you set the `KUBECONFIG` environment variable.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the following text to the `~/.ssh/config` file on your client machine:
 
@@ -427,6 +547,8 @@ This method is recommended for low-traffic applications because port-forwarding 
     ``` terminal
     $ ssh <user>@vm/<vm_name>.<namespace>
     ```
+
+</div>
 
 # Additional resources
 

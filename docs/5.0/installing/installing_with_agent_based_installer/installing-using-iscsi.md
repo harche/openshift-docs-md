@@ -16,11 +16,19 @@ The following configurations are required:
 
 - If the host on which you are booting the agent ISO image also has an installed disk, it might be necessary to specify the iSCSI disk name in the `rootDeviceHints` parameter to ensure that it is chosen as the boot disk for the final Red Hat Enterprise Linux CoreOS (RHCOS) image. You can also use a diskless environment for iSCSI booting, in which case you do not need to set the `rootDeviceHints` parameter.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [DHCP](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-networking-DHCP_preparing-to-install-with-agent-based-installer)
 
 - [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer)
+
+</div>
 
 # Prerequisites for installing a cluster with the Agent-based Installer
 
@@ -34,7 +42,13 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - You configured your firewall to allow TCP traffic on port `8090` from all hosts to the rendezvous host so that hosts can reach the Assisted Service API during discovery and bootstrap. For more information, see "Port requirements for the rendezvous host".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
@@ -44,9 +58,19 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - [Port requirements for the rendezvous host](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-networking-ports_preparing-to-install-with-agent-based-installer)
 
+</div>
+
 # Download the Agent-based Installer
 
 Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
@@ -62,13 +86,20 @@ Begin the installation process by downloading the Agent-based Installer and the 
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
+</div>
+
 # Create the preferred configuration inputs
 
 Create the preferred configuration inputs used to create the agent image.
 
-<div class="note">
+> [!NOTE]
+> Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
 
-Configuring the `install-config.yaml` and `agent-config.yaml` files is the preferred method for using the Agent-based Installer. Using GitOps ZTP manifests is optional.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -147,9 +178,11 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     `platform`
     Specifies your platform. If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways: IPv4, IPv6, or IPv4 and IPv6 in parallel (dual-stack).
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of dual-stack networking**
+    <div class="title">
+
+    Example of dual-stack networking
 
     </div>
 
@@ -177,11 +210,10 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
         - 2001:DB8::5
     ```
 
-    <div class="note">
-
-    For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
-
     </div>
+
+    > [!NOTE]
+    > For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
 
     `pullSecret`
     Specifies your pull secret.
@@ -196,6 +228,10 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     Specifies the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
 
@@ -261,17 +297,24 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     `hosts.rootDeviceHints`
     Specifies a configuration that enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
 
-    <div class="note">
-
-    This parameter is mandatory for FCP multipath configurations on IBM Z.
-
-    </div>
+    > [!NOTE]
+    > This parameter is mandatory for FCP multipath configurations on IBM Z.
 
     `hosts.networkConfig`
     Specifies the network interface configuration of a host in NMState format. This configuration is optional.
 
     `minimalISO`
     Specifies whether to generate an ISO image without the rootfs image file, instead providing details about where to pull the rootfs file from. You must set this parameter to `true` to enable iSCSI booting.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow)
 
@@ -287,9 +330,19 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
 
 - [Verifying the supported architecture for an Agent-based installation](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#agent-install-verifying-architectures_installing-with-agent-based-installer)
 
+</div>
+
 # Creating the installation files
 
 Generate the ISO image and create an iPXE script to upload to your iSCSI target.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the agent image by running the following command:
 
@@ -318,9 +371,11 @@ Generate the ISO image and create an iPXE script to upload to your iSCSI target.
     `<iscsi_target_base>`
     Specifies the iSCSI target name. This name can be the same as the initiator name.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Command**
+    <div class="title">
+
+    Example Command
 
     </div>
 
@@ -331,3 +386,7 @@ Generate the ISO image and create an iPXE script to upload to your iSCSI target.
     sanboot --keep iscsi:192.168.45.1::::iqn.2023-01.com.example:\${hostname}
     EOF
     ```
+
+    </div>
+
+</div>

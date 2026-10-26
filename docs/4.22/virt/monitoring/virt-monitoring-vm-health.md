@@ -2,7 +2,7 @@ Define probes and watchdogs in the `VirtualMachine` resource to configure virtua
 
 You can configure VM health checks by defining readiness and liveness probes in the `VirtualMachine` resource.
 
-# About readiness and liveness probes
+# Readiness and liveness probes for VM health
 
 Use readiness and liveness probes to detect and handle unhealthy virtual machines (VMs). You can include one or more probes in the specification of the VM to ensure that traffic does not reach a VM that is not ready for it and that a new VM is created when a VM becomes unresponsive.
 
@@ -21,11 +21,29 @@ The probe attempts to open a socket to the VM. The VM is only considered healthy
 Guest agent ping
 The probe uses the `guest-ping` command to determine if the QEMU guest agent is running on the virtual machine.
 
-## Defining an HTTP readiness probe
+## Define an HTTP readiness probe
 
 You can define an HTTP readiness probe by setting the `spec.readinessProbe.httpGet` field of the virtual machine (VM) configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Include details of the readiness probe in the VM configuration file.
 
@@ -79,11 +97,31 @@ You can define an HTTP readiness probe by setting the `spec.readinessProbe.httpG
     $ oc create -f <file_name>.yaml
     ```
 
-## Defining a TCP readiness probe
+</div>
+
+## Define a TCP readiness probe
 
 You can define a TCP readiness probe by setting the `spec.readinessProbe.tcpSocket` field of the virtual machine (VM) configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Include details of the TCP readiness probe in the VM configuration file.
 
@@ -125,11 +163,31 @@ You can define a TCP readiness probe by setting the `spec.readinessProbe.tcpSock
     $ oc create -f <file_name>.yaml
     ```
 
-## Defining an HTTP liveness probe
+</div>
+
+## Define an HTTP liveness probe
 
 Define an HTTP liveness probe by setting the `spec.livenessProbe.httpGet` field of the virtual machine (VM) configuration. You can define both HTTP and TCP tests for liveness probes in the same way as readiness probes. This procedure configures a sample liveness probe with an HTTP GET test.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Include details of the HTTP liveness probe in the VM configuration file.
 
@@ -177,7 +235,9 @@ Define an HTTP liveness probe by setting the `spec.livenessProbe.httpGet` field 
     $ oc create -f <file_name>.yaml
     ```
 
-# About watchdogs
+</div>
+
+# Watchdog devices and recovery actions
 
 Watchdog devices monitor guest operating system responsiveness and trigger recovery actions when a virtual machine becomes unresponsive.
 
@@ -189,21 +249,36 @@ The `reset` action reboots the VM in place without allowing the guest operating 
 
 The `shutdown` action initiates a graceful shutdown by stopping all services before powering down the VM.
 
-<div class="note">
-
-Watchdog functionality is not available for Windows VMs.
-
-</div>
+> [!NOTE]
+> Watchdog functionality is not available for Windows VMs.
 
 To implement watchdog functionality, you must configure the watchdog device for the VM and install the watchdog agent on the guest operating system.
 
-## Configuring a watchdog device for the virtual machine
+## Configure a watchdog device for a virtual machine
 
 You configure a watchdog device for the virtual machine (VM).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - For `x86` systems, the VM must use a kernel that works with the `i6300esb` watchdog device. If you use `s390x` architecture, the kernel must be enabled for `diag288`. Red Hat Enterprise Linux (RHEL) images support `i6300esb` and `diag288`.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `YAML` file with the following contents:
 
@@ -244,15 +319,20 @@ You configure a watchdog device for the virtual machine (VM).
     $ oc apply -f <file_name>.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Run the following command to verify that the VM is connected to the watchdog device:
 
-    <div class="important">
-
-    Verification steps are provided for testing watchdog functionality only and must not be run on production machines.
-
-    </div>
+    > [!IMPORTANT]
+    > Verification steps are provided for testing watchdog functionality only and must not be run on production machines.
 
     ``` terminal
     $ lspci | grep watchdog -i
@@ -272,9 +352,19 @@ You configure a watchdog device for the virtual machine (VM).
       # pkill -9 watchdog
       ```
 
-## Installing the watchdog agent on the guest
+</div>
+
+## Install the watchdog agent on the guest
 
 You can install the watchdog agent on the guest and start the `watchdog` service.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the virtual machine as root user.
 
@@ -308,13 +398,33 @@ You can install the watchdog agent on the guest and start the `watchdog` service
     # systemctl enable --now watchdog.service
     ```
 
-# Defining a guest agent ping probe
+</div>
+
+# Define a guest agent ping probe
 
 You can define a guest agent ping probe by setting the `spec.readinessProbe.guestAgentPing` field of the virtual machine (VM) configuration.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The QEMU guest agent must be installed and enabled on the virtual machine.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Include details of the guest agent ping probe in the VM configuration file. For example:
 
@@ -356,6 +466,8 @@ You can define a guest agent ping probe by setting the `spec.readinessProbe.gues
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
+
+</div>
 
 # Additional resources
 

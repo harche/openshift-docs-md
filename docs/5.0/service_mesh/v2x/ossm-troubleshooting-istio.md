@@ -6,11 +6,8 @@ In order to understand what version of Red Hat OpenShift Service Mesh you have 
 
 - **Operator** version - The most current Operator version is 2.6.11. The Operator version number only indicates the version of the currently installed Operator. Because the Red Hat OpenShift Service Mesh Operator supports multiple versions of the Service Mesh control plane, the version of the Operator does not determine the version of your deployed `ServiceMeshControlPlane` resources.
 
-  <div class="important">
-
-  Upgrading to the latest Operator version automatically applies patch updates, but does not automatically upgrade your Service Mesh control plane to the latest minor version.
-
-  </div>
+  > [!IMPORTANT]
+  > Upgrading to the latest Operator version automatically applies patch updates, but does not automatically upgrade your Service Mesh control plane to the latest minor version.
 
 - **ServiceMeshControlPlane** version - The `ServiceMeshControlPlane` version determines what version of Red Hat OpenShift Service Mesh you are using. The value of the `spec.version` field in the `ServiceMeshControlPlane` resource controls the architecture and configuration settings that are used to install and deploy Red Hat OpenShift Service Mesh. When you create the Service Mesh control plane you can set the version in one of two ways:
 
@@ -56,13 +53,17 @@ When you install the Red Hat OpenShift Service Mesh Operators, OpenShift automa
 
 - services
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**From the OpenShift Container Platform console**
+<div class="title">
+
+From the OpenShift Container Platform console
 
 </div>
 
 You can verify that the Operator pods are available and running by using the OpenShift Container Platform console.
+
+</div>
 
 1.  Navigate to **Workloads** → **Pods**.
 
@@ -80,7 +81,13 @@ You can verify that the Operator pods are available and running by using the Ope
 
 5.  Verify that the `elasticsearch-operator` pod exists and has a status of `running`.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+From the command line
+
+</div>
 
 1.  Verify the Operator pods are available and running in the `openshift-operators` namespace with the following command:
 
@@ -88,9 +95,11 @@ You can verify that the Operator pods are available and running by using the Ope
     $ oc get pods -n openshift-operators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -101,15 +110,19 @@ You can verify that the Operator pods are available and running by using the Ope
     kiali-operator-f9c8d84f4-7xh2v     1/1     Running   0          64s
     ```
 
+    </div>
+
 2.  Verify the Elasticsearch operator with the following command:
 
     ``` terminal
     $ oc get pods -n openshift-operators-redhat
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -117,6 +130,10 @@ You can verify that the Operator pods are available and running by using the Ope
     NAME                                      READY   STATUS    RESTARTS   AGE
     elasticsearch-operator-d4f59b968-796vq     1/1     Running   0          15s
     ```
+
+    </div>
+
+</div>
 
 ## Troubleshooting service mesh Operators
 
@@ -130,15 +147,20 @@ If you experience Operator issues:
 
 - Check for any errors in the Operator pod logs if the issue is related to installation of Operators.
 
-<div class="note">
-
-You can install Operators only through the OpenShift console, the software catalog is not accessible from the command line.
-
-</div>
+> [!NOTE]
+> You can install Operators only through the OpenShift console, the software catalog is not accessible from the command line.
 
 ### Viewing Operator pod logs
 
 You can view Operator logs by using the `oc logs` command. Red Hat may request logs to help resolve support cases.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To view Operator pod logs, enter the command:
 
@@ -151,6 +173,8 @@ You can view Operator logs by using the `oc logs` command. Red Hat may request l
   ``` terminal
   $ oc logs -n openshift-operators istio-operator-bb49787db-zgr87
   ```
+
+</div>
 
 # Troubleshooting the control plane
 
@@ -174,27 +198,25 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
 
 - Calls the Kiali Operator to create Kaili deployment based on configuration in either the SMCP or the Kiali custom resource.
 
-  <div class="note">
-
-  You view the Kiali components under the Kiali Operator, not the Service Mesh Operator.
-
-  </div>
+  > [!NOTE]
+  > You view the Kiali components under the Kiali Operator, not the Service Mesh Operator.
 
 - Calls the Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator to create Distributed Tracing Platform (Jaeger) components based on configuration in either the SMCP or the Jaeger custom resource.
 
-  <div class="note">
+  > [!NOTE]
+  > You view the Jaeger components under the Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator and the Elasticsearch components under the Red Hat Elasticsearch Operator, not the Service Mesh Operator.
 
-  You view the Jaeger components under the Red Hat OpenShift Distributed Tracing Platform (Jaeger) Operator and the Elasticsearch components under the Red Hat Elasticsearch Operator, not the Service Mesh Operator.
+  <div class="formalpara">
 
-  </div>
+  <div class="title">
 
-  <div class="formalpara-title">
-
-  **From the OpenShift Container Platform console**
+  From the OpenShift Container Platform console
 
   </div>
 
   You can verify the Service Mesh control plane installation in the OpenShift Container Platform web console.
+
+  </div>
 
   1.  Navigate to **Ecosystem** → **Installed Operators**.
 
@@ -246,15 +268,25 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
 
       4.  If the `Status` column any problems, check the `status:` output on the **YAML** tab for more information.
 
+<div>
+
+<div class="title">
+
+From the command line
+
+</div>
+
 1.  Run the following command to see if the Service Mesh control plane pods are available and running, where `istio-system` is the namespace where you installed the SMCP.
 
     ``` terminal
     $ oc get pods -n istio-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -269,6 +301,8 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     prometheus-5c579dfb-6qhjk              2/2     Running   0          115s
     ```
 
+    </div>
+
 2.  Check the status of the Service Mesh control plane deployment by using the following command. Replace `istio-system` with the namespace where you deployed the SMCP.
 
     ``` terminal
@@ -277,9 +311,11 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
 
     The installation has finished successfully when the STATUS column is `ComponentsReady`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -288,11 +324,15 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     basic   10/10   ComponentsReady   ["default"]   2.1.3     4m2s
     ```
 
+    </div>
+
     If you have modified and redeployed your Service Mesh control plane, the status should read `UpdateSuccessful`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -301,15 +341,19 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     basic-install   10/10     UpdateSuccessful   default     v1.1     3d16h
     ```
 
+    </div>
+
 3.  If the SMCP status indicates anything other than `ComponentsReady` check the `status:` output in the SCMP resource for more information.
 
     ``` terminal
     $ oc describe smcp <smcp-name> -n <controlplane-namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -317,15 +361,19 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     $ oc describe smcp basic -n istio-system
     ```
 
+    </div>
+
 4.  Check the status of the Jaeger deployment with the following command, where `istio-system` is the namespace where you deployed the SMCP.
 
     ``` terminal
     $ oc get jaeger -n istio-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -334,15 +382,19 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     jaeger   Running   1.30.0    allinone   memory    15m
     ```
 
+    </div>
+
 5.  Check the status of the Kiali deployment with the following command, where `istio-system` is the namespace where you deployed the SMCP.
 
     ``` terminal
     $ oc get kiali -n istio-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -350,6 +402,10 @@ When you create the Service Mesh control plane, the Service Mesh Operator uses t
     NAME    AGE
     kiali   15m
     ```
+
+    </div>
+
+</div>
 
 ### Accessing the Kiali console
 
@@ -360,6 +416,14 @@ To access the Kiali console you must have Red Hat OpenShift Service Mesh instal
 The installation process creates a route to access the Kiali console.
 
 If you know the URL for the Kiali console, you can access it directly. If you do not know the URL, use the following directions.
+
+<div>
+
+<div class="title">
+
+Procedure for administrators
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console with an administrator role.
 
@@ -377,7 +441,15 @@ If you know the URL for the Kiali console, you can access it directly. If you do
 
     If you are validating the console installation and namespaces have not yet been added to the mesh, there might not be any data to display other than `istio-system`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure for developers
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console with a developer role.
 
@@ -391,6 +463,8 @@ If you know the URL for the Kiali console, you can access it directly. If you do
 
 6.  Click **Log In With OpenShift**.
 
+</div>
+
 ### Accessing the Jaeger console
 
 To access the Jaeger console you must have Red Hat OpenShift Service Mesh installed, Red Hat OpenShift Distributed Tracing Platform (Jaeger) installed and configured.
@@ -399,9 +473,14 @@ The installation process creates a route to access the Jaeger console.
 
 If you know the URL for the Jaeger console, you can access it directly. If you do not know the URL, use the following directions.
 
-<div class="important">
+> [!IMPORTANT]
+> Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator have been deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
 
-Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distributed Tracing Platform (Jaeger) and OpenShift Elasticsearch Operator have been deprecated and will be removed in a future release. Red Hat will provide bug fixes and support for this feature during the current release lifecycle, but this feature will no longer receive enhancements and will be removed. As an alternative to Red Hat OpenShift Distributed Tracing Platform (Jaeger), you can use Red Hat OpenShift Distributed Tracing Platform instead.
+<div>
+
+<div class="title">
+
+Procedure from OpenShift console
 
 </div>
 
@@ -417,7 +496,15 @@ Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distribute
 
 5.  Click **Log In With OpenShift**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure from Kiali console
+
+</div>
 
 1.  Launch the Kiali console.
 
@@ -425,7 +512,15 @@ Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distribute
 
 3.  Click **Log In With OpenShift**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure from the CLI
+
+</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a user with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -446,6 +541,8 @@ Starting with Red Hat OpenShift Service Mesh 2.5, Red Hat OpenShift Distribute
 5.  If you have added services to the service mesh and have generated traces, you can use the filters and **Find Traces** button to search your trace data.
 
     If you are validating the console installation, there is no trace data to display.
+
+</div>
 
 ## Troubleshooting the Service Mesh control plane
 
@@ -485,6 +582,14 @@ Envoy access logs are useful in diagnosing traffic failures and flows, and help 
 
 To enable access logging for all istio-proxy containers, edit the `ServiceMeshControlPlane` (SMCP) object to add a file name for the logging output.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the OpenShift Container Platform CLI as a user with the cluster-admin role. Enter the following command. Then, enter your username and password when prompted.
 
     ``` terminal
@@ -518,6 +623,8 @@ To enable access logging for all istio-proxy containers, edit the `ServiceMeshCo
             name: /dev/stdout     #file name
     ```
 
+</div>
+
 For more information about troubleshooting pod issues, see [Investigating pod issues](../../support/troubleshooting/investigating-pod-issues.xml)
 
 # Get support
@@ -542,13 +649,41 @@ The Red Hat Knowledgebase helps you get the most from Red Hat products and tec
 
 It includes articles, product documentation, and videos that outline best practices for installing, configuring, and using Red Hat products. You can also search for solutions to known issues. Each solution has a root cause description and steps to fix the problem.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
+
+</div>
 
 ## Search the Red Hat Knowledgebase
 
 Search the Red Hat Knowledgebase to find solutions to known issues and resolve problems quickly without opening a support case.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a Red Hat Customer Portal account.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the [Red Hat Customer Portal](http://access.redhat.com).
 
@@ -568,13 +703,33 @@ Search the Red Hat Knowledgebase to find solutions to known issues and resolve 
 
 6.  Optional: Select the **Documentation** content type filter.
 
+</div>
+
 ## About collecting service mesh data
 
 You can use the `oc adm must-gather` CLI command to collect information about your cluster, including features and objects associated with Red Hat OpenShift Service Mesh.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift Container Platform CLI (`oc`) installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To collect Red Hat OpenShift Service Mesh data with `must-gather`, you must specify the Red Hat OpenShift Service Mesh image.
 
@@ -602,11 +757,21 @@ You can use the `oc adm must-gather` CLI command to collect information about yo
 
     - All Istio webhooks
 
+</div>
+
 For prompt support, supply diagnostic information for both OpenShift Container Platform and Red Hat OpenShift Service Mesh.
 
 ## Submitting a support case
 
 If you cannot resolve an OpenShift Container Platform issue by using the Red Hat Knowledgebase, submit a support case to get direct help from Red Hat Support.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -615,6 +780,16 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 - You have a Red Hat Customer Portal account.
 
 - You have a Red Hat Standard or Premium subscription.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 
@@ -675,3 +850,5 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 11. Input relevant case management details and click **Continue**.
 
 12. Preview the case details and click **Submit**.
+
+</div>

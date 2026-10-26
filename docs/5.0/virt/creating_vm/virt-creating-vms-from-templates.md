@@ -12,11 +12,8 @@ A template without a boot source displays the **Boot source required** label.
 Customize before starting the VM
 You can customize the disk source and VM parameters before you start the VM.
 
-<div class="note">
-
-If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
-
-</div>
+> [!NOTE]
+> If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
 
 Single-node OpenShift
 Due to differences in storage behavior, some templates are incompatible with single-node OpenShift. To ensure compatibility, do not set the `evictionStrategy` field for templates or VMs that use data volumes or storage profiles.
@@ -24,6 +21,14 @@ Due to differences in storage behavior, some templates are incompatible with sin
 # Creating a custom VM template in the web console
 
 You can create a virtual machine template by editing a YAML file example in the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -39,9 +44,19 @@ You can create a virtual machine template by editing a YAML file example in the 
 
 6.  Optional: Click **Download** to download and save the YAML file.
 
+</div>
+
 # Enabling dedicated resources for a virtual machine template
 
 You can enable dedicated resources for a virtual machine (VM) template in the OpenShift Container Platform web console. VMs that are created from this template will be scheduled with dedicated resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **Templates** in the side menu.
 
@@ -52,6 +67,8 @@ You can enable dedicated resources for a virtual machine (VM) template in the Op
 4.  Select **Schedule this workload with dedicated resources (guaranteed policy)**.
 
 5.  Click **Save**.
+
+</div>
 
 # Virtual machine template categories
 
@@ -100,9 +117,27 @@ Does not support categories. OpenShift Container Platform templates use the work
 
 You can edit the category of a `VirtualMachineTemplate` object by using the OpenShift Container Platform web console for either `v1alpha1` or `v1beta1` objects. Using the web console is the only way to assign a category to a `v1alpha1` `VirtualMachineTemplate` object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions on the template.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **Templates**.
 
@@ -110,27 +145,54 @@ You can edit the category of a `VirtualMachineTemplate` object by using the Open
 
 3.  On the template details page, click the **Actions** menu and select **Edit category**.
 
-    <div class="note">
-
-    You can also click the edit icon next to the **Category** field in the details grid.
-
-    </div>
+    > [!NOTE]
+    > You can also click the edit icon next to the **Category** field in the details grid.
 
 4.  Select a category from the list, or type a custom category name.
 
 5.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - On the template details page, verify that the **Category** field displays the updated category.
 
 - Navigate to **Virtualization** → **Templates** and verify that the **Category** column displays the updated category for the template.
+
+</div>
 
 ## Remove a category from a VM template
 
 You can remove the category from a `VirtualMachineTemplate` object by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions on the template.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **Templates**.
 
@@ -144,15 +206,45 @@ You can remove the category from a `VirtualMachineTemplate` object by using the 
 
 5.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - On the template details page, verify that the **Category** field displays **None**.
+
+</div>
 
 ## Filter VM templates by category
 
 You can filter virtual machine (VM) templates by category to quickly find templates that match a specific application type. You can filter by category from the **Templates** list page or the Create VM wizard catalog.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
 - One or more templates have categories assigned.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to one of the following locations:
 
@@ -164,15 +256,32 @@ You can filter virtual machine (VM) templates by category to quickly find templa
 
 3.  Select one or more categories to narrow the template list.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that only templates matching the selected categories are displayed.
+
+</div>
 
 ## Set a category when saving a VM as a template
 
 You can optionally set a category when saving a virtual machine (VM) as a `v1beta1` `VirtualMachineTemplate`. The category is stored as the `vm.kubevirt.io/category` label on the new template.
 
-<div class="note">
+> [!NOTE]
+> Setting a category during template creation is supported only for `v1beta1` `VirtualMachineTemplate` objects. For `v1alpha1` `VirtualMachineTemplate` objects, you must edit the category after the template is created.
 
-Setting a category during template creation is supported only for `v1beta1` `VirtualMachineTemplate` objects. For `v1alpha1` `VirtualMachineTemplate` objects, you must edit the category after the template is created.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -181,6 +290,16 @@ Setting a category during template creation is supported only for `v1beta1` `Vir
 - You have `edit` or `admin` permissions in the project.
 
 - You have a running or stopped VM.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **VirtualMachines**.
 
@@ -194,17 +313,29 @@ Setting a category during template creation is supported only for `v1beta1` `Vir
 
 6.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Navigate to **Virtualization** → **Templates** and verify that the new template is displayed with the assigned category in the **Category** column.
+
+</div>
 
 ## VM template category column
 
 The **Category** column on the **Virtualization** → **Templates** list page displays different information depending on the template type.
 
-| Template type                         | Category support               | Category column value                                                                                  |
-|---------------------------------------|--------------------------------|--------------------------------------------------------------------------------------------------------|
-| `VirtualMachineTemplate` (`v1beta1`)  | Full (set on creation or edit) | Shows the assigned category, such as **Database** or **Web Server**. Blank if no category is assigned. |
-| `VirtualMachineTemplate` (`v1alpha1`) | Edit only (after creation)     | Shows the assigned category. Blank if no category is assigned.                                         |
-| OpenShift template                    | Not supported                  | Shows the workload profile, such as **desktop** or **server**.                                         |
+| Template type | Category support | Category column value |
+|----|----|----|
+| `VirtualMachineTemplate` (`v1beta1`) | Full (set on creation or edit) | Shows the assigned category, such as **Database** or **Web Server**. Blank if no category is assigned. |
+| `VirtualMachineTemplate` (`v1alpha1`) | Edit only (after creation) | Shows the assigned category. Blank if no category is assigned. |
+| OpenShift template | Not supported | Shows the workload profile, such as **desktop** or **server**. |
 
 Category column behavior
 
@@ -214,9 +345,14 @@ The cluster stores categories as the `vm.kubevirt.io/category` label on `Virtual
 
 You can customize an existing virtual machine (VM) template before you start the VM, by modifying the VM or template parameters, such as data sources, cloud-init, or SSH keys.
 
-<div class="note">
+> [!NOTE]
+> If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
 
-If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -241,6 +377,8 @@ If you customize a template by copying it and including all of its labels and an
     - `template.kubevirt.io/deprecated`
 
 8.  Click **Save**.
+
+</div>
 
 # Additional resources
 

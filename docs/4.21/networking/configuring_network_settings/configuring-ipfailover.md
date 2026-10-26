@@ -12,11 +12,8 @@ The administrator must ensure that all of the VIP addresses meet the following r
 
 Keepalived on each node determines whether the needed service is running. If it is, VIPs are supported and Keepalived participates in the negotiation to determine which node serves the VIP. For a node to participate, the service must be listening on the watch port on a VIP or the check must be disabled.
 
-<div class="note">
-
-Each VIP in the set might be served by a different node.
-
-</div>
+> [!NOTE]
+> Each VIP in the set might be served by a different node.
 
 IP failover monitors a port on each VIP to determine whether the port is reachable on the node. If the port is not reachable, the VIP is not assigned to the node. If the port is set to `0`, this check is suppressed. The check script does the needed testing.
 
@@ -32,19 +29,13 @@ While using VIPs to access a service, any of the nodes can be in the IP failover
 
 When using external IPs in the service definition, the VIPs are set to the external IPs, and the IP failover monitoring port is set to the service port. When using a node port, the port is open on every node in the cluster, and the service load-balances traffic from whatever node currently services the VIP. In this case, the IP failover monitoring port is set to the `NodePort` in the service definition.
 
-<div class="important">
-
-Even though a service VIP is highly available, performance can still be affected. Keepalived makes sure that each of the VIPs is serviced by some node in the configuration, and several VIPs can end up on the same node even when other nodes have none. Strategies that externally load-balance across a set of VIPs can be thwarted when IP failover puts multiple VIPs on the same node.
-
-</div>
+> [!IMPORTANT]
+> Even though a service VIP is highly available, performance can still be affected. Keepalived makes sure that each of the VIPs is serviced by some node in the configuration, and several VIPs can end up on the same node even when other nodes have none. Strategies that externally load-balance across a set of VIPs can be thwarted when IP failover puts multiple VIPs on the same node.
 
 When you use `ExternalIP`, you can set up IP failover to have the same VIP range as the `ExternalIP` range. You can also disable the monitoring port. In this case, all of the VIPs appear on same node in the cluster. Any user can set up a service with an `ExternalIP` and make it highly available.
 
-<div class="important">
-
-There are a maximum of 254 VIPs in the cluster.
-
-</div>
+> [!IMPORTANT]
+> There are a maximum of 254 VIPs in the cluster.
 
 # IP failover environment variables
 
@@ -58,73 +49,71 @@ The IP failover environment variables reference lists all variables you can use 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Variable Name</th>
 <th style="text-align: left;">Default</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_MONITOR_PORT</code></p></td>
 <td style="text-align: left;"><p><code>80</code></p></td>
 <td style="text-align: left;"><p>The IP failover pod tries to open a TCP connection to this port on each Virtual IP (VIP). If connection is established, the service is considered to be running. If this port is set to <code>0</code>, the test always passes.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_NETWORK_INTERFACE</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The interface name that IP failover uses to send Virtual Router Redundancy Protocol (VRRP) traffic. The default value is <code>eth0</code>.</p>
 <p>If your cluster uses the OVN-Kubernetes network plugin, set this value to <code>br-ex</code> to avoid packet loss. For a cluster that uses the OVN-Kubernetes network plugin, all listening interfaces do not serve VRRP but instead expect inbound traffic over a <code>br-ex</code> bridge.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_REPLICA_COUNT</code></p></td>
 <td style="text-align: left;"><p><code>2</code></p></td>
 <td style="text-align: left;"><p>The number of replicas to create. This must match <code>spec.replicas</code> value in IP failover deployment configuration.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_VIRTUAL_IPS</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The list of IP address ranges to replicate. This must be provided. For example, <code>1.2.3.4-6,1.2.3.9</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_VRRP_ID_OFFSET</code></p></td>
 <td style="text-align: left;"><p><code>10</code></p></td>
 <td style="text-align: left;"><p>The offset value used to set the virtual router IDs. Using different offset values allows multiple IP failover configurations to exist within the same cluster. The default offset is <code>10</code>, and the allowed range is <code>0</code> through <code>255</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_VIP_GROUPS</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The number of groups to create for VRRP. If not set, a group is created for each virtual IP range specified with the <code>OPENSHIFT_HA_VIP_GROUPS</code> variable.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_IPTABLES_CHAIN</code></p></td>
 <td style="text-align: left;"><p>INPUT</p></td>
 <td style="text-align: left;"><p>The name of the iptables chain, to automatically add an <code>iptables</code> rule to allow the VRRP traffic on. If the value is not set, an <code>iptables</code> rule is not added. If the chain does not exist, it is not created.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_CHECK_SCRIPT</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The full path name in the pod file system of a script that is periodically run to verify the application is operating.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_CHECK_INTERVAL</code></p></td>
 <td style="text-align: left;"><p><code>2</code></p></td>
 <td style="text-align: left;"><p>The period, in seconds, that the check script is run.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_NOTIFY_SCRIPT</code></p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The full path name in the pod file system of a script that is run whenever the state changes.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>OPENSHIFT_HA_PREEMPTION</code></p></td>
 <td style="text-align: left;"><p><code>preempt_nodelay 300</code></p></td>
 <td style="text-align: left;"><p>The strategy for handling a new higher priority host. The <code>nopreempt</code> strategy does not move master from the lower priority host to the higher priority host.</p></td>
 </tr>
 </tbody>
 </table>
-
-IP failover environment variables
 
 # Configure IP failover in your cluster
 
@@ -133,6 +122,14 @@ To configure IP failover in your OpenShift Container Platform cluster and provid
 The IP failover deployment ensures that a failover pod runs on each of the nodes matching the constraints or the label used. The pod, which runs Keepalived, can monitor an endpoint and use Virtual Router Redundancy Protocol (VRRP) to fail over the virtual IP (VIP) from one node to another if the first node cannot reach the service or endpoint.
 
 For production use, set a `selector` that selects at least two nodes, and set `replicas` equal to the number of selected nodes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have logged in to the cluster as a user with `cluster-admin` privileges.
 
@@ -143,6 +140,16 @@ For production use, set a `selector` that selects at least two nodes, and set `r
   - You have installed an [RHOSP client (RHCOS documentation)](https://docs.openstack.org/python-openstackclient/latest/) on the target environment.
 
   - You have downloaded the [RHOSP `openrc.sh` rc file (RHCOS documentation)](https://docs.openstack.org/zh_CN/user-guide/common/cli-set-environment-variables-using-openstack-rc.html).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an IP failover service account:
 
@@ -168,9 +175,11 @@ For production use, set a `selector` that selects at least two nodes, and set `r
         $ openstack port show <cluster_name> -c allowed_address_pairs
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Output example**
+        <div class="title">
+
+        Output example
 
         </div>
 
@@ -180,11 +189,15 @@ For production use, set a `selector` that selects at least two nodes, and set `r
                                  ip_address='192.168.0.7', mac_address='fa:16:3e:31:f9:cb'
         ```
 
+        </div>
+
     2.  Set a different VIP address for the IP failover deployment and make the address reachable on RHOSP ports by entering the following command in the RHOSP CLI. Do not set any default RHOSP API and VIP addresses as the failover VIP address for the IP failover deployment.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example of adding the `1.1.1.1` failover IP address as an allowed address on RHOSP ports.**
+        <div class="title">
+
+        Example of adding the `1.1.1.1` failover IP address as an allowed address on RHOSP ports.
 
         </div>
 
@@ -192,13 +205,17 @@ For production use, set a `selector` that selects at least two nodes, and set `r
         $ openstack port set <cluster_name> --allowed-address ip-address=1.1.1.1,mac-address=fa:fa:16:3e:31:f9:cb
         ```
 
+        </div>
+
     3.  Create a deployment YAML file to configure IP failover for your deployment. See "Example deployment YAML for IP failover configuration" in a later step.
 
     4.  Specify the following specification in the IP failover deployment so that you pass the failover VIP address to the `OPENSHIFT_HA_VIRTUAL_IPS` environment variable:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example of adding the `1.1.1.1` VIP address to `OPENSHIFT_HA_VIRTUAL_IPS`**
+        <div class="title">
+
+        Example of adding the `1.1.1.1` VIP address to `OPENSHIFT_HA_VIRTUAL_IPS`
 
         </div>
 
@@ -215,17 +232,18 @@ For production use, set a `selector` that selects at least two nodes, and set `r
         # ...
         ```
 
+        </div>
+
 4.  Create a deployment YAML file to configure IP failover.
 
-    <div class="note">
+    > [!NOTE]
+    > For Red Hat OpenStack Platform (RHOSP), you do not need to re-create the deployment YAML file. You already created this file as part of the earlier instructions.
 
-    For Red Hat OpenStack Platform (RHOSP), you do not need to re-create the deployment YAML file. You already created this file as part of the earlier instructions.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example deployment YAML for IP failover configuration**
+    Example deployment YAML for IP failover configuration
 
     </div>
 
@@ -330,6 +348,8 @@ For production use, set a `selector` that selects at least two nodes, and set `r
             - name: openshift-pull-secret
     ```
 
+    </div>
+
     where:
 
     `ipfailover-keepalived`
@@ -377,6 +397,8 @@ For production use, set a `selector` that selects at least two nodes, and set `r
     `openshift-pull-secret`
     Specifies the name of the pull secret to use for the IP failover deployment. Create the pull secret before creating the deployment, otherwise you will get an error when creating the deployment.
 
+</div>
+
 # Configure check and notify scripts
 
 To customize health monitoring for IP failover and receive notifications when VIP state changes in OpenShift Container Platform, you can configure check and notify scripts by using `ConfigMap` objects.
@@ -401,9 +423,27 @@ As a cluster administrator, you can provide an optional notify script that Keepa
 
 - `$3` — New state: `master`, `backup`, or `fault`
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the desired script and create a `ConfigMap` object to hold it. The script has no input arguments and must return `0` for `OK` and `1` for `fail`.
 
@@ -438,11 +478,8 @@ As a cluster administrator, you can provide an optional notify script that Keepa
             --source='{"configMap": { "name": "mycustomcheck", "defaultMode": 493}}'
         ```
 
-        <div class="note">
-
-        The `oc set env` command is whitespace sensitive. There must be no whitespace on either side of the `=` sign.
-
-        </div>
+        > [!NOTE]
+        > The `oc set env` command is whitespace sensitive. There must be no whitespace on either side of the `=` sign.
 
     2.  Alternatively, edit the `ipfailover-keepalived` configuration by running the following command:
 
@@ -450,9 +487,11 @@ As a cluster administrator, you can provide an optional notify script that Keepa
         $ oc edit deploy ipfailover-keepalived
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `ipfailover-keepalived` configuration**
+        <div class="title">
+
+        Example `ipfailover-keepalived` configuration
 
         </div>
 
@@ -476,6 +515,8 @@ As a cluster administrator, you can provide an optional notify script that Keepa
         ...
         ```
 
+        </div>
+
         where:
 
         `spec.container.env.name`
@@ -492,6 +533,8 @@ As a cluster administrator, you can provide an optional notify script that Keepa
 
     3.  Save the changes and exit the editor. This restarts the `ipfailover-keepalived` configuration.
 
+</div>
+
 # Configure VRRP preemption
 
 To control VIP preemption behavior when nodes recover in OpenShift Container Platform, you can configure the `OPENSHIFT_HA_PREEMPTION` variable to set a delay before higher priority VIPs take over or disable preemption entirely.
@@ -505,6 +548,14 @@ There are two options for the `OPENSHIFT_HA_PREEMPTION` variable:
 - `preempt_delay 300`: When set, Keepalived waits 300 seconds before moving the `master` role to the higher-priority VIP.
 
 In the following example, the `OPENSHIFT_HA_PREEMPTION` value is set to `preempt_delay 300`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To specify preemption enter `oc edit deploy ipfailover-keepalived` to edit the router deployment configuration:
 
@@ -521,6 +572,8 @@ In the following example, the `OPENSHIFT_HA_PREEMPTION` value is set to `preempt
             value: preempt_delay 300
   #...
   ```
+
+</div>
 
 # Deploy multiple IP failover instances
 
@@ -540,27 +593,39 @@ You can use the `OPENSHIFT_HA_VIP_GROUPS` variable to configure IP failover for 
 
 Grouping VIPs creates a wider range of allocation of VIPs per VRRP in the case of VRRP failover events, and is useful when all hosts in the cluster have access to a service locally. For example, when a service is being exposed with an `ExternalIP`.
 
-<div class="note">
+> [!NOTE]
+> As a rule for failover, do not limit services, such as the router, to one specific host. Instead, services should be replicated to each host so that in the case of IP failover, the services do not have to be recreated on the new host.
 
-As a rule for failover, do not limit services, such as the router, to one specific host. Instead, services should be replicated to each host so that in the case of IP failover, the services do not have to be recreated on the new host.
+> [!NOTE]
+> If you are using OpenShift Container Platform health checks, the nature of IP failover and groups means that all instances in the group are not checked. For that reason, [the Kubernetes health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) must be used to ensure that services are live.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-If you are using OpenShift Container Platform health checks, the nature of IP failover and groups means that all instances in the group are not checked. For that reason, [the Kubernetes health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) must be used to ensure that services are live.
+Prerequisites
 
 </div>
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To change the number of IP addresses assigned to each group, change the value for the `OPENSHIFT_HA_VIP_GROUPS` variable, for example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `Deployment` YAML for IP failover configuration**
+  <div class="title">
+
+  Example `Deployment` YAML for IP failover configuration
 
   </div>
 
@@ -573,13 +638,14 @@ If you are using OpenShift Container Platform health checks, the nature of IP fa
   ...
   ```
 
+  </div>
+
   In this example, the `OPENSHIFT_HA_VIP_GROUPS` variable is set to `3`. In an environment with seven VIPs, it creates three groups, assigning three VIPs to the first group, and two VIPs to the two remaining groups.
 
-  <div class="note">
+  > [!NOTE]
+  > If the number of groups set by `OPENSHIFT_HA_VIP_GROUPS` is fewer than the number of IP addresses set to fail over, the group contains more than one IP address, and all of the addresses move as a single unit.
 
-  If the number of groups set by `OPENSHIFT_HA_VIP_GROUPS` is fewer than the number of IP addresses set to fail over, the group contains more than one IP address, and all of the addresses move as a single unit.
-
-  </div>
+</div>
 
 # High availability For ExternalIP
 
@@ -589,15 +655,33 @@ To configure high availability for `ExternalIP`, you can specify a `spec.Externa
 
 Because IP failover can support up to a maximum of 255 VIPs for the entire cluster, the `spec.ExternalIP.autoAssignCIDRs` must be `/24` or smaller.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuration for ExternalIP](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-externalip.xml#configuration-externalip_configuring-externalip)
 
 - [Kubernetes documentation on ExternalIP](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips)
+
+</div>
 
 # Remove IP failover
 
 To remove IP failover from your OpenShift Container Platform cluster and clean up iptables rules and virtual IP addresses, you can delete the deployment and service account, then run a cleanup job on each configured node.
 
 When IP failover is initially configured, the worker nodes in the cluster are modified with an `iptables` rule that explicitly allows multicast packets on `224.0.0.18` for Keepalived. Because of the change to the nodes, removing IP failover requires running a job to remove the `iptables` rule and removing the virtual IP addresses used by Keepalived.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: Identify and delete any check and notify scripts that are stored as config maps:
 
@@ -615,9 +699,11 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
         {end}"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -626,6 +712,8 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
             Volumes that use config maps:
               volume:    config-volume
               configMap: mycustomcheck
+
+        </div>
 
     2.  If the preceding step provided the names of config maps that are used as volumes, delete the config maps:
 
@@ -639,9 +727,11 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
     $ oc get deployment -l ipfailover
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -649,6 +739,8 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
     NAMESPACE   NAME         READY   UP-TO-DATE   AVAILABLE   AGE
     default     ipfailover   2/2     2            2           105d
     ```
+
+    </div>
 
 3.  Delete the deployment:
 
@@ -697,13 +789,27 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
         $ oc create -f remove-ipfailover-job.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
             job.batch/remove-ipfailover-2h8dm created
+
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Confirm that the job removed the initial configuration for IP failover.
 
@@ -711,9 +817,11 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
   $ oc logs job/remove-ipfailover-2h8dm
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -723,3 +831,7 @@ When IP failover is initially configured, the worker nodes in the cluster are mo
     - Cleaning up ...
     - Releasing VIPs  (interface eth0) ...
   ```
+
+  </div>
+
+</div>

@@ -46,9 +46,11 @@ To customize image retrieval and security policies for your applications, config
 
 An `ImageStream` object file contains the following elements.
 
-<div class="formalpara-title">
+<div id="image-stream-object-definition_image-streams-managing" class="formalpara">
 
-**Imagestream object definition**
+<div class="title">
+
+Imagestream object definition
 
 </div>
 
@@ -78,6 +80,8 @@ status:
       image: sha256:47463d94eb5c049b2d23b03a9530bf944f8f967a0fe79147dd6b9135bf7dd13d
     tag: latest
 ```
+
+</div>
 
 where
 
@@ -124,9 +128,11 @@ Image stream tags can reference any local or externally managed image. It contai
 
 The following image stream tag is from an `ImageStream` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Image stream tag with two images in its history**
+<div class="title">
+
+Image stream tag with two images in its history
 
 </div>
 
@@ -150,6 +156,8 @@ metadata:
 # ...
 ```
 
+</div>
+
 Image stream tags can be permanent tags or tracking tags.
 
 - Permanent tags are version-specific tags that point to a particular version of an image, such as Python 3.5.
@@ -158,11 +166,8 @@ Image stream tags can be permanent tags or tracking tags.
 
   For example, the `latest` image stream tags that ship with OpenShift Container Platform are tracking tags. This means consumers of the `latest` image stream tag are updated to the newest level of the framework provided by the image when a new level becomes available. A `latest` image stream tag to `v3.10` can be changed to `v3.11` at any time. It is important to be aware that these `latest` image stream tags behave differently than the Docker `latest` tag. The `latest` image stream tag, in this case, does not point to the latest image in the Docker repository. It points to another image stream tag, which might not be the latest version of an image. For example, if the `latest` image stream tag points to `v3.10` of an image, when the `3.11` version is released, the `latest` tag is not automatically updated to `v3.11`, and remains at `v3.10` until it is manually updated to point to a `v3.11` image stream tag.
 
-  <div class="note">
-
-  Tracking tags are limited to a single image stream and cannot reference other image streams.
-
-  </div>
+  > [!NOTE]
+  > Tracking tags are limited to a single image stream and cannot reference other image streams.
 
 You can create your own image stream tags for your own needs.
 
@@ -184,19 +189,18 @@ For example, builds and deployments can be automatically started when an image s
 
 Manage how OpenShift Container Platform tracks newly uploaded images by understanding image stream mapping. When the integrated registry receives a new image, it automatically creates and sends an image stream mapping, providing the image’s crucial project, name, tag, and metadata.
 
-<div class="note">
-
-Configuring image stream mappings is an advanced feature.
-
-</div>
+> [!NOTE]
+> Configuring image stream mappings is an advanced feature.
 
 This information is used to create a new image, if it does not already exist, and to tag the image into the image stream. OpenShift Container Platform stores complete metadata about each image, such as commands, entry point, and environment variables. Images in OpenShift Container Platform are immutable and the maximum name length is 63 characters.
 
 The following image stream mapping example results in an image being tagged as `test/origin-ruby-sample:latest`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Image stream mapping object definition**
+<div class="title">
+
+Image stream mapping object definition
 
 </div>
 
@@ -310,21 +314,28 @@ image:
   dockerImageReference: 172.30.56.218:5000/test/origin-ruby-sample@sha256:47463d94eb5c049b2d23b03a9530bf944f8f967a0fe79147dd6b9135bf7dd13d
 ```
 
+</div>
+
 # Working with image streams
 
 To organize and manage container images in OpenShift Container Platform, you can use image streams and image stream tags. By using image streams, you can track image versions and simplify deployments.
 
-<div class="important">
-
-Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
-
-The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
-
-</div>
+> [!IMPORTANT]
+> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+>
+> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
 
 ## Get information about image streams
 
 To efficiently manage and monitor your image streams in OpenShift Container Platform, you can get general information about the image stream and detailed information about all the tags it is pointing to, ensuring your deployed applications rely on the correct image versions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To get general information about the image stream and detailed information about all the tags it is pointing to, enter the following command:
 
@@ -338,9 +349,11 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   $ oc describe is/python
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -362,6 +375,8 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
         About a minute ago
   ```
 
+  </div>
+
 - To get all of the information available about a particular image stream tag, enter the following command:
 
   ``` terminal
@@ -374,9 +389,11 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   $ oc describe istag/python:latest
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -397,11 +414,10 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   Docker Labels:  build-date=20170801
   ```
 
-  <div class="note">
-
-  More information is output than shown.
-
   </div>
+
+  > [!NOTE]
+  > More information is output than shown.
 
 - Enter the following command to discover which architecture or operating system that an image stream tag supports:
 
@@ -415,9 +431,11 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   $ oc get istag busybox:latest -ojsonpath="{range .image.dockerImageManifests[*]}/{'\n'}{end}"
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -432,9 +450,21 @@ To efficiently manage and monitor your image streams in OpenShift Container Plat
   linux/s390x
   ```
 
+  </div>
+
+</div>
+
 ## Add tags to an image stream
 
 To accurately manage and track specific versions of your container images, add tags to your image streams within OpenShift Container Platform, This ensures reliable referencing and deployment throughout your environment.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add a tag that points to one of the existing tags by using the \`oc tag\`command:
 
@@ -448,9 +478,11 @@ To accurately manage and track specific versions of your container images, add t
   $ oc tag python:3.5 python:latest
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -458,15 +490,19 @@ To accurately manage and track specific versions of your container images, add t
   Tag python:latest set to python@sha256:49c18358df82f4577386404991c51a9559f243e0b1bdc366df25.
   ```
 
+  </div>
+
 - Confirm the image stream has two tags, one, `3.5`, pointing at the external container image and another tag, `latest`, pointing to the same image because it was created based on the first tag.
 
   ``` terminal
   $ oc describe is/python
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -494,9 +530,21 @@ To accurately manage and track specific versions of your container images, add t
         5 minutes ago
   ```
 
+  </div>
+
+</div>
+
 ## Add tags for an external image
 
 To enable OpenShift Container Platform resources to track and consume container images sourced from external registries, add tags to the corresponding image streams. This action integrates external image content securely into your cluster’s local image management system.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add tags pointing to internal or external images, by using the `oc tag` command for all tag-related operations:
 
@@ -510,9 +558,11 @@ To enable OpenShift Container Platform resources to track and consume container 
   $ oc tag docker.io/python:3.6.0 python:3.6
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -520,11 +570,23 @@ To enable OpenShift Container Platform resources to track and consume container 
   Tag python:3.6 set to docker.io/python:3.6.0.
   ```
 
+  </div>
+
   If the external image is secured, you must create a secret with credentials for accessing that registry.
+
+</div>
 
 ## Update image stream tags
 
 To maintain flexibility and consistency in deployment definitions, update an image stream tag to reflect a different tag in OpenShift Container Platform. Specifically, you can update a tag to reflect another tag in an image stream, which is essential for managing image versions effectively.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update a tag:
 
@@ -538,9 +600,11 @@ To maintain flexibility and consistency in deployment definitions, update an ima
   $ oc tag python:3.6 python:latest
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -548,9 +612,21 @@ To maintain flexibility and consistency in deployment definitions, update an ima
   Tag python:latest set to python@sha256:438208801c4806548460b27bd1fbcb7bb188273d13871ab43f.
   ```
 
+  </div>
+
+</div>
+
 ## Remove image stream tags
 
 To maintain control over your image history and simplify management within OpenShift Container Platform, you can remove old tags from an image stream. This action helps ensure that your resources track only the current and necessary image references.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Remove old tags from an image stream:
 
@@ -564,9 +640,11 @@ To maintain control over your image history and simplify management within OpenS
   $ oc tag -d python:3.6
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -574,13 +652,33 @@ To maintain control over your image history and simplify management within OpenS
   Deleted tag default/python:3.6
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Remove deprecated image stream tags from the Cluster Samples Operator](../openshift_images/configuring-samples-operator.xml#images-samples-operator-deprecated-image-stream_configuring-samples-operator)
+
+</div>
 
 ## Configure periodic importing of image stream tags
 
 To maintain up-to-date image definitions from an external container image registry, configure periodic importing of image stream tags. This process allows you to quickly re-import images for critical security updates by using the `--scheduled` flag.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Schedule importing images:
 
@@ -594,15 +692,19 @@ To maintain up-to-date image definitions from an external container image regist
     $ oc tag docker.io/python:3.6.0 python:3.6 --scheduled
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     Tag python:3.6 set to import docker.io/python:3.6.0 periodically.
     ```
+
+    </div>
 
     This command causes OpenShift Container Platform to periodically update this particular image stream tag. This period is a cluster-wide setting set to 15 minutes by default.
 
@@ -611,6 +713,8 @@ To maintain up-to-date image definitions from an external container image regist
     ``` terminal
     $ oc tag <repositiory/image> <image-name:tag>
     ```
+
+</div>
 
 # Import and work with images and image streams
 
@@ -624,9 +728,14 @@ To securely manage content from external sources, configure your image streams t
 
 This procedure is essential if you change the registry that the Cluster Samples Operator uses for pulling content to something other than the default [registry.redhat.io](https://registry.redhat.io).
 
-<div class="note">
+> [!NOTE]
+> When importing from insecure or secure registries, the registry URL defined in the secret must include the `:80` port suffix or the secret is not used when attempting to import from the registry.
 
-When importing from insecure or secure registries, the registry URL defined in the secret must include the `:80` port suffix or the secret is not used when attempting to import from the registry.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -644,6 +753,8 @@ When importing from insecure or secure registries, the registry URL defined in t
 
     During the import process, OpenShift Container Platform picks up the secrets and provides them to the remote party.
 
+</div>
+
 ## Working with manifest lists
 
 To manage multi-architecture images in a manifest list, use the `--import-mode` flag with `oc import-image` or `oc tag`. Importing a single sub-manifest or all manifests provides fine-grained control over your image stream content.
@@ -652,6 +763,14 @@ In some cases, users might want to use sub-manifests directly. When `oc adm prun
 
 To avoid this limitation, you can use the manifest list by tag or by digest instead.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Create an image stream that includes multi-architecture images, and sets the import mode to `PreserveOriginal`, by entering the following command:
 
   ``` terminal
@@ -659,9 +778,11 @@ To avoid this limitation, you can use the manifest list by tag or by digest inst
   --import-mode='PreserveOriginal' --reference-policy=local --confirm
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -674,6 +795,8 @@ To avoid this limitation, you can use the manifest list by tag or by digest inst
   ---
   ```
 
+  </div>
+
 - Alternatively, enter the following command to import an image with the `Legacy` import mode, which discards manifest lists and imports a single sub-manifest:
 
   ``` terminal
@@ -681,15 +804,22 @@ To avoid this limitation, you can use the manifest list by tag or by digest inst
   --import-mode='Legacy' --confirm
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > The `--import-mode=` default value is `Legacy`. Excluding this value, or failing to specify either `Legacy` or `PreserveOriginal`, imports a single sub-manifest. An invalid import mode returns the following error: `error: valid ImportMode values are Legacy or PreserveOriginal`.
 
-  The `--import-mode=` default value is `Legacy`. Excluding this value, or failing to specify either `Legacy` or `PreserveOriginal`, imports a single sub-manifest. An invalid import mode returns the following error: `error: valid ImportMode values are Legacy or PreserveOriginal`.
-
-  </div>
+</div>
 
 ### Configure periodic importing of manifest lists
 
 To maintain up-to-date image references for complex, multi-architecture images, configure periodic importing of manifest lists. To periodically re-import a manifest list, you can use the `--scheduled` flag, ensuring your image stream tracks the latest versions from external registries.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the image stream to periodically update the manifest list by entering the following command:
 
@@ -698,11 +828,21 @@ To maintain up-to-date image references for complex, multi-architecture images, 
   --import-mode='PreserveOriginal' --scheduled=true
   ```
 
+</div>
+
 ### Configure SSL/TLS when importing manifest lists
 
 To control connection security and access policies for manifest lists sourced from external repositories, configure SSL/TLS settings during image importing.
 
 To configure SSL/TLS when importing a manifest list, you can use the `--insecure` flag to bypass standard certificate validation requirements if necessary.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set `--insecure=true` so that importing a manifest list skips SSL/TLS verification. For example:
 
@@ -711,9 +851,19 @@ To configure SSL/TLS when importing a manifest list, you can use the `--insecure
   --import-mode='PreserveOriginal' --insecure=true
   ```
 
+</div>
+
 ## Specify architecture for --import-mode
 
 To control the architecture of your imported images and ensure proper deployment, use the `--import-mode=` flag. You can swap your imported image stream between multi-architecture and single architecture by excluding or including the `--import-mode=` flag as needed.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following command to update your image stream from multi-architecture to single architecture by excluding the `--import-mode=` flag:
 
@@ -728,6 +878,8 @@ To control the architecture of your imported images and ensure proper deployment
   --import-mode='PreserveOriginal'
   ```
 
+</div>
+
 ## Configuration fields for --import-mode
 
 To implement multi-architecture image management using the `--import-mode` flag, reference the necessary configuration fields. These fields define precise parameters for selecting and importing specific manifests into your OpenShift Container Platform cluster.
@@ -740,13 +892,13 @@ The following table describes the options available for the `--import-mode=` fla
 <col style="width: 72%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><strong>Legacy</strong></p></td>
 <td style="text-align: left;"><p>The default option for <code>--import-mode</code>. When specified, the manifest list is discarded, and a single sub-manifest is imported. The platform is chosen in the following order of priority:</p>
 <ol type="1">
@@ -756,7 +908,7 @@ The following table describes the options available for the `--import-mode=` fla
 <li><p>The first manifest in the list</p></li>
 </ol></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><strong>PreserveOriginal</strong></p></td>
 <td style="text-align: left;"><p>When specified, the original manifest is preserved. For manifest lists, the manifest list and all of its sub-manifests are imported.</p></td>
 </tr>

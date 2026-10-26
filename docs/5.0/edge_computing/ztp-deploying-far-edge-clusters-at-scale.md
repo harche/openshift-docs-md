@@ -64,17 +64,14 @@ GitOps Zero Touch Provisioning (ZTP) uses Red Hat Advanced Cluster Management (
 
 The policy generator is a plugin for the GitOps Operator that enables the creation of RHACM policies from a concise template. The tool can combine multiple CRs into a single policy, and you can generate multiple policies that apply to various subsets of clusters in your fleet.
 
-<div class="note">
-
-For scalability and to reduce the complexity of managing configurations across the fleet of clusters, use configuration CRs with as much commonality as possible.
-
-- Where possible, apply configuration CRs using a fleet-wide common policy.
-
-- The next preference is to create logical groupings of clusters to manage as much of the remaining configurations as possible under a group policy.
-
-- When a configuration is unique to an individual site, use hub-side templating with `ConfigMap` resources to inject group or site-specific data into the common or group policy.
-
-</div>
+> [!NOTE]
+> For scalability and to reduce the complexity of managing configurations across the fleet of clusters, use configuration CRs with as much commonality as possible.
+>
+> - Where possible, apply configuration CRs using a fleet-wide common policy.
+>
+> - The next preference is to create logical groupings of clusters to manage as much of the remaining configurations as possible under a group policy.
+>
+> - When a configuration is unique to an individual site, use hub-side templating with `ConfigMap` resources to inject group or site-specific data into the common or group policy.
 
 The following diagram shows how the policy generator interacts with GitOps and RHACM in the configuration phase of cluster deployment.
 
@@ -92,21 +89,26 @@ The following recommended structuring of policies combines configuration CRs to 
 
 - Support flexibility in common configurations for cluster variants.
 
-| Policy category | Description                                                                                                                                                                                                                                                                                     |
-|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Common          | A policy that exists in the common category is applied to all clusters in the fleet. Use common `PolicyGenerator` CRs to apply common installation settings across all cluster types.                                                                                                           |
-| Groups          | A policy that exists in the groups category is applied to a group of clusters in the fleet. Use group `PolicyGenerator` CRs to manage specific aspects of single-node, three-node, and standard cluster installations. Cluster groups can also follow geographic region, hardware variant, etc. |
-| Sites           | Site-specific values that differ for each cluster are supplied through `ConfigMap` resources and hub-side templating in common or group `PolicyGenerator` CRs, rather than through separate site-specific `Policy` CR files.                                                                    |
+| Policy category | Description |
+|----|----|
+| Common | A policy that exists in the common category is applied to all clusters in the fleet. Use common `PolicyGenerator` CRs to apply common installation settings across all cluster types. |
+| Groups | A policy that exists in the groups category is applied to a group of clusters in the fleet. Use group `PolicyGenerator` CRs to manage specific aspects of single-node, three-node, and standard cluster installations. Cluster groups can also follow geographic region, hardware variant, etc. |
+| Sites | Site-specific values that differ for each cluster are supplied through `ConfigMap` resources and hub-side templating in common or group `PolicyGenerator` CRs, rather than through separate site-specific `Policy` CR files. |
 
 Recommended PolicyGenerator policy categories
 
-<div class="important">
+> [!IMPORTANT]
+> Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+>
+> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/5.0/html-single/governance/index#integrate-policy-generator) documentation.
+>
+> For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
-Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+<div>
 
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+<div class="title">
 
-For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
+Additional resources
 
 </div>
 
@@ -115,3 +117,5 @@ For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyG
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
 
 - [Preparing the GitOps ZTP Git repository](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-preparing-the-ztp-git-repository_ztp-preparing-the-hub-cluster)
+
+</div>

@@ -4,11 +4,29 @@ Catalog maintainers can create new catalogs in the file-based catalog format for
 
 You can use the `opm` CLI to create a catalog image that uses the plain text *file-based catalog* format (JSON or YAML), which replaces the deprecated SQLite database format.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `opm` CLI.
 
 - You have `podman` version 1.9.3+.
 
 - A bundle image is built and pushed to a registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Initialize the catalog:
 
@@ -29,9 +47,11 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
 
         The Dockerfile must be in the same parent directory as the catalog directory that you created in the previous step:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example directory structure**
+        <div class="title">
+
+        Example directory structure
 
         </div>
 
@@ -40,6 +60,8 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
         ├── <catalog_dir>
         └── <catalog_dir>.Dockerfile
         ```
+
+        </div>
 
         where:
 
@@ -93,17 +115,16 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
     \<catalog_dir\>/index.yaml
     Specifies the path to the catalog configuration file.
 
-    <div class="note">
-
-    Channels must contain at least one bundle.
-
-    </div>
+    > [!NOTE]
+    > Channels must contain at least one bundle.
 
 3.  Add a channel entry for the bundle. For example, modify the following example to your specifications, and add it to your `<catalog_dir>/index.yaml` file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example channel entry**
+    <div class="title">
+
+    Example channel entry
 
     </div>
 
@@ -115,6 +136,8 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
     entries:
       - name: <operator_name>.v0.1.0
     ```
+
+    </div>
 
     Ensure that you include the period (`.`) after the `` <operator_name>`variable but before the `v `` in the version. Otherwise, the entry fails to pass the `opm validate` command.
 
@@ -132,15 +155,19 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
         $ echo $?
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         0
         ```
+
+        </div>
 
 5.  Build the catalog image by running the `podman build` command:
 
@@ -164,7 +191,19 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
         $ podman push <registry>/<namespace>/<catalog_image_name>:<tag>
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [`opm` CLI reference](../../cli_reference/opm/cli-opm-ref.xml#cli-opm-ref)
+
+</div>
 
 # Updating or filtering a file-based catalog image
 
@@ -172,11 +211,16 @@ To keep your catalog accurate and ensure users can safely upgrade installed Oper
 
 After you complete the changes, you can rebuild the image as an updated version of the catalog.
 
-<div class="note">
+> [!NOTE]
+> Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
+>
+> For more information about the oc-mirror plugin and this use case, see "Mirroring images for a disconnected installation using the oc-mirror plugin v2".
 
-Alternatively, if you already have a catalog image on a mirror registry, you can use the oc-mirror CLI plugin to automatically prune any removed images from an updated source version of that catalog image while mirroring it to the target registry.
+<div>
 
-For more information about the oc-mirror plugin and this use case, see "Mirroring images for a disconnected installation using the oc-mirror plugin v2".
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -192,6 +236,16 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
 
     If you do not have an initialized catalog directory, create the directory and generate the Dockerfile. For more information, see the "Initialize the catalog" step from the "Creating a file-based catalog image" procedure.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Extract the contents of the catalog image in YAML format to an `index.yaml` file in your catalog directory:
 
     ``` terminal
@@ -199,27 +253,23 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
         -o yaml > <catalog_dir>/index.yaml
     ```
 
-    <div class="note">
-
-    Alternatively, you can use the `-o json` flag to output in JSON format.
-
-    </div>
+    > [!NOTE]
+    > Alternatively, you can use the `-o json` flag to output in JSON format.
 
 2.  Modify the contents of the resulting `index.yaml` file to your specifications:
 
-    <div class="important">
-
-    After a bundle has been published in a catalog, assume that one of your users has installed it. Ensure that all previously published bundles in a catalog have an update path to the current or newer channel head to avoid stranding users that have that version installed.
-
-    </div>
+    > [!IMPORTANT]
+    > After a bundle has been published in a catalog, assume that one of your users has installed it. Ensure that all previously published bundles in a catalog have an update path to the current or newer channel head to avoid stranding users that have that version installed.
 
     - To add an Operator, follow the steps for creating package, bundle, and channel entries in the "Creating a file-based catalog image" procedure.
 
     - To remove an Operator, delete the set of `olm.package`, `olm.channel`, and `olm.bundle` blobs that relate to the package. The following example shows a set that must be deleted to remove the `example-operator` package from the catalog:
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example removed entries**
+      <div class="title">
+
+      Example removed entries
 
       </div>
 
@@ -282,6 +332,8 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
       ---
       ```
 
+      </div>
+
     - To add or update deprecation messages for an Operator, ensure there is a `deprecations.yaml` file in the same directory as the package’s `index.yaml` file. For information on the `deprecations.yaml` file format, see "olm.deprecations schema".
 
 3.  Save your changes.
@@ -306,7 +358,15 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
     $ podman push <registry>/<namespace>/<catalog_image_name>:<tag>
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the web console, navigate to the OperatorHub configuration resource in the **Administration** → **Cluster Settings** → **Configuration** page.
 
@@ -316,8 +376,20 @@ For more information about the oc-mirror plugin and this use case, see "Mirrorin
 
 3.  After the catalog source is in a **READY** state, navigate to the **Ecosystem** → **Software Catalog** page. Select **Operators** under the **Type** heading and check that the changes you made are reflected in the list of Operators.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Packaging format → Schemas → olm.deprecations schema](../../operators/understanding/olm-packaging-format.xml#olm-deprecations-schema_olm-packaging-format)
 
 - [Mirroring an image set to a mirror registry](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#using-oc-mirror_about-installing-oc-mirror-v2)
 
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)
+
+</div>

@@ -2,41 +2,35 @@ To ensure your cluster meets performance and scalability requirements, plan your
 
 The example guidelines are based on the largest possible cluster. For smaller clusters, the maximums are lower. There are many factors that influence the stated thresholds, including the etcd version or storage data format. In most cases, exceeding these numbers results in lower overall performance but might not cause your cluster to fail.
 
-<div class="warning">
-
-Clusters that experience rapid change, such as those with many starting and stopping pods, can have a lower practical maximum size than documented.
-
-</div>
+> [!WARNING]
+> Clusters that experience rapid change, such as those with many starting and stopping pods, can have a lower practical maximum size than documented.
 
 # OpenShift Container Platform tested cluster maximums for major releases
 
-To ensure your deployment remains supported, plan your cluster configuration by using tested cluster maximums. OpenShift Container Platform validates these specific limits for major releases rather than theoretical absolute cluster maximums, ensuring stability for your environment.
+Plan your cluster configuration by using tested cluster maximums as a scale guide. OpenShift Container Platform validates these specific limits for major releases rather than theoretical absolute cluster maximums. Exceeding a tested maximum is not a loss of support, though Red Hat has not validated that scale.
 
-<div class="note">
-
-Red Hat does not provide direct guidance on sizing your OpenShift Container Platform cluster. This is because determining whether your cluster is within the supported bounds of OpenShift Container Platform requires careful consideration of all the multidimensional factors that limit the cluster scale.
-
-</div>
+> [!NOTE]
+> Red Hat does not provide direct guidance on sizing your OpenShift Container Platform cluster. This is because determining whether your cluster is within the supported bounds of OpenShift Container Platform requires careful consideration of all the multidimensional factors that limit the cluster scale.
 
 OpenShift Container Platform supports tested cluster maximums rather than absolute cluster maximums. Not every combination of OpenShift Container Platform version, control plane workload, and network plugin are tested, so the following table does not represent an absolute expectation of scale for all deployments. Scaling to a maximum on all dimensions simultaneously might not be possible. The table contains tested maximums for specific workloads and deployments, and serves as a scale guide as to what can be expected with similar deployments.
 
-| Maximum type                                     | 4.x tested maximum                                                     | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|--------------------------------------------------|------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Number of nodes                                  | 2,000                                                                  | Pause pods were deployed to stress the control plane components of OpenShift Container Platform at 2000 node scale. The ability to scale to similar numbers will vary depending upon specific deployment and workload parameters.                                                                                                                                                                                                                                                               |
-| Number of pods                                   | 150,000                                                                | The pod count displayed here is the number of test pods. The actual number of pods depends on the application’s memory, CPU, and storage requirements.                                                                                                                                                                                                                                                                                                                                          |
-| Number of pods per node                          | 2,500                                                                  | This was tested on a cluster with 31 servers: 3 control planes, 2 infrastructure nodes, and 26 compute nodes. If you need 2,500 user pods, you need both a `hostPrefix` of `20`, which allocates a network large enough for each node to contain more than 2000 pods, and a custom kubelet config with `maxPods` set to `2500`. For more information, see [Running 2500 pods per node on OCP 4.13](https://cloud.redhat.com/blog/running-2500-pods-per-node-on-ocp-4.13).                       |
-| Number of namespaces                             | 10,000                                                                 | When there are a large number of active projects, etcd might suffer from poor performance if the keyspace grows excessively large and exceeds the space quota. Periodic maintenance of etcd, including defragmentation, is highly recommended to free etcd storage.                                                                                                                                                                                                                             |
-| Number of builds                                 | 10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of pods per namespace                     | 25,000                                                                 | There are several control loops in the system that must iterate over all objects in a given namespace as a reaction to some changes in state. Having a large number of objects of a given type in a single namespace can make those loops expensive and slow down processing given state changes. The limit assumes that the system has enough CPU, memory, and disk to satisfy the application requirements.                                                                                   |
-| Number of routes per default 2-router deployment | 9,000                                                                  | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of secrets                                | 80,000                                                                 | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of config maps                            | 90,000                                                                 | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of services                               | 10,000                                                                 | Each service port and each service back-end has a corresponding entry in `iptables`. The number of back-ends of a given service impact the size of the `Endpoints` objects, which impacts the size of data that is being sent all over the system.                                                                                                                                                                                                                                              |
-| Number of services per namespace                 | 5,000                                                                  | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of back-ends per service                  | 5,000                                                                  | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of deployments per namespace              | 2,000                                                                  | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of build configs                          | 12,000                                                                 | \-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Number of custom resource definitions (CRD)      | 1,024                                                                  | Tested on a cluster with 29 servers: 3 control planes, 2 infrastructure nodes, and 24 compute nodes. The cluster had 500 namespaces. OpenShift Container Platform has a limit of 1,024 total custom resource definitions (CRD), including those installed by OpenShift Container Platform, products integrating with OpenShift Container Platform, and user-created CRDs. If there are more than 1,024 CRDs created, then there is a possibility that `oc` command requests might be throttled. |
+| Maximum type | 4.x tested maximum | Notes |
+|----|----|----|
+| Number of nodes | 2,000 | Pause pods were deployed to stress the control plane components of OpenShift Container Platform at 2000 node scale. The ability to scale to similar numbers will vary depending upon specific deployment and workload parameters. |
+| Number of pods | 150,000 | The pod count displayed here is the number of test pods. The actual number of pods depends on the application’s memory, CPU, and storage requirements. |
+| Number of pods per node | 500 | The default `maxPods` value is 250. To run 500 pods per node, configure a custom kubelet config with `maxPods` set to `500`. |
+| Number of namespaces | 10,000 | When there are a large number of active projects, etcd might suffer from poor performance if the keyspace grows excessively large and exceeds the space quota. Periodic maintenance of etcd, including defragmentation, is highly recommended to free etcd storage. |
+| Number of builds | 10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy | \- |
+| Number of pods per namespace | 25,000 | There are several control loops in the system that must iterate over all objects in a given namespace as a reaction to some changes in state. Having a large number of objects of a given type in a single namespace can make those loops expensive and slow down processing given state changes. The limit assumes that the system has enough CPU, memory, and disk to satisfy the application requirements. |
+| Number of routes per default 2-router deployment | 9,000 | \- |
+| Number of secrets | 80,000 | \- |
+| Number of config maps | 90,000 | \- |
+| Number of services | 10,000 | Each service port and each service back-end has a corresponding entry in `iptables`. The number of back-ends of a given service impact the size of the `Endpoints` objects, which impacts the size of data that is being sent all over the system. |
+| Number of services per namespace | 5,000 | \- |
+| Number of back-ends per service | 5,000 | \- |
+| Number of deployments per namespace | 2,000 | \- |
+| Number of build configs | 12,000 | \- |
+| Number of custom resource definitions (CRD) | 1,024 | Tested on a cluster with 29 servers: 3 control planes, 2 infrastructure nodes, and 24 compute nodes. The cluster had 500 namespaces. OpenShift Container Platform has a limit of 1,024 total custom resource definitions (CRD), including those installed by OpenShift Container Platform, products integrating with OpenShift Container Platform, and user-created CRDs. If there are more than 1,024 CRDs created, then there is a possibility that `oc` command requests might be throttled. |
 
 Example scenario
 As an example, 500 compute nodes (m5.2xl) were tested, and are supported, by using OpenShift Container Platform 4.17, the OVN-Kubernetes network plugin, and the following workload objects:
@@ -101,12 +95,12 @@ To validate your deployment limits, review the environment and configuration det
 
 ## AWS cloud platform cluster maximums
 
-| Node               | Flavor      | vCPU | RAM (GiB) | Disk type | Disk size (GiB) or IOS | Count        | Region    |
-|--------------------|-------------|------|-----------|-----------|------------------------|--------------|-----------|
-| Control plane/etcd | r5.4xlarge  | 16   | 128       | gp3       | 220                    | 3            | us-west-2 |
-| Infra              | m5.12xlarge | 48   | 192       | gp3       | 100                    | 3            | us-west-2 |
-| Workload           | m5.4xlarge  | 16   | 64        | gp3       | 500                    | 1            | us-west-2 |
-| Compute            | m5.2xlarge  | 8    | 32        | gp3       | 100                    | 3/25/250/500 | us-west-2 |
+| Node | Flavor | vCPU | RAM (GiB) | Disk type | Disk size (GiB) or IOS | Count | Region |
+|----|----|----|----|----|----|----|----|
+| Control plane/etcd | r5.4xlarge | 16 | 128 | gp3 | 220 | 3 | us-west-2 |
+| Infra | m5.12xlarge | 48 | 192 | gp3 | 100 | 3 | us-west-2 |
+| Workload | m5.4xlarge | 16 | 64 | gp3 | 500 | 1 | us-west-2 |
+| Compute | m5.2xlarge | 8 | 32 | gp3 | 100 | 3/25/250/500 | us-west-2 |
 
 where:
 
@@ -152,10 +146,10 @@ Cluster is scaled in iterations.
 
 ## IBM Z platform cluster maximums
 
-| Node               | vCPU | RAM (GiB) | Disk type | Disk size (GiB) or IOS | Count                                         |
-|--------------------|------|-----------|-----------|------------------------|-----------------------------------------------|
-| Control plane/etcd | 8    | 32        | ds8k      | 300 / LCU 1            | 3                                             |
-| Compute            | 8    | 32        | ds8k      | 150 / LCU 2            | 4 nodes (scaled to 100/250/500 pods per node) |
+| Node | vCPU | RAM (GiB) | Disk type | Disk size (GiB) or IOS | Count |
+|----|----|----|----|----|----|
+| Control plane/etcd | 8 | 32 | ds8k | 300 / LCU 1 | 3 |
+| Compute | 8 | 32 | ds8k | 150 / LCU 2 | 4 nodes (scaled to 100/250/500 pods per node) |
 
 where:
 
@@ -173,17 +167,14 @@ Total physical memory used is 512 GiB.
 
 # How to plan your environment according to tested cluster maximums
 
-To ensure your infrastructure meets operational requirements, plan your OpenShift Container Platform environment according to tested cluster maximums. Designing your cluster within these validated limits ensures that you can maintain stability and ensures your deployment remains supported
+Plan your OpenShift Container Platform environment by using tested cluster maximums as a scale guide. Designing your cluster within these validated limits helps you maintain stability. Exceeding a tested maximum is not a loss of support, though Red Hat has not validated that scale.
 
-<div class="important">
-
-Oversubscribing the physical resources on a node affects resource guarantees the Kubernetes scheduler makes during pod placement. Learn what measures you can take to avoid memory swapping.
-
-Some of the tested maximums are stretched only in a single dimension. They will vary when many objects are running on the cluster.
-
-The numbers noted in this documentation are based on Red Hat’s test methodology, setup, configuration, and tunings. These numbers can vary based on your own individual setup and environments.
-
-</div>
+> [!IMPORTANT]
+> Oversubscribing the physical resources on a node affects resource guarantees the Kubernetes scheduler makes during pod placement. Learn what measures you can take to avoid memory swapping.
+>
+> Some of the tested maximums are stretched only in a single dimension. They will vary when many objects are running on the cluster.
+>
+> The numbers noted in this documentation are based on Red Hat’s test methodology, setup, configuration, and tunings. These numbers can vary based on your own individual setup and environments.
 
 While planning your environment, determine how many pods are expected to fit per node by using the following formula:
 

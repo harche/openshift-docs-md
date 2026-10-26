@@ -6,7 +6,25 @@ You can define a set of extra manifests for inclusion in the installation phase 
 
 Extra manifests must be packaged in `ConfigMap` resources and referenced in the `extraManifestsRefs` field of the `ClusterInstance` CR.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Create a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a set of extra manifest CRs that the GitOps ZTP pipeline uses to customize the cluster installs.
 
@@ -66,11 +84,10 @@ Extra manifests must be packaged in `ConfigMap` resources and referenced in the 
 
     During cluster provisioning, the SiteConfig Operator applies the CRs contained in the referenced `ConfigMap` resources as extra manifests.
 
-    <div class="note">
+    > [!NOTE]
+    > You can reference multiple `ConfigMap` resources in `extraManifestsRefs` to organize your manifests logically. For example, you might have separate `ConfigMap` resources for crun configuration, custom `MachineConfig` CRs, and other Day 0 configurations.
 
-    You can reference multiple `ConfigMap` resources in `extraManifestsRefs` to organize your manifests logically. For example, you might have separate `ConfigMap` resources for crun configuration, custom `MachineConfig` CRs, and other Day 0 configurations.
-
-    </div>
+</div>
 
 # Customizing the br-ex bridge at installation time in the GitOps ZTP pipeline
 
@@ -78,15 +95,30 @@ By default, OpenShift Container Platform automatically configures the Open vSwit
 
 To customize the `br-ex` bridge at installation time in the GitOps ZTP pipeline, you create a `MachineConfig` object that includes the customized `br-ex` bridge configuration, package it as a `ConfigMap`, and reference it in your `ClusterInstance` CR.
 
-<div class="note">
+> [!NOTE]
+> The customized `br-ex` bridge configuration cannot be included directly in the `ClusterInstance` CR. Using a `MachineConfig` object as an extra manifest is currently the only supported method to configure a customized `br-ex` bridge at installation time.
 
-The customized `br-ex` bridge configuration cannot be included directly in the `ClusterInstance` CR. Using a `MachineConfig` object as an extra manifest is currently the only supported method to configure a customized `br-ex` bridge at installation time.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You configured a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
 
 - You created a `MachineConfig` object that includes your customized `br-ex` bridge NMState configuration. For detailed instructions on creating the NMState configuration and `MachineConfig` object, see "Creating a manifest object that includes a customized br-ex bridge".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In your `/clusterinstance` directory, create an `extra-manifest` subdirectory and save the `MachineConfig` object to a file in this directory, for example, `extra-manifest/10-br-ex-master.yaml`.
 
@@ -130,6 +162,16 @@ The customized `br-ex` bridge configuration cannot be included directly in the `
 
     During cluster provisioning, the SiteConfig Operator applies the `MachineConfig` object as an extra manifest, and the customized `br-ex` bridge configuration is applied to each node without requiring a reboot.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - On the hub cluster, verify that the `ConfigMap` that contains the `MachineConfig` object exists by running the following command:
 
   ``` terminal
@@ -142,6 +184,8 @@ The customized `br-ex` bridge configuration cannot be included directly in the `
   $ oc get machineconfig 10-br-ex-master
   ```
 
+</div>
+
 # Configuring cluster network MTU at installation time
 
 You can explicitly set the cluster network maximum transmission unit (MTU) during installation by including a `Network` custom resource (CR) as an extra manifest in the GitOps Zero Touch Provisioning (ZTP) pipeline.
@@ -152,25 +196,40 @@ During installation, the Cluster Network Operator (CNO) automatically calculates
 
 By explicitly setting the cluster network MTU at installation time, you can include additional headroom for those future needs and avoid a disruptive MTU migration.
 
-<div class="important">
+> [!IMPORTANT]
+> The cluster network MTU value must be lower than the machine network MTU by at least 100 bytes to account for OVN-Kubernetes overlay overhead. If you plan to enable IPsec as a Day 2 operation, allow an additional 46 bytes for IPsec headroom. For example, with a machine network MTU of `9100` bytes, set the cluster network MTU to `8900` bytes, which accounts for the following offset:
+>
+> - OVN-Kubernetes overhead: 100 bytes
+>
+> - IPsec headroom: 46 bytes
+>
+> - Extra headroom: 54 bytes
+>
+> - Total offset: 200 bytes
+>
+> To avoid selecting an MTU value that a node cannot support, verify the maximum MTU (`maxmtu`) that the network interface accepts by running the `ip -d link` command.
 
-The cluster network MTU value must be lower than the machine network MTU by at least 100 bytes to account for OVN-Kubernetes overlay overhead. If you plan to enable IPsec as a Day 2 operation, allow an additional 46 bytes for IPsec headroom. For example, with a machine network MTU of `9100` bytes, set the cluster network MTU to `8900` bytes, which accounts for the following offset:
+<div>
 
-- OVN-Kubernetes overhead: 100 bytes
+<div class="title">
 
-- IPsec headroom: 46 bytes
-
-- Extra headroom: 54 bytes
-
-- Total offset: 200 bytes
-
-To avoid selecting an MTU value that a node cannot support, verify the maximum MTU (`maxmtu`) that the network interface accepts by running the `ip -d link` command.
+Prerequisites
 
 </div>
 
 - You have configured the hub cluster to provision managed clusters by using the GitOps ZTP pipeline.
 
 - You have a Git repository where you manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as a source repository for the Argo CD application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In your `ClusterInstance` CR, set the machine network MTU on the network interface for all nodes.
 
@@ -271,15 +330,27 @@ To avoid selecting an MTU value that a node cannot support, verify the maximum M
 
     During cluster provisioning, the SiteConfig Operator applies the `Network` CR as an extra manifest, and the CNO uses the specified MTU value instead of auto-calculating it.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After the cluster installation is complete, verify the cluster network MTU by running the following command:
 
   ``` terminal
   $ oc get networks.operator.openshift.io cluster -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -297,19 +368,49 @@ To avoid selecting an MTU value that a node cannot support, verify the maximum M
         mtu: 8900
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Customizing extra installation manifests in the GitOps ZTP pipeline](../edge_computing/ztp-advanced-install-ztp.xml#ztp-customizing-the-install-extra-manifests_ztp-advanced-install-ztp)
 
 - [Creating a manifest object that includes a customized br-ex bridge](../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 
+</div>
+
 # Deleting a node by using the ClusterInstance CR
 
 By using a `ClusterInstance` custom resource (CR), you can delete and reprovision a node. This method is more efficient than manually deleting the node.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the hub cluster to generate the required installation and policy CRs.
 
 - You have created a Git repository in which you can manage your custom site configuration data. The repository must be accessible from the hub cluster and be defined as the source repository for the Argo CD application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `ClusterInstance` CR to add the `bmac.agent-install.openshift.io/remove-agent-and-node-on-delete=true` annotation to the `BareMetalHost` resource for the node, and push the changes to the Git repository:
 
@@ -336,15 +437,19 @@ By using a `ClusterInstance` custom resource (CR), you can delete and reprovisio
     $ oc get bmh -n <cluster_namespace> <bmh_name> -ojsonpath='' | jq -r '.annotations["bmac.agent-install.openshift.io/remove-agent-and-node-on-delete"]'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     true
     ```
+
+    </div>
 
 3.  Delete the `BareMetalHost` CR by configuring the `pruneManifests` field in the `ClusterInstance` CR to remove the target `BareMetalHost` resource:
 
@@ -367,7 +472,15 @@ By using a `ClusterInstance` custom resource (CR), you can delete and reprovisio
 
 4.  Push the changes to the Git repository and wait for deprovisioning to start. The status of the `BareMetalHost` CR should change to `deprovisioning`. Wait for the `BareMetalHost` to finish deprovisioning, and be fully deleted.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `BareMetalHost` and `Agent` CRs for the worker node have been deleted from the hub cluster by running the following commands:
 
@@ -385,18 +498,21 @@ By using a `ClusterInstance` custom resource (CR), you can delete and reprovisio
     $ oc get nodes
     ```
 
-    <div class="note">
-
-    If you are working with secrets, deleting a secret too early can cause an issue because ArgoCD needs the secret to complete resynchronization after deletion. Delete the secret only after the node cleanup, when the current ArgoCD synchronization is complete.
-
-    </div>
+    > [!NOTE]
+    > If you are working with secrets, deleting a secret too early can cause an issue because ArgoCD needs the secret to complete resynchronization after deletion. Delete the secret only after the node cleanup, when the current ArgoCD synchronization is complete.
 
 3.  After the `BareMetalHost` object is successfully deleted, remove the worker node definition from the `spec.nodes` section in the `ClusterInstance` CR and push the changes to the Git repository.
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 To reprovision a node, add the node definition back to the `spec.nodes` section in the `ClusterInstance` CR, push the changes to the Git repository, and wait for the synchronization to complete. This regenerates the `BareMetalHost` CR of the worker node and triggers the re-install of the node.
+
+</div>

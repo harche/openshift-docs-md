@@ -4,6 +4,14 @@ In a highly available control plane, three etcd pods run as a part of a stateful
 
 You can check the status of the etcd cluster health by logging into any etcd pod.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to an etcd pod by entering the following command:
 
     ``` terminal
@@ -16,9 +24,11 @@ You can check the status of the etcd cluster health by logging into any etcd pod
     sh-4.4# etcdctl endpoint status -w table
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -32,9 +42,21 @@ You can check the status of the etcd cluster health by logging into any etcd pod
     +-----------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
     ```
 
+    </div>
+
+</div>
+
 # Recovering a failing etcd pod
 
 Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to store its data. An etcd pod might fail because of corrupted or missing data. You can recover a failing etcd pod and its PVC.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To confirm that the etcd pod is failing, enter the following command:
 
@@ -44,9 +66,11 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
 
     Replace `<hosted_cluster_name>` with the name of the hosted cluster of the etcd instance.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -56,6 +80,8 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
     etcd-1   2/2     Running            0            45m
     etcd-2   1/2     CrashLoopBackOff   1 (5s ago)   64m
     ```
+
+    </div>
 
     The failing etcd pod might have the `CrashLoopBackOff` or `Error` status.
 
@@ -67,15 +93,27 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
 
     Replace `<etcd_pod_name>` with the name of the failing pod.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that a new etcd pod is up and running by entering the following command:
 
   ``` terminal
   $ oc get pods -l app=etcd -n clusters-<hosted_cluster_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -85,3 +123,7 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
   etcd-1   2/2     Running   0          48m
   etcd-2   2/2     Running   0          2m2s
   ```
+
+  </div>
+
+</div>

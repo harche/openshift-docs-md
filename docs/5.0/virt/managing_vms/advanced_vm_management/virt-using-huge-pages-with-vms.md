@@ -10,23 +10,38 @@ A huge page is a memory page that is larger than 4Ki. On x86_64 architectures, t
 
 In OpenShift Virtualization, virtual machines can be configured to consume pre-allocated huge pages.
 
-# Configuring huge pages for virtual machines
+# Map VM memory more efficiently with huge pages
 
-You can configure virtual machines to use pre-allocated huge pages by including the `memory.hugepages.pageSize` and `resources.requests.memory` parameters in your virtual machine configuration.
+Configure a virtual machine (VM) to use pre-allocated huge pages so that the VM’s memory is mapped more efficiently than with standard 4Ki pages.
 
 The memory request must be divisible by the page size. For example, you cannot request `500Mi` memory with a page size of `1Gi`.
 
-<div class="note">
-
-The memory layouts of the host and the guest OS are unrelated. Huge pages requested in the virtual machine manifest apply to QEMU. Huge pages inside the guest can only be configured based on the amount of available memory of the virtual machine instance.
-
-</div>
+> [!NOTE]
+> The memory layouts of the host and the guest operating system are unrelated. Huge pages requested in the virtual machine manifest apply to QEMU. Huge pages inside the guest can only be configured based on the amount of available memory of the virtual machine instance.
 
 If you edit a running virtual machine, the virtual machine must be rebooted for the changes to take effect.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Nodes must have pre-allocated huge pages configured.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In your virtual machine configuration, add the `resources.requests.memory` and `memory.hugepages.pageSize` parameters to the `spec.domain`. The following configuration snippet is for a virtual machine that requests a total of `4Gi` memory with a page size of `1Gi`:
 
@@ -53,3 +68,5 @@ If you edit a running virtual machine, the virtual machine must be rebooted for 
     ``` terminal
     $ oc apply -f <virtual_machine>.yaml
     ```
+
+</div>

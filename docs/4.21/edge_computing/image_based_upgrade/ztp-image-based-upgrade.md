@@ -2,11 +2,29 @@ You can use a single resource on the hub cluster, the `ImageBasedGroupUpgrade` c
 
 For more information about the image-based upgrade, see "Understanding the image-based upgrade for single-node OpenShift clusters".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding the image-based upgrade for single-node OpenShift clusters](../../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
+
+</div>
 
 # Managing the image-based upgrade at scale using the ImageBasedGroupUpgrade CR on the hub
 
 The `ImageBasedGroupUpgrade` CR combines the `ImageBasedUpgrade` and `ClusterGroupUpgrade` APIs. For example, you can define the cluster selection and rollout strategy with the `ImageBasedGroupUpgrade` API in the same way as the `ClusterGroupUpgrade` API. The stage transitions are different from the `ImageBasedUpgrade` API. You can use the `ImageBasedGroupUpgrade` API to combine several stage transitions, also called actions, into one step that share one rollout strategy.
+
+<div class="example">
+
+<div class="title">
+
+Example `ImageBasedGroupUpgrade.yaml`
+
+</div>
 
 ``` yaml
 apiVersion: lcm.openshift.io/v1alpha1
@@ -48,6 +66,8 @@ Where:
 
 - `seedImageRef`: Target platform version, the seed image, and the secret required to access the image.
 
+</div>
+
 If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the secret is added to the manifest list for the `Prep` stage. The secret is recreated in each spoke cluster in the `openshift-lifecycle-agent` namespace.
 
 <div class="informalexample">
@@ -70,11 +90,8 @@ Actions are the list of stage transitions that TALM completes in the steps of an
 
 You can combine these actions differently in your upgrade plan and you can add the next steps later. Wait until the earlier steps either complete or fail before adding a step to your plan. The first action of an added step for clusters that failed a earlier steps must be either `Abort` or `Rollback`.
 
-<div class="important">
-
-You cannot remove actions or steps from an ongoing plan.
-
-</div>
+> [!IMPORTANT]
+> You cannot remove actions or steps from an ongoing plan.
 
 The following table shows example plans for different levels of control over the rollout strategy:
 
@@ -85,13 +102,13 @@ The following table shows example plans for different levels of control over the
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Example plan</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">actions</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;Prep&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;Upgrade&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;FinalizeUpgrade&quot;</span><span class="kw">]</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rolloutStrategy</span><span class="kw">:</span></span>
@@ -99,7 +116,7 @@ The following table shows example plans for different levels of control over the
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">timeout</span><span class="kw">:</span><span class="at"> </span><span class="dv">60</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>All actions share the same strategy</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">actions</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;Prep&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;Upgrade&quot;</span><span class="kw">]</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rolloutStrategy</span><span class="kw">:</span></span>
@@ -111,7 +128,7 @@ The following table shows example plans for different levels of control over the
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">timeout</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span></code></pre></div></td>
 <td style="text-align: left;"><p>Some actions share the same strategy</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span><span class="kw">:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">actions</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;Prep&quot;</span><span class="kw">]</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rolloutStrategy</span><span class="kw">:</span></span>
@@ -130,13 +147,8 @@ The following table shows example plans for different levels of control over the
 </tbody>
 </table>
 
-Example upgrade plans
-
-<div class="important">
-
-Clusters that fail one of the actions will skip the remaining actions in the same step.
-
-</div>
+> [!IMPORTANT]
+> Clusters that fail one of the actions will skip the remaining actions in the same step.
 
 The `ImageBasedGroupUpgrade` API accepts the following actions:
 
@@ -195,11 +207,8 @@ When a stage completes or fails, TALM marks the relevant clusters with the follo
 
 Use these cluster labels to cancel or roll back an upgrade on a group of clusters after troubleshooting the issues.
 
-<div class="important">
-
-If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
-
-</div>
+> [!IMPORTANT]
+> If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
 
 For example, if you want to cancel the upgrade for all managed clusters except for clusters that successfully completed the upgrade, you can add an `Abort` action to your plan. The `Abort` action moves back the `ImageBasedUpgrade` CR to the `Idle` stage, which cancels the upgrade on clusters that are not yet upgraded. Adding a separate `Abort` action ensures that the TALM does not perform the `Abort` action on clusters that have the `lcm.openshift.io/ibgu-upgrade-completed` label.
 
@@ -222,9 +231,14 @@ Shows all failed actions along with a detailed error message.
 
 For use cases when you need better control of when the upgrade interrupts your service, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` CR. You can use the `ImageBasedGroupUpgrade` CR to add actions after the earlier step is complete. After evaluating the results of the earlier steps, you can move to the next upgrade stage or troubleshoot any failed steps throughout the procedure.
 
-<div class="important">
+> [!IMPORTANT]
+> Only certain action combinations are supported and listed in *Supported action combinations*.
 
-Only certain action combinations are supported and listed in *Supported action combinations*.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -233,6 +247,16 @@ Only certain action combinations are supported and listed in *Supported action c
 - You have created policies and `ConfigMap` objects for resources used in the image-based upgrade.
 
 - You have installed the Lifecycle Agent and OADP Operators on all managed clusters through the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file on the hub cluster that has the `ImageBasedGroupUpgrade` CR:
 
@@ -276,11 +300,8 @@ Only certain action combinations are supported and listed in *Supported action c
 
     - `seedImageRef`: Target platform version, the seed image, and the secret required to access the image.
 
-    <div class="note">
-
-    If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the {lco} adds the secret to the manifest list for the `Prep` stage. The {lco} recreates the secret in each spoke cluster in the `openshift-lifecycle-agent` namespace.
-
-    </div>
+    > [!NOTE]
+    > If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the {lco} adds the secret to the manifest list for the `Prep` stage. The {lco} recreates the secret in each spoke cluster in the `openshift-lifecycle-agent` namespace.
 
     - `extraManifests`: Optional: Applies additional manifests, which are not in the seed image, to the target cluster. Also applies `ConfigMap` objects for custom catalog sources.
 
@@ -300,9 +321,11 @@ Only certain action combinations are supported and listed in *Supported action c
     $ oc get ibgu -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -321,6 +344,8 @@ Only certain action combinations are supported and listed in *Supported action c
         name: spoke6
     # ...
     ```
+
+    </div>
 
     The earlier output of an example plan starts with the `Prep` stage only and you add actions to the plan based on the results of the earlier step. The TALM adds a label to the clusters to mark if the upgrade succeeded or failed. For example, the TALM applies the `lcm.openshift.io/ibgu-prep-failed` label to clusters that failed the `Prep` stage.
 
@@ -366,15 +391,27 @@ Only certain action combinations are supported and listed in *Supported action c
     '[{"op": "add", "path": "/spec/plan/-", "value": {"actions": ["FinalizeUpgrade"], "rolloutStrategy": {"maxConcurrency": 10, "timeout": 3}}}]'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the status updates by running the following command:
 
   ``` terminal
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -401,7 +438,17 @@ Only certain action combinations are supported and listed in *Supported action c
   # ...
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring a shared container partition between ostree stateroots when using GitOps ZTP](../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#ztp-image-based-upgrade-shared-container-partition_shared-container-partition)
 
@@ -415,15 +462,35 @@ Only certain action combinations are supported and listed in *Supported action c
 
 - [Supported action combinations](../../edge_computing/image_based_upgrade/ztp-image-based-upgrade.xml#ztp-image-based-upgrade-supported-combinations_ztp-gitops)
 
+</div>
+
 # Performing an image-based upgrade on managed clusters at scale in one step
 
 For use cases when service interruption is not a concern, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` custom resource (CR). You can use the `ImageBasedGroupUpgrade` CR to combine several actions in one step with one rollout strategy. With one rollout strategy, you can reduce the upgrade time but you can only troubleshoot failed clusters after the upgrade plan is complete.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
 - You have created policies and `ConfigMap` objects for resources used in the image-based upgrade.
 
 - You have installed the Lifecycle Agent and OADP Operators on all managed clusters through the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file on the hub cluster that has the `ImageBasedGroupUpgrade` CR:
 
@@ -467,11 +534,8 @@ For use cases when service interruption is not a concern, you can upgrade a set 
 
     - `seedImageRef`: Target platform version, the seed image, and the secret required to access the image.
 
-    <div class="note">
-
-    If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the secret is added to the manifest list for the `Prep` stage. The secret is recreated in each spoke cluster in the `openshift-lifecycle-agent` namespace.
-
-    </div>
+    > [!NOTE]
+    > If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the secret is added to the manifest list for the `Prep` stage. The secret is recreated in each spoke cluster in the `openshift-lifecycle-agent` namespace.
 
     - `extraManifests`: Optional: Applies additional manifests, which are not in the seed image, to the target cluster. Also applies `ConfigMap` objects for custom catalog sources.
 
@@ -489,15 +553,27 @@ For use cases when service interruption is not a concern, you can upgrade a set 
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the status updates by running the following command:
 
   ``` terminal
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -521,17 +597,36 @@ For use cases when service interruption is not a concern, you can upgrade a set 
   # ...
   ```
 
+  </div>
+
+</div>
+
 # Canceling an image-based upgrade on managed clusters at scale
 
 You can cancel the upgrade on a set of managed clusters that completed the `Prep` stage.
 
-<div class="important">
+> [!IMPORTANT]
+> Only certain action combinations are supported and listed in *Supported action combinations*.
 
-Only certain action combinations are supported and listed in *Supported action combinations*.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a separate YAML file on the hub cluster that has the `ImageBasedGroupUpgrade` CR:
 
@@ -575,15 +670,27 @@ Only certain action combinations are supported and listed in *Supported action c
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the status updates by running the following command:
 
   ``` terminal
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -599,21 +706,48 @@ Only certain action combinations are supported and listed in *Supported action c
   # ...
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Supported action combinations](../../edge_computing/image_based_upgrade/ztp-image-based-upgrade.xml#ztp-image-based-upgrade-supported-combinations_ztp-gitops)
+
+</div>
 
 # Rolling back an image-based upgrade on managed clusters at scale
 
 Roll back the changes on a set of managed clusters if you find unresolvable issues after a successful upgrade. You need to create a separate `ImageBasedGroupUpgrade` CR and define the set of managed clusters that you want to roll back.
 
-<div class="important">
+> [!IMPORTANT]
+> Only certain action combinations are supported and listed in *Supported action combinations*.
 
-Only certain action combinations are supported and listed in *Supported action combinations*.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a separate YAML file on the hub cluster that has the `ImageBasedGroupUpgrade` CR:
 
@@ -657,15 +791,27 @@ Only certain action combinations are supported and listed in *Supported action c
 
     All managed clusters that match the defined labels move back to the `Rollback` and then the `Idle` stages to complete the rollback.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the status updates by running the following command:
 
   ``` terminal
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -680,21 +826,30 @@ Only certain action combinations are supported and listed in *Supported action c
   # ...
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Supported action combinations](../../edge_computing/image_based_upgrade/ztp-image-based-upgrade.xml#ztp-image-based-upgrade-supported-combinations_ztp-gitops)
 
 - [Recovering from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-scenario-3-recovering-expired-certs_dr-recovering-expired-certs)
 
+</div>
+
 # Troubleshooting image-based upgrades with Lifecycle Agent
 
 Perform troubleshooting steps on the managed clusters to resolve any issues.
 
-<div class="important">
-
-If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
-
-</div>
+> [!IMPORTANT]
+> If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
 
 ## Collecting logs
 
@@ -768,11 +923,8 @@ Resolution
 
 3.  After cleaning up all the deployments of the stateroot, wipe the stateroot directory by running the following commands:
 
-    <div class="warning">
-
-    Ensure that the booted deployment is not in this stateroot.
-
-    </div>
+    > [!WARNING]
+    > Ensure that the booted deployment is not in this stateroot.
 
     ``` terminal
     $ stateroot="<stateroot_to_delete>"

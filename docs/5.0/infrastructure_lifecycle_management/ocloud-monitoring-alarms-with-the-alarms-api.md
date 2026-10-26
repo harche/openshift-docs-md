@@ -1,28 +1,50 @@
 You can monitor infrastructure and cluster health by querying alarms through the O-Cloud Manager Alarms API. The Alarms API aggregates alerts from RHACM Observability into standardized alarm records. You can query, filter, and acknowledge alarms, and create subscriptions to receive real-time notifications when alarm states change.
 
-<div class="note">
+> [!NOTE]
+> The Alarms API aggregates alerts from RHACM Observability into standardized alarm records that conform to the O-RAN O2 IMS specification for the telecommunications use case.
 
-The Alarms API aggregates alerts from RHACM Observability into standardized alarm records that conform to the O-RAN O2 IMS specification for the telecommunications use case.
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+- [Observability in RHACM](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/5.0/html/observability/index)
 
 </div>
-
-- [Observability in RHACM](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/observability/index)
 
 # Query and filter infrastructure alarms
 
 You can query the O-Cloud Manager Alarms API to list active infrastructure and cluster alarms. The Alarms API aggregates alerts from RHACM Observability Alertmanager and exposes them as O-RAN O2 IMS compliant alarm records with standardized severity levels, timestamps, and resource associations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
 
 - RHACM Observability is configured and running on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the Alarms API base URL by running the following command:
 
@@ -37,9 +59,11 @@ You can query the O-Cloud Manager Alarms API to list active infrastructure and c
       "${ALARMS_URL}/alarms" | jq
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -61,6 +85,8 @@ You can query the O-Cloud Manager Alarms API to list active infrastructure and c
       }
     ]
     ```
+
+    </div>
 
 3.  Filter alarms by severity by running the following command:
 
@@ -87,17 +113,45 @@ You can query the O-Cloud Manager Alarms API to list active infrastructure and c
 
     - Replace `<alarm_id>` with the `alarmEventRecordId` value.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - A successful response returns a JSON array of alarm records. An empty array indicates no alarms match the filter criteria.
+
+</div>
 
 # Acknowledge an alarm
 
 You can acknowledge an alarm through the O-Cloud Manager Alarms API. Acknowledging an alarm does not resolve it, but marks it as reviewed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
 
 - You identified the alarm to acknowledge by querying alarms.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Acknowledge an alarm by running the following command:
 
@@ -112,13 +166,18 @@ You can acknowledge an alarm through the O-Cloud Manager Alarms API. Acknowledgi
 
   Replace `<alarm_id>` with the `alarmEventRecordId` of the alarm to acknowledge.
 
-  <div class="note">
+  > [!NOTE]
+  > The PATCH endpoint also supports modifying `perceivedSeverity` to manually override the severity level of an alarm record.
 
-  The PATCH endpoint also supports modifying `perceivedSeverity` to manually override the severity level of an alarm record.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the alarm is acknowledged by running the following command:
 
@@ -129,15 +188,35 @@ You can acknowledge an alarm through the O-Cloud Manager Alarms API. Acknowledgi
 
   The output returns `true` if the alarm is acknowledged.
 
+</div>
+
 # Manage alarm subscriptions
 
 You can create alarm subscriptions through the O-Cloud Manager Alarms API to receive real-time HTTP notifications when alarm states change. When a subscription is active, the O-Cloud Manager sends callbacks to the specified endpoint whenever a matching alarm event occurs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
 
 - You configured SMO integration for the O-Cloud Manager. Alarm subscription creation is blocked until the SMO attributes are configured in the `Inventory` custom resource (CR).
 
 - Your webhook endpoint is reachable from the hub cluster and responds to GET requests with a `204` status code.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the Alarms API base URL by running the following command:
 
@@ -173,11 +252,8 @@ You can create alarm subscriptions through the O-Cloud Manager Alarms API to rec
 
       - `ACKNOWLEDGE` — Exclude notifications when an alarm is acknowledged.
 
-      <div class="note">
-
-      If SMO attributes are not configured in the `Inventory` CR, subscription creation fails with the error: "provisioning of Alarm Subscriptions is blocked until the SMO attributes are configured."
-
-      </div>
+      > [!NOTE]
+      > If SMO attributes are not configured in the `Inventory` CR, subscription creation fails with the error: "provisioning of Alarm Subscriptions is blocked until the SMO attributes are configured."
 
 3.  List all alarm subscriptions by running the following command:
 
@@ -196,4 +272,16 @@ You can create alarm subscriptions through the O-Cloud Manager Alarms API to rec
 
     - Replace `<subscription_id>` with the subscription identifier returned when the subscription was created.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After creating a subscription, verify it appears in the subscription list. Trigger a test alert on a managed cluster and confirm that your webhook endpoint receives the notification callback.
+
+</div>

@@ -26,7 +26,25 @@ time="2022-09-02T08:53:57Z" level=error msg="InvalidChangeBatch: [FATAL problem:
 
 The External DNS Operator implements the External DNS API from the `olm.openshift.io` API group. The External DNS Operator updates services, routes, and external DNS providers.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `yq` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the name of an install plan, such as `install-zcvlr`, by running the following command:
 
@@ -46,9 +64,11 @@ The External DNS Operator implements the External DNS API from the `olm.openshif
     $ oc get -n external-dns-operator deployment/external-dns-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -57,12 +77,26 @@ The External DNS Operator implements the External DNS API from the `olm.openshif
     external-dns-operator   1/1       1            1           23h
     ```
 
+    </div>
+
+</div>
+
 # View External DNS Operator logs
 
 To troubleshoot DNS configuration issues, view the External DNS Operator logs. Use the `oc logs` command to retrieve diagnostic information directly from the Operator pod.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the logs of the External DNS Operator by running the following command:
 
   ``` terminal
   $ oc logs -n external-dns-operator deployment/external-dns-operator -c external-dns-operator
   ```
+
+</div>

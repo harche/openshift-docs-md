@@ -1,18 +1,15 @@
 You can review compliance scan results and apply remediations to resolve failing rules. Remediations are not applied automatically, so you can verify each change before applying it to your cluster.
 
-<div class="important">
-
-Full remediation for Federal Information Processing Standards (FIPS) compliance requires enabling FIPS mode for the cluster. To enable FIPS mode, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see Installing the system in FIPS mode.
-
-FIPS mode is supported on the following architectures:
-
-- `x86_64`
-
-- `ppc64le`
-
-- `s390x`
-
-</div>
+> [!IMPORTANT]
+> Full remediation for Federal Information Processing Standards (FIPS) compliance requires enabling FIPS mode for the cluster. To enable FIPS mode, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see Installing the system in FIPS mode.
+>
+> FIPS mode is supported on the following architectures:
+>
+> - `x86_64`
+>
+> - `ppc64le`
+>
+> - `s390x`
 
 # Filters for compliance check results
 
@@ -48,9 +45,11 @@ $ oc get compliancecheckresults -n openshift-compliance \
 -l 'compliance.openshift.io/check-status=FAIL,compliance.openshift.io/check-severity=high'
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -74,6 +73,8 @@ ocp4-moderate-configure-network-policies-namespaces            FAIL     high
 ocp4-moderate-fips-mode-enabled-on-all-nodes                   FAIL     high
 ```
 
+</div>
+
 List all failing checks that must be remediated manually:
 
 ``` terminal
@@ -83,15 +84,15 @@ $ oc get -n openshift-compliance compliancecheckresults \
 
 The manual remediation steps are typically stored in the `description` attribute in the `ComplianceCheckResult` object.
 
-| ComplianceCheckResult Status | Description                                                                                                       |
-|------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| PASS                         | Compliance check ran to completion and passed.                                                                    |
-| FAIL                         | Compliance check ran to completion and failed.                                                                    |
-| INFO                         | Compliance check ran to completion and found something not severe enough to be considered an error.               |
-| MANUAL                       | Compliance check does not have a way to automatically assess the success or failure and must be checked manually. |
-| INCONSISTENT                 | Compliance check reports different results from different sources, typically cluster nodes.                       |
-| ERROR                        | Compliance check ran, but could not complete properly.                                                            |
-| NOT-APPLICABLE               | Compliance check did not run because it is not applicable or not selected.                                        |
+| ComplianceCheckResult Status | Description |
+|----|----|
+| PASS | Compliance check ran to completion and passed. |
+| FAIL | Compliance check ran to completion and failed. |
+| INFO | Compliance check ran to completion and found something not severe enough to be considered an error. |
+| MANUAL | Compliance check does not have a way to automatically assess the success or failure and must be checked manually. |
+| INCONSISTENT | Compliance check reports different results from different sources, typically cluster nodes. |
+| ERROR | Compliance check ran, but could not complete properly. |
+| NOT-APPLICABLE | Compliance check did not run because it is not applicable or not selected. |
 
 ComplianceCheckResult Status
 
@@ -104,6 +105,14 @@ The `ComplianceCheckResult` object includes human-readable descriptions of what 
 The remediation payload is stored in the `spec.current` attribute. The payload can be any Kubernetes object, but because this remediation was produced by a node scan, the remediation payload in the following example is a `MachineConfig` object. For Platform scans, the remediation payload is often a different kind of an object (for example, a `ConfigMap` or `Secret` object). Typically, applying that remediation is up to the administrator. Otherwise, the Compliance Operator would have required a very broad set of permissions to manipulate any generic Kubernetes object. An example of remediating a Platform check is provided later in the text.
 
 To see exactly what the remediation does when applied, the `MachineConfig` object contents use the Ignition objects for the configuration. See the link to "Ignition specification" in Additional resources for further information about the format. In the following example, the `spec.config.storage.files[0].path` attribute specifies the file that is being created by this remediation (`/etc/sysctl.d/75-sysctl_net_ipv4_conf_all_accept_redirects.conf`) and the `spec.config.storage.files[0].contents.source` attribute specifies the contents of that file.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Review the example of a check and a remediation called `sysctl-net-ipv4-conf-all-accept-redirects`. This example is redacted to only show `spec` and `status` and omits `metadata`:
 
@@ -131,19 +140,18 @@ To see exactly what the remediation does when applied, the `MachineConfig` objec
 
 2.  Use the following Python script to view the contents:
 
-    <div class="note">
-
-    The contents of the files are URL-encoded.
-
-    </div>
+    > [!NOTE]
+    > The contents of the files are URL-encoded.
 
     ``` terminal
     $ echo "net.ipv4.conf.all.accept_redirects%3D0" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(''.join(sys.stdin.readlines())))"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -151,19 +159,25 @@ To see exactly what the remediation does when applied, the `MachineConfig` objec
     net.ipv4.conf.all.accept_redirects=0
     ```
 
-    <div class="important">
-
-    The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
-
     </div>
+
+    > [!IMPORTANT]
+    > The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+
+</div>
 
 # Apply remediation when using customized machine config pools
 
 When you create a custom `MachineConfigPool`, add a label to the `MachineConfigPool` so that `machineConfigPoolSelector` present in the `KubeletConfig` can match the label with `MachineConfigPool`.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because the `MachineConfigPool` object might fail to unpause unexpectedly after the Compliance Operator finishes applying remediation.
 
-Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because the `MachineConfigPool` object might fail to unpause unexpectedly after the Compliance Operator finishes applying remediation.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -173,9 +187,11 @@ Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because t
     $ oc get nodes -n openshift-compliance
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -188,6 +204,8 @@ Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because t
     ip-10-0-197-35.us-east-2.compute.internal  Ready   master 5h22m  v1.36.3
     ```
 
+    </div>
+
 2.  Add a label to nodes.
 
     ``` terminal
@@ -196,15 +214,19 @@ Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because t
     node-role.kubernetes.io/<machine_config_pool_name>=
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     node/ip-10-0-166-81.us-east-2.compute.internal labeled
     ```
+
+    </div>
 
 3.  Create custom `MachineConfigPool` CR.
 
@@ -235,6 +257,8 @@ Do not set `protectKernelDefaults: false` in the `KubeletConfig` file, because t
     $ oc get mcp -w
     ```
 
+</div>
+
 # Evaluate KubeletConfig rules against default configuration values
 
 The Compliance Operator uses the Node/Proxy API to evaluate `KubeletConfig` object rules against actual node configurations, preventing inaccurate results caused by incomplete configuration files and default values for missing options.
@@ -250,6 +274,14 @@ No additional configuration changes are required to use this feature with defaul
 The Compliance Operator does not maintain a copy of each node pool configuration.
 
 The Compliance Operator aggregates consistent configuration options for all nodes within a single node pool into one copy of the configuration file. The Compliance Operator then uses the configuration file for a particular node pool to evaluate rules against nodes within that pool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `example` role to the `ScanSetting` object that will be stored in the `ScanSettingBinding` CR:
 
@@ -294,15 +326,35 @@ The Compliance Operator aggregates consistent configuration options for all node
       name: default
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - The Platform KubeletConfig rules are checked through the `Node/Proxy` object. You can find those rules by running the following command:
 
   ``` terminal
   $ oc get rules -o json | jq '.items[] | select(.checkType == "Platform") | select(.metadata.name | contains("ocp4-kubelet-")) | .metadata.name'
   ```
 
+</div>
+
 # Remediate `KubeletConfig` sub pools
 
 You can apply `KubeletConfig` remediation labels to `MachineConfigPool` sub-pools.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add a label to the sub-pool `MachineConfigPool` CR:
 
@@ -310,9 +362,19 @@ You can apply `KubeletConfig` remediation labels to `MachineConfigPool` sub-pool
   $ oc label mcp <sub-pool-name> pools.operator.machineconfiguration.openshift.io/<sub-pool-name>=
   ```
 
+</div>
+
 # Apply a remediation
 
 The boolean attribute `spec.apply` controls whether the remediation should be applied by the Compliance Operator. You can apply the remediation by setting the attribute to `true`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Apply the remediation by setting the attribute to `true`:
 
@@ -328,17 +390,13 @@ The boolean attribute `spec.apply` controls whether the remediation should be ap
 
 2.  Optionally, the Compliance Operator can apply remediations automatically. Set `autoApplyRemediations: true` in the `ScanSetting` top-level object.
 
-    <div class="warning">
+    > [!WARNING]
+    > Applying remediations automatically should only be done with careful consideration.
 
-    Applying remediations automatically should only be done with careful consideration.
+    > [!IMPORTANT]
+    > The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
 
-    </div>
-
-    <div class="important">
-
-    The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
-
-    </div>
+</div>
 
 # Remediate a platform check manually
 
@@ -350,15 +408,25 @@ Manual remediations are necessary for the following reasons:
 
 - Different checks modify different API objects, requiring automated remediation to possess `root` or superuser access to modify objects in the cluster, which is not advised.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  The example below uses the `ocp4-ocp-allowed-registries-for-import` rule, which would fail on a default OpenShift Container Platform installation. Inspect the rule `oc get rule.compliance/ocp4-ocp-allowed-registries-for-import -oyaml`, the rule is to limit the registries the users are allowed to import images from by setting the `allowedRegistriesForImport` attribute, The *warning* attribute of the rule also shows the API object checked, so it can be modified and remediate the issue:
 
     ``` terminal
     $ oc edit image.config.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -383,6 +451,8 @@ Manual remediations are necessary for the following reasons:
       internalRegistryHostname: image-registry.openshift-image-registry.svc:5000
     ```
 
+    </div>
+
 2.  Re-run the scan:
 
     ``` terminal
@@ -390,15 +460,22 @@ Manual remediations are necessary for the following reasons:
     annotate compliancescans/rhcos4-e8-worker compliance.openshift.io/rescan=
     ```
 
+</div>
+
 # Update remediations
 
 When you update compliance content to a newer version, the Compliance Operator marks previously applied remediations as **Outdated**. Review these remediations and apply the updated versions to ensure your nodes use the latest configuration.
 
 The previously applied remediation contents would then be stored in the `spec.outdated` attribute of a `ComplianceRemediation` object and the new updated contents would be stored in the `spec.current` attribute. After updating the content to a newer version, the administrator then needs to review the remediation. If the `spec.outdated` attribute exists, it would be used to render the resulting `MachineConfig` object. After the `spec.outdated` attribute is removed, the Compliance Operator re-renders the resulting `MachineConfig` object, which causes the Operator to push the configuration to the nodes.
 
-<div class="important">
+> [!IMPORTANT]
+> The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
 
-The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -409,9 +486,11 @@ The Compliance Operator does not automatically resolve dependency issues that ca
     -l complianceoperator.openshift.io/outdated-remediation=
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -420,11 +499,10 @@ The Compliance Operator does not automatically resolve dependency issues that ca
     workers-scan-no-empty-passwords   Outdated
     ```
 
-    <div class="note">
-
-    The currently applied remediation is stored in the `Outdated` attribute and the new, unapplied remediation is stored in the `Current` attribute. If you are satisfied with the new version, remove the `Outdated` field. If you want to keep the updated content, remove the `Current` and `Outdated` attributes.
-
     </div>
+
+    > [!NOTE]
+    > The currently applied remediation is stored in the `Outdated` attribute and the new, unapplied remediation is stored in the `Current` attribute. If you are satisfied with the new version, remove the `Outdated` field. If you want to keep the updated content, remove the `Current` and `Outdated` attributes.
 
 2.  Apply the newer version of the remediation:
 
@@ -439,9 +517,11 @@ The Compliance Operator does not automatically resolve dependency issues that ca
     $ oc get -n openshift-compliance complianceremediations workers-scan-no-empty-passwords
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -450,15 +530,24 @@ The Compliance Operator does not automatically resolve dependency issues that ca
     workers-scan-no-empty-passwords   Applied
     ```
 
+    </div>
+
 4.  Verify that the nodes apply the newer remediation version and reboot.
+
+</div>
 
 # Unapply a remediation
 
 You can unapply a remediation that was previously applied to roll back a change when you need to revert it.
 
-<div class="important">
+> [!IMPORTANT]
+> The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
 
-The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -472,15 +561,22 @@ The Compliance Operator does not automatically resolve dependency issues that ca
 
 2.  Verify that the remediation status has changed to `NotApplied` and the composite `MachineConfig` object is re-rendered to not include the remediation.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > All affected nodes with the remediation will be rebooted.
 
-    All affected nodes with the remediation will be rebooted.
-
-    </div>
+</div>
 
 # Remove a KubeletConfig remediation
 
 `KubeletConfig` remediations are included in node-level profiles. To remove a `KubeletConfig` remediation, you must manually remove it from the `KubeletConfig` objects.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Locate the `scan-name` and compliance check for the `one-rule-tp-node-master-kubelet-eviction-thresholds-set-hard-imagefs-available` remediation:
 
@@ -488,9 +584,11 @@ The Compliance Operator does not automatically resolve dependency issues that ca
     $ oc -n openshift-compliance get remediation \ one-rule-tp-node-master-kubelet-eviction-thresholds-set-hard-imagefs-available -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -532,17 +630,16 @@ The Compliance Operator does not automatically resolve dependency issues that ca
       applicationState: Applied
     ```
 
+    </div>
+
     where:
 
     - `metadata.labels.compliance.openshift.io/scan-name` specifies the scan name of the remediation.
 
     - `spec.current.object.spec.kubeletConfig.evictionHard.imagefs.available` specifies the remediation that was added to the `KubeletConfig` objects.
 
-      <div class="note">
-
-      If the remediation invokes an `evictionHard` kubelet configuration, you must specify all of the `evictionHard` parameters: `memory.available`, `nodefs.available`, `nodefs.inodesFree`, `imagefs.available`, and `imagefs.inodesFree`. If you do not specify all parameters, only the specified parameters are applied and the remediation will not function properly.
-
-      </div>
+      > [!NOTE]
+      > If the remediation invokes an `evictionHard` kubelet configuration, you must specify all of the `evictionHard` parameters: `memory.available`, `nodefs.available`, `nodefs.inodesFree`, `imagefs.available`, and `imagefs.inodesFree`. If you do not specify all parameters, only the specified parameters are applied and the remediation will not function properly.
 
 2.  Remove the remediation:
 
@@ -561,9 +658,11 @@ The Compliance Operator does not automatically resolve dependency issues that ca
         --selector compliance.openshift.io/scan-name=one-rule-tp-node-master
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -572,33 +671,28 @@ The Compliance Operator does not automatically resolve dependency issues that ca
         compliance-operator-kubelet-master   2m34s
         ```
 
+        </div>
+
     3.  Manually remove the remediation, `imagefs.available: 10%`, from the `KubeletConfig` object:
 
         ``` terminal
         $ oc edit -n openshift-compliance KubeletConfig compliance-operator-kubelet-master
         ```
 
-        <div class="important">
+        > [!IMPORTANT]
+        > All affected nodes with the remediation will be rebooted.
 
-        All affected nodes with the remediation will be rebooted.
+        > [!NOTE]
+        > You must also exclude the rule from any scheduled scans in your tailored profiles that auto-applies the remediation, otherwise, the remediation will be re-applied during the next scheduled scan.
 
-        </div>
-
-        <div class="note">
-
-        You must also exclude the rule from any scheduled scans in your tailored profiles that auto-applies the remediation, otherwise, the remediation will be re-applied during the next scheduled scan.
-
-        </div>
+</div>
 
 # Inconsistent ComplianceScan
 
 The `ScanSetting` object lists the node roles that the compliance scans generated from the `ScanSetting` or `ScanSettingBinding` objects would scan. Each node role usually maps to a machine config pool.
 
-<div class="important">
-
-All machines in a machine config pool are expected to be identical and all scan results from the nodes in a pool should be identical.
-
-</div>
+> [!IMPORTANT]
+> All machines in a machine config pool are expected to be identical and all scan results from the nodes in a pool should be identical.
 
 If a compliance scan results in an `INCONSISTENT` result, re-run the compliance scan to get a consistent result by annotating the scan with the `compliance.openshift.io/rescan=` option.
 
@@ -608,12 +702,22 @@ Because the number of machines in a pool might be quite large, the Compliance Op
 
 If possible, a remediation is still created so that the cluster can converge to a compliant status. However, this might not always be possible and correcting the difference between nodes must be done manually.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Re-run the compliance scan to get a consistent result by annotating the scan with the `compliance.openshift.io/rescan=` option:
 
   ``` terminal
   $ oc -n openshift-compliance \
   annotate compliancescans/rhcos4-e8-worker compliance.openshift.io/rescan=
   ```
+
+</div>
 
 # Additional resources
 

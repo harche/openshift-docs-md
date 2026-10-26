@@ -30,7 +30,25 @@ You must create your own Octavia load balancer to use it for application network
 
 If you want to use multiple API load balancers, create an Octavia load balancer and then configure your cluster to use it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Octavia is available on your Red Hat OpenStack Platform (RHOSP) deployment.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the command-line interface (CLI), create an Octavia load balancer that uses the Amphora driver:
 
@@ -46,11 +64,8 @@ If you want to use multiple API load balancers, create an Octavia load balancer 
     $ openstack loadbalancer listener create --name API_OCP_CLUSTER_6443 --protocol HTTPS--protocol-port 6443 API_OCP_CLUSTER
     ```
 
-    <div class="note">
-
-    To view the status of the load balancer, enter `openstack loadbalancer list`.
-
-    </div>
+    > [!NOTE]
+    > To view the status of the load balancer, enter `openstack loadbalancer list`.
 
 3.  Create a pool that uses the round-robin algorithm and has session persistence enabled:
 
@@ -87,17 +102,16 @@ If you want to use multiple API load balancers, create an Octavia load balancer 
 
     Your cluster now uses Octavia for load balancing.
 
+</div>
+
 # Services for a user-managed load balancer
 
 You can configure an OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP) to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Configuring a user-managed load balancer depends on your vendor’s load balancer.
-
-The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
-
-</div>
+> [!IMPORTANT]
+> Configuring a user-managed load balancer depends on your vendor’s load balancer.
+>
+> The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
 
 Red Hat supports the following services for a user-managed load balancer:
 
@@ -130,11 +144,8 @@ The following configuration options are supported for user-managed load balancer
 
 - Target all IP addresses on a subnet. This configuration can reduce the effort required to maintain the load balancer, because you can create and destroy nodes within those networks without reconfiguring the load balancer targets. If you deploy your ingress pods by using a machine set on a smaller network, such as a `/27` or `/28`, you can simplify your load balancer targets.
 
-  <div class="tip">
-
-  You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
-
-  </div>
+  > [!TIP]
+  > You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
 
 Before you configure a user-managed load balancer for your OpenShift Container Platform cluster, consider the following information:
 
@@ -152,27 +163,25 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 You can configure an OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP) to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
-
-</div>
+> [!IMPORTANT]
+> Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
 
 Read the following prerequisites that apply to the service that you want to configure for your user-managed load balancer.
 
-<div class="note">
+> [!NOTE]
+> MetalLB, which runs on a cluster, functions as a user-managed load balancer.
 
-MetalLB, which runs on a cluster, functions as a user-managed load balancer.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Prerequisites**
+Prerequisites
 
 </div>
 
 The following list details OpenShift API prerequisites:
+
+</div>
 
 - You defined a front-end IP address.
 
@@ -234,11 +243,21 @@ Timeout: 5
 Interval: 10
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure the HAProxy Ingress Controller, so that you can enable access to the cluster from your load balancer on ports 6443, 22623, 443, and 80. Depending on your needs, you can specify the IP address of a single subnet or IP addresses from multiple subnets in your HAProxy configuration.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example HAProxy configuration with one listed subnet**
+    <div class="title">
+
+    Example HAProxy configuration with one listed subnet
 
     </div>
 
@@ -294,9 +313,13 @@ Interval: 10
     # ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example HAProxy configuration with multiple listed subnets**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example HAProxy configuration with multiple listed subnets
 
     </div>
 
@@ -351,6 +374,8 @@ Interval: 10
           server bootstrap 192.168.80.89:5050 check inter 1s
     # ...
     ```
+
+    </div>
 
 2.  Use the `curl` CLI command to verify that the user-managed load balancer and its resources are operational:
 
@@ -438,11 +463,8 @@ Interval: 10
     A record pointing to Load Balancer Front End
     ```
 
-    <div class="important">
-
-    DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
-
-    </div>
+    > [!IMPORTANT]
+    > DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
 
 4.  For your OpenShift Container Platform cluster to use the user-managed load balancer, you must specify the following configuration in your cluster’s `install-config.yaml` file:
 
@@ -470,7 +492,15 @@ Interval: 10
     `<ingress_ip>`
     Specifies the user-managed load balancer’s public IP address for ingress traffic. Mandatory parameter.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Use the `curl` CLI command to verify that the user-managed load balancer and DNS record configuration are operational:
 
@@ -556,17 +586,29 @@ Interval: 10
         cache-control: private
         ```
 
+</div>
+
 # Specifying a floating IP address in the Ingress Controller
 
 To establish external access to your OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP), use the automatically assigned floating IP address. The floating IP address is associated with your Ingress port.
 
 You might want to precreate a floating IP address before updating your DNS records and cluster deployment. In this situation, you can define a floating IP address to the Ingress Controller. You can do this regardless of whether you are using Octavia or a user-managed cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the Ingress Controller custom resource (CR) file with the floating IPs:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Ingress config `sample-ingress.yaml`**
+    <div class="title">
+
+    Example Ingress config `sample-ingress.yaml`
 
     </div>
 
@@ -587,6 +629,8 @@ You might want to precreate a floating IP address before updating your DNS recor
             openstack:
               floatingIP: <ingress_port_IP>
     ```
+
+    </div>
 
     where:
 
@@ -616,8 +660,20 @@ You might want to precreate a floating IP address before updating your DNS recor
 
 4.  Continue with creating your OpenShift Container Platform cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Confirm that the load balancer was successfully provisioned by checking the `IngressController` conditions using the following command:
 
   ``` terminal
   $ oc get ingresscontroller -n openshift-ingress-operator <name> -o jsonpath="{.status.conditions}" | yq -PC
   ```
+
+</div>

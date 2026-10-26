@@ -24,6 +24,14 @@ The output for the hosted cluster contains the following content:
 
 Although the output does not contain any secret objects from the cluster, it can contain references to the names of secrets.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have `cluster-admin` access to the management cluster.
 
 - You need the `name` value for the `HostedCluster` resource and the namespace where the CR is deployed.
@@ -34,7 +42,15 @@ Although the output does not contain any secret objects from the cluster, it can
 
 - You must ensure that the `kubeconfig` file is loaded and is pointing to the management cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To gather the output for troubleshooting, enter the following command:
 
@@ -52,9 +68,19 @@ Although the output does not contain any secret objects from the cluster, it can
 
   - If you want to save the results of the command to a compressed file, specify the `--dest-dir=NAME` parameter and replace `NAME` with the name of the directory where you want to save the results.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the hosted control planes command-line interface](../hosted_control_planes/hcp-prepare/hcp-cli.xml#hcp-cli)
+
+</div>
 
 # Gathering OpenShift Container Platform data for a hosted cluster
 
@@ -63,6 +89,14 @@ You can gather OpenShift Container Platform debugging information for a hosted c
 ## Gathering data for a hosted cluster by using the CLI
 
 You can gather OpenShift Container Platform debugging information for a hosted cluster by using the command-line interface (CLI).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have `cluster-admin` access to the management cluster.
 
@@ -73,6 +107,16 @@ You can gather OpenShift Container Platform debugging information for a hosted c
 - You must have the OpenShift CLI (`oc`) installed.
 
 - You must ensure that the `kubeconfig` file is loaded and is pointing to the management cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate the `kubeconfig` file by entering the following command:
 
@@ -93,9 +137,19 @@ You can gather OpenShift Container Platform debugging information for a hosted c
     $ oc adm must-gather
     ```
 
+</div>
+
 ## Gathering data for a hosted cluster by using the web console
 
 You can gather OpenShift Container Platform debugging information for a hosted cluster by using the multicluster engine Operator web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have `cluster-admin` access to the management cluster.
 
@@ -106,6 +160,16 @@ You can gather OpenShift Container Platform debugging information for a hosted c
 - You must have the OpenShift CLI (`oc`) installed.
 
 - You must ensure that the `kubeconfig` file is loaded and is pointing to the management cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, select **All Clusters** and select the cluster you want to troubleshoot.
 
@@ -119,9 +183,19 @@ You can gather OpenShift Container Platform debugging information for a hosted c
     $ oc adm must-gather
     ```
 
+</div>
+
 # Entering the must-gather command in a disconnected environment
 
 When you need to troubleshoot an issue in a disconnected environment, you can gather information by running the `must-gather` command. The command generates output for the management cluster and the hosted cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a disconnected environment, mirror the Red Hat Operator catalog images into their mirror registry. For more information, see "Install on disconnected networks".
 
@@ -138,7 +212,19 @@ When you need to troubleshoot an issue in a disconnected environment, you can ga
       --dest-dir=./data
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#install-on-disconnected-networks)
+
+</div>
 
 # Troubleshoot hosted clusters on OpenShift Virtualization
 
@@ -147,6 +233,14 @@ When you troubleshoot a hosted cluster on OpenShift Virtualization, start with t
 ## Troubleshooting HostedCluster resource stuck in a partial state
 
 If a hosted control plane is not coming fully online because a `HostedCluster` resource is pending, identify the problem by checking prerequisites, resource conditions, and node and Operator status.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Ensure that you meet all of the prerequisites for a hosted cluster on OpenShift Virtualization.
 
@@ -158,9 +252,19 @@ If a hosted control plane is not coming fully online because a `HostedCluster` r
 
   - View the output of the `oc get nodes` command to ensure that worker nodes are ready.
 
+</div>
+
 ## Identifying why no compute nodes are registered
 
 If a hosted control plane is not coming fully online because the hosted control plane has no compute nodes registered, identify the problem by checking the status of various parts of the hosted control plane.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the `HostedCluster` and `NodePool` conditions for failures that indicate what the problem might be.
 
@@ -188,13 +292,31 @@ If a hosted control plane is not coming fully online because the hosted control 
 
 - If the ignition configuration was applied but the VM is still not registering as a node, see "Identifying the problem: Access the VM console logs" to learn how to access the VM console logs during startup.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Identifying the problem: Access the VM console logs](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#identifying-vm-console-logs)
+
+</div>
 
 ## Identifying why compute nodes are not ready
 
 During cluster creation, nodes enter the `NotReady` state temporarily while the networking stack is rolled out. This part of the process is normal. However, if this part of the process takes longer than 15 minutes, identify the problem by investigating the node object and pods.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enter the following command to view the conditions on the node object and determine why the node is not ready:
 
@@ -208,9 +330,19 @@ During cluster creation, nodes enter the `NotReady` state temporarily while the 
     $ oc get pods -A --field-selector=status.phase!=Running,status,phase!=Succeeded
     ```
 
+</div>
+
 ## Identifying why ingress and console cluster Operators are not coming online
 
 If a hosted control plane is not coming fully online because the Ingress and console cluster Operators are not online, check the wildcard DNS routes and load balancer.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If the cluster uses the default Ingress behavior, enter the following command to ensure that wildcard DNS routes are enabled on the OpenShift Container Platform cluster that the virtual machines (VMs) are hosted on:
 
@@ -226,9 +358,19 @@ If a hosted control plane is not coming fully online because the Ingress and con
 
   - Ensure that the wildcard DNS entry is targeting the load balancer IP address.
 
+</div>
+
 ## Identifying why load balancer services for the hosted cluster are unavailable
 
 If a hosted control plane is not coming fully online because the load balancer services are not becoming available, check events, details, and the Kubernetes Cluster Configuration Manager (KCCM) pod.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Look for events and details that are associated with the load balancer service within the hosted cluster.
 
@@ -239,9 +381,19 @@ If a hosted control plane is not coming fully online because the load balancer s
     -l app=cloud-controller-manager
   ```
 
+</div>
+
 ## Identifying why hosted cluster PVCs are not available
 
 If a hosted control plane is not coming fully online because the persistent volume claims (PVCs) for a hosted cluster are not available, check the PVC events and details, and component logs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Look for events and details that are associated with the PVC to understand which errors are occurring.
 
@@ -258,15 +410,35 @@ If a hosted control plane is not coming fully online because the persistent volu
   $ oc get pods -n <hcp namespace> -l app=kubevirt-csi-driver
   ```
 
+</div>
+
 ## Identifying why VM nodes are not joining the cluster
 
 If a hosted control plane is not coming fully online because the virtual machine (VM) nodes are not correctly joining the cluster, access the VM console logs.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To access the VM console logs, complete the steps in "How to get serial console logs for VMs part of OpenShift Virtualization Hosted Control Plane clusters".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [How to get serial console logs for VMs part of OpenShift Virtualization Hosted Control Plane clusters (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7037705)
+
+</div>
 
 ## Resolving RHCOS image mirroring failures
 
@@ -275,6 +447,14 @@ For hosted control planes on OpenShift Virtualization in a disconnected environm
 When you create your first hosted cluster, the Kubevirt virtual machine does not boot, because the boot image is not available in the internal registry.
 
 To resolve this issue, manually mirror the RHCOS image to the internal registry.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the internal registry name by running the following command:
 
@@ -338,6 +518,8 @@ To resolve this issue, manually mirror the RHCOS image to the internal registry.
     $ oc apply -f rhcos-boot-kubevirt.yaml
     ```
 
+</div>
+
 ## Returning non-bare-metal clusters to the late binding pool
 
 If you are using late binding managed clusters without `BareMetalHosts`, you must complete additional manual steps to delete a late binding cluster and return the nodes back to the Discovery ISO.
@@ -346,13 +528,33 @@ For late binding managed clusters without `BareMetalHosts`, removing cluster inf
 
 To unbind the non-bare-metal nodes with late binding, complete the following steps.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Remove the cluster information. For more information, see "Removing a cluster from management".
 
 2.  Clean the root disks.
 
 3.  Reboot manually with the Discovery ISO.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#remove-managed-cluster)
+
+</div>
 
 # Troubleshooting hosted clusters on bare metal
 
@@ -361,6 +563,14 @@ If you encounter issues with hosted control planes on bare metal, review the tro
 ## Determining why nodes are not added to a hosted cluster on bare metal
 
 When you scale up a hosted cluster with nodes that were provisioned by using Assisted Installer, the host fails to pull the ignition with a URL that contains port `22642`. That URL is invalid for hosted control planes and indicates that an issue exists with the cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To determine the issue, review the assisted-service logs by entering the following command:
 
@@ -382,19 +592,36 @@ When you scale up a hosted cluster with nodes that were provisioned by using Ass
 
 3.  To fix this issue, see "Add the pull secret to the namespace" in the multicluster engine for Kubernetes Operator documentation.
 
-    <div class="note">
+    > [!NOTE]
+    > To use hosted control planes, you must have multicluster engine Operator installed, either as a standalone Operator or as part of Red Hat Advanced Cluster Management. Because the Operator has a close association with Red Hat Advanced Cluster Management, the documentation for the Operator is published within that product’s documentation. Even if you do not use Red Hat Advanced Cluster Management, the parts of its documentation that cover multicluster engine Operator are relevant to hosted control planes.
 
-    To use hosted control planes, you must have multicluster engine Operator installed, either as a standalone Operator or as part of Red Hat Advanced Cluster Management. Because the Operator has a close association with Red Hat Advanced Cluster Management, the documentation for the Operator is published within that product’s documentation. Even if you do not use Red Hat Advanced Cluster Management, the parts of its documentation that cover multicluster engine Operator are relevant to hosted control planes.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Add the pull secret to the namespace](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html-single/clusters/index#on-prem-creating-your-cluster-with-the-cli-pull-secret)
+
+</div>
 
 # Restarting hosted control plane components
 
 If you are an administrator for hosted control planes, you can use the `hypershift.openshift.io/restart-date` annotation to restart all control plane components for a particular `HostedCluster` resource.
 
 For example, you might need to restart control plane components for certificate rotation.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To restart a control plane, annotate the `HostedCluster` resource by entering the following command:
 
@@ -407,19 +634,22 @@ For example, you might need to restart control plane components for certificate 
 
   The control plane is restarted whenever the value of the annotation changes. The `date` command serves as the source of a unique string. The annotation is treated as a string, not a timestamp.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 After you restart a control plane, the following hosted control planes components are typically restarted:
 
-<div class="note">
-
-You might see some additional components restarting as a side effect of changes implemented by the other components.
-
 </div>
+
+> [!NOTE]
+> You might see some additional components restarting as a side effect of changes implemented by the other components.
 
 - catalog-operator
 
@@ -475,6 +705,14 @@ You might see some additional components restarting as a side effect of changes 
 
 If you are a cluster instance administrator, you can pause the reconciliation of a hosted cluster and hosted control plane. You might want to pause reconciliation when you back up and restore an etcd database or when you need to debug problems with a hosted cluster or hosted control plane.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To pause reconciliation for a hosted cluster and hosted control plane, populate the `pausedUntil` field of the `HostedCluster` resource.
 
     - To pause the reconciliation until a specific time, enter the following command:
@@ -510,6 +748,8 @@ If you are a cluster instance administrator, you can pause the reconciliation of
       --type=merge
     ```
 
+</div>
+
 # Resolving agent service failures for hosted control planes on IBM Z
 
 In some cases, agents might fail to join the cluster after booting the machines with the boot artifacts.
@@ -520,13 +760,23 @@ You can confirm this issue by checking the `agent.service` logs for the followin
 
 This issue occurs because image signature verification fails when no signature is present. As a workaround, you can disable signature verification by modifying the container policy.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add the `ignitionConfigOverride` field in the `InfraEnv` manifest to override the `/etc/containers/policy.json` file. This disables signature verification for container images.
 
 2.  Replace the base64-encoded content in the `ignitionConfigOverride` with the required `/etc/containers/policy.json` configuration according to your image registries. See the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -561,9 +811,13 @@ This issue occurs because image signature verification fails when no signature i
     }
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example `InfraEnv` manifest with `ignitionConfigOverride`**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example `InfraEnv` manifest with `ignitionConfigOverride`
 
     </div>
 
@@ -581,6 +835,10 @@ This issue occurs because image signature verification fails when no signature i
       ignitionConfigOverride: '{"ignition":{"version":"3.2.0"},"storage":{"files":[{"path":"/etc/containers/policy.json","mode":420,"overwrite":true,"contents":{"source":"data:text/plain;charset=utf-8;base64,ewogICAgImRlZmF1bHQiOiBbCiAgICAgICAgewogICAgICAgICAgICAidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIgogICAgICAgIH0KICAgIF0sCiAgICAidHJhbnNwb3J0cyI6CiAgICAgICAgewogICAgICAgICAgICAiZG9ja2VyLWRhZW1vbiI6CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgIiI6IFt7InR5cGUiOiJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dCiAgICAgICAgICAgICAgICB9CiAgICAgICAgfQp9"}}]}}'
     ```
 
+    </div>
+
+</div>
+
 # Known limitations for internal subnets for hosted clusters
 
 Several known limitations exist for internal subnets on hosted clusters.
@@ -597,6 +855,14 @@ Several known limitations exist for internal subnets on hosted clusters.
 
 When you try to configure the `ovnKubernetesConfig` object on a hosted cluster by using a different network type, such as `OpenShiftSDN`, an error occurs because hosted control planes works only with the `OVNKubernetes` network type.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Verify the network type of your hosted cluster by entering the following command:
 
   ``` terminal
@@ -604,9 +870,19 @@ When you try to configure the `ovnKubernetesConfig` object on a hosted cluster b
     -o jsonpath='{.spec.networking.networkType}'
   ```
 
+</div>
+
 ## Setting CIDR values in internal subnet fields
 
 If the `internalJoinSubnet` field and the `internalTransitSwitchSubnet` field are set to the same classless inter-domain routing (CIDR) values, an error occurs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Use different subnets for each field, as shown in the following example:
 
@@ -626,9 +902,19 @@ If the `internalJoinSubnet` field and the `internalTransitSwitchSubnet` field ar
   # ...
   ```
 
+</div>
+
 ## Ensuring a valid IPv4 CIDR format
 
 If you do not specify subnets in a valid classless inter-domain range (CIDR) format, an error occurs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Ensure that the CIDR format follows the following format:
 
@@ -644,9 +930,11 @@ If you do not specify subnets in a valid classless inter-domain range (CIDR) for
   `Y`
   is a value from `0` to `30`.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Valid examples**
+  <div class="title">
+
+  Valid examples
 
   </div>
 
@@ -655,9 +943,13 @@ If you do not specify subnets in a valid classless inter-domain range (CIDR) for
   192.168.1.0/24
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Invalid examples**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Invalid examples
 
   </div>
 
@@ -667,15 +959,29 @@ If you do not specify subnets in a valid classless inter-domain range (CIDR) for
   0.99.0.0/16
   ```
 
+  </div>
+
+</div>
+
 ## Avoiding an overlap between OVN subnets and CIDR values
 
 If the configured OVN subnets overlap with the machine classless inter-domain routing (CIDR), service CIDR, cluster network CIDR, or with each other, an error occurs.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Use subnets that do not overlap with any network CIDR. You can use a CIDR calculator to verify that no overlaps exist.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example of configuration with no overlaps**
+  <div class="title">
+
+  Example of configuration with no overlaps
 
   </div>
 
@@ -695,9 +1001,21 @@ If the configured OVN subnets overlap with the machine classless inter-domain ro
             internalTransitSwitchSubnet: "100.69.0.0/16"
   ```
 
+  </div>
+
+</div>
+
 ## Resolving a stuck OVN rollout
 
 After you change an existing configuration, the OVN component rollout might take a long time or encounter issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the status of the `ovnkube-node` DaemonSet rollout by entering the following command:
 
@@ -717,6 +1035,8 @@ After you change an existing configuration, the OVN component rollout might take
 
     If the rollout is stuck, you might need to revert the configuration change.
 
+</div>
+
 # Troubleshooting connectivity for hosted control planes
 
 By using connectivity metrics, you can diagnose whether any issues are related to connectivity from a hosted control plane to a data plane.
@@ -727,6 +1047,14 @@ To diagnose connectivity issues from a hosted control plane to the compute nodes
 
 If the status of the `DataPlaneConnectionAvailable` condition is `True`, the control plane can successfully reach the data plane nodes through the `konnectivity-agent` pods. If the status is `False`, take the following steps to determine why the control plane cannot reach the data plane.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check the network policies that might block the `Konnectivity` service traffic.
 
 2.  Review the firewall rules between the control plane and the data plane.
@@ -735,4 +1063,16 @@ If the status of the `DataPlaneConnectionAvailable` condition is `True`, the con
 
 4.  In the control plane, review the `Konnectivity` server deployment.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Connectivity monitoring for hosted control planes](../hosted_control_planes/hcp-observability.xml#hcp-connectivity-metrics_hcp-observability)
+
+</div>

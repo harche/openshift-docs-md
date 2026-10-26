@@ -18,17 +18,11 @@ Custom metadata is any label or annotation whose name is not managed by the Comp
 
 - Keys where the domain contains `k8s.io/` (such as `k8s.io/component` or `node.k8s.io/instance-type`)
 
-<div class="note">
+> [!NOTE]
+> Metadata that you set on `TailoredProfile`, `ScanSettingBinding`, or other orchestration resources is not propagated to individual `ComplianceCheckResult` objects. Attach metadata on the `Rule` or `CustomRule` that owns the check.
 
-Metadata that you set on `TailoredProfile`, `ScanSettingBinding`, or other orchestration resources is not propagated to individual `ComplianceCheckResult` objects. Attach metadata on the `Rule` or `CustomRule` that owns the check.
-
-</div>
-
-<div class="note">
-
-Custom metadata on `ComplianceRemediation` objects is not covered by this feature.
-
-</div>
+> [!NOTE]
+> Custom metadata on `ComplianceRemediation` objects is not covered by this feature.
 
 Profile bundle updates
 When a `ProfileBundle` refreshes profile content, the Operator merges user-defined annotations on `Rule` objects with parser-managed annotations so your keys remain while Operator and content fields stay current.
@@ -42,11 +36,29 @@ For more background on the enhancement, see Additional resources.
 
 You can attach custom labels and annotations to a `Rule` that Open Security Content Automation Protocol (OpenSCAP) evaluates, and verify that they are displayed on the aggregated `ComplianceCheckResult` after the next scan.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Compliance Operator 1.9.0 or later.
 
 - You have access to the `openshift-compliance` namespace (or the namespace where your rules and scans run).
 
 - You identified the `Rule` object name and the `ComplianceScan` that evaluates it.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add custom labels to the rule. Replace `<rule_name>` with your `Rule` object name, and adjust labels as needed with the following command:
 
@@ -104,13 +116,33 @@ You can attach custom labels and annotations to a `Rule` that Open Security Cont
 
     After the profile parser reconciles the `Rule`, your key should still be present.
 
+</div>
+
 # Adding custom labels and annotations to a CustomRule object
 
 For platform checks implemented as a `CustomRule` object and evaluated by the Common Expression Language (CEL) scanner, define labels and annotations on the `CustomRule` metadata. The Compliance Operator copies non-reserved entries onto each generated `ComplianceCheckResult`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Compliance Operator 1.9.0 or later.
 
 - You use a `TailoredProfile` (or equivalent workflow) that enables your `CustomRule` for a CEL profile scan.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `CustomRule` object that includes your metadata in `metadata.labels` and `metadata.annotations`. The following example defines a platform CEL check; replace names, expressions, and metadata with values appropriate for your environment:
 
@@ -187,3 +219,5 @@ For platform checks implemented as a `CustomRule` object and evaluated by the Co
       -o jsonpath='{.metadata.annotations.internal-id}' \
       -n openshift-compliance
     ```
+
+</div>

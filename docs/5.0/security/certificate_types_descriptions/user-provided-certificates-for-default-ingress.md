@@ -16,11 +16,8 @@ Use user-provided default ingress certificates to allow applications on the defa
 
 Applications are usually exposed at `<route_name>.apps.<cluster_name>.<base_domain>`. The `<cluster_name>` and `<base_domain>` come from the installation config file. `<route_name>` is the host field of the route, if specified, or the route name. For example, `hello-openshift-default.apps.username.devcluster.openshift.com`. `hello-openshift` is the name of the route and the route is in the default namespace. You might want clients to access the applications without distributing cluster-managed CA certificates to the clients. Cluster administrators must set a custom default certificate when serving application content.
 
-<div class="warning">
-
-The Ingress Operator generates a default certificate for an `IngressController` CR to serve as a placeholder until you configure a custom default certificate. Do not use Operator-generated default certificates in production clusters.
-
-</div>
+> [!WARNING]
+> The Ingress Operator generates a default certificate for an `IngressController` CR to serve as a placeholder until you configure a custom default certificate. Do not use Operator-generated default certificates in production clusters.
 
 ## Location
 

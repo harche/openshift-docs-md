@@ -10,11 +10,8 @@ OpenShift Container Platform administrators can control the level of overcommit 
 
 Requests and limits enable administrators to allow and manage the overcommitment of resources on a node. The scheduler uses requests for scheduling your container and providing a minimum service guarantee. Limits constrain the amount of compute resource that may be consumed on your node. In conjunction with a per-project `LimitRange` object specifying limits and defaults, this adjusts the container limit and request to achieve the desired level of overcommit.
 
-<div class="note">
-
-That these overrides have no effect if no limits have been set on containers. Create a `LimitRange` object with default limits, per individual project, or in the project template, to ensure that the overrides apply.
-
-</div>
+> [!NOTE]
+> That these overrides have no effect if no limits have been set on containers. Create a `LimitRange` object with default limits, per individual project, or in the project template, to ensure that the overrides apply.
 
 After these overrides, the container limits and requests must still be validated by any `LimitRange` object in the project. It is possible, for example, for developers to specify a limit close to the minimum limit, and have the request then be overridden below the minimum limit, causing the pod to be forbidden. This unfortunate user experience should be addressed with future work, but for now, configure this capability and `LimitRange` objects with caution.
 
@@ -34,9 +31,11 @@ You can view the current setting by running the following commands on your nodes
 $ sysctl -a |grep commit
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -46,13 +45,17 @@ vm.overcommit_memory = 0
 #...
 ```
 
+</div>
+
 ``` terminal
 $ sysctl -a |grep panic
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -62,11 +65,10 @@ vm.panic_on_oom = 0
 #...
 ```
 
-<div class="note">
-
-The previous commands should already be set on nodes, so no further action is required.
-
 </div>
+
+> [!NOTE]
+> The previous commands should already be set on nodes, so no further action is required.
 
 You can also perform the following configurations for each node:
 

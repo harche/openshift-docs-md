@@ -6,19 +6,21 @@ To control when OpenShift Container Platform pulls container images from registr
 
 The following table lists the possible values for the `imagePullPolicy` parameter:
 
-| Value          | Description                                                   |
-|----------------|---------------------------------------------------------------|
-| `Always`       | Always pull the image.                                        |
+| Value | Description |
+|----|----|
+| `Always` | Always pull the image. |
 | `IfNotPresent` | Only pull the image if it does not already exist on the node. |
-| `Never`        | Never pull the image.                                         |
+| `Never` | Never pull the image. |
 
 `imagePullPolicy` values
 
 The following example sets the `imagePullPolicy` parameter to `IfNotPresent` for the image tagged `v1.2.3`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `imagePullPolicy` configuration**
+<div class="title">
+
+Example `imagePullPolicy` configuration
 
 </div>
 
@@ -38,6 +40,8 @@ spec:
         - containerPort: 8080
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.containers.image`
@@ -50,7 +54,7 @@ Specifies the policy to use. In this example, the policy is set to `IfNotPresent
 
 When you omit the `imagePullPolicy` parameter, OpenShift Container Platform automatically determines the policy based on the image tag. This default behavior ensures that the `latest` tag always pulls the newest image, while specific version tags use locally cached images when available to improve efficiency.
 
-| Image tag                                                     | `imagePullPolicy` setting | Behavior                                                                                                                                                 |
-|---------------------------------------------------------------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `latest`                                                      | `Always`                  | Always pulls the image. This policy helps ensure that the container always uses the latest version of the image.                                         |
-| Any other tag (for example, `v1.2.3`, `stable`, `production`) | `IfNotPresent`            | Pull only if necessary. This policy uses the locally cached version of the image if it exists on the node, avoiding unnecessary pulls from the registry. |
+| Image tag | `imagePullPolicy` setting | Behavior |
+|----|----|----|
+| `latest` | `Always` | Always pulls the image. This policy helps ensure that the container always uses the latest version of the image. |
+| Any other tag (for example, `v1.2.3`, `stable`, `production`) | `IfNotPresent` | Pull only if necessary. This policy uses the locally cached version of the image if it exists on the node, avoiding unnecessary pulls from the registry. |

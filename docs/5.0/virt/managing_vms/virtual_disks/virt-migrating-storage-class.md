@@ -12,7 +12,25 @@ To move a VM disk to a new storage class, you create a migration plan. The migra
 
 Cluster administrators must grant users permission to perform storage migrations. Permissions to perform storage migrations are not part of the administrative or editing roles in the cluster by default.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have cluster administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  (Optional) To assign the user single namespace storage migration permissions, run the following command:
 
@@ -49,9 +67,19 @@ Cluster administrators must grant users permission to perform storage migrations
     \<user_name\>
     The user to assign the storage migration permission.
 
+</div>
+
 # Migrating VM disks to a different storage class by using the web console
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When migrating a running VM, the VM operation is not interrupted and the data on the migrated disks remains accessible.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -91,8 +119,18 @@ You can migrate one or more disks attached to a virtual machine (VM) to a differ
 
 10. (Optional) Click **View storage migrations** to view all storage migration plans.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  From the **VirtualMachine details** page, navigate to **Configuration** → **Storage**.
 
 2.  Verify that all disks have the expected storage class listed in the **Storage class** column.
+
+</div>

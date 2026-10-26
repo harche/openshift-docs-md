@@ -6,11 +6,8 @@ A device plugin is a gRPC service running on nodes that manages specific hardwar
 
 The device plugin provides a consistent and portable solution to consume hardware devices across clusters. The device plugin provides support for these devices through an extension mechanism, which makes these devices available to Containers, provides health checks of these devices, and securely shares them.
 
-<div class="important">
-
-OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
 
 A device plugin is a gRPC service running on the nodes (external to the `kubelet`) that is responsible for managing specific hardware resources. Any device plugin must support following remote procedure calls (RPCs):
 
@@ -50,11 +47,8 @@ service DevicePlugin {
 
 - Kubernetes device plugin for IBM® Crypto Express (CEX) cards
 
-<div class="note">
-
-For easy device plugin reference implementation, there is a stub device plugin in the Device Manager code: ***vendor/k8s.io/kubernetes/pkg/kubelet/cm/deviceplugin/device_plugin_stub.go***.
-
-</div>
+> [!NOTE]
+> For easy device plugin reference implementation, there is a stub device plugin in the Device Manager code: ***vendor/k8s.io/kubernetes/pkg/kubelet/cm/deviceplugin/device_plugin_stub.go***.
 
 ## Methods for deploying a device plugin
 
@@ -66,7 +60,13 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 - More specific details regarding deployment steps can be found with each device plugin implementation.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Nvidia GPU device plugin for COS-based operating system](https://github.com/GoogleCloudPlatform/Container-engine-accelerators/tree/master/cmd/nvidia_gpu)
 
@@ -78,6 +78,8 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 - [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
 
+</div>
+
 # Understand the Device Manager
 
 Device Manager advertises specialized node hardware resources through device plugins, enabling pods to consume hardware devices without requiring upstream code changes.
@@ -86,11 +88,8 @@ Device Manager provides a mechanism for advertising specialized node hardware re
 
 You can advertise specialized hardware without requiring any upstream code changes.
 
-<div class="important">
-
-OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
 
 Device Manager advertises devices as **Extended Resources**. User pods can consume devices, advertised by Device Manager, using the same **Limit/Request** mechanism, which is used for requesting any other **Extended Resource**.
 
@@ -110,6 +109,14 @@ Enable Device Manager to implement a device plugin to advertise specialized hard
 
 Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Obtain the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure by entering the following command. Perform one of the following steps:
 
     1.  View the machine config:
@@ -124,9 +131,11 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         # oc describe machineconfig 00-worker
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -136,13 +145,17 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         Labels:       machineconfiguration.openshift.io/role=worker
         ```
 
+        </div>
+
         `machineconfiguration.openshift.io` is the label required for the Device Manager.
 
 2.  Create a custom resource (CR) for your configuration change.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample configuration for a Device Manager CR**
+    <div class="title">
+
+    Sample configuration for a Device Manager CR
 
     </div>
 
@@ -159,6 +172,8 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         feature-gates:
           - DevicePlugins=true
     ```
+
+    </div>
 
     where:
 
@@ -177,9 +192,11 @@ Device Manager provides a mechanism for advertising specialized node hardware re
     $ oc create -f devicemgr.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -187,4 +204,8 @@ Device Manager provides a mechanism for advertising specialized node hardware re
     kubeletconfig.machineconfiguration.openshift.io/devicemgr created
     ```
 
+    </div>
+
 4.  Ensure that Device Manager was actually enabled by confirming that ***/var/lib/kubelet/device-plugins/kubelet.sock*** is created on the node. This is the UNIX domain socket on which the Device Manager gRPC server listens for new plugin registrations. This sock file is created when the Kubelet is started only if Device Manager is enabled.
+
+</div>

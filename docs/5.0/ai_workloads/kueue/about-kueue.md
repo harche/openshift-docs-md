@@ -6,11 +6,8 @@ You can use Red Hat build of Kueue to manage when jobs in your Kubernetes clust
 
 Red Hat build of Kueue can determine when a job waits, is admitted to start by creating pods, or should be *preempted*, meaning that active pods for that job are deleted.
 
-<div class="note">
-
-In the context of Red Hat build of Kueue, a job can be defined as a one-time or on-demand task that runs to completion.
-
-</div>
+> [!NOTE]
+> In the context of Red Hat build of Kueue, a job can be defined as a one-time or on-demand task that runs to completion.
 
 Red Hat build of Kueue is based on the Kueue open source project.
 

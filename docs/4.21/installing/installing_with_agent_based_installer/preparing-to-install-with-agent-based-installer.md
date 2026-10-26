@@ -19,11 +19,8 @@ As an OpenShift Container Platform user, you can leverage the advantages of the 
 
 The Agent-based Installer uses a bootable ISO that contains the Assisted discovery agent and the Assisted Service. Both are required to perform the cluster installation, but the Assisted Service runs on only one of the hosts.
 
-<div class="note">
-
-Currently, ISO boot support on IBM Z® (`s390x`) is available only for Red Hat Enterprise Linux (RHEL) KVM, which provides the flexibility to choose either PXE or ISO-based installation. For installations with z/VM and Logical Partition (LPAR), only PXE boot is supported.
-
-</div>
+> [!NOTE]
+> Currently, ISO boot support on IBM Z® (`s390x`) is available only for Red Hat Enterprise Linux (RHEL) KVM, which provides the flexibility to choose either PXE or ISO-based installation. For installations with z/VM and Logical Partition (LPAR), only PXE boot is supported.
 
 The `openshift-install agent create image` subcommand generates an ephemeral ISO based on the inputs that you provide. You can choose to provide inputs through the following manifests:
 
@@ -78,11 +75,11 @@ You can install a disconnected OpenShift Container Platform cluster through the 
 
 The following cluster resources are recommended for each topology:
 
-| Topology            | Number of control plane nodes | Number of compute nodes | vCPU    | Memory       | Storage |
-|---------------------|-------------------------------|-------------------------|---------|--------------|---------|
-| Single-node cluster | 1                             | 0                       | 8 vCPUs | 16 GB of RAM | 120 GB  |
-| Compact cluster     | 3                             | 0 or 1                  | 8 vCPUs | 16 GB of RAM | 120 GB  |
-| HA cluster          | 3 to 5                        | 2 and above             | 8 vCPUs | 16 GB of RAM | 120 GB  |
+| Topology | Number of control plane nodes | Number of compute nodes | vCPU | Memory | Storage |
+|----|----|----|----|----|----|
+| Single-node cluster | 1 | 0 | 8 vCPUs | 16 GB of RAM | 120 GB |
+| Compact cluster | 3 | 0 or 1 | 8 vCPUs | 16 GB of RAM | 120 GB |
+| HA cluster | 3 to 5 | 2 and above | 8 vCPUs | 16 GB of RAM | 120 GB |
 
 Recommended cluster resources
 
@@ -100,17 +97,20 @@ In the `install-config.yaml` file, specify the platform on which to perform the 
 
 - `none`
 
-  <div class="important">
+  > [!IMPORTANT]
+  > For platform `none`:
+  >
+  > - The `none` option requires the provision of DNS name resolution and load balancing infrastructure in your cluster. See *Requirements for a cluster using the platform "none" option* in the "Additional resources" section for more information.
+  >
+  > - See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
 
-  For platform `none`:
+<div>
 
-  - The `none` option requires the provision of DNS name resolution and load balancing infrastructure in your cluster. See *Requirements for a cluster using the platform "none" option* in the "Additional resources" section for more information.
+<div class="title">
 
-  - See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
+Additional resources
 
-  </div>
-
-<!-- -->
+</div>
 
 - [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)
 
@@ -122,19 +122,18 @@ In the `install-config.yaml` file, specify the platform on which to perform the 
 
 - [About a local arbiter node](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_preparing-to-install-with-agent-based-installer)
 
+</div>
+
 # About FIPS compliance
 
 For many OpenShift Container Platform customers, regulatory readiness, or compliance, on some level is required before any systems can be put into production. That regulatory readiness can be imposed by national standards, industry standards or the organization’s corporate governance framework.
 
 Federal Information Processing Standards (FIPS) compliance is one of the most critical components required in highly secure environments to ensure that only supported cryptographic technologies are allowed on nodes.
 
-<div class="important">
-
-To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-
-When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-</div>
+> [!IMPORTANT]
+> To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+>
+> When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
 # Configure FIPS through the Agent-based Installer
 
@@ -142,19 +141,18 @@ During a cluster deployment, the Federal Information Processing Standards (FIPS)
 
 For Red Hat Enterprise Linux (RHEL) machines, you must enable FIPS mode when you install the operating system on the machines that you plan to use as worker machines.
 
-<div class="important">
-
-OpenShift Container Platform requires the use of a FIPS-capable installation binary to install a cluster in FIPS mode.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform requires the use of a FIPS-capable installation binary to install a cluster in FIPS mode.
 
 You can enable FIPS mode through the preferred method of `install-config.yaml` and `agent-config.yaml` files:
 
 You must set value of the `fips` field to `true` in the `install-config.yaml` file:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample install-config.yaml.file**
+<div class="title">
+
+Sample install-config.yaml.file
 
 </div>
 
@@ -166,17 +164,18 @@ metadata:
 fips: true
 ```
 
-<div class="important">
-
-To enable FIPS mode on IBM Z® clusters, you must also enable FIPS in either the `.parm` file or using `virt-install` as outlined in the procedures for manually adding IBM Z® agents.
-
 </div>
+
+> [!IMPORTANT]
+> To enable FIPS mode on IBM Z® clusters, you must also enable FIPS in either the `.parm` file or using `virt-install` as outlined in the procedures for manually adding IBM Z® agents.
 
 If you are using the optional GitOps ZTP manifests, you must set the value of `fips` as `true` in the `agent-install.openshift.io/install-config-overrides` field in the `agent-cluster-install.yaml` file:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample agent-cluster-install.yaml file**
+<div class="title">
+
+Sample agent-cluster-install.yaml file
 
 </div>
 
@@ -190,19 +189,28 @@ metadata:
   namespace: sno-cluster-test
 ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OpenShift Security Guide Book](https://access.redhat.com/articles/5059881)
 
 - [Support for FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
+
+</div>
 
 # Host configuration
 
 You can make additional configurations for each host on the cluster in the `agent-config.yaml` file, such as network configurations and root device hints.
 
-<div class="important">
-
-For each host you configure, you must specify which host you are configuring by providing the MAC address of an interface on the host.
-
-</div>
+> [!IMPORTANT]
+> For each host you configure, you must specify which host you are configuring by providing the MAC address of an interface on the host.
 
 ## Host roles
 
@@ -212,17 +220,16 @@ It is recommended to explicitly define roles for your hosts.
 
 The `rendezvousIP` must be assigned to a host with the `master` role. This can be done manually or by allowing the Agent-based Installer to assign the role.
 
-<div class="important">
+> [!IMPORTANT]
+> You do not need to explicitly define the `master` role for the rendezvous host, however you cannot create configurations that conflict with this assignment.
+>
+> For example, if you have 4 hosts with 3 of the hosts explicitly defined to have the `master` role, the last host that is automatically assigned the `worker` role during installation cannot be configured as the rendezvous host.
 
-You do not need to explicitly define the `master` role for the rendezvous host, however you cannot create configurations that conflict with this assignment.
+<div class="formalpara">
 
-For example, if you have 4 hosts with 3 of the hosts explicitly defined to have the `master` role, the last host that is automatically assigned the `worker` role during installation cannot be configured as the rendezvous host.
+<div class="title">
 
-</div>
-
-<div class="formalpara-title">
-
-**Sample agent-config.yaml file**
+Sample agent-config.yaml file
 
 </div>
 
@@ -255,6 +262,8 @@ hosts:
         macAddress: 00:ef:44:21:e6:a8
 ```
 
+</div>
+
 ## About root device hints
 
 The `rootDeviceHints` parameter enables the installation program to provision the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device.
@@ -268,56 +277,58 @@ The installation program examines the devices in the order it discovers them, an
 <col style="width: 75%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Subfield</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>deviceName</code></p></td>
 <td style="text-align: left;"><p>A string containing a Linux device name such as <code>/dev/vda</code> or <code>/dev/disk/by-path/</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>It is recommended to use the <code>/dev/disk/by-path/&lt;device_path&gt;</code> link to the storage location.</p>
 </div>
 <p>The hint must match the actual value exactly.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>hctl</code></p></td>
 <td style="text-align: left;"><p>A string containing a SCSI bus address like <code>0:0:0:0</code>. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>model</code></p></td>
 <td style="text-align: left;"><p>A string containing a vendor-specific device identifier. The hint can be a substring of the actual value.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>vendor</code></p></td>
 <td style="text-align: left;"><p>A string containing the name of the vendor or manufacturer of the device. The hint can be a sub-string of the actual value.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>serialNumber</code></p></td>
 <td style="text-align: left;"><p>A string containing the device serial number. The hint must match the actual value exactly.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>minSizeGigabytes</code></p></td>
 <td style="text-align: left;"><p>An integer representing the minimum size of the device in gigabytes.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>wwn</code></p></td>
 <td style="text-align: left;"><p>A string containing the unique storage identifier. The hint must match the actual value exactly. If you use the <code>udevadm</code> command to retrieve the <code>wwn</code> value, and the command outputs a value for <code>ID_WWN_WITH_EXTENSION</code>, then you must use this value to specify the <code>wwn</code> subfield.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>rotational</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the device should be a rotating disk (true) or not (false).</p></td>
 </tr>
 </tbody>
 </table>
 
-Subfields
+<div class="formalpara">
 
-<div class="formalpara-title">
+<div class="title">
 
-**Example usage**
+Example usage
 
 </div>
 
@@ -328,6 +339,8 @@ Subfields
          deviceName: "/dev/sda"
 ```
 
+</div>
+
 # About networking
 
 The **rendezvous IP** must be known at the time of generating the agent ISO, so that during the initial boot all the hosts can check in to the assisted service.
@@ -336,27 +349,21 @@ If the IP addresses are assigned using a Dynamic Host Configuration Protocol (DH
 
 In addition to static IP addresses, you can apply any network configuration that is in NMState format. This includes VLANs and NIC bonds.
 
-<div class="note">
-
-By default, Podman uses a subnet of `10.88.0.0/16` as a bridge network. Do not set the `network.machineNetwork.cidr` parameter to include this address range, otherwise a conflict causes the cluster installation to fail.
-
-</div>
+> [!NOTE]
+> By default, Podman uses a subnet of `10.88.0.0/16` as a bridge network. Do not set the `network.machineNetwork.cidr` parameter to include this address range, otherwise a conflict causes the cluster installation to fail.
 
 ## Port requirements for the rendezvous host
 
 During the discovery and bootstrap phases of an installation, all the hosts connect to the Assisted Service that runs on the rendezvous host. Configure your firewall to allow the following traffic from each host to the rendezvous host:
 
-| Port   | Protocol | Description                                                                                                                                           |
-|--------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `8090` | TCP      | Assisted Service API. Hosts use this port to register with the Assisted Service, report hardware information, and retrieve installation instructions. |
+| Port | Protocol | Description |
+|----|----|----|
+| `8090` | TCP | Assisted Service API. Hosts use this port to register with the Assisted Service, report hardware information, and retrieve installation instructions. |
 
 Ports required to reach the Assisted Service on the rendezvous host
 
-<div class="note">
-
-Port `8090` is required only during installation. After installation completes, the Assisted Service is no longer exposed on the rendezvous host.
-
-</div>
+> [!NOTE]
+> Port `8090` is required only during installation. After installation completes, the Assisted Service is no longer exposed on the rendezvous host.
 
 This specific port requirement is in addition to the standard OpenShift Container Platform networking requirements for installation.
 
@@ -364,9 +371,11 @@ This specific port requirement is in addition to the standard OpenShift Containe
 
 When using Dynamic Host Configuration Protocol (DHCP), you must specify the value for the `rendezvousIP` field in the `agent-config.yaml` file, and the `networkConfig` fields can be left blank:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample agent-config.yaml.file**
+<div class="title">
+
+Sample agent-config.yaml.file
 
 </div>
 
@@ -378,6 +387,8 @@ metadata:
 rendezvousIP: 192.168.111.80
 ```
 
+</div>
+
 where:
 
 `rendezvousIP`
@@ -387,9 +398,11 @@ Specifies the IP address for the rendezvous host.
 
 When using static networking with the preferred `install-config.yaml` and `agent-config.yaml` files, you can specify the value for the `rendezvousIP` field in the `agent-config.yaml` file or allow the installation program to choose a static IP address from the `networkConfig` fields.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample agent-config.yaml.file**
+<div class="title">
+
+Sample agent-config.yaml.file
 
 </div>
 
@@ -430,6 +443,8 @@ hosts:
 EOF
 ```
 
+</div>
+
 where:
 
 `rendezvousIP`
@@ -452,9 +467,11 @@ Specifies the next-hop address for the node traffic. This must be in the same su
 
 When using static networking with the optional method of GitOps ZTP custom resources, which comprises 6 custom resources, you can configure static IPs in the `nmstateconfig.yaml` file. The rendezvous IP is chosen from the static IP addresses specified in the `config` fields.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample nmstateconfig.yaml file**
+<div class="title">
+
+Sample nmstateconfig.yaml file
 
 </div>
 
@@ -494,6 +511,8 @@ spec:
       macAddress: 52:54:01:aa:aa:a1
 ```
 
+</div>
+
 where:
 
 `ipv4.address.ip`
@@ -515,11 +534,8 @@ Specifies the MAC address of an interface on the host, used to determine which h
 
 There are additional requirements when installing a cluster using the platform "none" option with the Agent-based Installer.
 
-<div class="important">
-
-See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
-
-</div>
+> [!IMPORTANT]
+> See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
 
 ## Platform "none" DNS requirements
 
@@ -537,11 +553,8 @@ Reverse DNS resolution is also required for the Kubernetes API, the control plan
 
 DNS A/AAAA or CNAME records are used for name resolution and PTR records are used for reverse name resolution. The reverse records are important because Red Hat Enterprise Linux CoreOS (RHCOS) uses the reverse records to set the hostnames for all the nodes, unless the hostnames are provided by DHCP. Additionally, the reverse records are used to generate the certificate signing requests (CSR) that OpenShift Container Platform needs to operate.
 
-<div class="note">
-
-It is recommended to use a DHCP server to provide the hostnames to each cluster node.
-
-</div>
+> [!NOTE]
+> It is recommended to use a DHCP server to provide the hostnames to each cluster node.
 
 The following DNS records are required for an OpenShift Container Platform cluster using the platform `none` option and they must be in place before installation. In each record, `<cluster_name>` is the cluster name and `<base_domain>` is the base domain that you specify in the `install-config.yaml` file. A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
@@ -553,38 +566,40 @@ The following DNS records are required for an OpenShift Container Platform clust
 <col style="width: 55%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Record</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Kubernetes API</p></td>
 <td style="text-align: left;"><p><code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to identify the API load balancer. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>api-int.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A DNS A/AAAA or CNAME record, and a DNS PTR record, to internally identify the API load balancer. These records must be resolvable from all the nodes within the cluster.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>The API server must be able to resolve the worker nodes by the hostnames that are recorded in Kubernetes. If the API server cannot resolve the node names, then proxied API calls can fail, and you cannot retrieve logs from pods.</p>
 </div></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Routes</p></td>
 <td style="text-align: left;"><p><code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>A wildcard DNS A/AAAA or CNAME record that refers to the application ingress load balancer. The application ingress load balancer targets the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default. These records must be resolvable by both clients external to the cluster and from all the nodes within the cluster.</p>
 <p>For example, <code>console-openshift-console.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;</code> is used as a wildcard route to the OpenShift Container Platform console.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Control plane machines</p></td>
 <td style="text-align: left;"><p><code>&lt;master&gt;&lt;n&gt;.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>DNS A/AAAA or CNAME records and DNS PTR records to identify each machine for the control plane nodes. These records must be resolvable by the nodes within the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Compute machines</p></td>
 <td style="text-align: left;"><p><code>&lt;worker&gt;&lt;n&gt;.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code></p></td>
 <td style="text-align: left;"><p>DNS A/AAAA or CNAME records and DNS PTR records to identify each machine for the worker nodes. These records must be resolvable by the nodes within the cluster.</p></td>
@@ -592,19 +607,11 @@ The following DNS records are required for an OpenShift Container Platform clust
 </tbody>
 </table>
 
-Required DNS records
+> [!NOTE]
+> In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
 
-<div class="note">
-
-In OpenShift Container Platform 4.4 and later, you do not need to specify etcd host and SRV records in your DNS configuration.
-
-</div>
-
-<div class="tip">
-
-You can use the `dig` command to verify name and reverse name resolution.
-
-</div>
+> [!TIP]
+> You can use the `dig` command to verify name and reverse name resolution.
 
 ### Example DNS configuration for platform "none" clusters
 
@@ -615,9 +622,11 @@ In the examples, the cluster name is `ocp4` and the base domain is `example.com`
 Example DNS A record configuration for a platform "none" cluster
 The following example is a BIND zone file that shows sample A records for name resolution in a cluster using the platform `none` option.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample DNS zone database**
+<div class="title">
+
+Sample DNS zone database
 
 </div>
 
@@ -654,6 +663,8 @@ worker1.ocp4.example.com.   IN  A   192.168.1.7
 ;EOF
 ```
 
+</div>
+
 where:
 
 `api.ocp4.example.com.`
@@ -665,11 +676,8 @@ Provides name resolution for the Kubernetes API. The record refers to the IP add
 `*.apps.ocp4.example.com.`
 Provides name resolution for the wildcard routes. The record refers to the IP address of the application ingress load balancer. The application ingress load balancer targets the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-<div class="note">
-
-In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
-
-</div>
+> [!NOTE]
+> In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
 `master0.ocp4.example.com.`-`master2.ocp4.example.com.`
 Provides name resolution for the control plane machines.
@@ -680,9 +688,11 @@ Provides name resolution for the compute machines.
 Example DNS PTR record configuration for a platform "none" cluster
 The following example BIND zone file shows sample PTR records for reverse name resolution in a cluster using the platform `none` option.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample DNS zone database for reverse records**
+<div class="title">
+
+Sample DNS zone database for reverse records
 
 </div>
 
@@ -709,6 +719,8 @@ $TTL 1W
 ;EOF
 ```
 
+</div>
+
 where:
 
 `api.ocp4.example.com.`
@@ -723,17 +735,18 @@ Provides reverse DNS resolution for the control plane machines.
 `worker0.ocp4.example.com.`-`worker1.ocp4.example.com.`
 Provides reverse DNS resolution for the compute machines.
 
-<div class="note">
-
-A PTR record is not required for the OpenShift Container Platform application wildcard.
-
-</div>
+> [!NOTE]
+> A PTR record is not required for the OpenShift Container Platform application wildcard.
 
 ## Platform "none" Load balancing requirements
 
 Before you install OpenShift Container Platform, you must provision the API and application Ingress load balancing infrastructure. In production scenarios, you can deploy the API and application Ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - These requirements do not apply to single-node OpenShift clusters using the platform `none` option.
 
@@ -749,32 +762,23 @@ The load balancing infrastructure must meet the following requirements:
 
     - A stateless load balancing algorithm. The options vary based on the load balancer implementation.
 
-    <div class="important">
-
-    Do not configure session persistence for an API load balancer.
-
-    </div>
+    > [!IMPORTANT]
+    > Do not configure session persistence for an API load balancer.
 
     Configure the following ports on both the front and back of the load balancers:
 
-    | Port    | Back-end machines (pool members)                                                                | Internal | External | Description           |
-    |---------|-------------------------------------------------------------------------------------------------|----------|----------|-----------------------|
-    | `6443`  | Control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X        | X        | Kubernetes API server |
-    | `22623` | Control plane.                                                                                  | X        |          | Machine config server |
+    | Port | Back-end machines (pool members) | Internal | External | Description |
+    |----|----|----|----|----|
+    | `6443` | Control plane. You must configure the `/readyz` endpoint for the API server health check probe. | X | X | Kubernetes API server |
+    | `22623` | Control plane. | X |  | Machine config server |
 
     API load balancer
 
-    <div class="important">
+    > [!IMPORTANT]
+    > The Agent-based Installer requires TCP port `8090` to be open between all hosts and the rendezvous host so that the hosts can access the Assisted Service API. Port `8090` is required only during the discovery and bootstrap phases. For more information, see "Port requirements for the rendezvous host".
 
-    The Agent-based Installer requires TCP port `8090` to be open between all hosts and the rendezvous host so that the hosts can access the Assisted Service API. Port `8090` is required only during the discovery and bootstrap phases. For more information, see "Port requirements for the rendezvous host".
-
-    </div>
-
-    <div class="note">
-
-    The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
-
-    </div>
+    > [!NOTE]
+    > The load balancer must be configured to take a maximum of 30 seconds from the time the API server turns off the `/readyz` endpoint to the removal of the API server instance from the pool. Within the time frame after `/readyz` returns an error or becomes healthy, the endpoint must have been removed or added. Probing every 5 or 10 seconds, with two successful requests to become healthy and three to become unhealthy, are well-tested values.
 
 2.  **Application Ingress load balancer**: Provides an ingress point for application traffic flowing in from outside the cluster. A working configuration for the Ingress router is required for an OpenShift Container Platform cluster.
 
@@ -784,26 +788,20 @@ The load balancing infrastructure must meet the following requirements:
 
     - A connection-based or session-based persistence is recommended, based on the options available and types of applications that will be hosted on the platform.
 
-    <div class="tip">
-
-    If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
-
-    </div>
+    > [!TIP]
+    > If the true IP address of the client can be seen by the application Ingress load balancer, enabling source IP-based session persistence can improve performance for applications that use end-to-end TLS encryption.
 
     Configure the following ports on both the front and back of the load balancers:
 
-    | Port  | Back-end machines (pool members)                                                   | Internal | External | Description   |
-    |-------|------------------------------------------------------------------------------------|----------|----------|---------------|
-    | `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTPS traffic |
-    | `80`  | The machines that run the Ingress Controller pods, compute, or worker, by default. | X        | X        | HTTP traffic  |
+    | Port | Back-end machines (pool members) | Internal | External | Description |
+    |----|----|----|----|----|
+    | `443` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTPS traffic |
+    | `80` | The machines that run the Ingress Controller pods, compute, or worker, by default. | X | X | HTTP traffic |
 
     Application Ingress load balancer
 
-    <div class="note">
-
-    If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
-
-    </div>
+    > [!NOTE]
+    > If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 ### Example load balancer configuration for platform "none" clusters
 
@@ -811,15 +809,14 @@ This section provides an example API and application Ingress load balancer confi
 
 In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-<div class="note">
+> [!NOTE]
+> If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
 
-If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample API and application Ingress load balancer configuration**
+Sample API and application Ingress load balancer configuration
 
 </div>
 
@@ -870,6 +867,8 @@ listen ingress-router-80
   server worker1 worker1.ocp4.example.com:80 check inter 1s
 ```
 
+</div>
+
 - Port `6443` handles the Kubernetes API traffic and points to the control plane machines. You must configure health checks on this port to ensure that the API server is available before routing traffic.
 
 - Port `22623` handles the machine config server traffic and points to the control plane machines.
@@ -878,15 +877,17 @@ listen ingress-router-80
 
 - Port `80` handles the HTTP traffic and points to the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-  <div class="note">
+  > [!NOTE]
+  > If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
-  If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+> [!TIP]
+> If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
 
-  </div>
+<div>
 
-<div class="tip">
+<div class="title">
 
-If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
+Additional resources
 
 </div>
 
@@ -896,17 +897,16 @@ If you are using HAProxy as a load balancer, you can check that the `haproxy` pr
 
 - [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)
 
+</div>
+
 # About a local arbiter node
 
 You can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
 
 A local arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
 
-<div class="important">
-
-You can configure a local arbiter node only. Remote arbiter nodes are not supported.
-
-</div>
+> [!IMPORTANT]
+> You can configure a local arbiter node only. Remote arbiter nodes are not supported.
 
 To deploy a cluster with two control plane nodes and one local arbiter node, you must define the following nodes in the `install-config.yaml` file:
 
@@ -934,9 +934,11 @@ The control plane nodes must meet the following minimum system requirements:
 
 Additionally, the control plane nodes must also have enough storage for the workload.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `install-config.yaml` configuration for deploying an arbiter node**
+<div class="title">
+
+Example `install-config.yaml` configuration for deploying an arbiter node
 
 </div>
 
@@ -977,6 +979,8 @@ platform:
         role: arbiter
 # ...
 ```
+
+</div>
 
 where:
 
@@ -1060,11 +1064,8 @@ where:
 `networkConfig.interfaces.name`
 Specifies the name of the interface.
 
-<div class="note">
-
-This value does not need to match the device name.
-
-</div>
+> [!NOTE]
+> This value does not need to match the device name.
 
 `networkConfig.interfaces.type`
 Specifies the type of interface. Specifying `vlan` creates a VLAN and specifying `bond` creates a bond.
@@ -1191,11 +1192,8 @@ Specifies an array of network interfaces defined for the host.
 `networkConfig.interfaces.name`
 Specifies the name of the interface.
 
-<div class="note">
-
-This value does not need to match the device name.
-
-</div>
+> [!NOTE]
+> This value does not need to match the device name.
 
 `networkConfig.interfaces.type`
 Specifies the type of interface. This example creates an ethernet interface.
@@ -1215,11 +1213,8 @@ Specifies the enablement of IPv4 addressing for the VF attached to the bond. Set
 `networkConfig.interfaces.min-tx-rate`
 Specifies a minimum transmission rate, in Mbps, for the VF. This sample value sets a rate of 100 Mbps. This value must be less than or equal to the maximum transmission rate.
 
-<div class="note">
-
-Intel NICs do not support the `min-tx-rate` parameter. For more information, see [**BZ#1772847**](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
-
-</div>
+> [!NOTE]
+> Intel NICs do not support the `min-tx-rate` parameter. For more information, see [**BZ#1772847**](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
 
 `networkConfig.interfaces.max-tx-rate`
 Specifies a maximum transmission rate, in Mbps, for the VF. This sample value sets a rate of 200 Mbps.
@@ -1236,15 +1231,27 @@ Specifies a static IP address for the bond interface. This is the node IP addres
 `routes.config.next-hop-interface`
 Specifies `bond0` as the gateway for the default route.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring network bonding](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/configuring-network-bonding_configuring-and-managing-networking)
+
+</div>
 
 # Sample install-config.yaml file for bare metal
 
 You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample install-config.yaml file for bare metal**
+<div class="title">
+
+Sample install-config.yaml file for bare metal
 
 </div>
 
@@ -1277,6 +1284,8 @@ pullSecret: '{"auths": ...}'
 sshKey: 'ssh-ed25519 AAAA...'
 ```
 
+</div>
+
 where:
 
 `baseDomain`
@@ -1288,11 +1297,8 @@ Specifies a sequence of mappings. To meet the requirements of the different data
 `compute.replicas`
 Specifies the number of compute machines that the Agent-based Installer waits to discover before triggering the installation process. It is the number of compute machines that must be booted with the generated ISO.
 
-<div class="note">
-
-If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
-
-</div>
+> [!NOTE]
+> If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
 
 `controlPlane`
 Specifies a single mapping. To meet the requirements of the different data structures, the first line of the `controlPlane` section must not begin with a hyphen, -. Only one control plane pool is used.
@@ -1306,11 +1312,8 @@ Specifies the cluster name that you specified in your DNS records.
 `networking.clusterNetwork.cidr`
 Specifies a block of IP addresses from which pod IP addresses are allocated. This block must not overlap with existing physical networks. These IP addresses are used for the pod network. If you need to access the pods from an external network, you must configure load balancers and routers to manage the traffic.
 
-<div class="note">
-
-Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
-
-</div>
+> [!NOTE]
+> Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
 
 `networking.clusterNetwork.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
@@ -1324,56 +1327,54 @@ Specifies the IP address pool to use for service IP addresses. You can enter onl
 `platform.none`
 Specifies platform `none`. You must set the platform to `none` for a single-node cluster. You can set the platform to `vsphere`, `baremetal`, or `none` for multi-node clusters.
 
-<div class="note">
-
-If you set the platform to `vsphere` or `baremetal`, you can configure IP address endpoints for cluster nodes in three ways:
-
-- IPv4
-
-- IPv6
-
-- IPv4 and IPv6 in parallel (dual-stack)
-
-<div class="formalpara-title">
-
-**Example of dual-stack networking**
-
-</div>
-
-``` yaml
-networking:
-  clusterNetwork:
-    - cidr: 172.21.0.0/16
-      hostPrefix: 23
-    - cidr: fd02::/48
-      hostPrefix: 64
-  machineNetwork:
-    - cidr: 192.168.11.0/16
-    - cidr: 2001:DB8::/32
-  serviceNetwork:
-    - 172.22.0.0/16
-    - fd03::/112
-  networkType: OVNKubernetes
-platform:
-  baremetal:
-    apiVIPs:
-    - 192.168.11.3
-    - 2001:DB8::4
-    ingressVIPs:
-    - 192.168.11.4
-    - 2001:DB8::5
-```
-
-</div>
+> [!NOTE]
+> If you set the platform to `vsphere` or `baremetal`, you can configure IP address endpoints for cluster nodes in three ways:
+>
+> - IPv4
+>
+> - IPv6
+>
+> - IPv4 and IPv6 in parallel (dual-stack)
+>
+> <div class="formalpara">
+>
+> <div class="title">
+>
+> Example of dual-stack networking
+>
+> </div>
+>
+> ``` yaml
+> networking:
+>   clusterNetwork:
+>     - cidr: 172.21.0.0/16
+>       hostPrefix: 23
+>     - cidr: fd02::/48
+>       hostPrefix: 64
+>   machineNetwork:
+>     - cidr: 192.168.11.0/16
+>     - cidr: 2001:DB8::/32
+>   serviceNetwork:
+>     - 172.22.0.0/16
+>     - fd03::/112
+>   networkType: OVNKubernetes
+> platform:
+>   baremetal:
+>     apiVIPs:
+>     - 192.168.11.3
+>     - 2001:DB8::4
+>     ingressVIPs:
+>     - 192.168.11.4
+>     - 2001:DB8::5
+> ```
+>
+> </div>
 
 `fips`
 Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-<div class="important">
-
-When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-</div>
+> [!IMPORTANT]
+> When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
 `pullSecret`
 Specifies a pull secret that allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
@@ -1381,11 +1382,8 @@ Specifies a pull secret that allows you to authenticate with the services that a
 `sshKey`
 Specifies the SSH public key for the `core` user in Red Hat Enterprise Linux CoreOS (RHCOS).
 
-<div class="note">
-
-For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-</div>
+> [!NOTE]
+> For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 
 # Validation checks before agent ISO creation
 

@@ -6,7 +6,25 @@ Preview the backup and restore resources in advance by doing a dry run of the ba
 
 OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OADP Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To preview the resources included in the backup before running the actual backup, run the following command:
 
@@ -32,11 +50,8 @@ OADP backs up application resources based on the type, namespace, or label. This
 
     Replace `<backup_name>` with the name of the backup.
 
-    <div class="important">
-
-    The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
-
-    </div>
+    > [!IMPORTANT]
+    > The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
 
 4.  To know more details about the restore resources, run the following command:
 
@@ -46,11 +61,21 @@ OADP backs up application resources based on the type, namespace, or label. This
 
     Replace `<restore_name>` with the name of the restore.
 
+</div>
+
 # Create a Restore CR
 
 Restore a `Backup` custom resource (CR) by creating a `Restore` CR.
 
 When you restore a stateful application that uses the `azurefile-csi` storage class, the restore operation remains in the `Finalizing` phase.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
@@ -59,6 +84,16 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
 - You must have a Velero `Backup` CR.
 
 - The persistent volume (PV) capacity must match the requested size at backup time. Adjust the requested size if needed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Restore` CR, as in the following example:
 
@@ -115,11 +150,8 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
     $ bash dc-restic-post-restore.sh -> dc-post-restore.sh
     ```
 
-    <div class="note">
-
-    During the restore process, the OADP Velero plug-ins scale down the `DeploymentConfig` objects and restore the pods as standalone pods. This is done to prevent the cluster from deleting the restored `DeploymentConfig` pods immediately on restore and to allow the restore and post-restore hooks to complete their actions on the restored pods. The cleanup script shown below removes these disconnected pods and scales any `DeploymentConfig` objects back up to the appropriate number of replicas.
-
-    </div>
+    > [!NOTE]
+    > During the restore process, the OADP Velero plug-ins scale down the `DeploymentConfig` objects and restore the pods as standalone pods. This is done to prevent the cluster from deleting the restored `DeploymentConfig` pods immediately on restore and to allow the restore and post-restore hooks to complete their actions on the restored pods. The cleanup script shown below removes these disconnected pods and scales any `DeploymentConfig` objects back up to the appropriate number of replicas.
 
     ``` bash
     #!/bin/bash
@@ -168,6 +200,8 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
     done
     ```
 
+</div>
+
 # Create restore hooks
 
 Create restore hooks to run commands in a container in a pod by editing the `Restore` custom resource (CR).
@@ -180,7 +214,13 @@ You can create two types of restore hooks:
 
 - An `exec` hook runs commands or scripts in a container of a restored pod.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add a hook to the `spec.hooks` block of the `Restore` CR, as in the following example:
 
@@ -261,6 +301,8 @@ You can create two types of restore hooks:
 
   - `Fail`: No more restore hooks run in any container in any pod. The status of the `Restore` CR will be `PartiallyFailed`.
 
+</div>
+
 During a File System Backup (FSB) restore operation, a `Deployment` resource referencing an `ImageStream` is not restored properly. The restored pod that runs the FSB, and the `postHook` is terminated prematurely.
 
 This happens because, during the restore operation, OpenShift controller updates the `spec.template.spec.containers[0].image` field in the `Deployment` resource with an updated `ImageStreamTag` hash. The update triggers the rollout of a new pod, terminating the pod on which `velero` runs the FSB and the post restore hook. For more information about image stream trigger, see "Triggering updates on image stream changes".
@@ -283,4 +325,14 @@ The workaround for this behavior is a two-step restore process:
       --include-resources=deployment.apps
     ```
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Triggering updates on image stream changes](../../../openshift_images/triggering-updates-on-imagestream-changes.xml#triggering-updates-on-imagestream-changes)
+
+</div>

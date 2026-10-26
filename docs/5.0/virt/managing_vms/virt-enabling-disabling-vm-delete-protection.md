@@ -4,11 +4,19 @@ You enable or disable delete protection from either the command line or the VMâ€
 
 You can also choose to remove availability of the delete protection option for any VMs in a cluster you administer. In this case, VMs with the feature already enabled retain the protection, while the option is unavailable for any newly created VMs.
 
-# Enabling or disabling virtual machine delete protection by using the web console
+# Enable or disable VM delete protection by using the web console
 
-To prevent the inadvertent deletion of a virtual machine (VM), you can enable VM delete protection by using the OpenShift Container Platform web console. You can also disable delete protection for a VM.
+You can enable or disable delete protection on a virtual machine (VM), which prevents inadvertent deletion. The default is disabled.
 
 By default, delete protection is not enabled for VMs. You must set the option for each individual VM.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the OpenShift Container Platform web console, choose your view:
 
@@ -34,15 +42,33 @@ By default, delete protection is not enabled for VMs. You must set the option fo
 
       2.  Click **Disable** to disable the protection.
 
-# Enabling or disabling VM delete protection by using the CLI
+</div>
 
-To prevent the inadvertent deletion of a virtual machine (VM), you can enable VM delete protection by using the command line. You can also disable delete protection for a VM.
+# Enable or disable VM delete protection by using the CLI
+
+You can enable or disable delete protection on a virtual machine (VM) by using the command line. Delete protection prevents inadvertent deletion.
 
 By default, delete protection is not enabled for VMs. You must set the option for each individual VM.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enable delete protection for a VM by running the following command:
 
@@ -56,17 +82,37 @@ By default, delete protection is not enabled for VMs. You must set the option fo
   $ oc patch vm <vm_name> --type json -p '[{"op": "remove", "path": "/metadata/labels/kubevirt.io~1vm-delete-protection"}]' -n <namespace>
   ```
 
-# Removing the VM delete protection option
+</div>
 
-When you enable delete protection on a virtual machine (VM), you ensure that the VM cannot be inadvertently deleted. You can also disable the protection for a VM.
+# Remove the VM delete protection option from the cluster
+
+You can make the delete protection option unavailable on your cluster by applying a `ValidatingAdmissionPolicy`. A virtual machine (VM) that already has delete protection keeps the setting, but you cannot enable protection on a new VM.
 
 As a cluster administrator, you can choose not to make the VM delete protection option available. VMs with delete protection already enabled retain that setting; for any new VMs that are created, enabling the option is not allowed.
 
 You can remove the delete protection option by establishing a validation admission policy for the cluster and then creating the necessary binding to use the policy in the cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have cluster administrator privileges.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the validation admission policy, as shown in the following example:
 
@@ -119,6 +165,8 @@ You can remove the delete protection option by establishing a validation admissi
     ``` terminal
     $ oc apply -f disable-vm-delete-protection-binding.yaml
     ```
+
+</div>
 
 # Additional resources
 

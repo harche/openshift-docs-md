@@ -10,17 +10,30 @@ The following are the high-level steps to preinstall a single-node OpenShift clu
 
 - Boot the host using the live installation ISO to preinstall the host.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation process](../../installing/overview/index.xml#installation-process_ocp-installation-overview)
+
+</div>
 
 # Creating a live installation ISO for a single-node OpenShift image-based installation
 
 You can embed your single-node OpenShift seed image URL, and other installation artifacts, in a live installation ISO by using the `openshift-install` program.
 
-<div class="note">
+> [!NOTE]
+> For more information about the specification for the `image-based-installation-config.yaml` manifest, see the section "Reference specifications for the `image-based-installation-config.yaml` manifest".
 
-For more information about the specification for the `image-based-installation-config.yaml` manifest, see the section "Reference specifications for the `image-based-installation-config.yaml` manifest".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -31,6 +44,16 @@ For more information about the specification for the `image-based-installation-c
 - The target host has network access to the seed image URL and all other installation artifacts.
 
 - If you require static networking, you must install the `nmstatectl` library on the host that creates the live installation ISO.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a live installation ISO and embed your single-node OpenShift seed image URL and other installation artifacts:
 
@@ -52,7 +75,7 @@ For more information about the specification for the `image-based-installation-c
 
         Example output:
 
-<!-- -->
+</div>
 
     INFO Image-Config-Template created in: ibi-iso-workdir
 
@@ -71,8 +94,8 @@ kind: ImageBasedInstallationConfig
 metadata:
   name: example-image-based-installation-config
 # The following fields are required
-seedImage: quay.io/openshift-kni/seed-image:4.22.0
-seedVersion: 4.22.0
+seedImage: quay.io/openshift-kni/seed-image:5.0.0
+seedVersion: 5.0.0
 installationDisk: /dev/vda
 pullSecret: '<your_pull_secret>'
 # networkConfig is optional and contains the network configuration for the host in NMState format.
@@ -102,7 +125,7 @@ pullSecret: '<your_pull_secret>'
     metadata:
       name: example-image-based-installation-config
     seedImage: quay.io/repo-id/seed:latest
-    seedVersion: "4.22.0"
+    seedVersion: "5.0.0"
     extraPartitionStart: "-240G"
     installationDisk: /dev/disk/by-id/wwn-0x62c...
     sshKey: 'ssh-ed25519 AAAA...'
@@ -146,6 +169,14 @@ pullSecret: '<your_pull_secret>'
     INFO Consuming Image-based Installation ISO Config from target directory
     INFO Creating Image-based Installation ISO with embedded ignition
 
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - View the output in the working directory:
 
   ``` text
@@ -153,9 +184,19 @@ pullSecret: '<your_pull_secret>'
     └── rhcos-ibi.iso
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Reference specifications for the `image-based-installation-config.yaml` manifest](../../edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.xml#ibi-installer-configuration-config_ibi-edge-image-based-install)
+
+</div>
 
 ## Configuring additional partitions on the target host
 
@@ -163,9 +204,14 @@ The installation ISO creates a partition for the `/var/lib/containers` directory
 
 You can create additional partitions by using the `coreosInstallerArgs` specification. For example, in hard disks with adequate storage, you might need an additional partition for storage options, such as Logical Volume Manager (LVM) Storage.
 
-<div class="note">
+> [!NOTE]
+> The `/var/lib/containers` partition requires at least 500 GB to ensure adequate disk space for precached images. You must create additional partitions with a starting position larger than the partition for `/var/lib/containers`.
 
-The `/var/lib/containers` partition requires at least 500 GB to ensure adequate disk space for precached images. You must create additional partitions with a starting position larger than the partition for `/var/lib/containers`.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -173,14 +219,14 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
 
     Example `image-based-installation-config.yaml` file:
 
-<!-- -->
+</div>
 
     apiVersion: v1beta1
     kind: ImageBasedInstallationConfig
     metadata:
       name: example-extra-partition
     seedImage: quay.io/repo-id/seed:latest
-    seedVersion: "4.22.0"
+    seedVersion: "5.0.0"
     installationDisk: /dev/sda
     pullSecret: '{"auths": ...}'
     # ...
@@ -214,6 +260,14 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
 
 \+ `<skip_disk_cleanup>`:: Specifies whether to skip disk formatting during the installation process. Set to `true` to skip. `"--save-partindex"`:: Specifies the argument to preserve a partition. `<partition_index>`:: Specifies the additional partition to preserve. The live installation ISO requires five partitions. Set a number greater than five, for example `6`. `<installation_disk>`:: Specifies the installation disk on the target host, for example `/dev/sda`. `<partition_label>`:: Specifies the label for the partition, for example `storage`. `<partition_number>`:: Specifies the number for the partition, for example `6`. `<partition_size>`:: Specifies the size of partition in MiB, for example `380000`. `<starting_position>`:: Specifies the starting position on the disk in MiB for the additional partition. You must specify a starting point larger than the partition for `/var/lib/containers`, for example `500000`.
 
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - When you complete the preinstallation of the host with the live installation ISO, login to the target host and run the following command to view the partitions:
 
   ``` terminal
@@ -222,7 +276,7 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
 
   Example output:
 
-<!-- -->
+</div>
 
     sda    8:0    0  140G  0 disk
     ├─sda1 8:1    0    1M  0 part
@@ -236,7 +290,25 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
 
 You can provision a live installation ISO to a bare-metal host to preinstall single-node OpenShift.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Using your preferred method, boot the target bare-metal host from the `rhcos-ibi.iso` live installation ISO to preinstall single-node OpenShift.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Login to the target host.
 
@@ -248,7 +320,7 @@ You can provision a live installation ISO to a bare-metal host to preinstall sin
 
     Example output:
 
-<!-- -->
+</div>
 
     Aug 13 17:01:44 10.46.26.129 install-rhcos-and-restore-seed.sh[2876]: time="2024-08-13T17:01:44Z" level=info msg="All the precaching threads have finished."
     Aug 13 17:01:44 10.46.26.129 install-rhcos-and-restore-seed.sh[2876]: time="2024-08-13T17:01:44Z" level=info msg="Total Images: 125"
@@ -277,30 +349,30 @@ The `openshift-install` program uses the `image-based-installation-config.yaml` 
 <col style="width: 57%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Specification</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>seedImage</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the seed image to use in the ISO generation process.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>seedVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the OpenShift Container Platform release version of the seed image. The release version in the seed image must match the release version that you specify in the <code>seedVersion</code> field.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>installationDisk</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the disk that will be used for the installation process.</p>
 <p>Because the disk discovery order is not guaranteed, the kernel name of the disk can change across booting options for machines with multiple disks. For example, <code>/dev/sda</code> becomes <code>/dev/sdb</code> and vice versa. To avoid this issue, you must use a persistent disk attribute, such as the disk World Wide Name (WWN), for example: <code>/dev/disk/by-id/wwn-&lt;disk-id&gt;</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>pullSecret</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the pull secret to use during the precache process. The pull secret contains authentication credentials for pulling the release payload images from the container registry.</p>
@@ -308,8 +380,6 @@ The `openshift-install` program uses the `image-based-installation-config.yaml` 
 </tr>
 </tbody>
 </table>
-
-Required specifications
 
 <table>
 <caption>Optional specifications</caption>
@@ -319,42 +389,44 @@ Required specifications
 <col style="width: 57%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Specification</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>shutdown</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Specifies if the host shuts down after the installation process completes. The default value is <code>false</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>extraPartitionStart</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the start of the extra partition used for <code>/var/lib/containers</code>. The default value is <code>-40G</code>, which means that the partition will be exactly 40GiB in size and uses the space 40GiB from the end of the disk. If you specify a positive value, the partition will start at that position of the disk and extend to the end of the disk.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>extraPartitionLabel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The label of the extra partition you use for <code>/var/lib/containers</code>. The default partition label is <code>var-lib-containers</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>You must ensure that the partition label in the installation ISO matches the partition label set in the machine configuration for the seed image. If the partition labels are different, the partition mount fails during installation on the host. For more information, see "Configuring a shared container partition between ostree stateroots".</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>extraPartitionNumber</code></p></td>
 <td style="text-align: left;"><p><code>unsigned integer</code></p></td>
 <td style="text-align: left;"><p>The number of the extra partition you use for <code>/var/lib/containers</code>. The default number is <code>5</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>skipDiskCleanup</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>The installation process formats the disk on the host. Set this specification to 'true' to skip this step. The default is <code>false</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>networkConfig</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies networking configurations for the host, for example:</p>
@@ -366,10 +438,12 @@ Required specifications
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">        ...</span></span></code></pre></div>
 <p>If you require static networking, you must install the <code>nmstatectl</code> library on the host that creates the live installation ISO. For further information about defining network configurations by using <code>nmstate</code>, see <a href="https://nmstate.io/">nmstate.io</a>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>The name of the interface must match the actual NIC name as shown in the operating system.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>proxy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies proxy settings to use during the installation ISO generation, for example:</p>
@@ -378,7 +452,7 @@ Required specifications
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">httpsProxy</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;http://proxy.example.com:8080&quot;</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">noProxy</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;no_proxy.example.com&quot;</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>imageDigestSources</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the sources or repositories for the release-image content, for example:</p>
@@ -387,7 +461,7 @@ Required specifications
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;registry.example.com:5000/ocp4/openshift4&quot;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">source</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;quay.io/openshift-release-dev/ocp-release&quot;</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>additionalTrustBundle</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the PEM-encoded X.509 certificate bundle. The installation program adds this to the <code>/etc/pki/ca-trust/source/anchors/</code> directory in the installation ISO.</p>
@@ -398,17 +472,17 @@ Required specifications
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  l2wOuDwKQa+upc4GftXE7C//4mKBNBC6Ty01gUaTIpo=</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  -----END CERTIFICATE-----</span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>sshKey</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the SSH key to authenticate access to the host.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ignitionConfigOverride</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies a JSON string containing the user overrides for the Ignition config. The configuration merges with the Ignition config file generated by the installation program. This feature requires Ignition version is 3.2 or later.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>coreosInstallerArgs</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies custom arguments for the <code>coreos-install</code> command that you can use to configure kernel arguments and disk partitioning options.</p></td>
@@ -416,6 +490,14 @@ Required specifications
 </tbody>
 </table>
 
-Optional specifications
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring a shared container partition between ostree stateroots](../../edge_computing/image_base_install/ibi-preparing-for-image-based-install.xml#cnf-image-based-upgrade-shared-container-partition_ibi-preparing-image-based-install)
+
+</div>

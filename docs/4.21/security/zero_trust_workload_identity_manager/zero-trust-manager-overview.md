@@ -14,13 +14,33 @@ The SPIFFE IDs are contained in the SPIFFE Verifiable Identity Document (SVID). 
 
 For more information, see "SPIFFE Overview".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [SPIFFE Overview](https://spiffe.io/docs/latest/spiffe-about/overview/)
+
+</div>
 
 # SPIRE Server
 
 The SPIRE Server is the central management component of SPIRE that issues SPIFFE identities and maintains the registration database for a trust domain.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the SPIRE Server](https://spiffe.io/docs/latest/spire-about/spire-concepts/#all-about-the-server)
+
+</div>
 
 # SPIRE Agent
 
@@ -28,7 +48,17 @@ The SPIRE Agent performs workload attestation to ensure that workloads receive a
 
 SPIRE and the SPIRE Agent perform node attestation via node plugins. The plugins are used to verify the identity of the node on which the agent is running. For more information, see "About the SPIRE Agent".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the SPIRE Agent](https://spiffe.io/docs/latest/spire-about/spire-concepts/#all-about-the-agent)
+
+</div>
 
 # Attestation
 
@@ -42,4 +72,14 @@ The two main types of attestation in SPIFFE/SPIRE are:
 
 For more information, see "Attestation".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Attestation](https://spiffe.io/docs/latest/spire-about/spire-concepts/#attestation)
+
+</div>

@@ -10,13 +10,31 @@ If the PV and the snapshot locations are in different regions, the `Backup` cust
 InvalidVolume.NotFound: The volume vol-xxxx does not exist.
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Edit the value of the `spec.snapshotLocations.velero.config.region` key in the `DataProtectionApplication` manifest so that the snapshot location is in the same region as the PV.
 
 2.  Create a new `Backup` CR.
 
+</div>
+
 # Troubleshoot issue where backup CR status remains in progress
 
 Resolve the issue where an interrupted backup causes the `Backup` CR status to remain in the `InProgress` phase. This helps you clear stalled backups and create new ones to complete your backup operations.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the details of the `Backup` CR by running the following command:
 
@@ -41,6 +59,8 @@ Resolve the issue where an interrupted backup causes the `Backup` CR status to r
     $ velero backup describe <backup_name> --details
     ```
 
+</div>
+
 # Troubleshoot issue where backup CR status remains partially failed
 
 Resolve the `PartiallyFailed` status that occurs when a `Backup` CR cannot create a CSI snapshot due to a missing label on the `VolumeSnapshotClass`. This helps you ensure successful backups by properly labeling the snapshot class.
@@ -50,6 +70,14 @@ If the backup created based on the CSI snapshot class is missing a label, the CS
 ``` text
 time="2023-02-17T16:33:13Z" level=error msg="Error backing up item" backup=openshift-adp/user1-backup-check5 error="error executing custom action (groupResource=persistentvolumeclaims, namespace=busy1, name=pvc1-user1): rpc error: code = Unknown desc = failed to get volumesnapshotclass for storageclass ocs-storagecluster-ceph-rbd: failed to get volumesnapshotclass for provisioner openshift-storage.rbd.csi.ceph.com, ensure that the desired volumesnapshot class has the velero.io/csi-volumesnapshot-class label" logSource="/remote-source/velero/app/pkg/backup/backup.go:417" name=busybox-79799557b5-vprq
 ```
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the `Backup` CR by running the following command::
 
@@ -67,11 +95,21 @@ time="2023-02-17T16:33:13Z" level=error msg="Error backing up item" backup=opens
 
 4.  Create a new `Backup` CR.
 
+</div>
+
 # Troubleshoot PVC binding failures with the waitForFirstConsumer storage class
 
 To ensure that restored persistent volume claims (PVCs) successfully bind to PVs when node affinity is configured, adjust the storage class binding mode settings during restore operations.
 
 PVCs that use a storage class with `bindingMode: WaitForFirstConsumer` might fail to bind to a PV when node affinity is configured. This issue can occur during restore operations, including virtual machine file restore (VMFR) workflows.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the `ignoreDelayBinding` field to `true` in the `restorePVC` section of the `nodeAgent` configuration in the `DataProtectionApplication` CR, as shown in the following example:
 
@@ -90,3 +128,5 @@ PVCs that use a storage class with `bindingMode: WaitForFirstConsumer` might fai
           ignoreDelayBinding: true
         uploaderType: kopia
   ```
+
+</div>

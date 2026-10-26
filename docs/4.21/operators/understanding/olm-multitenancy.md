@@ -2,9 +2,19 @@ The default behavior for Operator Lifecycle Manager (OLM) aims to provide simpli
 
 Consider the following scenarios to determine which Operator installation workflow works best for your environment and requirements.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Common terms: Multitenant](../../operators/understanding/olm-common-terms.xml#olm-common-terms-multitenancy_olm-common-terms)
 
 - [Limitations for multitenant Operator management](../../operators/understanding/olm/olm-understanding-operatorgroups.xml#olm-operatorgroups-limitations)
+
+</div>
 
 # Default Operator install modes and behavior
 
@@ -22,11 +32,19 @@ This choice also means that users in the affected namespaces get access to the O
 
 - The `namespace-view` role can read CR objects of that Operator.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Adding Operators to a cluster](../../operators/admin/olm-adding-operators-to-cluster.xml#olm-adding-operators-to-a-cluster)
 
 - [Install modes types](../../operators/understanding/olm/olm-understanding-operatorgroups.xml#olm-operatorgroups-membership_olm-understanding-operatorgroups)
+
+</div>
 
 # Recommended solution for multitenant clusters
 
@@ -54,19 +72,21 @@ This solution only works when the following constraints are met:
 
 - The Operator cannot ship a CRD conversion webhook.
 
-<div class="important">
+> [!IMPORTANT]
+> You cannot use different versions of the same Operator on the same cluster. Eventually, the installation of another instance of the Operator would be blocked when it meets the following conditions:
+>
+> - The instance is not the newest version of the Operator.
+>
+> - The instance ships an older revision of the CRDs that lack information or versions that newer revisions have that are already in use on the cluster.
 
-You cannot use different versions of the same Operator on the same cluster. Eventually, the installation of another instance of the Operator would be blocked when it meets the following conditions:
+> [!WARNING]
+> As an administrator, use caution when allowing non-cluster administrators to install Operators self-sufficiently, as explained in "Allowing non-cluster administrators to install Operators". These tenants should only have access to a curated catalog of Operators that are known to not have dependencies. These tenants must also be forced to use the same version line of an Operator, to ensure the CRDs do not change. This requires the use of namespace-scoped catalogs and likely disabling the global default catalogs.
 
-- The instance is not the newest version of the Operator.
+<div>
 
-- The instance ships an older revision of the CRDs that lack information or versions that newer revisions have that are already in use on the cluster.
+<div class="title">
 
-</div>
-
-<div class="warning">
-
-As an administrator, use caution when allowing non-cluster administrators to install Operators self-sufficiently, as explained in "Allowing non-cluster administrators to install Operators". These tenants should only have access to a curated catalog of Operators that are known to not have dependencies. These tenants must also be forced to use the same version line of an Operator, to ensure the CRDs do not change. This requires the use of namespace-scoped catalogs and likely disabling the global default catalogs.
+Additional resources
 
 </div>
 
@@ -76,8 +96,20 @@ As an administrator, use caution when allowing non-cluster administrators to ins
 
 - [Disabling the default OperatorHub catalog sources](../../operators/admin/olm-managing-custom-catalogs.xml#olm-restricted-networks-operatorhub_olm-managing-custom-catalogs)
 
+</div>
+
 # Operator colocation and Operator groups
 
 Operator Lifecycle Manager (OLM) handles OLM-managed Operators that are installed in the same namespace, meaning their `Subscription` resources are colocated in the same namespace, as related Operators. Even if they are not actually related, OLM considers their states, such as their version and update policy, when any one of them is updated.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Multitenancy and Operator colocation](../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
+
+</div>

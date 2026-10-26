@@ -2,19 +2,16 @@ By enabling IPsec, you can encrypt both internal pod-to-pod cluster traffic betw
 
 IPsec is disabled by default. You can enable IPsec either during or after installing the cluster. For information about cluster installation, see [OpenShift Container Platform installation overview](../../installing/overview/index.xml#ocp-installation-overview).
 
-<div class="note">
-
-Upgrading your cluster to OpenShift Container Platform 4.17 when the `libreswan` and `NetworkManager-libreswan` packages have different OpenShift Container Platform versions causes two consecutive compute node reboot operations. For the first reboot, the Cluster Network Operator (CNO) applies the IPsec configuration to compute nodes. For the second reboot, the Machine Config Operator (MCO) applies the latest machine configs to the cluster.
-
-To combine the CNO and MCO updates into a single node reboot, complete the following tasks:
-
-- Before upgrading your cluster, set the `paused` parameter to `true` in the `MachineConfigPools` custom resource (CR) that groups compute nodes.
-
-- After you upgrade your cluster, set the parameter to `false`.
-
-For more information, see [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update).
-
-</div>
+> [!NOTE]
+> Upgrading your cluster to OpenShift Container Platform 4.17 when the `libreswan` and `NetworkManager-libreswan` packages have different OpenShift Container Platform versions causes two consecutive compute node reboot operations. For the first reboot, the Cluster Network Operator (CNO) applies the IPsec configuration to compute nodes. For the second reboot, the Machine Config Operator (MCO) applies the latest machine configs to the cluster.
+>
+> To combine the CNO and MCO updates into a single node reboot, complete the following tasks:
+>
+> - Before upgrading your cluster, set the `paused` parameter to `true` in the `MachineConfigPools` custom resource (CR) that groups compute nodes.
+>
+> - After you upgrade your cluster, set the parameter to `false`.
+>
+> For more information, see [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update).
 
 The following support limitations exist for IPsec on a OpenShift Container Platform cluster:
 
@@ -40,11 +37,11 @@ You can configure IPsec on OpenShift Container Platform clusters in `Disabled`, 
 
 The following table describes the different modes of operation:
 
-| Mode       | Description                                                                                                                                                                                                               | Default |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `Disabled` | No traffic is encrypted. This is the cluster default.                                                                                                                                                                     | Yes     |
-| `Full`     | Pod-to-pod traffic is encrypted as described in "Types of network traffic flows encrypted by pod-to-pod IPsec". Traffic to external nodes may be encrypted after you complete the required configuration steps for IPsec. | No      |
-| `External` | Traffic to external nodes may be encrypted after you complete the required configuration steps for IPsec.                                                                                                                 | No      |
+| Mode | Description | Default |
+|----|----|----|
+| `Disabled` | No traffic is encrypted. This is the cluster default. | Yes |
+| `Full` | Pod-to-pod traffic is encrypted as described in "Types of network traffic flows encrypted by pod-to-pod IPsec". Traffic to external nodes may be encrypted after you complete the required configuration steps for IPsec. | No |
+| `External` | Traffic to external nodes may be encrypted after you complete the required configuration steps for IPsec. | No |
 
 IPsec modes of operation
 
@@ -56,11 +53,8 @@ The following prerequisites are required to add certificates into the host NSS d
 
 - Install the NMState Operator. This Operator is required for specifying the IPsec configuration. For more information, see "Kubernetes NMState Operator".
 
-  <div class="note">
-
-  The NMState Operator is supported on Google Cloud only for configuring IPsec.
-
-  </div>
+  > [!NOTE]
+  > The NMState Operator is supported on Google Cloud only for configuring IPsec.
 
 # Additional resources
 
@@ -132,11 +126,8 @@ This feature is supported on the following platforms:
 
 - VMware vSphere
 
-<div class="important">
-
-If you have Red Hat Enterprise Linux (RHEL) compute nodes, these do not support IPsec encryption for external traffic.
-
-</div>
+> [!IMPORTANT]
+> If you have Red Hat Enterprise Linux (RHEL) compute nodes, these do not support IPsec encryption for external traffic.
 
 If your cluster uses hosted control planes for Red Hat OpenShift Container Platform, configuring IPsec for encrypting traffic to external hosts is not supported.
 
@@ -156,11 +147,8 @@ To enable pod-to-pod and external IPsec encryption in OpenShift Container Platfo
 
 - `External`: Encryption for external traffic
 
-<div class="note">
-
-If you configure IPsec in `Full` mode, you must also complete the "Configuring IPsec encryption for external traffic" procedure.
-
-</div>
+> [!NOTE]
+> If you configure IPsec in `Full` mode, you must also complete the "Configuring IPsec encryption for external traffic" procedure.
 
 If you enabled IPsec in `Full` mode, as a cluster administrator you can configure options for the mode by adding the `full` schema to `networks.operator.openshift.io`. The `full` schema supports the `encapsulation` parameter. You can use this parameter to configure network address translation-traversal (NAT-T) encapsulation for IPsec traffic. The `encapsulation` parameter supports the following values:
 
@@ -168,13 +156,29 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
 
 - `Always` enables UDP encapsulation for all traffic types available in a node. This option does not rely upon `libreswan` to detect NAT packets in a node.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - You have reduced the size of your cluster MTU by `46` bytes to allow for the overhead of the IPsec ESP header.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To enable IPsec encryption, enter the following command:
 
@@ -194,9 +198,11 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
     `spec.defaultNetwork.ovnKubernetesConfig.ipsecConfig.mode`
     Specifies `External` to encrypt traffic to external hosts or `Full` to encrypt pod-to-pod traffic and, optionally, traffic to external hosts. By default, IPsec is disabled.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration that has IPsec enabled in `Full` mode and `encapsulation` set to `Always`**
+    <div class="title">
+
+    Example configuration that has IPsec enabled in `Full` mode and `encapsulation` set to `Always`
 
     </div>
 
@@ -213,9 +219,19 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
               }}}}}}'
     ```
 
+    </div>
+
 2.  Encrypt external traffic with IPsec by completing the "Configuring IPsec encryption for external traffic" procedure.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To find the names of the OVN-Kubernetes data plane pods, enter the following command:
 
@@ -223,9 +239,11 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
     $ oc get pods -n openshift-ovn-kubernetes -l=app=ovnkube-node
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -239,13 +257,12 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
     ...
     ```
 
+    </div>
+
 2.  Verify that you enabled IPsec on your cluster by running the following command:
 
-    <div class="note">
-
-    As a cluster administrator, you can verify that you enabled IPsec between pods on your cluster when you configured IPsec in `Full` mode. This step does not verify whether IPsec is working between your cluster and external hosts.
-
-    </div>
+    > [!NOTE]
+    > As a cluster administrator, you can verify that you enabled IPsec between pods on your cluster when you configured IPsec in `Full` mode. This step does not verify whether IPsec is working between your cluster and external hosts.
 
     ``` terminal
     $ oc -n openshift-ovn-kubernetes rsh ovnkube-node-<XXXXX> ovn-nbctl --no-leader-only get nb_global . ipsec
@@ -258,13 +275,20 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
 
     Successful output from the command shows the status as `true`.
 
+</div>
+
 # Configure IPsec encryption for external traffic
 
 To configure IPsec encryption for traffic between OpenShift Container Platform and external hosts, you can create Butane machine configs with PKCS#12 certificates and apply them to cluster nodes.
 
-<div class="note">
+> [!NOTE]
+> After you apply the machine config, the Machine Config Operator (MCO) reboots affected nodes in your cluster to rollout the new machine config.
 
-After you apply the machine config, the Machine Config Operator (MCO) reboots affected nodes in your cluster to rollout the new machine config.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -282,6 +306,16 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
 - You must set the `routingViaHost` parameter to `true` in the `ovnKubernetesConfig.gatewayConfig` specification of the OVN-Kubernetes network plugin.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an IPsec configuration with an NMState Operator node network configuration policy. For more information, see [Configuring an IPsec based VPN connection by using nmstatectl](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/setting-up-an-ipsec-vpn_configuring-and-managing-networking#configuring-an-ipsec-based-vpn-connection-by-using-nmstatectl_setting-up-an-ipsec-vpn).
 
     1.  To identify the IP address of the cluster node that is the IPsec endpoint, enter the following command:
@@ -290,9 +324,11 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
     2.  Create a file named `ipsec-config.yaml` that has a node network configuration policy for the NMState Operator, such as in the following examples. For an overview about `NodeNetworkConfigurationPolicy` objects, see [The Kubernetes NMState project](https://nmstate.io/kubernetes-nmstate/).
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example NMState IPsec transport configuration**
+        <div class="title">
+
+        Example NMState IPsec transport configuration
 
         </div>
 
@@ -322,6 +358,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
                 type: transport
         ```
 
+        </div>
+
         where:
 
         `kubernetes.io/hostname`
@@ -339,9 +377,11 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
         `rightsubnet`
         Specifies the IP address of the external host, such as `10.1.2.3/32`.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example NMState IPsec tunnel configuration**
+        <div class="title">
+
+        Example NMState IPsec tunnel configuration
 
         </div>
 
@@ -370,6 +410,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
                 ikev2: insist
                 type: tunnel
         ```
+
+        </div>
 
     3.  To configure the IPsec interface, enter the following command:
 
@@ -401,11 +443,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
 6.  To create Butane config files for the control plane and compute nodes, enter the following command:
 
-    <div class="note">
-
-    The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
-
-    </div>
+    > [!NOTE]
+    > The [Butane version](https://coreos.github.io/butane/specs/) you specify in the config file should match the OpenShift Container Platform version and always ends in `0`. For example, `4.17.0`. See "Creating machine configs with Butane" for information about Butane.
 
     ``` terminal
     $ for role in master worker; do
@@ -475,13 +514,18 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
     done
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > As the Machine Config Operator (MCO) updates machines in each machine config pool, it reboots each node one by one. You must wait for all the nodes to update before external IPsec connectivity is available.
 
-    As the Machine Config Operator (MCO) updates machines in each machine config pool, it reboots each node one by one. You must wait for all the nodes to update before external IPsec connectivity is available.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the machine config pool status by entering the following command:
 
@@ -491,11 +535,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
     A successfully updated node has the following status: `UPDATED=true`, `UPDATING=false`, `DEGRADED=false`.
 
-    <div class="note">
-
-    By default, the MCO updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
-
-    </div>
+    > [!NOTE]
+    > By default, the MCO updates one machine per pool at a time, causing the total time the migration takes to increase with the size of the cluster.
 
 2.  To confirm that IPsec machine configs rolled out successfully, enter the following commands:
 
@@ -505,9 +546,11 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
         $ oc get mc | grep ipsec
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -515,6 +558,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
         80-ipsec-master-extensions        3.2.0        6d15h
         80-ipsec-worker-extensions        3.2.0        6d15h
         ```
+
+        </div>
 
     2.  Confirm you have applied the IPsec extension to control plane nodes:
 
@@ -528,6 +573,8 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
         $ oc get mcp worker -o yaml | grep 80-ipsec-worker-extensions -c
         ```
 
+</div>
+
 # Additional resources
 
 - [IPsec Encryption](https://nmstate.io/devel/yaml_api.html#ipsec-encryption)
@@ -538,11 +585,29 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
 To stop encrypting traffic to an external host in OpenShift Container Platform, you can remove the IPsec tunnel configuration from your cluster nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - You enabled IPsec in either `Full` or `External` mode on your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `remove-ipsec-tunnel.yaml` with the following YAML:
 
@@ -578,13 +643,33 @@ To stop encrypting traffic to an external host in OpenShift Container Platform, 
     $ oc apply -f remove-ipsec-tunnel.yaml
     ```
 
+</div>
+
 # Disable IPsec encryption
 
 To disable IPsec encryption in OpenShift Container Platform, you can patch the cluster `Network` custom resource and set `ipsecConfig` mode to `Disabled`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in to the cluster with a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Choose one of the following options to disable IPsec encryption:
 
@@ -610,6 +695,8 @@ To disable IPsec encryption in OpenShift Container Platform, you can patch the c
         ```
 
 2.  Optional: You can increase the size of your cluster MTU by `46` bytes because there is no longer any overhead from the IPsec Encapsulating Security Payload (ESP) header in IP packets.
+
+</div>
 
 # Additional resources
 

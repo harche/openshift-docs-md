@@ -4,9 +4,27 @@ Before installing the NVIDIA DPF Operator, you must set up the management cluste
 
 The management cluster is a standard OpenShift Container Platform 4.17 cluster installed by using the Assisted Installer. This cluster hosts the DPF Operators and the hosted control planes for managing the hosted cluster on DPUs.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the [Red Hat Hybrid Cloud Console](https://console.redhat.com/openshift/create).
 
 - You have the OpenShift CLI (`oc`) installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to the [Red Hat Hybrid Cloud Console cluster creation page](https://console.redhat.com/openshift/create) and create a cluster with control-plane nodes only. Select **Data center** → **Assisted Installer**.
 
@@ -30,6 +48,10 @@ The management cluster is a standard OpenShift Container Platform 4.17 cluster i
 
         <div class="note">
 
+        <div class="title">
+
+        </div>
+
         - You can alternatively configure MTU allocation on the DHCP server that allocates IPs to the control plane nodes.
 
         - If virtual machines are used for control-plane nodes, the MTU must be set on the bridge of the hypervisor used by the VMs.
@@ -50,7 +72,15 @@ The management cluster is a standard OpenShift Container Platform 4.17 cluster i
 
 5.  After the installation completes, download the `KUBECONFIG` file and save it as `mgmt-kubeconfig`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Set the `KUBECONFIG` environment variable:
 
@@ -64,6 +94,8 @@ The management cluster is a standard OpenShift Container Platform 4.17 cluster i
     $ oc get nodes
     ```
 
+</div>
+
 # Configure worker nodes for DPU operation
 
 You must deploy the `dpu-worker-config` Helm chart to configure worker nodes with DPUs before adding those nodes to the management cluster. The `dpu-worker-config` Helm chart creates the `MachineConfigPool`, `dpu-worker-configuration` MachineConfig, and other required resources that configure the bridge, OVS services, and IP routing on worker nodes. The `MachineConfigPool` groups DPU-equipped worker nodes so that the Machine Config Operator can apply DPU-specific configurations to them.
@@ -76,7 +108,13 @@ The MachineConfig resource performs several configuration tasks required by DPF:
 
 - **IP Rules Configuration**: Sets routing rules required for pod-to-host control-plane traffic.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -85,6 +123,16 @@ The MachineConfig resource performs several configuration tasks required by DPF:
 - The Helm CLI (`helm`) is installed on your workstation.
 
 - You have a pull secret file that includes credentials for `registry.redhat.io`. Helm reads its registry credentials from this file, which is separate from the container runtime configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the `OPENSHIFT_PULL_SECRET` environment variable to the path of your pull secret file:
 
@@ -104,6 +152,16 @@ The MachineConfig resource performs several configuration tasks required by DPF:
         --disable-openapi-validation
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `dpu-worker-config` Helm release is deployed:
 
   ``` terminal
@@ -116,9 +174,11 @@ The MachineConfig resource performs several configuration tasks required by DPF:
   $ oc get mcp worker-dpu
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -127,15 +187,19 @@ The MachineConfig resource performs several configuration tasks required by DPF:
   worker-dpu   rendered-worker-dpu-b4a44cc606c2ffcf07067d1e943a8758   True      False      False      0              0                   0                     0                      2m
   ```
 
+  </div>
+
 - Verify that the `dpu-worker-configuration` MachineConfig is created:
 
   ``` terminal
   $ oc get machineconfig dpu-worker-configuration
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -144,21 +208,38 @@ The MachineConfig resource performs several configuration tasks required by DPF:
   dpu-worker-configuration                           3.2.0             2m
   ```
 
-<div class="note">
-
-The Machine Config Operator automatically reboots worker nodes to apply DPU-specific configurations after nodes with the `worker-dpu` label are added to the cluster.
+  </div>
 
 </div>
+
+> [!NOTE]
+> The Machine Config Operator automatically reboots worker nodes to apply DPU-specific configurations after nodes with the `worker-dpu` label are added to the cluster.
 
 # Create the DPF namespace
 
 You must create a dedicated namespace for the DPF Operator and its components before installing the Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create the `dpf-operator-system` namespace:
 
@@ -166,13 +247,23 @@ You must create a dedicated namespace for the DPF Operator and its components be
   $ oc create namespace dpf-operator-system
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the namespace was created:
 
   ``` terminal
   $ oc get namespace dpf-operator-system
   ```
+
+</div>
 
 # Required Operators
 
@@ -184,6 +275,14 @@ The multicluster engine Operator and the Node Feature Discovery Operator can be 
 
 If you did not install the multicluster engine Operator by using the Assisted Installer, install it from the OpenShift CLI. You do not need to install Red Hat Advanced Cluster Management or create a `MultiClusterHub` resource to use the multicluster engine Operator. If the Assisted Installer already created a `MultiClusterEngine` resource, skip this procedure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the management cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -191,6 +290,16 @@ If you did not install the multicluster engine Operator by using the Assisted In
 - No `MultiClusterEngine` resource exists on the cluster.
 
 - If you already have an existing `MultiClusterEngine` resource with a different name, note that the following verification commands use `mce`. Substitute your resource’s name where needed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check which multicluster engine channels are available from the `redhat-operators` catalog:
 
@@ -269,6 +378,16 @@ If you did not install the multicluster engine Operator by using the Assisted In
     $ oc apply -f mce.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Wait for the `MultiClusterEngine` resource to become available:
 
   ``` terminal
@@ -281,9 +400,11 @@ If you did not install the multicluster engine Operator by using the Assisted In
   $ oc get multiclusterengine mce -o jsonpath='{.spec.overrides.components[?(@.name=="hypershift")].enabled}{"\n"}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -291,17 +412,47 @@ If you did not install the multicluster engine Operator by using the Assisted In
   true
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the multicluster engine Operator while connected online](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/clusters/cluster_mce_overview#installing-while-connected-online-mce)
+
+</div>
 
 ## Install the cert-manager Operator
 
 The cert-manager Operator for Red Hat OpenShift manages TLS certificates for DPF components. You install this operator by using the OpenShift CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `cert-manager-operator.yaml` with the following content:
 
@@ -338,19 +489,49 @@ The cert-manager Operator for Red Hat OpenShift manages TLS certificates for DPF
     $ oc apply -f cert-manager-operator.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the Operator is installed:
 
   ``` terminal
   $ oc get pods -n cert-manager
   ```
 
+</div>
+
 ## Install the MetalLB Operator
 
 The MetalLB Operator provides load balancing services for DPF components on the management cluster. You install this operator by using the OpenShift CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `metallb-operator.yaml` with the following content:
 
@@ -393,6 +574,16 @@ The MetalLB Operator provides load balancing services for DPF components on the 
     $ oc apply -f metallb-operator.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Wait for the MetalLB custom resource definition to be created and established before configuring MetalLB:
 
   ``` terminal
@@ -400,13 +591,33 @@ The MetalLB Operator provides load balancing services for DPF components on the 
   $ oc wait crd/metallbs.metallb.io --for=condition=Established --timeout=5m
   ```
 
+</div>
+
 ## Install the GitOps Operator
 
 The Red Hat OpenShift GitOps manages DPF service deployments and configurations using GitOps principles. You install this operator by using the OpenShift CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `gitops-operator.yaml` with the following content:
 
@@ -453,6 +664,16 @@ The Red Hat OpenShift GitOps manages DPF service deployments and configurations
     $ oc apply -f gitops-operator.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Wait for the Argo CD custom resource definition to be created and established before creating an `ArgoCD` resource:
 
   ``` terminal
@@ -460,15 +681,35 @@ The Red Hat OpenShift GitOps manages DPF service deployments and configurations
   $ oc wait crd/argocds.argoproj.io --for=condition=Established --timeout=5m
   ```
 
+</div>
+
 ## Install the NVIDIA Maintenance Operator
 
 The NVIDIA Maintenance Operator assists in performing maintenance tasks and gracefully draining DPU worker nodes. You install this operator by using Helm.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the Helm CLI (`helm`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a Helm values file named `maintenance-operator-values.yaml` with the following content:
 
@@ -507,19 +748,47 @@ The NVIDIA Maintenance Operator assists in performing maintenance tasks and grac
       --wait
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the Operator pod is running:
 
   ``` terminal
   $ oc get pods -n dpf-operator-system
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [DPF Operator prerequisites](https://networking-docs.nvidia.com/dpf/26.4.1/host-network-configuration-prerequisites)
+
+</div>
 
 # Configure the required Operators
 
 After the required Operators are installed, configure Node Feature Discovery, MetalLB, GitOps, and Cluster Network Operator for the DPF environment. This procedure also verifies that the multicluster engine and hosted control plane components are ready.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -528,6 +797,16 @@ After the required Operators are installed, configure Node Feature Discovery, Me
 - You have installed the cert-manager Operator for Red Hat OpenShift, MetalLB Operator, Red Hat OpenShift GitOps, and NVIDIA Maintenance Operator.
 
 - You have installed the Logical Volume Manager Storage Operator, multicluster engine Operator, and the Node Feature Discovery Operator. You can install them by using the Assisted Installer during cluster creation. If you did not install the multicluster engine Operator, follow "Install the multicluster engine Operator" before continuing.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define the cluster variables:
 
@@ -701,15 +980,27 @@ After the required Operators are installed, configure Node Feature Discovery, Me
       '{"spec":{"defaultNetwork":{"ovnKubernetesConfig":{"gatewayConfig":{"ipForwarding":"Global"}}}}}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `MultiClusterEngine` instance is created:
 
   ``` terminal
   $ oc get multiclusterengine mce
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -718,17 +1009,16 @@ After the required Operators are installed, configure Node Feature Discovery, Me
   mce    Available   4m58s   2.17.2           2.17.2           All components available
   ```
 
+  </div>
+
 - Verify that the hosted control plane component is enabled:
 
   ``` terminal
   $ oc get multiclusterengine mce -o jsonpath='{.spec.overrides.components[?(@.name=="hypershift")].enabled}{"\n"}'
   ```
 
-  <div class="note">
-
-  The manual installation procedure creates `mce` with `hypershift` enabled. If the previous command returns `true`, no further action is needed. If it returns `false` or an empty result, you must enable the `hypershift` component before DPU provisioning can succeed.
-
-  </div>
+  > [!NOTE]
+  > The manual installation procedure creates `mce` with `hypershift` enabled. If the previous command returns `true`, no further action is needed. If it returns `false` or an empty result, you must enable the `hypershift` component before DPU provisioning can succeed.
 
   To enable the `hypershift` component on the `MultiClusterEngine` resource, use the following steps. In current multicluster engine Operator versions the component is named `hypershift`. Earlier versions use `hypershift-preview`.
 
@@ -753,11 +1043,8 @@ After the required Operators are installed, configure Node Feature Discovery, Me
     $ oc edit multiclusterengine mce
     ```
 
-    <div class="important">
-
-    Do not use `oc patch --type=merge` to enable the component, because a merge patch replaces the entire `components` array and removes the other components. Use the JSON `add` patch only when the `components` list exists. Otherwise, use `oc edit`.
-
-    </div>
+    > [!IMPORTANT]
+    > Do not use `oc patch --type=merge` to enable the component, because a merge patch replaces the entire `components` array and removes the other components. Use the JSON `add` patch only when the `components` list exists. Otherwise, use `oc edit`.
 
 - Verify that the `NodeFeatureDiscovery` instance and `NodeFeatureRule` are configured:
 
@@ -783,12 +1070,18 @@ After the required Operators are installed, configure Node Feature Discovery, Me
   $ oc get network.operator.openshift.io cluster -o jsonpath='{.spec.defaultNetwork.ovnKubernetesConfig.gatewayConfig.ipForwarding}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Global
   ```
+
+  </div>
+
+</div>

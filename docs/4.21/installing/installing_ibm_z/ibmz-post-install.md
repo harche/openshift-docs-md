@@ -12,17 +12,32 @@ The following devices can be configured:
 
 You can configure devices by adding udev rules by using the Machine Config Operator (MCO) or you can configure devices manually.
 
-<div class="note">
+> [!NOTE]
+> The procedures described here apply only to z/VM installations. If you have installed your cluster with RHEL KVM on IBM Z® or IBM® LinuxONE infrastructure, no additional configuration is needed inside the KVM guest after the devices were added to the KVM guests. However, both in z/VM and RHEL KVM environments the next steps to configure the Local Storage Operator and Kubernetes NMState Operator need to be applied.
 
-The procedures described here apply only to z/VM installations. If you have installed your cluster with RHEL KVM on IBM Z® or IBM® LinuxONE infrastructure, no additional configuration is needed inside the KVM guest after the devices were added to the KVM guests. However, both in z/VM and RHEL KVM environments the next steps to configure the Local Storage Operator and Kubernetes NMState Operator need to be applied.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Machine configuration overview](../../machine_configuration/index.xml#machine-config-overview)
 
+</div>
+
 # Configuring additional devices by using the Machine Config Operator
 
 You can use the Machine Config Operator (MCO) to configure additional devices in an IBM Z® or IBM® LinuxONE environment. Configuring devices with the MCO is persistent but only allows specific configurations for compute nodes. MCO does not allow control plane nodes to have different configurations.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
@@ -47,6 +62,16 @@ You can use the Machine Config Operator (MCO) to configure additional devices in
       matchLabels:
         node-role.kubernetes.io/worker0: ""
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To configure an FCP host adapter with N_Port Identifier Virtualization (NPIV) by adding a udev rule, complete the following steps:
 
@@ -279,19 +304,49 @@ You can use the Machine Config Operator (MCO) to configure additional devices in
         `spec.config.storage.files.path`
         Specifies the path where the udev rule is located.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Install and configure the Local Storage Operator](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
 
 - [Observing and updating the node network state and configuration](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#k8s-nmstate-updating-node-network-config)
 
+</div>
+
 # Configuring additional devices manually
 
 After installation, you can manually configure additional devices on IBM Z® or IBM® LinuxONE nodes. This configuration persists across node restarts, but you must redo the steps if you replace the node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
 - The device must be available to the node.
 
 - In a z/VM environment, the device must be attached to the z/VM guest.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the node via SSH by running the following command:
 
@@ -311,9 +366,21 @@ After installation, you can manually configure additional devices on IBM Z® or 
     $ sudo chzdev -e <device>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [chzdev - Configure IBM Z® devices (IBM® Documentation)](https://www.ibm.com/docs/en/linux-on-systems?topic=commands-chzdev)
 
 - [Persistent device configuration (IBM® Documentation)](https://www.ibm.com/docs/en/linux-on-systems?topic=linuxonibm/com.ibm.linux.z.ludd/ludd_c_perscfg.html)
+
+</div>
 
 # RoCE network cards
 
@@ -323,15 +390,30 @@ You can configure RoCE (RDMA over Converged Ethernet) interfaces with the Kubern
 
 After installation, you can enable multipathing for Fibre Channel Protocol (FCP) logical unit numbers (LUNs) on IBM Z® or IBM® LinuxONE nodes. This configuration persists across node restarts, but you must redo the steps if you replace the node.
 
-<div class="important">
+> [!IMPORTANT]
+> On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
 
-On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configured your cluster for it during installation. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process" in *Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE*.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You are logged in to the cluster as a user with administrative privileges.
 
 - You have configured multiple paths to a LUN with either method explained above.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the node via SSH by running the following command:
 
@@ -363,6 +445,16 @@ On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configure
     $ sudo fdisk /dev/mapper/mpatha
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the devices have been grouped, run the following command:
 
   ``` terminal
@@ -381,8 +473,18 @@ On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configure
       `- 0:0:1:6  sdh 66:48  active ready running
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Install and configure the Local Storage Operator](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
 
 - [Observing and updating the node network state and configuration](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#k8s-nmstate-updating-node-network-config)
+
+</div>

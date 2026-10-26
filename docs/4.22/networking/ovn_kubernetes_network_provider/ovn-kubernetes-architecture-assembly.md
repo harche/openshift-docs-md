@@ -33,15 +33,25 @@ The Kubernetes control plane nodes contain two `ovnkube-control-plane` pods on s
 
 List the resources and containers running within the OVN-Kubernetes project to identify network workload states and verify component placement across the infrastructure.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  List all pods and endpoints by entering the following command:
 
     ``` terminal
     $ oc get all,ep,cm -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -83,6 +93,8 @@ List the resources and containers running within the OVN-Kubernetes project to i
     configmap/signer-ca                  1      114m
     ```
 
+    </div>
+
     There is one `ovnkube-node` pod for each node in the cluster. The `ovnkube-config` config map has the OpenShift Container Platform OVN-Kubernetes configurations.
 
 2.  Display the container layout within the node pod by entering the following command:
@@ -91,15 +103,19 @@ List the resources and containers running within the OVN-Kubernetes project to i
     $ oc get pods ovnkube-node-bcvts -o jsonpath='{.spec.containers[*].name}' -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     ovn-controller ovn-acl-logging kube-rbac-proxy-node kube-rbac-proxy-ovn-metrics northd nbdb sbdb ovnkube-controller
     ```
+
+    </div>
 
     The `ovnkube-node` pod hosts the following networking containers:
 
@@ -121,9 +137,11 @@ List the resources and containers running within the OVN-Kubernetes project to i
     $ oc get pods ovnkube-control-plane-65c6f55656-6d55h -o jsonpath='{.spec.containers[*].name}' -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -131,15 +149,37 @@ List the resources and containers running within the OVN-Kubernetes project to i
     kube-rbac-proxy ovnkube-cluster-manager
     ```
 
+    </div>
+
     The `ovnkube-control-plane` pod has a container that runs on each OpenShift Container Platform node, the `ovnkube-cluster-manager`. The `ovnkube-cluster-manager` container allocates pod subnet, transit-switch subnet IP addresses, and join-switch subnet IP addresses to each node in the cluster. The `kube-rbac-proxy` container monitors metrics for the `ovnkube-cluster-manager` container.
+
+</div>
 
 # Listing the OVN-Kubernetes northbound database contents
 
 To understand OVN-Kubernetes (OVN-K) logical networking entities, you must examine the northbound database running as a container inside the ovnkube-node pod. Each node is controlled by the ovnkube-controller container running within that local pod structure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift CLI (`oc`) is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the pods in the network namespace by entering the following command:
 
@@ -147,9 +187,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
     $ oc get po -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -165,15 +207,19 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
     ovnkube-node-wqn2m                       8/8     Running   0             16m
     ```
 
+    </div>
+
 2.  Optional: To list the pods with node information, enter the following command:
 
     ``` terminal
     $ oc get pods -n openshift-ovn-kubernetes -owide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -188,6 +234,8 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
     ovnkube-node-mlr8k                       8/8     Running   0             27m   10.0.0.3     ci-ln-t487nnb-72292-mdcnq-master-1         <none>           <none>
     ovnkube-node-wqn2m                       8/8     Running   0             17m   10.0.128.4   ci-ln-t487nnb-72292-mdcnq-worker-c-przlm   <none>           <none>
     ```
+
+    </div>
 
 3.  Open a remote shell into the `nbdb` or `sbdb` containers on the relevant node.
 
@@ -208,9 +256,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         -c northd -- ovn-nbctl lr-list
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -219,11 +269,10 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         96a0a0f0-e7ed-4fec-8393-3195563de1b8 (ovn_cluster_router)
         ```
 
-        <div class="note">
-
-        From this output you can see there is router on each node plus an `ovn_cluster_router`.
-
         </div>
+
+        > [!NOTE]
+        > From this output you can see there is router on each node plus an `ovn_cluster_router`.
 
     2.  View the list of logical switches by entering the following command:
 
@@ -232,9 +281,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         -c nbdb -- ovn-nbctl ls-list
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -245,11 +296,10 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         992509d7-2c3f-4432-88db-c179e43592e5 (transit_switch)
         ```
 
-        <div class="note">
-
-        From this output you can see there is an ext switch for each node plus switches with the node name itself and a join switch.
-
         </div>
+
+        > [!NOTE]
+        > From this output you can see there is an ext switch for each node plus switches with the node name itself and a join switch.
 
     3.  View the list of load balancers by entering the following command:
 
@@ -258,9 +308,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         -c nbdb -- ovn-nbctl lb-list
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -302,11 +354,10 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
         6c2e1c90-f0ca-484e-8a8e-40e71442110a    Service_openshif    udp        172.30.0.10:53          10.128.0.13:5353,10.128.2.6:5353,10.129.0.39:5353,10.129.2.6:5353,10.130.0.11:5353,10.131.0.9:5353
         ```
 
-        <div class="note">
-
-        From this truncated output you can see there are many OVN-Kubernetes load balancers. Load balancers in OVN-Kubernetes are representations of services.
-
         </div>
+
+        > [!NOTE]
+        > From this truncated output you can see there are many OVN-Kubernetes load balancers. Load balancers in OVN-Kubernetes are representations of services.
 
 5.  Display the options available with the `ovn-nbctl` command by entering the following command:
 
@@ -315,27 +366,26 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, you must exami
     -c nbdb ovn-nbctl --help
     ```
 
+</div>
+
 # Command-line arguments for ovn-nbctl to examine northbound database contents
 
 The following table describes the command-line arguments that can be used with `ovn-nbctl` to examine the contents of the northbound database.
 
-<div class="note">
+> [!NOTE]
+> Open a remote shell in the pod you want to view the contents of and then run the `ovn-nbctl` commands.
 
-Open a remote shell in the pod you want to view the contents of and then run the `ovn-nbctl` commands.
-
-</div>
-
-| Argument                            | Description                                                                     |
-|-------------------------------------|---------------------------------------------------------------------------------|
-| `ovn-nbctl show`                    | An overview of the northbound database contents as seen from a specific node.   |
-| `ovn-nbctl show <switch_or_router>` | Show the details associated with the specified switch or router.                |
-| `ovn-nbctl lr-list`                 | Show the logical routers.                                                       |
-| `ovn-nbctl lrp-list <router>`       | Using the router information from `ovn-nbctl lr-list` to show the router ports. |
-| `ovn-nbctl lr-nat-list <router>`    | Show network address translation details for the specified router.              |
-| `ovn-nbctl ls-list`                 | Show the logical switches                                                       |
-| `ovn-nbctl lsp-list <switch>`       | Using the switch information from `ovn-nbctl ls-list` to show the switch port.  |
-| `ovn-nbctl lsp-get-type <port>`     | Get the type for the logical port.                                              |
-| `ovn-nbctl lb-list`                 | Show the load balancers.                                                        |
+| Argument | Description |
+|----|----|
+| `ovn-nbctl show` | An overview of the northbound database contents as seen from a specific node. |
+| `ovn-nbctl show <switch_or_router>` | Show the details associated with the specified switch or router. |
+| `ovn-nbctl lr-list` | Show the logical routers. |
+| `ovn-nbctl lrp-list <router>` | Using the router information from `ovn-nbctl lr-list` to show the router ports. |
+| `ovn-nbctl lr-nat-list <router>` | Show network address translation details for the specified router. |
+| `ovn-nbctl ls-list` | Show the logical switches |
+| `ovn-nbctl lsp-list <switch>` | Using the switch information from `ovn-nbctl ls-list` to show the switch port. |
+| `ovn-nbctl lsp-get-type <port>` | Get the type for the logical port. |
+| `ovn-nbctl lb-list` | Show the load balancers. |
 
 Command-line arguments to examine northbound database contents
 
@@ -343,9 +393,27 @@ Command-line arguments to examine northbound database contents
 
 To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the southbound database running as a container inside the `ovnkube-node` pod. Each node is controlled by the `ovnkube-controller` container running in that pod on the node.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift CLI (`oc`) is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the pods in the network namespace by entering the following command:
 
@@ -353,9 +421,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
     $ oc get po -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -371,15 +441,19 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
     ovnkube-node-wqn2m                       8/8     Running   0             16m
     ```
 
+    </div>
+
 2.  Optional: To list the pods with node information, enter the following command:
 
     ``` terminal
     $ oc get pods -n openshift-ovn-kubernetes -owide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -395,6 +469,8 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
     ovnkube-node-wqn2m                       8/8     Running   0             17m   10.0.128.4   ci-ln-t487nnb-72292-mdcnq-worker-c-przlm   <none>           <none>
     ```
 
+    </div>
+
 3.  Open a remote shell into the `nbdb` or `sbdb` containers on the relevant node to examine the southbound database.
 
 4.  Show all the objects in the southbound database by entering the following command:
@@ -403,9 +479,11 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
     $ ovn-sbctl show
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -463,6 +541,8 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
         Port_Binding tstor-ci-ln-9gp362t-72292-v2p94-master-1
     ```
 
+    </div>
+
     - This detailed output shows the chassis and the ports that are attached to the chassis which in this case are all of the router ports and anything that uses host networking.
 
     - Any pods communicate out to the wider network by using source network address translation (SNAT). Their IP address is translated into the IP address of the node that the pod is running on and then sent out into the network.
@@ -476,21 +556,20 @@ To understand OVN-Kubernetes (OVN-K) logical networking entities, examine the so
     -c sbdb ovn-sbctl --help
     ```
 
+</div>
+
 # Command-line arguments for ovn-sbctl to examine southbound database contents
 
 The following table describes the command-line arguments that can be used with `ovn-sbctl` to examine the contents of the southbound database.
 
-<div class="note">
+> [!NOTE]
+> Open a remote shell in the pod you wish to view the contents of and then run the `ovn-sbctl` commands.
 
-Open a remote shell in the pod you wish to view the contents of and then run the `ovn-sbctl` commands.
-
-</div>
-
-| Argument                             | Description                                                                   |
-|--------------------------------------|-------------------------------------------------------------------------------|
-| `ovn-sbctl show`                     | An overview of the southbound database contents as seen from a specific node. |
-| `ovn-sbctl list Port_Binding <port>` | List the contents of southbound database for a the specified port .           |
-| `ovn-sbctl dump-flows`               | List the logical flows.                                                       |
+| Argument | Description |
+|----|----|
+| `ovn-sbctl show` | An overview of the southbound database contents as seen from a specific node. |
+| `ovn-sbctl list Port_Binding <port>` | List the contents of southbound database for a the specified port . |
+| `ovn-sbctl dump-flows` | List the logical flows. |
 
 Command-line arguments to examine southbound database contents
 
@@ -529,15 +608,20 @@ Port binding entries in the `ovn-sbdb` for logical patch ports used in gateway r
 localnet ports
 localnet ports are present on the bridged logical switches that allows a connection to a locally accessible network from each `ovn-controller` instance. This helps model the direct connectivity to the physical network from the logical switches. A logical switch can only have a single localnet port attached to it.
 
-<div class="note">
-
-Executing `ovnkube-trace` with the log level configuration set to `2` or `5` exposes these internal OVN-Kubernetes logical routing components for analysis.
-
-</div>
+> [!NOTE]
+> Executing `ovnkube-trace` with the log level configuration set to `2` or `5` exposes these internal OVN-Kubernetes logical routing components for analysis.
 
 ## Installing network-tools on local host
 
 Install `network-tools` on your local host for debugging OpenShift Container Platform cluster network issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Clone the `network-tools` repository onto your workstation with the following command:
 
@@ -557,9 +641,19 @@ Install `network-tools` on your local host for debugging OpenShift Container Pla
     $ ./debug-scripts/network-tools -h
     ```
 
+</div>
+
 ## Running network-tools
 
 Run `network-tools` to retrieve configuration status from logical switches and routers when diagnosing internal routing loops and cluster network issues.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -567,15 +661,27 @@ Run `network-tools` to retrieve configuration status from logical switches and r
 
 - You have installed `network-tools` on local host.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Display the logical router map by entering the following command:
 
     ``` terminal
     $ ./debug-scripts/network-tools ovn-db-run-command ovn-nbctl lr-list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -584,15 +690,19 @@ Run `network-tools` to retrieve configuration status from logical switches and r
     84bd4a4c-4b0b-4a47-b0cf-a2c32709fc53 (ovn_cluster_router)
     ```
 
+    </div>
+
 2.  Locate active port bindings with local network attributes by entering the following command:
 
     ``` terminal
     $ ./debug-scripts/network-tools ovn-db-run-command "ovn-sbctl find Port_Binding type=localnet"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -624,15 +734,19 @@ Run `network-tools` to retrieve configuration status from logical switches and r
     [...]
     ```
 
+    </div>
+
 3.  List the `l3gateway` ports by entering the following command:
 
     ``` terminal
     $ ./debug-scripts/network-tools ovn-db-run-command "ovn-sbctl find Port_Binding type=l3gateway"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -688,15 +802,19 @@ Run `network-tools` to retrieve configuration status from logical switches and r
     [...]
     ```
 
+    </div>
+
 4.  List the patch ports by entering the following command:
 
     ``` terminal
     $ ./debug-scripts/network-tools ovn-db-run-command "ovn-sbctl find Port_Binding type=patch"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -750,6 +868,10 @@ Run `network-tools` to retrieve configuration status from logical switches and r
     virtual_parent      : []
     [...]
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

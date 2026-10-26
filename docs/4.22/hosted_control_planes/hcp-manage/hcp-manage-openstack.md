@@ -14,7 +14,25 @@ The secret name formats are as follows:
 
 The `kubeconfig` secret has a Base64-encoded `kubeconfig` field. The `kubeadmin` password secret is also Base64-encoded; you can extract it and then use the password to log in to the API server or console of the hosted cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The `oc` CLI is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the `admin-kubeconfig` secret by entering the following command:
 
@@ -24,13 +42,17 @@ The `kubeconfig` secret has a Base64-encoded `kubeconfig` field. The `kubeadmin`
       --to=./hostedcluster-secrets --confirm
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         hostedcluster-secrets/kubeconfig
+
+    </div>
 
 2.  View a list of nodes of the hosted cluster to verify your access by entering the following command:
 
@@ -38,9 +60,19 @@ The `kubeconfig` secret has a Base64-encoded `kubeconfig` field. The `kubeadmin`
     $ oc --kubeconfig ./hostedcluster-secrets/kubeconfig get nodes
     ```
 
+</div>
+
 # Enabling node auto-scaling for the hosted cluster
 
 When you need more capacity in your hosted cluster on Red Hat OpenStack Platform (RHOSP) and spare agents are available, you can enable auto-scaling to install new worker nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To enable auto-scaling, enter the following command:
 
@@ -96,13 +128,17 @@ When you need more capacity in your hosted cluster on Red Hat OpenStack Platfor
       --to=./hostedcluster-secrets --confirm
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         hostedcluster-secrets/kubeconfig
+
+    </div>
 
 4.  You can check if new nodes are in the `Ready` status by entering the following command:
 
@@ -123,13 +159,20 @@ When you need more capacity in your hosted cluster on Red Hat OpenStack Platfor
     $ oc --kubeconfig ./hostedcluster-secrets get nodes
     ```
 
+</div>
+
 # Configuring node pools for availability zones
 
 To improve the high availability of your hosted cluster, you can distribute node pools across multiple Red Hat OpenStack Platform (RHOSP) Nova availability zones.
 
-<div class="note">
+> [!NOTE]
+> Availability zones do not necessarily correspond to fault domains and do not inherently provide high availability benefits.
 
-Availability zones do not necessarily correspond to fault domains and do not inherently provide high availability benefits.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -138,6 +181,16 @@ Availability zones do not necessarily correspond to fault domains and do not inh
 - You have access to the management cluster.
 
 - The `hcp` and `oc` command-line interfaces (CLIs) are installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set environment variables that are appropriate for your needs. For example, if you want to create two additional machines in the `az1` availability zone, you could enter:
 
@@ -170,9 +223,11 @@ Availability zones do not necessarily correspond to fault domains and do not inh
     $ oc get nodepools --namespace clusters
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -182,15 +237,19 @@ Availability zones do not necessarily correspond to fault domains and do not inh
     example-az1               example         2                               False         False                  True              True             Minimum availability requires 2 replicas, current 0 available
     ```
 
+    </div>
+
 4.  Observe the notes as they start on your hosted cluster by running the following command:
 
     ``` terminal
     $ oc --kubeconfig $CLUSTER_NAME-kubeconfig get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -202,15 +261,19 @@ Availability zones do not necessarily correspond to fault domains and do not inh
     ...
     ```
 
+    </div>
+
 5.  Verify that the node pool is created by running the following command:
 
     ``` terminal
     $ oc get nodepools --namespace clusters
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -218,6 +281,10 @@ Availability zones do not necessarily correspond to fault domains and do not inh
     NAME              CLUSTER         DESIRED   CURRENT   AVAILABLE   PROGRESSING   MESSAGE
     <node_pool_name>  <cluster_name>  2         2         2           False         All replicas are available
     ```
+
+    </div>
+
+</div>
 
 # Additional ports for node pools
 
@@ -245,16 +312,24 @@ The flag takes a list of comma-separated parameters that can be used multiple ti
 
 The parameters are as follows:
 
-| Parameter               | Description                                                                                                                                                                                   | Required | Default |
-|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
-| `network-id`            | The ID of the network to attach to the node.                                                                                                                                                  | Yes      | N/A     |
-| `vnic-type`             | The vNIC type to use for the port. If not specified, Neutron uses the default type `normal`.                                                                                                  | No       | N/A     |
-| `disable-port-security` | Whether to disable port security for the port. If not specified, Neutron enables port security unless it is explicitly disabled at the network level.                                         | No       | N/A     |
-| `address-pairs`         | A list of IP address pairs to assign to the port. The format is `ip_address=mac_address`. Multiple pairs can be provided, separated by a hyphen (`-`). The `mac_address` portion is optional. | No       | N/A     |
+| Parameter | Description | Required | Default |
+|----|----|----|----|
+| `network-id` | The ID of the network to attach to the node. | Yes | N/A |
+| `vnic-type` | The vNIC type to use for the port. If not specified, Neutron uses the default type `normal`. | No | N/A |
+| `disable-port-security` | Whether to disable port security for the port. If not specified, Neutron enables port security unless it is explicitly disabled at the network level. | No | N/A |
+| `address-pairs` | A list of IP address pairs to assign to the port. The format is `ip_address=mac_address`. Multiple pairs can be provided, separated by a hyphen (`-`). The `mac_address` portion is optional. | No | N/A |
 
 ## Creating additional ports for node pools
 
 You can configure additional ports for node pools for hosted clusters that run on Red Hat OpenStack Platform (RHOSP).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created a hosted cluster.
 
@@ -268,7 +343,15 @@ You can configure additional ports for node pools for hosted clusters that run o
 
 - You reviewed the options that are listed in "Options for additional ports for node pools".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a hosted cluster with additional ports attached to it by running the `hcp create nodepool openstack` command with the `--openstack-node-additional-port` options. For example:
 
@@ -302,6 +385,8 @@ You can configure additional ports for node pools for hosted clusters that run o
   `<lb_net_id>`
   Specifies a load balancer network ID.
 
+</div>
+
 # Node tuning for hosted clusters on RHOSP
 
 You can tune hosted cluster node performance on RHOSP for high-performance workloads, such as cloud-native network functions (CNFs). Performance tuning includes configuring RHOSP resources, creating a performance profile, deploying a tuned `NodePool` resource, and enabling SR-IOV device support.
@@ -312,15 +397,35 @@ CNFs are designed to run in cloud-native environments. They can provide network 
 
 To run high-performance workloads on hosted control planes on Red Hat OpenStack Platform (RHOSP), you can create a performance profile and deploy a tuned `NodePool` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have RHOSP flavor that has the necessary resources to run your workload, including dedicated CPU, memory, and host aggregate information.
 
 - You have an RHOSP network that is attached to SR-IOV or DPDK-capable NICs. The network must be available to the project used by hosted clusters.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a performance profile that meets your requirements in a file called `perfprofile.yaml`. For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example performance profile in a config map**
+    <div class="title">
+
+    Example performance profile in a config map
 
     </div>
 
@@ -368,11 +473,10 @@ To run high-performance workloads on hosted control planes on Red Hat OpenStack
               globallyDisableIrqLoadBalancing: true
     ```
 
-    <div class="important">
-
-    If you do not already have environment variables set for the HyperShift Operator namespace, isolated and reserved CPUs, and huge pages count, create them before applying the performance profile.
-
     </div>
+
+    > [!IMPORTANT]
+    > If you do not already have environment variables set for the HyperShift Operator namespace, isolated and reserved CPUs, and huge pages count, create them before applying the performance profile.
 
 2.  Apply the performance profile configuration by running the following command:
 
@@ -443,17 +547,24 @@ To run high-performance workloads on hosted control planes on Red Hat OpenStack
           --timeout=5m
         ```
 
-        <div class="note">
+        > [!NOTE]
+        > You can make an SSH connection into the nodes or use the `oc debug` command to verify performance configurations.
 
-        You can make an SSH connection into the nodes or use the `oc debug` command to verify performance configurations.
-
-        </div>
+</div>
 
 ## Enable the SR-IOV Network Operator in a hosted cluster
 
 To manage the SR-IOV-capable devices on nodes deployed by the `NodePool` resource, you can enable the SR-IOV Network Operator.
 
 The Operator runs in the hosted cluster and requires labeled worker nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate a `kubeconfig` file for the hosted cluster by running the following command:
 
@@ -482,4 +593,16 @@ The Operator runs in the hosted cluster and requires labeled worker nodes.
 
 5.  After installation, configure SR-IOV workloads in the hosted cluster by using the same process as for a standalone cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sr-iov-operator_installing-sriov-operator)
+
+</div>

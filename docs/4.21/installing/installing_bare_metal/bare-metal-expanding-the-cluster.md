@@ -1,22 +1,24 @@
 You can expand a bare-metal cluster by adding worker nodes after initial deployment to increase capacity and maintain high availability.
 
-<div class="note">
-
-Expanding the cluster using Redfish Virtual Media involves meeting minimum firmware requirements. See **Firmware requirements for installing with virtual media** in the **Prerequisites** section for additional details when expanding the cluster using Redfish Virtual Media.
-
-</div>
+> [!NOTE]
+> Expanding the cluster using Redfish Virtual Media involves meeting minimum firmware requirements. See **Firmware requirements for installing with virtual media** in the **Prerequisites** section for additional details when expanding the cluster using Redfish Virtual Media.
 
 # Preparing the bare-metal node
 
 Configure IP addressing for a new bare-metal node by using either static configuration or DHCP (Dynamic Host Configuration Protocol) reservations to enable network connectivity before adding the node to your cluster.
 
-<div class="important">
-
-Some administrators prefer to use static IP addresses so that each node’s IP address remains constant in the absence of a DHCP server. To configure static IP addresses with NMState, see "Optional: Configuring host network interfaces in the `install-config.yaml` file" in the "Setting up the environment for an OpenShift installation" section for additional details.
-
-</div>
+> [!IMPORTANT]
+> Some administrators prefer to use static IP addresses so that each node’s IP address remains constant in the absence of a DHCP server. To configure static IP addresses with NMState, see "Optional: Configuring host network interfaces in the `install-config.yaml` file" in the "Setting up the environment for an OpenShift installation" section for additional details.
 
 Preparing the bare-metal node requires executing the following procedure from the provisioner node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the `oc` binary:
 
@@ -244,11 +246,8 @@ Preparing the bare-metal node requires executing the following procedure from th
         `spec.preprovisioningNetworkDataName: openshift-worker-<num>-network-config-secret`
         Specifies the network configuration secret name in the `preprovisioningNetworkDataName` of the `BareMetalHost` CR. Optional: Provide this value if you have configured the network interface for the newly created node.
 
-    <div class="note">
-
-    If the MAC address of an existing bare-metal node matches the MAC address of a bare-metal host that you are attempting to provision, then the Ironic installation will fail. If the host enrollment, inspection, cleaning, or other Ironic steps fail, the Bare Metal Operator retries the installation continuously. See "Diagnosing a host duplicate MAC address" for more information.
-
-    </div>
+    > [!NOTE]
+    > If the MAC address of an existing bare-metal node matches the MAC address of a bare-metal host that you are attempting to provision, then the Ironic installation will fail. If the host enrollment, inspection, cleaning, or other Ironic steps fail, the Bare Metal Operator retries the installation continuously. See "Diagnosing a host duplicate MAC address" for more information.
 
 6.  Create the bare-metal node:
 
@@ -256,9 +255,11 @@ Preparing the bare-metal node requires executing the following procedure from th
     $ oc -n openshift-machine-api create -f bmh.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -267,6 +268,8 @@ Preparing the bare-metal node requires executing the following procedure from th
     secret/openshift-worker-<num>-bmc-secret created
     baremetalhost.metal3.io/openshift-worker-<num> created
     ```
+
+    </div>
 
     Replace `<num>` with the worker number.
 
@@ -278,9 +281,11 @@ Preparing the bare-metal node requires executing the following procedure from th
 
     Replace `<num>` with the worker node number.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -289,29 +294,45 @@ Preparing the bare-metal node requires executing the following procedure from th
     openshift-worker-<num>  available              true
     ```
 
-    <div class="note">
-
-    To allow the worker node to join the cluster, scale the `machineset` object to the number of the `BareMetalHost` objects. You can scale nodes either manually or automatically. To scale nodes automatically, use the `metal3.io/autoscale-to-hosts` annotation for `machineset`.
-
     </div>
+
+    > [!NOTE]
+    > To allow the worker node to join the cluster, scale the `machineset` object to the number of the `BareMetalHost` objects. You can scale nodes either manually or automatically. To scale nodes automatically, use the `metal3.io/autoscale-to-hosts` annotation for `machineset`.
 
     1.  To manually scale the machine set, follow the procedure titled *Provisioning the bare-metal node*.
 
     2.  To automatically scale the machine set, follow the procedure titled *Automatically scaling machines to the number of available bare-metal hosts* in the *Scalability and Performance* section.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Optional: Configuring host network interfaces in the install-config.yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-host-network-interfaces-in-the-install-config-yaml-file_ipi-install-installation-workflow)
 
 - [Automatically scaling machines to the number of available bare-metal hosts](../../scalability_and_performance/managing-bare-metal-hosts.xml#automatically-scaling-machines-to-available-bare-metal-hosts_managing-bare-metal-hosts)
+
+</div>
 
 # Replacing a bare-metal control plane node
 
 Replace a failed or unhealthy control plane node by removing the old `BareMetalHost` and `Machine` objects, then creating new ones to maintain cluster high availability.
 
-<div class="important">
+> [!IMPORTANT]
+> If you reuse the `BareMetalHost` object definition from an existing control plane host, do not leave the `externallyProvisioned` field set to `true`.
+>
+> Existing control plane `BareMetalHost` objects might have the `externallyProvisioned` flag set to `true` if they were provisioned by the OpenShift Container Platform installation program.
 
-If you reuse the `BareMetalHost` object definition from an existing control plane host, do not leave the `externallyProvisioned` field set to `true`.
+<div>
 
-Existing control plane `BareMetalHost` objects might have the `externallyProvisioned` flag set to `true` if they were provisioned by the OpenShift Container Platform installation program.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -319,11 +340,18 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
 
 - You have taken an etcd backup.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Take an etcd backup before performing this procedure so that you can restore your cluster if you encounter any issues. For more information about taking an etcd backup, see the *Additional resources* section.
 
-  Take an etcd backup before performing this procedure so that you can restore your cluster if you encounter any issues. For more information about taking an etcd backup, see the *Additional resources* section.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure that the Bare Metal Operator is available:
 
@@ -331,9 +359,11 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     $ oc get clusteroperator bare-metal
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -341,6 +371,8 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     NAME        VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
     baremetal   4.17     True          False      False   3d15h
     ```
+
+    </div>
 
 2.  Remove the old `BareMetalHost` and `Machine` objects:
 
@@ -415,9 +447,11 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     $ oc get bmh -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -430,11 +464,10 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     compute-1.example.com         provisioned              compute-2-l2zmb            true             4h53m
     ```
 
-    <div class="note">
-
-    There are no `MachineSet` objects for control plane nodes, so you must create a `Machine` object instead. You can copy the `providerSpec` from another control plane `Machine` object.
-
     </div>
+
+    > [!NOTE]
+    > There are no `MachineSet` objects for control plane nodes, so you must create a `Machine` object instead. You can copy the `providerSpec` from another control plane `Machine` object.
 
 6.  Create a `Machine` object:
 
@@ -478,9 +511,11 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     $ oc get bmh -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -493,15 +528,19 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     compute-2.example.com         provisioned              compute-2-l2zmb            true             5h53m
     ```
 
+    </div>
+
 8.  After the RHCOS installation, verify that the `BareMetalHost` is added to the cluster:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -514,11 +553,20 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
     compute-2.example.com          available   worker    87m   v1.34.2
     ```
 
-    <div class="note">
-
-    After replacement of the new control plane node, the etcd pod running in the new node is in `crashloopback` status. See "Replacing an unhealthy etcd member" in the *Additional resources* section for more information.
-
     </div>
+
+    > [!NOTE]
+    > After replacement of the new control plane node, the etcd pod running in the new node is in `crashloopback` status. See "Replacing an unhealthy etcd member" in the *Additional resources* section for more information.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Replacing an unhealthy etcd member](../../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#replacing-the-unhealthy-etcd-member)
 
@@ -528,11 +576,31 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
 
 - [BMC addressing](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#bmc-addressing_ipi-install-installation-workflow)
 
+</div>
+
 # Preparing to deploy with Virtual Media on the `bare-metal` network
 
 Configure the provisioning custom resource to enable Virtual Media deployment on the `bare-metal` network when expanding clusters that use a separate provisioning network.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - There is an existing cluster with a `bare-metal` network and a `provisioning` network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `provisioning` custom resource (CR) to enable deploying with Virtual Media on the `bare-metal` network:
 
@@ -635,6 +703,8 @@ Configure the provisioning custom resource to enable Virtual Media deployment on
 
     where:
 
+</div>
+
 `spec.template.spec.providerSpec.value.image.checksum: http:/172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2.<md5sum>`
 Specifies to edit the `checksum` URL to use the API VIP address.
 
@@ -647,11 +717,29 @@ You can diagnose a duplicate MAC address issue by examining bare-metal host regi
 
 You can diagnose a duplicate MAC address by examining the bare-metal hosts that are running in the `openshift-machine-api` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install an OpenShift Container Platform cluster on bare metal.
 
 - Install the OpenShift Container Platform CLI `oc`.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the bare-metal hosts running in the `openshift-machine-api` namespace:
 
@@ -659,9 +747,11 @@ You can diagnose a duplicate MAC address by examining the bare-metal hosts that 
     $ oc get bmh -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -675,15 +765,19 @@ You can diagnose a duplicate MAC address by examining the bare-metal hosts that 
     openshift-worker-2   error    registering
     ```
 
+    </div>
+
 2.  To see more detailed information about the status of the failing host, run the following command replacing `<bare_metal_host_name>` with the name of the host:
 
     ``` terminal
     $ oc get -n openshift-machine-api bmh <bare_metal_host_name> -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -696,9 +790,21 @@ You can diagnose a duplicate MAC address by examining the bare-metal hosts that 
     ...
     ```
 
+    </div>
+
+</div>
+
 # Provisioning the bare-metal node
 
 Scale the compute machine set to provision a new bare-metal node and add it as a worker to your cluster after the node is prepared and available.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure the `STATE` is `available` before provisioning the bare-metal node.
 
@@ -794,3 +900,5 @@ Scale the compute machine set to provision a new bare-metal node and add it as a
     ``` terminal
     [kni@openshift-worker-<num>]$ journalctl -fu kubelet
     ```
+
+</div>

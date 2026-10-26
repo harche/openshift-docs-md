@@ -18,9 +18,11 @@ When a catalog is added to a cluster, a label is created by using the value of t
 
 The value of the `matchLabels` field uses the following format:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example label derived from the `metadata.name` field**
+<div class="title">
+
+Example label derived from the `metadata.name` field
 
 </div>
 
@@ -34,13 +36,17 @@ metadata:
 ...
 ```
 
+</div>
+
 The `<example_extension>` value is the label derived from the `metadata.name` field and automatically added when the catalog is applied.
 
 The following example resolves the `<example_extension>-operator` package from a catalog with the `openshift-redhat-operators` label:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example extension CR**
+<div class="title">
+
+Example extension CR
 
 </div>
 
@@ -62,15 +68,19 @@ spec:
           olm.operatorframework.io/metadata.name: openshift-redhat-operators
 ```
 
+</div>
+
 # Catalog selection by labels or expressions
 
 You can add metadata to a catalog by using labels in the custom resource (CR) of a cluster catalog. You can then filter catalog selection by specifying the assigned labels or using expressions in the CR of the cluster extension.
 
 The following cluster catalog CR adds the `example.com/support` label with the value of `true` to the `catalog-a` cluster catalog:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster catalog CR with labels**
+<div class="title">
+
+Example cluster catalog CR with labels
 
 </div>
 
@@ -88,11 +98,15 @@ spec:
       ref: quay.io/example/content-management-a:latest
 ```
 
+</div>
+
 The following cluster extension CR uses the `matchLabels` selector to select catalogs with the `example.com/support` label and the value of `true`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster extension CR with `matchLabels` selector**
+<div class="title">
+
+Example cluster extension CR with `matchLabels` selector
 
 </div>
 
@@ -114,11 +128,15 @@ spec:
           example.com/support: "true"
 ```
 
+</div>
+
 You can use the `matchExpressions` field to perform more complex filtering for labels. The following cluster extension CR selects catalogs with the `example.com/support` label and a value of `production` or `supported`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster extension CR with `matchExpression` selector**
+<div class="title">
+
+Example cluster extension CR with `matchExpression` selector
 
 </div>
 
@@ -144,11 +162,10 @@ spec:
               - "supported"
 ```
 
-<div class="note">
-
-If you use both the `matchLabels` and `matchExpressions` fields, the selected catalog must satisfy all specified criteria.
-
 </div>
+
+> [!NOTE]
+> If you use both the `matchLabels` and `matchExpressions` fields, the selected catalog must satisfy all specified criteria.
 
 # Catalog exclusion by labels or expressions
 
@@ -156,9 +173,11 @@ You can exclude catalogs by using match expressions on metadata with the `NotIn`
 
 The following custom resources (CRs) add an `example.com/testing` label to the `unwanted-catalog-1` and `unwanted-catalog-2` cluster catalogs:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster catalog CR**
+<div class="title">
+
+Example cluster catalog CR
 
 </div>
 
@@ -176,9 +195,13 @@ spec:
       ref: quay.io/example/content-management-a:latest
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example cluster catalog CR**
+<div class="formalpara">
+
+<div class="title">
+
+Example cluster catalog CR
 
 </div>
 
@@ -196,11 +219,15 @@ spec:
       ref: quay.io/example/content-management-b:latest
 ```
 
+</div>
+
 The following cluster extension CR excludes selection from the `unwanted-catalog-1` catalog:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster extension CR that excludes a specific catalog**
+<div class="title">
+
+Example cluster extension CR that excludes a specific catalog
 
 </div>
 
@@ -225,11 +252,15 @@ spec:
               - unwanted-catalog-1
 ```
 
+</div>
+
 The following cluster extension CR selects from catalogs that do not have the `example.com/testing` label. As a result, both `unwanted-catalog-1` and `unwanted-catalog-2` are excluded from catalog selection.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster extension CR that excludes catalogs with a specific label**
+<div class="title">
+
+Example cluster extension CR that excludes catalogs with a specific label
 
 </div>
 
@@ -252,11 +283,17 @@ spec:
             operator: DoesNotExist
 ```
 
+</div>
+
 # Catalog selection by priority
 
 When multiple catalogs provide the same package, you can resolve ambiguities by specifying the priority in the custom resource (CR) of each catalog. If unspecified, catalogs have a default priority value of `0`. The priority can be any positive or negative 32-bit integer.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - During bundle resolution, catalogs with higher priority values are selected over catalogs with lower priority values.
 
@@ -266,9 +303,11 @@ When multiple catalogs provide the same package, you can resolve ambiguities by 
 
 </div>
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example cluster catalog CR with a higher priority**
+<div class="title">
+
+Example cluster catalog CR with a higher priority
 
 </div>
 
@@ -285,9 +324,13 @@ spec:
       ref: quay.io/example/higher-priority-catalog:latest
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example cluster catalog CR with a lower priority**
+<div class="formalpara">
+
+<div class="title">
+
+Example cluster catalog CR with a lower priority
 
 </div>
 
@@ -303,6 +346,8 @@ spec:
     image:
       ref: quay.io/example/lower-priority-catalog:latest
 ```
+
+</div>
 
 # Troubleshoot catalog selection errors
 

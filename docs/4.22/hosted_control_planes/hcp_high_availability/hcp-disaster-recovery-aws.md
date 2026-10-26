@@ -10,25 +10,26 @@ The disaster recovery process involves the following steps:
 
 Your workloads remain running during the process. The Cluster API might be unavailable for a period, but that does not affect the services that are running on the worker nodes.
 
-<div class="important">
-
-Both the source management cluster and the destination management cluster must have the `--external-dns` flags to maintain the API server URL. See the following example:
-
-<div class="formalpara-title">
-
-**Example: External DNS flags**
-
-</div>
-
-``` terminal
---external-dns-provider=aws \
---external-dns-credentials=<path_to_aws_credentials_file> \
---external-dns-domain-filter=<basedomain>
-```
-
-If you do not include the `--external-dns` flags to maintain the API server URL, you cannot migrate the hosted cluster.
-
-</div>
+> [!IMPORTANT]
+> Both the source management cluster and the destination management cluster must have the `--external-dns` flags to maintain the API server URL. See the following example:
+>
+> <div class="formalpara">
+>
+> <div class="title">
+>
+> Example: External DNS flags
+>
+> </div>
+>
+> ``` terminal
+> --external-dns-provider=aws \
+> --external-dns-credentials=<path_to_aws_credentials_file> \
+> --external-dns-domain-filter=<basedomain>
+> ```
+>
+> </div>
+>
+> If you do not include the `--external-dns` flags to maintain the API server URL, you cannot migrate the hosted cluster.
 
 # Overview of the backup and restore process for hosted control planes on AWS
 
@@ -70,6 +71,14 @@ The backup and restore process works as follows:
 
 To recover your hosted cluster in your target management cluster, you first need to back up all of the relevant data.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a config map file to declare the source management cluster by entering the following command:
 
     ``` terminal
@@ -100,11 +109,8 @@ To recover your hosted cluster in your target management cluster, you first need
 
 3.  Back up etcd and upload the data to an S3 bucket by running the following bash script:
 
-    <div class="tip">
-
-    Wrap this script in a function and call it from the main function.
-
-    </div>
+    > [!TIP]
+    > Wrap this script in a function and call it from the main function.
 
     ``` terminal
     # ETCD Backup
@@ -364,31 +370,56 @@ To recover your hosted cluster in your target management cluster, you first need
     clean_routes "${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}" "${AWS_ZONE_ID}"
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 Check all of the OpenShift Container Platform objects and the S3 bucket to verify that everything looks as expected.
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Restore your hosted cluster.
 
+</div>
+
 # Restoring a hosted cluster
 
 Gather all of the objects that you backed up and restore them in your destination management cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You backed up the data from your source management cluster.
 
-<div class="tip">
+</div>
 
-Ensure that the `kubeconfig` file of the destination management cluster is placed as it is set in the `KUBECONFIG` variable or, if you use the script, in the `MGMT2_KUBECONFIG` variable. Use `export KUBECONFIG=<Kubeconfig FilePath>` or, if you use the script, use `export KUBECONFIG=${MGMT2_KUBECONFIG}`.
+> [!TIP]
+> Ensure that the `kubeconfig` file of the destination management cluster is placed as it is set in the `KUBECONFIG` variable or, if you use the script, in the `MGMT2_KUBECONFIG` variable. Use `export KUBECONFIG=<Kubeconfig FilePath>` or, if you use the script, use `export KUBECONFIG=${MGMT2_KUBECONFIG}`.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -402,9 +433,11 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ BACKUP_DIR=${HC_CLUSTER_DIR}/backup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Namespace deletion in the destination Management cluster**
+    <div class="title">
+
+    Namespace deletion in the destination Management cluster
 
     </div>
 
@@ -412,21 +445,27 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc delete ns ${HC_CLUSTER_NS} || true
     ```
 
+    </div>
+
     ``` terminal
     $ oc delete ns ${HC_CLUSTER_NS}-{HC_CLUSTER_NAME} || true
     ```
 
 2.  Re-create the deleted namespaces by entering these commands:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Namespace creation commands**
+    <div class="title">
+
+    Namespace creation commands
 
     </div>
 
     ``` terminal
     $ oc new-project ${HC_CLUSTER_NS}
     ```
+
+    </div>
 
     ``` terminal
     $ oc new-project ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}
@@ -440,9 +479,11 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
 
 4.  Restore the objects in the `HostedCluster` control plane namespace by entering these commands:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Restore secret command**
+    <div class="title">
+
+    Restore secret command
 
     </div>
 
@@ -450,9 +491,13 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/secret-*
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Cluster restore commands**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Cluster restore commands
 
     </div>
 
@@ -460,21 +505,27 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/hcp-*
     ```
 
+    </div>
+
     ``` terminal
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/cl-*
     ```
 
 5.  If you are recovering the nodes and the node pool to reuse AWS instances, restore the objects in the HC control plane namespace by entering these commands:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Commands for AWS**
+    <div class="title">
+
+    Commands for AWS
 
     </div>
 
     ``` terminal
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/awscl-*
     ```
+
+    </div>
 
     ``` terminal
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/awsmt-*
@@ -484,15 +535,19 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/awsm-*
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Commands for machines**
+    <div class="title">
+
+    Commands for machines
 
     </div>
 
     ``` terminal
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/machinedeployment-*
     ```
+
+    </div>
 
     ``` terminal
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}/machineset-*
@@ -551,6 +606,16 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc apply -f ${BACKUP_DIR}/namespaces/${HC_CLUSTER_NS}/np-*
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the nodes are fully restored, use this function:
 
   ``` terminal
@@ -572,49 +637,71 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
   done
   ```
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Shut down and delete your cluster.
 
+</div>
+
 # Deleting a hosted cluster from your source management cluster
 
 After you back up your hosted cluster and restore it to your destination management cluster, you shut down and delete the hosted cluster on your source management cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You backed up your data and restored it to your source management cluster.
 
-<div class="tip">
+</div>
 
-Ensure that the `kubeconfig` file of the destination management cluster is placed as it is set in the `KUBECONFIG` variable or, if you use the script, in the `MGMT_KUBECONFIG` variable. Use `export KUBECONFIG=<Kubeconfig FilePath>` or, if you use the script, use `export KUBECONFIG=${MGMT_KUBECONFIG}`.
+> [!TIP]
+> Ensure that the `kubeconfig` file of the destination management cluster is placed as it is set in the `KUBECONFIG` variable or, if you use the script, in the `MGMT_KUBECONFIG` variable. Use `export KUBECONFIG=<Kubeconfig FilePath>` or, if you use the script, use `export KUBECONFIG=${MGMT_KUBECONFIG}`.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Scale the `deployment` and `statefulset` objects by entering these commands:
 
-    <div class="important">
-
-    Do not scale the stateful set if the value of its `spec.persistentVolumeClaimRetentionPolicy.whenScaled` field is set to `Delete`, because this could lead to a loss of data.
-
-    As a workaround, update the value of the `spec.persistentVolumeClaimRetentionPolicy.whenScaled` field to `Retain`. Ensure that no controllers exist that reconcile the stateful set and would return the value back to `Delete`, which could lead to a loss of data.
-
-    </div>
+    > [!IMPORTANT]
+    > Do not scale the stateful set if the value of its `spec.persistentVolumeClaimRetentionPolicy.whenScaled` field is set to `Delete`, because this could lead to a loss of data.
+    >
+    > As a workaround, update the value of the `spec.persistentVolumeClaimRetentionPolicy.whenScaled` field to `Retain`. Ensure that no controllers exist that reconcile the stateful set and would return the value back to `Delete`, which could lead to a loss of data.
 
     ``` terminal
     $ export KUBECONFIG=${MGMT_KUBECONFIG}
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Scale down deployment commands**
+    <div class="title">
+
+    Scale down deployment commands
 
     </div>
 
     ``` terminal
     $ oc scale deployment -n ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME} --replicas=0 --all
     ```
+
+    </div>
 
     ``` terminal
     $ oc scale statefulset.apps -n ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME} --replicas=0 --all
@@ -674,15 +761,19 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
 
 6.  Delete the `HostedControlPlane` and `ControlPlane` HC namespace objects by entering these commands:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Delete HostedControlPlane and ControlPlane HC NS commands**
+    <div class="title">
+
+    Delete HostedControlPlane and ControlPlane HC NS commands
 
     </div>
 
     ``` terminal
     $ oc patch -n ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME} hostedcontrolplane.hypershift.openshift.io ${HC_CLUSTER_NAME} --type=json --patch='[ { "op":"remove", "path": "/metadata/finalizers" }]'
     ```
+
+    </div>
 
     ``` terminal
     $ oc delete hostedcontrolplane.hypershift.openshift.io -n ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME} --all
@@ -694,15 +785,19 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
 
 7.  Delete the `HostedCluster` and HC namespace objects by entering these commands:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Delete HC and HC Namespace commands**
+    <div class="title">
+
+    Delete HC and HC Namespace commands
 
     </div>
 
     ``` terminal
     $ oc -n ${HC_CLUSTER_NS} patch hostedclusters ${HC_CLUSTER_NAME} -p '{"metadata":{"finalizers":null}}' --type merge || true
     ```
+
+    </div>
 
     ``` terminal
     $ oc delete hc -n ${HC_CLUSTER_NS} ${HC_CLUSTER_NAME}  || true
@@ -712,17 +807,31 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
     $ oc delete ns ${HC_CLUSTER_NS} || true
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that everything works, enter these commands:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Validations commands**
+  <div class="title">
+
+  Validations commands
 
   </div>
 
   ``` terminal
   $ export KUBECONFIG=${MGMT2_KUBECONFIG}
   ```
+
+  </div>
 
   ``` terminal
   $ oc get hc -n ${HC_CLUSTER_NS}
@@ -740,15 +849,19 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
   $ oc get machines -n ${HC_CLUSTER_NS}-${HC_CLUSTER_NAME}
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Commands for inside the HostedCluster**
+  <div class="title">
+
+  Commands for inside the HostedCluster
 
   </div>
 
   ``` terminal
   $ export KUBECONFIG=${HC_KUBECONFIG}
   ```
+
+  </div>
 
   ``` terminal
   $ oc get clusterversion
@@ -758,13 +871,19 @@ Ensure that the `kubeconfig` file of the destination management cluster is place
   $ oc get nodes
   ```
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Delete the OVN pods in the hosted cluster so that you can connect to the new OVN control plane that runs in the new management cluster:
+
+</div>
 
 1.  Load the `KUBECONFIG` environment variable with the hosted cluster’s `kubeconfig` path.
 

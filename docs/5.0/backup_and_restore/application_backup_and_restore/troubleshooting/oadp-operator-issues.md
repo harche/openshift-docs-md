@@ -6,6 +6,14 @@ Resolve the silent failure issue where the OADP Operator reports a `Running` sta
 
 To fix this issue, retrieve a list of backup storage locations (BSLs) and check the manifest of each BSL for credential issues.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Retrieve a list of BSLs by using either the OpenShift CLI or the OADP CLI:
 
     1.  Retrieve a list of BSLs by using the OpenShift CLI (`oc`):
@@ -68,3 +76,5 @@ To fix this issue, retrieve a list of backup storage locations (BSLs) and check 
     metadata:
       resourceVersion: ""
     ```
+
+</div>

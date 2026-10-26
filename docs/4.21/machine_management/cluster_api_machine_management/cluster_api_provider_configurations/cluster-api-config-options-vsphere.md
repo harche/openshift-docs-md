@@ -1,12 +1,9 @@
 You can change the configuration of your VMware vSphere Cluster API machines by updating values in the Cluster API custom resource manifests.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Sample YAML for configuring VMware vSphere clusters
 
@@ -151,8 +148,5 @@ Specifies the machine template name.
 `spec.template.spec.failureDomain`
 Specifies the failure domain configuration details.
 
-<div class="note">
-
-Using multiple regions and zones on a vSphere cluster that uses the Cluster API is not a validated configuration.
-
-</div>
+> [!NOTE]
+> Using multiple regions and zones on a vSphere cluster that uses the Cluster API is not a validated configuration.

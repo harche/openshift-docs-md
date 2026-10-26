@@ -14,23 +14,40 @@ Cluster administrators that want to grant access to the CRD to other users can u
 
 Operators in particular make use of CRDs by packaging them with any required RBAC policy and other software-specific logic. Cluster administrators can also add CRDs manually to the cluster outside of the lifecycle of an Operator, making them available to all users.
 
-<div class="note">
-
-While only cluster administrators can create CRDs, developers can create the CR from an existing CRD if they have read and write permission to it.
-
-</div>
+> [!NOTE]
+> While only cluster administrators can create CRDs, developers can create the CR from an existing CRD if they have read and write permission to it.
 
 # Creating a custom resource definition
 
 To create custom resource (CR) objects, cluster administrators must first create a custom resource definition (CRD).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster with `cluster-admin` user privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that contains the following field types:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file for a CRD**
+    <div class="title">
+
+    Example YAML file for a CRD
 
     </div>
 
@@ -67,6 +84,8 @@ To create custom resource (CR) objects, cluster administrators must first create
         - ct
     ```
 
+    </div>
+
     where:
 
     `apiVersion`
@@ -96,11 +115,8 @@ To create custom resource (CR) objects, cluster administrators must first create
     `spec.names.shortNames`
     Specifies a shorter string to match your resource on the CLI.
 
-    <div class="note">
-
-    By default, a CRD is cluster-scoped and available to all projects.
-
-    </div>
+    > [!NOTE]
+    > By default, a CRD is cluster-scoped and available to all projects.
 
 2.  Create the CRD object:
 
@@ -122,23 +138,42 @@ To create custom resource (CR) objects, cluster administrators must first create
 
     You can now use this endpoint URL to create and manage CRs. The object kind is based on the `spec.kind` field of the CRD object you created.
 
+</div>
+
 # Creating cluster roles for custom resource definitions
 
 Cluster administrators can grant permissions to existing cluster-scoped custom resource definitions (CRDs). If you use the `admin`, `edit`, and `view` default cluster roles, you can take advantage of cluster role aggregation for their rules.
 
-<div class="important">
+> [!IMPORTANT]
+> You must explicitly assign permissions to each of these roles. The roles with more permissions do not inherit rules from roles with fewer permissions. If you assign a rule to a role, you must also assign that verb to roles that have more permissions. For example, if you grant the `get crontabs` permission to the view role, you must also grant it to the `edit` and `admin` roles. The `admin` or `edit` role is usually assigned to the user that created a project through the project template.
 
-You must explicitly assign permissions to each of these roles. The roles with more permissions do not inherit rules from roles with fewer permissions. If you assign a rule to a role, you must also assign that verb to roles that have more permissions. For example, if you grant the `get crontabs` permission to the view role, you must also grant it to the `edit` and `admin` roles. The `admin` or `edit` role is usually assigned to the user that created a project through the project template.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Create a CRD.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a cluster role definition file for the CRD. The cluster role definition is a YAML file that contains the rules that apply to each cluster role. An OpenShift Container Platform controller adds the rules that you specify to the default cluster roles.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file for a cluster role definition**
+    <div class="title">
+
+    Example YAML file for a cluster role definition
 
     </div>
 
@@ -168,6 +203,8 @@ You must explicitly assign permissions to each of these roles. The roles with mo
       resources: ["crontabs"]
       verbs: ["get", "list", "watch"]
     ```
+
+    </div>
 
     where:
 
@@ -204,17 +241,39 @@ You must explicitly assign permissions to each of these roles. The roles with mo
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
 # Creating custom resources from a file
 
 After you add a custom resource definition (CRD) to the cluster, you can create custom resources (CRs) from a file by using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - CRD added to the cluster by a cluster administrator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for the CR. In the following example definition, the `cronSpec` and `image` custom fields are set in a CR of `Kind: CronTab`. The `Kind` comes from the `spec.kind` field of the CRD object:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file for a CR**
+    <div class="title">
+
+    Example YAML file for a CR
 
     </div>
 
@@ -229,6 +288,8 @@ After you add a custom resource definition (CRD) to the cluster, you can create 
       cronSpec: "* * * * /5"
       image: my-awesome-cron-image
     ```
+
+    </div>
 
     where:
 
@@ -253,11 +314,31 @@ After you add a custom resource definition (CRD) to the cluster, you can create 
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
 # Inspecting custom resources
 
 You can inspect custom resource (CR) objects that exist in your cluster using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A CR object exists in a namespace to which you have access.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To get information on a specific kind of a CR, run:
 
@@ -271,9 +352,11 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     $ oc get crontab
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -281,6 +364,8 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     NAME                 KIND
     my-new-cron-object   CronTab.v1.stable.example.com
     ```
+
+    </div>
 
     Resource names are not case-sensitive, and you can use either the singular or plural forms defined in the CRD, as well as any short name. For example:
 
@@ -308,9 +393,11 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
     $ oc get ct -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -334,4 +421,8 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
         image: my-awesome-cron-image
     ```
 
+    </div>
+
     The `spec` section in the output displays the custom configuration settings, such as `cronSpec` and `image`, that you defined when creating the object.
+
+</div>

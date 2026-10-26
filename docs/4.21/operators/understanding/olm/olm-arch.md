@@ -4,13 +4,13 @@ You can learn how Operator Lifecycle Manager (OLM) components interact to manage
 
 Operator Lifecycle Manager (OLM) and the Catalog Operator manage the following custom resource definitions (CRDs) that form the basis of the Operator Framework.
 
-| Resource                      | Short name | Owner   | Description                                                                                                                                                            |
-|-------------------------------|------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ClusterServiceVersion` (CSV) | `csv`      | OLM     | Application metadata: name, version, icon, required resources, installation, and so on.                                                                                |
-| `InstallPlan`                 | `ip`       | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV.                                                                                  |
-| `CatalogSource`               | `catsrc`   | Catalog | A repository of CSVs, CRDs, and packages that define an application.                                                                                                   |
-| `Subscription`                | `sub`      | Catalog | Used to keep CSVs up to date by tracking a channel in a package.                                                                                                       |
-| `OperatorGroup`               | `og`       | OLM     | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
+| Resource | Short name | Owner | Description |
+|----|----|----|----|
+| `ClusterServiceVersion` (CSV) | `csv` | OLM | Application metadata: name, version, icon, required resources, installation, and so on. |
+| `InstallPlan` | `ip` | Catalog | Calculated list of resources to be created to automatically install or upgrade a CSV. |
+| `CatalogSource` | `catsrc` | Catalog | A repository of CSVs, CRDs, and packages that define an application. |
+| `Subscription` | `sub` | Catalog | Used to keep CSVs up to date by tracking a channel in a package. |
+| `OperatorGroup` | `og` | OLM | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
 
 CRDs managed by OLM and Catalog Operators
 
@@ -39,11 +39,8 @@ The OLM Operator uses the following workflow:
 
 2.  If requirements are met, run the install strategy for the CSV.
 
-    <div class="note">
-
-    A CSV must be an active member of an Operator group for the install strategy to run.
-
-    </div>
+    > [!NOTE]
+    > A CSV must be an active member of an Operator group for the install strategy to run.
 
 # Catalog Operator
 

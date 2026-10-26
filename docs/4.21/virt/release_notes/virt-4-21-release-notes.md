@@ -178,11 +178,8 @@ The following [alerts for the OpenShift Virtualization Operator](../../virt/moni
 The `HotplugVolume` feature gate is deprecated
 The `HotplugVolume` feature gate, which allows you to add storage without restarting your VM, is deprecated and will be removed in a future release. This feature gate will be replaced by `DeclarativeHotplugVolumes`.
 
-<div class="note">
-
-`DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
-
-</div>
+> [!NOTE]
+> `DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
 
 [CNV-73301](https://issues.redhat.com/browse/CNV-73301)
 
@@ -320,6 +317,10 @@ Using OpenShift Virtualization on a Google Cloud cluster with bare-metal nodes i
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - Running OpenShift Virtualization on Google Cloud requires OpenShift Container Platform 4.21.5 and OpenShift Virtualization 4.21.1, or later versions.
 
 - Resizing an attached Hyperdisk volume is not supported in RWX mode. For more information, see [Increase the capacity of a Hyperdisk volume](https://docs.cloud.google.com/compute/docs/disks/modify-hyperdisks#capacity_changes) in the Google Cloud documentation.
@@ -353,6 +354,10 @@ For more information, see the following articles in the Red Hat Knowledgebase:
 - [OpenShift Virtualization with GCNV: Known errors and limitations](https://access.redhat.com/articles/7141471)
 
   <div class="important">
+
+  <div class="title">
+
+  </div>
 
   - Running OpenShift Virtualization with GCNV storage requires OpenShift Container Platform 4.21 and OpenShift Virtualization 4.21.2, or later versions.
 

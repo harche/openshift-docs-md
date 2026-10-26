@@ -2,19 +2,26 @@ To use storage from a back-end that does not have a built-in plugin, you can ext
 
 FlexVolume is an out-of-tree plugin that uses an executable model to interface with drivers.
 
-<div class="important">
-
-FlexVolume is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
-
-Out-of-tree Container Storage Interface (CSI) driver is the recommended way to write volume drivers in OpenShift Container Platform. Maintainers of FlexVolume drivers should implement a CSI driver and move users of FlexVolume to CSI. Users of FlexVolume should move their workloads to CSI driver.
-
-For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
-
-</div>
+> [!IMPORTANT]
+> FlexVolume is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
+>
+> Out-of-tree Container Storage Interface (CSI) driver is the recommended way to write volume drivers in OpenShift Container Platform. Maintainers of FlexVolume drivers should implement a CSI driver and move users of FlexVolume to CSI. Users of FlexVolume should move their workloads to CSI driver.
+>
+> For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
 
 Pods interact with FlexVolume drivers through the `flexvolume` in-tree plugin.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Expanding persistent volumes](../../storage/expanding-persistent-volumes.xml#expanding-persistent-volumes)
+
+</div>
 
 # About FlexVolume drivers
 
@@ -22,11 +29,8 @@ When working with FlexVolume drivers, it is helpful to understand how OpenShift 
 
 A FlexVolume driver is an executable file that resides in a well-defined directory on all nodes in the cluster. OpenShift Container Platform calls the FlexVolume driver whenever it needs to mount or unmount a volume represented by a `PersistentVolume` object with `flexVolume` as the source.
 
-<div class="important">
-
-Attach and detach operations are not supported in OpenShift Container Platform for FlexVolume.
-
-</div>
+> [!IMPORTANT]
+> Attach and detach operations are not supported in OpenShift Container Platform for FlexVolume.
 
 # FlexVolume driver example
 
@@ -42,9 +46,11 @@ The FlexVolume driver contains:
 
 - The content of the referenced secret, if specified, prefixed by `kubernetes.io/secret/`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**FlexVolume driver JSON input example**
+<div class="title">
+
+FlexVolume driver JSON input example
 
 </div>
 
@@ -58,6 +64,8 @@ The FlexVolume driver contains:
     "kubernetes.io/secret/<another key name>": "<another key value>",
 }
 ```
+
+</div>
 
 where:
 
@@ -75,9 +83,11 @@ Specifies all keys and their values from the secret referenced by `flexVolume.se
 
 OpenShift Container Platform expects JSON data on standard output of the driver. When not specified, the output describes the result of the operation.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**FlexVolume driver default output example**
+<div class="title">
+
+FlexVolume driver default output example
 
 </div>
 
@@ -88,6 +98,8 @@ OpenShift Container Platform expects JSON data on standard output of the driver.
 }
 ```
 
+</div>
+
 Exit code of the driver should be `0` for success and `1` for error.
 
 Operations should be idempotent, which means that the mounting of an already mounted volume should result in a successful operation.
@@ -95,6 +107,14 @@ Operations should be idempotent, which means that the mounting of an already mou
 # Installing FlexVolume drivers
 
 You can implement FlexVolumes by using a list of operations to call and the installation path are all that is required. FlexVolume drivers that are used to extend OpenShift Container Platform are executed only on the node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - FlexVolume drivers must implement these operations:
 
@@ -147,11 +167,23 @@ You can implement FlexVolumes by using a list of operations to call and the inst
 
 - All other operations should return JSON with `{"status": "Not supported"}` and exit code `1`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Ensure that the executable file exists on all nodes in the cluster.
 
 2.  Place the executable file at the volume plugin path: `/etc/kubernetes/kubelet-plugins/volume/exec/<vendor>~<driver>/<driver>`.
 
     For example, to install the FlexVolume driver for the storage `foo`, place the executable file at: `/etc/kubernetes/kubelet-plugins/volume/exec/openshift.com~foo/foo`.
+
+</div>
 
 # Consuming storage using FlexVolume drivers
 
@@ -159,11 +191,21 @@ You can consume a Fibre Channel volume by using a `PersistentVolume` object.
 
 Each `PersistentVolume` object in OpenShift Container Platform represents one storage asset in the storage back-end, such as a volume.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Use the `PersistentVolume` object to reference the installed storage.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Persistent volume object definition using FlexVolume drivers example**
+  <div class="title">
+
+  Persistent volume object definition using FlexVolume drivers example
 
   </div>
 
@@ -186,6 +228,8 @@ Each `PersistentVolume` object in OpenShift Container Platform represents one st
         fooServer: 192.168.0.1:1234
         fooVolumeName: bar
   ```
+
+  </div>
 
   where:
 
@@ -212,8 +256,7 @@ Each `PersistentVolume` object in OpenShift Container Platform represents one st
 
   "fsType":"\<FS type\>", "readwrite":"\<rw\>", "secret/key1":"\<secret1\>" "secret/keyN":"\<secretN\>"
 
-  <div class="note">
+  > [!NOTE]
+  > Secrets are passed only to mount or unmount call-outs.
 
-  Secrets are passed only to mount or unmount call-outs.
-
-  </div>
+</div>

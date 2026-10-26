@@ -4,6 +4,14 @@ Operator Lifecycle Manager (OLM) automatically configures managed Operators with
 
 Inject certificate authority (CA) certificates into the Zero Trust Workload Identity Manager to support proxying HTTPS connections. This configuration helps ensure that the Identity Manager can communicate securely when you enable a cluster-wide proxy.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have enabled the cluster-wide proxy for OpenShift Container Platform.
@@ -11,6 +19,16 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
 - You have installed Zero Trust Workload Identity Manager 1.0.0 or later.
 
 - You have deployed the SPIRE Server, SPIRE Agent, SPIFFE CSI Driver, and the SPIRE OIDC Discovery Provider operands in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a config map in the `zero-trust-workload-identity-manager` namespace by running the following command:
 
@@ -30,7 +48,15 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
     $ oc -n zero-trust-workload-identity-manager patch subscription openshift-zero-trust-workload-identity-manager --type='merge' -p '{"spec":{"config":{"env":[{"name":"TRUSTED_CA_BUNDLE_CONFIGMAP","value":"trusted-ca"}]}}}'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the operands have finished rolling out by running the following command:
 
@@ -41,9 +67,11 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
     $ oc rollout status deployment/spire-spiffe-oidc-discovery-provider -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -53,6 +81,8 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
     daemonset "spire-agent" successfully rolled out
     deployment "spire-spiffe-oidc-discovery-provider" successfully rolled out
     ```
+
+    </div>
 
 2.  Verify that the CA bundle was mounted as a volume by running the following command:
 
@@ -72,15 +102,19 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
     $ oc get daemonset spire-spiffe-csi-driver -n zero-trust-workload-identity-manager -o jsonpath='{.spec.template.spec.containers[*].volumeMounts[?(@.name=="trusted-ca-bundle")]}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     [{{"mountPath":"/etc/pki/ca-trust/extracted/pem","name":"trusted-ca-bundle","readOnly":true}]
     ```
+
+    </div>
 
 3.  Verify that the source of the CA bundle is the `trusted-ca` config map by running the following command:
 
@@ -100,9 +134,11 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
     $ oc get deployment spire-spiffe-oidc-discovery-provider -n zero-trust-workload-identity-manager -o=jsonpath='{.spec.template.spec.volumes}' | jq '.[] | select(.name=="trusted-ca-bundle")'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -121,6 +157,10 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
       "name": "trusted-ca-bundle"
     }
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

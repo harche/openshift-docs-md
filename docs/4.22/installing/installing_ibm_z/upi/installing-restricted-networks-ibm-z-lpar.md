@@ -1,10 +1,7 @@
 In OpenShift Container Platform version 4.17, you can install a cluster directly in a logical partition (LPAR) on IBM Z® or IBM® LinuxONE infrastructure that you provision in a disconnected environment, without using a hypervisor layer.
 
-<div class="note">
-
-While this document refers to only IBM Z®, all information in it also applies to IBM® LinuxONE.
-
-</div>
+> [!NOTE]
+> While this document refers to only IBM Z®, all information in it also applies to IBM® LinuxONE.
 
 # Prerequisites for installing a cluster on IBM Z in a disconnected environment
 
@@ -20,23 +17,23 @@ Before you install OpenShift Container Platform on IBM Z® using user-provisione
 
 - Before you begin the installation process, you must move or remove any existing installation files. This ensures that the required installation files are created and updated during the installation process.
 
-  <div class="important">
-
-  Ensure that installation steps are done from a machine with access to the installation media.
-
-  </div>
+  > [!IMPORTANT]
+  > Ensure that installation steps are done from a machine with access to the installation media.
 
 - You provisioned persistent storage by using OpenShift Data Foundation or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
 
 - If you use a firewall and plan to use the Telemetry service, you configured the firewall to allow the sites that your cluster requires access to.
 
-  <div class="note">
+  > [!NOTE]
+  > Be sure to also review this site list if you are configuring a proxy.
 
-  Be sure to also review this site list if you are configuring a proxy.
+<div>
 
-  </div>
+<div class="title">
 
-<!-- -->
+Additional resources
+
+</div>
 
 - [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install)
 
@@ -50,6 +47,8 @@ Before you install OpenShift Container Platform on IBM Z® using user-provisione
 
 - [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
+</div>
+
 # About installations in restricted networks
 
 You can install OpenShift Container Platform 4.17 in a restricted network that lacks an active internet connection. These restricted installations use installer-provisioned or user-provisioned infrastructure, depending on your cloud platform.
@@ -58,11 +57,8 @@ If you choose to perform a restricted network installation on a cloud platform, 
 
 To complete a restricted network installation, you must create a registry that mirrors the contents of the OpenShift image registry and contains the installation media. You can create this registry on a mirror host, which can access both the internet and your closed network, or by using other methods that meet your restrictions.
 
-<div class="important">
-
-Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
-
-</div>
+> [!IMPORTANT]
+> Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
 
 ## Additional limits
 
@@ -80,9 +76,27 @@ This section provides details about the high-level steps required to set up your
 
 After preparation, your cluster infrastructure must meet the requirements outlined in the *Requirements for a cluster with user-provisioned infrastructure* section.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have reviewed the [OpenShift Container Platform 4.x Tested Integrations](https://access.redhat.com/articles/4128421) page.
 
 - You have reviewed the infrastructure requirements detailed in the *Requirements for a cluster with user-provisioned infrastructure* section.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set up static IP addresses.
 
@@ -92,15 +106,12 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
 4.  Configure your firewall to enable the ports required for the OpenShift Container Platform cluster components to communicate. See *Networking requirements for user-provisioned infrastructure* section for details about the ports that are required.
 
-    <div class="important">
-
-    By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
-
-    For ingress health check probes, the `/healthz/ready` endpoint is available on this port.
-
-    Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
-
-    </div>
+    > [!IMPORTANT]
+    > By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
+    >
+    > For ingress health check probes, the `/healthz/ready` endpoint is available on this port.
+    >
+    > Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
 
 5.  Setup the required DNS infrastructure for your cluster.
 
@@ -120,11 +131,10 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
 7.  Provision the required API and application ingress load balancing infrastructure. See the *Load balancing requirements for user-provisioned infrastructure* section for more information about the requirements.
 
-    <div class="note">
+    > [!NOTE]
+    > Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
 
-    Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
-
-    </div>
+</div>
 
 ## Example load balancer configuration for user-provisioned clusters
 
@@ -132,23 +142,19 @@ Reference the example API and application Ingress load balancer configuration so
 
 The sample is an `/etc/haproxy/haproxy.cfg` configuration for an HAProxy load balancer. The example is not meant to provide advice for choosing one load balancing solution over another.
 
-<div class="tip">
-
-If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
-
-</div>
+> [!TIP]
+> If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
 
 In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-<div class="note">
+> [!NOTE]
+> If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
 
-If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample API and application Ingress load balancer configuration**
+Sample API and application Ingress load balancer configuration
 
 </div>
 
@@ -204,6 +210,8 @@ listen ingress-router-80
   server compute1 compute1.ocp4.example.com:80 check inter 1s
 ```
 
+</div>
+
 where:
 
 `listen api-server-6443`
@@ -221,19 +229,34 @@ Port `443` handles the HTTPS traffic and points to the machines that run the Ing
 `listen ingress-router-80`
 Port `80` handles the HTTP traffic and points to the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-<div class="note">
-
-If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
-
-</div>
+> [!NOTE]
+> If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 # Manually creating the installation configuration file
 
 Installing the cluster requires that you manually create the installation configuration file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
 - You have obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an installation directory to store your required installation assets in:
 
@@ -241,29 +264,32 @@ Installing the cluster requires that you manually create the installation config
     $ mkdir <installation_directory>
     ```
 
-    <div class="important">
-
-    You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
-
-    </div>
+    > [!IMPORTANT]
+    > You must create a directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
 2.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
-    <div class="note">
-
-    You must name this configuration file `install-config.yaml`.
-
-    </div>
+    > [!NOTE]
+    > You must name this configuration file `install-config.yaml`.
 
 3.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
 
-    Back up the `install-config.yaml` file now, because the installation process consumes the file in the next step.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation configuration parameters for IBM Z®](../../../installing/installing_ibm_z/installation-config-parameters-ibm-z.xml#installation-config-parameters-ibm-z)
+
+</div>
 
 ## Sample install-config.yaml file for IBM Z
 
@@ -325,26 +351,17 @@ Specifies the `controlPlane` node configurations, which is a single mapping. To 
 `hyperthreading`
 Specifies whether to enable or disable simultaneous multithreading (SMT), or hyperthreading. By default, SMT is enabled to increase the performance of the cores in your machines. You can disable it by setting the parameter value to `Disabled`. If you disable SMT, you must disable it in all cluster machines; this includes both control plane and compute machines.
 
-<div class="note">
+> [!NOTE]
+> Simultaneous multithreading (SMT) is enabled by default. If SMT is not available on your OpenShift Container Platform nodes, the `hyperthreading` parameter has no effect.
 
-Simultaneous multithreading (SMT) is enabled by default. If SMT is not available on your OpenShift Container Platform nodes, the `hyperthreading` parameter has no effect.
-
-</div>
-
-<div class="important">
-
-If you disable `hyperthreading`, whether on your OpenShift Container Platform nodes or in the `install-config.yaml` file, ensure that your capacity planning accounts for the dramatically decreased machine performance.
-
-</div>
+> [!IMPORTANT]
+> If you disable `hyperthreading`, whether on your OpenShift Container Platform nodes or in the `install-config.yaml` file, ensure that your capacity planning accounts for the dramatically decreased machine performance.
 
 `compute.replicas`
 Specifies the number of compute machines that the cluster creates and manages for you on installer-provisioned installations. You must set this value to `0` when you install OpenShift Container Platform on user-provisioned infrastructure. Additionally for user-provisioned installations, you must manually deploy the compute machines before you finish installing the cluster.
 
-<div class="note">
-
-If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
-
-</div>
+> [!NOTE]
+> If you are installing a three-node cluster, do not deploy any compute machines when you install the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
 
 `controlPlane.replicas`
 Specifies the number of control plane machines that you add to the cluster. Because the cluster uses these values as the number of etcd endpoints in the cluster, the value must match the number of control plane machines that you deploy.
@@ -355,11 +372,8 @@ Specifies the cluster name that you specified in your DNS records.
 `networking.clusterNetwork.cidr`
 Specifies a block of IP addresses from which pod IP addresses are allocated. This block must not overlap with existing physical networks. These IP addresses are used for the pod network. If you need to access the pods from an external network, you must configure load balancers and routers to manage the traffic.
 
-<div class="note">
-
-Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
-
-</div>
+> [!NOTE]
+> Class E CIDR range is reserved for a future use. To use the Class E CIDR range, you must ensure your networking environment accepts the IP addresses within the Class E CIDR range.
 
 `networking.cidr.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
@@ -373,22 +387,16 @@ Specifies the IP address pool to use for service IP addresses. You can enter onl
 `platform`
 Specifies the platform. You must set the platform to `none`. You cannot provide additional platform configuration variables for IBM Z® infrastructure.
 
-<div class="important">
-
-Clusters that are installed with the platform type `none` are unable to use some features, such as managing compute machines with the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that would normally support the feature. This parameter cannot be changed after installation.
-
-</div>
+> [!IMPORTANT]
+> Clusters that are installed with the platform type `none` are unable to use some features, such as managing compute machines with the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that would normally support the feature. This parameter cannot be changed after installation.
 
 `fips`
 Specifies either enabling or disabling FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-<div class="important">
-
-To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-
-When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-</div>
+> [!IMPORTANT]
+> To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+>
+> When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
 `pullSecret`
 Specifies the registry domain name for `<local_registry>`, and optionally the port, that your mirror registry uses to serve content. For example, `registry.example.com` or `registry.example.com:5000`. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
@@ -396,11 +404,8 @@ Specifies the registry domain name for `<local_registry>`, and optionally the po
 `sshKey`
 Specifies the SSH public key for the `core` user in Red Hat Enterprise Linux CoreOS (RHCOS).
 
-<div class="note">
-
-For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-</div>
+> [!NOTE]
+> For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 
 `additionalTrustBundle`
 Specifies the `additionalTrustBundle` parameter and value. The value must be the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry.
@@ -409,6 +414,10 @@ Specifies the `additionalTrustBundle` parameter and value. The value must be the
 Specifies the `imageContentSources` section according to the output of the command that you used to mirror the repository.
 
 <div class="important">
+
+<div class="title">
+
+</div>
 
 - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
 
@@ -422,17 +431,32 @@ Specifies the `imageContentSources` section according to the output of the comma
 
 Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  <div class="note">
+  > [!NOTE]
+  > The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  >
+  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
-  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+</div>
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
+<div>
 
-  </div>
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -468,31 +492,24 @@ Production environments can deny direct access to the internet and instead have 
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    <div class="note">
+    > [!NOTE]
+    > The installation program does not support the proxy `readinessEndpoints` field.
 
-    The installation program does not support the proxy `readinessEndpoints` field.
-
-    </div>
-
-    <div class="note">
-
-    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
-
-    ``` terminal
-    $ ./openshift-install wait-for install-complete --log-level debug
-    ```
-
-    </div>
+    > [!NOTE]
+    > If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
+    >
+    > ``` terminal
+    > $ ./openshift-install wait-for install-complete --log-level debug
+    > ```
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
-    <div class="note">
+    > [!NOTE]
+    > Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
-    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
-
-    </div>
+</div>
 
 ## Configuring a three-node cluster
 
@@ -500,9 +517,25 @@ To create smaller, resource-efficient clusters for testing and production, deplo
 
 In three-node OpenShift Container Platform environments, the three control plane machines are schedulable, which means that your application workloads run on them.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` file.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Ensure that the number of compute replicas is set to `0` in your `install-config.yaml` file, as shown in the following `compute` stanza:
 
@@ -514,11 +547,10 @@ In three-node OpenShift Container Platform environments, the three control plane
   # ...
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > You must set the value of the `replicas` parameter for the compute machines to `0` when you install OpenShift Container Platform on user-provisioned infrastructure, regardless of the number of compute machines you deploy. In installer-provisioned installations, the parameter controls the number of compute machines that the cluster creates and manages for you. This does not apply to user-provisioned installations, where you deploy the compute machines manually.
 
-  You must set the value of the `replicas` parameter for the compute machines to `0` when you install OpenShift Container Platform on user-provisioned infrastructure, regardless of the number of compute machines you deploy. In installer-provisioned installations, the parameter controls the number of compute machines that the cluster creates and manages for you. This does not apply to user-provisioned installations, where you deploy the compute machines manually.
-
-  </div>
+</div>
 
 For three-node cluster installations, follow these next steps:
 
@@ -559,19 +591,19 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the CNO object. This name is always <code>cluster</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.clusterNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>A list specifying the blocks of IP addresses from which pod IP addresses are allocated and the subnet prefix length assigned to each individual node in the cluster. If you use dual-stack networking, specify IPv4 and IPv6 address families. For example:</p>
@@ -583,7 +615,7 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">64</span></span></code></pre></div>
 <p>If you install a cluster on AWS with dual-stack networking, the order of addresses must match the dual-stack configuration you selected. For example, if you specified the <code>DualStackIPv4Primary</code>, list the IPv4 address first.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.serviceNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>A block of IP addresses for services. If you use dual-stack networking, specify IPv4 and IPv6 address families. For example:</p>
@@ -594,12 +626,12 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <p>If you install a cluster on AWS with dual-stack networking, the order of addresses must match the dual-stack configuration you selected. For example, if you specified the <code>DualStackIPv4Primary</code>, list the IPv4 address first.</p>
 <p>You can customize this field only in the <code>install-config.yaml</code> file before you create the manifests. The value is read-only in the manifest file.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.defaultNetwork</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Configures the network plugin for the cluster network.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.additionalRoutingCapabilities.providers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>This setting enables a dynamic routing provider. The FRR routing capability provider is required for the route advertisement feature. The only supported value is <code>FRR</code>.</p>
@@ -614,13 +646,8 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 </tbody>
 </table>
 
-Cluster Network Operator configuration object
-
-<div class="important">
-
-For a cluster that needs to deploy objects across multiple networks, ensure that you specify the same value for the `clusterNetwork.hostPrefix` parameter for each network type that is defined in the `install-config.yaml` file. Setting a different value for each `clusterNetwork.hostPrefix` parameter can impact the OVN-Kubernetes network plugin, where the plugin cannot effectively route object traffic among different nodes.
-
-</div>
+> [!IMPORTANT]
+> For a cluster that needs to deploy objects across multiple networks, ensure that you specify the same value for the `clusterNetwork.hostPrefix` parameter for each network type that is defined in the `install-config.yaml` file. Setting a different value for each `clusterNetwork.hostPrefix` parameter can impact the OVN-Kubernetes network plugin, where the plugin cannot effectively route object traffic among different nodes.
 
 ## defaultNetwork object configuration
 
@@ -634,30 +661,30 @@ The values for the `defaultNetwork` object are defined in the following table:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>OVNKubernetes</code>. The Red Hat OpenShift Networking network plugin is selected during installation. This value cannot be changed after cluster installation.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>OpenShift Container Platform uses the OVN-Kubernetes network plugin by default.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ovnKubernetesConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>This object is only valid for the OVN-Kubernetes network plugin.</p></td>
 </tr>
 </tbody>
 </table>
-
-`defaultNetwork` object
 
 ## Configuration for the OVN-Kubernetes network plugin
 
@@ -671,46 +698,46 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mtu</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The maximum transmission unit (MTU) for the Geneve (Generic Network Virtualization Encapsulation) overlay network. This is detected automatically based on the MTU of the primary network interface. You do not normally need to override the detected MTU.</p>
 <p>If the auto-detected value is not what you expect it to be, confirm that the MTU on the primary network interface on your nodes is correct. You cannot use this option to change the MTU value of the primary network interface on the nodes.</p>
 <p>If your cluster requires different MTU values for different nodes, you must set this value to <code>100</code> less than the lowest MTU value in your cluster. For example, if some nodes in your cluster have an MTU of <code>9001</code>, and some have an MTU of <code>1500</code>, you must set this value to <code>1400</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>genevePort</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The port to use for all Geneve packets. The default value is <code>6081</code>. This value cannot be changed after cluster installation.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipsecConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specify a configuration object for customizing the IPsec configuration.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipv4</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies a configuration object for IPv4 settings.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipv6</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies a configuration object for IPv6 settings.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>policyAuditConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specify a configuration object for customizing network policy audit logging. If unset, the defaults audit log settings are used.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>routeAdvertisements</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies whether to advertise cluster network routes. The default value is <code>Disabled</code>.</p>
@@ -719,18 +746,18 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <li><p><code>Disabled</code>: Do not import routes to the cluster network or advertise cluster network routes.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>gatewayConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. If you are using hardware offloading, Red Hat recommends to use the default <code>Shared</code> gateway mode to bypass the host routing plane. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>While migrating egress traffic, you can expect some disruption to workloads and service traffic until the Cluster Network Operator (CNO) successfully rolls out the changes.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig` object
 
 <table>
 <caption><code>ovnKubernetesConfig.ipv4</code> object</caption>
@@ -740,20 +767,20 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalTransitSwitchSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>100.88.0.0/16</code> IPv4 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. The subnet for the distributed transit switch that enables east-west traffic. This subnet cannot overlap with any other subnets used by OVN-Kubernetes or on the host itself. It must be large enough to accommodate one IP address per node in your cluster.</p>
 <p>The default value is <code>100.88.0.0/16</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>internalJoinSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>100.64.0.0/16</code> IPv4 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. You must ensure that the IP address range does not overlap with any other subnet used by your OpenShift Container Platform installation. The IP address range must be larger than the maximum number of nodes that can be added to the cluster. For example, if the <code>clusterNetwork.cidr</code> value is <code>10.128.0.0/14</code> and the <code>clusterNetwork.hostPrefix</code> value is <code>/23</code>, then the maximum number of nodes is <code>2^(23-14)=512</code>.</p>
@@ -761,8 +788,6 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig.ipv4` object
 
 <table>
 <caption><code>ovnKubernetesConfig.ipv6</code> object</caption>
@@ -772,20 +797,20 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalTransitSwitchSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>fd97::/64</code> IPv6 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. The subnet for the distributed transit switch that enables east-west traffic. This subnet cannot overlap with any other subnets used by OVN-Kubernetes or on the host itself. It must be large enough to accommodate one IP address per node in your cluster.</p>
 <p>The default value is <code>fd97::/64</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>internalJoinSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>fd98::/64</code> IPv6 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. You must ensure that the IP address range does not overlap with any other subnet used by your OpenShift Container Platform installation. The IP address range must be larger than the maximum number of nodes that can be added to the cluster.</p>
@@ -793,8 +818,6 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig.ipv6` object
 
 <table>
 <caption><code>policyAuditConfig</code> object</caption>
@@ -804,29 +827,29 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>rateLimit</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of messages to generate every second per node. The default value is <code>20</code> messages per second.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>maxFileSize</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum size for the audit log in bytes. The default value is <code>50000000</code> or 50 MB.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>maxLogFiles</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of log files that are retained.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>destination</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>One of the following additional audit log targets:</p>
@@ -849,7 +872,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 </dl></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>syslogFacility</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>The syslog facility, such as <code>kern</code>, as defined by RFC5424. The default value is <code>local0</code>.</p></td>
@@ -857,9 +880,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`policyAuditConfig` object
-
-<table>
+<table id="gatewayConfig-object_installing-restricted-networks-ibm-z-lpar">
 <caption><code>gatewayConfig</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -867,33 +888,35 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>routingViaHost</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Set this field to <code>true</code> to send egress traffic from pods to the host networking stack. For highly-specialized installations and applications that rely on manually configured routes in the kernel routing table, you might want to route egress traffic to the host networking stack. By default, egress traffic is processed in OVN to exit the cluster and is not affected by specialized routes in the kernel routing table. The default value is <code>false</code>.</p>
 <p>This field has an interaction with the Open vSwitch hardware offloading feature. If you set this field to <code>true</code>, you do not receive the performance benefits of the offloading because egress traffic is processed by the host networking stack.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipForwarding</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>You can control IP forwarding for all traffic on OVN-Kubernetes managed interfaces by using the <code>ipForwarding</code> specification in the <code>Network</code> resource. Specify <code>Restricted</code> to only allow IP forwarding for Kubernetes related traffic. Specify <code>Global</code> to allow forwarding of all IP traffic. For new installations, the default is <code>Restricted</code>. For updates to OpenShift Container Platform 4.14 or later, the default is <code>Global</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>The default value of <code>Restricted</code> sets the IP forwarding to drop.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipv4</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify an object to configure the internal OVN-Kubernetes masquerade address for host to service traffic for IPv4 addresses.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipv6</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify an object to configure the internal OVN-Kubernetes masquerade address for host to service traffic for IPv6 addresses.</p></td>
@@ -901,9 +924,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`gatewayConfig` object
-
-<table>
+<table id="gatewayconfig-ipv4-object_installing-restricted-networks-ibm-z-lpar">
 <caption><code>gatewayConfig.ipv4</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -911,27 +932,27 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-`gatewayConfig.ipv4` object
-
-<table>
+<table id="gatewayconfig-ipv6-object_installing-restricted-networks-ibm-z-lpar">
 <caption><code>gatewayConfig.ipv6</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -939,27 +960,27 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-`gatewayConfig.ipv6` object
-
-<table>
+<table id="nw-operator-cr-ipsec_installing-restricted-networks-ibm-z-lpar">
 <caption><code>ipsecConfig</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -967,14 +988,14 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mode</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the behavior of the IPsec implementation. Must be one of the following values:</p>
@@ -987,11 +1008,11 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`ipsecConfig` object
+<div class="formalpara">
 
-<div class="formalpara-title">
+<div class="title">
 
-**Example OVN-Kubernetes configuration with IPsec enabled**
+Example OVN-Kubernetes configuration with IPsec enabled
 
 </div>
 
@@ -1005,6 +1026,8 @@ defaultNetwork:
       mode: Full
 ```
 
+</div>
+
 # Creating the Kubernetes manifest and Ignition config files
 
 Because you manually provision infrastructure, you must generate the Kubernetes manifest and Ignition config files that the cluster requires.
@@ -1013,21 +1036,40 @@ The installation program converts the installation configuration into Kubernetes
 
 <div class="important">
 
+<div class="title">
+
+</div>
+
 - The Ignition config files that the OpenShift Container Platform installation program generates contain certificates that expire after 24 hours, which the system then renews. If you shut down the cluster before the system renews the certificates and you later restart the cluster after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
 - Use Ignition config files within 12 hours after you generate them, because the 24-hour certificate rotates from 16 to 22 hours after you install the cluster. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
 </div>
 
-<div class="note">
+> [!NOTE]
+> The installation program that generates the manifest and Ignition files is architecture specific. You can obtain it from the [client image mirror](https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/latest/). The Linux version of the installation program runs on s390x only. This installation program is also available as a macOS version.
 
-The installation program that generates the manifest and Ignition files is architecture specific. You can obtain it from the [client image mirror](https://mirror.openshift.com/pub/openshift-v4/s390x/clients/ocp/latest/). The Linux version of the installation program runs on s390x only. This installation program is also available as a macOS version.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You obtained the OpenShift Container Platform installation program. For a restricted network installation, these files are on your mirror host.
 
 - You created the `install-config.yaml` installation configuration file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the directory that contains the OpenShift Container Platform installation program and generate the Kubernetes manifests for the cluster:
 
@@ -1040,19 +1082,13 @@ The installation program that generates the manifest and Ignition files is archi
     `<installation_directory>`
     Specifies the installation directory that contains the `install-config.yaml` file you created.
 
-    <div class="warning">
-
-    If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
-
-    </div>
+    > [!WARNING]
+    > If you are installing a three-node cluster, skip the following step to allow the control plane nodes to be schedulable.
 
     \+
 
-    <div class="important">
-
-    When you configure control plane nodes from the default unschedulable to schedulable, you require additional subscriptions because control plane nodes then become compute nodes.
-
-    </div>
+    > [!IMPORTANT]
+    > When you configure control plane nodes from the default unschedulable to schedulable, you require additional subscriptions because control plane nodes then become compute nodes.
 
 2.  Verify that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `false`. This setting prevents pods from being scheduled on the control plane machines:
 
@@ -1084,6 +1120,8 @@ The installation program that generates the manifest and Ignition files is archi
         ├── metadata.json
         └── worker.ign
 
+</div>
+
 # Configuring boot volume encryption in an IBM Z or IBM LinuxONE environment
 
 You can optionally encrypt the boot volumes of your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE by using LUKS encryption via IBM® Crypto Express (CEX) or Network Bound Disk Encryption (NBDE).
@@ -1096,9 +1134,27 @@ You can optionally encrypt the boot volumes of your OpenShift Container Platform
 
 Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Crypto Express (CEX) in an IBM Z® or IBM® LinuxONE environment requires additional steps.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `butane` utility.
 
 - You have reviewed the instructions for how to create machine configs with Butane.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Choose the appropriate method to create Butane configuration files for the control plane and compute nodes:
 
@@ -1169,9 +1225,11 @@ Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Cryp
 
 2.  Create a parameter file that includes `ignition.platform.id=metal` and `ignition.firstboot`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example kernel parameter file for the control plane machine**
+    <div class="title">
+
+    Example kernel parameter file for the control plane machine
 
     </div>
 
@@ -1187,6 +1245,8 @@ Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Cryp
     rd.zfcp=0.0.5677,0x600606680g7f0056,0x034F000000000000
     ```
 
+    </div>
+
     where:
 
     `coreos.inst.install_dev`
@@ -1201,21 +1261,38 @@ Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Cryp
     `rd.zfcp`
     Specifies the FCP device. For installations on DASD-type disks, replace with `rd.dasd=0.0.xxxx` to specify the DASD device.
 
-    <div class="note">
+    > [!NOTE]
+    > Write all options in the parameter file as a single line and make sure you have no newline characters.
 
-    Write all options in the parameter file as a single line and make sure you have no newline characters.
-
-    </div>
+</div>
 
 ## Configuring NBDE with static IP in an IBM Z or IBM LinuxONE environment
 
 Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requires additional steps.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have set up the External Tang Server. See [Network-bound disk encryption](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening#network-bound-disk-encryption_configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption) for instructions.
 
 - You have installed the `butane` utility.
 
 - You have reviewed the instructions for how to create machine configs with Butane.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create Butane configuration files for the control plane and compute nodes.
 
@@ -1267,17 +1344,16 @@ Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requir
         /root/rhcos-bootfiles/<node_name>-initramfs.s390x.img
     ```
 
-    <div class="note">
-
-    Before first boot, you must customize the initramfs for each node in the cluster, and add PXE kernel parameters.
-
-    </div>
+    > [!NOTE]
+    > Before first boot, you must customize the initramfs for each node in the cluster, and add PXE kernel parameters.
 
 3.  Create a parameter file that includes `ignition.platform.id=metal` and `ignition.firstboot`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example kernel parameter file for the control plane machine**
+    <div class="title">
+
+    Example kernel parameter file for the control plane machine
 
     </div>
 
@@ -1294,6 +1370,8 @@ Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requir
     zfcp.allow_lun_scan=0
     ```
 
+    </div>
+
     where:
 
     `coreos.inst.install_dev`
@@ -1308,13 +1386,22 @@ Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requir
     `rd.zfcp`
     Specifies the FCP device. For installations on DASD-type disks, replace with `rd.dasd=0.0.xxxx` to specify the DASD device.
 
-    <div class="note">
+    > [!NOTE]
+    > Write all options in the parameter file as a single line and make sure you have no newline characters.
 
-    Write all options in the parameter file as a single line and make sure you have no newline characters.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating machine configs with Butane](../../../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
+
+</div>
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 
@@ -1326,19 +1413,34 @@ If you have configured suitable networking, DNS, and load balancing infrastructu
 
 Complete the following steps to create the machines.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An HTTP or HTTPS server running on your provisioning machine that is accessible to the machines you create.
 
 - If you want to enable secure boot, you have obtained the appropriate Red Hat Product Signing Key and read [Secure boot on IBM Z and IBM LinuxONE](https://www.ibm.com/docs/en/linux-on-systems?topic=security-secure-boot-linux-onibm-z-linuxone) in IBM® documentation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to Linux on your provisioning machine.
 
 2.  Obtain the Red Hat Enterprise Linux CoreOS (RHCOS) kernel, initramfs, and rootfs files from the [RHCOS image mirror](https://mirror.openshift.com/pub/openshift-v4/s390x/dependencies/rhcos/latest/).
 
-    <div class="important">
-
-    The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Only use the appropriate kernel, initramfs, and rootfs artifacts described in the following procedure.
-
-    </div>
+    > [!IMPORTANT]
+    > The RHCOS images might not change with every release of OpenShift Container Platform. You must download images with the highest version that is less than or equal to the OpenShift Container Platform version that you install. Only use the appropriate kernel, initramfs, and rootfs artifacts described in the following procedure.
 
     The file names contain the OpenShift Container Platform version number. They resemble the following examples:
 
@@ -1348,11 +1450,8 @@ Complete the following steps to create the machines.
 
     - rootfs: `rhcos-<version>-live-rootfs.<architecture>.img`
 
-      <div class="note">
-
-      The rootfs image is the same for FCP and DASD.
-
-      </div>
+      > [!NOTE]
+      > The rootfs image is the same for FCP and DASD.
 
 3.  Create parameter files. The following parameters are specific for a particular virtual machine:
 
@@ -1420,11 +1519,8 @@ Complete the following steps to create the machines.
 
       1.  Use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed. For multipathing repeat this step for each additional path.
 
-          <div class="note">
-
-          When you install with multiple paths, you must enable multipathing directly after the installation, not at a later point in time, as this can cause problems.
-
-          </div>
+          > [!NOTE]
+          > When you install with multiple paths, you must enable multipathing directly after the installation, not at a later point in time, as this can cause problems.
 
       2.  Set the install device as: `coreos.inst.install_dev=/dev/disk/by-id/scsi-<serial_number>`.
 
@@ -1432,9 +1528,11 @@ Complete the following steps to create the machines.
 
     Some installation methods also require a `generic.ins` file with a mapping of the location of the installation data in the file system of the Hardware Management Console (HMC), the DVD, or the FTP server and the memory locations where the data is to be copied. A sample `generic.ins` file is provided with the RHEL installation media. The file contains file names for the initial RAM disk (`initrd.img`), the kernel image (`kernel.img`), and the parameter (`generic.prm`) files and a memory location for each file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `generic.ins` file**
+    <div class="title">
+
+    Example `generic.ins` file
 
     </div>
 
@@ -1445,13 +1543,12 @@ Complete the following steps to create the machines.
     images/initrd.addrsize 0x00010408
     ```
 
+    </div>
+
 5.  Leave all other parameters unchanged.
 
-    <div class="important">
-
-    Additional postinstallation steps are required to fully enable multipathing. For more information, see “Enabling multipathing with kernel arguments on RHCOS" in *Machine configuration*.
-
-    </div>
+    > [!IMPORTANT]
+    > Additional postinstallation steps are required to fully enable multipathing. For more information, see “Enabling multipathing with kernel arguments on RHCOS" in *Machine configuration*.
 
     The following is an example parameter file `worker-1.parm` for a compute node with multipathing:
 
@@ -1477,29 +1574,35 @@ Complete the following steps to create the machines.
 
 8.  Repeat this procedure for the other machines in the cluster.
 
+</div>
+
 ## Networking and bonding options for ISO installations
 
 You can configure advanced options so that you can modify the Red Hat Enterprise Linux CoreOS (RHCOS) manual installation process. The subsequent sections show examples of networking options for an ISO installation.
 
 If you install RHCOS from an ISO image, you can add kernel arguments manually when you boot the image to configure networking for a node. If no networking arguments are specified, DHCP is activated in the initramfs when RHCOS detects that networking is required to fetch the Ignition config file.
 
-<div class="important">
-
-When adding networking arguments manually, you must also add the `rd.neednet=1` kernel argument to bring the network up in the initramfs.
-
-</div>
+> [!IMPORTANT]
+> When adding networking arguments manually, you must also add the `rd.neednet=1` kernel argument to bring the network up in the initramfs.
 
 The following information provides examples for configuring networking and bonding on your RHCOS nodes for ISO installations. The examples describe how to use the `ip=`, `nameserver=`, and `bond=` kernel arguments.
 
-<div class="note">
-
-Ordering is important when adding the kernel arguments: `ip=`, `nameserver=`, and then `bond=`.
-
-</div>
+> [!NOTE]
+> Ordering is important when adding the kernel arguments: `ip=`, `nameserver=`, and then `bond=`.
 
 The networking options are passed to the `dracut` tool during system boot. For more information about the networking options supported by `dracut`, see `dracut.cmdline` manual page.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [`dracut.cmdline` manual page](https://www.man7.org/linux/man-pages/man7/dracut.cmdline.7.html)
+
+</div>
 
 ### Configuring DHCP or static IP addresses
 
@@ -1519,6 +1622,14 @@ The configuration examples in the procedure, update the IP addresses for the fol
 
 - The auto-configuration value to `none`. No auto-configuration is required when IP networking is configured statically.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Enter a command like the following command to configure a static IP address:
 
     ``` terminal
@@ -1532,11 +1643,8 @@ The configuration examples in the procedure, update the IP addresses for the fol
     ip=enp1s0:dhcp
     ```
 
-    <div class="note">
-
-    When you use DHCP to configure IP addressing for the RHCOS machines, the machines also obtain the DNS server information through DHCP. For DHCP-based deployments, you can define the DNS server address that is used by the RHCOS nodes through your DHCP server configuration.
-
-    </div>
+    > [!NOTE]
+    > When you use DHCP to configure IP addressing for the RHCOS machines, the machines also obtain the DNS server information through DHCP. For DHCP-based deployments, you can define the DNS server address that is used by the RHCOS nodes through your DHCP server configuration.
 
 3.  If two or more network interfaces and only one interface exists, disable DHCP on a single interface. In the example, the `enp1s0` interface has a static networking configuration and DHCP is disabled for `enp2s0`, which is not used:
 
@@ -1551,6 +1659,8 @@ The configuration examples in the procedure, update the IP addresses for the fol
     ip=enp1s0:dhcp
     ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:enp2s0:none
     ```
+
+</div>
 
 ### Configuring an IP address without a static hostname
 
@@ -1568,7 +1678,13 @@ The configuration examples in the procedure, update the IP addresses for the fol
 
 - The auto-configuration value to `none`. No auto-configuration is required when IP networking is configured statically.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To configure an IP address without a static hostname, enter a command like the following command:
 
@@ -1577,9 +1693,19 @@ The configuration examples in the procedure, update the IP addresses for the fol
   nameserver=4.4.4.41
   ```
 
+</div>
+
 ### Specifying multiple network interfaces and DNS servers
 
 You can specify multiple network interfaces by setting multiple `ip=` entries. You can provide multiple DNS servers by adding a `nameserver=` entry for each server,
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To specify multiple network interfaces for your interfaces, you can enter a command like the following command:
 
@@ -1595,13 +1721,20 @@ You can specify multiple network interfaces by setting multiple `ip=` entries. Y
   nameserver=8.8.8.8
   ```
 
+</div>
+
 ### Configuring default gateway and route
 
 As an optional task, you can configure routes to additional networks by setting an `rd.route=` value.
 
-<div class="note">
+> [!NOTE]
+> When you configure one or multiple networks, one default gateway is required. If the additional network gateway is different from the primary network gateway, the default gateway must be the primary network gateway.
 
-When you configure one or multiple networks, one default gateway is required. If the additional network gateway is different from the primary network gateway, the default gateway must be the primary network gateway.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -1617,9 +1750,19 @@ When you configure one or multiple networks, one default gateway is required. If
   rd.route=20.20.20.0/24:20.20.20.254:enp2s0
   ```
 
+</div>
+
 ### Configuring VLANs on individual interfaces
 
 As an optional task, you can configure VLANs on individual interfaces by using the `vlan=` parameter.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To configure a VLAN on a network interface and use a static IP address, run the following command:
 
@@ -1634,6 +1777,8 @@ As an optional task, you can configure VLANs on individual interfaces by using t
   ip=enp2s0.100:dhcp
   vlan=enp2s0.100:enp2s0
   ```
+
+</div>
 
 ### Bonding multiple network interfaces to a single interface
 
@@ -1652,6 +1797,14 @@ bond=<name>[:<network_interfaces>][:<options>]
 - `` <options>: Specifies a comma-separated list of bonding options. Enter the `modinfo bonding `` command to see available options.
 
 When you create a bonded interface using the `bond=` command, you must specify how the IP address is assigned and other information for the bonded interface.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To configure the bonded interface to use DHCP, edit the `/etc/config/network` file by setting the IP address for the bond to `dhcp`. For example:
 
@@ -1685,9 +1838,19 @@ When you create a bonded interface using the `bond=` command, you must specify h
   vlan=bond0.100:bond0
   ```
 
+</div>
+
 ### Using network teaming
 
 You can use network teaming as an alternative to bonding by using the `team=` parameter.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: You can use network teaming as an alternative to bonding by using the `team=` parameter.
 
@@ -1695,11 +1858,8 @@ You can use network teaming as an alternative to bonding by using the `team=` pa
 
       *name* is the team device name (`team0`) and *network_interfaces* represents a comma-separated list of physical (ethernet) interfaces (`em1, em2`).
 
-      <div class="note">
-
-      Teaming is planned to be deprecated when RHCOS switches to an upcoming version of RHEL. For more information, see this [Red Hat Knowledgebase Article](https://access.redhat.com/solutions/6509691).
-
-      </div>
+      > [!NOTE]
+      > Teaming is planned to be deprecated when RHCOS switches to an upcoming version of RHEL. For more information, see this [Red Hat Knowledgebase Article](https://access.redhat.com/solutions/6509691).
 
       Use the following example to configure a network team:
 
@@ -1708,11 +1868,21 @@ You can use network teaming as an alternative to bonding by using the `team=` pa
       ip=team0:dhcp
       ```
 
+</div>
+
 # Waiting for the bootstrap process to complete
 
 After your cluster nodes first boot into the persistent RHCOS environment installed to disk, wait for the OpenShift Container Platform bootstrap process to complete.
 
 The configuration information provided through the Ignition config files is used to initialize the bootstrap process and install OpenShift Container Platform on the machines.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have created the Ignition config files for your cluster.
 
@@ -1721,6 +1891,16 @@ The configuration information provided through the Ignition config files is used
 - You have obtained the installation program and generated the Ignition config files for your cluster.
 
 - You installed RHCOS on your cluster machines and provided the Ignition config files that the OpenShift Container Platform installation program generated.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Monitor the bootstrap process:
 
@@ -1737,9 +1917,11 @@ The configuration information provided through the Ignition config files is used
     `--log-level=info`
     Specifies `warn`, `debug`, or `error` instead of `info` to view different installation details.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1750,17 +1932,18 @@ The configuration information provided through the Ignition config files is used
     INFO It is now safe to remove the bootstrap resources
     ```
 
+    </div>
+
     The bootstrapping completion wait time varies per platform.
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
 2.  After the bootstrap process is complete, remove the bootstrap machine from the load balancer.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > You must remove the bootstrap machine from the load balancer at this point. You can also remove or reformat the bootstrap machine itself.
 
-    You must remove the bootstrap machine from the load balancer at this point. You can also remove or reformat the bootstrap machine itself.
-
-    </div>
+</div>
 
 # Logging in to the cluster by using the CLI
 
@@ -1768,9 +1951,27 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -1789,9 +1990,11 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     $ oc whoami
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1799,15 +2002,47 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     system:admin
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - "Customize your cluster"
 
 - "Remote health reporting"
+
+</div>
 
 # Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You added machines to your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -1815,9 +2050,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1828,13 +2065,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     master-2  Ready     master  64m  v1.35.4
     ```
 
+    </div>
+
     The output lists all of the machines that you created.
 
-    <div class="note">
-
-    The preceding output might not include the compute nodes until you approve some CSRs.
-
-    </div>
+    > [!NOTE]
+    > The preceding output might not include the compute nodes until you approve some CSRs.
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -1842,9 +2078,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1855,21 +2093,17 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     ...
     ```
 
+    </div>
+
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    <div class="note">
+    > [!NOTE]
+    > You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
-
-    </div>
-
-    <div class="note">
-
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
-
-    </div>
+    > [!NOTE]
+    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -1888,11 +2122,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      <div class="note">
-
-      Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
-
-      </div>
+      > [!NOTE]
+      > Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
 
 4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
@@ -1900,9 +2131,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1912,6 +2145,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
+
+    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -1938,9 +2173,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1953,17 +2190,36 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     worker-1  Ready     worker  11m  v1.35.4
     ```
 
-    <div class="note">
-
-    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
-
     </div>
+
+    > [!NOTE]
+    > You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
+
+</div>
 
 # Initial Operator configuration
 
 After the control plane initializes, you must immediately configure some Operators so that they all become available.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your control plane has initialized.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Watch the cluster components come online:
 
@@ -1971,9 +2227,11 @@ After the control plane initializes, you must immediately configure some Operato
     $ watch -n5 oc get clusteroperators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2012,11 +2270,23 @@ After the control plane initializes, you must immediately configure some Operato
     storage                                    4.17.0    True        False         False      37m
     ```
 
+    </div>
+
 2.  Configure the Operators that are not available.
+
+</div>
 
 ## Disabling the default software catalog sources
 
 To use only trusted or locally available Operator catalogs, disable the default software catalog sources that OpenShift Container Platform configures during installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -2025,11 +2295,10 @@ To use only trusted or locally available Operator catalogs, disable the default 
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-  <div class="tip">
+  > [!TIP]
+  > Or, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
-  Or, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
-
-  </div>
+</div>
 
 ## Image registry storage configuration
 
@@ -2043,27 +2312,39 @@ You can also allow the image registry to use block storage types by using the `R
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have a cluster on IBM Z®.
 
 - You have provisioned persistent storage for your cluster, such as Red Hat OpenShift Data Foundation.
 
-  <div class="important">
-
-  OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
-
-  </div>
+  > [!IMPORTANT]
+  > OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
 
 - You must have a system with at least 100Gi capacity.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To configure your registry to use storage, change the `spec.storage.pvc` in the `configs.imageregistry/cluster` resource.
 
-    <div class="note">
-
-    When you use shared storage, review your security settings to prevent outside access.
-
-    </div>
+    > [!NOTE]
+    > When you use shared storage, review your security settings to prevent outside access.
 
 2.  Verify that you do not have a registry pod:
 
@@ -2071,9 +2352,11 @@ As a cluster administrator, following installation you must configure your regis
     $ oc get pod -n openshift-image-registry -l docker-registry=default
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2081,11 +2364,10 @@ As a cluster administrator, following installation you must configure your regis
     No resources found in openshift-image-registry namespace
     ```
 
-    <div class="note">
-
-    If you do have a registry pod in your output, you do not need to continue with this procedure.
-
     </div>
+
+    > [!NOTE]
+    > If you do have a registry pod in your output, you do not need to continue with this procedure.
 
 3.  Check the registry configuration:
 
@@ -2093,9 +2375,11 @@ As a cluster administrator, following installation you must configure your regis
     $ oc edit configs.imageregistry.operator.openshift.io
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2105,6 +2389,8 @@ As a cluster administrator, following installation you must configure your regis
         claim:
     ```
 
+    </div>
+
     Leave the `claim` field blank to allow the automatic creation of an `image-registry-storage` PVC.
 
 4.  Check the `clusteroperator` status:
@@ -2113,9 +2399,11 @@ As a cluster administrator, following installation you must configure your regis
     $ oc get clusteroperator image-registry
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2123,6 +2411,8 @@ As a cluster administrator, following installation you must configure your regis
     NAME             VERSION              AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
     image-registry   4.17                 True        False         False      6h50m
     ```
+
+    </div>
 
 5.  Ensure that your registry is set to managed to enable building and pushing of images.
 
@@ -2138,9 +2428,19 @@ As a cluster administrator, following installation you must configure your regis
 
           managementState: Managed
 
+</div>
+
 ### Configure storage for the image registry in non-production clusters
 
 You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory, but you lose all images if you restart the registry.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To set the image registry storage to an empty directory:
 
@@ -2148,17 +2448,16 @@ You must configure storage for the Image Registry Operator. For non-production c
   $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
   ```
 
-  <div class="warning">
-
-  Configure this option only for non-production clusters.
-
-  </div>
+  > [!WARNING]
+  > Configure this option only for non-production clusters.
 
   If you run this command before the Image Registry Operator initializes its components, the `oc patch` command fails with the following error:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2166,15 +2465,37 @@ You must configure storage for the Image Registry Operator. For non-production c
   Error from server (NotFound): configs.imageregistry.operator.openshift.io "cluster" not found
   ```
 
+  </div>
+
   Wait a few minutes and run the command again.
+
+</div>
 
 # Completing installation on user-provisioned infrastructure
 
 To finalize the installation on user-provisioned infrastructure, complete the cluster deployment after configuring the Operators. This ensures the cluster is fully operational on the infrastructure that you provide.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your control plane has initialized.
 
 - You have completed the initial Operator configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that all the cluster components are online with the following command:
 
@@ -2182,9 +2503,11 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
     $ watch -n5 oc get clusteroperators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2223,6 +2546,8 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
     storage                                    4.17.0    True        False         False      37m
     ```
 
+    </div>
+
     Alternatively, the following command notifies you when all of the clusters are available. The command also retrieves and displays credentials:
 
     ``` terminal
@@ -2234,9 +2559,11 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
     `<installation_directory>`
     Specifies the path to the directory that you stored the installation files in.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2244,9 +2571,15 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
     INFO Waiting up to 30m0s for the cluster to initialize...
     ```
 
+    </div>
+
     The command succeeds when the Cluster Version Operator finishes deploying the OpenShift Container Platform cluster from Kubernetes API server.
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -2262,9 +2595,11 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
         $ oc get pods --all-namespaces
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -2276,6 +2611,8 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
         openshift-apiserver               apiserver-z25h4                                 1/1     Running     0          2m
         openshift-authentication-operator authentication-operator-69d5d8bf84-vh2n8        1/1     Running     0          5m
         ```
+
+        </div>
 
     2.  View the logs for a pod that is listed in the output of the previous command by using the following command:
 
@@ -2296,13 +2633,19 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
 4.  Register your cluster on the [Cluster registration](https://console.redhat.com/openshift/register) page.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 If you have enabled secure boot during the OpenShift Container Platform bootstrap process, the following verification steps are required:
+
+</div>
 
 1.  Debug the node by running the following command:
 
@@ -2310,15 +2653,19 @@ If you have enabled secure boot during the OpenShift Container Platform bootstra
     $ oc debug node/<node_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     chroot /host
     ```
+
+    </div>
 
 2.  Confirm that secure boot is enabled by running the following command. Example output states `1` if secure boot is enabled and `0` if secure boot is not enabled.
 
@@ -2332,9 +2679,11 @@ If you have enabled secure boot during the OpenShift Container Platform bootstra
     # lsreipl
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for an FCP disk**
+    <div class="title">
+
+    Example output for an FCP disk
 
     </div>
 
@@ -2350,9 +2699,13 @@ If you have enabled secure boot during the OpenShift Container Platform bootstra
     clear: 0
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output for a DASD disk**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output for a DASD disk
 
     </div>
 
@@ -2363,6 +2716,8 @@ If you have enabled secure boot during the OpenShift Container Platform bootstra
     Loadparm: ""
     clear: 0
     ```
+
+    </div>
 
 4.  Shut down the node by running the following command:
 

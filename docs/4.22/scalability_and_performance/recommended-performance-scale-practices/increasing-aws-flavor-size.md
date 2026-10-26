@@ -1,22 +1,47 @@
 If the control plane machines in an Amazon Web Services (AWS) cluster require more resources, you can select a larger AWS instance type for the control plane machines to use.
 
-<div class="note">
+> [!NOTE]
+> The procedure for clusters that use a control plane machine set is different from the procedure for clusters that do not use a control plane machine set.
+>
+> If you are uncertain about the state of the `ControlPlaneMachineSet` CR in your cluster, you can verify the CR status.
 
-The procedure for clusters that use a control plane machine set is different from the procedure for clusters that do not use a control plane machine set.
+<div>
 
-If you are uncertain about the state of the `ControlPlaneMachineSet` CR in your cluster, you can verify the CR status.
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Verify the CR status](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-checking-status_cpmso-getting-started)
 
+</div>
+
 # Change the Amazon Web Services instance type by using a control plane machine set
 
 If you need more resources for your control plane machines, you can change the Amazon Web Services (AWS) instance type that they use. To change the instance type, you update the instance type value in the control plane machine set custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`) as a user with administrator privileges.
 
 - Your AWS cluster uses a control plane machine set.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your control plane machine set CR by running the following command:
 
@@ -49,15 +74,45 @@ If you need more resources for your control plane machines, you can change the A
 
     - For clusters that are configured to use the `OnDelete` update strategy, you must replace your control plane machines manually.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Managing control plane machines with control plane machine sets](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-managing-machines)
+
+</div>
 
 # Change the Amazon Web Services instance type by using the AWS console
 
 You can change the Amazon Web Services (AWS) instance type that your control plane machines use by updating the instance type in the AWS console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the AWS console with the permissions required to modify the EC2 Instance for your cluster.
 
 - You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the AWS console and fetch the instances for the control plane machines.
 
@@ -77,6 +132,18 @@ You can change the Amazon Web Services (AWS) instance type that your control pla
 
 3.  Repeat this process for each control plane machine.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd)
 
 - [AWS documentation about changing the instance type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html)
+
+</div>

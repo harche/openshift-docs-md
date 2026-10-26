@@ -36,25 +36,48 @@ TALM can be used to manage the rollout of any policy CR where the `remediationAc
 
 - Automatically generated policies from the `PolicyGenerator` or `PolicyGentemplate` custom resource definition (CRD)
 
-<div class="note">
-
-Using the `PolicyGentemplate` CRD is the recommended method for automatic policy generation.
-
-</div>
+> [!NOTE]
+> Using the `PolicyGentemplate` CRD is the recommended method for automatic policy generation.
 
 For policies that update an Operator subscription with manual approval, TALM provides additional functionality that approves the installation of the updated Operator.
 
 For more information about managed policies, "Policy Overview" in the RHACM documentation.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
+
+</div>
 
 # Installing the Topology Aware Lifecycle Manager by using the web console
 
 You can use the OpenShift Container Platform web console to install the Topology Aware Lifecycle Manager.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the latest version of the RHACM Operator.
 
@@ -64,6 +87,16 @@ You can use the OpenShift Container Platform web console to install the Topology
 
 - Log in as a user with `cluster-admin` privileges.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
 2.  Search for the **Topology Aware Lifecycle Manager** from the list of available Operators, and then click **Install**.
@@ -72,13 +105,19 @@ You can use the OpenShift Container Platform web console to install the Topology
 
 4.  Click **Install**.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 To confirm that the installation is successful:
+
+</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -94,6 +133,14 @@ If the Operator is not installed successfully:
 
 You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Manager (TALM).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Install the latest version of the RHACM Operator.
@@ -103,6 +150,16 @@ You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Man
 - Set up a hub cluster with disconnected registry.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Subscription` CR:
 
@@ -127,7 +184,15 @@ You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Man
         $ oc create -f talm-subscription.yaml
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the installation succeeded by inspecting the CSV resource:
 
@@ -135,9 +200,11 @@ You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Man
     $ oc get csv -n openshift-operators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -146,15 +213,19 @@ You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Man
     topology-aware-lifecycle-manager.4.17.x   Topology Aware Lifecycle Manager   4.17.x                                      Succeeded
     ```
 
+    </div>
+
 2.  Verify that the TALM is up and running:
 
     ``` terminal
     $ oc get deploy -n openshift-operators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -162,6 +233,10 @@ You can use the OpenShift CLI (`oc`) to install the Topology Aware Lifecycle Man
     NAMESPACE                                          NAME                                             READY   UP-TO-DATE   AVAILABLE   AGE
     openshift-operators                                cluster-group-upgrades-controller-manager        1/1     1            1           14s
     ```
+
+    </div>
+
+</div>
 
 # About the ClusterGroupUpgrade CR
 
@@ -200,15 +275,12 @@ For more information see the "Applying update policies to managed clusters" sect
 
 As TALM works through remediation of the policies to the specified clusters, the `ClusterGroupUpgrade` CR can report true or false statuses for a number of conditions.
 
-<div class="note">
-
-After TALM completes a cluster update, the cluster does not update again under the control of the same `ClusterGroupUpgrade` CR. You must create a new `ClusterGroupUpgrade` CR in the following cases:
-
-- When you need to update the cluster again
-
-- When the cluster changes to non-compliant with the `inform` policy after being updated
-
-</div>
+> [!NOTE]
+> After TALM completes a cluster update, the cluster does not update again under the control of the same `ClusterGroupUpgrade` CR. You must create a new `ClusterGroupUpgrade` CR in the following cases:
+>
+> - When you need to update the cluster again
+>
+> - When the cluster changes to non-compliant with the `inform` policy after being updated
 
 ## Selecting clusters
 
@@ -228,9 +300,11 @@ You can use the `clusters`, `clusterLabelSelector`, and `clusterSelector` fields
 
 The remediation plan starts with the clusters listed in the `canaries` field. Each canary cluster forms a single-cluster batch.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `ClusterGroupUpgrade` CR with the enabled `field` set to `false`**
+<div class="title">
+
+Sample `ClusterGroupUpgrade` CR with the enabled `field` set to `false`
 
 </div>
 
@@ -306,6 +380,8 @@ status:
     status:
 ```
 
+</div>
+
 - `Spec.actions.afterCompletion` specifies the action that TALM takes when it completes policy remediation for each cluster.
 
 - `Spec.actions.beforeEnable` specifies the action that TALM takes as it begins the update process.
@@ -332,19 +408,13 @@ status:
 
 - `Spec.preCaching.conditions.type` the `Validated` condition shows that all selected clusters have been validated.
 
-<div class="note">
-
-Any failures during the update of a canary cluster stops the update process.
-
-</div>
+> [!NOTE]
+> Any failures during the update of a canary cluster stops the update process.
 
 When the remediation plan is successfully created, you can you set the `enable` field to `true` and TALM starts to update the non-compliant clusters with the specified managed policies.
 
-<div class="note">
-
-You can only make changes to the `spec` fields if the `enable` field of the `ClusterGroupUpgrade` CR is set to `false`.
-
-</div>
+> [!NOTE]
+> You can only make changes to the `spec` fields if the `enable` field of the `ClusterGroupUpgrade` CR is set to `false`.
 
 ## Validating
 
@@ -406,15 +476,14 @@ TALM uses the `Progressing` condition to report the status and reasons as follow
 
   - The `ClusterGroupUpgrade` CR is not enabled.
 
-<div class="note">
+> [!NOTE]
+> The managed policies apply in the order that they are listed in the `managedPolicies` field in the `ClusterGroupUpgrade` CR. One managed policy is applied to the specified clusters at a time. When a cluster complies with the current policy, the next managed policy is applied to it.
 
-The managed policies apply in the order that they are listed in the `managedPolicies` field in the `ClusterGroupUpgrade` CR. One managed policy is applied to the specified clusters at a time. When a cluster complies with the current policy, the next managed policy is applied to it.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample `ClusterGroupUpgrade` CR in the `Progressing` state**
+Sample `ClusterGroupUpgrade` CR in the `Progressing` state
 
 </div>
 
@@ -496,6 +565,8 @@ status:
       startedAt: '2022-11-18T16:27:15Z'
 ```
 
+</div>
+
 The `Progressing` fields show that TALM is in the process of remediating policies.
 
 ## Update status
@@ -514,9 +585,11 @@ TALM uses the `Succeeded` condition to report the status and reasons as follows:
 
   - Clusters did not comply with the managed policies within the `timeout` value specified in the `remediationStrategy` field.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `ClusterGroupUpgrade` CR in the `Succeeded` state**
+<div class="title">
+
+Sample `ClusterGroupUpgrade` CR in the `Succeeded` state
 
 </div>
 
@@ -573,15 +646,19 @@ TALM uses the `Succeeded` condition to report the status and reasons as follows:
         startedAt: '2022-11-18T16:27:15Z'
 ```
 
+</div>
+
 - `spec.conditions.type` in the `Progressing` fields, the status is `false` as the update has completed; clusters are compliant with all the managed policies.
 
 - `spec.conditions.type` the `Succeeded` fields show that the validations completed successfully.
 
 - `status` the `status` field includes a list of clusters and their respective statuses. The status of a cluster can be `complete` or `timedout`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `ClusterGroupUpgrade` CR in the `timedout` state**
+<div class="title">
+
+Sample `ClusterGroupUpgrade` CR in the `timedout` state
 
 </div>
 
@@ -656,6 +733,8 @@ status:
         completedAt: '2022-11-18T20:27:15Z'
 ```
 
+</div>
+
 - `status.clusters.currentPolicy` if a cluster’s state is `timedout`, the `currentPolicy` field shows the name of the policy and the policy status.
 
 - `status.conditions.type` the status for `succeeded` is `false` and the message indicates that policy remediation took too long.
@@ -668,6 +747,14 @@ For example, if you create `ClusterGroupUpgrade` CR C that blocks the start of `
 
 One `ClusterGroupUpgrade` CR can have multiple blocking CRs. In this case, all the blocking CRs must complete before the upgrade for the current CR can start.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the Topology Aware Lifecycle Manager (TALM).
 
 - Provision one or more managed clusters.
@@ -675,6 +762,16 @@ One `ClusterGroupUpgrade` CR can have multiple blocking CRs. In this case, all t
 - Log in as a user with `cluster-admin` privileges.
 
 - Create RHACM policies in the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the content of the `ClusterGroupUpgrade` CRs in the `cgu-a.yaml`, `cgu-b.yaml`, and `cgu-c.yaml` files.
 
@@ -1009,6 +1106,8 @@ One `ClusterGroupUpgrade` CR can have multiple blocking CRs. In this case, all t
 
     The `cgu-c` update does not have any blocking CRs.
 
+</div>
+
 # Update policies on managed clusters
 
 The Topology Aware Lifecycle Manager (TALM) remediates a set of `inform` policies for the clusters specified in the `ClusterGroupUpgrade` custom resource (CR).
@@ -1027,9 +1126,11 @@ If a spoke cluster does not report any compliant state to RHACM, the managed pol
 
 The `ClusterGroupUpgrade` CR’s `batchTimeoutAction` determines what happens if an upgrade fails for a cluster. You can specify `continue` to skip the failing cluster and continue to upgrade other clusters, or specify `abort` to stop the policy remediation for all clusters. Once the timeout elapses, TALM removes all the resources it created to ensure that no further updates are made to clusters.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example upgrade policy**
+<div class="title">
+
+Example upgrade policy
 
 </div>
 
@@ -1074,23 +1175,53 @@ spec:
   remediationAction: inform
 ```
 
+</div>
+
 For more information about RHACM policies, see "Policy overview" in the RHACM documentation.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
+
+</div>
 
 ## Configuring Operator subscriptions for managed clusters that you install with TALM
 
 Topology Aware Lifecycle Manager (TALM) can only approve the install plan for an Operator if the `Subscription` custom resource (CR) of the Operator contains the `status.state.AtLatestKnown` field.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add the `status.state.AtLatestKnown` field to the `Subscription` CR of the Operator:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Subscription CR**
+    <div class="title">
+
+    Example Subscription CR
 
     </div>
 
@@ -1112,19 +1243,28 @@ Topology Aware Lifecycle Manager (TALM) can only approve the install plan for an
       state: AtLatestKnown
     ```
 
-    The `status.state: AtLatestKnown` field is used for the latest Operator version available from the Operator catalog.
-
-    <div class="note">
-
-    When a new version of the Operator is available in the registry, the associated policy becomes non-compliant.
-
     </div>
 
+    The `status.state: AtLatestKnown` field is used for the latest Operator version available from the Operator catalog.
+
+    > [!NOTE]
+    > When a new version of the Operator is available in the registry, the associated policy becomes non-compliant.
+
 2.  Apply the changed `Subscription` policy to your managed clusters with a `ClusterGroupUpgrade` CR.
+
+</div>
 
 ## Applying update policies to managed clusters
 
 You can update your managed clusters by applying your policies.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the Topology Aware Lifecycle Manager (TALM).
 
@@ -1135,6 +1275,16 @@ You can update your managed clusters by applying your policies.
 - Log in as a user with `cluster-admin` privileges.
 
 - Create RHACM policies in the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the contents of the `ClusterGroupUpgrade` CR in the `cgu-1.yaml` file.
 
@@ -1184,9 +1334,11 @@ You can update your managed clusters by applying your policies.
         $ oc get cgu --all-namespaces
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1195,15 +1347,19 @@ You can update your managed clusters by applying your policies.
         default     cgu-1 8m55 NotEnabled Not Enabled
         ```
 
+        </div>
+
     2.  Check the status of the update by running the following command:
 
         ``` terminal
         $ oc get cgu -n default cgu-1 -ojsonpath='' | jq
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1275,6 +1431,8 @@ You can update your managed clusters by applying your policies.
         }
         ```
 
+        </div>
+
         The `spec.enable` field in the `ClusterGroupUpgrade` CR is set to `false`.
 
 3.  Change the value of the `spec.enable` field to `true` by running the following command:
@@ -1284,7 +1442,15 @@ You can update your managed clusters by applying your policies.
     --patch '{"spec":{"enable":true}}' --type=merge
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the status of the update by running the following command:
 
@@ -1292,9 +1458,11 @@ You can update your managed clusters by applying your policies.
     $ oc get cgu -n default cgu-1 -ojsonpath='' | jq
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1394,6 +1562,8 @@ You can update your managed clusters by applying your policies.
     }
     ```
 
+    </div>
+
     Reflects the update progress of the current batch. Run this command again to receive updated information about the progress.
 
 2.  Check the status of the policies by running the following command:
@@ -1402,9 +1572,11 @@ You can update your managed clusters by applying your policies.
     oc get policies -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1423,6 +1595,8 @@ You can update your managed clusters by applying your policies.
     default   policy3-common-ptp-sub-policy                 inform                NonCompliant         18m
     default   policy4-common-sriov-sub-policy               inform                NonCompliant         18m
     ```
+
+    </div>
 
     - The `spec.remediationAction` value changes to `enforce` for the child policies applied to the clusters from the current batch.
 
@@ -1444,9 +1618,11 @@ You can update your managed clusters by applying your policies.
         $ oc get subs -A | grep -i <subscription_name>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output for `cluster-logging` policy**
+        <div class="title">
+
+        Example output for `cluster-logging` policy
 
         </div>
 
@@ -1455,15 +1631,19 @@ You can update your managed clusters by applying your policies.
         openshift-logging                      cluster-logging              cluster-logging              redhat-operators   stable
         ```
 
+        </div>
+
 4.  If one of the managed policies includes a `ClusterVersion` CR, check the status of platform updates in the current batch by running the following command against the spoke cluster:
 
     ``` terminal
     $ oc get clusterversion
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1471,6 +1651,8 @@ You can update your managed clusters by applying your policies.
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   4.4.17.5     True        True          43s     Working towards 4.4.17.7: 71 of 735 done (9% complete)
     ```
+
+    </div>
 
 5.  Check the Operator subscription by running the following command:
 
@@ -1484,9 +1666,11 @@ You can update your managed clusters by applying your policies.
     $ oc get installplan -n <subscription_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for `cluster-logging` Operator**
+    <div class="title">
+
+    Example output for `cluster-logging` Operator
 
     </div>
 
@@ -1495,13 +1679,12 @@ You can update your managed clusters by applying your policies.
     openshift-logging                      install-6khtw   cluster-logging.5.3.3-4             Manual     true
     ```
 
+    </div>
+
     The install plans have their `Approval` field set to `Manual` and their `Approved` field changes from `false` to `true` after TALM approves the install plan.
 
-    <div class="note">
-
-    When TALM is remediating a policy containing a subscription, it automatically approves any install plans attached to that subscription. Where multiple install plans are needed to get the operator to the latest known version, TALM might approve multiple install plans, upgrading through one or more intermediate versions to get to the final version.
-
-    </div>
+    > [!NOTE]
+    > When TALM is remediating a policy containing a subscription, it automatically approves any install plans attached to that subscription. Where multiple install plans are needed to get the operator to the latest known version, TALM might approve multiple install plans, upgrading through one or more intermediate versions to get to the final version.
 
 7.  Check if the cluster service version for the Operator of the policy that the `ClusterGroupUpgrade` is installing reached the `Succeeded` phase by running the following command:
 
@@ -1509,9 +1692,11 @@ You can update your managed clusters by applying your policies.
     $ oc get csv -n <operator_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output for OpenShift Logging Operator**
+    <div class="title">
+
+    Example output for OpenShift Logging Operator
 
     </div>
 
@@ -1520,15 +1705,16 @@ You can update your managed clusters by applying your policies.
     cluster-logging.v6.2.1  Red Hat OpenShift Logging   6.2.1                Succeeded
     ```
 
+    </div>
+
+</div>
+
 # Using the container image pre-cache feature
 
 Single-node OpenShift clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed.
 
-<div class="note">
-
-The time of the update is not set by TALM. You can apply the `ClusterGroupUpgrade` CR at the beginning of the update by manual application or by external automation.
-
-</div>
+> [!NOTE]
+> The time of the update is not set by TALM. You can apply the `ClusterGroupUpgrade` CR at the beginning of the update by manual application or by external automation.
 
 The container image pre-caching starts when the `preCaching` field is set to `true` in the `ClusterGroupUpgrade` CR.
 
@@ -1615,9 +1801,14 @@ TALM excludes all images with names that include any of the patterns listed here
 
 For single-node OpenShift, the pre-cache feature allows the required container images to be present on the spoke cluster before the update starts.
 
-<div class="note">
+> [!NOTE]
+> For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the `ClusterGroupUpgrade` CR. You must set a `timeout` value that allows sufficient time for the pre-caching job to complete. When you enable the `ClusterGroupUpgrade` CR after pre-caching has completed, you can change the `timeout` value to a duration that is appropriate for the update.
 
-For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the `ClusterGroupUpgrade` CR. You must set a `timeout` value that allows sufficient time for the pre-caching job to complete. When you enable the `ClusterGroupUpgrade` CR after pre-caching has completed, you can change the `timeout` value to a duration that is appropriate for the update.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1626,6 +1817,16 @@ For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the
 - Provision one or more managed clusters.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the contents of the `ClusterGroupUpgrade` CR with the `preCaching` field set to `true` in the `clustergroupupgrades-group-du.yaml` file:
 
@@ -1656,7 +1857,15 @@ For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the
     $ oc apply -f clustergroupupgrades-group-du.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check if the `ClusterGroupUpgrade` CR exists in the hub cluster by running the following command:
 
@@ -1756,6 +1965,8 @@ For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the
           "type": "PrecachingSucceeded"
         }
     ```
+
+</div>
 
 The pre-cache tasks are done.
 
@@ -2028,11 +2239,8 @@ Example output:
     spoke3          true           https://api.spoke3.testlab.com:6443   True     True        27h
     ```
 
-<div class="note">
-
-A cluster can be present in `spec.clusters` and also be matched by the `spec.clusterLabelSelector` label.
-
-</div>
+> [!NOTE]
+> A cluster can be present in `spec.clusters` and also be matched by the `spec.clusterLabelSelector` label.
 
 **Checking the pre-caching status on spoke clusters**
 
@@ -2228,20 +2436,37 @@ For more information on tolerations in RHACM, see [Placing managed clusters by u
 
 To ensure that the `ClusterGroupUpgrade` configuration is functional, you can do the following:
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the `ClusterGroupUpgrade` CR with the `spec.enable` field set to `false`.
 
 2.  Wait for the status to be updated and go through the troubleshooting questions.
 
 3.  If everything looks as expected, set the `spec.enable` field to `true` in the `ClusterGroupUpgrade` CR.
 
-    <div class="warning">
+    > [!WARNING]
+    > After you set the `spec.enable` field to `true` in the `ClusterUpgradeGroup` CR, the update procedure starts and you cannot edit the CR’s `spec` fields anymore.
 
-    After you set the `spec.enable` field to `true` in the `ClusterUpgradeGroup` CR, the update procedure starts and you cannot edit the CR’s `spec` fields anymore.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [OpenShift Container Platform Troubleshooting Operator Issues](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-operator-issues)
 
 - [Updating managed policies with Topology Aware Lifecycle Manager](../edge_computing/policygenerator_for_ztp/ztp-talm-updating-managed-policies-pg.xml#ztp-topology-aware-lifecycle-manager)
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
+
+</div>

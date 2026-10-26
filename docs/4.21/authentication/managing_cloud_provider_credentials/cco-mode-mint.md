@@ -12,11 +12,8 @@ With mint mode, each cluster component has only the specific permissions it requ
 
 For example, a minor version cluster update (such as updating from OpenShift Container Platform 4.20 to 4.17) might include an updated `CredentialsRequest` resource for a cluster component. The CCO, operating in mint mode, uses the `admin` credential to process the `CredentialsRequest` resource and create users with limited permissions to satisfy the updated authentication requirements.
 
-<div class="note">
-
-By default, mint mode requires storing the `admin` credential in the cluster `kube-system` namespace. If this approach does not meet the security requirements of your organization, you can remove the credential after installing the cluster. For more information, see "Removing cloud provider credentials".
-
-</div>
+> [!NOTE]
+> By default, mint mode requires storing the `admin` credential in the cluster `kube-system` namespace. If this approach does not meet the security requirements of your organization, you can remove the credential after installing the cluster. For more information, see "Removing cloud provider credentials".
 
 ## About mint mode permissions requirements
 
@@ -90,9 +87,11 @@ Each cloud provider uses a credentials root secret in the `kube-system` namespac
 
 The format for the secret varies by cloud, and is also used for each `CredentialsRequest` secret.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Amazon Web Services (AWS) secret format**
+<div class="title">
+
+Amazon Web Services (AWS) secret format
 
 </div>
 
@@ -107,9 +106,13 @@ stringData:
   aws_secret_access_key: <base64-encoded_secret_access_key>
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Google Cloud secret format**
+<div class="formalpara">
+
+<div class="title">
+
+Google Cloud secret format
 
 </div>
 
@@ -123,11 +126,21 @@ stringData:
   service_account.json: <base64-encoded_service_account>
 ```
 
+</div>
+
 # Maintaining cloud provider credentials
 
 If your cloud provider credentials are changed for any reason, you must manually update the secret that the Cloud Credential Operator (CCO) uses to manage cloud provider credentials.
 
 The process for rotating cloud credentials depends on the mode that the CCO is configured to use. After you rotate credentials for a cluster that is using mint mode, you must manually remove the component credentials that were created by the removed credential.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your cluster is installed on a platform that supports rotating cloud credentials manually with the CCO mode that you are using:
 
@@ -136,6 +149,16 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 - You have changed the credentials that are used to interface with your cloud provider.
 
 - The new credentials have sufficient permissions for the mode CCO is configured to use in your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
@@ -205,11 +228,21 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 
         You do not need to manually delete the credentials from your provider console. Deleting the referenced component secrets will cause the CCO to delete the existing credentials from the platform and create new ones.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 
 2.  Verify that the contents of the **Value** field or fields have changed.
+
+</div>
 
 # Additional resources
 

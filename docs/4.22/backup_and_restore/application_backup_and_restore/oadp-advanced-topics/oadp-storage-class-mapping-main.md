@@ -14,6 +14,14 @@ Change the storage class of a persistent volume (PV) during a restore by configu
 
 To deploy ConfigMap with OADP, use the `change-storage-class-config` field. You must change the storage class mapping based on your cloud provider.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Change the storage class mapping by running the following command:
 
     ``` terminal
@@ -22,9 +30,11 @@ To deploy ConfigMap with OADP, use the `change-storage-class-config` field. You 
 
 2.  Create a config map in the Velero namespace as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -41,8 +51,12 @@ To deploy ConfigMap with OADP, use the `change-storage-class-config` field. You 
       standard-csi: ssd-csi
     ```
 
+    </div>
+
 3.  Save your storage class mapping preferences by running the following command:
 
     ``` terminal
     $ oc create -f change-storage-class-config
     ```
+
+</div>

@@ -10,17 +10,23 @@ When you install the OpenShift Virtualization Operator, the Hostpath Provisioner
 
 The HPP is a local storage provisioner designed for OpenShift Virtualization. To use the HPP, you must create an HPP custom resource (CR).
 
-<div class="important">
+> [!IMPORTANT]
+> HPP storage pools must not be in the same partition as the operating system. Otherwise, the storage pools might fill the operating system partition. If the operating system partition is full, this might negatively impact performance, or the node can become unstable or unusable.
 
-HPP storage pools must not be in the same partition as the operating system. Otherwise, the storage pools might fill the operating system partition. If the operating system partition is full, this might negatively impact performance, or the node can become unstable or unusable.
-
-</div>
-
-## Creating a storage class for the CSI driver with the storagePools stanza
+## Create a storage class for the CSI driver with the storagePools stanza
 
 To use the hostpath provisioner (HPP) you must create an associated storage class for the Container Storage Interface (CSI) driver.
 
-When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
+> [!NOTE]
+> When you create a storage class, you set parameters that affect the dynamic provisioning of persistent volumes (PVs) that belong to that storage class. You cannot update a `StorageClass` object’s parameters after you create it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `storageclass_csi.yaml` file to define the storage class:
 
@@ -40,13 +46,10 @@ When you create a storage class, you set parameters that affect the dynamic prov
 
     - `volumeBindingMode` defines the timing of PV creation. In this example, the `WaitForFirstConsumer` configuration delays PV creation until the scheduler assigns a pod to a specific node.
 
-      <div class="note">
-
-      Virtual machines use data volumes based on local PVs, which reside on specific nodes. When the system prepares a disk image for the virtual machine, the scheduler might not place the virtual machine on the node where it pinned the local storage PV.
-
-      \+ To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. Setting the `volumeBindingMode` parameter of the `StorageClass` to `WaitForFirstConsumer` delays PV binding and provisioning until you create a pod that uses the PVC.
-
-      </div>
+      > [!NOTE]
+      > Virtual machines use data volumes based on local PVs, which reside on specific nodes. When the system prepares a disk image for the virtual machine, the scheduler might not place the virtual machine on the node where it pinned the local storage PV.
+      >
+      > \+ To solve this problem, use the Kubernetes pod scheduler to bind the persistent volume claim (PVC) to a PV on the correct node. Setting the `volumeBindingMode` parameter of the `StorageClass` to `WaitForFirstConsumer` delays PV binding and provisioning until you create a pod that uses the PVC.
 
     - `parameters.storagePool` defines the name of the storage pool defined in the HPP custom resource (CR).
 
@@ -57,6 +60,8 @@ When you create a storage class, you set parameters that affect the dynamic prov
     ``` terminal
     $ oc create -f storageclass_csi.yaml
     ```
+
+</div>
 
 # Additional resources
 

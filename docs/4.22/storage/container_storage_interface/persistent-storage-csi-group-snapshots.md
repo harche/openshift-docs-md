@@ -4,13 +4,10 @@ Volume group snapshots capture point-in-time copies of multiple volumes simultan
 
 Volume group snapshots capture point-in-time copies of multiple persistent volume claims using label selectors. Three API objects manage snapshots: VolumeGroupSnapshot, VolumeGroupSnapshotContent, and VolumeGroupSnapshotClass.
 
-<div class="important">
-
-CSI volume group snapshots is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> CSI volume group snapshots is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 To use this Technology Preview feature, you must enable it by using feature gates. For information about using feature gates, see "Enabling features using feature gates".
 
@@ -47,23 +44,51 @@ Volume group snapshots have the following limitations:
 
 - Volume group snapshots need to be supported by the Container Storage Interface (CSI) driver. OpenShift Data Foundation supports volume group snapshots.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Quiesce and Unquiesce Hooks](https://github.com/kubernetes/community/blob/master/wg-data-protection/data-protection-workflows-white-paper.md#quiesce-and-unquiesce-hooks)
+
+</div>
 
 # Creating a volume group snapshot class
 
 Create a `VolumeGroupSnapshotClass` to define how volume group snapshots are provisioned, including the Container Storage Interface (CSI) driver and deletion policy. Cluster administrators must create this class before users can provision volume group snapshots.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Logged in to a running OpenShift Container Platform cluster with administrator privileges.
 
 - Enabled this feature using feature gates. For information about how to use feature gates, see "Enabling features sets by using feature gates".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `VolumeGroupSnapshotClass` YAML file using the following example file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example volume group snapshot class YAML file**
+    <div class="title">
+
+    Example volume group snapshot class YAML file
 
     </div>
 
@@ -77,6 +102,8 @@ Create a `VolumeGroupSnapshotClass` to define how volume group snapshots are pro
          …...
     ```
 
+    </div>
+
     - `kind`: Specifies the `VolumeGroupSnapshotClass` object.
 
     - `metadata.name`: Name of the `VolumeGroupSnapshotClass`.
@@ -87,11 +114,21 @@ Create a `VolumeGroupSnapshotClass` to define how volume group snapshots are pro
     $ oc create -f <volume-group-snapshot-class-filename>.yaml
     ```
 
+</div>
+
 # Creating a volume group snapshot
 
 Create a VolumeGroupSnapshot object to capture point-in-time copies of multiple persistent volume claims (PVCs). Label the PVCs, specify the `VolumeGroupSnapshotClass`, and individual `VolumeSnapshot` objects are created automatically.
 
 When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform creates a volume group snapshot.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Logged in to a running OpenShift Container Platform cluster.
 
@@ -103,15 +140,27 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
 
 - Administrator has created the `VolumeGroupSnapshotClass` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Locate (or create) the PVCs that you want to include in the volume group snapshot by running the following command:
 
     ``` terminal
     $ oc get pvc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -120,6 +169,8 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
     pvc-0       Bound     pvc-a42d7ea2-e3df-11ed-b5ea-0242ac120002   1Gi        RWO           48s
     pvc-1       Bound     pvc-a42d81b8-e3df-11ed-b5ea-0242ac120002   1Gi        RWO           48S
     ```
+
+    </div>
 
     This example uses two PVCs
 
@@ -131,9 +182,11 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         $ oc label pvc pvc-0 group=myGroup
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -141,11 +194,15 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         persistentvolumeclaim/pvc-0 labeled
         ```
 
+        </div>
+
     2.  Label PVC pvc-1 by running the following command:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -153,9 +210,13 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         $ oc label pvc pvc-1 group=myGroup
         ```
 
-        <div class="formalpara-title">
+        </div>
 
-        **Example output**
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -163,15 +224,19 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         persistentvolumeclaim/pvc-1 labeled
         ```
 
+        </div>
+
         In this example, you are labeling PVC "pvc-0" and "pvc-1" to belong to group "myGroup".
 
 3.  Create a `VolumeGroupSnapshot` object to specify your volume group snapshot:
 
     1.  Create a `VolumeGroupSnapshot` object YAML file with the following example file:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example VolumeGroupSnapshot YAML file**
+        <div class="title">
+
+        Example VolumeGroupSnapshot YAML file
 
         </div>
 
@@ -189,6 +254,8 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
                 group: myGroup
         ```
 
+        </div>
+
         - `kind`: The `VolumeGroupSnapshot` object requests creation of a volume group snapshot for multiple PVCs.
 
         - `metadata.name`: Name of the volume group snapshot.
@@ -205,13 +272,19 @@ When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform cre
         $ oc create -f <volume-group-snapshot-filename>.yaml
         ```
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 Individual volume snapshots are created according to how many PVCs were specified as part of the volume group snapshot.
+
+</div>
 
 These individual volume snapshots are named with the following format: \<hash of VolumeGroupSnaphotContentUUID+volumeHandle\>:
 
@@ -246,6 +319,14 @@ snapshot-fbfe59eff570171765df664280910c3bf1a4d56e233a5364cd8cb0152a35965b
 
 Restore volumes from a volume group snapshot by creating new persistent volume claims (PVCs) from individual `VolumeSnapshot` objects. Each PVC provisions a volume populated with snapshot data. Repeat for each `VolumeSnapshot` in the group to restore all volumes to their previous state.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Logged in to a running OpenShift Container Platform cluster.
 
 - PVC has been created using a Container Storage Interface (CSI) driver that supports volume group snapshots.
@@ -254,11 +335,23 @@ Restore volumes from a volume group snapshot by creating new persistent volume c
 
 - A volume group snapshot has been created and is ready to use.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Specify a `VolumeSnapshot` data source from a volume group snapshot for a PVC as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example restore PVC YAML file**
+    <div class="title">
+
+    Example restore PVC YAML file
 
     </div>
 
@@ -280,6 +373,8 @@ Restore volumes from a volume group snapshot by creating new persistent volume c
         requests:
           storage: 1Gi
     ```
+
+    </div>
 
     - `metadata.name`: Name of the restore PVC.
 
@@ -308,6 +403,8 @@ Restore volumes from a volume group snapshot by creating new persistent volume c
     A new PVC with the name you specified in the first step is displayed.
 
 4.  Repeat the procedure as needed until all volumes are created from all the snapshots that are part of a volume group snapshot.
+
+</div>
 
 # Additional resources
 

@@ -1,208 +1,112 @@
 You can configure external KMS encryption for etcd to centralize key management and meet regulatory compliance requirements.
 
-<div class="important">
-
-Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Enable KMS encryption
 
-You can enable external Key Management Service (KMS) encryption for etcd data to centralize key management and meet compliance requirements.
+You can enable Key Management Service (KMS) encryption for etcd data to centralize key management and meet compliance requirements.
 
-- You have access to the cluster as a user with the `cluster-admin` role.
+<div>
 
-- You have enabled the `TechPreviewNoUpgrade` feature set to enable the `KMSEncryption` feature gate.
+<div class="title">
 
-- You have a `HashiCorp Vault Enterprise` instance accessible from your control plane nodes. Vault Community Edition is not available.
-
-- Your control plane nodes have network access to the Vault server.
-
-- You have configured your Vault instance with:
-
-  - Transit secrets engine enabled at the default `transit/` mount path
-
-  - Encryption key created with type `aes256-gcm96` (recommended for FIPS 140-3 compliance)
-
-  - Vault policy allowing the Kubernetes KMS v2 plugin to encrypt, decrypt, and read key information
-
-  - Authentication method (token, `AppRole`, or `userpass`) configured with the policy attached
-
-The Kubernetes KMS v2 plugin requires a Vault policy with the following capabilities:
-
-``` hcl
-path "transit/encrypt/kms-key" {
-  capabilities = ["update"]
-}
-
-path "transit/decrypt/kms-key" {
-  capabilities = ["update"]
-}
-
-path "transit/keys/kms-key" {
-  capabilities = ["read"]
-}
-
-path "auth/token/lookup-self" {
-  capabilities = ["read"]
-}
-```
-
-Replace `kms-key` with your Vault Transit key name if using a different name.
-
-<div class="important">
-
-Create an etcd backup before enabling KMS encryption.
+Prerequisites
 
 </div>
 
-1.  Deploy the KMS plugin on each control plane host as a static pod:
+- You have access to the cluster as a user with the `cluster-admin` role.
 
-    - Configure the plugin to listen at `unix:///var/run/kmsplugin/kms.sock`
+- You have enabled the `TechPreviewNoUpgrade` feature set, which activates the `KMSEncryption` feature gate.
 
-    - For your static pod, mount `/var/run/kmsplugin` as `hostPath`
+- You have a HashiCorp Vault Enterprise instance that is externally hosted and accessible from your cluster. Vault Enterprise must not be hosted inside the cluster service network. Vault Community Edition is not supported.
 
-    - Configure KMS provider connection details and authentication credentials
+- You have configured your Vault instance with:
 
-    The following steps show how to deploy the `HashiCorp` Vault KMS plugin as a static pod.
+  - Transit secrets engine enabled at a mount path, such as the default `transit/` path
 
-2.  Create a static pod manifest file:
+  - Encryption key created with type `aes256-gcm96` (recommended for FIPS 140-3 compliance)
 
-    ``` terminal
-    $ cat > /tmp/vault-kms-plugin.yaml <<'EOF'
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: vault-kms-plugin
-      namespace: kube-system
-      labels:
-        app: vault-kms-plugin
-        tier: control-plane
-    spec:
-      priorityClassName: system-node-critical
-      hostNetwork: true
-      containers:
-      - name: vault-kms-plugin
-        image: quay.io/redhat-isv-containers/698df066f8d1ddf179c15ef9:<version>
-        command:
-        - /vault-kubernetes-kms
-        - -vault-address=<https://vault.example.com:8200>
-        - -<vault_namespace>=admin
-        - -auth-method=userpass
-        - -userpass-username=<vault_username>
-        - -userpass-password=<vault_password>
-        - -transit-mount=transit
-        - -transit-key=kms-key
-        - -socket=unix:///var/run/kmsplugin/kms.sock
-        volumeMounts:
-        - name: kmsplugin
-          mountPath: /var/run/kmsplugin
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
-        securityContext:
-          privileged: true
-      volumes:
-      - name: kmsplugin
-        hostPath:
-          path: /var/run/kmsplugin
-          type: DirectoryOrCreate
-    EOF
-    ```
+  - Vault policy that allows the KMS plugin to encrypt, decrypt, and read key information
 
-    Replace the following values to match your environment:
+  - Authentication method, such as `AppRole`, configured with the policy attached
 
-    \<version\>
-    The Vault KMS plugin image version tag. Use `0.1.0-beta-ubi`.
+- You have the fully qualified OCI image pull spec with SHA256 digest for the KMS plugin image. You can obtain the image from the Red Hat Ecosystem Catalog or from Docker Hub. For more information, see "HashiCorp Vault KMS plugin container image" and "Red Hat Ecosystem Catalog". In disconnected environments, the image is mirrored to an accessible registry.
 
-    \<vault_username\>
-    Your Vault username for authentication.
+- You have the `skopeo` and `jq` tools installed.
 
-    \<vault_password\>
-    Your Vault password for authentication.
+- You have configured a Vault policy with the following capabilities:
 
-    <https://vault.example.com:8200>
-    The Vault address. Update this field to match your Vault server URL.
+  ``` hcl
+  path "transit/encrypt/kms-key" {
+    capabilities = ["update"]
+  }
 
-    \<vault_namespace\>
-    Optional field.
+  path "transit/decrypt/kms-key" {
+    capabilities = ["update"]
+  }
 
-    The manifest uses the Red Hat certified container image from Quay.io (`quay.io/redhat-isv-containers/698df066f8d1ddf179c15ef9`), which is the recommended image for OpenShift Container Platform.
+  path "transit/keys/kms-key" {
+    capabilities = ["read"]
+  }
 
-    <div class="note">
+  path "sys/license/status" {
+    capabilities = ["read"]
+  }
+  ```
 
-    Alternatively, you can use the [HashiCorp image from Docker Hub](https://hub.docker.com/r/hashicorp/vault-kube-kms) by replacing the image field with `docker.io/hashicorp/vault-kube-kms:0.1.0-beta-ubi`.
+  Replace `transit` with your Transit mount path and `kms-key` with your Vault Transit key name.
 
-    </div>
+- You have created an etcd backup.
 
-3.  Deploy the static pod manifest to each control plane node by running the following commands:
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Obtain the SHA256 digest for the KMS plugin image by entering the following command:
 
     ``` terminal
-    $ MANIFEST=$(cat /tmp/vault-kms-plugin.yaml | base64)
-    $ for node in $(oc get nodes --selector=node-role.kubernetes.io/master -o name | cut -d/ -f2); do
-        echo "Deploying to $node..."
-        oc debug node/$node -- chroot /host bash -c \
-          "echo '$MANIFEST' | base64 -d > /etc/kubernetes/manifests/vault-kms-plugin.yaml"
-      done
+    $ skopeo inspect docker://quay.io/redhat-isv-containers/698df066f8d1ddf179c15ef9:<version> | jq -r '.Digest'
     ```
 
-    The kubelet automatically detects and starts static pods from `/etc/kubernetes/manifests/`.
+    Replace `<version>` with the plugin version compatible with your cluster, such as `0.1.0-beta-ubi`.
 
-4.  Verify the static pods are running by entering the following command:
+    Use the resulting digest to construct the fully qualified pull spec in the format `quay.io/redhat-isv-containers/698df066f8d1ddf179c15ef9@sha256:<digest>`.
+
+2.  Create a secret in the `openshift-config` namespace with your Vault authentication credentials by entering the following command:
 
     ``` terminal
-    $ oc get pods -n kube-system -o wide | grep vault-kms
+    $ oc create secret generic vault-approle-secret \
+      --from-literal=role-id=<your_role_id> \
+      --from-literal=secret-id=<your_secret_id> \
+      -n openshift-config
     ```
 
-    <div class="formalpara-title">
+    Replace `<your_role_id>` and `<your_secret_id>` with your Vault AppRole credentials.
 
-    **Example output**
-
-    </div>
+3.  Optional: If your Vault server uses a custom TLS certificate authority, create a config map in the `openshift-config` namespace with the CA bundle by entering the following command:
 
     ``` terminal
-    vault-kms-plugin-ip-10-0-16-7.compute.internal    1/1  Running  0  2m  10.0.16.7
-    vault-kms-plugin-ip-10-0-32-93.compute.internal   1/1  Running  0  2m  10.0.32.93
-    vault-kms-plugin-ip-10-0-69-106.compute.internal  1/1  Running  0  2m  10.0.69.106
+    $ oc create configmap vault-ca-bundle \
+      --from-file=ca-bundle.crt=<path_to_ca_bundle> \
+      -n openshift-config
     ```
 
-    Static pod names include the node name as a suffix. You should see one pod per control plane node.
-
-5.  Verify the socket exists on a control plane node by entering the following command:
-
-    ``` terminal
-    $ oc debug node/<node_name> -- chroot /host ls -la /var/run/kmsplugin/kms.sock
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    srwxr-xr-x. 1 root root 0 <timestamp> /var/run/kmsplugin/kms.sock
-    ```
-
-    <div class="note">
-
-    Static pods are managed by kubelet on each node and cannot be deleted with `oc delete pod`. To remove a static pod, delete the manifest file from `/etc/kubernetes/manifests/` on each control plane node.
-
-    </div>
-
-6.  Edit the `APIServer` custom resource by entering the following command:
+4.  Edit the `APIServer` custom resource by entering the following command:
 
     ``` terminal
     $ oc edit apiserver cluster
     ```
 
-7.  Add the KMS configuration to the `spec.encryption` section:
+5.  Add the KMS configuration to the `spec.encryption` section:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -212,19 +116,64 @@ Create an etcd backup before enabling KMS encryption.
     spec:
       encryption:
         type: KMS
+        kms:
+          type: Vault
+          vault:
+            kmsPluginImage: <registry>/<repository>@sha256:<digest>
+            vaultAddress: https://vault.example.com:8200
+            vaultNamespace: my-namespace
+            vaultAuthNamespace: my-auth-namespace
+            vaultKeyPath: transit/keys/kms-key
+            tls:
+              caBundle:
+                name: vault-ca-bundle
+              serverName: vault.example.com
+            authentication:
+              type: AppRole
+              appRole:
+                secret:
+                  name: vault-approle-secret
     ```
 
-8.  Save and exit.
+    where:
 
-    Migration begins automatically. The `kube-apiserver`, `openshift-apiserver` and `oauth-apiserver` Operators will restart and roll out new revisions.
+    `kmsPluginImage`
+    Specifies the KMS plugin container image as a fully qualified OCI pull spec with SHA256 digest. Image tags and short names are not allowed. In disconnected environments, use the mirrored location.
 
-    <div class="note">
+    `vaultAddress`
+    Specifies the HTTPS URL of the Vault server. Paths, query parameters, and fragments are not allowed.
 
-    The `openshift-apiserver` and `authentication` operators typically complete migration in 5-10 minutes. The `kube-apiserver` operator uses a conservative rollout strategy, updating one control plane node at a time and waiting for health checks before proceeding to the next node. This process can take 30 minutes or longer depending on cluster load.
+    `vaultNamespace`
+    Specifies the Vault namespace. This value is optional.
 
-    </div>
+    `vaultAuthNamespace`
+    Specifies the Vault namespace for authentication when it differs from the Transit namespace. Defaults to the `vaultNamespace` value. This value is optional.
 
-<!-- -->
+    `vaultKeyPath`
+    Specifies the Transit encryption key path in the format `<mount>/keys/<key_name>`.
+
+    `tls.caBundle.name`
+    Specifies the config map in the `openshift-config` namespace containing the CA bundle. Required only if Vault uses a custom CA.
+
+    `tls.serverName`
+    Specifies the TLS server name for certificate verification. This value is optional.
+
+    `authentication.appRole.secret.name`
+    Specifies the secret name in the `openshift-config` namespace containing the AppRole credentials.
+
+6.  Save and exit.
+
+    The `kube-apiserver`, `openshift-apiserver`, and `authentication` Operators validate the configuration and roll out new revisions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the encryption type by entering the following command:
 
@@ -232,43 +181,56 @@ Create an etcd backup before enabling KMS encryption.
     $ oc get apiserver cluster -o jsonpath='{.spec.encryption.type}'
     ```
 
-    Output should show `KMS`.
+    The output shows `KMS`.
 
-2.  Monitor the `kube-apiserver` rollout progress by entering the following command:
+2.  Check the KMS plugin health and configuration validation by entering the following command:
 
     ``` terminal
-    $ oc get kubeapiserver cluster -o jsonpath='{.status.nodeStatuses}' | jq -r '.[] | "\(.nodeName | split(".")[0]): current=\(.currentRevision) target=\(.targetRevision)"'
+    $ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus}' | jq .
     ```
 
-    <div class="formalpara-title">
+    Verify that `preflight.result.status` shows `Succeeded` and all nodes in `healthReports` show `Healthy`.
 
-    **Example output during rollout**
+3.  Monitor the `kube-apiserver` rollout progress by entering the following command:
+
+    ``` terminal
+    $ oc get co kube-apiserver
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output during rollout
 
     </div>
 
     ``` terminal
-    ip-10-0-16-166: current=10 target=0
-    ip-10-0-32-93: current=9 target=10
-    ip-10-0-69-106: current=9 target=0
+    NAME             VERSION      AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+    kube-apiserver   5.0.0-rc.4   True        True          False      35m     NodeInstallerProgressing: 2 nodes are at revision 6; 1 node is at revision 7
     ```
 
-    The operator rolls out one node at a time. When all nodes show the same `current` revision and `target` is `0`, the rollout is complete.
+    </div>
 
-3.  Check the encryption migration status by entering the following command:
+    When `PROGRESSING` shows `False`, the rollout is complete.
+
+4.  Check the encryption migration status by entering the following command:
 
     ``` terminal
     $ oc get kubeapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output when complete**
+    <div class="title">
+
+    Example output when complete
 
     </div>
 
-    ``` terminal
+    ``` json
     {
-      "lastTransitionTime": "2026-05-15T17:39:02Z",
+      "lastTransitionTime": "2026-09-24T16:41:48Z",
       "message": "All resources encrypted: secrets, configmaps",
       "reason": "EncryptionCompleted",
       "status": "True",
@@ -276,15 +238,14 @@ Create an etcd backup before enabling KMS encryption.
     }
     ```
 
-    Wait for `reason` to show `EncryptionCompleted` before proceeding to verify encryption in etcd.
-
-4.  Verify secrets are encrypted in etcd:
-
-    <div class="warning">
-
-    Wait for the `kube-apiserver` rollout to complete on all control plane nodes before verifying encryption. During the rollout, API requests are distributed across nodes, and secrets created while some nodes are still on an earlier revision will not be encrypted with Kubernetes KMS v2.
-
     </div>
+
+    Wait for `reason` to show `EncryptionCompleted` before you verify encryption in etcd.
+
+5.  Verify that secrets are encrypted in etcd:
+
+    > [!WARNING]
+    > Wait for the `kube-apiserver` rollout to complete on all control plane nodes before you verify encryption. Secrets created while nodes run an earlier revision are not encrypted with KMS.
 
     1.  Create a test secret by entering the following command:
 
@@ -304,13 +265,41 @@ Create an etcd backup before enabling KMS encryption.
         $ oc exec -n openshift-etcd <etcd_pod_name> -- etcdctl get /kubernetes.io/secrets/default/test-secret --print-value-only | hexdump -C | head -1
         ```
 
-        Output should begin with `k8s:enc:kms:v2:` followed by encrypted binary data.
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        00000000  6b 38 73 3a 65 6e 63 3a  6b 6d 73 3a 76 32 3a 31  |k8s:enc:kms:v2:1|
+        ```
+
+        </div>
+
+        The output begins with `k8s:enc:kms:v2:` followed by encrypted binary data.
 
     4.  Delete the test secret by entering the following command:
 
         ``` terminal
         $ oc delete secret test-secret -n default
         ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [HashiCorp Vault KMS plugin container image](https://hub.docker.com/r/hashicorp/vault-kube-kms)
+
+- [Red Hat Ecosystem Catalog](https://catalog.redhat.com/search?gs&q=vault-kms)
 
 - [Vault Transit Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/transit)
 
@@ -320,9 +309,22 @@ Create an etcd backup before enabling KMS encryption.
 
 - [Vault Authentication Methods](https://developer.hashicorp.com/vault/docs/auth)
 
+</div>
+
 # Rotate the Vault encryption key
 
 You can rotate your Vault Transit encryption key to generate a new key version while maintaining access to data encrypted with earlier versions.
+
+> [!WARNING]
+> After rotating the Vault encryption key, OpenShift Container Platform does not automatically re-encrypt existing etcd data with the new key version. Existing data remains encrypted with the previous key version. The Vault-side rotation steps are safe to perform because Vault retains all previous key versions for decryption.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -330,13 +332,23 @@ You can rotate your Vault Transit encryption key to generate a new key version w
 
 - Kubernetes KMS v2 encryption is enabled and functioning.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Rotate the Vault encryption key by entering the following command:
 
     ``` terminal
     $ vault write -f transit/keys/kms-key/rotate
     ```
 
-    Vault creates a new key version while maintaining earlier versions for decryption. The API server automatically uses the correct key version for each secret.
+    Replace `kms-key` with your Vault Transit key name. Vault creates a new key version while retaining earlier versions for decryption.
 
 2.  Verify the new key version by entering the following command:
 
@@ -346,17 +358,31 @@ You can rotate your Vault Transit encryption key to generate a new key version w
 
     The `latest_version` field shows the current key version number.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that existing secrets remain accessible by entering the following command:
 
   ``` terminal
   $ oc get secret -A
   ```
 
-All secrets should be readable without errors.
+  All secrets should be readable without errors. Vault maintains all key versions and automatically uses the appropriate version for decryption.
 
-<div class="note">
+</div>
 
-Existing encrypted secrets do not need re-encryption. Vault maintains all key versions and automatically uses the appropriate version for decryption.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -366,9 +392,19 @@ Existing encrypted secrets do not need re-encryption. Vault maintains all key ve
 
 - [Vault Transit: Key Rotation](https://developer.hashicorp.com/vault/docs/secrets/transit#key-rotation)
 
+</div>
+
 # Migrate from local encryption to KMS encryption
 
-You can migrate from local etcd encryption to external KMS encryption to centralize key management and improve compliance.
+You can migrate from local etcd encryption to KMS encryption to centralize key management.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -376,13 +412,20 @@ You can migrate from local etcd encryption to external KMS encryption to central
 
 - Your cluster is currently using `aescbc` or `aesgcm` encryption.
 
-- You have deployed the KMS plugin on all control plane nodes.
+- You have created the credential secret and optional CA bundle config map in the `openshift-config` namespace.
 
-- Control plane nodes have network access to the KMS provider.
+- You have the fully qualified OCI image pull spec with SHA256 digest for the KMS plugin image.
 
-<div class="important">
+</div>
 
-Create an etcd backup before migrating.
+> [!IMPORTANT]
+> Create an etcd backup before migrating.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -398,7 +441,7 @@ Create an etcd backup before migrating.
     $ oc edit apiserver cluster
     ```
 
-3.  Change the encryption type from `aescbc` or `aesgcm` to `KMS`:
+3.  Change the encryption type from `aescbc` or `aesgcm` to `KMS` and add the inline Vault configuration by using the following example:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -408,169 +451,519 @@ Create an etcd backup before migrating.
     spec:
       encryption:
         type: KMS
+        kms:
+          type: Vault
+          vault:
+            kmsPluginImage: <registry>/<repository>@sha256:<digest>
+            vaultAddress: https://vault.example.com:8200
+            vaultKeyPath: transit/keys/kms-key
+            authentication:
+              type: AppRole
+              appRole:
+                secret:
+                  name: vault-approle-secret
     ```
 
 4.  Save and exit.
 
-    Migration starts automatically and typically takes several minutes.
+    After configuration validation succeeds, migration starts.
 
-5.  Verify migration completion for all API servers by running the following commands:
+</div>
 
-    ``` terminal
-    $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
-    ```
+<div>
 
-    ``` terminal
-    $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
-    ```
+<div class="title">
 
-    ``` terminal
-    $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
-    ```
+Verification
 
-    All outputs should show `EncryptionCompleted`.
+</div>
 
-# Monitor KMS encryption status
-
-You can monitor KMS encryption status by using Operator and API server logs to verify successful configuration and detect issues.
-
-1.  Check the kube-apiserver operator logs for KMS-related events by entering the following command:
+1.  Verify migration completion for the OpenShift API server by entering the following command:
 
     ``` terminal
-    $ oc logs -n openshift-kube-apiserver-operator deploy/kube-apiserver-operator | grep -i kms
+    $ oc get openshiftapiserver -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
     ```
 
-2.  View API server logs for KMS-related events by entering the following command:
+2.  Verify migration completion for the Kubernetes API server by entering the following command:
 
     ``` terminal
-    $ oc logs -n openshift-kube-apiserver -l apiserver=true --tail=100 | grep -i kms
+    $ oc get kubeapiserver -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
     ```
 
-3.  Verify the KMS encryption configuration by entering the following command:
+3.  Verify migration completion for the authentication Operator by entering the following command:
 
     ``` terminal
-    $ oc get apiserver cluster -o jsonpath='{.spec.encryption}' | jq
+    $ oc get authentication.operator.openshift.io -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
     ```
 
-- [Kubernetes KMS provider documentation](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+    All outputs show `EncryptionCompleted`.
+
+</div>
+
+# Migrating between KMS providers
+
+You can migrate between KMS providers without an intermediate local encryption step. During migration, OpenShift Container Platform runs both KMS plugins concurrently until re-encryption completes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- KMS encryption is enabled and functioning with the current provider.
+
+- You have created the credential secret and optional CA bundle config map for the new provider in the `openshift-config` namespace.
+
+- You have the fully qualified OCI image pull spec with SHA256 digest for the new KMS plugin image.
+
+- You have created an etcd backup.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the `APIServer` custom resource by entering the following command:
+
+    ``` terminal
+    $ oc edit apiserver cluster
+    ```
+
+2.  Update the `kms.vault` configuration with the new provider settings by using the following example:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: APIServer
+    metadata:
+      name: cluster
+    spec:
+      encryption:
+        type: KMS
+        kms:
+          type: Vault
+          vault:
+            kmsPluginImage: <registry>/<repository>@sha256:<digest>
+            vaultAddress: https://vault.example.com:8200
+            vaultNamespace: my-namespace
+            vaultAuthNamespace: my-auth-namespace
+            vaultKeyPath: transit/keys/kms-key
+            tls:
+              caBundle:
+                name: vault-ca-bundle
+              serverName: vault.example.com
+            authentication:
+              type: AppRole
+              appRole:
+                secret:
+                  name: vault-approle-secret
+    ```
+
+3.  Save and exit.
+
+    After configuration validation succeeds, the new provider handles encryption while the old provider decrypts existing data.
+
+4.  Monitor migration progress by entering the following command:
+
+    ``` terminal
+    $ oc get kubeapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
+    ```
+
+    Wait for `reason` to show `EncryptionCompleted`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify that the OpenShift API server has completed migration by entering the following command:
+
+    ``` terminal
+    $ oc get openshiftapiserver -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
+    ```
+
+    The output shows `EncryptionCompleted`.
+
+2.  Verify that the Kubernetes API server has completed migration by entering the following command:
+
+    ``` terminal
+    $ oc get kubeapiserver -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
+    ```
+
+    The output shows `EncryptionCompleted`.
+
+3.  Verify that the authentication Operator has completed migration by entering the following command:
+
+    ``` terminal
+    $ oc get authentication.operator.openshift.io -o jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{end}'
+    ```
+
+    The output shows `EncryptionCompleted`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
+- Delete the old credential secret by entering the following command:
+
+  ``` terminal
+  $ oc delete secret <old_vault_secret_name> -n openshift-config
+  ```
+
+  Replace `<old_vault_secret_name>` with the name of the previous provider’s credential secret.
+
+- Optional: Delete the old CA bundle config map by entering the following command:
+
+  ``` terminal
+  $ oc delete configmap <old_vault_configmap_name> -n openshift-config
+  ```
+
+  Replace `<old_vault_configmap_name>` with the name of the previous provider’s CA bundle config map.
+
+- After your backup retention period passes, decommission the old KMS key.
+
+  > [!NOTE]
+  > Do not decommission the old KMS key until migration completes and all backups encrypted with the old key have expired.
+
+</div>
+
+# Monitoring KMS encryption status
+
+You can monitor KMS encryption status by inspecting operator encryption status conditions, health reports, and preflight results.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- KMS encryption is enabled.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Check overall Operator status by entering the following command:
+
+    ``` terminal
+    $ oc get co kube-apiserver
+    ```
+
+    The `DEGRADED` column shows `True` if KMS configuration or connectivity problems exist.
+
+2.  Inspect KMS health reports and preflight results by entering the following command:
+
+    ``` terminal
+    $ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "healthReports": [
+        {
+          "keyID": "1",
+          "lastCheckedTime": "2026-09-24T16:44:19Z",
+          "nodeName": "ip-10-0-1-198.us-east-2.compute.internal",
+          "remoteKeyID": "CgQKAnYx...",
+          "status": "Healthy"
+        },
+        {
+          "keyID": "1",
+          "lastCheckedTime": "2026-09-24T16:44:45Z",
+          "nodeName": "ip-10-0-77-162.us-east-2.compute.internal",
+          "remoteKeyID": "CgQKAnYx...",
+          "status": "Healthy"
+        },
+        {
+          "keyID": "1",
+          "lastCheckedTime": "2026-09-24T16:44:25Z",
+          "nodeName": "ip-10-0-97-236.us-east-2.compute.internal",
+          "remoteKeyID": "CgQKAnYx...",
+          "status": "Healthy"
+        }
+      ],
+      "preflight": {
+        "observedConfigHash": "GNja6Q==",
+        "result": {
+          "configHash": "GNja6Q==",
+          "remoteKeyID": "always-succeed",
+          "status": "Succeeded"
+        }
+      }
+    }
+    ```
+
+    </div>
+
+    `healthReports`
+    Shows KMS plugin health per control plane node. Each entry includes the node name, key ID, a `status` of `Healthy`, `Unhealthy`, or `Error`, and an optional `detail` field with additional diagnostic information when the status is not `Healthy`.
+
+    `preflight`
+    Shows whether the configured KMS settings are valid. The `preflight.result.status` field shows `Succeeded` when the plugin can connect to the external Vault instance and the credentials are valid, or `Failed` when connectivity problems or invalid credentials exist.
+
+3.  Verify the Kubernetes API server encryption status by entering the following command:
+
+    ``` terminal
+    $ oc get kubeapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "lastTransitionTime": "2026-09-24T16:41:48Z",
+      "message": "All resources encrypted: secrets, configmaps",
+      "reason": "EncryptionCompleted",
+      "status": "True",
+      "type": "Encrypted"
+    }
+    ```
+
+    </div>
+
+    Wait for `reason` to show `EncryptionCompleted`.
+
+4.  Verify the authentication Operator encryption status by entering the following command:
+
+    ``` terminal
+    $ oc get authentication.operator.openshift.io cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "lastTransitionTime": "2026-09-24T16:22:10Z",
+      "message": "All resources encrypted: oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io",
+      "reason": "EncryptionCompleted",
+      "status": "True",
+      "type": "Encrypted"
+    }
+    ```
+
+    </div>
+
+    The output shows `EncryptionCompleted`.
+
+5.  Verify the OpenShift API server encryption status by entering the following command:
+
+    ``` terminal
+    $ oc get openshiftapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "lastTransitionTime": "2026-09-24T16:25:54Z",
+      "message": "All resources encrypted: routes.route.openshift.io",
+      "reason": "EncryptionCompleted",
+      "status": "True",
+      "type": "Encrypted"
+    }
+    ```
+
+    </div>
+
+    The output shows `EncryptionCompleted`.
+
+</div>
 
 # KMS encryption troubleshooting
 
 You can diagnose and resolve common KMS encryption issues to maintain secure key management and cluster availability.
 
+## KMS encryption does not activate
+
+Symptom: KMS encryption does not activate after configuring the `APIServer` resource. The `kube-apiserver` Operator reports a degraded condition.
+
+Diagnosis: Check the encryption status, including health reports and preflight results by running the following command:
+
+``` terminal
+$ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus}' | jq .
+```
+
+The `preflight.result.status` field shows whether configuration validation succeeded. The `healthReports` array shows plugin health per control plane node.
+
+If you need additional detail, check the kube-apiserver Operator logs by running the following command:
+
+``` terminal
+$ oc logs -n openshift-kube-apiserver-operator deploy/kube-apiserver-operator | grep -i "kms\|error"
+```
+
+Solutions:
+
+- Verify that the Vault server is reachable from control plane nodes.
+
+- Verify that the credential secret in `openshift-config` has valid credentials.
+
+- Verify that the Transit encryption key exists at the path specified in `vaultKeyPath`.
+
+- Verify that the Vault policy grants encrypt, decrypt, and read permissions on the key.
+
 ## Invalid KMS configuration
 
-**Symptom:** APIServer resource shows validation errors during KMS encryption configuration.
+Symptom: `APIServer` resource shows validation errors.
 
-**Diagnosis:** Check kube-apiserver Operator logs:
+Diagnosis: Check the preflight results in the encryption status by running the following command:
+
+``` terminal
+$ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus.preflight}' | jq .
+```
+
+The `preflight.result.status` field shows whether the configured KMS settings are valid. A failed preflight indicates connectivity problems with the external Vault instance or invalid credentials.
+
+If you need additional detail, check kube-apiserver Operator logs by running the following command:
 
 ``` terminal
 $ oc logs -n openshift-kube-apiserver-operator deploy/kube-apiserver-operator | grep -i "kms\|validation\|error"
 ```
 
-**Solutions:**
+Solutions:
 
-- Verify plugin configuration follows provider requirements
+- Verify that the `kms.vault` configuration in the `APIServer` resource has valid field values.
 
-- Ensure all required fields are specified
+- Verify that `kmsPluginImage` is a fully qualified OCI pull spec with a SHA256 digest.
 
-- Verify plugin is running on all control plane nodes:
+- Verify that `vaultAddress` is a valid HTTPS URL without path or query parameters.
 
-  ``` terminal
-  $ oc debug node/<node_name> -- chroot /host ls -la /var/run/kmsplugin/kms.sock
-  ```
+- Verify that the credential secret referenced by `authentication.appRole.secret.name` exists in the `openshift-config` namespace.
 
 ## KMS permissions errors
 
-**Symptom:** Encryption migration fails with permission errors.
+Symptom: Encryption migration fails with permission errors.
 
-**Diagnosis:** Check Operator and plugin logs:
+Diagnosis: Check Operator logs by running the following command:
 
 ``` terminal
 $ oc logs -n openshift-kube-apiserver-operator deploy/kube-apiserver-operator | grep -i "kms\|permission\|access denied"
 ```
 
-``` terminal
-$ oc debug node/<node_name> -- chroot /host journalctl -u kms-plugin
-```
+Solutions:
 
-**Solutions:**
+- Verify that the credential secret has valid and unexpired credentials.
 
-- Verify plugin has valid authentication credentials
+- Verify that the Vault policy grants encrypt and decrypt permissions.
 
-- Check if credentials have expired
-
-- Ensure plugin principal has encrypt and decrypt permissions
-
-- Verify KMS provider key policy allows plugin access
-
-- Confirm encryption key is enabled and not scheduled for deletion
+- Verify that the encryption key is enabled and not scheduled for deletion.
 
 ## Expired or deleted KMS key
 
-**Symptom:** API server cannot decrypt secrets when accessing encrypted resources.
+Symptom: API server cannot decrypt encrypted resources.
 
-**Diagnosis:** Check logs and verify key status:
+Diagnosis: Check API server logs and verify key status by running the following command:
 
 ``` terminal
 $ oc logs -n openshift-kube-apiserver -l apiserver=true | grep -i "decrypt\|kms.*error"
 ```
 
-``` terminal
-$ oc debug node/<node_name> -- chroot /host journalctl -u kms-plugin | grep -i "key\|error"
-```
+Solutions:
 
-**Solutions:**
+- Re-enable the encryption key if it was disabled.
 
-- Re-enable the encryption key if disabled
+- Restore from backup if the key was permanently deleted.
 
-- Restore from backup if key was permanently deleted
+- Cancel key deletion if it is scheduled.
 
-- Cancel key deletion if scheduled
+- Ensure the KMS provider retains access to earlier key versions.
 
-- Ensure KMS provider maintains access to previous key versions
-
-<div class="warning">
-
-Deleted KMS keys prevent data recovery. Align key retention with backup policies.
-
-</div>
+> [!WARNING]
+> Deleted KMS keys prevent data recovery. Align key retention with backup policies.
 
 ## API server degraded or unavailable
 
-**Symptom:** API server becomes degraded or unresponsive after enabling KMS encryption.
+Symptom: API server becomes degraded or unresponsive after enabling KMS encryption.
 
-**Diagnosis:** Check Operator status and logs:
+Diagnosis: Check the encryption status health reports by running the following command:
+
+``` terminal
+$ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus.healthReports}' | jq .
+```
+
+Health reports show per-node plugin status. An `Unhealthy` status indicates connectivity or credential problems between that node and the Vault instance.
+
+Check overall Operator status by running the following command:
 
 ``` terminal
 $ oc get clusteroperator kube-apiserver
 ```
 
+If you need additional detail, check API server logs by running the following command:
+
 ``` terminal
 $ oc logs -n openshift-kube-apiserver -l apiserver=true --tail=200 | grep -i kms
 ```
 
-**Solutions:**
+Solutions:
 
-- Check network connectivity between control plane and KMS provider
+- Check network connectivity between control plane nodes and Vault.
 
-- Verify network policies, firewalls, and routes allow communication
+- Verify network policies and firewalls allow communication.
 
-- Monitor KMS provider rate limits and request increases if needed
+- Check Vault for rate limiting.
 
-- Verify DNS resolution and TLS certificate validation
-
-- Confirm plugin is running on all control plane nodes:
-
-  ``` terminal
-  $ oc debug node/<node_name> -- chroot /host systemctl status kms-plugin
-  ```
+- Verify DNS resolution and TLS certificate validation.
 
 ## Encryption migration stuck or slow
 
-**Symptom:** KMS encryption migration takes unusually long or becomes stuck.
+Symptom: Encryption migration takes unusually long or is stuck.
 
-**Diagnosis:** Check Operator status and migration logs:
+Diagnosis: Check Operator status and migration logs by running the following commands:
 
 ``` terminal
 $ oc get clusteroperator kube-apiserver
@@ -580,17 +973,17 @@ $ oc get clusteroperator kube-apiserver
 $ oc logs -n openshift-kube-apiserver-operator deploy/kube-apiserver-operator | grep -i migration
 ```
 
-**Solutions:**
+Solutions:
 
-- Migration time depends on data size; monitor progress
+- Migration time depends on data size. Monitor progress with Operator conditions.
 
-- Monitor KMS provider audit logs for rate limiting or throttling events
+- Check Vault audit logs for rate limiting or throttling.
 
-- Check network performance between control plane and KMS provider
+- Check network performance between control plane nodes and Vault.
 
 ## Collecting debug information
 
-Collect cluster logs:
+Collect cluster status and logs by running the following commands:
 
 ``` terminal
 $ oc adm must-gather
@@ -598,6 +991,10 @@ $ oc adm must-gather
 
 ``` terminal
 $ oc get apiserver cluster -o yaml > apiserver.yaml
+```
+
+``` terminal
+$ oc get kubeapiserver cluster -ojsonpath='{.status.encryptionStatus}' | jq . > encryption-status.json
 ```
 
 ``` terminal
@@ -610,23 +1007,20 @@ $ oc logs -n openshift-kube-apiserver -l apiserver=true --tail=500 > kube-apiser
 
 Collect KMS provider information:
 
-- KMS plugin logs from control plane nodes
+- Vault audit logs
 
-- KMS provider audit logs
-
-- KMS provider key policy and permissions
+- Vault key policy and permissions
 
 - Authentication credentials status
 
 - Network connectivity test results
 
-<div class="note">
-
-Redact credentials, tokens, and sensitive data before sharing logs.
-
-</div>
+> [!NOTE]
+> Redact credentials, tokens, and sensitive data before sharing logs.
 
 # Additional resources
+
+- [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 - [Using a KMS provider for data encryption](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
 

@@ -4,9 +4,14 @@ In OpenShift Container Platform, you can configure OVN-Kubernetes hybrid network
 
 To configure hybrid networking with OVN-Kubernetes, you can set `hybridOverlayConfig` during installation or patch the Cluster Network Operator (CNO) after installation.
 
-<div class="note">
+> [!NOTE]
+> This configuration is necessary to run both Linux and Windows nodes in the same cluster.
 
-This configuration is necessary to run both Linux and Windows nodes in the same cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
 - Log in to the cluster as a user with `cluster-admin` privileges.
 
 - Ensure that the cluster uses the OVN-Kubernetes network plugin.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To configure the OVN-Kubernetes hybrid network overlay, enter the following command:
 
@@ -50,15 +65,14 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
     `<overlay_port>`
     Specifies a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
 
-    <div class="note">
+    > [!NOTE]
+    > Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
 
-    Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example output**
+    Example output
 
     </div>
 
@@ -66,11 +80,15 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
     network.operator.openshift.io/cluster patched
     ```
 
+    </div>
+
 2.  To confirm that the configuration is active, enter the following command. It can take several minutes for the update to apply.
 
     ``` terminal
     $ oc get network.operator.openshift.io -o jsonpath="{.items[0].spec.defaultNetwork.ovnKubernetesConfig}"
     ```
+
+</div>
 
 # Additional resources
 

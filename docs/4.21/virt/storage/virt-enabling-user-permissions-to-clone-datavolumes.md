@@ -6,13 +6,28 @@ To enable a user to clone a virtual machine to another namespace, a user with th
 
 You can create a new cluster role that enables permissions for all actions for the `datavolumes` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You must have cluster admin privileges.
 
-<div class="note">
+</div>
 
-If you are a non-admin user that is an administrator for both the source and target namespaces, you can create a `Role` instead of a `ClusterRole` where appropriate.
+> [!NOTE]
+> If you are a non-admin user that is an administrator for both the source and target namespaces, you can create a `Role` instead of a `ClusterRole` where appropriate.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -82,3 +97,5 @@ If you are a non-admin user that is an administrator for both the source and tar
 
     `<datavolume_cloner.yaml>`
     Specifies the file name of the `RoleBinding` manifest created in the previous step.
+
+</div>

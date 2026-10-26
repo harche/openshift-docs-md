@@ -4,9 +4,14 @@ You can use the web console to create, update, roll back, or delete a Helm relea
 
 A Helm release is a deployed instance of a Helm chart within your OpenShift Container Platform cluster. You can install charts from the developer catalog or by using a direct chart URL. Using a direct URL avoids the need for a configured Helm repository. However, this method circumvents the validation provided by the developer catalog. Use the direct URL method only when a chart is not available from the developer catalog or configured repositories.
 
-<div class="warning">
+> [!WARNING]
+> Installing a Helm chart from a direct URL bypasses the validation checks provided by the developer catalog. Install charts only from URLs you trust, because unverified charts can introduce security risks to your cluster. When possible, use charts from the developer catalog or a configured Helm repository instead.
 
-Installing a Helm chart from a direct URL bypasses the validation checks provided by the developer catalog. Install charts only from URLs you trust, because unverified charts can introduce security risks to your cluster. When possible, use charts from the developer catalog or a configured Helm repository instead.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ Installing a Helm chart from a direct URL bypasses the validation checks provide
 - You have the necessary project permissions to install a Helm chart.
 
 - You have a URL for a Helm chart.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, select **Ecosystem \> Helm** from the navigation menu. The **Helm** view opens.
 
@@ -26,11 +41,8 @@ Installing a Helm chart from a direct URL bypasses the validation checks provide
 
 5.  In the **Chart URL** field, enter the URL for the Helm chart you want to install.
 
-    <div class="note">
-
-    For Helm charts stored in an OCI-compliant registry, the URL must use the `oci://` protocol; for example, `oci://quay.io/organization/repository/chart-name`.
-
-    </div>
+    > [!NOTE]
+    > For Helm charts stored in an OCI-compliant registry, the URL must use the `oci://` protocol; for example, `oci://quay.io/organization/repository/chart-name`.
 
 6.  In the **Release name** field, enter a name for the Helm release you want to install.
 
@@ -46,27 +58,52 @@ Installing a Helm chart from a direct URL bypasses the validation checks provide
 
     - Choose **YAML view** if you need to modify advanced settings that are not available in the form view.
 
-      <div class="note">
-
-      The **Form view** might not display every field from your Helm chart. For full control over all configuration parameters, select **YAML view**.
-
-      </div>
+      > [!NOTE]
+      > The **Form view** might not display every field from your Helm chart. For full control over all configuration parameters, select **YAML view**.
 
 10. Click **Install**. The **Helm Releases** tab opens and, if the release installation is successful, its status is **Deployed**.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - The new Helm release is listed in the table on the **Helm Releases** tab.
 
 - The **Status** column for the Helm release displays **Deployed**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Official Helm documentation](https://helm.sh)
 
 - [Quay OCI artifact support for Helm charts](https://www.redhat.com/en/blog/quay-oci-artifact-support-for-helm-charts)
 
+</div>
+
 # Upgrading a Helm release
 
 You can upgrade a Helm release to use a new chart version or update your release configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Topology** view, select the Helm release to see the side panel.
 
@@ -74,23 +111,26 @@ You can upgrade a Helm release to use a new chart version or update your release
 
 3.  On the **Upgrade Helm Release** page, if you can edit the **Chart Version** field, select the chart version you want to upgrade to, edit the values as needed, then click **Upgrade** to create a revision of the Helm release. The **Helm Releases** page shows both revisions.
 
-    <div class="note">
+    > [!NOTE]
+    > If you installed the Helm chart using a direct URL, you can’t change **Chart Version**. Instead, edit the values in **Form view** or **YAML view**.
 
-    If you installed the Helm chart using a direct URL, you can’t change **Chart Version**. Instead, edit the values in **Form view** or **YAML view**.
-
-    </div>
+</div>
 
 # Rolling back a Helm release
 
 If a release fails, you can rollback the Helm release to a previous version.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Procedure**
+<div class="title">
+
+Procedure
 
 </div>
 
 To rollback a release using the **Helm** view:
+
+</div>
 
 1.  In the **Developer** perspective, navigate to the **Helm** view to see the **Helm Releases** in the namespace.
 
@@ -111,9 +151,19 @@ To rollback a release using the **Helm** view:
 
 # Deleting a Helm release
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the **Topology** view, right-click the Helm release and select **Delete Helm Release**.
 
-2.  In the confirmation prompt, enter the name of the chart and click **Delete**.
+2.  In the confirmation prompt, enter the name of the release and click **Delete**.
+
+</div>
 
 # Additional resources
 

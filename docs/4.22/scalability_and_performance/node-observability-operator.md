@@ -2,13 +2,10 @@ The Node Observability Operator collects and stores CRI-O and Kubelet profiling 
 
 With the Node Observability Operator, you can query the profiling data, enabling analysis of performance trends in CRI-O and Kubelet. It supports debugging performance-related issues and executing embedded scripts for network metrics by using the `run` field in the custom resource definition. To enable CRI-O and Kubelet profiling or scripting, you can configure the `type` field in the custom resource definition.
 
-<div class="important">
-
-The Node Observability Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The Node Observability Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Workflow of the Node Observability Operator
 
@@ -28,9 +25,27 @@ The Node Observability Operator is not installed in OpenShift Container Platform
 
 You can install the Node Observability Operator by using the OpenShift CLI (oc).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (oc).
 
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the Node Observability Operator is available by running the following command:
 
@@ -38,9 +53,11 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     $ oc get packagemanifests -n openshift-marketplace node-observability-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -48,6 +65,8 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     NAME                            CATALOG                AGE
     node-observability-operator     Red Hat Operators      9h
     ```
+
+    </div>
 
 2.  Create the `node-observability-operator` namespace by running the following command:
 
@@ -86,7 +105,15 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     EOF
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the install plan name by running the following command:
 
@@ -94,15 +121,19 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     $ oc -n node-observability-operator get sub node-observability-operator -o yaml | yq '.status.installplan.name'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     install-dt54w
     ```
+
+    </div>
 
 2.  Verify the install plan status by running the following command:
 
@@ -112,9 +143,11 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
 
     `<install_plan_name>` is the install plan name that you obtained from the output of the previous command.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -122,15 +155,19 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     COMPLETE
     ```
 
+    </div>
+
 3.  Verify that the Node Observability Operator is up and running:
 
     ``` terminal
     $ oc get deploy -n node-observability-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -139,13 +176,35 @@ You can install the Node Observability Operator by using the OpenShift CLI (oc).
     node-observability-operator-controller-manager  1/1     1           1           40h
     ```
 
+    </div>
+
+</div>
+
 ## Installing the Node Observability Operator using the web console
 
 You can install the Node Observability Operator from the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -167,11 +226,21 @@ You can install the Node Observability Operator from the OpenShift Container Pla
 
     5.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the Administrator’s navigation panel, expand **Ecosystem** → **Installed Operators**.
 
 2.  Verify that the Node Observability Operator is listed in the Operators list.
+
+</div>
 
 # Requesting CRI-O and Kubelet profiling data using the Node Observability Operator
 
@@ -181,25 +250,37 @@ Creating a Node Observability custom resource to collect CRI-O and Kubelet profi
 
 You must create and run the `NodeObservability` custom resource (CR) before you run the profiling query. When you run the `NodeObservability` CR, it creates the necessary machine config and machine config pool CRs to enable the CRI-O profiling on the worker nodes matching the `nodeSelector`.
 
-<div class="important">
+> [!IMPORTANT]
+> If CRI-O profiling is not enabled on the worker nodes, the `NodeObservabilityMachineConfig` resource gets created. Worker nodes matching the `nodeSelector` specified in `NodeObservability` CR restarts. This might take 10 or more minutes to complete.
 
-If CRI-O profiling is not enabled on the worker nodes, the `NodeObservabilityMachineConfig` resource gets created. Worker nodes matching the `nodeSelector` specified in `NodeObservability` CR restarts. This might take 10 or more minutes to complete.
-
-</div>
-
-<div class="note">
-
-Kubelet profiling is enabled by default.
-
-</div>
+> [!NOTE]
+> Kubelet profiling is enabled by default.
 
 The CRI-O unix socket of the node is mounted on the agent pod, which allows the agent to communicate with CRI-O to run the pprof request. Similarly, the `kubelet-serving-ca` certificate chain is mounted on the agent pod, which allows secure communication between the agent and node’s kubelet endpoint.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Node Observability Operator.
 
 - You have installed the OpenShift CLI (oc).
 
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform CLI by running the following command:
 
@@ -240,9 +321,11 @@ The CRI-O unix socket of the node is mounted on the agent pod, which allows the 
     oc apply -f nodeobservability.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -250,15 +333,19 @@ The CRI-O unix socket of the node is mounted on the agent pod, which allows the 
     nodeobservability.olm.openshift.io/cluster created
     ```
 
+    </div>
+
 5.  Review the status of the `NodeObservability` CR by running the following command:
 
     ``` terminal
     $ oc get nob/cluster -o yaml | yq '.status.conditions'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -273,15 +360,24 @@ The CRI-O unix socket of the node is mounted on the agent pod, which allows the 
         type: Ready
     ```
 
+    </div>
+
     `NodeObservability` CR run is completed when the reason is `Ready` and the status is `True`.
+
+</div>
 
 ## Running the profiling query
 
 To run the profiling query, you must create a `NodeObservabilityRun` resource. The profiling query is a blocking operation that fetches CRI-O and Kubelet profiling data for a duration of 30 seconds. After the profiling query is complete, you must retrieve the profiling data inside the container file system `/run/node-observability` directory. The lifetime of data is bound to the agent pod through the `emptyDir` volume, so you can access the profiling data while the agent pod is in the `running` status.
 
-<div class="important">
+> [!IMPORTANT]
+> You can request only one profiling query at any point of time.
 
-You can request only one profiling query at any point of time.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -290,6 +386,16 @@ You can request only one profiling query at any point of time.
 - You have created the `NodeObservability` custom resource (CR).
 
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `NodeObservabilityRun` resource file named `nodeobservabilityrun.yaml` that contains the following text:
 
@@ -315,9 +421,11 @@ You can request only one profiling query at any point of time.
     $ oc get nodeobservabilityrun nodeobservabilityrun -o yaml  | yq '.status.conditions'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -335,6 +443,8 @@ You can request only one profiling query at any point of time.
       type: Finished
     ```
 
+    </div>
+
     The profiling query is complete once the status is `True` and type is `Finished`.
 
 4.  Retrieve the profiling data from the container’s `/run/node-observability` path by running the following bash script:
@@ -351,6 +461,8 @@ You can request only one profiling query at any point of time.
     done
     ```
 
+</div>
+
 # Node Observability Operator scripting
 
 Scripting allows you to run pre-configured bash scripts, using the current Node Observability Operator and Node Observability Agent.
@@ -361,11 +473,29 @@ These scripts monitor key metrics like CPU load, memory pressure, and worker nod
 
 You must create and run the `NodeObservability` custom resource (CR) before you run the scripting. When you run the `NodeObservability` CR, it enables the agent in scripting mode on the compute nodes matching the `nodeSelector` label.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the Node Observability Operator.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform cluster by running the following command:
 
@@ -409,9 +539,11 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
     $ oc apply -f nodeobservability.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -419,15 +551,19 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
     nodeobservability.olm.openshift.io/cluster created
     ```
 
+    </div>
+
 5.  Review the status of the `NodeObservability` CR by running the following command:
 
     ``` terminal
     $ oc get nob/cluster -o yaml | yq '.status.conditions'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -442,17 +578,39 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
         type: Ready
     ```
 
+    </div>
+
     The `NodeObservability` CR run is completed when the `reason` is `Ready` and `status` is `"True"`.
+
+</div>
 
 ## Configuring Node Observability Operator scripting
 
 You can configure the Node Observability Operator to run pre-configured scripts for collecting metrics data from compute nodes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Node Observability Operator.
 
 - You have created the `NodeObservability` custom resource (CR).
 
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `nodeobservabilityrun-script.yaml` that contains the following content:
 
@@ -468,15 +626,12 @@ You can configure the Node Observability Operator to run pre-configured scripts 
         type: scripting
     ```
 
-    <div class="important">
-
-    You can request only the following scripts:
-
-    - `metrics.sh`
-
-    - `network-metrics.sh` (uses `monitor.sh`)
-
-    </div>
+    > [!IMPORTANT]
+    > You can request only the following scripts:
+    >
+    > - `metrics.sh`
+    >
+    > - `network-metrics.sh` (uses `monitor.sh`)
 
 2.  Trigger the scripting by creating the `NodeObservabilityRun` resource with the following command:
 
@@ -490,9 +645,11 @@ You can configure the Node Observability Operator to run pre-configured scripts 
     $ oc get nodeobservabilityrun nodeobservabilityrun-script -o yaml  | yq '.status.conditions'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -521,6 +678,8 @@ You can configure the Node Observability Operator to run pre-configured scripts 
       Start Timestamp:           2023-12-19T15:10:51Z
     ```
 
+    </div>
+
     The scripting is complete once `Status` is `True` and `Type` is `Finished`.
 
 4.  Retrieve the scripting data from the root path of the container by running the following bash script:
@@ -543,6 +702,8 @@ You can configure the Node Observability Operator to run pre-configured scripts 
       done
     done
     ```
+
+</div>
 
 # Additional resources
 

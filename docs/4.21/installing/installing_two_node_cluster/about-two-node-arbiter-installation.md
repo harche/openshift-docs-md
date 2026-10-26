@@ -12,9 +12,14 @@ You can install a cluster with two control plane nodes and one local arbiter nod
 
 - Installing with the Agent-based Installer: See "About a local arbiter node".
 
-<div class="note">
+> [!NOTE]
+> For a cluster with an arbiter, the same networking requirements as a regular cluster for connectivity between machines apply. For more information, see "Network connectivity requirements".
 
-For a cluster with an arbiter, the same networking requirements as a regular cluster for connectivity between machines apply. For more information, see "Network connectivity requirements".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -25,3 +30,5 @@ For a cluster with an arbiter, the same networking requirements as a regular clu
 - [Network connectivity requirements](../../installing/installing_platform_agnostic/installing-platform-agnostic.xml#installation-network-connectivity-user-infra_installing-platform-agnostic)
 
 - [About a local arbiter node](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_preparing-to-install-with-agent-based-installer)
+
+</div>

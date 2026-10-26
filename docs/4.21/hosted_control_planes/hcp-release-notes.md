@@ -76,33 +76,27 @@ In the following table, features are marked with the following statuses:
 
 - *Removed*
 
-<div class="important">
+> [!IMPORTANT]
+> For IBM Power and IBM Z, the following exceptions apply:
+>
+> - For version 4.20 and later, you must run the control plane on machine types that are based on 64-bit x86 architecture or s390x architecture, and node pools on IBM Power or IBM Z.
+>
+> - For version 4.19 and earlier, you must run the control plane on machine types that are based on 64-bit x86 architecture, and node pools on IBM Power or IBM Z.
 
-For IBM Power and IBM Z, the following exceptions apply:
-
-- For version 4.20 and later, you must run the control plane on machine types that are based on 64-bit x86 architecture or s390x architecture, and node pools on IBM Power or IBM Z.
-
-- For version 4.19 and earlier, you must run the control plane on machine types that are based on 64-bit x86 architecture, and node pools on IBM Power or IBM Z.
-
-</div>
-
-| Feature                                                                                    | 4.19               | 4.20                 | 4.21                 |
-|--------------------------------------------------------------------------------------------|--------------------|----------------------|----------------------|
-| Hosted control planes for OpenShift Container Platform using non-bare-metal agent machines | Technology Preview | Technology Preview   | Technology Preview   |
-| Hosted control planes for OpenShift Container Platform on RHOSP                            | Technology Preview | Technology Preview   | Technology Preview   |
-| Custom taints and tolerations                                                              | Technology Preview | Technology Preview   | Technology Preview   |
-| NVIDIA GPU devices on hosted control planes for OpenShift Virtualization                   | Technology Preview | Technology Preview   | Technology Preview   |
-| Hosted control planes for OpenShift Virtualization on IBM Z                                | Not available      | Not available        | Technology Preview   |
-| Hosted control planes on IBM Z in a disconnected environment                               | Technology Preview | General Availability | General Availability |
-| Restoring a hosted cluster to a new management cluster by using OADP                       | Technology Preview | Technology Preview   | Technology Preview   |
+| Feature | 4.19 | 4.20 | 4.21 |
+|----|----|----|----|
+| Hosted control planes for OpenShift Container Platform using non-bare-metal agent machines | Technology Preview | Technology Preview | Technology Preview |
+| Hosted control planes for OpenShift Container Platform on RHOSP | Technology Preview | Technology Preview | Technology Preview |
+| Custom taints and tolerations | Technology Preview | Technology Preview | Technology Preview |
+| NVIDIA GPU devices on hosted control planes for OpenShift Virtualization | Technology Preview | Technology Preview | Technology Preview |
+| Hosted control planes for OpenShift Virtualization on IBM Z | Not available | Not available | Technology Preview |
+| Hosted control planes on IBM Z in a disconnected environment | Technology Preview | General Availability | General Availability |
+| Restoring a hosted cluster to a new management cluster by using OADP | Technology Preview | Technology Preview | Technology Preview |
 
 Hosted control planes GA and TP tracker
 
-<div class="note">
-
-Hosted control planes for OpenShift Virtualization on IBM Z is supported as Technology Preview starting with OpenShift Container Platform 4.21, multicluster engine for Kubernetes Operator 2.11, and Red Hat Advanced Cluster Management (RHACM) 2.16. Currently, only the default pod network is supported. Cluster upgrades are supported. The following features are not supported in this release: FIPS mode, disconnected environments, and autoscaling.
-
-</div>
+> [!NOTE]
+> Hosted control planes for OpenShift Virtualization on IBM Z is supported as Technology Preview starting with OpenShift Container Platform 4.21, multicluster engine for Kubernetes Operator 2.11, and Red Hat Advanced Cluster Management (RHACM) 2.16. Currently, only the default pod network is supported. Cluster upgrades are supported. The following features are not supported in this release: FIPS mode, disconnected environments, and autoscaling.
 
 # Known issues
 

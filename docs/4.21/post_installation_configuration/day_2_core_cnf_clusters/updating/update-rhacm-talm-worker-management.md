@@ -6,9 +6,27 @@ You can pause worker nodes before updating the control plane by using Topology A
 
 Pausing worker nodes prevents the `MachineConfigPool` resource from updating worker nodes while the control plane updates, minimizing workload disruption.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to clusters with cluster-admin privileges.
 
 - Topology Aware Lifecycle Manager (TALM) is installed on the Red Hat Advanced Cluster Management (RHACM) hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a RHACM policy for each `MachineConfigPool` resource that needs to be paused during the update:
 
@@ -45,11 +63,8 @@ Pausing worker nodes prevents the `MachineConfigPool` resource from updating wor
 
     where `<mcp_name>` is the name of the machine config pool to pause, for example `mcp-1`. This value is used in both the policy name and the `MachineConfigPool` resource name.
 
-    <div class="important">
-
-    Create a separate policy for each `MachineConfigPool` resource that you need to pause during the cluster update. If the machine config pool is not paused, any machine configuration change triggers a node reboot. Pausing the machine config pool allows all configuration changes to be applied in a single reboot when the pool is unpaused.
-
-    </div>
+    > [!IMPORTANT]
+    > Create a separate policy for each `MachineConfigPool` resource that you need to pause during the cluster update. If the machine config pool is not paused, any machine configuration change triggers a node reboot. Pausing the machine config pool allows all configuration changes to be applied in a single reboot when the pool is unpaused.
 
 2.  Apply the policy to RHACM by running the following command:
 
@@ -152,7 +167,15 @@ Pausing worker nodes prevents the `MachineConfigPool` resource from updating wor
 
     The `MachineConfigPool` status shows the rolling update progress. Nodes update in a rolling fashion based on the `maxUnavailable` setting.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that worker nodes are updated and workloads are healthy by running the following commands:
 
@@ -163,6 +186,16 @@ Pausing worker nodes prevents the `MachineConfigPool` resource from updating wor
     ```
 
     All nodes must show `Ready` status and the expected kubelet version. For the `MachineConfigPool` output, verify that `MACHINECOUNT` = `READYMACHINECOUNT` = `UPDATEDMACHINECOUNT`. The `oc get pods` command must return no unexpected pods.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - If the pause policy does not take effect, verify the policy is enforced in RHACM by running the following command:
 
@@ -186,13 +219,33 @@ Pausing worker nodes prevents the `MachineConfigPool` resource from updating wor
   $ oc get pdb -A -o jsonpath='{range .items[?(@.status.disruptionsAllowed==0)]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
   ```
 
+</div>
+
 # Pausing and unpausing worker nodes by using machine config pools
 
 You can pause and unpause worker nodes directly by patching the `MachineConfigPool` resource on the target cluster. Use this method when you are managing a single cluster or when you do not have Topology Aware Lifecycle Manager (TALM) configured.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the target cluster with cluster-admin privileges.
 
 - The `oc` CLI tool is installed and configured.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Pause the worker `MachineConfigPool` resource by running the following command:
 
@@ -229,6 +282,16 @@ You can pause and unpause worker nodes directly by patching the `MachineConfigPo
 
     - `Ready`: Node update complete
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that worker nodes are updated and workloads are healthy by running the following commands:
 
   ``` terminal
@@ -238,6 +301,8 @@ You can pause and unpause worker nodes directly by patching the `MachineConfigPo
   ```
 
   All nodes must show `Ready` status and the expected kubelet version. For the `MachineConfigPool` output, verify that `MACHINECOUNT` = `READYMACHINECOUNT` = `UPDATEDMACHINECOUNT`. The `oc get pods` command must return no unexpected pods.
+
+</div>
 
 # Additional resources
 

@@ -4,15 +4,20 @@ Velero has limited abilities to resolve admission webhook issues during a restor
 
 For example, creating or restoring a top-level object such as `service.serving.knative.dev` typically creates child resources automatically. If you do this first, you will not need to use Velero to create and restore these resources. This avoids the problem of child resources being blocked by an admission webhook that Velero might use.
 
-<div class="note">
-
-Velero plugins are started as separate processes. After a Velero operation has completed, either successfully or not, it exits. Receiving a `received EOF, stopping recv loop` message in the debug logs indicates that a plugin operation has completed. It does not mean that an error has occurred.
-
-</div>
+> [!NOTE]
+> Velero plugins are started as separate processes. After a Velero operation has completed, either successfully or not, it exits. Receiving a `received EOF, stopping recv loop` message in the debug logs indicates that a plugin operation has completed. It does not mean that an error has occurred.
 
 # Restore Knative resources
 
 Resolve issues with restoring Knative resources that use admission webhooks by restoring the top-level `service.serving.knative.dev` service resource with Velero. This helps you to ensure that Knative resources are restored successfully without admission webhook errors.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Restore the top level `service.serving.knative.dev Service` resource by using the following command:
 
@@ -22,9 +27,19 @@ Resolve issues with restoring Knative resources that use admission webhooks by r
     service.serving.knative.dev
   ```
 
+</div>
+
 # Restore IBM AppConnect resources
 
 Troubleshoot Velero restore failures for IBM® AppConnect resources that use admission webhooks. Verify your webhook rules and check that the installed Operator supports the backup’s version to successfully complete the restore.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check if you have any mutating admission plugins of `kind: MutatingWebhookConfiguration` in the cluster by entering/running the following command:
 
@@ -35,6 +50,8 @@ Troubleshoot Velero restore failures for IBM® AppConnect resources that use adm
 2.  Examine the YAML file of each `kind: MutatingWebhookConfiguration` to ensure that none of its rules block creation of the objects that are experiencing issues. For more information, see [the official Kubernetes documentation](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#rulewithoperations-v1-admissionregistration-k8s-io).
 
 3.  Check that any `spec.version` in `type: Configuration.appconnect.ibm.com/v1beta1` used at backup time is supported by the installed Operator.
+
+</div>
 
 # Avoid the Velero plugin panic error
 
@@ -51,6 +68,14 @@ namespace=<BSL Name>, name=postgres): rpc error: code = Aborted desc = plugin pa
 runtime error: index out of range with length 1, stack trace: goroutine 94…
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Label the custom BSL with the relevant label by using the following command:
 
     ``` terminal
@@ -59,17 +84,26 @@ runtime error: index out of range with length 1, stack trace: goroutine 94…
 
 2.  After the BSL is labeled, wait until the DPA reconciles.
 
-    <div class="note">
+    > [!NOTE]
+    > You can force the reconciliation by making any minor change to the DPA itself.
 
-    You can force the reconciliation by making any minor change to the DPA itself.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - After the DPA is reconciled, confirm that the parameter has been created and that the correct registry data has been populated into it by entering the following command:
 
   ``` terminal
   $ oc -n openshift-adp get secret/oadp-<bsl_name>-<bsl_provider>-registry-secret -o json | jq -r '.data'
   ```
+
+</div>
 
 # Workaround for OpenShift ADP Controller segmentation fault
 
@@ -83,12 +117,30 @@ The `openshift-adp-controller-manager` pod fails with a crash loop segmentation 
 
 See *OADP-1054* for more information.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OADP-1054](https://issues.redhat.com/browse/OADP-1054)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Admission plugins](../../../architecture/admission-plug-ins.xml#admission-plug-ins)
 
 - [Webhook admission plugins](../../../architecture/admission-plug-ins.xml#admission-webhooks-about_admission-plug-ins)
 
 - [Types of webhook admission plugins](../../../architecture/admission-plug-ins.xml#admission-webhook-types_admission-plug-ins)
+
+</div>

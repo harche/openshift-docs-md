@@ -14,11 +14,16 @@ The Operator provides a storage class, called `thin-csi`, that you can use to cr
 vSphere CSI driver
 The driver enables you to create and mount vSphere PVs. In OpenShift Container Platform 4.20, and later, the driver version is 3.6.0 The vSphere CSI driver supports all of the file systems supported by the underlying Red Hat Enterprise Linux CoreOS (RHCOS) release, including XFS and Ext4. For more information about supported file systems, see "Overview of available file systems".
 
-<div class="note">
+> [!NOTE]
+> For new installations, OpenShift Container Platform 4.13 and later provides automatic migration for the vSphere in-tree volume plugin to its equivalent CSI driver. Updating to OpenShift Container Platform 4.15 and later also provides automatic migration. For more information about updating and migration, see "CSI automatic migration".
+>
+> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
 
-For new installations, OpenShift Container Platform 4.13 and later provides automatic migration for the vSphere in-tree volume plugin to its equivalent CSI driver. Updating to OpenShift Container Platform 4.15 and later also provides automatic migration. For more information about updating and migration, see "CSI automatic migration".
+<div>
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -31,6 +36,8 @@ CSI automatic migration should be seamless. Migration does not change how you us
 - [Overview of available file systems](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_file_systems/overview-of-available-file-systems_managing-file-systems)
 
 - [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+</div>
 
 # About CSI
 
@@ -91,7 +98,17 @@ spec:
 
 Requesting a PVC of the RWX volume type should result in provisioning of persistent volumes (PVs) backed by the vSAN file service.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [vSAN File Service](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vsan.doc/GUID-82565B82-C911-42F7-85B1-E9EF973EE90C.html)
+
+</div>
 
 # VMware vSphere CSI Driver Operator requirements
 
@@ -109,23 +126,27 @@ To install the vSphere Container Storage Interface (CSI) Driver Operator, the fo
 
 If a third-party vSphere CSI driver is present in the cluster, OpenShift Container Platform does not overwrite it. The presence of a third-party vSphere CSI driver prevents OpenShift Container Platform from updating to OpenShift Container Platform 4.13 or later.
 
-<div class="note">
-
-The VMware vSphere CSI Driver Operator is supported only on clusters deployed with `platform: vsphere` in the installation manifest.
-
-</div>
+> [!NOTE]
+> The VMware vSphere CSI Driver Operator is supported only on clusters deployed with `platform: vsphere` in the installation manifest.
 
 You can create a custom role for the Container Storage Interface (CSI) driver, the vSphere CSI Driver Operator, and the vSphere Problem Detector Operator. The custom role can include privilege sets that assign a minimum set of permissions to each vSphere object. This means that the CSI driver, the vSphere CSI Driver Operator, and the vSphere Problem Detector Operator can establish a basic interaction with these objects.
 
-<div class="important">
-
-Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected and unsupported behaviors that might occur when creating a custom role with a set of restricted privileges.
-
-</div>
+> [!IMPORTANT]
+> Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected and unsupported behaviors that might occur when creating a custom role with a set of restricted privileges.
 
 To remove a third-party CSI driver, see "Removing a third-party vSphere CSI Driver".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Removing a third-party vSphere CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-install-issues_persistent-storage-csi-vsphere)
+
+</div>
 
 # Removing a third-party vSphere CSI Driver Operator
 
@@ -135,9 +156,14 @@ OpenShift Container Platform 4.10, and later, includes a built-in version of the
 
 OpenShift Container Platform 4.12, and later, clusters are still fully supported, and updates to z-stream releases of 4.12, such as 4.12.z, are not blocked, but you must correct this state by removing the third-party vSphere CSI Driver before updates to next major version of OpenShift Container Platform can occur. Removing the third-party vSphere CSI driver does not require deletion of associated persistent volume (PV) objects, and no data loss should occur.
 
-<div class="note">
+> [!NOTE]
+> These instructions may not be complete, so consult the vendor or community provider uninstall guide to ensure removal of the driver and components.
 
-These instructions may not be complete, so consult the vendor or community provider uninstall guide to ensure removal of the driver and components.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -151,9 +177,11 @@ These instructions may not be complete, so consult the vendor or community provi
     $ oc delete CSIDriver csi.vsphere.vmware.com
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -161,23 +189,28 @@ These instructions may not be complete, so consult the vendor or community provi
     csidriver.storage.k8s.io "csi.vsphere.vmware.com" deleted
     ```
 
-<div class="formalpara-title">
+    </div>
 
-**Result**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 After you have removed the third-party vSphere CSI Driver from the OpenShift Container Platform cluster, installation of Red Hat’s vSphere CSI Driver Operator automatically resumes, and any conditions that could block upgrades to OpenShift Container Platform 4.11, or later, are automatically removed. If you had existing vSphere CSI PV objects, their lifecycle is now managed by Red Hat’s vSphere CSI Driver Operator.
 
+</div>
+
 # vSphere persistent disks encryption
 
 You can encrypt virtual machines (VMs) and dynamically provisioned persistent volumes (PVs) on OpenShift Container Platform running on top of vSphere.
 
-<div class="note">
-
-OpenShift Container Platform does not support RWX-encrypted PVs. You cannot request RWX PVs out of a storage class that uses an encrypted storage policy.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform does not support RWX-encrypted PVs. You cannot request RWX PVs out of a storage class that uses an encrypted storage policy.
 
 You must encrypt VMs before you can encrypt PVs, which you can do during or after installation.
 
@@ -195,7 +228,13 @@ After encrypting VMs, you can configure a storage class that supports dynamic en
 
 - **Tag-based placement**: Encrypts the provisioned volumes and uses tag-based placement to target specific datastores.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Requirements for encrypting virtual machines](../../installing/installing_vsphere/upi/upi-vsphere-installation-reqs.xml#installation-vsphere-encrypted-vms_upi-vsphere-installation-reqs)
 
@@ -203,9 +242,19 @@ After encrypting VMs, you can configure a storage class that supports dynamic en
 
 - [Enabling encryption on a vSphere cluster](../../installing/installing_vsphere/vsphere-post-installation-encryption.xml#vsphere-post-installation-encryption)
 
+</div>
+
 ## Using datastore URL
 
 To encrypt persistent volumes by targeting a specific datastore, create a storage class that references an encryption-enabled storage policy and datastore URL.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Find out the name of the default storage policy in your datastore that supports encryption.
 
@@ -226,9 +275,19 @@ To encrypt persistent volumes by targeting a specific datastore, create a storag
 
     `parameters.storagePolicyName` is the name of the default storage policy in your datastore that supports encryption.
 
+</div>
+
 ## Using tag-based placement
 
 To encrypt persistent volumes with flexible datastore selection, use tag-based placement that targets multiple datastores through vCenter tags and supports topology-aware provisioning.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In vCenter create a category for tagging datastores that will be made available to this storage class. Also, ensure that **StoragePod(Datastore clusters)**, **Datastore**, and **Folder** are selected as Associable Entities for the created category.
 
@@ -270,17 +329,16 @@ To encrypt persistent volumes with flexible datastore selection, use tag-based p
 
     `parameters.storagePolicyName` is the name of the storage policy that you created for encryption.
 
+</div>
+
 # Multiple vCenter support for vSphere CSI
 
 To achieve high availability across vSphere infrastructure without shared storage, configure up to three vCenter clusters during OpenShift Container Platform installation.
 
 OpenShift Container Platform v4.17, and later, supports this capability.
 
-<div class="note">
-
-Multiple vCenters can only be configured **during** installation. Multiple vCenters **cannot** be configured after installation.
-
-</div>
+> [!NOTE]
+> Multiple vCenters can only be configured **during** installation. Multiple vCenters **cannot** be configured after installation.
 
 The maximum number of supported vCenter clusters is three.
 
@@ -288,11 +346,29 @@ The maximum number of supported vCenter clusters is three.
 
 To enable multi-vCenter support for high availability without shared storage, specify multiple vSphere clusters in the installation configuration before deploying your cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Specify multiple vSphere clusters during installation. For information, see "Installation configuration parameters for vSphere".
 
-<!-- -->
+</div>
+
+<div id="link_installation_config_parameters_vsphere">
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation configuration parameters for vSphere](../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
+
+</div>
 
 # vSphere CSI topology overview
 
@@ -302,9 +378,9 @@ This is accomplished by defining zone and region categories in vCenter, and then
 
 The following example defines two failure domains with one region and two zones:
 
-| Compute cluster                              | Failure domain                                                      | Description                                                                       |
-|----------------------------------------------|---------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| Compute cluster: ocp1, Data center: Atlanta  | openshift-region: us-east-1 (tag), openshift-zone: us-east-1a (tag) | This defines a failure domain in region us-east-1 with zone us-east-1a.           |
+| Compute cluster | Failure domain | Description |
+|----|----|----|
+| Compute cluster: ocp1, Data center: Atlanta | openshift-region: us-east-1 (tag), openshift-zone: us-east-1a (tag) | This defines a failure domain in region us-east-1 with zone us-east-1a. |
 | Computer cluster: ocp2, Data center: Atlanta | openshift-region: us-east-1 (tag), openshift-zone: us-east-1b (tag) | This defines a different failure domain within the same region called us-east-1b. |
 
 vSphere storage topology with one region and two zones
@@ -317,35 +393,66 @@ The following guidelines are recommended for vSphere CSI topology:
 
   `vsphere-problem-detector` provides alerts if the `openshift-region` or `openshift-zone` tags are not defined at the data center or compute cluster level, and each topology tag (`openshift-region` or `openshift-zone`) should occur only once in the hierarchy.
 
-  <div class="note">
-
-  Ignoring this recommendation only results in a log warning from the CSI driver and duplicate tags lower in the hierarchy, such as hosts, are ignored; VMware considers this an invalid configuration, and therefore to prevent problems you should not use it.
-
-  </div>
+  > [!NOTE]
+  > Ignoring this recommendation only results in a log warning from the CSI driver and duplicate tags lower in the hierarchy, such as hosts, are ignored; VMware considers this an invalid configuration, and therefore to prevent problems you should not use it.
 
 - Volume provisioning requests in topology-aware environments attempt to create volumes in datastores accessible to all hosts under a given topology segment. This includes hosts that do not have Kubernetes node VMs running on them. For example, if the vSphere Container Storage Plug-in driver receives a request to provision a volume in `zone-a`, applied on the data center `dc-1`, all hosts under `dc-1` must have access to the datastore selected for volume provisioning. The hosts include those that are directly under `dc-1`, and those that are a part of clusters inside `dc-1`.
 
 - For additional recommendations, you should read the VMware "Guidelines and Best Practices for Deployment with Topology".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Guidelines and Best Practices for Deployment with Topology](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0/vsphere-container-storage-plug-in-deployment/deploying-vsphere-container-storage-plug-in-with-topology.html#GUID-162E7582-723B-4A0F-A937-3ACE82EAFD31-en)
+
+</div>
 
 ## Creating vSphere storage topology during installation
 
 To enable automatic topology-aware storage provisioning across vSphere failure domains, configure regions and zones during cluster installation.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Specify the topology during installation. See "Configuring regions and zones for a VMware vCenter".
 
   No additional action is necessary and the default storage class that is created by OpenShift Container Platform is topology aware and should allow provisioning of volumes in different failure domains.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring regions and zones for a VMware vCenter](../../installing/installing_vsphere/ipi/installing-vsphere-installer-provisioned-customizations.xml#configuring-vsphere-regions-zones_installing-vsphere-installer-provisioned-customizations)
+
+</div>
 
 ## Creating vSphere storage topology postinstallation
 
 To enable topology-aware storage provisioning after cluster installation, configure vCenter tags, create failure domains, and define storage classes that target datastores in specific zones and regions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the VMware vCenter vSphere client GUI, define appropriate zone and region categories and tags.
 
@@ -365,11 +472,8 @@ To enable topology-aware storage provisioning after cluster installation, config
 
     3.  Assign the previously created tag (in this example `openshift-zonal-datastore`) to each datastore in a failure domain that would be considered for dynamic provisioning.
 
-        <div class="note">
-
-        You can use any names you like for datastore categories and tags. The names used in this example are provided as recommendations. Ensure that the tags and categories that you define uniquely identify only datastores that are shared with all hosts in the OpenShift Container Platform cluster.
-
-        </div>
+        > [!NOTE]
+        > You can use any names you like for datastore categories and tags. The names used in this example are provided as recommendations. Ensure that the tags and categories that you define uniquely identify only datastores that are shared with all hosts in the OpenShift Container Platform cluster.
 
 4.  As needed, create a storage policy that targets the tag-based datastores in each failure domain:
 
@@ -399,9 +503,11 @@ To enable topology-aware storage provisioning after cluster installation, config
 
     6.  Click **Create**.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -418,27 +524,43 @@ To enable topology-aware storage provisioning after cluster installation, config
         volumeBindingMode: WaitForFirstConsumer
         ```
 
+        </div>
+
         - `metadata.name`: New topology aware storage class name.
 
         - `parameters.StoragePolicyName`: Specify zoned storage policy.
 
-          <div class="note">
+          > [!NOTE]
+          > You can also create the storage class by editing the preceding YAML file and running the command `oc create -f $FILE`.
 
-          You can also create the storage class by editing the preceding YAML file and running the command `oc create -f $FILE`.
+</div>
 
-          </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Specifying multiple regions and zones for your cluster on vSphere](../../installing/installing_vsphere/post-install-vsphere-zones-regions-configuration.xml#specifying-regions-zones-infrastructure-vsphere_post-install-vsphere-zones-regions-configuration)
 
 - [VMware vSphere tag documentation](https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-vcenter-esxi-management/GUID-16422FF7-235B-4A44-92E2-532F6AED0923.html?hWord=N4IghgNiBcIC5gOYgL5A)
 
+</div>
+
 ## Creating vSphere storage topology without an infra topology
 
 To configure topology-aware storage provisioning without using the `infrastructure` object, define vCenter categories and tags, then configure the `ClusterCSIDriver` object to recognize topology zones and regions.
 
-<div class="note">
+> [!NOTE]
+> OpenShift Container Platform recommends using the infrastructure object for specifying failure domains in a topology aware setup. Specifying failure domains in the infrastructure object and specify topology-categories in the `ClusterCSIDriver` object at the same time is an unsupported operation.
 
-OpenShift Container Platform recommends using the infrastructure object for specifying failure domains in a topology aware setup. Specifying failure domains in the infrastructure object and specify topology-categories in the `ClusterCSIDriver` object at the same time is an unsupported operation.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -458,9 +580,11 @@ OpenShift Container Platform recommends using the infrastructure object for spec
       ~ $ oc edit clustercsidriver csi.vsphere.vmware.com -o yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -483,6 +607,8 @@ OpenShift Container Platform recommends using the infrastructure object for spec
               - openshift-region
       ```
 
+      </div>
+
       - `spec.driverConfig.driverType`: Ensure that `driverType` is set to `vSphere`.
 
       - `spec.driverConfig.driverType.vSphere.topologyCategories`: `openshift-zone` and `openshift-region` categories created earlier in vCenter.
@@ -493,9 +619,11 @@ OpenShift Container Platform recommends using the infrastructure object for spec
     ~ $ oc get csinode
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -510,13 +638,17 @@ OpenShift Container Platform recommends using the infrastructure object for spec
     co8-4s88d-worker-zlk7d 1 47m
     ```
 
+    </div>
+
     ``` terminal
     ~ $ oc get csinode co8-4s88d-worker-j2hmg -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -533,13 +665,12 @@ OpenShift Container Platform recommends using the infrastructure object for spec
       - topology.csi.vmware.com/openshift-region
     ```
 
+    </div>
+
     `spec.topologyKeys` lists the topology keys from vSphere `openshift-zone` and `openshift-region` categories.
 
-    <div class="note">
-
-    `CSINode` objects might take some time to receive updated topology information. After the driver is updated, `CSINode` objects should have topology keys in them.
-
-    </div>
+    > [!NOTE]
+    > `CSINode` objects might take some time to receive updated topology information. After the driver is updated, `CSINode` objects should have topology keys in them.
 
 4.  Create a tag to assign to datastores across failure domains:
 
@@ -551,11 +682,8 @@ OpenShift Container Platform recommends using the infrastructure object for spec
 
     3.  Assign the previously created tag (in this example `openshift-zonal-datastore`) to each datastore in a failure domain that would be considered for dynamic provisioning.
 
-        <div class="note">
-
-        You can use any names you like for categories and tags. The names used in this example are provided as recommendations. Ensure that the tags and categories that you define uniquely identify only datastores that are shared with all hosts in the OpenShift Container Platform cluster.
-
-        </div>
+        > [!NOTE]
+        > You can use any names you like for categories and tags. The names used in this example are provided as recommendations. Ensure that the tags and categories that you define uniquely identify only datastores that are shared with all hosts in the OpenShift Container Platform cluster.
 
 5.  Create a storage policy that targets the tag-based datastores in each failure domain:
 
@@ -585,9 +713,11 @@ OpenShift Container Platform recommends using the infrastructure object for spec
 
     6.  Click **Create**.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -604,17 +734,28 @@ OpenShift Container Platform recommends using the infrastructure object for spec
         volumeBindingMode: WaitForFirstConsumer
         ```
 
+        </div>
+
         - `metadata.name`: New topology aware storage class name.
 
         - `parameters.StoragePolicyName`: Specify zoned storage policy.
 
-          <div class="note">
+          > [!NOTE]
+          > You can also create the storage class by editing the preceding YAML file and running the command `oc create -f $FILE`.
 
-          You can also create the storage class by editing the preceding YAML file and running the command `oc create -f $FILE`.
+</div>
 
-          </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [VMware vSphere tag documentation](https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-vcenter-esxi-management/GUID-16422FF7-235B-4A44-92E2-532F6AED0923.html?hWord=N4IghgNiBcIC5gOYgL5A)
+
+</div>
 
 ## vSphere topology results
 
@@ -622,15 +763,25 @@ To verify that topology-aware storage provisioning is working correctly, check t
 
 Creating persistent volume claims (PVCs) and PVs from the topology aware storage class are truly zonal, and should use the datastore in their respective zone depending on how pods are scheduled:
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Check that persistent volumes include zone and region labels as expected by running the following command:
 
   ``` terminal
   $ oc get pv <pv_name> -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -655,9 +806,13 @@ Creating persistent volume claims (PVCs) and PVs from the topology aware storage
   ...
   ```
 
+  </div>
+
   - `nodeAffinity.required.nodeSelectorTerms.matchExpressions.key`: PV has zoned keys.
 
   - `storageClassName`: PV is using the zoned storage class.
+
+</div>
 
 # Changing the maximum number of snapshots for vSphere
 
@@ -667,7 +822,25 @@ The default maximum number of snapshots per volume in vSphere Container Storage 
 
 For more VMware snapshot performance recommendations, see "Best practices for using VMware snapshots in the vSphere environment".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster with administrator rights.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the current secret by the running the following command:
 
@@ -675,9 +848,11 @@ For more VMware snapshot performance recommendations, see "Best practices for us
     $ oc -n openshift-cluster-csi-drivers get secret/vsphere-csi-config-secret -o jsonpath='{.data.cloud\.conf}' | base64 -d
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -694,6 +869,8 @@ For more VMware snapshot performance recommendations, see "Best practices for us
     user                    = "xxxxxxxx@devcluster.openshift.com"
     migration-datastore-url = ds:///vmfs/volumes/vsan:52c842f232751e0d-3253aadeac21ca82/
     ```
+
+    </div>
 
     In this example, the global maximum number of snapshots is not configured, so the default value of 3 is applied.
 
@@ -731,15 +908,27 @@ For more VMware snapshot performance recommendations, see "Best practices for us
 
       In this example, the vSAN limit is being changed to 7 (`granularMaxSnapshotsPerBlockVolumeInVSAN` set to 7).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that any changes you made are reflected in the config map by running the following command:
 
   ``` terminal
   $ oc -n openshift-cluster-csi-drivers get secret/vsphere-csi-config-secret -o jsonpath='{.data.cloud\.conf}' | base64 -d
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -760,11 +949,23 @@ For more VMware snapshot performance recommendations, see "Best practices for us
   global-max-snapshots-per-block-volume = 10
   ```
 
+  </div>
+
   The parameter `global-max-snapshots-per-block-volume` is now set to 10.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Best practices for using VMware snapshots in the vSphere environment](https://kb.vmware.com/s/article/1025279)
+
+</div>
 
 # Migrating CNS volumes between datastores for vSphere
 
@@ -790,6 +991,14 @@ If you are running out of space in your current datastore, or want to move to a 
 
 For additional limitations, see "For vSphere 8", "For VCF 9", "For vSphere v8.0, more general information", and "For VCF 9, more general information".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [For vSphere 8](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vsphere-storage-8-0/getting-started-with-cloud-native-storage-in-vsphere/cloud-native-storage-for-vsphere-administrators/migrating-container-volumes-in-vsphere.html)
 
 - [For VCF 9](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-storage/getting-started-with-cloud-native-storage-in-vsphere/cloud-native-storage-for-vsphere-administrators/migrating-container-volumes-in-vsphere.html#GUID-536DEB75-84F5-48DC-A425-3BF703B8F54E-en)
@@ -797,6 +1006,8 @@ For additional limitations, see "For vSphere 8", "For VCF 9", "For vSphere v8.0,
 - [For vSphere v8.0, more general information](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0.html)
 
 - [For VCF 9, more general information](https://techdocs.broadcom.com/us/en/vmware-cis/vcf.html)
+
+</div>
 
 # Disabling and enabling storage on vSphere
 
@@ -815,13 +1026,13 @@ The consequences of disabling and enabling storage on vSphere are described in t
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Disabling</th>
 <th style="text-align: left;">Enabling</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><ul>
 <li><p>vSphere CSI Driver Operator un-installs the CSI driver.</p></li>
 <li><p>Storage container orchestration (CO) should be healthy.</p></li>
@@ -839,15 +1050,18 @@ The consequences of disabling and enabling storage on vSphere are described in t
 </tbody>
 </table>
 
-Consequences of disabling/enabling storage on vSphere
-
 ## Disabling and enabling storage on vSphere
 
 To control vSphere storage integration with your cluster, disable or enable the CSI driver by changing the management state in the `ClusterCSIDriver` resource.
 
-<div class="important">
+> [!IMPORTANT]
+> Before running this procedure, carefully review the preceding "Consequences of disabling and enabling storage on vSphere" table and potential impacts to your environment.
 
-Before running this procedure, carefully review the preceding "Consequences of disabling and enabling storage on vSphere" table and potential impacts to your environment.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -879,21 +1093,30 @@ Before running this procedure, carefully review the preceding "Consequences of d
 
         The only item that should appear is the operator. For example: "vmware-vsphere-csi-driver-operator-559b97ffc5-w99fm"
 
+</div>
+
 # Adding bare-metal nodes
 
 Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported. However, you must remove the vSphere CSI Driver before adding bare-metal nodes, otherwise the cluster is marked as degraded.
 
-<div class="important">
-
-Adding bare-metal nodes is generally available for OpenShift Container Platform 4.22.13 and later. However, this feature is Technology Preview for 4.22 through 4.22.12.
-
-</div>
+> [!IMPORTANT]
+> Adding bare-metal nodes is generally available for OpenShift Container Platform 4.22.13 and later. However, this feature is Technology Preview for 4.22 through 4.22.12.
 
 For information about how to add bare-metal nodes, see "Adding bare-metal compute machines to a vSphere cluster".
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Disabling and enabling storage on vSphere](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-disable-storage-overview_persistent-storage-csi-vsphere)
 
 - [Adding bare-metal compute machines to a vSphere cluster](../../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml)
+
+</div>
 
 # Increasing maximum volumes per node for vSphere
 
@@ -901,28 +1124,30 @@ To support more storage volumes on individual nodes, you can increase the maximu
 
 For vSphere version 8 or later, or VMware vSphere Foundation (VVF) 9, or VMware Cloud Foundation (VCF) 9, you can increase the allowable number of volumes per node to a maximum of 255. Otherwise, the default value remains at 59.
 
-<div class="important">
-
-You must have an homogeneous vSphere 8 environment that only contains ESXi 8 hypervisors, or an homogeneous VVF or VCF 9 environment that only contains ESXi 9 hypervisors. Heterogeneous environments that contain a mix of versions of ESXi are not allowed. In such heterogenous environment, if you set a value greater than 59, the cluster degrades.
-
-</div>
+> [!IMPORTANT]
+> You must have an homogeneous vSphere 8 environment that only contains ESXi 8 hypervisors, or an homogeneous VVF or VCF 9 environment that only contains ESXi 9 hypervisors. Heterogeneous environments that contain a mix of versions of ESXi are not allowed. In such heterogenous environment, if you set a value greater than 59, the cluster degrades.
 
 Limitations
 - You must be running VMware vSphere version 8 or later, or VVF 9, or VCF 9.
 
 - You can potentially exceed the limit of 2048 virtual disks per host if you increase the maximum number of volumes per node on enough nodes. This can occur because there is no Distributed Resource scheduler (DRS) validation for vSphere to ensure you do not exceed this limit.
 
-<div class="important">
-
-Increasing volumes per node is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Increasing volumes per node is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Increasing the maximum allowable volumes per node for vSphere
 
 To accommodate workloads requiring more than 59 persistent volumes per node, increase the maximum allowable volumes by configuring the `ClusterCSIDriver` resource.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the OpenShift Container Platform web console.
 
@@ -932,11 +1157,18 @@ To accommodate workloads requiring more than 59 persistent volumes per node, inc
 
 - In vCenter, ensure that the parameter `pvscsiCtrlr256DiskSupportEnabled` is set to 'True'.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Changing the `pvscsiCtrlr256DiskSupportEnabled` parameter is not fully supported by VMware. Also, the parameter is a cluster-wide option.
 
-  Changing the `pvscsiCtrlr256DiskSupportEnabled` parameter is not fully supported by VMware. Also, the parameter is a cluster-wide option.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Administration** \> **CustomResourceDefinitions**.
 
@@ -954,9 +1186,11 @@ To accommodate workloads requiring more than 59 persistent volumes per node, inc
 
 8.  Add the parameter `spec.driverConfig.vSphere.maxAllowedBlockVolumesPerNode` to the YAML file, and provide a value for the desired maximum number of volumes per node as in the following sample YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file for adding the parameter maxAllowedBlockVolumesPerNode**
+    <div class="title">
+
+    Example YAML file for adding the parameter maxAllowedBlockVolumesPerNode
 
     </div>
 
@@ -970,9 +1204,13 @@ To accommodate workloads requiring more than 59 persistent volumes per node, inc
     ...
     ```
 
+    </div>
+
     For `maxAllowedBlockVolumesPerNode`, enter the desired value here for the maximum number of volumes per node. The default is 59. The minimum value is 1 and the maximum value is 255.
 
 9.  Click **Save**.
+
+</div>
 
 # Additional resources
 

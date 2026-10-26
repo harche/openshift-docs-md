@@ -26,11 +26,8 @@ Within a catalog source, Operators are organized into *packages* and streams of 
 
 A user indicates a particular package and channel in a particular catalog source in a *subscription*, for example an `etcd` package and its `alpha` channel. If a subscription is made to a package that has not yet been installed in the namespace, the latest Operator for that package is installed.
 
-<div class="note">
-
-OLM deliberately avoids version comparisons, so the "latest" or "newest" Operator available from a given *catalog* → *channel* → *package* path does not necessarily need to be the highest version number. It should be thought of more as the *head* reference of a channel, similar to a Git repository.
-
-</div>
+> [!NOTE]
+> OLM deliberately avoids version comparisons, so the "latest" or "newest" Operator available from a given *catalog* → *channel* → *package* path does not necessarily need to be the highest version number. It should be thought of more as the *head* reference of a channel, similar to a Git repository.
 
 Each CSV has a `replaces` parameter that indicates which Operator it replaces. This builds a graph of CSVs that can be queried by OLM, and updates can be shared between channels. Channels can be thought of as entry points into the graph of updates:
 
@@ -39,9 +36,11 @@ Each CSV has a `replaces` parameter that indicates which Operator it replaces. T
 <figcaption>OLM graph of available channel updates</figcaption>
 </figure>
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example channels in a package**
+<div class="title">
+
+Example channels in a package
 
 </div>
 
@@ -54,6 +53,8 @@ channels:
   currentCSV: example.v0.1.3
 defaultChannel: alpha
 ```
+
+</div>
 
 For OLM to successfully query for updates, given a catalog source, package, channel, and CSV, a catalog must be able to return, unambiguously and deterministically, a single CSV that `replaces` the input CSV.
 
@@ -83,9 +84,11 @@ In those cases, OLM must consider two cluster states and provide an update graph
 
 By shipping a new catalog and adding a *skipped* release, OLM is ensured that it can always get a single unique update regardless of the cluster state and whether it has seen the bad update yet.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CSV with skipped release**
+<div class="title">
+
+Example CSV with skipped release
 
 </div>
 
@@ -103,6 +106,8 @@ spec:
     skips:
     - etcdoperator.v0.9.1
 ```
+
+</div>
 
 Consider the following example of **Old CatalogSource** and **New CatalogSource**.
 
@@ -141,9 +146,11 @@ The order of precedence is:
 
 4.  The next Operator that replaces the current one in any source visible to the subscription.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CSV with `skipRange`**
+<div class="title">
+
+Example CSV with `skipRange`
 
 </div>
 
@@ -156,6 +163,8 @@ metadata:
     annotations:
         olm.skipRange: '>=4.1.0 <4.1.2'
 ```
+
+</div>
 
 ## Z-stream support
 

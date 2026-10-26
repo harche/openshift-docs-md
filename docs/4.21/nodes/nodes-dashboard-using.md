@@ -24,15 +24,22 @@ Displays visualizations that that you can use to identify changes in the number 
 
 You can access the node metrics dashboard from the **Administrator** perspective of the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Expand the **Observe** menu option and select **Dashboards**.
 
 2.  Under the **Dashboard** filter, select **Node cluster**.
 
-    <div class="note">
+    > [!NOTE]
+    > If no data appears in the visualizations under the **Critical** category, no critical anomalies were detected. The dashboard is working as intended.
 
-    If no data appears in the visualizations under the **Critical** category, no critical anomalies were detected. The dashboard is working as intended.
-
-    </div>
+</div>
 
 # Identify metrics for indicating optimal node resource usage
 
@@ -60,13 +67,17 @@ The metrics in the **Critical** category help you indicate optimal node resource
 
 You can review details regarding the top three containers that have experienced the most Out-Of-Memory (OOM) kills in the previous day by using the **Top 3 containers with the most OOM kills in the last day** query in the node metrics dashboard.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     topk(3, sum(increase(container_runtime_crio_containers_oom_count_total[1d])) by (name))
+
+</div>
 
 OOM kills force the system to terminate some processes due to low memory. Frequent OOM kills can hinder the functionality of the node and even the entire Kubernetes ecosystem. Containers experiencing frequent OOM kills might be consuming more memory than they should, which causes system instability.
 
@@ -78,13 +89,17 @@ You can review the ratio of failed image pulls by using the **Failure rate for i
 
 The query divides the total number of failed image pulls by the sum of successful and failed image pulls to provide a ratio of failures.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     rate(container_runtime_crio_image_pulls_failure_total[1h]) / (rate(container_runtime_crio_image_pulls_success_total[1h]) + rate(container_runtime_crio_image_pulls_failure_total[1h]))
+
+</div>
 
 Understanding the failure rate of image pulls is crucial for maintaining the health of the node. A high failure rate might indicate networking issues, storage problems, misconfigurations, or other issues that could disrupt pod density and the deployment of new containers.
 
@@ -96,13 +111,17 @@ You can review the percentage of system-reserved memory that is utilized for eac
 
 The calculation divides the total resident set size (RSS) by the total memory capacity of the node subtracted from the allocatable memory. RSS is the portion of the system’s memory occupied by a process that is held in main memory (RAM). Nodes are flagged if their resulting value equals or exceeds an 80% threshold.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (container_memory_rss{id="/system.slice"}) / sum by (node) (kube_node_status_capacity{resource="memory"} - kube_node_status_allocatable{resource="memory"}) * 100 >= 80
+
+</div>
 
 System reserved memory is crucial for a Kubernetes node as it is utilized to run system daemons and Kubernetes system daemons. System reserved memory utilization that exceeds 80% indicates that the system and Kubernetes daemons are consuming too much memory and can suggest node instability that could affect the performance of running pods. Excessive memory consumption can cause Out-of-Memory (OOM) killers that can terminate critical system processes to free up memory.
 
@@ -114,13 +133,17 @@ You can review the nodes where the Kubelet’s system-reserved memory utilizatio
 
 The query examines the memory that the Kubelet process itself is consuming on a node.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (container_memory_rss{id="/system.slice/kubelet.service"}) / sum by (node) (kube_node_status_capacity{resource="memory"} - kube_node_status_allocatable{resource="memory"}) * 100 >= 50
+
+</div>
 
 This query helps you identify any possible memory pressure situations in your nodes that could affect the stability and efficiency of node operations. Kubelet memory utilization that consistently exceeds 50% of the system reserved memory, indicate that the system reserved settings are not configured properly and that there is a high risk of the node becoming unstable.
 
@@ -132,13 +155,17 @@ You can identify the nodes where the percentage of used memory reserved for the 
 
 In this case, memory usage is defined by the resident set size (RSS), which is the portion of the CRI-O system’s memory held in RAM.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (container_memory_rss{id="/system.slice/crio.service"}) / sum by (node) (kube_node_status_capacity{resource="memory"} - kube_node_status_allocatable{resource="memory"}) * 100 >= 50
+
+</div>
 
 This query helps you monitor the status of memory reserved for the CRI-O system on each node. High utilization could indicate a lack of available resources and potential performance issues. If the memory reserved for the CRI-O system exceeds the advised limit of 50%, it indicates that half of the system reserved memory is being used by CRI-O on a node.
 
@@ -150,13 +177,17 @@ You can identify any nodes where the system-reserved CPU utilization is more tha
 
 The query focuses on the system-reserved capacity to calculate the rate of CPU usage in the last 5 minutes and compares that to the CPU resources available on the nodes. If the ratio exceeds 80%, the node’s result is displayed in the metric.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (rate(container_cpu_usage_seconds_total{id="/system.slice"}[5m]) * 100) / sum by (node) (kube_node_status_capacity{resource="cpu"} - kube_node_status_allocatable{resource="cpu"}) >= 80
+
+</div>
 
 This query indicates a critical level of system-reserved CPU usage, which can lead to resource exhaustion. High system-reserved CPU usage can result in the inability of the system processes (including the Kubelet and CRI-O) to adequately manage resources on the node. This query can indicate excessive system processes or misconfigured CPU allocation.
 
@@ -166,13 +197,17 @@ Potential corrective measures include rebalancing workloads to other nodes or in
 
 You can review the percentage of CPU that the Kubelet system is currently using from system reserved by using the **Nodes with Kubelet system reserved CPU utilization \> 50%** query in the node metrics dashboard.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (rate(container_cpu_usage_seconds_total{id="/system.slice/kubelet.service"}[5m]) * 100) / sum by (node) (kube_node_status_capacity{resource="cpu"} - kube_node_status_allocatable{resource="cpu"}) >= 50
+
+</div>
 
 The Kubelet uses the system reserved CPU for its own operations and for running critical system services. For the node’s health, it is important to ensure that system reserve CPU usage does not exceed the 50% threshold. Exceeding this limit could indicate heavy utilization or load on the Kubelet, which affects node stability and potentially the performance of the entire Kubernetes cluster.
 
@@ -184,13 +219,17 @@ You can identify any nodes where the CRI-O system-reserved CPU utilization has e
 
 The query monitors CPU resource consumption by CRI-O, your container runtime, on a per-node basis.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example default query**
+<div class="title">
+
+Example default query
 
 </div>
 
     sum by (node) (rate(container_cpu_usage_seconds_total{id="/system.slice/crio.service"}[5m]) * 100) / sum by (node) (kube_node_status_capacity{resource="cpu"} - kube_node_status_allocatable{resource="cpu"}) >= 50
+
+</div>
 
 This query allows for quick identification of abnormal start times that could negatively impact pod performance. If this query returns a high value, your pod start times are slower than usual, which suggests potential issues with the kubelet, pod configuration, or resources.
 
@@ -200,6 +239,14 @@ Investigate further by checking your pod configurations and allocated resources.
 
 You can create your own queries by customizing the default queries used to build the node metrics dashboard.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Choose a metric and click **Inspect** to navigate into the data. This page displays the metric in detail, including an expanded visualization of the results of the query, the Prometheus query used to analyze the data, and the data subset used in the query.
 
 2.  Make any required changes to the query parameters.
@@ -207,3 +254,5 @@ You can create your own queries by customizing the default queries used to build
 3.  Optional: Click **Add query** to run additional queries against the data.
 
 4.  Click **Run query** to rerun the query using your specified parameters.
+
+</div>

@@ -18,23 +18,20 @@ The possible values are:
 
 After the pod is bound to a node, the pod will never be bound to another node. This means that a controller is necessary in order for a pod to survive node failure:
 
-| Condition                                                        | Controller Type        | Restart Policy         |
-|------------------------------------------------------------------|------------------------|------------------------|
-| Pods that are expected to terminate (such as batch computations) | Job                    | `OnFailure` or `Never` |
-| Pods that are expected to not terminate (such as web servers)    | Replication controller | `Always`.              |
-| Pods that must run one-per-machine                               | Daemon set             | Any                    |
+| Condition | Controller Type | Restart Policy |
+|----|----|----|
+| Pods that are expected to terminate (such as batch computations) | Job | `OnFailure` or `Never` |
+| Pods that are expected to not terminate (such as web servers) | Replication controller | `Always`. |
+| Pods that must run one-per-machine | Daemon set | Any |
 
 If a Container on a pod fails and the restart policy is set to `OnFailure`, the pod stays on the node and the Container is restarted. If you do not want the Container to restart, use a restart policy of `Never`.
 
 If an entire pod fails, OpenShift Container Platform starts a new pod. Developers must address the possibility that applications might be restarted in a new pod. In particular, applications must handle temporary files, locks, incomplete output, and so forth caused by previous runs.
 
-<div class="note">
-
-Kubernetes architecture expects reliable endpoints from cloud providers. When a cloud provider is down, the kubelet prevents OpenShift Container Platform from restarting.
-
-If the underlying cloud provider endpoints are not reliable, do not install a cluster using cloud provider integration. Install the cluster as if it was in a no-cloud environment. It is not recommended to toggle cloud provider integration on or off in an installed cluster.
-
-</div>
+> [!NOTE]
+> Kubernetes architecture expects reliable endpoints from cloud providers. When a cloud provider is down, the kubelet prevents OpenShift Container Platform from restarting.
+>
+> If the underlying cloud provider endpoints are not reliable, do not install a cluster using cloud provider integration. Install the cluster as if it was in a no-cloud environment. It is not recommended to toggle cloud provider integration on or off in an installed cluster.
 
 For details on how OpenShift Container Platform uses restart policy with failed Containers, see the "Example States" in the Kubernetes documentation.
 
@@ -46,11 +43,21 @@ Egress traffic (from the pod) is handled by policing, which simply drops packets
 
 The following procedure limits the bandwidth on a pod.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Write an object definition JSON file, and specify the data traffic speed using `kubernetes.io/ingress-bandwidth` and `kubernetes.io/egress-bandwidth` annotations. For example, to limit both pod egress and ingress bandwidth to 10M/s:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Limited `Pod` object definition**
+    <div class="title">
+
+    Limited `Pod` object definition
 
     </div>
 
@@ -76,11 +83,15 @@ The following procedure limits the bandwidth on a pod.
     }
     ```
 
+    </div>
+
 2.  Create the pod using the object definition:
 
     ``` terminal
     $ oc create -f <file_or_dir_path>
     ```
+
+</div>
 
 # Understand how to use pod disruption budgets to specify the number of pods that must be up
 
@@ -98,19 +109,13 @@ A `PodDisruptionBudget` object’s configuration consists of the following key p
 
   - `maxUnavailable` is the number of pods can be unavailable during a disruption.
 
-<div class="note">
+> [!NOTE]
+> `Available` refers to the number of pods that has condition `Ready=True`. `Ready=True` refers to the pod that is able to serve requests and should be added to the load balancing pools of all matching services.
+>
+> A `maxUnavailable` of `0%` or `0` or a `minAvailable` of `100%` or equal to the number of replicas is permitted but can block nodes from being drained.
 
-`Available` refers to the number of pods that has condition `Ready=True`. `Ready=True` refers to the pod that is able to serve requests and should be added to the load balancing pools of all matching services.
-
-A `maxUnavailable` of `0%` or `0` or a `minAvailable` of `100%` or equal to the number of replicas is permitted but can block nodes from being drained.
-
-</div>
-
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 You can check for pod disruption budgets across all projects with the following:
 
@@ -118,15 +123,14 @@ You can check for pod disruption budgets across all projects with the following:
 $ oc get poddisruptionbudget --all-namespaces
 ```
 
-<div class="note">
+> [!NOTE]
+> The following example contains some values that are specific to OpenShift Container Platform on AWS.
 
-The following example contains some values that are specific to OpenShift Container Platform on AWS.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example output**
+Example output
 
 </div>
 
@@ -142,19 +146,26 @@ openshift-console                      console                                 N
 #...
 ```
 
+</div>
+
 The `PodDisruptionBudget` is considered healthy when there are at least `minAvailable` pods running in the system. Every pod above that limit can be evicted.
 
-<div class="note">
-
-Depending on your pod priority and preemption settings, lower-priority pods might be removed despite their pod disruption budget requirements.
-
-</div>
+> [!NOTE]
+> Depending on your pod priority and preemption settings, lower-priority pods might be removed despite their pod disruption budget requirements.
 
 ## Specify the number of pods that must be up with pod disruption budgets
 
 You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time. This ensures pod availability during voluntary disruptions such as node maintenance or cluster updates.
 
 The following procedure shows how to configure a pod disruption budget.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file with the an object definition similar to the following:
 
@@ -212,6 +223,8 @@ The following procedure shows how to configure a pod disruption budget.
     $ oc create -f </path/to/file> -n <project_name>
     ```
 
+</div>
+
 ## Specify the eviction policy for unhealthy pods
 
 When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction. The eviction policy determines which pods the cluster can evict.
@@ -224,17 +237,24 @@ Running pods that are not yet healthy can be evicted only if the guarded applica
 AlwaysAllow
 Running pods that are not yet healthy can be evicted regardless of whether the criteria in the pod disruption budget is met. This policy can help evict malfunctioning applications, such as ones with pods stuck in the `CrashLoopBackOff` state or failing to report the `Ready` status.
 
-<div class="note">
+> [!NOTE]
+> It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow` in the `PodDisruptionBudget` object to support the eviction of misbehaving applications during a node drain. The default behavior is to wait for the application pods to become healthy before the drain can proceed.
 
-It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow` in the `PodDisruptionBudget` object to support the eviction of misbehaving applications during a node drain. The default behavior is to wait for the application pods to become healthy before the drain can proceed.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a YAML file that defines a `PodDisruptionBudget` object and specify the unhealthy pod eviction policy:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `pod-disruption-budget.yaml` file**
+    <div class="title">
+
+    Example `pod-disruption-budget.yaml` file
 
     </div>
 
@@ -251,6 +271,8 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
       unhealthyPodEvictionPolicy: AlwaysAllow
     ```
 
+    </div>
+
     where:
 
     `spec.unhealthyPodEvictionPolicy`
@@ -264,9 +286,21 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
 
     With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 - [Unhealthy Pod Eviction Policy (Kubernetes documentation)](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy)
+
+</div>
 
 # Prevent pod removal using critical pods
 
@@ -275,6 +309,14 @@ You can mark pods on a worker node as *critical* to prevent OpenShift Container 
 There are several core components that are critical to a fully functional cluster, but, run on a regular cluster node rather than the master. A cluster might stop working properly if a critical add-on is evicted.
 
 The following procedure shows how to mark a pod as critical.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Pod` spec or edit existing pods to include the `system-cluster-critical` priority class:
 
@@ -300,6 +342,8 @@ The following procedure shows how to mark a pod as critical.
     ``` terminal
     $ oc create -f <file-name>.yaml
     ```
+
+</div>
 
 # Reduce pod timeouts when using persistent volumes with high file counts
 

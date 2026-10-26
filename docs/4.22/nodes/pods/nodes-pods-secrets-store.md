@@ -12,11 +12,21 @@ For more information about CSI inline volumes, see "CSI inline ephemeral volumes
 
 Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CSI inline ephemeral volumes](../../storage/container_storage_interface/ephemeral-storage-csi-inline.xml#ephemeral-storage-csi-inline)
 
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+</div>
 
 ## Secrets store providers
 
@@ -34,17 +44,11 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 - HashiCorp Vault
 
-<div class="important">
+> [!IMPORTANT]
+> IBM Z supports only HashiCorp Vault.
 
-IBM Z supports only HashiCorp Vault.
-
-</div>
-
-<div class="note">
-
-Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the "Red Hat third-party support policy".
-
-</div>
+> [!NOTE]
+> Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the "Red Hat third-party support policy".
 
 ## Automatic rotation
 
@@ -60,9 +64,27 @@ Applications consuming the secret data must watch for updates to the secrets.
 
 To enable OpenShift Container Platform to mount secrets from external secret management systems, install the Secrets Store CSI Driver Operator and create a `ClusterCSIDriver` instance.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the Secrets Store CSI Driver Operator:
 
@@ -105,6 +127,8 @@ To enable OpenShift Container Platform to mount secrets from external secret man
 
     3.  Click **Create**.
 
+</div>
+
 # Mount secrets from an external secrets store to a CSI volume
 
 After installing the Secrets Store CSI Driver Operator, you can mount secrets from your external secret store. Using an external secret store protects information that you do not want developers to have and can be more secure than secret objects.
@@ -125,6 +149,14 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secrets Manager to a CSI volume in OpenShift Container Platform. An external secret store can be more secure than `secret` objects.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the `jq` tool.
@@ -137,21 +169,30 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
 
 - You have configured AWS Secrets Manager to store the required secrets.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the AWS Secrets Manager provider:
 
     1.  Create a YAML file by using the following example configuration:
 
-        <div class="important">
+        > [!IMPORTANT]
+        > The AWS Secrets Manager provider for the Secrets Store CSI driver is an upstream provider.
+        >
+        > This configuration is modified from the configuration provided in the upstream [AWS documentation](https://github.com/aws/secrets-store-csi-driver-provider-aws#installing-the-aws-provider) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
 
-        The AWS Secrets Manager provider for the Secrets Store CSI driver is an upstream provider.
+        <div class="formalpara">
 
-        This configuration is modified from the configuration provided in the upstream [AWS documentation](https://github.com/aws/secrets-store-csi-driver-provider-aws#installing-the-aws-provider) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
+        <div class="title">
 
-        </div>
-
-        <div class="formalpara-title">
-
-        **Example `aws-provider.yaml` file**
+        Example `aws-provider.yaml` file
 
         </div>
 
@@ -247,6 +288,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
               nodeSelector:
                 kubernetes.io/os: linux
         ```
+
+        </div>
 
     2.  Grant privileged access to the `csi-secrets-store-provider-aws` service account by running the following command:
 
@@ -299,15 +342,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
         $ oc get --raw=/.well-known/openid-configuration | jq -r '.issuer'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         https://<oidc_provider_name>
         ```
+
+        </div>
 
         Copy the OIDC provider name `<oidc_provider_name>` from the output to use in the next step.
 
@@ -320,9 +367,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
             --identity-provider-arn arn:aws:iam::<aws_account_id>:oidc-provider/<oidc_provider_name> --output-dir=<output_dir_name>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -331,6 +380,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
         2023/05/15 18:10:34 Saved credentials configuration to: credrequests-ccoctl-output/manifests/my-namespace-aws-creds-credentials.yaml
         2023/05/15 18:10:35 Updated Role policy for Role my-role-my-namespace-aws-creds
         ```
+
+        </div>
 
         Copy the `<aws_role_arn>` from the output to use in the next step. For example, `arn:aws:iam::<aws_account_id>:role/my-role-my-namespace-aws-creds`.
 
@@ -344,9 +395,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
 
     1.  Create a YAML file that defines the `SecretProviderClass` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `secret-provider-class-aws.yaml`**
+        <div class="title">
+
+        Example `secret-provider-class-aws.yaml`
 
         </div>
 
@@ -363,6 +416,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
               - objectName: "testSecret"
                 objectType: "secretsmanager"
         ```
+
+        </div>
 
         where:
 
@@ -388,9 +443,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
 
     1.  Create a YAML file that defines the `Deployment` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `deployment.yaml`**
+        <div class="title">
+
+        Example `deployment.yaml`
 
         </div>
 
@@ -430,6 +487,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
                       secretProviderClass: "my-aws-provider"
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -447,6 +506,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
         $ oc create -f deployment.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that you can access the secrets from AWS Secrets Manager in the pod volume mount:
 
   1.  List the secrets in the pod mount by running the following command:
@@ -455,9 +524,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
       $ oc exec my-aws-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -465,15 +536,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
       testSecret
       ```
 
+      </div>
+
   2.  View a secret in the pod mount by running the following command:
 
       ``` terminal
       $ oc exec my-aws-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -481,9 +556,21 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
       <secret_value>
       ```
 
+      </div>
+
+</div>
+
 ## Mount secrets from AWS Systems Manager Parameter Store
 
 You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Systems Manager Parameter Store to a CSI volume in OpenShift Container Platform. An external secret store can be more secure than `secret` objects.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -497,21 +584,30 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
 
 - You have configured AWS Systems Manager Parameter Store to store the required secrets.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the AWS Systems Manager Parameter Store provider:
 
     1.  Create a YAML file by using the following example configuration:
 
-        <div class="important">
+        > [!IMPORTANT]
+        > The AWS Systems Manager Parameter Store provider for the Secrets Store CSI driver is an upstream provider.
+        >
+        > This configuration is modified from the configuration provided in the upstream [AWS documentation](https://github.com/aws/secrets-store-csi-driver-provider-aws#installing-the-aws-provider) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
 
-        The AWS Systems Manager Parameter Store provider for the Secrets Store CSI driver is an upstream provider.
+        <div class="formalpara">
 
-        This configuration is modified from the configuration provided in the upstream [AWS documentation](https://github.com/aws/secrets-store-csi-driver-provider-aws#installing-the-aws-provider) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
+        <div class="title">
 
-        </div>
-
-        <div class="formalpara-title">
-
-        **Example `aws-provider.yaml` file**
+        Example `aws-provider.yaml` file
 
         </div>
 
@@ -608,6 +704,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
                 kubernetes.io/os: linux
         ```
 
+        </div>
+
     2.  Grant privileged access to the `csi-secrets-store-provider-aws` service account by running the following command:
 
         ``` terminal
@@ -659,15 +757,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
         $ oc get --raw=/.well-known/openid-configuration | jq -r '.issuer'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         https://<oidc_provider_name>
         ```
+
+        </div>
 
         Copy the OIDC provider name `<oidc_provider_name>` from the output to use in the next step.
 
@@ -680,9 +782,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
             --identity-provider-arn arn:aws:iam::<aws_account_id>:oidc-provider/<oidc_provider_name> --output-dir=<output_dir_name>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -691,6 +795,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
         2023/05/15 18:10:34 Saved credentials configuration to: credrequests-ccoctl-output/manifests/my-namespace-aws-creds-credentials.yaml
         2023/05/15 18:10:35 Updated Role policy for Role my-role-my-namespace-aws-creds
         ```
+
+        </div>
 
         Copy the `<aws_role_arn>` from the output to use in the next step. For example, `arn:aws:iam::<aws_account_id>:role/my-role-my-namespace-aws-creds`.
 
@@ -704,9 +810,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
 
     1.  Create a YAML file that defines the `SecretProviderClass` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `secret-provider-class-aws.yaml`**
+        <div class="title">
+
+        Example `secret-provider-class-aws.yaml`
 
         </div>
 
@@ -723,6 +831,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
               - objectName: "testParameter"
                 objectType: "ssmparameter"
         ```
+
+        </div>
 
         where:
 
@@ -748,9 +858,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
 
     1.  Create a YAML file that defines the `Deployment` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `deployment.yaml`**
+        <div class="title">
+
+        Example `deployment.yaml`
 
         </div>
 
@@ -790,6 +902,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
                       secretProviderClass: "my-aws-provider"
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -807,6 +921,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
         $ oc create -f deployment.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that you can access the secrets from AWS Systems Manager Parameter Store in the pod volume mount:
 
   1.  List the secrets in the pod mount by running the following command:
@@ -815,9 +939,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
       $ oc exec my-aws-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -825,15 +951,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
       testParameter
       ```
 
+      </div>
+
   2.  View a secret in the pod mount by running the following command:
 
       ``` terminal
       $ oc exec my-aws-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -841,9 +971,21 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
       <secret_value>
       ```
 
+      </div>
+
+</div>
+
 ## Mount secrets from Azure Key Vault
 
 You can use the Secrets Store CSI Driver Operator to mount secrets from Microsoft Azure Key Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your have installed a cluster on Azure.
 
@@ -855,21 +997,30 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
 
 - You have configured Azure Key Vault to store the required secrets.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the Azure Key Vault provider:
 
     1.  Create a YAML file named `azure-provider.yaml` that defines the `ServiceAccount` resource configuration. See the following example configuration:
 
-        <div class="important">
+        > [!IMPORTANT]
+        > The Azure Key Vault provider for the Secrets Store CSI driver is an upstream provider.
+        >
+        > This configuration is modified from the configuration provided in the upstream [Azure documentation](https://azure.github.io/secrets-store-csi-driver-provider-azure/docs/getting-started/installation/) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
 
-        The Azure Key Vault provider for the Secrets Store CSI driver is an upstream provider.
+        <div class="formalpara">
 
-        This configuration is modified from the configuration provided in the upstream [Azure documentation](https://azure.github.io/secrets-store-csi-driver-provider-azure/docs/getting-started/installation/) so that it works properly with OpenShift Container Platform. Changes to this configuration might impact functionality.
+        <div class="title">
 
-        </div>
-
-        <div class="formalpara-title">
-
-        **Example `azure-provider.yaml` file**
+        Example `azure-provider.yaml` file
 
         </div>
 
@@ -985,6 +1136,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
                 kubernetes.io/os: linux
         ```
 
+        </div>
+
     2.  Grant privileged access to the `csi-secrets-store-provider-azure` service account by running the following command:
 
         ``` terminal
@@ -1027,9 +1180,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
 
     1.  Create a YAML file that defines the `SecretProviderClass` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `secret-provider-class-azure.yaml`**
+        <div class="title">
+
+        Example `secret-provider-class-azure.yaml`
 
         </div>
 
@@ -1053,6 +1208,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
                   objectType: secret
             tenantId: "tid"
         ```
+
+        </div>
 
         where:
 
@@ -1078,9 +1235,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
 
     1.  Create a YAML file that defines the `Deployment` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `deployment.yaml`**
+        <div class="title">
+
+        Example `deployment.yaml`
 
         </div>
 
@@ -1121,6 +1280,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
                       name: secrets-store-creds
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -1141,6 +1302,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
         $ oc create -f deployment.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that you can access the secrets from Azure Key Vault in the pod volume mount:
 
   1.  List the secrets in the pod mount by running the following command:
@@ -1149,9 +1320,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
       $ oc exec my-azure-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1159,15 +1332,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
       secret1
       ```
 
+      </div>
+
   2.  View a secret in the pod mount by running the following command:
 
       ``` terminal
       $ oc exec my-azure-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/secret1
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1175,9 +1352,21 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
       my-secret-value
       ```
 
+      </div>
+
+</div>
+
 ## Mount secrets from Google Secret Manager
 
 You can use the Secrets Store CSI Driver Operator to mount secrets from Google Secret Manager to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your have installed a cluster on Google Cloud.
 
@@ -1189,13 +1378,25 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
 
 - You have created a service account key named `key.json` from your Google Cloud service account.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the Google Secret Manager provider:
 
     1.  Create a YAML file Create a YAML file named `gcp-provider.yaml` that defines the `ServiceAccount` resource configuration. See the following example configuration:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `gcp-provider.yaml` file**
+        <div class="title">
+
+        Example `gcp-provider.yaml` file
 
         </div>
 
@@ -1313,6 +1514,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
                 kubernetes.io/os: linux
         ```
 
+        </div>
+
     2.  Grant privileged access to the `csi-secrets-store-provider-gcp` service account by running the following command:
 
         ``` terminal
@@ -1363,9 +1566,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
 
     1.  Create a YAML file that defines the `SecretProviderClass` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `secret-provider-class-gcp.yaml`**
+        <div class="title">
+
+        Example `secret-provider-class-gcp.yaml`
 
         </div>
 
@@ -1382,6 +1587,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
               - resourceName: "projects/my-project/secrets/testsecret1/versions/1"
                 path: "testsecret1.txt"
         ```
+
+        </div>
 
         where:
 
@@ -1407,9 +1614,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
 
     1.  Create a YAML file that defines the `Deployment` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `deployment.yaml`**
+        <div class="title">
+
+        Example `deployment.yaml`
 
         </div>
 
@@ -1451,6 +1660,8 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
                       name: secrets-store-creds
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -1474,6 +1685,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
         $ oc create -f deployment.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that you can access the secrets from Google Secret Manager in the pod volume mount:
 
   1.  List the secrets in the pod mount by running the following command:
@@ -1482,9 +1703,11 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
       $ oc exec my-gcp-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1492,15 +1715,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
       testsecret1
       ```
 
+      </div>
+
   2.  View a secret in the pod mount by running the following command:
 
       ``` terminal
       $ oc exec my-gcp-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testsecret1
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1508,19 +1735,28 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
       <secret_value>
       ```
 
+      </div>
+
+</div>
+
 ## Mount secrets from HashiCorp Vault
 
 You can use the Secrets Store CSI Driver Operator to mount secrets from HashiCorp Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
-<div class="important">
+> [!IMPORTANT]
+> Mounting secrets from HashiCorp Vault by using the Secrets Store CSI Driver Operator has been tested with the following cloud providers:
+>
+> - Amazon Web Services (AWS)
+>
+> - Microsoft Azure
+>
+> Other cloud providers might work, but have not been tested yet. Additional cloud providers might be tested in the future.
 
-Mounting secrets from HashiCorp Vault by using the Secrets Store CSI Driver Operator has been tested with the following cloud providers:
+<div>
 
-- Amazon Web Services (AWS)
+<div class="title">
 
-- Microsoft Azure
-
-Other cloud providers might work, but have not been tested yet. Additional cloud providers might be tested in the future.
+Prerequisites
 
 </div>
 
@@ -1529,6 +1765,16 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
 - You have installed the Secrets Store CSI Driver Operator. See "Installing the Secrets Store CSI driver" for instructions.
 
 - You have installed Helm.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the HashiCorp Helm repository by running the following command:
 
@@ -1637,9 +1883,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc get pods -n vault
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1650,6 +1898,8 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         vault-csi-provider-bd6hp   1/2     Running   0          4s
         vault-csi-provider-smlv7   1/2     Running   0          5s
         ```
+
+        </div>
 
 4.  Configure HashiCorp Vault to store the required secrets:
 
@@ -1665,9 +1915,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc exec vault-0 --namespace=vault -- vault kv get secret/example1
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1690,6 +1942,8 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         testSecret1    my-secret-value
         ```
 
+        </div>
+
 5.  Configure Vault to use Kubernetes authentication:
 
     1.  Enable the Kubernetes auth method by running the following command:
@@ -1698,15 +1952,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc exec vault-0 --namespace=vault -- vault auth enable kubernetes
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         Success! Enabled kubernetes auth method at: kubernetes/
         ```
+
+        </div>
 
     2.  Configure the Kubernetes auth method:
 
@@ -1732,15 +1990,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
               kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
             ```
 
-            <div class="formalpara-title">
+            <div class="formalpara">
 
-            **Example output**
+            <div class="title">
+
+            Example output
 
             </div>
 
             ``` terminal
             Success! Data written to: auth/kubernetes/config
             ```
+
+            </div>
 
     3.  Create a policy for the application by running the following command:
 
@@ -1752,15 +2014,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
           EOF
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         Success! Uploaded policy: csi
         ```
+
+        </div>
 
     4.  Create an authentication role to access the application by running the following command:
 
@@ -1772,9 +2038,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
           ttl=20m
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1782,13 +2050,17 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         Success! Data written to: auth/kubernetes/role/csi
         ```
 
+        </div>
+
 6.  Create a secret provider class to define your secrets store provider:
 
     1.  Create a YAML file that defines the `SecretProviderClass` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `secret-provider-class-vault.yaml`**
+        <div class="title">
+
+        Example `secret-provider-class-vault.yaml`
 
         </div>
 
@@ -1808,6 +2080,8 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
                 objectName: "testSecret1"
                 secretKey: "testSecret1"
         ```
+
+        </div>
 
         where:
 
@@ -1833,9 +2107,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
 
     1.  Create a YAML file that defines the `Deployment` object:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `deployment.yaml`**
+        <div class="title">
+
+        Example `deployment.yaml`
 
         </div>
 
@@ -1878,6 +2154,8 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
                       secretProviderClass: "my-vault-provider"
         ```
 
+        </div>
+
         where:
 
         `metadata.name`
@@ -1895,15 +2173,27 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc create -f deployment.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that all of the `vault` pods are running properly by running the following command:
 
   ``` terminal
   $ oc get pods -n vault
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1915,15 +2205,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
   vault-csi-provider-smlv7   2/2     Running   0          19m
   ```
 
+  </div>
+
 - Verify that all of the `secrets-store-csi-driver` pods are running by running the following command:
 
   ``` terminal
   $ oc get pods -n openshift-cluster-csi-drivers | grep -E "secrets"
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1937,6 +2231,8 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
   secrets-store-csi-driver-operator-84bd699478-fpxrw   1/1     Running   0             47m
   ```
 
+  </div>
+
 - Verify that you can access the secrets from your HashiCorp Vault in the pod volume mount:
 
   1.  List the secrets in the pod mount by running the following command:
@@ -1945,9 +2241,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
       $ oc exec busybox-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1955,15 +2253,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
       testSecret1
       ```
 
+      </div>
+
   2.  View a secret in the pod mount by running the following command:
 
       ``` terminal
       $ oc exec busybox-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret1
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -1971,21 +2273,30 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
       my-secret-value
       ```
 
+      </div>
+
+</div>
+
 # Enable synchronization of mounted content as Kubernetes secrets
 
 You can enable a synchronization process that creates `secret` objects from the content on a mounted volume. Using secrets protects information that you do not want developers to have.
 
 An example where you might want to enable synchronization is to use an environment variable in your deployment to reference the Kubernetes secret.
 
-<div class="warning">
-
-Do not enable synchronization if you do not want to store your secrets on your OpenShift Container Platform cluster and in etcd. Enable this functionality only if you require it, such as when you want to use environment variables to refer to the secret.
-
-</div>
+> [!WARNING]
+> Do not enable synchronization if you do not want to store your secrets on your OpenShift Container Platform cluster and in etcd. Enable this functionality only if you require it, such as when you want to use environment variables to refer to the secret.
 
 If you enable synchronization, the secrets from the mounted volume are synchronized as Kubernetes secrets after you start a pod that mounts the secrets.
 
 The synchronized Kubernetes secret is deleted when all pods that mounted the content are deleted.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Secrets Store CSI Driver Operator.
 
@@ -1994,6 +2305,16 @@ The synchronized Kubernetes secret is deleted when all pods that mounted the con
 - You have created the secret provider class.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `SecretProviderClass` resource by running the following command:
 
@@ -2056,11 +2377,21 @@ The synchronized Kubernetes secret is deleted when all pods that mounted the con
 
 3.  Save the file to apply the changes.
 
+</div>
+
 # View the status of secrets in the pod volume mount
 
 You can view detailed information of the secrets, including the versions, in the pod volume mount. You can use this information to help you confirm that secrets from your external store are active within the pod environment.
 
 The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` resource in the same namespace as the pod. You can review this resource to see detailed information, including versions, about the secrets in the pod volume mount.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Secrets Store CSI Driver Operator.
 
@@ -2072,7 +2403,15 @@ The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` r
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View detailed information about the secrets in a pod volume mount by running the following command:
 
@@ -2082,9 +2421,11 @@ The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` r
 
   Replace `<secret_provider_class_pod_status_name>` with the name of the secret provider class pod status object is in the format of `<pod_name>-<namespace>-<secret_provider_class_name>`.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -2102,13 +2443,35 @@ The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` r
     targetPath: /var/lib/kubelet/pods/f0d49c1e-c87a-4beb-888f-37798456a3e7/volumes/kubernetes.io~csi/secrets-store-inline/mount
   ```
 
+  </div>
+
+</div>
+
 # Uninstall the Secrets Store CSI Driver Operator
 
 To remove the Secrets Store CSI Driver Operator and free cluster resources, uninstall the Operator after stopping applications and removing the CSI driver.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop all application pods that use the `secrets-store.csi.k8s.io` provider.
 
@@ -2126,11 +2489,8 @@ To remove the Secrets Store CSI Driver Operator and free cluster resources, unin
 
 5.  Uninstall the Secrets Store CSI Driver Operator:
 
-    <div class="note">
-
-    Before you can uninstall the Operator, you must remove the CSI driver first.
-
-    </div>
+    > [!NOTE]
+    > Before you can uninstall the Operator, you must remove the CSI driver first.
 
     1.  Click **Ecosystem** → **Installed Operators**.
 
@@ -2141,6 +2501,8 @@ To remove the Secrets Store CSI Driver Operator and free cluster resources, unin
     4.  When prompted on the **Uninstall Operator** window, click the **Uninstall** button to remove the Operator from the namespace. Any applications deployed by the Operator on the cluster need to be cleaned up manually.
 
         After uninstalling, the Secrets Store CSI Driver Operator is no longer listed in the **Installed Operators** section of the web console.
+
+</div>
 
 # Additional resources
 

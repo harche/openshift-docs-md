@@ -10,11 +10,8 @@ Edge termination encrypts client traffic to the gateway but allows unencrypted t
 Re-encrypt termination
 Re-encrypt termination encrypts traffic from the client to the gateway, and then re-encrypts it to the destination service. This mode allows the gateway to inspect payloads to efficiently route traffic or block unauthorized access without eliminating backend encryption.
 
-<div class="important">
-
-OpenShift Container Platform does not support passthrough termination for Gateway API. Passthrough termination provides direct traffic encryption from the client to the service, and is only supported in traditional OpenShift Container Platform routes.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform does not support passthrough termination for Gateway API. Passthrough termination provides direct traffic encryption from the client to the service, and is only supported in traditional OpenShift Container Platform routes.
 
 # Securing client connections with edge TLS termination
 
@@ -22,13 +19,28 @@ To secure traffic from clients to your gateway, configure a listener with the `T
 
 This configuration terminates encryption at the gateway for `HTTPRoute` custom resource (CR) traffic that targets the listener, and forwards unencrypted traffic to the destination service. You must have both an `HTTPRoute` CR and a gateway listener configured with intersecting hostnames for edge termination to successfully connect.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created an `HTTPRoute` CR that references your gateway. The hostnames defined in this route must match or intersect with the hostnames you plan to configure on your gateway listeners.
 
 - You created a `Secret` resource containing your TLS certificate and key in the same namespace as your gateway or in a namespace permitted by a `ReferenceGrant` CR.
 
-<div class="important">
+</div>
 
-The configuration examples in this procedure use `openshift-default` as the `gatewayClassName` value. When creating your `Gateway` CR, ensure that the `gatewayClassName` field aligns with the `GatewayClass` CR in your cluster configuration.
+> [!IMPORTANT]
+> The configuration examples in this procedure use `openshift-default` as the `gatewayClassName` value. When creating your `Gateway` CR, ensure that the `gatewayClassName` field aligns with the `GatewayClass` CR in your cluster configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -154,7 +166,15 @@ The configuration examples in this procedure use `openshift-default` as the `gat
 
     Unlike standard OpenShift Container Platform routes that use namespace-wide annotations for cross-namespace permissions, Gateway API uses the `ReferenceGrant` CR to authorize access. This `ReferenceGrant` CR gives access from the `Gateway` CR in one namespace to the `Secret` object in another namespace.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the listener conditions to verify that the `Gateway` CR is successfully configured and listening on port 443. The following example checks the `tls-basic` sample gateway:
 
@@ -162,9 +182,11 @@ The configuration examples in this procedure use `openshift-default` as the `gat
   $ oc get gateway tls-basic -n openshift-ingress -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -191,17 +213,18 @@ The configuration examples in this procedure use `openshift-default` as the `gat
         kind: HTTPRoute
   ```
 
+  </div>
+
+</div>
+
 # About backend TLS validation
 
 To ensure secure end-to-end encryption, you can use a `BackendTLSPolicy` custom resource (CR) to validate your backend certificates. This validation ensures that your `Gateway` CR securely connects to the correct destination pod.
 
 To use re-encrypt termination in Gateway API, you must combine listener edge termination with a `BackendTLSPolicy` CR attached to the service.
 
-<div class="important">
-
-Re-encrypt for `HTTPRoutes` CRs requires a listener configured with edge termination on the `Gateway` CR and a `BackendTLSPolicy` CR that targets the service.
-
-</div>
+> [!IMPORTANT]
+> Re-encrypt for `HTTPRoutes` CRs requires a listener configured with edge termination on the `Gateway` CR and a `BackendTLSPolicy` CR that targets the service.
 
 A `BackendTLSPolicy` CR describes up to 16 targets in the `targetRefs` parameter. The policy also determines how the backend certificate should be validated.
 
@@ -217,15 +240,20 @@ The policy also specifies a Server Name Indication (SNI) `hostname` parameter th
 
 You can use either SNIs or SANs depending on the certificate served by the targeted backend pods. If the pod certificate uses SANs, the `BackendTLSPolicy` CR must have at least one matching value in the `subjectAltNames` parameter to successfully connect using TLS. Each entry in the `subjectAltNames` parameter must include a `type` parameter. You can set the `type` value to either `"hostname"` or Uniform Resource Identifier (`"URI"`). You can specify the SAN itself as a domain name, URI, or a combination of both.
 
-<div class="important">
-
-Gateway API does not automatically evaluate the value of the `hostname` parameter as a SAN. If your certificate requires the hostname to be validated as a SAN, you must explicitly add it as a value in the `subjectAltNames` parameter.
-
-</div>
+> [!IMPORTANT]
+> Gateway API does not automatically evaluate the value of the `hostname` parameter as a SAN. If your certificate requires the hostname to be validated as a SAN, you must explicitly add it as a value in the `subjectAltNames` parameter.
 
 # Configuring re-encrypt termination with a BackendTLSPolicy
 
 To meet strict security requirements, use re-encrypt TLS termination to encrypt traffic from the gateway to your backend services. This ensures end-to-end encryption while allowing gateway payload inspection to route traffic efficiently.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created an edge-terminated listener on your gateway.
 
@@ -235,15 +263,19 @@ To meet strict security requirements, use re-encrypt TLS termination to encrypt 
 
 - If you are using explicit CA certificates, you created a `ConfigMap` object containing the public CA certificate that signed the certificate of your backend service.
 
-<div class="important">
-
-Re-encrypt for `HTTPRoutes` CRs requires a listener configured with edge termination on the `Gateway` CR and a `BackendTLSPolicy` CR that targets the service.
-
 </div>
 
-<div class="note">
+> [!IMPORTANT]
+> Re-encrypt for `HTTPRoutes` CRs requires a listener configured with edge termination on the `Gateway` CR and a `BackendTLSPolicy` CR that targets the service.
 
-The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` CR unless you configure a `ReferenceGrant` CR. The `HTTPRoute` CR does not need to reside in the same namespace as your `Gateway` CR, provided the `Gateway` CR is configured to allow routes from other namespaces. Additionally, if you choose to specify a `hostname` parameter in the policy, its value must match the hostname configured in your `HTTPRoute` CR.
+> [!NOTE]
+> The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` CR unless you configure a `ReferenceGrant` CR. The `HTTPRoute` CR does not need to reside in the same namespace as your `Gateway` CR, provided the `Gateway` CR is configured to allow routes from other namespaces. Additionally, if you choose to specify a `hostname` parameter in the policy, its value must match the hostname configured in your `HTTPRoute` CR.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -293,11 +325,8 @@ The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` 
 
     - To configure re-encrypt termination for a target service that exposes multiple ports and requires different policies, explicitly specify the port name using the `sectionName` parameter. The following example demonstrates this setup within your `targetRefs` configuration:
 
-      <div class="important">
-
-      If you omit the `sectionName` parameter when multiple references target the same service, the `BackendTLSPolicy` CR fails validation or results in a `Conflicted` status.
-
-      </div>
+      > [!IMPORTANT]
+      > If you omit the `sectionName` parameter when multiple references target the same service, the `BackendTLSPolicy` CR fails validation or results in a `Conflicted` status.
 
       ``` yaml
       apiVersion: gateway.networking.k8s.io/v1
@@ -322,15 +351,27 @@ The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` 
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `BackendTLSPolicy` CR was accepted by the implementation controller by checking its status. The following example checks the `tls-upstream-dev` sample policy:
 
   ``` terminal
   $ oc get backendtlspolicy tls-upstream-dev -n my-application -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -345,9 +386,21 @@ The `BackendTLSPolicy` CR must reside in the same namespace as your `HTTPRoute` 
       type: Accepted
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - If the `Accepted` status is set to `False`, check the `reason` parameter. Implementation-specific values, such as `InvalidCACertificateRef` or `Pending`, indicate why the re-encryption failed.
+
+</div>
 
 # Additional resources
 

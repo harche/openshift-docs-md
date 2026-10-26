@@ -4,19 +4,21 @@ Before working through the example, verify that the plugin is working by followi
 
 There are different customizations you can make to the OpenShift Container Platform web console. The following procedure adds a tab to the **Pod details** page as an example extension to your plugin.
 
-<div class="note">
+> [!NOTE]
+> The OpenShift Container Platform web console runs in a container connected to the cluster you have logged into. See "Dynamic plugin development" for information to test the plugin before creating your own.
 
-The OpenShift Container Platform web console runs in a container connected to the cluster you have logged into. See "Dynamic plugin development" for information to test the plugin before creating your own.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Visit the [`console-plugin-template`](https://github.com/openshift/console-plugin-template) repository containing a template for creating plugins in a new tab.
 
-    <div class="important">
-
-    Custom plugin code is not supported by Red Hat. Only [Cooperative community support](https://access.redhat.com/solutions/5893251) is available for your plugin.
-
-    </div>
+    > [!IMPORTANT]
+    > Custom plugin code is not supported by Red Hat. Only [Cooperative community support](https://access.redhat.com/solutions/5893251) is available for your plugin.
 
 2.  Create a GitHub repository for the template by clicking **Use this template** → ***Create new repository***.
 
@@ -102,13 +104,22 @@ The OpenShift Container Platform web console runs in a container connected to th
     $ helm upgrade -i  my-plugin charts/openshift-console-plugin -n my-plugin-namespace --create-namespace --set plugin.image=my-plugin-image-location
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > For more information on deploying your plugin on a cluster, see "Deploy your plugin on a cluster".
 
-    For more information on deploying your plugin on a cluster, see "Deploy your plugin on a cluster".
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Visit a **Pod** page to view the added tab.
+
+</div>
 
 # Additional resources
 

@@ -1,6 +1,6 @@
 Use the NVIDIA GPU operator to create virtual GPUs (vGPUs) and assign them to virtual machines (VMs) in OpenShift Virtualization.
 
-# About using virtual GPUs with OpenShift Virtualization
+# Virtual GPUs in OpenShift Virtualization
 
 You can create vGPUs for your virtual machines (VMs) using supported GPU cards. Refer to your hardware vendor’s documentation for functionality and support details.
 
@@ -8,23 +8,38 @@ You can use the NVIDIA GPU Operator to manage vGPUs for your virtual machines (V
 
 A mediated device is a physical device that is divided into one or more virtual devices. vGPUs are a type of mediated device (mdev) where the performance of the physical GPU is divided among the virtual devices. You can assign mediated devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU. Some GPUs do not support multiple guests.
 
-## Adding kernel arguments to enable the IOMMU driver
+## Add kernel arguments to enable the IOMMU driver
 
 You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices. To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have cluster administrator permissions.
 
 - Your CPU hardware is Intel or AMD.
 
-  <div class="note">
-
-  Enabling IOMMU is not required on `s390x` architecture.
-
-  </div>
+  > [!NOTE]
+  > Enabling IOMMU is not required on `s390x` architecture.
 
 - You enabled Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `MachineConfig` object that identifies the kernel argument. The following example shows a kernel argument for an Intel CPU.
 
@@ -56,7 +71,15 @@ You must enable the Input-Output Memory Management Unit (IOMMU) driver before yo
     $ oc create -f 100-worker-kernel-arg-iommu.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the new `MachineConfig` object was added by entering the following command and observing the output:
 
@@ -95,15 +118,22 @@ You must enable the Input-Output Memory Management Unit (IOMMU) driver before yo
       AMD: [ 0.000000] AMD-Vi: IOMMU Initialized
       ```
 
+</div>
+
 # Using the NVIDIA GPU Operator
 
 You can use the NVIDIA GPU Operator to provision worker nodes for running GPU-accelerated virtual machines (VMs) in OpenShift Virtualization.
 
 The NVIDIA GPU Operator manages NVIDIA GPU resources in an OpenShift Container Platform cluster and automates tasks when preparing nodes for GPU workloads. The NVIDIA GPU Operator can also facilitate provisioning complex artificial intelligence and machine learning (AI/ML) workloads.
 
-<div class="note">
+> [!NOTE]
+> You can get support for the NVIDIA GPU Operator through NVIDIA. For more information, see "Obtaining Support from NVIDIA" in the Red Hat Knowledgebase.
 
-You can get support for the NVIDIA GPU Operator through NVIDIA. For more information, see "Obtaining Support from NVIDIA" in the Red Hat Knowledgebase.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -173,9 +203,19 @@ You can get support for the NVIDIA GPU Operator through NVIDIA. For more informa
 
 2.  Use the NVIDIA GPU Operator to configure mediated devices. For more information see [NVIDIA GPU Operator with OpenShift Virtualization](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html).
 
-# Labeling nodes with a MIG-backed vGPU profile
+</div>
+
+# Label nodes with a MIG-backed vGPU profile
 
 If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a MIG-backed vGPU instance instead of time-sliced vGPU instances. When you use MIG, you give a partition of dedicated hardware to selected VMs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured vGPU support.
 
@@ -183,7 +223,15 @@ If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a 
 
 - You are using the NVIDIA AI Enterprise (AIE) vGPU Manager image.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Label the node with the name of the MIG-backed vGPU profile:
 
@@ -201,9 +249,19 @@ If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a 
     $ oc label node worker_1 --overwrite nvidia.com/vgpu.config=A30-1-6C
     ```
 
-# Creating and exposing mediated devices
+</div>
+
+# Create and expose mediated devices
 
 As an administrator, you can create mediated devices and expose them to the cluster by editing the `HyperConverged` custom resource (CR). Before you edit the CR, explore a worker node to find the configuration values that are specific to your hardware devices.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -212,6 +270,16 @@ As an administrator, you can create mediated devices and expose them to the clus
 - If your hardware vendor provides drivers, you installed them on the nodes where you want to create mediated devices.
 
   - If you use NVIDIA cards, you [installed the NVIDIA GRID driver](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify the name selector and resource name values for the mediated devices by exploring a worker node:
 
@@ -308,6 +376,16 @@ As an administrator, you can create mediated devices and expose them to the clus
 
 4.  Save your changes and exit the editor.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Confirm that the virtual GPU is attached to the node by running the following command:
 
   ``` terminal
@@ -317,11 +395,31 @@ As an administrator, you can create mediated devices and expose them to the clus
     | with_entries(select(.value != "0"))'
   ```
 
-# Removing mediated devices from the cluster
+</div>
+
+# Remove mediated devices from the cluster
 
 As a cluster administrator you can remove mediated devices from the cluster so that you can reallocate GPU hardware. To remove a mediated device from the cluster, delete the information for that device from the `HyperConverged` CR.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
@@ -350,15 +448,33 @@ As a cluster administrator you can remove mediated devices from the cluster so t
 
 3.  Save your changes and exit the editor.
 
-# Assigning a vGPU to a VM by using the CLI
+</div>
 
-Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
+# Assign a vGPU to a VM by using the CLI
+
+After mediated devices are configured in the cluster, you can assign them to individual VMs so that VMs can access shared GPU resources.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The mediated device is configured in the `HyperConverged` custom resource.
 
 - The virtual machine (VM) is stopped.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Assign the mediated device to a VM by editing the `spec.domain.devices.gpus` stanza of the `VirtualMachine` manifest.
 
@@ -381,7 +497,15 @@ Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
 
   - `spec.template.spec.domain.devices.gpus.name` specifies a name to identify the device on the VM.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the device is available from the virtual machine, run the following command, substituting `<device_name>` with the `deviceName` value from the `VirtualMachine` manifest:
 
@@ -389,13 +513,20 @@ Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
   $ lspci -nnk | grep <device_name>
   ```
 
-# Assigning a vGPU to a VM by using the web console
+</div>
+
+# Assign a vGPU to a VM by using the web console
 
 You can assign virtual GPUs to virtual machines by using the OpenShift Container Platform web console.
 
-<div class="note">
+> [!NOTE]
+> You can add hardware devices to virtual machines created from customized templates or a YAML file. You cannot add devices to pre-supplied boot source templates for specific operating systems.
 
-You can add hardware devices to virtual machines created from customized templates or a YAML file. You cannot add devices to pre-supplied boot source templates for specific operating systems.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -404,6 +535,16 @@ You can add hardware devices to virtual machines created from customized templat
   - To view the devices that are connected to your cluster, click **Compute** → **Hardware Devices** from the side menu.
 
 - The VM is stopped.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Virtualization** → **VirtualMachines** from the side menu.
 
@@ -419,7 +560,19 @@ You can add hardware devices to virtual machines created from customized templat
 
 7.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To confirm that the devices were added to the VM, click the **YAML** tab and review the `VirtualMachine` configuration. Mediated devices are added to the `spec.domain.devices` stanza.
+
+</div>
 
 # Additional resources
 

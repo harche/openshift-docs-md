@@ -26,13 +26,28 @@ You can configure OAuth for the following supported identity providers:
 
 Adding any identity provider in the OAuth configuration removes the default `kubeadmin` user provider.
 
-<div class="note">
+> [!NOTE]
+> When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
 
-When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You created your hosted cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HostedCluster` custom resource (CR) on the management cluster by running the following command:
 
@@ -91,6 +106,8 @@ When you configure identity providers, you must configure at least one `NodePool
 
 3.  Save the file to apply the changes.
 
+</div>
+
 # Configure the OAuth server for a hosted cluster by using the web console
 
 You can configure the internal OAuth server for your hosted cluster by using the OpenShift Container Platform web console.
@@ -117,15 +134,30 @@ You can configure OAuth for the following supported identity providers:
 
 Adding any identity provider in the OAuth configuration removes the default `kubeadmin` user provider.
 
-<div class="note">
+> [!NOTE]
+> When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
 
-When you configure identity providers, you must configure at least one `NodePool` replica in your hosted cluster in advance. Traffic for DNS resolution is sent through the worker nodes. You do not need to configure the `NodePool` replicas in advance for the `htpasswd` and `request-header` identity providers.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You logged in as a user with `cluster-admin` privileges.
 
 - You created your hosted cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to **Home** → **API Explorer**.
 
@@ -183,17 +215,16 @@ When you configure identity providers, you must configure at least one `NodePool
 
 7.  Click **Save**.
 
+</div>
+
 # IAM roles assigned by using the CCO in a hosted cluster on AWS
 
 You can assign components Identity and Access Management (IAM) roles that provide short-term, limited-privilege security credentials by using the Cloud Credential Operator (CCO) in hosted clusters on Amazon Web Services (AWS).
 
 By default, the CCO runs in a hosted control plane.
 
-<div class="note">
-
-The CCO supports a manual mode only for hosted clusters on AWS. By default, hosted clusters are configured in a manual mode. The management cluster might use modes other than manual.
-
-</div>
+> [!NOTE]
+> The CCO supports a manual mode only for hosted clusters on AWS. By default, hosted clusters are configured in a manual mode. The management cluster might use modes other than manual.
 
 ## Enable Operators to support CCO-based workflows with AWS STS
 
@@ -201,9 +232,14 @@ As an Operator author designing your project to run on Operator Lifecycle Manage
 
 With this method, the Operator is responsible for and requires RBAC permissions for creating the `CredentialsRequest` object and reading the resulting `Secret` object.
 
-<div class="note">
+> [!NOTE]
+> By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
 
-By default, pods related to the Operator deployment mount a `serviceAccountToken` volume so that the service account token can be referenced in the resulting `Secret` object.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -213,13 +249,25 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
 - OLM-based Operator project
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Update your Operator project’s `ClusterServiceVersion` (CSV) object:
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `clusterPermissions` list**
+        <div class="title">
+
+        Example `clusterPermissions` list
 
         </div>
 
@@ -243,6 +291,8 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
                 - watch
         ```
 
+        </div>
+
     2.  Add the following annotation to claim support for this method of CCO-based workflow with AWS STS:
 
         ``` yaml
@@ -265,9 +315,11 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied. For example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `CredentialsRequest` object creation**
+        <div class="title">
+
+        Example `CredentialsRequest` object creation
 
         </div>
 
@@ -318,11 +370,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
         Alternatively, if you are starting from a `CredentialsRequest` object in YAML form (for example, as part of your Operator project code), you can handle it differently:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `CredentialsRequest` object creation in YAML form**
+        <div class="title">
+
+        Example `CredentialsRequest` object creation in YAML form
 
         </div>
 
@@ -384,17 +440,18 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        <div class="note">
-
-        Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
-
         </div>
+
+        > [!NOTE]
+        > Adding a `CredentialsRequest` object to the Operator bundle is not currently supported.
 
     3.  Add the role ARN and web identity token path to the credentials request and apply it during Operator initialization:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example applying `CredentialsRequest` object during Operator initialization**
+        <div class="title">
+
+        Example applying `CredentialsRequest` object during Operator initialization
 
         </div>
 
@@ -412,11 +469,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example wait for `Secret` object**
+        <div class="title">
+
+        Example wait for `Secret` object
 
         </div>
 
@@ -458,13 +519,17 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
         The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
     5.  Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example AWS configuration creation**
+        <div class="title">
+
+        Example AWS configuration creation
 
         </div>
 
@@ -490,19 +555,20 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        <div class="important">
-
-        The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
-
-        Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
-
         </div>
+
+        > [!IMPORTANT]
+        > The secret is assumed to exist, but your Operator code should wait and retry when using this secret to give time to the CCO to create the secret.
+        >
+        > Additionally, the wait period should eventually time out and warn users that the OpenShift Container Platform cluster version, and therefore the CCO, might be an earlier version that does not support the `CredentialsRequest` object workflow with STS detection. In such cases, instruct users that they must add a secret by using another method.
 
     6.  Configure the AWS SDK session, for example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example AWS SDK session configuration**
+        <div class="title">
+
+        Example AWS SDK session configuration
 
         </div>
 
@@ -517,11 +583,33 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
+        </div>
+
+</div>
+
 ## Verify the CCO installation in a hosted cluster on AWS
 
 You can verify that the Cloud Credential Operator (CCO) is running correctly in your hosted control plane.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You configured the hosted cluster on Amazon Web Services (AWS).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the CCO is configured in a manual mode in your hosted cluster by running the following command:
 
@@ -531,15 +619,19 @@ You can verify that the Cloud Credential Operator (CCO) is running correctly in 
       -o=jsonpath={.spec.credentialsMode}
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
     ``` terminal
     Manual
     ```
+
+    </div>
 
 2.  Verify that the value for the `serviceAccountIssuer` resource is not empty by running the following command:
 
@@ -548,15 +640,21 @@ You can verify that the Cloud Credential Operator (CCO) is running correctly in 
       -o jsonpath --template '{.spec.serviceAccountIssuer }'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     https://aos-hypershift-ci-oidc-29999.s3.us-east-2.amazonaws.com/hypershift-ci-29999
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

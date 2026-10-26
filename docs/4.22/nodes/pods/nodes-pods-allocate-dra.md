@@ -37,9 +37,11 @@ A device class is a category of devices that pods can claim. Some device drivers
 
 The following example `DeviceClass` object selects any device that is managed by the `driver.example.com` device driver:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example device class object**
+<div class="title">
+
+Example device class object
 
 </div>
 
@@ -55,6 +57,8 @@ spec:
         device.driver == "driver.example.com"
 ```
 
+</div>
+
 where:
 
 `spec.selectors`
@@ -65,13 +69,10 @@ The DRA driver on each node creates and manages *resource slices*, which describ
 
 A partitionable device is a single physical hardware device that can be split into smaller, logical instances, such as Multi-Instance GPUs, based on workload demands. By partitioning devices, you can safely and efficiently share expensive accelerators across multiple pods.
 
-<div class="important">
-
-Partitionable devices is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Partitionable devices is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 To allocate partitions, the DRA creates a *counter set*, which is a set of named *counters*. The counters represent the resources available on the physical device that are used by the logical devices advertised through DRA.
 
@@ -79,9 +80,11 @@ Logical devices can specify the `consumesCounters` list in a resource slice. Eac
 
 When a resource claim is created and used in a pod, OpenShift Container Platform uses the resource slices to find nodes that have the requested resources. After finding an eligible resource slice for the resource claim, the OpenShift Container Platform scheduler updates the resource claim with the allocation details, allocates resources to the resource claim, and schedules the pod onto a node that can access the resources.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource slice object for a device**
+<div class="title">
+
+Example resource slice object for a device
 
 </div>
 
@@ -115,6 +118,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.driver`
@@ -123,9 +128,11 @@ Specifies the name of the DRA driver, which you can specify in a device class.
 `spec.devices.attributes`
 Specifies a device that you can allocate by using a resource claim or resource claim template.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource slice object for a partitionable device**
+<div class="title">
+
+Example resource slice object for a partitionable device
 
 </div>
 
@@ -188,6 +195,8 @@ spec:
           value: 20Gi
 ```
 
+</div>
+
 where:
 
 `spec.driver`
@@ -216,9 +225,11 @@ You must specify either a request for a specific device that the scheduler must 
 
 The following example resource claim template contains two sub-requests. Of these sub-requests, only one is selected by the scheduler. The scheduler tries to satisfy the sub-requests in the order in which they are listed. A CEL expression is used inside the sub-request for selecting a device.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource claim template object**
+<div class="title">
+
+Example resource claim template object
 
 </div>
 
@@ -246,6 +257,8 @@ spec:
               expression: "device.attributes['driver.example.com'].profile == '3g.20gb'"
 ```
 
+</div>
+
 where:
 
 `spec.spec.devices.requests`
@@ -270,9 +283,11 @@ For the device request in a resource claim, you must specify either a list of on
 
 The following example resource claim uses a CEL expression to request one device in the `example-device-class` device class. Here, the `exactly` parameter indicates that a node with the specific requested device must be available before the scheduler can create the pod.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource claim object**
+<div class="title">
+
+Example resource claim object
 
 </div>
 
@@ -294,15 +309,19 @@ spec:
             expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
 ```
 
+</div>
+
 ## About DRA admin access
 
 When working with Dynamic Resource Allocation (DRA), as a cluster administrator you can gain privileged access to a device that is in use by other users, so that you can perform tasks such as monitoring the health and status of the device while ensuring that users can continue to use the device.
 
 To gain admin access, an administrator must create a resource claim or resource claim template with the `adminAccess: true` parameter in a namespace that includes the `resource.kubernetes.io/admin-access: "true"` label. Non-administrator users cannot access namespaces with this label.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example namespace with admin access label**
+<div class="title">
+
+Example namespace with admin access label
 
 </div>
 
@@ -315,11 +334,15 @@ metadata:
 # ...
 ```
 
+</div>
+
 In the following example, the administrator is granted access to the `2g-10gb` device:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example resource claim object with admin access**
+<div class="title">
+
+Example resource claim object with admin access
 
 </div>
 
@@ -341,6 +364,8 @@ spec:
             expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
 ```
 
+</div>
+
 where:
 
 `spec.devices.requests.exactly.adminAccess.true` or `spec.devices.requests.firstAvailable.adminAccess.true`
@@ -348,7 +373,17 @@ Specifies that the admin access mode is enabled for the specified device.
 
 For information on adding a resource claim to a pod, see "Adding resource claims to pods".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Adding resource claims to pods](../../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra-configure_nodes-pods-allocate-dra)
+
+</div>
 
 # Adding resource claims to pods
 
@@ -358,23 +393,30 @@ Resource claims can be used with multiple pods, but resource claim templates can
 
 The example in the following procedure creates a resource claim to schedule a pod on a node with the assign a specific GPU to and a resource claim to share a GPU between `container1` and `container2`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A Dynamic Resource Allocation (DRA) driver is installed. For more information on DRA, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
 
 - A resource slice has been created.
 
 - If your resource slice is allocating a partitioned device, you enabled the required Technology Preview features for your cluster by adding the `TechPreviewNoUpgrade` feature set to the `FeatureGate` CR named `cluster`. For information about enabling Feature Gates, see "Enabling features using feature gates".
 
-  <div class="warning">
-
-  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-  </div>
+  > [!WARNING]
+  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
 - A resource claim and/or resource claim template has been created.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example resource claim object**
+  <div class="title">
+
+  Example resource claim object
 
   </div>
 
@@ -396,9 +438,13 @@ The example in the following procedure creates a resource claim to schedule a po
               expression: "device.attributes['driver.example.com'].profile == '2g.10gb'"
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example resource claim template object**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example resource claim template object
 
   </div>
 
@@ -426,11 +472,25 @@ The example in the following procedure creates a resource claim to schedule a po
                 expression: "device.attributes['driver.example.com'].profile == '3g.20gb'"
   ```
 
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a pod by creating a YAML file similar to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod that is requesting resources**
+    <div class="title">
+
+    Example pod that is requesting resources
 
     </div>
 
@@ -470,6 +530,8 @@ The example in the following procedure creates a resource claim to schedule a po
         resourceClaimName: gpu-devices
     ```
 
+    </div>
+
     where:
 
     `spec.container.resource.claims`
@@ -485,6 +547,8 @@ The example in the following procedure creates a resource claim to schedule a po
     ```
 
     For more information on configuring pod resource requests, see ["Dynamic Resource Allocation"](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (Kubernetes documentation).
+
+</div>
 
 # Additional resources
 

@@ -1,10 +1,7 @@
 To run workloads across `x86_64` and ARM nodes, you can install an OpenShift Container Platform cluster on Amazon Web Services (AWS) with multi-architecture compute machine support.
 
-<div class="note">
-
-When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture.
-
-</div>
+> [!NOTE]
+> When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture.
 
 You can install an AWS cluster with the support for configuring multi-architecture compute machines. After installing the AWS cluster, you can add multi-architecture compute machines to the cluster in the following ways:
 
@@ -12,15 +9,20 @@ You can install an AWS cluster with the support for configuring multi-architectu
 
 - Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is the secondary architecture.
 
-<div class="note">
-
-Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
-
-</div>
+> [!NOTE]
+> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
 # Install a cluster with multi-architecture support
 
 You can install a cluster with multi-architecture support to use compute machines with different Central Processing Unit (CPU) architectures. Modifying your configuration file helps ensure your control plane and worker nodes deploy with the correct architecture.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -28,15 +30,27 @@ You can install a cluster with multi-architecture support to use compute machine
 
 - You downloaded the pull secret for your cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check that the `openshift-install` binary is using the `multi` payload by running the following command:
 
     ``` terminal
     $ ./openshift-install version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -48,13 +62,17 @@ You can install a cluster with multi-architecture support to use compute machine
     default architecture amd64
     ```
 
+    </div>
+
     The output must contain `release architecture multi` to indicate that the `openshift-install` binary is using the `multi` payload.
 
 2.  Update the `install-config.yaml` file to configure the architecture for the nodes.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `install-config.yaml` file with multi-architecture configuration**
+    <div class="title">
+
+    Sample `install-config.yaml` file with multi-architecture configuration
 
     </div>
 
@@ -75,6 +93,8 @@ You can install a cluster with multi-architecture support to use compute machine
     # ...
     ```
 
+    </div>
+
     where:
 
     `compute.architecture`
@@ -83,8 +103,20 @@ You can install a cluster with multi-architecture support to use compute machine
     `controlPlane.architecture`
     Specifies the control plane node architecture. You can set this field to either `arm64` or `amd64`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#installation-launching-installer_installing-aws-localzone)
 
 - [Scheduling workloads on clusters with multi-architecture compute machines](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-compute-managing.xml#scheduling-workloads-on-clusters-with-multi-architecture-compute-machines)
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
+
+</div>

@@ -12,9 +12,11 @@ Review the commands that developers can use to create, deploy, and manage applic
 
 Update the annotations on a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -40,13 +42,17 @@ Update the annotations on a resource
   oc annotate pods foo description-
 ```
 
+</div>
+
 ## oc api-resources
 
 Print the supported API resources on the server
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -70,13 +76,17 @@ Print the supported API resources on the server
   oc api-resources --api-group=rbac.authorization.k8s.io
 ```
 
+</div>
+
 ## oc api-versions
 
 Print the supported API versions on the server, in the form of "group/version"
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -85,13 +95,17 @@ Print the supported API versions on the server, in the form of "group/version"
   oc api-versions
 ```
 
+</div>
+
 ## oc apply
 
 Apply a configuration to a resource by file name or stdin
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -116,13 +130,17 @@ Apply a configuration to a resource by file name or stdin
   oc apply --prune -f manifest.yaml --all --prune-allowlist=core/v1/ConfigMap
 ```
 
+</div>
+
 ## oc apply edit-last-applied
 
 Edit latest last-applied-configuration annotations of a resource/object
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -134,13 +152,17 @@ Edit latest last-applied-configuration annotations of a resource/object
   oc apply edit-last-applied -f deploy.yaml -o json
 ```
 
+</div>
+
 ## oc apply set-last-applied
 
 Set the last-applied-configuration annotation on a live object to match the contents of a file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -155,13 +177,17 @@ Set the last-applied-configuration annotation on a live object to match the cont
   oc apply set-last-applied -f deploy.yaml --create-annotation=true
 ```
 
+</div>
+
 ## oc apply view-last-applied
 
 View the latest last-applied-configuration annotations of a resource/object
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -173,13 +199,17 @@ View the latest last-applied-configuration annotations of a resource/object
   oc apply view-last-applied -f deploy.yaml -o json
 ```
 
+</div>
+
 ## oc attach
 
 Attach to a running container
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -199,13 +229,17 @@ Attach to a running container
   oc attach rs/nginx
 ```
 
+</div>
+
 ## oc auth can-i
 
 Check whether an action is allowed
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -239,13 +273,17 @@ Check whether an action is allowed
   oc auth can-i --list --namespace=foo
 ```
 
+</div>
+
 ## oc auth reconcile
 
 Reconciles rules for RBAC role, role binding, cluster role, and cluster role binding objects
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -254,13 +292,17 @@ Reconciles rules for RBAC role, role binding, cluster role, and cluster role bin
   oc auth reconcile -f my-rbac-rules.yaml
 ```
 
+</div>
+
 ## oc auth whoami
 
 Experimental: Check self subject attributes
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -272,13 +314,17 @@ Experimental: Check self subject attributes
   oc auth whoami -o json
 ```
 
+</div>
+
 ## oc autoscale
 
 Autoscale a deployment config, deployment, replica set, stateful set, or replication controller
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -296,13 +342,17 @@ Autoscale a deployment config, deployment, replica set, stateful set, or replica
   oc autoscale deployment bar --min=3 --max=6 --cpu=60% --memory=70%
 ```
 
+</div>
+
 ## oc cancel-build
 
 Cancel running, pending, or new builds
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -323,13 +373,17 @@ Cancel running, pending, or new builds
   oc cancel-build bc/ruby-build --state=new
 ```
 
+</div>
+
 ## oc cluster-info
 
 Display cluster information
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -338,13 +392,17 @@ Display cluster information
   oc cluster-info
 ```
 
+</div>
+
 ## oc cluster-info dump
 
 Dump relevant information for debugging and diagnosis
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -362,13 +420,17 @@ Dump relevant information for debugging and diagnosis
   oc cluster-info dump --namespaces default,kube-system --output-directory=/path/to/cluster-state
 ```
 
+</div>
+
 ## oc completion
 
 Output shell completion code for the specified shell (bash, zsh, fish, or powershell)
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -419,13 +481,17 @@ Output shell completion code for the specified shell (bash, zsh, fish, or powers
   oc completion powershell >> $PROFILE
 ```
 
+</div>
+
 ## oc config current-context
 
 Display the current-context
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -434,13 +500,17 @@ Display the current-context
   oc config current-context
 ```
 
+</div>
+
 ## oc config delete-cluster
 
 Delete the specified cluster from the kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -449,13 +519,17 @@ Delete the specified cluster from the kubeconfig
   oc config delete-cluster minikube
 ```
 
+</div>
+
 ## oc config delete-context
 
 Delete the specified context from the kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -464,13 +538,17 @@ Delete the specified context from the kubeconfig
   oc config delete-context minikube
 ```
 
+</div>
+
 ## oc config delete-user
 
 Delete the specified user from the kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -479,13 +557,17 @@ Delete the specified user from the kubeconfig
   oc config delete-user minikube
 ```
 
+</div>
+
 ## oc config get-clusters
 
 Display clusters defined in the kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -494,13 +576,17 @@ Display clusters defined in the kubeconfig
   oc config get-clusters
 ```
 
+</div>
+
 ## oc config get-contexts
 
 Describe one or many contexts
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -512,13 +598,17 @@ Describe one or many contexts
   oc config get-contexts my-context
 ```
 
+</div>
+
 ## oc config get-users
 
 Display users defined in the kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -527,13 +617,17 @@ Display users defined in the kubeconfig
   oc config get-users
 ```
 
+</div>
+
 ## oc config new-admin-kubeconfig
 
 Generate, make the server trust, and display a new admin.kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -542,13 +636,17 @@ Generate, make the server trust, and display a new admin.kubeconfig
   oc config new-admin-kubeconfig
 ```
 
+</div>
+
 ## oc config new-kubelet-bootstrap-kubeconfig
 
 Generate, make the server trust, and display a new kubelet /etc/kubernetes/kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -557,13 +655,17 @@ Generate, make the server trust, and display a new kubelet /etc/kubernetes/kubec
   oc config new-kubelet-bootstrap-kubeconfig
 ```
 
+</div>
+
 ## oc config refresh-ca-bundle
 
 Update the OpenShift CA bundle by contacting the API server
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -578,13 +680,17 @@ Update the OpenShift CA bundle by contacting the API server
   oc config refresh-ca-bundle --dry-run
 ```
 
+</div>
+
 ## oc config rename-context
 
 Rename a context from the kubeconfig file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -593,13 +699,17 @@ Rename a context from the kubeconfig file
   oc config rename-context old-name new-name
 ```
 
+</div>
+
 ## oc config set
 
 Set an individual value in a kubeconfig file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -617,13 +727,17 @@ Set an individual value in a kubeconfig file
   oc config set users.cluster-admin.client-key-data cert_data_here --set-raw-bytes=true
 ```
 
+</div>
+
 ## oc config set-cluster
 
 Set a cluster entry in kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -644,13 +758,17 @@ Set a cluster entry in kubeconfig
   oc config set-cluster e2e --proxy-url=https://1.2.3.4
 ```
 
+</div>
+
 ## oc config set-context
 
 Set a context entry in kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -659,13 +777,17 @@ Set a context entry in kubeconfig
   oc config set-context gce --user=cluster-admin
 ```
 
+</div>
+
 ## oc config set-credentials
 
 Set a user entry in kubeconfig
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -705,13 +827,17 @@ Set a user entry in kubeconfig
   oc config set-credentials cluster-admin --exec-env=var-to-remove-
 ```
 
+</div>
+
 ## oc config unset
 
 Unset an individual value in a kubeconfig file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -723,13 +849,17 @@ Unset an individual value in a kubeconfig file
   oc config unset contexts.foo.namespace
 ```
 
+</div>
+
 ## oc config use-context
 
 Set the current-context in a kubeconfig file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -738,13 +868,17 @@ Set the current-context in a kubeconfig file
   oc config use-context minikube
 ```
 
+</div>
+
 ## oc config view
 
 Display merged kubeconfig settings or a specified kubeconfig file
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -759,13 +893,17 @@ Display merged kubeconfig settings or a specified kubeconfig file
   oc config view -o jsonpath='{.users[?(@.name == "e2e")].user.password}'
 ```
 
+</div>
+
 ## oc cp
 
 Copy files and directories to and from containers
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -796,13 +934,17 @@ Copy files and directories to and from containers
   oc cp <some-namespace>/<some-pod>:/tmp/foo /tmp/bar
 ```
 
+</div>
+
 ## oc create
 
 Create a resource from a file or from stdin
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -817,13 +959,17 @@ Create a resource from a file or from stdin
   oc create -f registry.yaml --edit -o json
 ```
 
+</div>
+
 ## oc create build
 
 Create a new build
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -832,13 +978,17 @@ Create a new build
   oc create build myapp
 ```
 
+</div>
+
 ## oc create clusterresourcequota
 
 Create a cluster resource quota
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -847,13 +997,17 @@ Create a cluster resource quota
   oc create clusterresourcequota limit-bob --project-annotation-selector=openshift.io/requester=user-bob --hard=pods=10
 ```
 
+</div>
+
 ## oc create clusterrole
 
 Create a cluster role
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -877,13 +1031,17 @@ Create a cluster role
   oc create clusterrole monitoring --aggregation-rule="rbac.example.com/aggregate-to-monitoring=true"
 ```
 
+</div>
+
 ## oc create clusterrolebinding
 
 Create a cluster role binding for a particular cluster role
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -892,13 +1050,17 @@ Create a cluster role binding for a particular cluster role
   oc create clusterrolebinding cluster-admin --clusterrole=cluster-admin --user=user1 --user=user2 --group=group1
 ```
 
+</div>
+
 ## oc create configmap
 
 Create a config map from a local file, directory or literal value
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -912,20 +1074,21 @@ Create a config map from a local file, directory or literal value
   # Create a new config map named my-config with key1=config1 and key2=config2
   oc create configmap my-config --from-literal=key1=config1 --from-literal=key2=config2
 
-  # Create a new config map named my-config from the key=value pairs in the file
-  oc create configmap my-config --from-file=path/to/bar
-
-  # Create a new config map named my-config from an env file
-  oc create configmap my-config --from-env-file=path/to/foo.env --from-env-file=path/to/bar.env
+  # Create a new config map named my-config with key=value pairs from an env file
+  oc create configmap my-config --from-env-file=path/to/bar.env
 ```
+
+</div>
 
 ## oc create cronjob
 
 Create a cron job with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -937,13 +1100,17 @@ Create a cron job with the specified name
   oc create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
 ```
 
+</div>
+
 ## oc create deployment
 
 Create a deployment with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -964,13 +1131,17 @@ Create a deployment with the specified name
   oc create deployment my-dep --image=busybox:latest --image=ubuntu:latest --image=nginx
 ```
 
+</div>
+
 ## oc create deploymentconfig
 
 Create a deployment config with default options that uses a given image
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -979,13 +1150,17 @@ Create a deployment config with default options that uses a given image
   oc create deploymentconfig my-nginx --image=nginx
 ```
 
+</div>
+
 ## oc create identity
 
 Manually create an identity (only needed if automatic creation is disabled)
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -994,13 +1169,17 @@ Manually create an identity (only needed if automatic creation is disabled)
   oc create identity acme_ldap:adamjones
 ```
 
+</div>
+
 ## oc create imagestream
 
 Create a new empty image stream
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1009,13 +1188,17 @@ Create a new empty image stream
   oc create imagestream mysql
 ```
 
+</div>
+
 ## oc create imagestreamtag
 
 Create a new image stream tag
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1024,13 +1207,17 @@ Create a new image stream tag
   oc create imagestreamtag mysql:latest --from-image=myregistry.local/mysql/mysql:5.0
 ```
 
+</div>
+
 ## oc create ingress
 
 Create an ingress with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1072,13 +1259,17 @@ Create an ingress with the specified name
   --rule="foo.com/*=svc:8080,tls=secret1"
 ```
 
+</div>
+
 ## oc create job
 
 Create a job with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1093,13 +1284,17 @@ Create a job with the specified name
   oc create job test-job --from=cronjob/a-cronjob
 ```
 
+</div>
+
 ## oc create namespace
 
 Create a namespace with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1108,13 +1303,17 @@ Create a namespace with the specified name
   oc create namespace my-namespace
 ```
 
+</div>
+
 ## oc create poddisruptionbudget
 
 Create a pod disruption budget with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1128,13 +1327,17 @@ Create a pod disruption budget with the specified name
   oc create pdb my-pdb --selector=app=nginx --min-available=50%
 ```
 
+</div>
+
 ## oc create priorityclass
 
 Create a priority class with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1149,13 +1352,17 @@ Create a priority class with the specified name
   oc create priorityclass high-priority --value=1000 --description="high priority" --preemption-policy="Never"
 ```
 
+</div>
+
 ## oc create quota
 
 Create a quota with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1167,13 +1374,17 @@ Create a quota with the specified name
   oc create quota best-effort --hard=pods=100 --scopes=BestEffort
 ```
 
+</div>
+
 ## oc create role
 
 Create a role with single rule
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1191,13 +1402,17 @@ Create a role with single rule
   oc create role foo --verb=get,list,watch --resource=pods,pods/status
 ```
 
+</div>
+
 ## oc create rolebinding
 
 Create a role binding for a particular role or cluster role
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1209,13 +1424,17 @@ Create a role binding for a particular role or cluster role
   oc create rolebinding admin-binding --role=admin --serviceaccount=monitoring:sa-dev
 ```
 
+</div>
+
 ## oc create route edge
 
 Create a route that uses edge TLS termination
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1228,13 +1447,17 @@ Create a route that uses edge TLS termination
   oc create route edge --service=frontend --path /assets
 ```
 
+</div>
+
 ## oc create route passthrough
 
 Create a route that uses passthrough TLS termination
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1247,13 +1470,17 @@ Create a route that uses passthrough TLS termination
   oc create route passthrough --service=frontend --hostname=www.example.com
 ```
 
+</div>
+
 ## oc create route reencrypt
 
 Create a route that uses reencrypt TLS termination
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1267,13 +1494,17 @@ Create a route that uses reencrypt TLS termination
   oc create route reencrypt --service=frontend
 ```
 
+</div>
+
 ## oc create secret docker-registry
 
 Create a secret for use with a Docker registry
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1285,13 +1516,17 @@ Create a secret for use with a Docker registry
   oc create secret docker-registry my-secret --from-file=path/to/.docker/config.json
 ```
 
+</div>
+
 ## oc create secret generic
 
 Create a secret from a local file, directory, or literal value
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1312,13 +1547,17 @@ Create a secret from a local file, directory, or literal value
   oc create secret generic my-secret --from-env-file=path/to/foo.env --from-env-file=path/to/bar.env
 ```
 
+</div>
+
 ## oc create secret tls
 
 Create a TLS secret
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1327,13 +1566,17 @@ Create a TLS secret
   oc create secret tls tls-secret --cert=path/to/tls.crt --key=path/to/tls.key
 ```
 
+</div>
+
 ## oc create service clusterip
 
 Create a ClusterIP service
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1345,13 +1588,17 @@ Create a ClusterIP service
   oc create service clusterip my-cs --clusterip="None"
 ```
 
+</div>
+
 ## oc create service externalname
 
 Create an ExternalName service
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1360,13 +1607,17 @@ Create an ExternalName service
   oc create service externalname my-ns --external-name bar.com
 ```
 
+</div>
+
 ## oc create service loadbalancer
 
 Create a LoadBalancer service
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1375,13 +1626,17 @@ Create a LoadBalancer service
   oc create service loadbalancer my-lbs --tcp=5678:8080
 ```
 
+</div>
+
 ## oc create service nodeport
 
 Create a NodePort service
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1390,13 +1645,17 @@ Create a NodePort service
   oc create service nodeport my-ns --tcp=5678:8080
 ```
 
+</div>
+
 ## oc create serviceaccount
 
 Create a service account with the specified name
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1405,13 +1664,17 @@ Create a service account with the specified name
   oc create serviceaccount my-service-account
 ```
 
+</div>
+
 ## oc create token
 
 Request a service account token
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1435,13 +1698,17 @@ Request a service account token
   oc create token myapp --bound-object-kind Secret --bound-object-name mysecret --bound-object-uid 0d4691ed-659b-4935-a832-355f77ee47cc
 ```
 
+</div>
+
 ## oc create user
 
 Manually create a user (only needed if automatic creation is disabled)
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1450,13 +1717,17 @@ Manually create a user (only needed if automatic creation is disabled)
   oc create user ajones --full-name="Adam Jones"
 ```
 
+</div>
+
 ## oc create useridentitymapping
 
 Manually map an identity to a user
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1465,13 +1736,17 @@ Manually map an identity to a user
   oc create useridentitymapping acme_ldap:adamjones ajones
 ```
 
+</div>
+
 ## oc debug
 
 Launch a new instance of a pod for debugging
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1508,13 +1783,17 @@ Launch a new instance of a pod for debugging
   oc debug mypod-9xbc --to-namespace testns
 ```
 
+</div>
+
 ## oc delete
 
 Delete resources by file names, stdin, resources and names, or by resources and label selector
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1550,13 +1829,17 @@ Delete resources by file names, stdin, resources and names, or by resources and 
   oc delete pods --all --interactive
 ```
 
+</div>
+
 ## oc describe
 
 Show details of a specific resource or group of resources
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1581,13 +1864,17 @@ Show details of a specific resource or group of resources
   oc describe pods frontend
 ```
 
+</div>
+
 ## oc diff
 
 Diff the live version against a would-be applied version
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1599,13 +1886,17 @@ Diff the live version against a would-be applied version
   cat service.yaml | oc diff -f -
 ```
 
+</div>
+
 ## oc edit
 
 Edit a resource on the server
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1626,13 +1917,17 @@ Edit a resource on the server
   oc edit deployment mydeployment --subresource='status'
 ```
 
+</div>
+
 ## oc events
 
 List events
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1653,13 +1948,17 @@ List events
   oc events --types=Warning,Normal
 ```
 
+</div>
+
 ## oc exec
 
 Execute a command in a container
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1688,13 +1987,17 @@ Execute a command in a container
   oc exec svc/myservice -- date
 ```
 
+</div>
+
 ## oc explain
 
 Get documentation for a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1715,13 +2018,17 @@ Get documentation for a resource
   oc explain deployment --output=plaintext-openapiv2
 ```
 
+</div>
+
 ## oc expose
 
 Expose a replicated application as a service or route
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1746,13 +2053,17 @@ Expose a replicated application as a service or route
   oc expose service nginx --path=/nginx
 ```
 
+</div>
+
 ## oc extract
 
 Extract secrets or config maps to disk
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1770,13 +2081,17 @@ Extract secrets or config maps to disk
   oc extract configmap/nginx --to=/tmp --keys=nginx.conf
 ```
 
+</div>
+
 ## oc get
 
 Display one or many resources
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1824,13 +2139,17 @@ Display one or many resources
   oc get pods --all-namespaces
 ```
 
+</div>
+
 ## oc get-token
 
 Experimental: Get token from external OIDC issuer as credentials exec plugin
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1842,13 +2161,17 @@ Experimental: Get token from external OIDC issuer as credentials exec plugin
   oc get-token --client-id=client-id --issuer-url=test.issuer.url --callback-address=127.0.0.1:8343
 ```
 
+</div>
+
 ## oc idle
 
 Idle scalable resources
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1857,13 +2180,17 @@ Idle scalable resources
   $ oc idle --resource-names-file to-idle.txt
 ```
 
+</div>
+
 ## oc image append
 
 Add layers to images and push them to a registry
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1899,13 +2226,17 @@ Add layers to images and push them to a registry
   oc image append --from docker.io/library/busybox:latest --filter-by-os=linux/s390x --keep-manifest-list --to myregistry.com/myimage:latest layer.tar.gz
 ```
 
+</div>
+
 ## oc image extract
 
 Copy files from an image to the file system
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1951,13 +2282,17 @@ Copy files from an image to the file system
   oc image extract docker.io/library/centos:7[-3:]
 ```
 
+</div>
+
 ## oc image info
 
 Display information about an image
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -1975,13 +2310,17 @@ Display information about an image
   oc image info library/busybox:latest --filter-by-os=linux/arm64
 ```
 
+</div>
+
 ## oc image mirror
 
 Mirror images from one repository to another
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2040,13 +2379,17 @@ Mirror images from one repository to another
   --keep-manifest-list=true
 ```
 
+</div>
+
 ## oc import-image
 
 Import images from a container image registry
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2073,13 +2416,101 @@ Import images from a container image registry
   oc --request-timeout=5m import-image mystream --from=registry.io/repo/image --all --confirm
 ```
 
+</div>
+
+## oc kuberc
+
+Manage kuberc configuration files
+
+<div class="formalpara">
+
+<div class="title">
+
+Example usage
+
+</div>
+
+``` bash
+  # View the current kuberc configuration
+  oc kuberc view
+
+  # Set a default value for a command flag
+  oc kuberc set --section defaults --command get --option output=wide
+
+  # Create an alias for a command
+  oc kuberc set --section aliases --name getn --command get --prependarg nodes --option output=wide
+```
+
+</div>
+
+## oc kuberc set
+
+Set values in the kuberc configuration
+
+<div class="formalpara">
+
+<div class="title">
+
+Example usage
+
+</div>
+
+``` bash
+  # Set default output format for 'get' command
+  oc kuberc set --section defaults --command get --option output=wide
+
+  # Set default output format for a subcommand
+  oc kuberc set --section defaults --command "set env" --option output=yaml
+
+  # Create an alias 'getn' for 'get' command with prepended 'nodes' resource
+  oc kuberc set --section aliases --name getn --command get --prependarg nodes --option output=wide
+
+  # Create an alias 'runx' for 'run' command with appended arguments
+  oc kuberc set --section aliases --name runx --command run --option image=nginx --appendarg "--" --appendarg custom-arg1
+
+  # Overwrite an existing default
+  oc kuberc set --section defaults --command get --option output=json --overwrite
+
+  # Set the credential plugin policy and allowlist
+  oc kuberc set --section credentialplugin --policy Allowlist --allowlist-entry command=cloud-credential-helper
+```
+
+</div>
+
+## oc kuberc view
+
+Display the current kuberc configuration
+
+<div class="formalpara">
+
+<div class="title">
+
+Example usage
+
+</div>
+
+``` bash
+  # View kuberc configuration in YAML format (default)
+  oc kuberc view
+
+  # View kuberc configuration in JSON format
+  oc kuberc view --output json
+
+  # View a specific kuberc file
+  oc kuberc view --kuberc /path/to/kuberc
+```
+
+</div>
+
 ## oc kustomize
 
 Build a kustomization target from a directory or URL
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2094,13 +2525,17 @@ Build a kustomization target from a directory or URL
   oc kustomize https://github.com/kubernetes-sigs/kustomize.git/examples/helloWorld?ref=v1.0.6
 ```
 
+</div>
+
 ## oc label
 
 Update the labels on a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2125,13 +2560,17 @@ Update the labels on a resource
   oc label pods foo bar-
 ```
 
+</div>
+
 ## oc login
 
 Log in to a server
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2155,13 +2594,17 @@ Log in to a server
   oc login localhost:8443 --exec-plugin=oc-oidc --client-id=client-id --extra-scopes=email,profile --callback-port=8080
 ```
 
+</div>
+
 ## oc logout
 
 End the current server session
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2170,13 +2613,17 @@ End the current server session
   oc logout
 ```
 
+</div>
+
 ## oc logs
 
 Print the logs for a container in a pod
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2199,13 +2646,17 @@ Print the logs for a container in a pod
   oc logs -f pod/backend -c ruby-container
 ```
 
+</div>
+
 ## oc new-app
 
 Create a new application
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2257,13 +2708,17 @@ Create a new application
   oc new-app --search --template=ruby --output=yaml
 ```
 
+</div>
+
 ## oc new-build
 
 Create a new build configuration
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2300,13 +2755,17 @@ Create a new build configuration
   oc new-build https://github.com/openshift/ruby-hello-world --source-image=openshift/jenkins-1-centos7 --source-image-path=/var/lib/jenkins:tmp
 ```
 
+</div>
+
 ## oc new-project
 
 Request a new project
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2318,13 +2777,17 @@ Request a new project
   oc new-project web-team-dev --display-name="Web Team Development" --description="Development project for the web team."
 ```
 
+</div>
+
 ## oc observe
 
 Observe changes to resources and react to them (experimental)
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2339,13 +2802,17 @@ Observe changes to resources and react to them (experimental)
   oc observe services -l regist-dns=true --template '{ .spec.clusterIP }' -- register_dns.sh
 ```
 
+</div>
+
 ## oc patch
 
 Update fields of a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2369,13 +2836,17 @@ Update fields of a resource
   oc patch deployment nginx-deployment --subresource='scale' --type='merge' -p '{"spec":{"replicas":2}}'
 ```
 
+</div>
+
 ## oc plugin
 
 Provides utilities for interacting with plugins
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2386,14 +2857,18 @@ Provides utilities for interacting with plugins
   # List only binary names of available plugins without paths
   oc plugin list --name-only
 ```
+
+</div>
 
 ## oc plugin list
 
 List all visible plugin executables on a user’s PATH
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2405,13 +2880,17 @@ List all visible plugin executables on a user’s PATH
   oc plugin list --name-only
 ```
 
+</div>
+
 ## oc policy add-role-to-user
 
 Add a role to users or service accounts for the current project
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2423,13 +2902,17 @@ Add a role to users or service accounts for the current project
   oc policy add-role-to-user edit -z serviceaccount1
 ```
 
+</div>
+
 ## oc policy scc-review
 
 Check which service account can create a pod
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2448,13 +2931,17 @@ Check which service account can create a pod
   oc policy scc-review -f myresource_with_no_sa.yaml
 ```
 
+</div>
+
 ## oc policy scc-subject-review
 
 Check whether a user or a service account can create a pod
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2469,13 +2956,17 @@ Check whether a user or a service account can create a pod
   oc policy scc-subject-review -f myresourcewithsa.yaml
 ```
 
+</div>
+
 ## oc port-forward
 
 Forward one or more local ports to a pod
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2502,13 +2993,17 @@ Forward one or more local ports to a pod
   oc port-forward pod/mypod :5000
 ```
 
+</div>
+
 ## oc process
 
 Process a template into list of resources
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2535,13 +3030,17 @@ Process a template into list of resources
   cat template.json | oc process -f -
 ```
 
+</div>
+
 ## oc project
 
 Switch to another project
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2553,13 +3052,17 @@ Switch to another project
   oc project
 ```
 
+</div>
+
 ## oc projects
 
 Display existing projects
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2568,13 +3071,17 @@ Display existing projects
   oc projects
 ```
 
+</div>
+
 ## oc proxy
 
 Run a proxy to the Kubernetes API server
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2602,13 +3109,17 @@ Run a proxy to the Kubernetes API server
   oc proxy --api-prefix=/k8s-api
 ```
 
+</div>
+
 ## oc registry login
 
 Log in to the integrated registry
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2620,13 +3131,17 @@ Log in to the integrated registry
   oc registry login --registry quay.io/myregistry --auth-basic=USER:PASS
 ```
 
+</div>
+
 ## oc replace
 
 Replace a resource by file name or stdin
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2644,13 +3159,17 @@ Replace a resource by file name or stdin
   oc replace --force -f ./pod.json
 ```
 
+</div>
+
 ## oc rollback
 
 Revert part of an application back to a previous deployment
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2671,13 +3190,17 @@ Revert part of an application back to a previous deployment
   oc rollback frontend -o json
 ```
 
+</div>
+
 ## oc rollout
 
 Manage the rollout of a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2695,13 +3218,17 @@ Manage the rollout of a resource
   oc rollout restart deployment --selector=app=nginx
 ```
 
+</div>
+
 ## oc rollout cancel
 
 Cancel the in-progress deployment
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2710,13 +3237,17 @@ Cancel the in-progress deployment
   oc rollout cancel dc/nginx
 ```
 
+</div>
+
 ## oc rollout history
 
 View rollout history
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2728,13 +3259,17 @@ View rollout history
   oc rollout history daemonset/abc --revision=3
 ```
 
+</div>
+
 ## oc rollout latest
 
 Start a new rollout for a deployment config with the latest state from its triggers
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2746,13 +3281,17 @@ Start a new rollout for a deployment config with the latest state from its trigg
   oc rollout latest dc/nginx -o json
 ```
 
+</div>
+
 ## oc rollout pause
 
 Mark the provided resource as paused
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2763,13 +3302,17 @@ Mark the provided resource as paused
   oc rollout pause deployment/nginx
 ```
 
+</div>
+
 ## oc rollout restart
 
 Restart a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2787,13 +3330,17 @@ Restart a resource
   oc rollout restart deployment --selector=app=nginx
 ```
 
+</div>
+
 ## oc rollout resume
 
 Resume a paused resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2802,13 +3349,17 @@ Resume a paused resource
   oc rollout resume deployment/nginx
 ```
 
+</div>
+
 ## oc rollout retry
 
 Retry the latest failed rollout
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2818,13 +3369,17 @@ Retry the latest failed rollout
   oc rollout retry dc/frontend
 ```
 
+</div>
+
 ## oc rollout status
 
 Show the status of the rollout
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2833,13 +3388,17 @@ Show the status of the rollout
   oc rollout status deployment/nginx
 ```
 
+</div>
+
 ## oc rollout undo
 
 Undo a previous rollout
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2854,13 +3413,17 @@ Undo a previous rollout
   oc rollout undo --dry-run=server deployment/abc
 ```
 
+</div>
+
 ## oc rsh
 
 Start a shell session in a container
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2882,13 +3445,17 @@ Start a shell session in a container
   oc rsh -c index job/scheduled
 ```
 
+</div>
+
 ## oc rsync
 
 Copy files between a local file system and a pod
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2900,13 +3467,17 @@ Copy files between a local file system and a pod
   oc rsync POD:/remote/dir/ ./local/dir
 ```
 
+</div>
+
 ## oc run
 
 Run a particular image on the cluster
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2939,13 +3510,17 @@ Run a particular image on the cluster
   oc run nginx --image=nginx --command -- <cmd> <arg1> ... <argN>
 ```
 
+</div>
+
 ## oc scale
 
 Set a new size for a deployment, replica set, or replication controller
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2966,13 +3541,17 @@ Set a new size for a deployment, replica set, or replication controller
   oc scale --replicas=3 statefulset/web
 ```
 
+</div>
+
 ## oc secrets link
 
 Link secrets to a service account
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2984,13 +3563,17 @@ Link secrets to a service account
   oc secrets link builder builder-image-secret --for=pull,mount
 ```
 
+</div>
+
 ## oc secrets unlink
 
 Detach secrets from a service account
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -2999,13 +3582,17 @@ Detach secrets from a service account
   oc secrets unlink serviceaccount-name secret-name another-secret-name ...
 ```
 
+</div>
+
 ## oc set build-hook
 
 Update a build hook on a build config
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3020,13 +3607,17 @@ Update a build hook on a build config
   oc set build-hook bc/mybuild --post-commit --script="/var/lib/test-image.sh param1 param2 && /var/lib/done.sh"
 ```
 
+</div>
+
 ## oc set build-secret
 
 Update a build secret on a build config
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3044,13 +3635,17 @@ Update a build secret on a build config
   oc set build-secret --source -l app=myapp gitsecret
 ```
 
+</div>
+
 ## oc set data
 
 Update the data within a config map or secret
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3068,13 +3663,17 @@ Update the data within a config map or secret
   oc set data secret/foo --from-file=secret-dir
 ```
 
+</div>
+
 ## oc set deployment-hook
 
 Update a deployment hook on a deployment config
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3090,13 +3689,17 @@ Update a deployment hook on a deployment config
   oc set deployment-hook dc/myapp --mid --volumes=data -e VAR1=value1 -e VAR2=value2 -- /var/lib/prepare-deploy.sh
 ```
 
+</div>
+
 ## oc set env
 
 Update environment variables on a pod template
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3133,13 +3736,17 @@ Update environment variables on a pod template
   oc set env | grep RAILS_ | oc env -e - dc/myapp
 ```
 
+</div>
+
 ## oc set image
 
 Update the image of a pod template
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3160,13 +3767,17 @@ Update the image of a pod template
   oc set image -f path/to/file.yaml nginx=nginx:1.9.1 --local -o yaml
 ```
 
+</div>
+
 ## oc set image-lookup
 
 Change how images are resolved when deploying applications
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3190,13 +3801,17 @@ Change how images are resolved when deploying applications
   oc set image-lookup --all
 ```
 
+</div>
+
 ## oc set probe
 
 Update a probe on a pod template
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3223,13 +3838,17 @@ Update a probe on a pod template
   oc set probe dc --all --readiness --initial-delay-seconds=30
 ```
 
+</div>
+
 ## oc set resources
 
 Update resource requests/limits on objects with pod templates
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3247,13 +3866,17 @@ Update resource requests/limits on objects with pod templates
   oc set resources -f path/to/file.yaml --limits=cpu=200m,memory=512Mi --local -o yaml
 ```
 
+</div>
+
 ## oc set route-backends
 
 Update the backends for a route
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3277,13 +3900,17 @@ Update the backends for a route
   oc set route-backends web --zero
 ```
 
+</div>
+
 ## oc set selector
 
 Set the selector on a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3293,13 +3920,17 @@ Set the selector on a resource
   oc create deployment my-dep -o yaml --dry-run | oc label --local -f - environment=qa -o yaml | oc create -f -
 ```
 
+</div>
+
 ## oc set serviceaccount
 
 Update the service account of a resource
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3311,13 +3942,17 @@ Update the service account of a resource
   oc set sa -f nginx-deployment.yaml serviceaccount1 --local --dry-run -o yaml
 ```
 
+</div>
+
 ## oc set subject
 
 Update the user, group, or service account in a role binding or cluster role binding
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3332,13 +3967,17 @@ Update the user, group, or service account in a role binding or cluster role bin
   oc create rolebinding admin --role=admin --user=admin -o yaml --dry-run | oc set subject --local -f - --user=foo -o yaml
 ```
 
+</div>
+
 ## oc set triggers
 
 Update the triggers on one or more objects
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3369,13 +4008,17 @@ Update the triggers on one or more objects
   oc set triggers statefulset/db --from-image=namespace1/image:latest -c main
 ```
 
+</div>
+
 ## oc set volumes
 
 Update volumes on a pod template
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3408,13 +4051,17 @@ Update volumes on a pod template
   oc set volume dc/myapp --add -m /data --source=<json-string>
 ```
 
+</div>
+
 ## oc start-build
 
 Start a new build
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3440,13 +4087,17 @@ Start a new build
   oc start-build hello-world --wait
 ```
 
+</div>
+
 ## oc status
 
 Show an overview of the current project
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3461,13 +4112,17 @@ Show an overview of the current project
   oc status --suggest
 ```
 
+</div>
+
 ## oc tag
 
 Tag existing images into image streams
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3491,13 +4146,17 @@ Tag existing images into image streams
   oc tag openshift/origin-control-plane:latest -d
 ```
 
+</div>
+
 ## oc version
 
 Print the client and server version information
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3512,13 +4171,17 @@ Print the client and server version information
   oc version --client
 ```
 
+</div>
+
 ## oc wait
 
 Wait for a specific condition on one or many resources
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3545,15 +4208,27 @@ Wait for a specific condition on one or many resources
   # Wait for the pod "busybox1" to be deleted, with a timeout of 60s, after having issued the "delete" command
   oc delete pod/busybox1
   oc wait --for=delete pod/busybox1 --timeout=60s
+
+  # Wait for pod "busybox1" to be created AND reach the "Ready" status condition
+  oc wait --for=condition=Ready --for=create pod/busybox1
+
+  # Wait for pod "busybox1" to reach the "Ready" status OR for its containers to report a "False" readiness state
+  until oc wait pod/busybox1 --for=condition=Ready --timeout=1s 2>/dev/null || \
+  oc wait pod/busybox1 --for=condition=ContainersReady=False --timeout=1s 2>/dev/null; \
+  do echo "Checking conditions..."; sleep 1; done
 ```
+
+</div>
 
 ## oc whoami
 
 Return information about the current session
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example usage**
+<div class="title">
+
+Example usage
 
 </div>
 
@@ -3561,6 +4236,8 @@ Return information about the current session
   # Display the currently authenticated user
   oc whoami
 ```
+
+</div>
 
 # Additional resources
 

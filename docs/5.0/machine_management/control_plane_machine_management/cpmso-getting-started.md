@@ -19,14 +19,14 @@ In OpenShift Container Platform 4.17, the control plane machine set is supported
 
 The status of the control plane machine set after installation depends on your cloud provider and the version of OpenShift Container Platform that you installed on your cluster.
 
-| Cloud provider                     | Active by default  | Generated CR | Manual CR required |
-|------------------------------------|--------------------|--------------|--------------------|
-| Amazon Web Services (AWS)          | X <sup>\[1\]</sup> | X            |                    |
-| Google Cloud                       | X <sup>\[2\]</sup> | X            |                    |
-| Microsoft Azure                    | X <sup>\[2\]</sup> | X            |                    |
-| Nutanix                            | X <sup>\[3\]</sup> | X            |                    |
-| Red Hat OpenStack Platform (RHOSP) | X <sup>\[3\]</sup> | X            |                    |
-| VMware vSphere                     | X <sup>\[4\]</sup> | X            |                    |
+| Cloud provider | Active by default | Generated CR | Manual CR required |
+|----|----|----|----|
+| Amazon Web Services (AWS) | X <sup>\[1\]</sup> | X |  |
+| Google Cloud | X <sup>\[2\]</sup> | X |  |
+| Microsoft Azure | X <sup>\[2\]</sup> | X |  |
+| Nutanix | X <sup>\[3\]</sup> | X |  |
+| Red Hat OpenStack Platform (RHOSP) | X <sup>\[3\]</sup> | X |  |
+| VMware vSphere | X <sup>\[4\]</sup> | X |  |
 
 Control plane machine set implementation for OpenShift Container Platform 4.17
 
@@ -42,6 +42,14 @@ Control plane machine set implementation for OpenShift Container Platform 4.17
 
 Check the state of the control plane machine set custom resource to determine if it is active, inactive, or missing before making configuration changes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Determine the state of the CR by running the following command:
 
   ``` terminal
@@ -55,13 +63,19 @@ Check the state of the control plane machine set custom resource to determine if
 
   - A result of `NotFound` indicates that there is no existing `ControlPlaneMachineSet` CR.
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 To use the control plane machine set, you must ensure that a `ControlPlaneMachineSet` CR with the correct settings for your cluster exists.
+
+</div>
 
 - If your cluster has an existing CR, you must verify that the configuration in the CR is correct for your cluster.
 
@@ -71,9 +85,14 @@ To use the control plane machine set, you must ensure that a `ControlPlaneMachin
 
 To use the control plane machine set, you must ensure that a `ControlPlaneMachineSet` custom resource (CR) with the correct settings for your cluster exists. On a cluster with a generated CR, you must verify that the configuration in the CR is correct for your cluster and activate it.
 
-<div class="note">
+> [!NOTE]
+> For more information about the parameters in the CR, see "Control plane machine set configuration".
 
-For more information about the parameters in the CR, see "Control plane machine set configuration".
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -87,21 +106,35 @@ For more information about the parameters in the CR, see "Control plane machine 
 
 3.  When the configuration is correct, activate the CR by setting the `.spec.state` field to `Active` and saving your changes.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > To activate the CR, you must change the `.spec.state` field to `Active` in the same `oc edit` session that you use to update the CR configuration. If the CR is saved with the state left as `Inactive`, the control plane machine set generator resets the CR to its original settings.
 
-    To activate the CR, you must change the `.spec.state` field to `Active` in the same `oc edit` session that you use to update the CR configuration. If the CR is saved with the state left as `Inactive`, the control plane machine set generator resets the CR to its original settings.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Control plane machine set configuration](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-configuration)
+
+</div>
 
 # Creating a control plane machine set custom resource
 
 To use the control plane machine set, you must ensure that a `ControlPlaneMachineSet` custom resource (CR) with the correct settings for your cluster exists. On a cluster without a generated CR, you must create the CR manually and activate it.
 
-<div class="note">
+> [!NOTE]
+> For more information about the structure and parameters of the CR, see "Control plane machine set configuration".
 
-For more information about the structure and parameters of the CR, see "Control plane machine set configuration".
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -152,11 +185,8 @@ For more information about the structure and parameters of the CR, see "Control 
     `state: Active`
     Specifies the state of the Operator. When the state is `Inactive`, the Operator is not operational. You can activate the Operator by setting the value to `Active`.
 
-    <div class="important">
-
-    Before you activate the CR, you must ensure that its configuration is correct for your cluster requirements.
-
-    </div>
+    > [!IMPORTANT]
+    > Before you activate the CR, you must ensure that its configuration is correct for your cluster requirements.
 
     `type: RollingUpdate`
     Specifies the update strategy for the cluster. Valid values are `OnDelete` and `RollingUpdate`. The default value is `RollingUpdate`. For more information about update strategies, see "Updating the control plane configuration".
@@ -184,8 +214,20 @@ For more information about the structure and parameters of the CR, see "Control 
 
     where `<control_plane_machine_set>` specifies the name of the YAML file that contains the CR configuration.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating the control plane configuration](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines)
 
 - [Control plane machine set configuration](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-configuration)
 
 - [Provider-specific configuration options](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-config-provider-specific_cpmso-configuration)
+
+</div>

@@ -12,11 +12,8 @@ Run etcd on a block device that can write at least 50 IOPS of 8KB sequentially, 
 
 To achieve such performance, run etcd on machines that are backed by SSD or NVMe disks with low latency and high throughput. Consider single-level cell (SLC) solid-state drives (SSDs), which provide 1 bit per memory cell, are durable and reliable, and are ideal for write-intensive workloads.
 
-<div class="note">
-
-The load on etcd arises from static factors, such as the number of nodes and pods, and dynamic factors, including changes in endpoints due to pod autoscaling, pod restarts, job executions, and other workload-related events. To accurately size your etcd setup, you must analyze the specific requirements of your workload. Consider the number of nodes, pods, and other relevant factors that impact the load on etcd.
-
-</div>
+> [!NOTE]
+> The load on etcd arises from static factors, such as the number of nodes and pods, and dynamic factors, including changes in endpoints due to pod autoscaling, pod restarts, job executions, and other workload-related events. To accurately size your etcd setup, you must analyze the specific requirements of your workload. Consider the number of nodes, pods, and other relevant factors that impact the load on etcd.
 
 The following hard drive practices provide optimal etcd performance:
 
@@ -40,11 +37,8 @@ The following hard drive practices provide optimal etcd performance:
 
 Some key metrics to monitor on a deployed OpenShift Container Platform cluster are p99 of etcd disk write ahead log duration and the number of etcd leader changes. Use Prometheus to track these metrics.
 
-<div class="note">
-
-The etcd member database sizes can vary in a cluster during normal operations. This difference does not affect cluster upgrades, even if the leader size is different from the other members.
-
-</div>
+> [!NOTE]
+> The etcd member database sizes can vary in a cluster during normal operations. This difference does not affect cluster upgrades, even if the leader size is different from the other members.
 
 # Cluster latency requirements for etcd
 
@@ -70,7 +64,17 @@ In a healthy cluster, the round-trip time between members should be less than 50
 
 To support a low-latency, high-availability network, especially during the leader election process, an arbiter site should be located where it provides an RTT latency of less than 10 ms. The arbiter component of a network maintains consistency and availability in a distributed system.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Setting tuning parameters for etcd](../etcd/etcd-performance.xml#etcd-tuning-parameters_etcd-performance)
+
+</div>
 
 # Validate the hardware for etcd
 
@@ -90,11 +94,27 @@ Because etcd replicates the requests among all the members, its performance stro
 
 The `histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[2m]))` metric reports the round trip time for etcd to finish replicating the client requests between the members. Ensure that it is less than 50 ms.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A container runtime, such as Podman or Docker, is installed on the machine that you are testing.
 
 - The `/var/lib/etcd` path is available for writing test data.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run `fio` and analyze the results:
 
@@ -110,14 +130,32 @@ The `histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_buc
     $ sudo docker run --volume /var/lib/etcd:/var/lib/etcd:Z quay.io/cloud-bulldozer/etcd-perf
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Confirm that the 99th percentile of the fsync metric from the run is less than 10 ms.
 
 - Confirm that the report indicates that the disk is fast enough to host etcd.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [How to use `fio` to check etcd disk performance in OpenShift Container Platform](https://access.redhat.com/solutions/4885641)
 
 - [etcd performance troubleshooting guide for OpenShift Container Platform](https://access.redhat.com/articles/6271341)
+
+</div>

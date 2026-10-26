@@ -6,11 +6,29 @@ Unified Extensible Firmware Interface (UEFI), like legacy BIOS, initializes hard
 
 It stores all the information about initialization and startup in a file with a `.efi` extension, which is stored on a special partition called EFI System Partition (ESP). The ESP also contains the boot loader programs for the operating system that is installed on the computer.
 
-# Booting virtual machines in UEFI mode
+# Boot virtual machines in UEFI mode
 
 You can configure a virtual machine to boot in UEFI mode by editing the `VirtualMachine` manifest.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To boot a virtual machine (VM) in UEFI mode with secure boot active, edit or create a `VirtualMachine` manifest file. Use the `spec.firmware.bootloader` stanza to configure UEFI mode:
 
@@ -54,9 +72,19 @@ You can configure a virtual machine to boot in UEFI mode by editing the `Virtual
     $ oc create -f <file_name>.yaml
     ```
 
-# Configuring VMs with persistent EFI
+</div>
+
+# Configure VMs with persistent EFI
 
 You can configure a VM to have EFI persistence enabled by editing its manifest file.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the VM manifest file and save to apply settings.
 
@@ -75,3 +103,5 @@ You can configure a VM to have EFI persistence enabled by editing its manifest f
                 persistent: true
   # ...
   ```
+
+</div>

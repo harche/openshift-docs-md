@@ -24,11 +24,29 @@ Enhanced DNS decoding allows the eBPF agent to inspect UDP and TCP DNS traffic o
 
 Enable DNS tracking in the Network Observability Operator to monitor DNS query names, response codes, and latency for network flows within the cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Network Observability Operator is installed.
 
 - You have `cluster-admin` privileges.
 
 - You are familiar with the `FlowCollector` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `FlowCollector` resource by running the following command:
 
@@ -58,7 +76,15 @@ Enable DNS tracking in the Network Observability Operator to monitor DNS query n
 
 3.  Save and exit the editor.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Observe** → **Network Traffic**.
 
@@ -70,23 +96,22 @@ Enable DNS tracking in the Network Observability Operator to monitor DNS query n
 
 5.  Confirm that the flow table columns are populated with domain names and DNS metadata.
 
+</div>
+
 # DNS flow enrichment and analysis reference
 
 Identify metadata added to network flows, leverage DNS data for network optimization, and understand the performance and storage impacts on the cluster.
 
 The following table describes the metadata fields added to network flows when DNS tracking is enabled.
 
-<div class="note">
+> [!NOTE]
+> Query names might be missing or truncated because of compression pointers or cache limitations.
 
-Query names might be missing or truncated because of compression pointers or cache limitations.
-
-</div>
-
-| Field               | Description                                              | Example               |
-|---------------------|----------------------------------------------------------|-----------------------|
-| `dns_query_name`    | The Fully Qualified Domain Name (FQDN) being queried.    | `example.com`         |
-| `dns_response_code` | The status code returned by the DNS server.              | `NoError`, `NXDomain` |
-| `dns_id`            | The transaction ID used to match queries with responses. | `45213`               |
+| Field | Description | Example |
+|----|----|----|
+| `dns_query_name` | The Fully Qualified Domain Name (FQDN) being queried. | `example.com` |
+| `dns_response_code` | The status code returned by the DNS server. | `NoError`, `NXDomain` |
+| `dns_id` | The transaction ID used to match queries with responses. | `45213` |
 
 DNS flow metadata
 
@@ -112,6 +137,16 @@ For example, instead of `https://my-svc.my-namespace.svc`, use `https://my-svc.m
 
 DNS tracking increases the number of labels and the amount of metadata per flow. Ensure that the Loki storage is sized to accommodate the increased log volume.
 
-- [Network flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Network flows format reference](../../observability/network_observability/network-observability-api-reference.xml#network-flows-format_network_observability)
 
 - [Network Observability Operator runbooks](https://github.com/openshift/runbooks/tree/master/alerts/network-observability-operator)
+
+</div>

@@ -8,9 +8,11 @@ Gang scheduling is important if you are working with expensive, limited resource
 
 As a cluster administrator, you can configure gang scheduling by modifying the `gangScheduling` spec in the `Kueue` custom resource (CR).
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Kueue` CR with gang scheduling configured**
+<div class="title">
+
+Example `Kueue` CR with gang scheduling configured
 
 </div>
 
@@ -31,6 +33,8 @@ spec:
         admission: Parallel
 # ...
 ```
+
+</div>
 
 `spec.config.gangScheduling.policy`
 You can set the `policy` value to enable or disable gang scheduling. The possible values are `ByWorkload`, `None`, or empty (`""`). When the `policy` value is set to `ByWorkload`, each job is processed and considered for admission as a single unit. If the job does not become ready within the specified time, the entire job is evicted and retried at a later time. When the `policy` value is set to `None`, gang scheduling is disabled. When the `policy` value is empty or set to `""`, the Red Hat build of Kueue Operator determines settings for gang scheduling. Currently, gang scheduling is disabled by default.

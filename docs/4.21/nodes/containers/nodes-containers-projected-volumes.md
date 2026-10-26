@@ -8,11 +8,8 @@ The following types of volume sources can be projected:
 
 - Downward API
 
-<div class="note">
-
-All sources are required to be in the same namespace as the pod.
-
-</div>
+> [!NOTE]
+> All sources are required to be in the same namespace as the pod.
 
 # Understanding projected volumes
 
@@ -24,13 +21,10 @@ You can use projected volumes to map any combination of the volume sources into 
 
 - Populate a single volume with the keys from multiple secrets, config maps, and with downward API information, explicitly specifying paths for each item, so that you can have full control over the contents of that volume.
 
-<div class="important">
-
-When the `RunAsUser` permission is set in the security context of a Linux-based pod, the projected files have the correct permissions set, including container user ownership. However, when the Windows equivalent `RunAsUsername` permission is set in a Windows pod, the kubelet is unable to correctly set ownership on the files in the projected volume.
-
-Therefore, the `RunAsUsername` permission set in the security context of a Windows pod is not honored for Windows projected volumes running in OpenShift Container Platform.
-
-</div>
+> [!IMPORTANT]
+> When the `RunAsUser` permission is set in the security context of a Linux-based pod, the projected files have the correct permissions set, including container user ownership. However, when the Windows equivalent `RunAsUsername` permission is set in a Windows pod, the kubelet is unable to correctly set ownership on the files in the projected volume.
+>
+> Therefore, the `RunAsUsername` permission set in the security context of a Windows pod is not honored for Windows projected volumes running in OpenShift Container Platform.
 
 The following general scenarios show how you can use projected volumes.
 
@@ -48,9 +42,11 @@ Projected volumes allow you to use a secret as a public key to encrypt the names
 
 The following are examples of `Pod` specs for creating projected volumes.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Pod with a secret, a Downward API, and a config map**
+<div class="title">
+
+Pod with a secret, a Downward API, and a config map
 
 </div>
 
@@ -102,6 +98,8 @@ spec:
               mode: 0777
 ```
 
+</div>
+
 where:
 
 `spec.containers.volumeMounts`
@@ -137,15 +135,14 @@ Specifies a ConfigMap source.
 `spec.containers.volumes.projected.defaultMode.configMap.items.mode`
 Specifies the mode for the specific projection.
 
-<div class="note">
+> [!NOTE]
+> If there are multiple containers in the pod, each container needs a `volumeMounts` section, but only one `volumes` section is needed.
 
-If there are multiple containers in the pod, each container needs a `volumeMounts` section, but only one `volumes` section is needed.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Pod with multiple secrets with a non-default permission mode set**
+Pod with multiple secrets with a non-default permission mode set
 
 </div>
 
@@ -188,11 +185,10 @@ spec:
               mode: 511
 ```
 
-<div class="note">
-
-The `defaultMode` can only be specified at the projected level and not for each volume source. However, as illustrated above, you can explicitly set the `mode` for each individual projection.
-
 </div>
+
+> [!NOTE]
+> The `defaultMode` can only be specified at the projected level and not for each volume source. However, as illustrated above, you can explicitly set the `mode` for each individual projection.
 
 Pathing Considerations
 - Collisions Between Keys when Configured Paths are Identical. If you configure any keys with the same path, the pod spec will not be accepted as valid. In the following example, the specified path for `mysecret` and `myconfigmap` are the same:
@@ -276,6 +272,14 @@ MWYyZDFlMmU2N2Rm
 
 The following procedure uses a projected volume to mount an existing secret volume source.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the secret:
 
     1.  Create a YAML file similar to the following, replacing the password and user information as appropriate:
@@ -303,15 +307,19 @@ The following procedure uses a projected volume to mount an existing secret volu
         $ oc create -f secret.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         secret "mysecret" created
         ```
+
+        </div>
 
     3.  You can check that the secret was created using the following commands:
 
@@ -325,9 +333,11 @@ The following procedure uses a projected volume to mount an existing secret volu
         $ oc get secret mysecret
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -335,6 +345,8 @@ The following procedure uses a projected volume to mount an existing secret volu
         NAME       TYPE      DATA      AGE
         mysecret   Opaque    2         17h
         ```
+
+        </div>
 
         ``` terminal
         $ oc get secret <secret-name> -o yaml
@@ -411,15 +423,19 @@ The following procedure uses a projected volume to mount an existing secret volu
         $ oc create -f secret-pod.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         pod "test-projected-volume" created
         ```
+
+        </div>
 
 3.  Verify that the pod container is running, and then watch for changes to the pod:
 
@@ -435,9 +451,11 @@ The following procedure uses a projected volume to mount an existing secret volu
 
     The output should appear similar to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -445,6 +463,8 @@ The following procedure uses a projected volume to mount an existing secret volu
     NAME                    READY     STATUS    RESTARTS   AGE
     test-projected-volume   1/1       Running   0          14s
     ```
+
+    </div>
 
 4.  In another terminal, use the `oc exec` command to open a shell to the running container:
 
@@ -464,9 +484,11 @@ The following procedure uses a projected volume to mount an existing secret volu
     / # ls
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -475,3 +497,7 @@ The following procedure uses a projected volume to mount an existing secret volu
     dev               proc              run               usr
     etc               projected-volume  sys               var
     ```
+
+    </div>
+
+</div>

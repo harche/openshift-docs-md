@@ -17,6 +17,14 @@ metadata:
 # ...
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Use the following command to edit the `ScaledObject` CR for your workload:
 
     ``` terminal
@@ -44,6 +52,8 @@ metadata:
     `metadata.annotations.autoscaling.keda.sh/paused-replicas`
     Specifies that the Custom Metrics Autoscaler Operator is to scale the replicas to the specified value and stop autoscaling.
 
+</div>
+
 # Restart the custom metrics autoscaler for a scaled object
 
 You can restart a paused custom metrics autoscaler by removing the `autoscaling.keda.sh/paused-replicas` annotation for that `ScaledObject`.
@@ -56,6 +66,14 @@ metadata:
     autoscaling.keda.sh/paused-replicas: "4"
 # ...
 ```
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use the following command to edit the `ScaledObject` CR for your workload:
 
@@ -78,3 +96,5 @@ metadata:
       resourceVersion: '65729'
       uid: f5aec682-acdf-4232-a783-58b5b82f5dd0
     ```
+
+</div>

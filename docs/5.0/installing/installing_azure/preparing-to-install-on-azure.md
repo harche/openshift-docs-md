@@ -22,7 +22,13 @@ You can install a cluster on Microsoft Azure infrastructure that is provisioned 
 
 - You can deploy OpenShift Container Platform into Microsoft Azure Government (MAG) regions for US government agencies, contractors, educational institutions, and other US customers that must run sensitive workloads on Azure. For more information, see "Installing a cluster on Azure into a government region".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing a cluster quickly on Azure](../../installing/installing_azure/ipi/installing-azure-default.xml#installing-azure-default)
 
@@ -36,6 +42,8 @@ You can install a cluster on Microsoft Azure infrastructure that is provisioned 
 
 - [Installing a cluster on Azure into a government region](../../installing/installing_azure/ipi/installing-azure-government-region.xml#installing-azure-government-region)
 
+</div>
+
 # Installing a cluster on user-provisioned infrastructure
 
 You can install a cluster on Azure infrastructure that you provision, by using one of the following methods:
@@ -44,11 +52,19 @@ You can install a cluster on Azure infrastructure that you provision, by using o
 
 - You can install OpenShift Container Platform on Azure by using infrastructure that you manage and Azure Resource Manager (ARM) templates to assist with the installation. For more information, see "Installing a cluster on Azure using ARM templates".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing a cluster on Azure in a restricted network with user-provisioned infrastructure](../../installing/installing_azure/upi/installing-restricted-networks-azure-user-provisioned.xml#installing-restricted-networks-azure-user-provisioned)
 
 - [Installing a cluster on Azure using ARM templates](../../installing/installing_azure/upi/installing-azure-user-infra.xml#installing-azure-user-infra)
+
+</div>
 
 # Additional resources
 

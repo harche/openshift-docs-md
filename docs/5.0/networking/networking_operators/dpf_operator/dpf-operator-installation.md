@@ -1,32 +1,29 @@
 After setting up the environment, install the NVIDIA DPF Operator and create the required DPF resources and DPU services.
 
-<div class="important">
-
-You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires DPF CRDs such as `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
-
-</div>
+> [!IMPORTANT]
+> You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires DPF CRDs such as `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
 
 # DPF Operator installation environment variables
 
 Set the following required environment variables before you install and configure the DPF Operator on OpenShift Container Platform. The values of these variables are used in multiple DPF Operator installation and configuration procedures.
 
-| Variable                        | Description                                                                                                                                                                                                                                                     | Example value                                                                                                                                            |
-|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `CLUSTER_NAME`                  | The name of the management cluster.                                                                                                                                                                                                                             | `<YOUR_CLUSTER_NAME>`                                                                                                                                    |
-| `BASE_DOMAIN`                   | The base domain for the management cluster.                                                                                                                                                                                                                     | `example.com`                                                                                                                                            |
-| `HOST_CLUSTER_API`              | The API server hostname of the management cluster. Derived from `CLUSTER_NAME` and `BASE_DOMAIN`.                                                                                                                                                               | `api.mycluster.example.com`                                                                                                                              |
-| `REGISTRY`                      | The Helm chart registry URL for the DPF Operator.                                                                                                                                                                                                               | `https://helm.ngc.nvidia.com/nvidia/doca`                                                                                                                |
-| `TAG`                           | The version tag for the DPF Operator Helm chart.                                                                                                                                                                                                                | `v26.4.1`                                                                                                                                                |
-| `TARGETCLUSTER_API_SERVER_PORT` | The port number of the hosted cluster API server.                                                                                                                                                                                                               | `6443`                                                                                                                                                   |
-| `VTEP_CIDR`                     | A dedicated IP range allocated from the DPU high-speed network for VTEP (tunnel endpoint) IPs. Used for DPU service IPs by HBN and OVN-Kubernetes tunnels. The management network and this VTEP CIDR network must be routable to each other in both directions. | `10.0.120.0/22`                                                                                                                                          |
-| `NUM_VFS`                       | Number of SR-IOV VFs per physical function. Sets `NUM_OF_VFS` in the DPUFlavor `nvconfig`. The `NodeSRIOVDevicePluginConfig` allocates these VFs as VF0 (DPF communication channel), VF1 (OVN-Kubernetes management), and the remainder (workload and RDMA).    | `46`                                                                                                                                                     |
-| `NODES_MTU`                     | The MTU value for the node network interfaces. Use `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across all DPF networking configuration.                                                          | `1500` (standard) or `9000` (jumbo frames)                                                                                                               |
-| `OVN_TEMPLATE_CHART_URL`        | The OCI chart URL for the OVN-Kubernetes Helm chart.                                                                                                                                                                                                            | `oci://ghcr.io/mellanox/charts`                                                                                                                          |
-| `OVN_CHART_VERSION`             | The version of the OVN-Kubernetes Helm chart.                                                                                                                                                                                                                   | `v26.4.1-ocp-release-v4.22`                                                                                                                              |
-| `OVN_MTU`                       | The MTU value for OVN-Kubernetes overlay networking. Set to `1400` for standard MTU (1500 minus encapsulation overhead) or `8900` for jumbo frames (9000 minus encapsulation overhead). Must be kept consistent with `NODES_MTU`.                               | `1400` or `8900`                                                                                                                                         |
-| `DPU_HOST_CIDR`                 | The CIDR range of the subnet where the DPU host nodes reside. Used as the OVN `hostCIDR`. You must set this to your actual host subnet; the example value is illustrative only and is not a usable default.                                                     | `10.0.110.0/24`                                                                                                                                          |
-| `FLANNEL_POD_CIDR`              | The pod CIDR for the Flannel network in the hosted cluster. Required for OpenShift Container Platform 4.22 and later.                                                                                                                                           | `10.132.0.0/14`                                                                                                                                          |
-| `BFB_URL`                       | The download URL for the BlueField Bootstream File image used to provision DPUs.                                                                                                                                                                                | `https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb` |
+| Variable | Description | Example value |
+|----|----|----|
+| `CLUSTER_NAME` | The name of the management cluster. | `<YOUR_CLUSTER_NAME>` |
+| `BASE_DOMAIN` | The base domain for the management cluster. | `example.com` |
+| `HOST_CLUSTER_API` | The API server hostname of the management cluster. Derived from `CLUSTER_NAME` and `BASE_DOMAIN`. | `api.mycluster.example.com` |
+| `REGISTRY` | The Helm chart registry URL for the DPF Operator. | `https://helm.ngc.nvidia.com/nvidia/doca` |
+| `TAG` | The version tag for the DPF Operator Helm chart. | `v26.4.1` |
+| `TARGETCLUSTER_API_SERVER_PORT` | The port number of the hosted cluster API server. | `6443` |
+| `VTEP_CIDR` | A dedicated IP range allocated from the DPU high-speed network for VTEP (tunnel endpoint) IPs. Used for DPU service IPs by HBN and OVN-Kubernetes tunnels. The management network and this VTEP CIDR network must be routable to each other in both directions. | `10.0.120.0/22` |
+| `NUM_VFS` | Number of SR-IOV VFs per physical function. Sets `NUM_OF_VFS` in the DPUFlavor `nvconfig`. The `NodeSRIOVDevicePluginConfig` allocates these VFs as VF0 (DPF communication channel), VF1 (OVN-Kubernetes management), and the remainder (workload and RDMA). | `46` |
+| `NODES_MTU` | The MTU value for the node network interfaces. Use `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across all DPF networking configuration. | `1500` (standard) or `9000` (jumbo frames) |
+| `OVN_TEMPLATE_CHART_URL` | The OCI chart URL for the OVN-Kubernetes Helm chart. | `oci://ghcr.io/mellanox/charts` |
+| `OVN_CHART_VERSION` | The version of the OVN-Kubernetes Helm chart. | `v26.4.1-ocp-release-v4.22` |
+| `OVN_MTU` | The MTU value for OVN-Kubernetes overlay networking. Set to `1400` for standard MTU (1500 minus encapsulation overhead) or `8900` for jumbo frames (9000 minus encapsulation overhead). Must be kept consistent with `NODES_MTU`. | `1400` or `8900` |
+| `DPU_HOST_CIDR` | The CIDR range of the subnet where the DPU host nodes reside. Used as the OVN `hostCIDR`. You must set this to your actual host subnet; the example value is illustrative only and is not a usable default. | `10.0.110.0/24` |
+| `FLANNEL_POD_CIDR` | The pod CIDR for the Flannel network in the hosted cluster. Required for OpenShift Container Platform 4.22 and later. | `10.132.0.0/14` |
+| `BFB_URL` | The download URL for the BlueField Bootstream File image used to provision DPUs. | `https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-10.2/builds/10.2.20260715-0/aarch64/rhcos-10.2.20260715-0-nvidiabluefield.aarch64.bfb` |
 
 DPF Operator environment variables
 
@@ -54,9 +51,14 @@ $ export BFB_URL="https://rhcos.mirror.openshift.com/art/storage/prod/streams/rh
 
 You can install the DPF Operator by using Helm to deploy the Operator into the `dpf-operator-system` namespace on your management cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires the following DPF custom resource definitions to be available: `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
 
-You must install the DPF Operator before the DPF HCP Provisioner Operator because that Operator requires the following DPF custom resource definitions to be available: `DPUCluster`, `DPUFlavor`, `DPUDeployment`, and `DPFOperatorConfig`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -67,6 +69,16 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
 - You have installed the `helm` CLI.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the DPF Helm repository and update the local cache:
 
@@ -90,7 +102,15 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
         --wait
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the Operator controller manager deployment has rolled out successfully:
 
@@ -98,9 +118,11 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
     $ oc rollout status deployment --namespace dpf-operator-system dpf-operator-controller-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -108,15 +130,19 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
     deployment "dpf-operator-controller-manager" successfully rolled out
     ```
 
+    </div>
+
 2.  Verify that all pods in the `dpf-operator-system` namespace are ready:
 
     ``` terminal
     $ oc wait --for=condition=ready --namespace dpf-operator-system pods --all
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -130,29 +156,48 @@ You must install the DPF Operator before the DPF HCP Provisioner Operator becaus
     pod/maintenance-operator-585767f779-8k2lx condition met
     ```
 
+    </div>
+
+</div>
+
 # Create the DPFOperatorConfig custom resource
 
 Create a `DPFOperatorConfig` custom resource to configure the DPF Operator components, including the provisioning controller, static cluster manager, and SR-IOV device plugin controller.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a file named `dpfoperatorconfig.yaml` with the following content:
 
-    <div class="note">
-
-    MTU Configuration: Set `NODES_MTU` to `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across:
-
-    - Assisted Installer host configuration
-
-    - DPFOperatorConfig networking section (this step)
-
-    - DPUServiceNAD configuration
-
-    Choose based on your network infrastructure capabilities.
-
-    </div>
+    > [!NOTE]
+    > MTU Configuration: Set `NODES_MTU` to `1500` for standard MTU environments or `9000` for jumbo frame environments. This value must be consistent across:
+    >
+    > - Assisted Installer host configuration
+    >
+    > - DPFOperatorConfig networking section (this step)
+    >
+    > - DPUServiceNAD configuration
+    >
+    > Choose based on your network infrastructure capabilities.
 
     ``` yaml
     apiVersion: operator.dpu.nvidia.com/v1alpha1
@@ -203,7 +248,15 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     $ envsubst < dpfoperatorconfig.yaml | oc apply -f -
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the provisioning controller manager deployment has rolled out:
 
@@ -211,9 +264,11 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     $ oc rollout status deployment --namespace dpf-operator-system dpf-provisioning-controller-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -221,15 +276,19 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     deployment "dpf-provisioning-controller-manager" successfully rolled out
     ```
 
+    </div>
+
 2.  Verify that the DPU service controller manager deployment has rolled out:
 
     ``` terminal
     $ oc rollout status deployment --namespace dpf-operator-system dpuservice-controller-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -237,13 +296,12 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     deployment "dpuservice-controller-manager" successfully rolled out
     ```
 
+    </div>
+
 3.  Verify that all Operator deployments in the `dpf-operator-system` namespace have rolled out:
 
-    <div class="note">
-
-    You might need to run this command more than once, because the deployments become available at different times as the Operator reconciles its resources.
-
-    </div>
+    > [!NOTE]
+    > You might need to run this command more than once, because the deployments become available at different times as the Operator reconciles its resources.
 
     ``` terminal
     $ oc rollout status deployment --namespace dpf-operator-system
@@ -255,9 +313,11 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     $ oc get pods -n dpf-operator-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -278,13 +338,35 @@ Create a `DPFOperatorConfig` custom resource to configure the DPF Operator compo
     static-cm-controller-manager-745c8fd7d5-n8d2z           1/1     Running   0          110s
     ```
 
+    </div>
+
+</div>
+
 # Create the NodeSRIOVDevicePluginConfig custom resource
 
 You can create a `NodeSRIOVDevicePluginConfig` custom resource to define how SR-IOV virtual functions on the management cluster worker nodes are allocated to DPF components.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `nodesriovdevicepluginconfig.yaml` with the following content:
 
@@ -332,15 +414,27 @@ You can create a `NodeSRIOVDevicePluginConfig` custom resource to define how SR-
     $ oc apply -f nodesriovdevicepluginconfig.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `NodeSRIOVDevicePluginConfig` resource is created:
 
   ``` terminal
   $ oc get nodesriovdevicepluginconfig -n dpf-operator-system
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -348,24 +442,33 @@ You can create a `NodeSRIOVDevicePluginConfig` custom resource to define how SR-
   bf3-vfs    30s
   ```
 
+  </div>
+
+</div>
+
 # Create the DPUFlavor custom resource
 
 You can create a `DPUFlavor` custom resource to define the DPU configuration, including NVConfig parameters, kernel arguments, hugepages settings, and the OVS initialization script. The `DPUFlavor` also supports an optional `configFiles` field for custom DPU configuration files.
 
 The `nvconfig` section contains BlueField-3 firmware parameters that the DPU agent applies by using `mlxconfig` during provisioning. If any parameter differs from the current firmware configuration, the provisioning controller triggers a system-level reset so that the changes take effect. The following parameters are required for DPF operation:
 
-| Parameter                       | Value    | Description                                                                                                                                       |
-|---------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `INTERNAL_CPU_MODEL`            | `1`      | Switches the BlueField-3 to DPU mode where the ARM cores are active. A value of `0` keeps the card in NIC-only mode, which does not support DPF.  |
-| `SRIOV_EN`                      | `1`      | Enables SR-IOV on both physical functions. The host agent creates Virtual Functions (VFs) that carry tenant traffic between the host and the DPU. |
-| `NUM_OF_VFS`                    | Variable | Number of VFs per physical function. Set this value by using the `$NUM_VFS` environment variable. The default is `46`.                            |
-| `LINK_TYPE_P1` / `LINK_TYPE_P2` | `ETH`    | Sets both ports to Ethernet mode. DPF requires Ethernet. InfiniBand (`IB`) mode is not supported.                                                 |
+| Parameter | Value | Description |
+|----|----|----|
+| `INTERNAL_CPU_MODEL` | `1` | Switches the BlueField-3 to DPU mode where the ARM cores are active. A value of `0` keeps the card in NIC-only mode, which does not support DPF. |
+| `SRIOV_EN` | `1` | Enables SR-IOV on both physical functions. The host agent creates Virtual Functions (VFs) that carry tenant traffic between the host and the DPU. |
+| `NUM_OF_VFS` | Variable | Number of VFs per physical function. Set this value by using the `$NUM_VFS` environment variable. The default is `46`. |
+| `LINK_TYPE_P1` / `LINK_TYPE_P2` | `ETH` | Sets both ports to Ethernet mode. DPF requires Ethernet. InfiniBand (`IB`) mode is not supported. |
 
 Required BlueField-3 NVConfig parameters
 
-<div class="note">
+> [!NOTE]
+> If BlueField-3 already has the correct values, the DPU agent reports that no action is required and does not trigger a reset.
 
-If BlueField-3 already has the correct values, the DPU agent reports that no action is required and does not trigger a reset.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -374,6 +477,16 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
 - You have created the `DPFOperatorConfig` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpuflavor.yaml` for your MTU configuration and apply it.
 
@@ -624,21 +737,51 @@ If BlueField-3 already has the correct values, the DPU agent reports that no act
     $ envsubst < dpuflavor.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `DPUFlavor` resource is created:
 
   ``` terminal
   $ oc get dpuflavor -n dpf-operator-system
   ```
 
+</div>
+
 # Create the `BFB` resource
 
 You can create a `BFB` custom resource to define the DPU image, known as a BlueField Bootstream File, that is downloaded and placed on shared storage for DPU provisioning.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `bfb.yaml` with the following content:
 
@@ -663,15 +806,27 @@ You can create a `BFB` custom resource to define the DPU image, known as a BlueF
     $ envsubst < bfb.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the BFB image phase is `Ready`:
 
   ``` terminal
   $ oc get bfb -n dpf-operator-system bf-bundle
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -680,9 +835,21 @@ You can create a `BFB` custom resource to define the DPU image, known as a BlueF
   bf-bundle   Ready   3m
   ```
 
+  </div>
+
+</div>
+
 # Create the DPUDeployment custom resource
 
 You can create a `DPUDeployment` custom resource as the main orchestration object that connects DPU services with specific BFB images and DPU flavors. The `DPUDeployment` defines DPU sets for DPU provisioning and configures service chains to deploy services across DPUs.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
@@ -693,6 +860,16 @@ You can create a `DPUDeployment` custom resource as the main orchestration objec
 - You have created the `DPUFlavor` resource.
 
 - You have created the `BFB` resource and it is in the `Ready` phase.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpudeployment.yaml` with the following content:
 
@@ -758,15 +935,27 @@ You can create a `DPUDeployment` custom resource as the main orchestration objec
     $ oc apply -f dpudeployment.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify the `DPUDeployment` state:
 
   ``` terminal
   $ oc get DPUDeployment -n dpf-operator-system
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -775,25 +964,28 @@ You can create a `DPUDeployment` custom resource as the main orchestration objec
   dpudeployment   False   Pending   2m32s
   ```
 
-  <div class="note">
-
-  A `Pending` phase is expected at this stage. The `DPUDeployment` transitions to `Ready` after DPU provisioning is complete and all services are deployed.
-
   </div>
+
+  > [!NOTE]
+  > A `Pending` phase is expected at this stage. The `DPUDeployment` transitions to `Ready` after DPU provisioning is complete and all services are deployed.
+
+</div>
 
 # Create the HBN DPU service configuration
 
 You can create a `DPUServiceConfiguration` custom resource for the Host-Based Networking (HBN) DPU service. The HBN service provides BGP-based networking on the DPU with ECMP routing support.
 
-<div class="note">
+> [!NOTE]
+> HBN and OVN-Kubernetes are currently the only supported DPU network services. The DOCA Telemetry Service (DTS), which you configure in a later step, is deployed for observability and is not a network service.
 
-HBN and OVN-Kubernetes are currently the only supported DPU network services. The DOCA Telemetry Service (DTS), which you configure in a later step, is deployed for observability and is not a network service.
+> [!NOTE]
+> The `DPUServiceTemplate` resources are automatically created and managed by the `dpf-hcp-provisioner-operator`. You only need to create the `DPUServiceConfiguration` resources.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-The `DPUServiceTemplate` resources are automatically created and managed by the `dpf-hcp-provisioner-operator`. You only need to create the `DPUServiceConfiguration` resources.
+Prerequisites
 
 </div>
 
@@ -802,6 +994,16 @@ The `DPUServiceTemplate` resources are automatically created and managed by the 
 - The `DPFOperatorConfig` resource is created.
 
 - The DPF Operator environment variables are set. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `hbn.yaml` with the following content:
 
@@ -903,9 +1105,11 @@ The `DPUServiceTemplate` resources are automatically created and managed by the 
     $ oc apply -f hbn.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -913,9 +1117,21 @@ The `DPUServiceTemplate` resources are automatically created and managed by the 
     dpuserviceconfiguration.svc.dpu.nvidia.com/hbn created
     ```
 
+    </div>
+
+</div>
+
 # Create the OVN-Kubernetes DPU service configuration
 
 You can create a `DPUServiceConfiguration` custom resource for the OVN-Kubernetes DPU service. The OVN-Kubernetes service provides pod networking on the DPU.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
@@ -924,6 +1140,16 @@ You can create a `DPUServiceConfiguration` custom resource for the OVN-Kubernete
 - You have created the HBN `DPUServiceConfiguration` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `ovn-k.yaml` with the following content:
 
@@ -963,19 +1189,36 @@ You can create a `DPUServiceConfiguration` custom resource for the OVN-Kubernete
     $ envsubst < ovn-k.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the HBN and OVN-Kubernetes service configurations are created:
 
   ``` terminal
   $ oc get dpuserviceconfiguration -n dpf-operator-system
   ```
 
+</div>
+
 # Create the DOCA Telemetry Service DPU service configuration
 
 You can create a `DPUServiceConfiguration` custom resource for the DOCA Telemetry Service. The DOCA Telemetry Service provides metrics collection from the DPUs by using Prometheus.
 
-<div class="note">
+> [!NOTE]
+> The `DPUServiceTemplate` for DOCA Telemetry Service is automatically created and managed by the `dpf-hcp-provisioner-operator` controller. The operator uses the correct chart and image versions for the installed DPF version. You only need to create the `DPUServiceConfiguration` resource.
 
-The `DPUServiceTemplate` for DOCA Telemetry Service is automatically created and managed by the `dpf-hcp-provisioner-operator` controller. The operator uses the correct chart and image versions for the installed DPF version. You only need to create the `DPUServiceConfiguration` resource.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -984,6 +1227,16 @@ The `DPUServiceTemplate` for DOCA Telemetry Service is automatically created and
 - You have created the `DPFOperatorConfig` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dts.yaml` with the following content:
 
@@ -1010,19 +1263,49 @@ The `DPUServiceTemplate` for DOCA Telemetry Service is automatically created and
     $ oc apply -f dts.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the DOCA Telemetry Service configuration is created:
 
   ``` terminal
   $ oc get dpuserviceconfiguration -n dpf-operator-system doca-telemetry-service
   ```
 
+</div>
+
 # Create the OVN-Kubernetes credential request and role bindings
 
 To authenticate with the management cluster API server, create a `DPUServiceCredentialRequest` custom resource and the associated role bindings to enable the OVN-Kubernetes DPU service on the hosted cluster. The `ClusterRoleBinding` grants the required permissions for OVN node network operations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpucredentialreq.yaml` with the following content:
 
@@ -1079,6 +1362,16 @@ To authenticate with the management cluster API server, create a `DPUServiceCred
     $ oc apply -f dpucredentialreq.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the credential request and role bindings are created:
 
   ``` terminal
@@ -1089,13 +1382,33 @@ To authenticate with the management cluster API server, create a `DPUServiceCred
   $ oc get clusterrolebinding ovn-kubernetes-node-limited-binding
   ```
 
+</div>
+
 # Create the DPUServiceInterface custom resources
 
 You can create `DPUServiceInterface` custom resources to define interface objects that are specified in service chains. You must create physical interface resources for the DPU ports and an OVN-Kubernetes interface resource for host workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `physical-if.yaml` with the following content to define the physical DPU port interfaces:
 
@@ -1166,11 +1479,23 @@ You can create `DPUServiceInterface` custom resources to define interface object
     $ oc apply -f ovnk-if.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that all `DPUServiceInterface` resources are created:
 
   ``` terminal
   $ oc get dpuserviceinterface -n dpf-operator-system
   ```
+
+</div>
 
 # Create the DPUServiceNAD resource
 
@@ -1178,13 +1503,29 @@ Create a `DPUServiceNAD` custom resource to define the network attachment availa
 
 - `mybrhbn` maps to the `br-hbn` bridge, used by the HBN service. IPAM is disabled because IP allocation is handled by `DPUServiceIPAM`.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpuservice-nad.yaml` with the following content:
 
@@ -1207,15 +1548,27 @@ Create a `DPUServiceNAD` custom resource to define the network attachment availa
     $ envsubst < dpuservice-nad.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `DPUServiceNAD` resource is created:
 
   ``` terminal
   $ oc get dpuservicenad mybrhbn -n dpf-operator-system
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -1224,15 +1577,37 @@ Create a `DPUServiceNAD` custom resource to define the network attachment availa
   mybrhbn    True    2m
   ```
 
+  </div>
+
+</div>
+
 # Create the `DPUServiceIPAM` resources
 
 You can create `DPUServiceIPAM` custom resources to configure IP address management for DPU services. Two IPAM pools are required: one for the VTEP network used by the high-speed data plane, and one for loopback addresses used by the HBN service.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the DPF Operator.
 
 - You have created the `DPFOperatorConfig` resource.
 
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dpuservice-ipam.yaml` with the following content:
 
@@ -1266,8 +1641,20 @@ You can create `DPUServiceIPAM` custom resources to configure IP address managem
     $ envsubst < dpuservice-ipam.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `DPUServiceIPAM` resources are created:
 
   ``` terminal
   $ oc get dpuserviceipam -n dpf-operator-system
   ```
+
+</div>

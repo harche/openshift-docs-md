@@ -31,29 +31,40 @@ To prevent thrashing, the `virt-platform-autopilot` controller monitors the rate
 
 The `virt-platform-autopilot` controller applies opinionated defaults, but you can override managed configurations to suit your environment.
 
-Customize specific values
-Keep a resource managed by the controller, but apply a JSON patch on top of the reconciled configuration to retain your custom settings.
-
-Exclude specific fields from reconciliation
-Keep a resource managed by the controller, but mask individual fields so that the controller ignores them during reconciliation.
+z
 
 Stop reconciliation of a resource
 Mark a resource as unmanaged so that the controller does not reconcile it after it is created. You take full ownership of that resource’s configuration.
-
-Exclude a resource entirely
-Prevent the controller from creating or reconciling a resource by disabling it in the `HyperConverged` custom resource (CR).
 
 You can combine these approaches across different resources in the same cluster.
 
 ## Exclude a resource from being managed by the `virt-platform-autopilot` controller
 
-Disabled resources are not created or reconciled automatically by the `virt-platform-autopilot` controller. You can disable a resource by adding it to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+Disabled resources are not created or reconciled automatically by the `virt-platform-autopilot` controller. Prevent the controller from creating or reconciling a resource by disabling it in the `HyperConverged` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to the cluster as a user with `cluster-admin` privileges.
 
 - The `virt-platform-autopilot` controller is enabled on the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HyperConverged` CR and add resources to the `platform.kubevirt.io/disabled-resources` annotation:
 
@@ -77,17 +88,24 @@ Disabled resources are not created or reconciled automatically by the `virt-plat
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 ## Customize specific values in a managed resource
 
-You can customize specific values in a managed resource. The resource remains managed by the `virt-platform-autopilot` controller, but the controller applies an extra JSON patch on top of the reconciled configuration to retain your custom settings.
+Customize specific values in a managed resource by applying a JSON patch on top of the reconciled configuration to retain your custom settings.
 
-<div class="important">
+> [!IMPORTANT]
+> Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+>
+> To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+>
+> For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
 
-Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+<div>
 
-To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+<div class="title">
 
-For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
+Prerequisites
 
 </div>
 
@@ -98,6 +116,16 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
 - The `virt-platform-autopilot` controller is enabled on the cluster.
 
 - The `platform.kubevirt.io/mode=unmanaged` and `platform.kubevirt.io/ignore-fields` annotations must not be present on the resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `platform.kubevirt.io/patch` annotation to a resource with a valid RFC 6902 JSON Patch operations array.
 
@@ -111,11 +139,8 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
 
     The `virt-platform-autopilot` controller continues to manage all other fields on the resource but skips the specified paths.
 
-    <div class="important">
-
-    JSON patches are blocked on sensitive resources, including `MachineConfig` and `KubeletConfig` resources.
-
-    </div>
+    > [!IMPORTANT]
+    > JSON patches are blocked on sensitive resources, including `MachineConfig` and `KubeletConfig` resources.
 
 2.  Optional: To restore `virt-platform-autopilot` controller management for all fields, remove the `platform.kubevirt.io/patch` annotation.
 
@@ -127,17 +152,24 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
       -n openshift-kube-descheduler-operator
     ```
 
+</div>
+
 ## Exclude specific fields from reconciliation in a managed resource
 
-You can exclude specific fields from being managed by the `virt-platform-autopilot` controller so that it ignores them during reconciliation.
+Exclude specific fields from being managed by the `virt-platform-autopilot` controller so that it ignores them during reconciliation.
 
-<div class="important">
+> [!IMPORTANT]
+> Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+>
+> To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+>
+> For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
 
-Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+<div>
 
-To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+<div class="title">
 
-For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
+Prerequisites
 
 </div>
 
@@ -148,6 +180,16 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
 - The `virt-platform-autopilot` controller is enabled on the cluster.
 
 - The `platform.kubevirt.io/mode=unmanaged` and `platform.kubevirt.io/patch` annotations must not be present on the resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `platform.kubevirt.io/ignore-fields` annotation with a comma-separated list of RFC 6901 JSON Pointer paths.
 
@@ -168,17 +210,24 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
       -n openshift-kube-descheduler-operator
     ```
 
+</div>
+
 ## Stop reconciliation of a managed resource
 
-You can stop the `virt-platform-autopilot` controller entirely from reconciling a resource after it is created, by setting the `platform.kubevirt.io/mode=unmanaged` annotation for that resource.
+Mark a resource as unmanaged so that the `virt-platform-autopilot` controller does not reconcile it after it is created. You take full ownership of that resource’s configuration.
 
-<div class="important">
+> [!IMPORTANT]
+> Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+>
+> To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+>
+> For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
 
-Deleting an unmanaged resource causes any annotations on that resource to be lost. The `virt-platform-autopilot` controller then creates a new, opinionated version of the resource.
+<div>
 
-To prevent the `virt-platform-autopilot` controller from recreating deleted resources, you must disable the resource. You can disable resources by adding them to the `platform.kubevirt.io/disabled-resources` annotation in the `HyperConverged` custom resource (CR).
+<div class="title">
 
-For more information, see "Exclude a resource from being managed by the `virt-platform-autopilot` controller".
+Prerequisites
 
 </div>
 
@@ -189,6 +238,16 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
 - The `virt-platform-autopilot` controller is enabled on the cluster.
 
 - The `platform.kubevirt.io/ignore-fields` and `platform.kubevirt.io/patch` annotations must not be present on the resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the `platform.kubevirt.io/mode` annotation for the resource to `unmanaged`.
 
@@ -209,6 +268,8 @@ For more information, see "Exclude a resource from being managed by the `virt-pl
       platform.kubevirt.io/mode- \
       -n openshift-kube-descheduler-operator
     ```
+
+</div>
 
 # Additional resources
 

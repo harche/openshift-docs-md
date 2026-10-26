@@ -24,6 +24,14 @@ The AWS Load Balancer Operator detects the following information from the underl
 
 The AWS Load Balancer Operator supports the Kubernetes service resource of type `LoadBalancer` by using Network Load Balancer (NLB) with the `instance` target type only.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To deploy the AWS Load Balancer Operator on-demand from the software catalog, create a `Subscription` object by running the following command:
 
     ``` terminal
@@ -42,9 +50,11 @@ The AWS Load Balancer Operator supports the Kubernetes service resource of type 
     $ oc get -n aws-load-balancer-operator deployment/aws-load-balancer-operator-controller-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -52,6 +62,10 @@ The AWS Load Balancer Operator supports the Kubernetes service resource of type 
     NAME                                           READY     UP-TO-DATE   AVAILABLE   AGE
     aws-load-balancer-operator-controller-manager  1/1       1            1           23h
     ```
+
+    </div>
+
+</div>
 
 # Use the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost
 
@@ -63,19 +77,37 @@ An Application Load Balancer in the cloud can attach to cloud-based compute node
 
 You must annotate Ingress resources with the Outpost subnet or the VPC subnet, but not both.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have extended an AWS VPC cluster into an Outpost.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the AWS Load Balancer Operator and created the AWS Load Balancer Controller.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Configure the `Ingress` resource to use a specified subnet:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `Ingress` resource configuration**
+  <div class="title">
+
+  Example `Ingress` resource configuration
 
   </div>
 
@@ -100,7 +132,11 @@ You must annotate Ingress resources with the Outpost subnet or the VPC subnet, b
                     number: 80
   ```
 
+  </div>
+
   where:
 
   `<subnet_id>`
   Specifies the subnet to use. To use the Application Load Balancer in an Outpost, specify the Outpost subnet ID. To use the Application Load Balancer in the cloud, you must specify at least two subnets in different availability zones.
+
+</div>

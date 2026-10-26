@@ -1,6 +1,6 @@
 Refer to tested object maximums when planning your environment for your specific use case, and consider all factors that can impact cluster scaling. For information options that impact performance, see the "OpenShift Virtualization - Tuning & Scaling Guide" in the Red Hat Knowledgebase.
 
-# Tested maximums for OpenShift Virtualization
+# Tested resource limits
 
 Maximums are based on a single cluster of the largest possible size for a OpenShift Virtualization 4.x environment. Approaching the maximum values can reduce performance and increase latency. Consider using multiple smaller clusters if possible to improve performance.
 
@@ -17,33 +17,30 @@ Maximums apply to virtual machines (VMs) running on OpenShift Virtualization and
 | Attached disks (virtio) | 160 disks    | 170 disks         |
 | Attached disks (SCSI)   | 200 disks    | N/A               |
 
-<div class="note">
-
-Each VM must have at least 512 MB of memory. The `fstype` in the guest operating system (OS) must support the maximum limits. Do not use preallocation in data volumes that are larger than 99 TB.
-
-</div>
+> [!NOTE]
+> Each VM must have at least 512 MB of memory. The `fstype` in the guest operating system (OS) must support the maximum limits. Do not use preallocation in data volumes that are larger than 99 TB.
 
 ## Host maximums
 
 The following maximums apply to the OpenShift Container Platform hosts used for OpenShift Virtualization.
 
-| Objective (per host)         | Tested limit                                                                        | Theoretical limit        |
-|------------------------------|-------------------------------------------------------------------------------------|--------------------------|
-| Logical CPU cores or threads | Same as Red Hat Enterprise Linux (RHEL)                                             | N/A                      |
-| RAM                          | Same as RHEL                                                                        | N/A                      |
+| Objective (per host) | Tested limit | Theoretical limit |
+|----|----|----|
+| Logical CPU cores or threads | Same as Red Hat Enterprise Linux (RHEL) | N/A |
+| RAM | Same as RHEL | N/A |
 | Simultaneous live migrations | Defaults to 2 outbound migrations per node, and 5 concurrent migrations per cluster | Depends on NIC bandwidth |
-| Live migration bandwidth     | No default limit                                                                    | Depends on NIC bandwidth |
+| Live migration bandwidth | No default limit | Depends on NIC bandwidth |
 
 ## Cluster maximums
 
 The following maximums apply to objects defined in OpenShift Virtualization.
 
-| Objective (per cluster)         | Tested limit                                          | Theoretical limit                    |
-|---------------------------------|-------------------------------------------------------|--------------------------------------|
-| Number of attached PVs per node | N/A                                                   | CSI storage provider dependent       |
-| Maximum PV size                 | N/A                                                   | CSI storage provider dependent       |
-| Hosts                           | 500 hosts (100 or fewer recommended) <sup>\[1\]</sup> | Same as OpenShift Container Platform |
-| Defined VMs                     | 10,000 VMs <sup>\[2\]</sup>                           | Same as OpenShift Container Platform |
+| Objective (per cluster) | Tested limit | Theoretical limit |
+|----|----|----|
+| Number of attached PVs per node | N/A | CSI storage provider dependent |
+| Maximum PV size | N/A | CSI storage provider dependent |
+| Hosts | 500 hosts (100 or fewer recommended) <sup>\[1\]</sup> | Same as OpenShift Container Platform |
+| Defined VMs | 10,000 VMs <sup>\[2\]</sup> | Same as OpenShift Container Platform |
 
 1.  If you use more than 100 nodes, consider using Red Hat Advanced Cluster Management (RHACM) to manage multiple clusters instead of scaling out a single control plane. Larger clusters add complexity, require longer updates, and depending on node size and total object density, they can increase control plane stress.
 

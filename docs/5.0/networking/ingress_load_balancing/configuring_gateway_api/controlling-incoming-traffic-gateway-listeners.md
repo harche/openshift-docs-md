@@ -6,11 +6,16 @@ To ensure that your applications receive only authenticated and authorized traff
 
 If you are routing secure traffic, you must also configure TLS settings. You can define these parameters by configuring the `spec.listeners` field in your `Gateway` custom resource (CR).
 
-<div class="important">
+> [!IMPORTANT]
+> If your gateway is accessible from other namespaces, always configure the `spec.listeners[].allowedRoutes[].namespaces.selector` field with a selector for the permitted namespaces. By specifying a namespace selector, you prevent possible misuse or hijacking of the gateway from other namespaces.
+>
+> If nothing is listed in the `spec.listeners[].allowedRoutes[]` field, the gateway is accessible only from the same namespace.
 
-If your gateway is accessible from other namespaces, always configure the `spec.listeners[].allowedRoutes[].namespaces.selector` field with a selector for the permitted namespaces. By specifying a namespace selector, you prevent possible misuse or hijacking of the gateway from other namespaces.
+<div>
 
-If nothing is listed in the `spec.listeners[].allowedRoutes[]` field, the gateway is accessible only from the same namespace.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -62,6 +67,8 @@ If nothing is listed in the `spec.listeners[].allowedRoutes[]` field, the gatewa
     $ oc apply -f <gateway_cr>.yaml
     ```
 
+</div>
+
 ## Gateway listener configuration reference
 
 When configuring the `spec.listeners` field in your `Gateway` custom resource (CR), you can define network protocols, ports, hostnames, TLS termination, and route attachment policies.
@@ -99,15 +106,20 @@ To resolve or prevent routing conflicts, ensure that your listeners adhere to th
 
   This specificity rule also applies to multiple wildcard domains. For example, `*.<example_domain.tld>` takes precedence over `*.<tld>`. This ensures that traffic intended for a specific subdomain is accurately routed to its dedicated listener, even if a broader wildcard listener exists.
 
-  <div class="note">
-
-  In Gateway API, wildcards match one or more complete DNS labels. For example, `*.<example.com>` matches `<www.example.com>` and `<sub.domain.example.com>`, but does not match the root domain `<example.com>`.
-
-  </div>
+  > [!NOTE]
+  > In Gateway API, wildcards match one or more complete DNS labels. For example, `*.<example.com>` matches `<www.example.com>` and `<sub.domain.example.com>`, but does not match the root domain `<example.com>`.
 
 # Troubleshooting listener connections using status conditions
 
 When a listener is not routing traffic as expected, you can review its `status` conditions to quickly diagnose and fix the configuration error. The listener `status` condition gives insight into its current state and any underlying issues preventing it from accepting traffic.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the `status` conditions of your `Gateway` custom resource (CR) by running the following command:
 
@@ -121,19 +133,21 @@ When a listener is not routing traffic as expected, you can review its `status` 
 
       For details on how to interpret the output and resolve common errors, see [Gateway listener troubleshooting reference](#gateway-listener-troubleshooting-reference_controlling-incoming-traffic-gateway-listeners).
 
+</div>
+
 ## Gateway listener troubleshooting reference
 
 When you troubleshoot your gateway listeners, you can review the status conditions in the `Gateway` custom resource (CR) output to identify configuration errors or conflicts.
 
 The following table describes common listener conditions and how to resolve them:
 
-| Condition    | Description                                                                                                                                                                                                                                                     |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Ready`      | Indicates that the listener is configured correctly and is actively listening for traffic.                                                                                                                                                                      |
-| `Conflicted` | Signifies an ambiguity or conflict in the listener’s configuration with another listener on the same gateway. If a listener is conflicted, review your listener configurations against the conflict management rules to identify and resolve the ambiguity.     |
-| `Programmed` | Denotes that the underlying infrastructure, such as a load balancer or proxy, has successfully been programmed with the listener’s configuration.                                                                                                               |
-| `Accepted`   | Indicates that the gateway has accepted the listener’s configuration. This is usually an early step in the listener’s lifecycle.                                                                                                                                |
-| `Invalid`    | Means the listener’s configuration itself contains errors or is malformed, preventing it from being processed. An invalid status indicates errors in your YAML configuration. Check your configuration for typos, incorrect syntax, or missing required fields. |
+| Condition | Description |
+|----|----|
+| `Ready` | Indicates that the listener is configured correctly and is actively listening for traffic. |
+| `Conflicted` | Signifies an ambiguity or conflict in the listener’s configuration with another listener on the same gateway. If a listener is conflicted, review your listener configurations against the conflict management rules to identify and resolve the ambiguity. |
+| `Programmed` | Denotes that the underlying infrastructure, such as a load balancer or proxy, has successfully been programmed with the listener’s configuration. |
+| `Accepted` | Indicates that the gateway has accepted the listener’s configuration. This is usually an early step in the listener’s lifecycle. |
+| `Invalid` | Means the listener’s configuration itself contains errors or is malformed, preventing it from being processed. An invalid status indicates errors in your YAML configuration. Check your configuration for typos, incorrect syntax, or missing required fields. |
 
 Gateway listener status conditions
 

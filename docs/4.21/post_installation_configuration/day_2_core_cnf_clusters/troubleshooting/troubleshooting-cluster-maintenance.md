@@ -4,15 +4,20 @@ When deploying OpenShift Container Platform on bare-metal infrastructure, you mu
 
 - Periodically check the status of the cluster Operators
 
-<div class="note">
-
-For hardware monitoring, contact your hardware vendor to find the appropriate logging tool for your specific hardware.
-
-</div>
+> [!NOTE]
+> For hardware monitoring, contact your hardware vendor to find the appropriate logging tool for your specific hardware.
 
 # Checking cluster Operators
 
 Periodically check the status of your cluster Operators to find issues early.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Check the status of the cluster Operators by running the following command:
 
@@ -20,12 +25,24 @@ Periodically check the status of your cluster Operators to find issues early.
   $ oc get co
   ```
 
+</div>
+
 # Watching for failed pods
 
 To reduce troubleshooting time, regularly monitor for failed pods in your cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To watch for failed pods, run the following command:
 
   ``` terminal
   $ oc get po -A | grep -Eiv 'complete|running'
   ```
+
+</div>

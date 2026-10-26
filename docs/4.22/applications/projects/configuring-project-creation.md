@@ -10,13 +10,13 @@ If the parameter is not defined, the API server creates a default template that 
 
 When a project request is submitted, the API substitutes the following parameters into the template:
 
-| Parameter                 | Description                                      |
-|---------------------------|--------------------------------------------------|
-| `PROJECT_NAME`            | The name of the project. Required.               |
-| `PROJECT_DISPLAYNAME`     | The display name of the project. Might be empty. |
-| `PROJECT_DESCRIPTION`     | The description of the project. Might be empty.  |
-| `PROJECT_ADMIN_USER`      | The user name of the administrating user.        |
-| `PROJECT_REQUESTING_USER` | The user name of the requesting user.            |
+| Parameter | Description |
+|----|----|
+| `PROJECT_NAME` | The name of the project. Required. |
+| `PROJECT_DISPLAYNAME` | The display name of the project. Might be empty. |
+| `PROJECT_DESCRIPTION` | The description of the project. Might be empty. |
+| `PROJECT_ADMIN_USER` | The user name of the administrating user. |
+| `PROJECT_REQUESTING_USER` | The user name of the requesting user. |
 
 Default project template parameters
 
@@ -30,7 +30,25 @@ As a cluster administrator, you can modify the default project template so that 
 
 To create your own custom project template:
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in as a user with `cluster-admin` privileges.
 
@@ -68,9 +86,11 @@ To create your own custom project template:
 
 6.  Update the `spec` section to include the `projectRequestTemplate` and `name` parameters. Ensure you set the name of your uploaded project template. The default name is `project-request`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Project configuration resource with custom project template**
+    <div class="title">
+
+    Project configuration resource with custom project template
 
     </div>
 
@@ -85,11 +105,23 @@ To create your own custom project template:
     # ...
     ```
 
+    </div>
+
 7.  After you save your changes, create a new project to verify that your changes were successfully applied.
+
+</div>
 
 # Disabling project self-provisioning
 
 You can prevent an authenticated user group from self-provisioning new projects.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in as a user with `cluster-admin` privileges.
 
@@ -99,9 +131,11 @@ You can prevent an authenticated user group from self-provisioning new projects.
     $ oc describe clusterrolebinding.rbac self-provisioners
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -117,6 +151,8 @@ You can prevent an authenticated user group from self-provisioning new projects.
       ----  ----                ---------
       Group system:authenticated:oauth
     ```
+
+    </div>
 
     Review the subjects in the `self-provisioners` section.
 
@@ -169,9 +205,11 @@ You can prevent an authenticated user group from self-provisioning new projects.
     $ oc new-project test
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -179,7 +217,11 @@ You can prevent an authenticated user group from self-provisioning new projects.
     Error from server (Forbidden): You may not request a new project via this API.
     ```
 
+    </div>
+
     Consider customizing this project request message to provide more helpful instructions specific to your organization.
+
+</div>
 
 # Customizing the project request message
 
@@ -196,6 +238,14 @@ Cluster administrators can customize this message. Consider updating the message
 - To request a project, contact your system administrator at `projectname@example.com`.
 
 - To request a new project, fill out the project request form located at `https://internal.example.com/openshift-project-request`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the project configuration resource using the web console or CLI.
 
@@ -219,9 +269,11 @@ Cluster administrators can customize this message. Consider updating the message
 
 2.  Update the `spec` section to include the `projectRequestMessage` parameter and set the value to your custom message:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Project configuration resource with custom project request message**
+    <div class="title">
+
+    Project configuration resource with custom project request message
 
     </div>
 
@@ -234,6 +286,8 @@ Cluster administrators can customize this message. Consider updating the message
       projectRequestMessage: <message_string>
     # ...
     ```
+
+    </div>
 
     The following example uses actual values:
 
@@ -248,3 +302,5 @@ Cluster administrators can customize this message. Consider updating the message
     ```
 
 3.  After saving your changes, attempt to create a new project by using a developer or service account that cannot self-provision projects. By doing this task, you can verify that your changes were successfully applied.
+
+</div>

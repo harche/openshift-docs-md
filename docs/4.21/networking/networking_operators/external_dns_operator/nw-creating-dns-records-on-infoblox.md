@@ -4,9 +4,27 @@ To create DNS records on Infoblox, use the External DNS Operator. The Operator m
 
 To create DNS records on Infoblox, use the External DNS Operator. The Operator manages external name resolution for your cluster services.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`).
 
 - You have access to the Infoblox UI.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `secret` object with Infoblox credentials by running the following command:
 
@@ -20,9 +38,11 @@ To create DNS records on Infoblox, use the External DNS Operator. The Operator m
     $ oc get routes --all-namespaces | grep console
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -31,11 +51,15 @@ To create DNS records on Infoblox, use the External DNS Operator. The Operator m
     openshift-console          downloads           downloads-openshift-console.apps.test.example.com                     downloads           http    edge/Redirect          None
     ```
 
+    </div>
+
 3.  Create a YAML file, for example, `external-dns-sample-infoblox.yaml`, that defines the `ExternalDNS` object:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `external-dns-sample-infoblox.yaml` file**
+    <div class="title">
+
+    Example `external-dns-sample-infoblox.yaml` file
 
     </div>
 
@@ -63,6 +87,8 @@ To create DNS records on Infoblox, use the External DNS Operator. The Operator m
           routerName: default
     ```
 
+    </div>
+
     where:
 
     `metadata.name`
@@ -88,3 +114,5 @@ To create DNS records on Infoblox, use the External DNS Operator. The Operator m
     1.  Click **Data Management** → **DNS** → **Zones**.
 
     2.  Select the zone name.
+
+</div>

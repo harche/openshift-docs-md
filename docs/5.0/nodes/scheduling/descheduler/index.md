@@ -16,11 +16,8 @@ You can benefit from descheduling running pods in situations such as the followi
 
 - Pods have been restarted too many times.
 
-<div class="important">
-
-The descheduler does not schedule replacement of evicted pods. The scheduler automatically performs this task for the evicted pods.
-
-</div>
+> [!IMPORTANT]
+> The descheduler does not schedule replacement of evicted pods. The scheduler automatically performs this task for the evicted pods.
 
 When the descheduler decides to evict pods from a node, it employs the following general mechanism:
 
@@ -68,11 +65,8 @@ It enables the following strategies:
 
 - `RemoveDuplicates`: ensures that there is only one pod associated with a replica set, replication controller, deployment, or job running on same node. If there are more, those duplicate pods are evicted for better pod distribution in a cluster.
 
-<div class="warning">
-
-Do not enable `TopologyAndDuplicates` with any of the following profiles: `SoftTopologyAndDuplicates` or `CompactAndScale`. Enabling these profiles together results in a conflict.
-
-</div>
+> [!WARNING]
+> Do not enable `TopologyAndDuplicates` with any of the following profiles: `SoftTopologyAndDuplicates` or `CompactAndScale`. Enabling these profiles together results in a conflict.
 
 `LifecycleAndUtilization`
 This profile evicts long-running pods and balances resource usage between nodes.
@@ -95,20 +89,14 @@ It enables the following strategies:
 
   By default, pods that are older than 24 hours are removed. You can customize the pod lifetime value.
 
-<div class="warning">
-
-Do not enable `LifecycleAndUtilization` with any of the following profiles: `LongLifecycle` or `CompactAndScale`. Enabling these profiles together results in a conflict.
-
-</div>
+> [!WARNING]
+> Do not enable `LifecycleAndUtilization` with any of the following profiles: `LongLifecycle` or `CompactAndScale`. Enabling these profiles together results in a conflict.
 
 `SoftTopologyAndDuplicates`
 This profile is the same as `TopologyAndDuplicates`, except that pods with soft topology constraints, such as `whenUnsatisfiable: ScheduleAnyway`, are also considered for eviction.
 
-<div class="warning">
-
-Do not enable both `SoftTopologyAndDuplicates` and `TopologyAndDuplicates`. Enabling both results in a conflict.
-
-</div>
+> [!WARNING]
+> Do not enable both `SoftTopologyAndDuplicates` and `TopologyAndDuplicates`. Enabling both results in a conflict.
 
 `EvictPodsWithLocalStorage`
 This profile allows pods with local storage to be eligible for eviction.
@@ -121,11 +109,8 @@ This profile enables the `HighNodeUtilization` strategy, which attempts to evict
 
 Optionally, you can adjust the underutilized percentage by setting the Technology Preview field `devHighNodeUtilizationThresholds` to one the following values: `Minimal` for 10%, `Modest` for 20%, or `Moderate` for 30%. The default value is `Modest`.
 
-<div class="warning">
-
-Do not enable `CompactAndScale` with any of the following profiles: `LifecycleAndUtilization`, `LongLifecycle`, or `TopologyAndDuplicates`. Enabling these profiles together results in a conflict.
-
-</div>
+> [!WARNING]
+> Do not enable `CompactAndScale` with any of the following profiles: `LifecycleAndUtilization`, `LongLifecycle`, or `TopologyAndDuplicates`. Enabling these profiles together results in a conflict.
 
 `KubeVirtRelieveAndMigrate`
 The `KubeVirtRelieveAndMigrate` profile evicts pods from high-cost nodes to reduce overall resource expenses and enable workload migration. It also periodically rebalances workloads to help maintain similar spare capacity across nodes, which supports better handling of sudden workload spikes. Nodes can experience the following costs:
@@ -186,11 +171,8 @@ spec:
     - psi=1
 ```
 
-<div class="note">
-
-The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
-
-</div>
+> [!NOTE]
+> The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
 
 You can use this profile with the `SoftTopologyAndDuplicates` profile to also rebalance pods based on soft topology constraints, which can be useful in hosted control plane environments.
 
@@ -205,10 +187,17 @@ This profile balances resource usage between nodes and enables the following str
 
   - A node is considered overutilized if its usage is above 50% for any of the thresholds (CPU, memory, and number of pods).
 
-<div class="warning">
+> [!WARNING]
+> Do not enable `LongLifecycle` with any of the following profiles: `LifecycleAndUtilization` or `CompactAndScale`. Enabling these profiles together results in a conflict.
 
-Do not enable `LongLifecycle` with any of the following profiles: `LifecycleAndUtilization` or `CompactAndScale`. Enabling these profiles together results in a conflict.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Default scheduling](../../../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
+
+</div>

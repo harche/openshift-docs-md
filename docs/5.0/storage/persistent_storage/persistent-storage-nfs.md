@@ -2,19 +2,44 @@ You can provision OpenShift Container Platform clusters with persistent storage 
 
 Persistent volumes (PVs) and persistent volume claims (PVCs) provide a convenient method for sharing a volume across a project. While the NFS-specific information contained in a PV definition could also be defined directly in a pod definition, doing so does not create the volume as a distinct cluster resource, making the volume more susceptible to conflicts.
 
-<div class="note">
+> [!NOTE]
+> The in-tree NFS provisioner does not support user namespaces.
 
-The in-tree NFS provisioner does not support user namespaces.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Mounting NFS shares](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_file_systems/mounting-nfs-shares_managing-file-systems)
 
+</div>
+
 # Provisioning persistent storage using NFS
 
 You can provision persistent storage for OpenShift Container Platform by creating persistent volume (PV) and persistent volume claim (PVC) objects that reference your NFS servers and export paths.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have NFS storage available in the underlying infrastructure with the appropriate export paths configured.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an object definition for the PV:
 
@@ -57,11 +82,8 @@ You can provision persistent storage for OpenShift Container Platform by creatin
     `spec.persistentVolumeReclaimPolicy`
     Specifies the reclaim policy for the PV. This defines what happens to a volume when released.
 
-    <div class="note">
-
-    Each NFS volume must be mountable by all schedulable nodes in the cluster.
-
-    </div>
+    > [!NOTE]
+    > Each NFS volume must be mountable by all schedulable nodes in the cluster.
 
 2.  Verify that the PV was created:
 
@@ -69,9 +91,11 @@ You can provision persistent storage for OpenShift Container Platform by creatin
     $ oc get pv
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -79,6 +103,8 @@ You can provision persistent storage for OpenShift Container Platform by creatin
     NAME     LABELS    CAPACITY     ACCESSMODES   STATUS      CLAIM  REASON    AGE
     pv0001   <none>    5Gi          RWO           Available                    31s
     ```
+
+    </div>
 
 3.  Create a persistent volume claim that binds to the new PV:
 
@@ -111,9 +137,11 @@ You can provision persistent storage for OpenShift Container Platform by creatin
     $ oc get pvc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -121,6 +149,10 @@ You can provision persistent storage for OpenShift Container Platform by creatin
     NAME         STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
     nfs-claim1   Bound    pv0001   5Gi        RWO                           2m
     ```
+
+    </div>
+
+</div>
 
 # Enforce disk quotas
 
@@ -144,9 +176,11 @@ As an example, if the target NFS directory appears on the NFS server as:
 $ ls -lZ /opt/nfs -d
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -154,13 +188,17 @@ $ ls -lZ /opt/nfs -d
 drwxrws---. nfsnobody 5555 unconfined_u:object_r:usr_t:s0   /opt/nfs
 ```
 
+</div>
+
 ``` terminal
 $ id nfsnobody
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -168,23 +206,19 @@ $ id nfsnobody
 uid=65534(nfsnobody) gid=65534(nfsnobody) groups=65534(nfsnobody)
 ```
 
+</div>
+
 Then the container must match SELinux labels, and either run with a UID of `65534`, the `nfsnobody` owner, or with `5555` in its supplemental groups to access the directory.
 
-<div class="note">
-
-The owner ID of `65534` is used as an example. Even though NFS’s `root_squash` maps `root`, uid `0`, to `nfsnobody`, uid `65534`, NFS exports can have arbitrary owner IDs. Owner `65534` is not required for NFS exports.
-
-</div>
+> [!NOTE]
+> The owner ID of `65534` is used as an example. Even though NFS’s `root_squash` maps `root`, uid `0`, to `nfsnobody`, uid `65534`, NFS exports can have arbitrary owner IDs. Owner `65534` is not required for NFS exports.
 
 ## Group IDs
 
 You can use supplemental groups to manage NFS access in OpenShift Container Platform when you cannot change permissions on the NFS export. Supplemental groups manage shared storage such as NFS, while block storage such as iSCSI uses the `fsGroup` SCC strategy and `fsGroup` value in the pod `securityContext`.
 
-<div class="note">
-
-To gain access to persistent storage, it is generally preferable to use supplemental group IDs versus user IDs.
-
-</div>
+> [!NOTE]
+> To gain access to persistent storage, it is generally preferable to use supplemental group IDs versus user IDs.
 
 Because the group ID on the example target NFS directory is `5555`, the pod can define that group ID using `supplementalGroups` under the `securityContext` definition of the pod. For example:
 
@@ -209,21 +243,15 @@ Assuming there are no custom SCCs that might satisfy the pod requirements, the p
 
 As a result, the above pod passes admissions and is launched. However, if group ID range checking is desired, a custom SCC is the preferred solution. A custom SCC can be created such that minimum and maximum group IDs are defined, group ID range checking is enforced, and a group ID of `5555` is allowed.
 
-<div class="note">
-
-To use a custom SCC, you must first add it to the appropriate service account. For example, use the `default` service account in the given project unless another has been specified on the `Pod` specification.
-
-</div>
+> [!NOTE]
+> To use a custom SCC, you must first add it to the appropriate service account. For example, use the `default` service account in the given project unless another has been specified on the `Pod` specification.
 
 ## User IDs
 
 You can define user IDs in the container image or in the pod definition.
 
-<div class="note">
-
-It is generally preferable to use supplemental group IDs to gain access to persistent storage versus using user IDs.
-
-</div>
+> [!NOTE]
+> It is generally preferable to use supplemental group IDs to gain access to persistent storage versus using user IDs.
 
 In the example target NFS directory shown above, the container needs its UID set to `65534`, ignoring group IDs for the moment, so the following can be added to the `Pod` definition:
 
@@ -256,11 +284,8 @@ Assuming that the project is `default` and the SCC is `restricted`, the user ID 
 
 It is generally considered a good practice not to modify the predefined SCCs. The preferred way to fix this situation is to create a custom SCC A custom SCC can be created such that minimum and maximum user IDs are defined, UID range checking is still enforced, and the UID of `65534` is allowed.
 
-<div class="note">
-
-To use a custom SCC, you must first add it to the appropriate service account. For example, use the `default` service account in the given project unless another has been specified on the `Pod` specification.
-
-</div>
+> [!NOTE]
+> To use a custom SCC, you must first add it to the appropriate service account. For example, use the `default` service account in the given project unless another has been specified on the `Pod` specification.
 
 ## SELinux
 
@@ -270,9 +295,25 @@ Red Hat Enterprise Linux (RHEL) and Red Hat Enterprise Linux CoreOS (RHCOS) sy
 
 The following procedure shows how to enable the correct SELinux permissions.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The `container-selinux` package must be installed. This package provides the `virt_use_nfs` SELinux boolean.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enable the `virt_use_nfs` boolean using the following command. The `-P` option makes this boolean persistent across reboots.
 
@@ -280,15 +321,33 @@ The following procedure shows how to enable the correct SELinux permissions.
   # setsebool -P virt_use_nfs 1
   ```
 
+</div>
+
 ## Export settings
 
 Before you can enable arbitrary container users to read and write the volume, check that each exported volume on the NFS server meets the required conditions.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the NFS server with root permissions.
 
 - You have installed and configured an NFS server on your system.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Every export must be exported using the following format:
 
@@ -300,27 +359,35 @@ Before you can enable arbitrary container users to read and write the volume, ch
 
   - For NFSv4, configure the default port `2049` (**nfs**).
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **NFSv4**
+    <div class="title">
+
+    NFSv4
 
     </div>
 
     ``` terminal
     # iptables -I INPUT 1 -p tcp --dport 2049 -j ACCEPT
     ```
+
+    </div>
 
   - For NFSv3, there are three ports to configure: `2049` (**nfs**), `20048` (**mountd**), and `111` (**portmapper**).
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **NFSv3**
+    <div class="title">
+
+    NFSv3
 
     </div>
 
     ``` terminal
     # iptables -I INPUT 1 -p tcp --dport 2049 -j ACCEPT
     ```
+
+    </div>
 
     ``` terminal
     # iptables -I INPUT 1 -p tcp --dport 20048 -j ACCEPT
@@ -331,6 +398,8 @@ Before you can enable arbitrary container users to read and write the volume, ch
     ```
 
 - The NFS export and directory must be set up so that they are accessible by the target pods. Either set the export to be owned by the container’s primary UID, or supply the pod group access using `supplementalGroups`, as shown in the group IDs above.
+
+</div>
 
 # Resource reclamation
 
@@ -390,14 +459,14 @@ Depending on what version of NFS is being used and how it is configured, there m
 <col style="width: 66%" />
 </colgroup>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NFSv4 mount incorrectly shows all files with ownership of <code>nobody:nobody</code></p></td>
 <td style="text-align: left;"><ul>
 <li><p>Could be attributed to the ID mapping settings, found in <code>/etc/idmapd.conf</code> on your NFS.</p></li>
 <li><p>See <a href="https://access.redhat.com/solutions/33455">this Red Hat Solution</a>.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Disabling ID mapping on NFSv4</p></td>
 <td style="text-align: left;"><ul>
 <li><p>On the NFS server, run the following command:</p>

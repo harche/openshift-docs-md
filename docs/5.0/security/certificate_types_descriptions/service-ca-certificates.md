@@ -16,17 +16,11 @@ As of OpenShift Container Platform 4.3.5, automated rotation is supported and is
 
 The 26-month service CA validity period is longer than the expected upgrade interval for a supported OpenShift Container Platform cluster. Non-control plane consumers of service CA certificates are refreshed after CA rotation and before the expiration of the pre-rotation CA.
 
-<div class="warning">
+> [!WARNING]
+> A manually-rotated service CA does not maintain trust with the previous service CA. You might experience a temporary service disruption until the pods in the cluster are restarted, which ensures that pods are using service serving certificates issued by the new service CA.
 
-A manually-rotated service CA does not maintain trust with the previous service CA. You might experience a temporary service disruption until the pods in the cluster are restarted, which ensures that pods are using service serving certificates issued by the new service CA.
-
-</div>
-
-<div class="important">
-
-Applications using the `service-ca` certificate must be capable of dynamically reloading CA certificates. When automated rotation occurs, pods that cannot reload CA certificates dynamically might require a restart to rebuild certificate trust.
-
-</div>
+> [!IMPORTANT]
+> Applications using the `service-ca` certificate must be capable of dynamically reloading CA certificates. When automated rotation occurs, pods that cannot reload CA certificates dynamically might require a restart to rebuild certificate trust.
 
 # Management
 

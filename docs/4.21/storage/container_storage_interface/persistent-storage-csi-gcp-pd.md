@@ -16,9 +16,14 @@ The GCP PD driver enables you to create and mount GCP PD PVs.
 
 GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks. For more information, see "C3 instance type for bare metal and N4 machine series".
 
-<div class="note">
+> [!NOTE]
+> OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
 
-OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -34,6 +39,8 @@ OpenShift Container Platform provides automatic migration for the GCE Persistent
 
 - [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
 
+</div>
+
 # About CSI
 
 The Container Storage Interface (CSI) enables storage vendors to deliver plugins through a standard interface without modifying Kubernetes core code, replacing traditional embedded storage drivers.
@@ -46,9 +53,14 @@ By default, the Google Cloud Platform (GCP) persistent disk (PD) Container Stora
 
 To reduce permissions, grant the `iam.serviceAccountUser` role to the control plane and compute node service accounts, and then remove the `iam.serviceAccountUser` role from the project-wide service account, thus reducing the scope of the permission.
 
-<div class="note">
+> [!NOTE]
+> Reducing permissions only applies to GCP clusters using Workload Identity Federation (WIF).
 
-Reducing permissions only applies to GCP clusters using Workload Identity Federation (WIF).
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -77,6 +89,8 @@ Reducing permissions only applies to GCP clusters using Workload Identity Federa
 
     - `GOOGLE_PROJECT_ID`: The unique ID of the Google Cloud project where this is occurring. For example, `prod-data-789`.
 
+</div>
+
 # GCP PD CSI driver storage class parameters
 
 To configure persistent volume provisioning behavior for Google Cloud Platform (GCP) persistent disk (PD), use storage class parameters that control disk type, replication, and encryption settings.
@@ -94,7 +108,7 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 <col style="width: 36%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: left;">Values</th>
 <th style="text-align: left;">Default</th>
@@ -102,7 +116,7 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>pd-ssd</code>, <code>pd-standard</code>, <code>pd-balanced</code>, or <code>hyperdisk-balanced</code></p></td>
 <td style="text-align: left;"><p><code>pd-standard</code></p></td>
@@ -110,13 +124,13 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 <p>The driver does not validate the value, thus all the possible values are accepted.</p>
 <p>For <code>hyperdisk-balanced</code>, be sure to check the limitations under "C3 and N4 instance type limitations".</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>replication-type</code></p></td>
 <td style="text-align: left;"><p><code>none</code> or <code>regional-pd</code></p></td>
 <td style="text-align: left;"><p><code>none</code></p></td>
 <td style="text-align: left;"><p>Allows you to choose between zonal or regional PVs.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>disk-encryption-kms-key</code></p></td>
 <td style="text-align: left;"><p>Fully qualified resource identifier for the key to use to encrypt new disks.</p></td>
 <td style="text-align: left;"><p>Empty string</p></td>
@@ -125,9 +139,17 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 </tbody>
 </table>
 
-CreateVolume Parameters
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [C3 and N4 instance type limitations](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-limitations_persistent-storage-csi-gcp-pd)
+
+</div>
 
 # C3 instance type for bare metal and N4 machines series
 
@@ -147,13 +169,10 @@ The GCP PD CSI driver support for the C3 instance type for bare metal and N4 mac
 
 - The default storage class is standard-csi.
 
-  <div class="important">
-
-  You need to manually create a storage class.
-
-  For information about creating the storage class, see Step 2 in "Setting up hyperdisk-balanced disks".
-
-  </div>
+  > [!IMPORTANT]
+  > You need to manually create a storage class.
+  >
+  > For information about creating the storage class, see Step 2 in "Setting up hyperdisk-balanced disks".
 
 - Clusters with mixed virtual machines (VMs) that use different storage types, for example, N2 and N4, are not supported. This is due to hyperdisks-balanced disks not being usable on most legacy VMs. Similarly, regular persistent disks are not usable on N4/C3 VMs.
 
@@ -161,13 +180,21 @@ The GCP PD CSI driver support for the C3 instance type for bare metal and N4 mac
 
 - For more limitations, see Google Cloud documentation "Limitations for Hyperdisk".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Setting up hyperdisk-balanced disk](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-storage-pools-procedure_persistent-storage-csi-gcp-pd)
 
 - [OCPBUGS-39258](https://issues.redhat.com/browse/OCPBUGS-39258)
 
 - [Limitations for Hyperdisk](https://cloud.google.com/compute/docs/disks/hyperdisks#limitations)
+
+</div>
 
 ## Storage pools for hyperdisk-balanced disks overview
 
@@ -179,7 +206,25 @@ Hyperdisk storage pools can be used with Compute Engine for large-scale storage.
 
 To provision high-performance hyperdisk-balanced storage volumes, configure a storage class, create persistent volume claims, and deploy applications that use the hyperdisk storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster with administrative privileges
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a GCP cluster with attached disks provisioned with hyperdisk-balanced disks.
 
@@ -189,9 +234,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
 
         For your install-config.yaml file, use the following example file:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example install-config YAML file**
+        <div class="title">
+
+        Example install-config YAML file
 
         </div>
 
@@ -228,15 +275,14 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
                 diskType: hyperdisk-balanced
         ```
 
+        </div>
+
         - `controlPlane.platform.gcp.type` and `compute.platform.gcp.type`: Specifies the node type as n4-standard-4.
 
         - `controlPlane.platform.gcp.osDisk.diskType` and `compute.platform.osDisk.diskType`: Specifies the node has the root disk backed by hyperdisk-balanced disk type. All nodes in the cluster should use the same disk type, either hyperdisks-balanced or pd-\*.
 
-          <div class="note">
-
-          All nodes in the cluster must support hyperdisk-balanced volumes. Clusters with mixed nodes are not supported, for example N2 and N3 using hyperdisk-balanced disks.
-
-          </div>
+          > [!NOTE]
+          > All nodes in the cluster must support hyperdisk-balanced volumes. Clusters with mixed nodes are not supported, for example N2 and N3 using hyperdisk-balanced disks.
 
     2.  After step 3 in "Incorporating the Cloud Credential Operator utility manifests", copy the following manifests into the manifests directory created by the installation program:
 
@@ -244,9 +290,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
 
         - storageclass.yaml - creates a hyperdisk-specific storage class
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example cluster CSI driver YAML file**
+          <div class="title">
+
+          Example cluster CSI driver YAML file
 
           </div>
 
@@ -262,11 +310,15 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
             storageClassState: Unmanaged
           ```
 
+          </div>
+
           `spec.storageClassState` specifies disabling creation of the default OpenShift Container Platform storage classes.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example storage class YAML file**
+          <div class="title">
+
+          Example storage class YAML file
 
           </div>
 
@@ -295,6 +347,8 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
           ...
           ```
 
+          </div>
+
         - `metadata`.name: Specifies the name for your storage class. In this example, it is `hyperdisk-sc`.
 
         - `provisioner`: `pd.csi.storage.gke.io` specifies GCP CSI provisioner.
@@ -311,9 +365,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
 
 3.  Create a persistent volume claim (PVC) that uses the hyperdisk-specific storage class using the following example YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC YAML file**
+    <div class="title">
+
+    Example PVC YAML file
 
     </div>
 
@@ -331,6 +387,8 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
           storage: 2048Gi
     ```
 
+    </div>
+
     - `spec.storageClassName`: The PVC references the storage pool-specific storage class. In this example, `hyperdisk-sc`.
 
     - `spec.resources.requests.storage`: Target storage capacity of the hyperdisk-balanced volume. In this example, `2048Gi`.
@@ -341,9 +399,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
 
     2.  Use the following example YAML file to create the deployment:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example deployment YAML file**
+        <div class="title">
+
+        Example deployment YAML file
 
         </div>
 
@@ -376,6 +436,8 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
                   claimName: my-pvc
         ```
 
+        </div>
+
         - `spec.template.spec.nodeSelector`: Specifies the machine family. In this example, it is `n4`.
 
         - `spec.template.spec.volumes.persistentVolumeClaim.claimName`: Specifies the name of the PVC created in the preceding step. In this example, it is `my-pfc`.
@@ -386,9 +448,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         $ oc get deployment
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -396,6 +460,8 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         NAME       READY   UP-TO-DATE   AVAILABLE   AGE
         postgres   0/1     1            0           42s
         ```
+
+        </div>
 
         It might take a few minutes for hyperdisk instances to complete provisioning and display a READY status.
 
@@ -405,9 +471,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         $ oc get pvc my-pvc
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -416,15 +484,19 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         my-pvc        Bound    pvc-1ff52479-4c81-4481-aa1d-b21c8f8860c6   2Ti        RWO            hyperdisk-sc       <unset>                2m24s
         ```
 
+        </div>
+
     5.  Confirm the expected configuration of your hyperdisk-balanced disk:
 
         ``` terminal
         $ gcloud compute disks list
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -435,6 +507,8 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         c4a-rhel-vm                                 us-central1-a   zone            50       hyperdisk-balanced  READY
         ```
 
+        </div>
+
         Where `c4a-rhel.vm` is a hyperdisk-balanced disk.
 
     6.  If using storage pools, check that the volume is provisioned as specified in your storage class and PVC by running the following command:
@@ -443,9 +517,11 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         $ gcloud compute storage-pools list-disks pool-us-east4-c --zone=us-east4-c
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -454,9 +530,23 @@ To provision high-performance hyperdisk-balanced storage volumes, configure a st
         pvc-1ff52479-4c81-4481-aa1d-b21c8f8860c6  READY   3000              140                     2048
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Create a Hyperdisk Storage Pool](https://cloud.google.com/compute/docs/disks/create-storage-pools#create-pool)
 
 - [Installing a cluster on GCP with customizations](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-customizations)
+
+</div>
 
 # Creating a custom-encrypted persistent volume
 
@@ -466,17 +556,37 @@ When you create a `PersistentVolumeClaim` object, OpenShift Container Platform p
 
 For encryption, the newly attached PV that you create uses customer-managed encryption keys (CMEK) on a cluster by using a new or existing Google Cloud Key Management Service (KMS) key.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to a running OpenShift Container Platform cluster.
 
 - You have created a Cloud KMS key ring and key version.
 
+</div>
+
 For more information about CMEK and Cloud KMS resources, see Google Cloud documentation "Using customer-managed encryption keys (CMEK)".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a storage class with the Cloud KMS key. The following example enables dynamic provisioning of encrypted volumes:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -493,13 +603,12 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
       disk-encryption-kms-key: projects/<key-project-id>/locations/<location>/keyRings/<key-ring>/cryptoKeys/<key>
     ```
 
+    </div>
+
     The `parameters.disk-encryption-kms-key` field must be the resource identifier for the key that will be used to encrypt new disks. Values are case-sensitive. For more information about providing key ID values, see Google Cloud documentation "Retrieving a resource’s ID" and "Getting a Cloud KMS resource ID".
 
-    <div class="note">
-
-    You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and re-create it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
-
-    </div>
+    > [!NOTE]
+    > You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and re-create it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
 
 2.  Deploy the storage class on your OpenShift Container Platform cluster by using the `oc` command:
 
@@ -507,9 +616,11 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
     $ oc describe storageclass csi-gce-pd-cmek
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -525,6 +636,8 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
     VolumeBindingMode:     WaitForFirstConsumer
     Events:                none
     ```
+
+    </div>
 
 3.  Create a file named `pvc.yaml` that matches the name of your storage class object that you created in the previous step:
 
@@ -542,11 +655,8 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
           storage: 6Gi
     ```
 
-    <div class="note">
-
-    If you marked the new storage class as default, you can omit the `storageClassName` field.
-
-    </div>
+    > [!NOTE]
+    > If you marked the new storage class as default, you can omit the `storageClassName` field.
 
 4.  Apply the PVC on your cluster:
 
@@ -560,9 +670,11 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
     $ oc get pvc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -571,19 +683,30 @@ For more information about CMEK and Cloud KMS resources, see Google Cloud docume
     podpvc    Bound     pvc-e36abf50-84f3-11e8-8538-42010a800002   10Gi       RWO            csi-gce-pd-cmek  9s
     ```
 
-    <div class="note">
-
-    If your storage class has the `volumeBindingMode` field set to `WaitForFirstConsumer`, you must create a pod to use the PVC before you can verify it.
-
     </div>
 
+    > [!NOTE]
+    > If your storage class has the `volumeBindingMode` field set to `WaitForFirstConsumer`, you must create a pod to use the PVC before you can verify it.
+
     Your CMEK-protected PV is now ready to use with your OpenShift Container Platform cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Using customer-managed encryption keys (CMEK)](https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
 
 - [Retrieving a resource’s ID](https://cloud.google.com/kms/docs/resource-hierarchy#retrieve_resource_id)
 
 - [Getting a Cloud KMS resource ID](https://cloud.google.com/kms/docs/getting-resource-ids)
+
+</div>
 
 # User-managed encryption
 
@@ -595,21 +718,15 @@ This features supports the following storage types:
 
 - Amazon Web Services (AWS) Elastic Block storage (EBS)
 
-  <div class="note">
-
-  If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
-
-  </div>
+  > [!NOTE]
+  > If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
 
   For information about installing AWS EBS with user-managed encryption, see "Optional AWS configuration parameters".
 
 - Microsoft Azure Disk storage
 
-  <div class="note">
-
-  If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
-
-  </div>
+  > [!NOTE]
+  > If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
 
   For information about installing Azure Disk with user-managed encryption, see "Preparing an Azure Disk Encryption Set".
 
@@ -621,9 +738,17 @@ This features supports the following storage types:
 
   For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Additional Google Cloud configuration parameters](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-configuration-parameters-additional-gcp_installation-config-parameters-gcp)
+
+</div>
 
 # Additional resources
 

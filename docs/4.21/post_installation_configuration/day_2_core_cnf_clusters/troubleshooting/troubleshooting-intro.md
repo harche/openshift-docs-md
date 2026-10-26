@@ -2,13 +2,10 @@ Troubleshooting and maintenance are weekly tasks that can be a challenge if you 
 
 To maintain and troubleshoot a bare-metal environment with high performance requirements, see the following procedures.
 
-<div class="important">
-
-This troubleshooting information is not a reference for configuring OpenShift Container Platform or developing cloud-native applications.
-
-For information about developing cloud-native applications on OpenShift Container Platform, see [Red Hat Best Practices for Kubernetes](https://redhat-best-practices-for-k8s.github.io/guide/).
-
-</div>
+> [!IMPORTANT]
+> This troubleshooting information is not a reference for configuring OpenShift Container Platform or developing cloud-native applications.
+>
+> For information about developing cloud-native applications on OpenShift Container Platform, see [Red Hat Best Practices for Kubernetes](https://redhat-best-practices-for-k8s.github.io/guide/).
 
 # Getting Support
 
@@ -28,13 +25,41 @@ The Red Hat Knowledgebase helps you get the most from Red Hat products and tec
 
 It includes articles, product documentation, and videos that outline best practices for installing, configuring, and using Red Hat products. You can also search for solutions to known issues. Each solution has a root cause description and steps to fix the problem.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
+
+</div>
 
 ## Search the Red Hat Knowledgebase
 
 Search the Red Hat Knowledgebase to find solutions to known issues and resolve problems quickly without opening a support case.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a Red Hat Customer Portal account.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the [Red Hat Customer Portal](http://access.redhat.com).
 
@@ -54,9 +79,19 @@ Search the Red Hat Knowledgebase to find solutions to known issues and resolve 
 
 6.  Optional: Select the **Documentation** content type filter.
 
+</div>
+
 ## Submitting a support case
 
 If you cannot resolve an OpenShift Container Platform issue by using the Red Hat Knowledgebase, submit a support case to get direct help from Red Hat Support.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -65,6 +100,16 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 - You have a Red Hat Customer Portal account.
 
 - You have a Red Hat Standard or Premium subscription.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 
@@ -125,3 +170,5 @@ If you cannot resolve an OpenShift Container Platform issue by using the Red Ha
 11. Input relevant case management details and click **Continue**.
 
 12. Preview the case details and click **Submit**.
+
+</div>

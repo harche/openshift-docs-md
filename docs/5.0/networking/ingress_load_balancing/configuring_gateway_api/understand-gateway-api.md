@@ -8,11 +8,8 @@ A well-designed Gateway API deployment helps you achieve a portable, role-orient
 
 - Choose between shared or dedicated deployment topologies.
 
-<div class="important">
-
-Gateway API does not support user-defined networks (UDN).
-
-</div>
+> [!IMPORTANT]
+> Gateway API does not support user-defined networks (UDN).
 
 # Gateway API benefits and limitations
 
@@ -48,23 +45,17 @@ In some situations, Gateway API provides one or more fields that a vendor implem
 
 Any CRDs created within an OpenShift Container Platform 4.17 cluster are compatibly versioned and maintained by the Ingress Operator. If CRDs are already present but were not previously managed by the Ingress Operator, the Ingress Operator checks whether these configurations are compatible with Gateway API version supported by OpenShift Container Platform, and creates an admin-gate that requires your acknowledgment of CRD succession.
 
-<div class="important">
-
-If you are updating your cluster from a previous OpenShift Container Platform version that contains Gateway API CRDs, change those resources so that they exactly match the version supported by OpenShift Container Platform. Otherwise, you cannot update your cluster because those CRDs were not managed by OpenShift Container Platform, and could contain functionality that is unsupported by Red Hat.
-
-</div>
+> [!IMPORTANT]
+> If you are updating your cluster from a previous OpenShift Container Platform version that contains Gateway API CRDs, change those resources so that they exactly match the version supported by OpenShift Container Platform. Otherwise, you cannot update your cluster because those CRDs were not managed by OpenShift Container Platform, and could contain functionality that is unsupported by Red Hat.
 
 ## Gateway API CRDs for `gateway.networking.x-k8s.io`
 
 In previous versions of OpenShift Container Platform, cluster security policies blocked the deployment of the `gateway.networking.x-k8s.io` Gateway API CRD. Starting in OpenShift Container Platform 4.22, this restriction is removed, and you can deploy that CRD.
 
-<div class="note">
-
-Experimental Gateway API CRDs in the `gateway.networking.k8s.io` group remain restricted.
-
-You can install the `gateway.networking.x-k8s.io` CRD and related objects on the cluster because they are no longer blocked. The built-in Gateway API implementation managed by the Ingress Operator does not reconcile those objects in OpenShift Container Platform. Use a compatible third-party Gateway implementation if you need those APIs reconciled.
-
-</div>
+> [!NOTE]
+> Experimental Gateway API CRDs in the `gateway.networking.k8s.io` group remain restricted.
+>
+> You can install the `gateway.networking.x-k8s.io` CRD and related objects on the cluster because they are no longer blocked. The built-in Gateway API implementation managed by the Ingress Operator does not reconcile those objects in OpenShift Container Platform. Use a compatible third-party Gateway implementation if you need those APIs reconciled.
 
 # Gateway API deployment topologies
 
@@ -76,9 +67,11 @@ Routes and any load balancers or proxies are served from the same namespace. The
 
 The following example shows a dedicated `Gateway` resource, `fin-gateway`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example dedicated `Gateway` resource**
+<div class="title">
+
+Example dedicated `Gateway` resource
 
 </div>
 
@@ -97,13 +90,17 @@ spec:
     hostname: "*.example.com"
 ```
 
+</div>
+
 If you do not set `spec.listeners[].allowedRoutes` for a `Gateway` resource, the system implicitly sets the `namespaces.from` field to the value of `Same`.
 
 The following example shows the associated `HTTPRoute` resource, `sales-db`, which attaches to the dedicated `Gateway` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `HTTPRoute` resource**
+<div class="title">
+
+Example `HTTPRoute` resource
 
 </div>
 
@@ -124,6 +121,8 @@ spec:
           port: 8080
 ```
 
+</div>
+
 The `HTTPRoute` resource must have the name of the `Gateway` object as the value for its `parentRefs` field to attach to the gateway. The system implicitly assumes that the route exists in the same namespace as the `Gateway` object.
 
 ## Shared gateway
@@ -132,9 +131,11 @@ Routes are served from multiple namespaces or multiple hostnames. The `Gateway` 
 
 The following example shows a `Gateway` resource, `devops-gateway`, that has a `spec.listeners.allowedRoutes.namespaces` label selector set to match any namespaces containing `shared-gateway-access: "true"`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example shared `Gateway` resource**
+<div class="title">
+
+Example shared `Gateway` resource
 
 </div>
 
@@ -159,11 +160,15 @@ spec:
             shared-gateway-access: "true"
 ```
 
+</div>
+
 The following examples show the allowed namespaces for the `devops-gateway` resource:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Namespace` resources**
+<div class="title">
+
+Example `Namespace` resources
 
 </div>
 
@@ -182,6 +187,8 @@ metadata:
   labels:
     shared-gateway-access: "true"
 ```
+
+</div>
 
 In this example, two `HTTPRoute` resources, `dev-portal` and `ops-home`, are in different namespaces but are attached to the shared gateway:
 

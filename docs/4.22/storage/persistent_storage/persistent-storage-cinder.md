@@ -2,17 +2,24 @@ OpenShift Container Platform supports OpenStack Cinder volumes. You can provisio
 
 Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
-<div class="important">
+> [!IMPORTANT]
+> OpenShift Container Platform 4.11 and later provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver.
+>
+> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see "CSI automatic migration".
 
-OpenShift Container Platform 4.11 and later provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver.
+<div>
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see "CSI automatic migration".
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
 
 - [OpenStack Cinder](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/8/html-single/architecture_guide/index#comp-cinder)
+
+</div>
 
 # Manual provisioning with Cinder
 
@@ -24,13 +31,33 @@ Manual provisioning requires that OpenShift Container Platform is configured for
 
 You can create a persistent volume (PV) that provisions storage from an Red Hat OpenStack Platform (RHOSP) Cinder volume for use with OpenShift Container Platform.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have defined your PV in an object definition before creating it in OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save your object definition to a file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **cinder-persistentvolume.yaml**
+    <div class="title">
+
+    cinder-persistentvolume.yaml
 
     </div>
 
@@ -49,6 +76,8 @@ You can create a persistent volume (PV) that provisions storage from an Red Hat
         volumeID: "f37a03aa-6212-4c62-a805-9ce139fab180"
     ```
 
+    </div>
+
     where:
 
     `metadata.name`
@@ -66,17 +95,16 @@ You can create a persistent volume (PV) that provisions storage from an Red Hat
     `spec.cinder.volumeID`
     Specifies the Cinder volume to use.
 
-    <div class="important">
-
-    Do not change the `fstype` parameter value after the volume is formatted and provisioned. Changing this value can result in data loss and pod failure.
-
-    </div>
+    > [!IMPORTANT]
+    > Do not change the `fstype` parameter value after the volume is formatted and provisioned. Changing this value can result in data loss and pod failure.
 
 2.  Create the object definition file you saved in the previous step.
 
     ``` terminal
     $ oc create -f cinder-persistentvolume.yaml
     ```
+
+</div>
 
 ## Persistent volume formatting
 
@@ -88,7 +116,25 @@ Before OpenShift Container Platform mounts the volume and passes it to a contain
 
 If you use Cinder PVs in your application, configure security for their deployment resources.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An SCC must be created that uses the appropriate `fsGroup` strategy.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a service account and add it to the SCC:
 
@@ -150,3 +196,5 @@ If you use Cinder PVs in your application, configure security for their deployme
 
     `spec.template.spec.securityContext.fsGroup`
     Specifies an `fsGroup` for the pods.
+
+</div>

@@ -4,13 +4,17 @@ After you deploy a hosted cluster on OpenShift Virtualization, you can manage th
 
 You can access the hosted cluster by either getting the `kubeconfig` file and `kubeadmin` credential directly from resources, or by using the `hcp` command-line interface to generate a `kubeconfig` file.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace has hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
+
+</div>
 
 The secret name formats are as follows:
 
@@ -28,6 +32,14 @@ The `kubeadmin` password secret is also Base64-encoded. You can decode it and us
 
 To access the hosted cluster by using the `hcp` CLI to generate the `kubeconfig` file, take the following steps.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Generate the `kubeconfig` file by entering the following command:
 
     ``` terminal
@@ -41,9 +53,19 @@ To access the hosted cluster by using the `hcp` CLI to generate the `kubeconfig`
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
+</div>
+
 # Enabling node auto-scaling for the hosted cluster
 
 When you need more capacity in your hosted cluster and spare agents are available, you can enable auto-scaling to install new worker nodes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To enable auto-scaling, enter the following command:
 
@@ -53,11 +75,8 @@ When you need more capacity in your hosted cluster and spare agents are availabl
       -p '[{"op": "remove", "path": "/spec/replicas"},{"op":"add", "path": "/spec/autoScaling", "value": { "max": 5, "min": 2 }}]'
     ```
 
-    <div class="note">
-
-    In the example, the minimum number of nodes is 2, and the maximum is 5. The maximum number of nodes that you can add might be bound by your platform. For example, if you use the Agent platform, the maximum number of nodes is bound by the number of available agents.
-
-    </div>
+    > [!NOTE]
+    > In the example, the minimum number of nodes is 2, and the maximum is 5. The maximum number of nodes that you can add might be bound by your platform. For example, if you use the Agent platform, the maximum number of nodes is bound by the number of available agents.
 
 2.  Create a workload that requires a new node.
 
@@ -109,13 +128,17 @@ When you need more capacity in your hosted cluster and spare agents are availabl
       --to=./hostedcluster-secrets --confirm
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
         hostedcluster-secrets/kubeconfig
+
+    </div>
 
 4.  You can check if new nodes are in the `Ready` status by entering the following command:
 
@@ -136,11 +159,10 @@ When you need more capacity in your hosted cluster and spare agents are availabl
     $ oc --kubeconfig ./hostedcluster-secrets get nodes
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > For IBM Z® agents, if you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, auto scaling is not supported. You must delete the old agent manually and scale up the node pool because the new agent joins during the scale down process.
 
-    For IBM Z® agents, if you are using an OSA network device in Processor Resource/Systems Manager (PR/SM) mode, auto scaling is not supported. You must delete the old agent manually and scale up the node pool because the new agent joins during the scale down process.
-
-    </div>
+</div>
 
 # Storage for hosted control planes on OpenShift Virtualization
 
@@ -156,14 +178,14 @@ The following table lists the capabilities that the infrastructure must provide 
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Infrastructure CSI provider</th>
 <th style="text-align: left;">Hosted cluster CSI provider</th>
 <th style="text-align: left;">Hosted cluster capabilities</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Any RWX <code>Block</code> CSI provider</p></td>
 <td style="text-align: left;"><p><code>kubevirt-csi</code></p></td>
 <td style="text-align: left;"><ul>
@@ -172,7 +194,7 @@ The following table lists the capabilities that the infrastructure must provide 
 <li><p>CSI volume cloning</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Any RWX <code>Block</code> CSI provider</p></td>
 <td style="text-align: left;"><p>Red Hat OpenShift Data Foundation</p></td>
 <td style="text-align: left;"><p>Red Hat OpenShift Data Foundation feature set. External mode has a smaller footprint and uses a standalone Red Hat Ceph Storage. Internal mode has a larger footprint, but is self-contained and suitable for use cases that require expanded capabilities such as RWX <code>File</code>.</p></td>
@@ -180,33 +202,33 @@ The following table lists the capabilities that the infrastructure must provide 
 </tbody>
 </table>
 
-Persistent storage modes in a hosted cluster
-
-<div class="note">
-
-OpenShift Virtualization handles storage on hosted clusters, which especially helps customers whose requirements are limited to block storage.
-
-</div>
+> [!NOTE]
+> OpenShift Virtualization handles storage on hosted clusters, which especially helps customers whose requirements are limited to block storage.
 
 ## Mapping KubeVirt CSI storage classes
 
 You can map the infrastructure storage class to the hosted storage class during cluster creation.
 
-<div class="note">
-
-KubeVirt CSI supports mapping only an infrastructure storage class that is capable of `ReadWriteMany` (RWX) access.
-
-</div>
+> [!NOTE]
+> KubeVirt CSI supports mapping only an infrastructure storage class that is capable of `ReadWriteMany` (RWX) access.
 
 The following table shows how volume and access mode capabilities map to KubeVirt CSI storage classes:
 
-| Infrastructure CSI capability | Hosted cluster CSI capability                                  | VM live migration support | Notes                                                                                                                                                                                                                                   |
-|-------------------------------|----------------------------------------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| RWX: `Block` or `Filesystem`  | `ReadWriteOnce` (RWO) `Block` or `Filesystem` RWX `Block` only | Supported                 | Use `Block` mode because `Filesystem` volume mode results in degraded hosted `Block` mode performance. RWX `Block` volume mode is supported only when the hosted cluster is OpenShift Container Platform 4.16 or later.                 |
-| RWO `Block` storage           | RWO `Block` storage or `Filesystem`                            | Not supported             | Lack of live migration support affects the ability to update the underlying infrastructure cluster that hosts the KubeVirt VMs.                                                                                                         |
-| RWO `FileSystem`              | RWO `Block` or `Filesystem`                                    | Not supported             | Lack of live migration support affects the ability to update the underlying infrastructure cluster that hosts the KubeVirt VMs. Use of the infrastructure `Filesystem` volume mode results in degraded hosted `Block` mode performance. |
+| Infrastructure CSI capability | Hosted cluster CSI capability | VM live migration support | Notes |
+|----|----|----|----|
+| RWX: `Block` or `Filesystem` | `ReadWriteOnce` (RWO) `Block` or `Filesystem` RWX `Block` only | Supported | Use `Block` mode because `Filesystem` volume mode results in degraded hosted `Block` mode performance. RWX `Block` volume mode is supported only when the hosted cluster is OpenShift Container Platform 4.16 or later. |
+| RWO `Block` storage | RWO `Block` storage or `Filesystem` | Not supported | Lack of live migration support affects the ability to update the underlying infrastructure cluster that hosts the KubeVirt VMs. |
+| RWO `FileSystem` | RWO `Block` or `Filesystem` | Not supported | Lack of live migration support affects the ability to update the underlying infrastructure cluster that hosts the KubeVirt VMs. Use of the infrastructure `Filesystem` volume mode results in degraded hosted `Block` mode performance. |
 
 Mapping KubeVirt CSI storage classes to access and volume modes
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To map the infrastructure storage class to the hosted storage class, use the `--infra-storage-class-mapping` argument as shown in the following example:
 
@@ -234,9 +256,19 @@ Mapping KubeVirt CSI storage classes to access and volume modes
 
     After you create the hosted cluster, the infrastructure storage class is visible within the hosted cluster. When you create a Persistent Volume Claim (PVC) within the hosted cluster that uses one of those storage classes, KubeVirt CSI provisions that volume by using the infrastructure storage class mapping that you configured during cluster creation.
 
+</div>
+
 ## Mapping a single KubeVirt CSI volume snapshot class
 
 You can expose your infrastructure volume snapshot class to the hosted cluster by using KubeVirt CSI.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To map your volume snapshot class to the hosted cluster, use the `--infra-volumesnapshot-class-mapping` argument when creating a hosted cluster as shown in the following example:
 
@@ -265,15 +297,22 @@ You can expose your infrastructure volume snapshot class to the hosted cluster b
 
   - `--infra-volumesnapshot-class-mapping` specifies the volume snapshot classes. Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class in the infrastructure cluster, and replace `<hosted_volume_snapshot_class>` with the volume snapshot class in the hosted cluster.
 
-    <div class="note">
+    > [!NOTE]
+    > If you do not use the `--infra-storage-class-mapping` and `--infra-volumesnapshot-class-mapping` arguments, a hosted cluster is created with the default storage class and the volume snapshot class. Therefore, you must set the default storage class and the volume snapshot class in the infrastructure cluster.
 
-    If you do not use the `--infra-storage-class-mapping` and `--infra-volumesnapshot-class-mapping` arguments, a hosted cluster is created with the default storage class and the volume snapshot class. Therefore, you must set the default storage class and the volume snapshot class in the infrastructure cluster.
-
-    </div>
+</div>
 
 ## Mapping multiple KubeVirt CSI volume snapshot classes
 
 You can map multiple volume snapshot classes to the hosted cluster by assigning them to a specific group. The infrastructure storage class and the volume snapshot class are compatible with each other only if they belong to a same group.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To map multiple volume snapshot classes to the hosted cluster, use the `group` option when creating a hosted cluster, as shown in the following example:
 
@@ -305,9 +344,19 @@ You can map multiple volume snapshot classes to the hosted cluster by assigning 
 
   - `--infra-volumesnapshot-class-mapping` specifies the volume snapshot classes. Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class in the infrastructure cluster and `<hosted_volume_snapshot_class>` with the volume snapshot class in the hosted cluster. For example, `infra-vol-snap-mygroup/hosted-vol-snap-mygroup,group=mygroup` and `infra-vol-snap-mymap/hosted-vol-snap-mymap,group=mymap`.
 
+</div>
+
 ## Configuring KubeVirt VM root volume
 
 At cluster creation time, you can configure the storage class that is used to host the KubeVirt virtual machine (VM) root volumes by using the `--root-volume-storage-class` argument.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To set a custom storage class and volume size for KubeVirt VMs, run a command as shown in the following example:
 
@@ -338,6 +387,8 @@ At cluster creation time, you can configure the storage class that is used to ho
 
     As a result, you get a hosted cluster created with VMs hosted on persistent volume claims (PVCs).
 
+</div>
+
 ## Enabling KubeVirt VM image caching
 
 To optimize both cluster startup time and storage usage, you can use KubeVirt virtual machine (VM) image caching.
@@ -351,6 +402,14 @@ Image caching works as follows:
 2.  A unique clone of that PVC is created for every KubeVirt VM that is added as a worker node to the cluster.
 
 Image caching reduces VM startup time by requiring only a single image import. It can further reduce overall cluster storage usage when the storage class supports copy-on-write cloning.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To enable image caching, during cluster creation, use the `--root-volume-cache-strategy=PVC` argument by running a command as shown in the following example:
 
@@ -376,9 +435,19 @@ Image caching reduces VM startup time by requiring only a single image import. I
 
   - `--root-volume-cache-strategy` specifies a strategy for image caching.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Cloning a data volume using smart-cloning](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#smart-cloning_virt-creating-vms-by-cloning-pvcs)
+
+</div>
 
 ## KubeVirt CSI storage security and isolation
 
@@ -397,6 +466,14 @@ The CSI driver ensures secure and isolated access to the infrastructure storage 
 ## Configuring etcd storage
 
 At cluster creation time, you can configure the storage class that is used to host etcd data by using the `--etcd-storage-class` argument.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To configure a storage class for etcd, run a command similar to the following example:
 
@@ -422,15 +499,22 @@ At cluster creation time, you can configure the storage class that is used to ho
 
   - `--etcd-storage-class` specifies the etcd storage class name. If you do not provide an `--etcd-storage-class` argument, the default storage class is used.
 
+</div>
+
 # Attaching NVIDIA GPU devices by using the hcp CLI
 
 You can attach one or more NVIDIA graphics processing unit (GPU) devices to node pools by using the `hcp` command-line interface (CLI) in a hosted cluster on OpenShift Virtualization.
 
-<div class="important">
+> [!IMPORTANT]
+> Attaching NVIDIA GPU devices to node pools is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Attaching NVIDIA GPU devices to node pools is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -438,7 +522,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - You have exposed the NVIDIA GPU device as an [extended resource](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources) on the node to assign it to node pools.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - You can attach the GPU device to node pools during cluster creation by running a command similar to the following example:
 
@@ -464,21 +556,25 @@ For more information about the support scope of Red Hat Technology Preview featu
 
   - `--host-device-name` specifies the GPU device name and the count. The `--host-device-name` argument takes the name of the GPU device from the infrastructure node and an optional count that represents the number of GPU devices you want to attach to each virtual machine (VM) in node pools. The default count is `1`. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices.
 
-    <div class="tip">
+    > [!TIP]
+    > You can use the `--host-device-name` argument multiple times to attach multiple devices of different types.
 
-    You can use the `--host-device-name` argument multiple times to attach multiple devices of different types.
-
-    </div>
+</div>
 
 # Attaching NVIDIA GPU devices by using the NodePool resource
 
 You can attach one or more NVIDIA graphics processing unit (GPU) devices to node pools by configuring the `nodepool.spec.platform.kubevirt.hostDevices` field in the `NodePool` resource.
 
-<div class="important">
+> [!IMPORTANT]
+> Attaching NVIDIA GPU devices to node pools is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Attaching NVIDIA GPU devices to node pools is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -584,6 +680,8 @@ For more information about the support scope of Red Hat Technology Preview featu
 
   - `<worker_node_count>` specifies the worker count; for example, `3`.
 
+</div>
+
 # Evicting KubeVirt virtual machines
 
 In cases where KubeVirt virtual machines (VMs) cannot be live migrated, such as when you use GPU passthrough, the VMs must be evicted at the same time as the `NodePool` resource of the hosted cluster.
@@ -591,6 +689,14 @@ In cases where KubeVirt virtual machines (VMs) cannot be live migrated, such as 
 Otherwise, the compute nodes might be shut down without being drained from the workload. This might also happen when you are upgrading the OpenShift Virtualization Operator.
 
 To achieve a synchronized restart, you can set the `evictionStrategy` parameter on the `hyperconverged` resource to ensure that only VMs that are drained from workloads are rebooted.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To learn more about the `hyperconverged` resource and the allowed values for the `evictionStrategy` parameter, enter the following command:
 
@@ -616,15 +722,27 @@ To achieve a synchronized restart, you can set the `evictionStrategy` parameter 
 
     By applying this patch, you specify that VMs should be live-migrated if possible, and that only the VMs that cannot be live-migrated should be evicted.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check whether the patch command was applied properly by entering the following command:
 
   ``` terminal
   $ oc -n openshift-cnv get hyperconverged kubevirt-hyperconverged -ojsonpath='{.spec.evictionStrategy}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -632,15 +750,35 @@ To achieve a synchronized restart, you can set the `evictionStrategy` parameter 
   External
   ```
 
+  </div>
+
+</div>
+
 # Spreading node pool VMs by using topologySpreadConstraint
 
 In some scenarios, node pool virtual machines (VMs) might run on the same node, which can cause availability issues. To avoid distribution of VMs on a single node, use the descheduler to continuously honor the `topologySpreadConstraint` constraint to spread VMs on multiple nodes.
 
 By default, KubeVirt VMs created by a node pool are scheduled on any available nodes that have the capacity to run the VMs. The `topologySpreadConstraint` constraint is set to schedule VMs on multiple nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the Kube Descheduler Operator. For more information, see "Installing the descheduler".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Open the `KubeDescheduler` custom resource (CR) by entering the following command, and then modify the `KubeDescheduler` CR to use the `SoftTopologyAndDuplicates` and `KubeVirtRelieveAndMigrate` profiles so that you maintain the `topologySpreadConstraint` constraint settings.
 
@@ -650,9 +788,11 @@ By default, KubeVirt VMs created by a node pool are scheduled on any available n
   $ oc edit kubedescheduler cluster -n openshift-kube-descheduler-operator
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example `KubeDescheduler` configuration**
+  <div class="title">
+
+  Example `KubeDescheduler` configuration
 
   </div>
 
@@ -675,6 +815,8 @@ By default, KubeVirt VMs created by a node pool are scheduled on any available n
   # ...
   ```
 
+  </div>
+
   where:
 
   `spec.deschedulingIntervalSeconds`
@@ -683,6 +825,16 @@ By default, KubeVirt VMs created by a node pool are scheduled on any available n
   `spec.profiles`
   The `SoftTopologyAndDuplicates` profile evicts pods that follow the `whenUnsatisfiable: ScheduleAnyway` soft topology constraint. The `KubeVirtRelieveAndMigrate` profile balances resource usage between nodes and enables strategies, such as `RemovePodsHavingTooManyRestarts` and `LowNodeUtilization`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the descheduler](../../nodes/scheduling/descheduler/nodes-descheduler-configuring.xml#nodes-descheduler-installing_virt-enabling-descheduler-evictions)
+
+</div>

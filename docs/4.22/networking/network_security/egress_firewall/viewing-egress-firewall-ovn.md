@@ -4,11 +4,29 @@ As a cluster administrator, you can list the names of any existing egress firewa
 
 You can view an `EgressFirewall` CR in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A cluster using the OVN-Kubernetes network plugin.
 
 - Install the OpenShift Command-line Interface (CLI), commonly known as `oc`.
 
 - You must log in to the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: To view the names of the `EgressFirewall` CR defined in your cluster, enter the following command:
 
@@ -22,9 +40,11 @@ You can view an `EgressFirewall` CR in your cluster.
     $ oc describe egressfirewall <policy_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -38,3 +58,7 @@ You can view an `EgressFirewall` CR in your cluster.
     Rule:       Allow to www.example.com
     Rule:       Deny to 0.0.0.0/0
     ```
+
+    </div>
+
+</div>

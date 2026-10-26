@@ -34,11 +34,8 @@ OpenShift Container Platform 4.17 offers the following update channels:
 
 If you do not want the Cluster Version Operator to fetch available updates from the update recommendation service, you can use the `oc adm upgrade channel` command in the OpenShift CLI to configure an empty channel. This configuration can be helpful if, for example, a cluster has restricted network access and there is no local, reachable update recommendation service.
 
-<div class="warning">
-
-Red Hat recommends updating only to versions suggested by OpenShift Update Service. For a minor version update, versions must be contiguous. Red Hat does not test updates to noncontiguous versions and cannot guarantee compatibility with earlier versions.
-
-</div>
+> [!WARNING]
+> Red Hat recommends updating only to versions suggested by OpenShift Update Service. For a minor version update, versions must be contiguous. Red Hat does not test updates to noncontiguous versions and cannot guarantee compatibility with earlier versions.
 
 # Update channels
 
@@ -52,11 +49,8 @@ The `fast-4.17` channel is updated with new versions of OpenShift Container Plat
 
 While the `fast-4.17` channel contains releases as soon as their errata are published, releases are added to the `stable-4.17` channel after a delay. During this delay, data is collected from multiple sources and analyzed for indications of product regressions. Once a significant number of data points have been collected, these releases are added to the stable channel.
 
-<div class="note">
-
-Since the time required to obtain a significant number of data points varies based on many factors, Service LeveL Objective (SLO) is not offered for the delay duration between fast and stable channels. For more information, please see "Choosing the correct channel for your cluster"
-
-</div>
+> [!NOTE]
+> Since the time required to obtain a significant number of data points varies based on many factors, Service LeveL Objective (SLO) is not offered for the delay duration between fast and stable channels. For more information, please see "Choosing the correct channel for your cluster"
 
 Newly installed clusters default to using stable channels.
 
@@ -64,11 +58,8 @@ Newly installed clusters default to using stable channels.
 
 In addition to the stable channel, all even-numbered minor versions of OpenShift Container Platform offer [Extended Update Support](https://access.redhat.com/support/policy/updates/openshift#ocp4_phases) (EUS). Releases promoted to the stable channel are also simultaneously promoted to the EUS channels. The primary purpose of the EUS channels is to serve as a convenience for clusters performing a Control Plane Only update.
 
-<div class="note">
-
-Both standard and non-EUS subscribers can access all EUS repositories and necessary RPMs (`rhel-*-eus-rpms`) to be able to support critical purposes such as debugging and building drivers.
-
-</div>
+> [!NOTE]
+> Both standard and non-EUS subscribers can access all EUS repositories and necessary RPMs (`rhel-*-eus-rpms`) to be able to support critical purposes such as debugging and building drivers.
 
 ## candidate-4.17 channel
 
@@ -98,11 +89,8 @@ You can imagine seeing the following releases in your channel:
 
 The service recommends only updates that have been tested and have no known serious regressions. For example, if your cluster is on 4.17.1 and OpenShift Container Platform suggests 4.17.4, then it is recommended to update from 4.17.1 to 4.17.4.
 
-<div class="important">
-
-Do not rely on consecutive patch numbers. In this example, 4.17.2 is not and never was available in the channel, therefore updates to 4.17.2 are not recommended or supported.
-
-</div>
+> [!IMPORTANT]
+> Do not rely on consecutive patch numbers. In this example, 4.17.2 is not and never was available in the channel, therefore updates to 4.17.2 are not recommended or supported.
 
 # Update recommendations and Conditional Updates
 
@@ -120,11 +108,8 @@ Choosing the appropriate update channel for your cluster involves two decisions.
 
 First, select the minor version you want for your cluster update. Selecting a channel which matches your current version ensures that you only apply z-stream updates and do not receive feature updates. Selecting an available channel which has a version greater than your current version will ensure that after one or more updates your cluster will have updated to that version. Your cluster will only be offered channels which match its current version, the next version, or the next EUS version.
 
-<div class="note">
-
-Due to the complexity involved in planning updates between versions many minors apart, channels that assist in planning updates beyond a single Control Plane Only update are not offered.
-
-</div>
+> [!NOTE]
+> Due to the complexity involved in planning updates between versions many minors apart, channels that assist in planning updates beyond a single Control Plane Only update are not offered.
 
 Second, you should choose your desired rollout strategy. You may choose to update as soon as Red Hat declares a release GA by selecting from fast channels or you may want to wait for Red Hat to promote releases to the stable channel. Update recommendations offered in the `fast-4.17` and `stable-4.17` are both fully supported and benefit equally from ongoing data analysis. The promotion delay before promoting a release to the stable channel represents the only difference between the two channels. Updates to the latest z-streams are generally promoted to the stable channel within a week or two, however the delay when initially rolling out updates to the latest minor is much longer, generally 45-90 days. Please consider the promotion delay when choosing your desired channel, as waiting for promotion to the stable channel may affect your scheduling plans.
 

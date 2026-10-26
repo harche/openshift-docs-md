@@ -18,9 +18,27 @@ The following are the limitations of External Secrets Operator for Red Hat OpenS
 
 You can install the External Secrets Operator for Red Hat OpenShift by using the OpenShift Container Platform web console. You can select the desired update channel and approval strategy, and deploy the Operator into the recommended namespace without manually defining YAML resources.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -52,17 +70,45 @@ You can install the External Secrets Operator for Red Hat OpenShift by using the
 
     5.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Verify that **External Secrets Operator** is listed with a **Status** of **Succeeded** in the `external-secrets-operator` namespace.
 
+</div>
+
 # Install the External Secrets Operator for Red Hat OpenShift by using the CLI
 
 You can install the External Secrets Operator for Red Hat OpenShift by manually configuring the Operator Lifecycle Manager (OLM) resources using the OpenShift CLI. You can create a dedicated namespace, define the Operator’s scope, and install the Operator from the catalog.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new project named `external-secrets-operator` by running the following command:
 
@@ -113,7 +159,15 @@ You can install the External Secrets Operator for Red Hat OpenShift by manually 
     $ oc create -f subscription.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the OLM subscription is created by running the following command:
 
@@ -154,6 +208,8 @@ You can install the External Secrets Operator for Red Hat OpenShift by manually 
     external-secrets-operator-controller-manager-5699f4bc54-kbsmn   1/1     Running   0          25h
     ```
 
+</div>
+
 # Additional resources
 
 - [Adding Operators to a cluster](../../operators/admin/olm-adding-operators-to-cluster.xml#olm-adding-operators-to-a-cluster)
@@ -162,13 +218,33 @@ You can install the External Secrets Operator for Red Hat OpenShift by manually 
 
 To install the External Secrets operand, create an instance of the `ExternalSecrets` custom resource by using the command-line interface (CLI) which deploys necessary operand components such as the core controller, webhook, and certificate controller into the `external-secrets` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `externalsecretsconfig.openshift.operator.io` object by defining a YAML file with the following content:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `externalsecretsconfig.yaml` file**
+    <div class="title">
+
+    Example `externalsecretsconfig.yaml` file
 
     </div>
 
@@ -189,6 +265,8 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
           name: allow-external-secrets-egress
     ```
 
+    </div>
+
     For more information on spec configuration, see "External Secrets Operator for Red Hat OpenShift APIs".
 
 2.  Create the `externalsecretsconfigs.openshift.operator.io` object by running the following command:
@@ -197,7 +275,15 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
     $ oc create -f externalsecretsconfig.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `external-secrets` pods are running by entering the following command:
 
@@ -205,9 +291,11 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
     $ oc get pods -n external-secrets
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -218,15 +306,19 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
     external-secrets-webhook-b566658ff-7m4d5            1/1     Running   0          4h5m
     ```
 
+    </div>
+
 2.  Verify that the `external-secrets-operator` deployment object reports a successful status by running the following command:
 
     ``` terminal
     $ oc get externalsecretsconfig.operator.openshift.io cluster -n external-secrets-operator -o jsonpath='{.status.conditions}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -251,7 +343,21 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
     ]
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next step
+
+</div>
+
 - Configure the network policies of the operand as described in "Configuring network policy for the operand".
+
+</div>
 
 # Understand update channels of the External Secrets Operator for Red Hat OpenShift
 
@@ -267,11 +373,8 @@ The External Secrets Operator for Red Hat OpenShift offers the following update 
 
 Select the `stable-v1` channel to install and update the latest release of the External Secrets Operator for Red Hat OpenShift. By selecting this channel, you can use the most recent stable release for your Operator.
 
-<div class="note">
-
-The `stable-v1` channel is the default and suggested channel while installing the External Secrets Operator for Red Hat OpenShift.
-
-</div>
+> [!NOTE]
+> The `stable-v1` channel is the default and suggested channel while installing the External Secrets Operator for Red Hat OpenShift.
 
 The `stable-v1` channel offers the following update approval strategies:
 

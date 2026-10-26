@@ -4,11 +4,29 @@ Prepare your hosting cluster environment before deploying a virtualized control 
 
 Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a series of custom resources (CRs). These CRs create the namespace, permissions, configuration, and deployment required to expose VMs through the Redfish API.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a OpenShift Container Platform cluster with OpenShift Virtualization installed.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You logged in to OpenShift Container Platform as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `Namespace` CR for KubeVirt Redfish by creating a YAML file with content such as the following example:
 
@@ -130,11 +148,8 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
 
           The output is a `bcrypt` hashed password beginning with `$2a$`, `$2b$`, or `$2y$`.
 
-          <div class="note">
-
-          In earlier Technology Preview releases, plain text passwords were used. Use `bcrypt` hashed passwords for improved security.
-
-          </div>
+          > [!NOTE]
+          > In earlier Technology Preview releases, plain text passwords were used. Use `bcrypt` hashed passwords for improved security.
 
     2.  Create the `Secret` CR containing the configuration with content such as the following example. Edit the `config.yaml` section to match your environment:
 
@@ -194,11 +209,8 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc apply -f secret.yaml
     ```
 
-    <div class="warning">
-
-    The credentials defined in this `Secret` CR enable full management control over the VMs exposed through KubeVirt Redfish, independently of any OpenShift Container Platform privileges.
-
-    </div>
+    > [!WARNING]
+    > The credentials defined in this `Secret` CR enable full management control over the VMs exposed through KubeVirt Redfish, independently of any OpenShift Container Platform privileges.
 
 11. Create the `Deployment` CR by creating a YAML file with content such as the following example:
 
@@ -344,7 +356,15 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc apply -f route.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the pods are running by running the following command:
 
@@ -352,9 +372,11 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     $ oc get pods -n kubevirt-redfish
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -362,6 +384,8 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     NAME                                READY   STATUS    RESTARTS   AGE
     kubevirt-redfish-587cd94988-xthml   1/1     Running   0          2m
     ```
+
+    </div>
 
 2.  Get the route hostname by running the following command:
 
@@ -389,15 +413,35 @@ Install KubeVirt Redfish on your OpenShift Virtualization cluster by applying a 
     }
     ```
 
+</div>
+
 # Create control plane VMs
 
 Create VMs on the hosting cluster that will become the control plane nodes for your virtualized control plane cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - KubeVirt Redfish is installed and configured on the hosting cluster.
 
 - The hosting cluster has a network configured to provide Layer 2 connectivity between VMs.
 
 - Logical Volume Manager (LVM) Storage is installed on the hosting cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` CR for each control plane node by creating a YAML file with content such as the following example:
 
@@ -499,13 +543,10 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
     - `rebootPolicy: Terminate` specifies the reboot behavior required for Redfish API boot override operations. Ensures the VM terminates cleanly when boot media changes.
 
-      <div class="note">
-
-      The `RebootPolicy` feature gate enables the `rebootPolicy` field in `VirtualMachine` CR specifications. In OpenShift Virtualization 5.0, this feature gate is enabled by default.
-
-      The `rebootPolicy: Terminate` configuration is required when deploying a virtualized control plane cluster.
-
-      </div>
+      > [!NOTE]
+      > The `RebootPolicy` feature gate enables the `rebootPolicy` field in `VirtualMachine` CR specifications. In OpenShift Virtualization 5.0, this feature gate is enabled by default.
+      >
+      > The `rebootPolicy: Terminate` configuration is required when deploying a virtualized control plane cluster.
 
     - `cores: 8` and `guest: 16Gi` specify the minimum recommended resources for control plane nodes.
 
@@ -552,7 +593,15 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
     $ oc apply -f vcp-control-plane-pdb.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the VMs are created and powered off by running the following command:
 
@@ -562,9 +611,11 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
     - `<vm_namespace>` is the namespace of the VMs.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -575,6 +626,8 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
       control-plane-2    1m    Stopped   False
       ```
 
+      </div>
+
 2.  Verify that KubeVirt Redfish can discover the VMs by querying the Redfish API:
 
     ``` terminal
@@ -582,8 +635,10 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
         https://<kubevirt_redfish_route>/redfish/v1/Systems
     ```
 
+</div>
+
 # Additional resources
 
 - [Recommended resources for topologies](../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-based-installer-recommended-resources_preparing-to-install-with-agent-based-installer)
 
-- [Connecting a virtual machine to a secondary localnet user-defined network](../virt/vm_networking/virt-connecting-vm-to-secondary-udn.xml#virt-connecting-vm-to-secondary-udn)
+- [Connect a virtual machine to a physical network by using an Open vSwitch bridge](../virt/vm_networking/virt-connecting-vm-to-physical-network-ovs-bridge.xml#virt-connecting-vm-to-physical-network-ovs-bridge)

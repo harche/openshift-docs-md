@@ -1,10 +1,7 @@
 You can configure node placement rules to specify where OpenShift Virtualization Operators, workloads, and controllers are deployed. Custom placement rules allow you to isolate virtual machine (VM) traffic or dedicate specialized compute resources to critical workloads.
 
-<div class="important">
-
-You can configure node placement rules for some components after installing OpenShift Virtualization, but virtual machines cannot be present if you want to configure node placement rules for workloads.
-
-</div>
+> [!IMPORTANT]
+> You can configure node placement rules for some components after installing OpenShift Virtualization, but virtual machines cannot be present if you want to configure node placement rules for workloads.
 
 # About node placement rules for OpenShift Virtualization components
 
@@ -23,27 +20,42 @@ Allows pods to be scheduled on nodes that have matching taints. If a taint is ap
 
 If you are running an IBM Z or IBM LinuxONE (`s390x`) cluster with mixed hypervisors, refer to the following table for the supported nodes to run the virtual machines.
 
-| Node architecture | Hypervisor | VM deployment | Node selection                  | VM architecture |
-|-------------------|------------|---------------|---------------------------------|-----------------|
-| s390x             | LPAR       | Supported     | set node selector for LPAR node | s390x           |
-| s390x             | z/VM       | Unsupported   | set anti-affinity for z/VM node | Not applicable  |
-| s390x             | KVM        | Unsupported   | set anti-affinity for KVM node  | Not applicable  |
+| Node architecture | Hypervisor | VM deployment | Node selection | VM architecture |
+|----|----|----|----|----|
+| s390x | LPAR | Supported | set node selector for LPAR node | s390x |
+| s390x | z/VM | Unsupported | set anti-affinity for z/VM node | Not applicable |
+| s390x | KVM | Unsupported | set anti-affinity for KVM node | Not applicable |
 
 IBM Z® node options
 
-<div class="note">
+> [!NOTE]
+> The scheduler does not select LPAR over z/VM or KVM nodes on `s390x` by default. To have a supported `s390x` virtual machine, you must set at least one `s390x` LPAR node as a schedulable compute node and you must set the node selector before deploying the virtual machine.
 
-The scheduler does not select LPAR over z/VM or KVM nodes on `s390x` by default. To have a supported `s390x` virtual machine, you must set at least one `s390x` LPAR node as a schedulable compute node and you must set the node selector before deploying the virtual machine.
-
-</div>
-
-# Applying node placement rules
+# Apply node placement rules
 
 You can apply node placement rules to ensure that virtualization components run on the most suitable nodes for your workload requirements. You can apply node placement rules by editing OpenShift Virtualization objects.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in with cluster administrator permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the object in your default editor by running the following command:
 
@@ -53,6 +65,8 @@ You can apply node placement rules to ensure that virtualization components run 
 
 2.  Save the file to apply the changes.
 
+</div>
+
 # Node placement rule examples
 
 Examples of node placement rules for different objects that determine where OpenShift Virtualization components are deployed.
@@ -61,11 +75,19 @@ Examples of node placement rules for different objects that determine where Open
 
 To specify the nodes where OLM deploys the OpenShift Virtualization Operators, edit the `Subscription` object during OpenShift Virtualization installation.
 
-Currently, you cannot configure node placement rules for the `Subscription` object by using the web console.
+<div class="note">
 
-The `Subscription` object does not support the `affinity` node placement rule.
+<div class="title">
 
-Example `Subscription` object with `nodeSelector` rule:
+</div>
+
+- You cannot configure node placement rules for the `Subscription` object by using the web console.
+
+- The `Subscription` object does not support the `affinity` node placement rule.
+
+</div>
+
+**Example `Subscription` object with `nodeSelector` rule:**
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -108,7 +130,7 @@ The following pods are affected by the `Subscription` object node placement rule
 
 - `virt-operator`
 
-Example `Subscription` object with `tolerations` rule:
+**Example `Subscription` object with `tolerations` rule:**
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -136,7 +158,7 @@ OLM deploys OpenShift Virtualization Operators on nodes labeled `key = virtualiz
 
 To specify the nodes where OpenShift Virtualization deploys its components, you can edit the `nodePlacement` object in the `HyperConverged` custom resource (CR) file that you create during OpenShift Virtualization installation.
 
-Example `HyperConverged` object with `nodeSelector` rule:
+**Example `HyperConverged` object with `nodeSelector` rule:**
 
 ``` yaml
 apiVersion: hco.kubevirt.io/v1
@@ -159,7 +181,7 @@ spec:
 
 - Workloads are placed on nodes labeled `example.io/example-workloads-key = example-workloads-value`.
 
-Example `HyperConverged` object with `affinity` rule:
+**Example `HyperConverged` object with `affinity` rule:**
 
 ``` yaml
 apiVersion: hco.kubevirt.io/v1
@@ -206,7 +228,7 @@ spec:
 
 - Nodes that have more than eight CPUs are preferred for workloads, but if they are not available, pods are still scheduled.
 
-Example `HyperConverged` object with `tolerations` rule:
+**Example `HyperConverged` object with `tolerations` rule:**
 
 ``` yaml
 apiVersion: hco.kubevirt.io/v1
@@ -259,17 +281,14 @@ The following pods are affected by the `HyperConverged` object node placement ru
 
 You can edit the `HostPathProvisioner` object directly or by using the web console.
 
-<div class="warning">
-
-You must schedule the hostpath provisioner (HPP) and the OpenShift Virtualization components on the same nodes. Otherwise, virtualization pods that use the hostpath provisioner cannot run. You cannot run virtual machines.
-
-</div>
+> [!WARNING]
+> You must schedule the hostpath provisioner (HPP) and the OpenShift Virtualization components on the same nodes. Otherwise, virtualization pods that use the hostpath provisioner cannot run. You cannot run virtual machines.
 
 After you deploy a virtual machine (VM) with the HPP storage class, you can remove the hostpath provisioner pod from the same node by using the node selector. However, you must first revert that change, at least for that specific node, and wait for the pod to run before trying to delete the VM.
 
 You can configure node placement rules by specifying `nodeSelector`, `affinity`, or `tolerations` for the `spec.workload` field of the `HostPathProvisioner` object that you create when you install the hostpath provisioner.
 
-Example `HostPathProvisioner` object with `nodeSelector` rule:
+**Example `HostPathProvisioner` object with `nodeSelector` rule:**
 
 ``` yaml
 apiVersion: hostpathprovisioner.kubevirt.io/v1beta1
@@ -294,6 +313,14 @@ On IBM Z® (`s390x`) clusters, OpenShift Virtualization only supports VMs on bar
 
 By patching the `HyperConverged` custom resource (CR), you can restrict both OpenShift Virtualization infrastructure components and VM workloads to bare metal LPAR nodes in a single declarative configuration. The Node Feature Discovery (NFD) Operator automatically labels bare metal LPAR nodes with `feature.node.kubernetes.io/cpu-model.hypervisor: PR_SM` by reading `/proc/cpuinfo` at node boot. You can use this label as a reliable discriminator for LPAR-only placement.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your cluster has bare metal LPAR compute nodes on IBM Z® or IBM® LinuxONE hardware.
 
 - You have installed the Node Feature Discovery (NFD) Operator and an active `NodeFeatureDiscovery` instance is running.
@@ -304,15 +331,27 @@ By patching the `HyperConverged` custom resource (CR), you can restrict both Ope
 
 - You are logged in with cluster administrator permissions.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Verify that the NFD Operator has labeled the LPAR nodes by running the following command:
 
     ``` terminal
     $ oc get nodes -L feature.node.kubernetes.io/cpu-model.hypervisor
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -321,6 +360,8 @@ By patching the `HyperConverged` custom resource (CR), you can restrict both Ope
     worker-zvm                 z_VM_7.4.0
     worker-kvm                 KVM_Linux
     ```
+
+    </div>
 
     Nodes labeled `PR_SM` are valid VM targets. Nodes labeled `KVM_Linux` or `z_VM_7.4.0` are not supported VM targets.
 
@@ -349,17 +390,22 @@ By patching the `HyperConverged` custom resource (CR), you can restrict both Ope
     `spec.workloads.nodePlacement`
     Specifies the default scheduling placement for all VM pods (`virt-launcher`) across the cluster, ensuring that VMs start only on `PR_SM` LPAR nodes without requiring per-VM `nodeSelector` definitions.
 
-    <div class="note">
-
-    In environments where `spec.infra.nodePlacement` does not fully prevent `virt-handler` scheduling on non-LPAR nodes, you can protect those nodes by applying a taint.
-
-    </div>
+    > [!NOTE]
+    > In environments where `spec.infra.nodePlacement` does not fully prevent `virt-handler` scheduling on non-LPAR nodes, you can protect those nodes by applying a taint.
 
     ``` terminal
     $ oc adm taint nodes <non_lpar_node> kubevirt.io/no-virt=true:NoSchedule
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that `virt-handler` pods are running only on `PR_SM` LPAR nodes by running the following command:
 
@@ -422,6 +468,8 @@ By patching the `HyperConverged` custom resource (CR), you can restrict both Ope
     ``` terminal
     $ oc delete vm test-vm-placement -n default
     ```
+
+</div>
 
 # Additional resources
 

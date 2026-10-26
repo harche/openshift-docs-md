@@ -1,14 +1,11 @@
 Install OpenShift Virtualization to add virtualization functionality to your OpenShift Container Platform cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> If you install OpenShift Virtualization in a restricted environment with no internet connectivity, you must configure Operator Lifecycle Manager (OLM) for a disconnected environment.
+>
+> If you have limited internet connectivity, you can configure proxy support in OLM to access the software catalog.
 
-If you install OpenShift Virtualization in a restricted environment with no internet connectivity, you must configure Operator Lifecycle Manager (OLM) for a disconnected environment.
-
-If you have limited internet connectivity, you can configure proxy support in OLM to access the software catalog.
-
-</div>
-
-# About installation methods for OpenShift Virtualization
+# Installation methods for OpenShift Virtualization
 
 You can install OpenShift Virtualization on your OpenShift Container Platform cluster by using Operator Lifecycle Manager (OLM), agent-based installation, or the Assisted Installer.
 
@@ -19,14 +16,6 @@ For disconnected environments, you must configure OLM for restricted networks be
 
 Agent-based installation
 Use the Agent-based Installer to deploy a cluster with OpenShift Virtualization and related operators pre-configured. This installation method is designed for users who want a streamlined, UI-driven installation experience, particularly in disconnected environments.
-
-<div class="important">
-
-Agent-based installation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
 
 Assisted Installer with virtualization bundle
 Use the Assisted Installer to deploy OpenShift Virtualization or Red Hat OpenShift Virtualization Engine by using the virtualization operator bundle, which includes OpenShift Virtualization and essential supporting operators. This installation method simplifies the deployment process by pre-configuring operators and minimizing external dependencies. This is the preferred installation method for OpenShift Virtualization Engine.
@@ -43,13 +32,31 @@ Consider the following factors when choosing an installation method:
 
 - Customization needs: For maximum flexibility in cluster configuration, use the standard OLM installation method.
 
-# Installing the OpenShift Virtualization Operator by using the web console
+# Install the OpenShift Virtualization Operator by using the web console
 
 You can deploy the OpenShift Virtualization Operator by using the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install OpenShift Container Platform 4.17 on your cluster.
 
 - Log in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Administrator** perspective, click **Ecosystem** → **Software Catalog**.
 
@@ -65,21 +72,15 @@ You can deploy the OpenShift Virtualization Operator by using the OpenShift Cont
 
     2.  For **Installed Namespace**, ensure that the **Operator recommended namespace** option is selected. This installs the Operator in the mandatory `openshift-cnv` namespace, which is automatically created if it does not exist.
 
-        <div class="warning">
-
-        Attempting to install the OpenShift Virtualization Operator in a namespace other than `openshift-cnv` causes the installation to fail.
-
-        </div>
+        > [!WARNING]
+        > Attempting to install the OpenShift Virtualization Operator in a namespace other than `openshift-cnv` causes the installation to fail.
 
     3.  For **Approval Strategy**, it is highly recommended that you select **Automatic**, which is the default value, so that OpenShift Virtualization automatically updates when a new version is available in the **stable** update channel.
 
         Selecting the **Manual** approval strategy is not recommended, as it poses a high risk to cluster support and functionality. Only select **Manual** if you fully understand these risks and cannot use **Automatic**.
 
-        <div class="warning">
-
-        Because OpenShift Virtualization is only supported when used with the corresponding OpenShift Container Platform version, missing OpenShift Virtualization updates can cause your cluster to become unsupported.
-
-        </div>
+        > [!WARNING]
+        > Because OpenShift Virtualization is only supported when used with the corresponding OpenShift Container Platform version, missing OpenShift Virtualization updates can cause your cluster to become unsupported.
 
 6.  Click **Install** to make the Operator available to the `openshift-cnv` namespace.
 
@@ -89,19 +90,49 @@ You can deploy the OpenShift Virtualization Operator by using the OpenShift Cont
 
 9.  Click **Create** to launch OpenShift Virtualization.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Navigate to the **Workloads** → **Pods** page and monitor the OpenShift Virtualization pods until they are all **Running**. After all the pods display the **Running** state, you can use OpenShift Virtualization.
 
-# Subscribing to the OpenShift Virtualization catalog by using the CLI
+</div>
+
+# Subscribe to the OpenShift Virtualization catalog by using the CLI
 
 Before you install OpenShift Virtualization, you must subscribe to the OpenShift Virtualization catalog. Subscribing gives the `openshift-cnv` namespace access to the OpenShift Virtualization Operators.
 
 To subscribe, configure `Namespace`, `OperatorGroup`, and `Subscription` objects by applying a single manifest to your cluster.
 
-- Install OpenShift Container Platform 4.17 on your cluster.
+<div>
 
-- Install the OpenShift CLI (`oc`).
+<div class="title">
 
-- Log in as a user with `cluster-admin` privileges.
+Prerequisites
+
+</div>
+
+- You have installed OpenShift Container Platform 4.17 on your cluster.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have logged in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that contains the following manifest:
 
@@ -143,13 +174,19 @@ To subscribe, configure `Namespace`, `OperatorGroup`, and `Subscription` objects
     $ oc apply -f <filename>.yaml
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 You must verify that the subscription creation was successful before you can proceed with installing OpenShift Virtualization.
+
+</div>
 
 1.  Check that the `ClusterServiceVersion` (CSV) object was created successfully. Run the following command and verify the output:
 
@@ -212,15 +249,33 @@ You must verify that the subscription creation was successful before you can pro
     }
     ```
 
-# Deploying the OpenShift Virtualization Operator by using the CLI
+# Deploy the OpenShift Virtualization Operator by using the CLI
 
 You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
-- Install the OpenShift CLI (`oc`).
+<div>
 
-- Subscribe to the OpenShift Virtualization catalog in the `openshift-cnv` namespace.
+<div class="title">
 
-- Log in as a user with `cluster-admin` privileges.
+Prerequisites
+
+</div>
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have logged in as a user with `cluster-admin` privileges.
+
+- You have subscribed to the OpenShift Virtualization catalog in the `openshift-cnv` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file that contains the following manifest:
 
@@ -239,6 +294,16 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
     $ oc apply -f <file_name>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Ensure that OpenShift Virtualization deployed successfully by watching the `PHASE` of the cluster service version (CSV) in the `openshift-cnv` namespace. Run the following command:
 
   ``` terminal
@@ -251,6 +316,8 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
   NAME                                      DISPLAY                    VERSION   REPLACES   PHASE
   kubevirt-hyperconverged-operator.v4.22.9   OpenShift Virtualization   4.22.9                Succeeded
   ```
+
+</div>
 
 # Additional resources
 

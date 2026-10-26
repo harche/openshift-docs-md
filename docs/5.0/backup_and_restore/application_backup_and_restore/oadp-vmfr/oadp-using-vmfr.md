@@ -4,6 +4,14 @@ Discover VM backups, restore files, and access restored files through a web brow
 
 Enable OADP virtual machine file restore (VMFR) by configuring the `DataProtectionApplication` (DPA) custom resource (CR) with the `vmFileRestore` section. You can allow file-level restore operations for VM backups.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster with the `cluster-admin` role.
 
 - The OADP Operator is installed.
@@ -13,6 +21,16 @@ Enable OADP virtual machine file restore (VMFR) by configuring the `DataProtecti
 - OpenShift Virtualization is installed and running on the cluster.
 
 - You have a default storage class configured on the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `DataProtectionApplication` CR to enable the VMFR feature:
 
@@ -70,7 +88,15 @@ Enable OADP virtual machine file restore (VMFR) by configuring the `DataProtecti
 
     Replace `<dpa_cr_filename>` with the file name containing the DPA CR configuration.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To verify that the DPA is reconciled with the VMFR feature enabled, run the following command:
 
@@ -88,6 +114,8 @@ Enable OADP virtual machine file restore (VMFR) by configuring the `DataProtecti
 
     The output should include a running `oadp-vm-file-restore-controller-manager` pod.
 
+</div>
+
 # Create a VirtualMachineBackupsDiscovery CR
 
 Create a `VirtualMachineBackupsDiscovery` (VMBD) custom resource (CR) to identify which Velero backups contain a specified virtual machine (VM). You can locate available backups before performing a file-level restore.
@@ -100,9 +128,14 @@ After you create a VMBD CR, the CR undergoes the following phases:
 
 - Upon successful discovery, the `status.phase` field of the VMBD CR is updated to `Completed`.
 
-<div class="important">
+> [!IMPORTANT]
+> Create all VMFR custom resources in the protected namespace, which is `openshift-adp` by default.
 
-Create all VMFR custom resources in the protected namespace, which is `openshift-adp` by default.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -113,6 +146,16 @@ Create all VMFR custom resources in the protected namespace, which is `openshift
 - You have configured the `DataProtectionApplication` (DPA) CR with the VMFR feature enabled.
 
 - You have existing Velero backups that contain virtual machine data.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachineBackupsDiscovery` CR YAML manifest file with the following configuration:
 
@@ -193,6 +236,16 @@ Create all VMFR custom resources in the protected namespace, which is `openshift
 
     Replace `<vmbd_cr_filename>` with the file name containing the VMBD CR configuration.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the VMBD CR is successfully created and discovery is complete, run the following command:
 
   ``` terminal
@@ -260,6 +313,8 @@ Create all VMFR custom resources in the protected namespace, which is `openshift
   `observedGeneration`
   Specifies the last generation value processed by the controller.
 
+</div>
+
 # Create a VirtualMachineFileRestore CR
 
 Create a `VirtualMachineFileRestore` (VMFR) custom resource (CR) to make files from discovered virtual machine (VM) backups accessible for browsing and downloading. You can recover individual files without restoring the entire VM.
@@ -272,9 +327,14 @@ After you create a VMFR CR, the CR undergoes the following phases:
 
 - Upon successful setup, the `status.phase` field of the VMFR CR is updated to `Completed`.
 
-<div class="note">
+> [!NOTE]
+> All VMFR custom resources must be created in the protected namespace, which is `openshift-adp` by default.
 
-All VMFR custom resources must be created in the protected namespace, which is `openshift-adp` by default.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -285,6 +345,16 @@ All VMFR custom resources must be created in the protected namespace, which is `
 - You have configured the `DataProtectionApplication` (DPA) CR with the VMFR feature enabled.
 
 - You have created a `VirtualMachineBackupsDiscovery` (VMBD) CR and its `status.phase` is `Completed`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  \[Optional\] Create a secret containing the credentials for accessing the file browser:
 
@@ -395,6 +465,16 @@ All VMFR custom resources must be created in the protected namespace, which is `
 
     Replace `<vmfr_cr_filename>` with the file name containing the VMFR CR configuration.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the VMFR CR is successfully created and file access is available, run the following command:
 
   ``` terminal
@@ -485,15 +565,35 @@ All VMFR custom resources must be created in the protected namespace, which is `
   `createdNamespace`
   Specifies the temporary namespace created for hosting the file-serving resources. This namespace is cleaned up when you delete the VMFR CR.
 
+</div>
+
 # Access restored files through a web browser
 
 Access restored virtual machine (VM) files through a web browser by using the file browser interface provided by the `VirtualMachineFileRestore` (VMFR) custom resource (CR). You can browse, preview, and download files from VM backups.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
 - A `VirtualMachineFileRestore` (VMFR) CR with the `fileAccess.fileBrowser` section configured exists.
 
 - The VMFR CR `status.phase` is `Completed`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To retrieve the file browser access URLs, run the following command:
 
@@ -534,6 +634,8 @@ Access restored virtual machine (VM) files through a web browser by using the fi
     <figcaption aria-hidden="true">File preview in the file browser</figcaption>
     </figure>
 
+</div>
+
 # Access restored files through SSH
 
 Access restored virtual machine (VM) files through SSH by using `rsync`, `scp`, or `sftp` with the `VirtualMachineFileRestore` (VMFR) custom resource (CR). You can transfer files from VM backups efficiently.
@@ -542,11 +644,29 @@ When you configure SSH access, the VMFR controller autogenerates an SSH key pair
 
 The remote path for restored files follows the format `/restores/<date>/<backup_name>/<vm_name>/<path_to_file>`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster with the `cluster-admin` role.
 
 - You have created a `VirtualMachineFileRestore` (VMFR) CR with the `fileAccess.ssh` section configured.
 
 - The VMFR CR `status.phase` is `Completed`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To retrieve the SSH access information, run the following command:
 
@@ -610,6 +730,8 @@ The remote path for restored files follows the format `/restores/<date>/<backup_
       oadp@<fileserver_svc>.<created_namespace>.svc.cluster.local
     ```
 
+</div>
+
 # Delete a VirtualMachineFileRestore CR
 
 Delete a `VirtualMachineFileRestore` (VMFR) custom resource (CR) to clean up file-serving resources after you have recovered the files you need. This helps you free cluster resources used by the file-serving pod and temporary namespace.
@@ -622,13 +744,27 @@ When you delete a VMFR CR, the controller performs the following cleanup operati
 
 - Deletes the temporary namespace if one was automatically created.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
 - You have a `VirtualMachineFileRestore` CR that you want to delete.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete a `VirtualMachineFileRestore` CR, run the following command:
 
@@ -638,7 +774,15 @@ When you delete a VMFR CR, the controller performs the following cleanup operati
 
   Replace `<vmfr_cr_name>` with the name of the VMFR CR.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the VMFR CR is deleted and resources are cleaned up, run the following command:
 
@@ -648,9 +792,19 @@ When you delete a VMFR CR, the controller performs the following cleanup operati
 
   The deleted VMFR CR should not appear in the output.
 
+</div>
+
 # Test the VM file restore workflow
 
 Complete an end-to-end workflow that creates a VM, backs it up, and restores individual files through SSH to test the VM file restore feature or verify your configuration.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
@@ -659,6 +813,16 @@ Complete an end-to-end workflow that creates a VM, backs it up, and restores ind
 - OpenShift Virtualization is installed and running on the cluster.
 
 - You have installed the `virtctl` CLI tool to access the VM.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a secret for the cloud storage credentials by running the following command:
 
@@ -1004,3 +1168,5 @@ Complete an end-to-end workflow that creates a VM, backs it up, and restores ind
     ``` terminal
     $ oc delete vmfr <vmfr_name> -n openshift-adp
     ```
+
+</div>

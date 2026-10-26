@@ -8,11 +8,8 @@ You can use daemon sets to create shared storage, run a logging pod on every nod
 
 For security reasons, the cluster administrators and the project administrators can create daemon sets.
 
-<div class="important">
-
-Daemon set scheduling is incompatible with the project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
-
-</div>
+> [!IMPORTANT]
+> Daemon set scheduling is incompatible with the project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
 
 # Daemon set scheduling
 
@@ -26,9 +23,11 @@ Normally, the node that a pod runs on is selected by the Kubernetes scheduler. H
 
 The **ScheduleDaemonSetPods** feature, enabled by default in OpenShift Container Platform, lets you schedule daemon sets using the default scheduler instead of the daemon set controller, by adding the `nodeAffinity` term to the daemon set pods, instead of the `spec.nodeName` term. The default scheduler is then used to bind the pod to the target host. If node affinity of the daemon set pod already exists, it is replaced. The daemon set controller only performs these operations when creating or modifying daemon set pods, and no changes are made to the `spec.template` of the daemon set.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `nodeAffinity` in a daemon set pod**
+<div class="title">
+
+Example `nodeAffinity` in a daemon set pod
 
 </div>
 
@@ -50,6 +49,8 @@ spec:
 #...
 ```
 
+</div>
+
 In addition, a `node.kubernetes.io/unschedulable:NoSchedule` toleration is added automatically to daemon set pods. The default scheduler ignores unschedulable Nodes when scheduling daemon set pods.
 
 # Creating daemonsets
@@ -59,6 +60,10 @@ Create a daemon set to automatically deploy and maintain pod replicas across sel
 When creating daemon sets, the `nodeSelector` field is used to indicate the nodes on which the daemon set should deploy replicas.
 
 <div class="important">
+
+<div class="title">
+
+</div>
 
 - If you update a daemon set pod template, the existing pod replicas are not affected.
 
@@ -70,6 +75,14 @@ To update a daemon set, force new pod replicas to be created by deleting the old
 
 </div>
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The default project-wide node selector in your namespace is set to an empty string by using the `openshift.io/node-selector` annotation:
 
   ``` terminal
@@ -77,27 +90,34 @@ To update a daemon set, force new pod replicas to be created by deleting the old
       '{"metadata": {"annotations": {"openshift.io/node-selector": ""}}}'
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to disable the default project-wide node selector for a namespace:
-
-  ``` yaml
-  apiVersion: v1
-  kind: Namespace
-  metadata:
-    name: <namespace>
-    annotations:
-      openshift.io/node-selector: ''
-  #...
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to disable the default project-wide node selector for a namespace:
+  >
+  > ``` yaml
+  > apiVersion: v1
+  > kind: Namespace
+  > metadata:
+  >   name: <namespace>
+  >   annotations:
+  >     openshift.io/node-selector: ''
+  > #...
+  > ```
 
 - If you are creating a new project, the default node selector is overwritten:
 
   ``` terminal
   $ oc adm new-project <name> --node-selector=""
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define the daemon set yaml file:
 
@@ -148,15 +168,27 @@ To update a daemon set, force new pod replicas to be created by deleting the old
     $ oc create -f daemonset.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the pods were created and that each node has a pod replica by running the following command:
 
   ``` terminal
   $ oc get pods
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -165,21 +197,29 @@ To update a daemon set, force new pod replicas to be created by deleting the old
   hello-daemonset-e3md9   1/1       Running   0          2m
   ```
 
+  </div>
+
 - Verify that the pods are placed onto the correct nodes by running the following command:
 
   ``` terminal
   $ oc describe pod/hello-daemonset-cx6md|grep Node
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Node:        openshift-node01.hostname.com/10.14.20.134
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

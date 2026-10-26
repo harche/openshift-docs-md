@@ -14,28 +14,30 @@ OpenShift Container Platform provides the following predefined audit policy prof
 <col style="width: 66%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Profile</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>Default</code></p></td>
 <td style="text-align: left;"><p>Logs only metadata for read and write requests; does not log request bodies except for OAuth access token requests. This is the default policy.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>WriteRequestBodies</code></p></td>
 <td style="text-align: left;"><p>In addition to logging metadata for all requests, logs request bodies for every write request to the API servers (<code>create</code>, <code>update</code>, <code>patch</code>, <code>delete</code>, <code>deletecollection</code>). This profile has more resource overhead than the <code>Default</code> profile. <sup>[1]</sup></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>AllRequestBodies</code></p></td>
 <td style="text-align: left;"><p>In addition to logging metadata for all requests, logs request bodies for every read and write request to the API servers (<code>get</code>, <code>list</code>, <code>create</code>, <code>update</code>, <code>patch</code>). This profile has the most resource overhead. <sup>[1]</sup></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>None</code></p></td>
 <td style="text-align: left;"><p>No requests are logged, including OAuth access token requests and OAuth authorize token requests. Custom rules are ignored when this profile is set.</p>
 <div class="warning">
+<div class="title">
+&#10;</div>
 <p>Do not disable audit logging by using the <code>None</code> profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue to troubleshoot properly.</p>
 </div></td>
 </tr>
@@ -50,7 +52,25 @@ By default, OpenShift Container Platform uses the `Default` audit log profile. Y
 
 You can configure the audit log policy to use when logging requests that come to the API servers.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `APIServer` resource:
 
@@ -75,13 +95,20 @@ You can configure the audit log policy to use when logging requests that come to
     `profile`
     Set to `Default`, `WriteRequestBodies`, `AllRequestBodies`, or `None`. The default profile is `Default`.
 
-    <div class="warning">
-
-    It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
-
-    </div>
+    > [!WARNING]
+    > It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
 
 3.  Save the file to apply the changes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that a new revision of the Kubernetes API server pods is rolled out. It can take several minutes for all nodes to update to the new revision.
 
@@ -104,19 +131,36 @@ You can configure the audit log policy to use when logging requests that come to
 
   - `2 nodes are at revision 11; 1 nodes are at revision 12`
 
+</div>
+
 # Configure the audit log policy with custom rules
 
 You can configure an audit log policy that defines custom rules. You can specify multiple groups and define which profile to use for that group.
 
 These custom rules take precedence over the top-level profile field. The custom rules are evaluated from top to bottom, and the first that matches is applied.
 
-<div class="important">
+> [!IMPORTANT]
+> If you set the top-level profile field to `None`, an API server, such as the Kubernetes API server, ignores custom rules and disables audit logging.
 
-If you set the top-level profile field to `None`, an API server, such as the Kubernetes API server, ignores custom rules and disables audit logging.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `APIServer` resource:
 
@@ -151,6 +195,16 @@ If you set the top-level profile field to `None`, an API server, such as the Kub
 
 3.  Save the file to apply the changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that a new revision of the Kubernetes API server pods is rolled out. It can take several minutes for all nodes to update to the new revision.
 
   ``` terminal
@@ -172,17 +226,34 @@ If you set the top-level profile field to `None`, an API server, such as the Kub
 
   - `2 nodes are at revision 11; 1 nodes are at revision 12`
 
+</div>
+
 # Disable audit logging
 
 You can disable audit logging for OpenShift Container Platform. When you disable audit logging, even OAuth access token requests and OAuth authorize token requests are not logged.
 
-<div class="warning">
+> [!WARNING]
+> It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
 
-It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `APIServer` resource:
 
@@ -202,13 +273,20 @@ It is not recommended to disable audit logging by using the `None` profile unles
         profile: None
     ```
 
-    <div class="note">
-
-    You can also disable audit logging only for specific groups by specifying custom rules in the `spec.audit.customRules` field.
-
-    </div>
+    > [!NOTE]
+    > You can also disable audit logging only for specific groups by specifying custom rules in the `spec.audit.customRules` field.
 
 3.  Save the file to apply the changes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that a new revision of the Kubernetes API server pods is rolled out. It can take several minutes for all nodes to update to the new revision.
 
@@ -230,3 +308,5 @@ It is not recommended to disable audit logging by using the `None` profile unles
   - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
 
   - `2 nodes are at revision 11; 1 nodes are at revision 12`
+
+</div>

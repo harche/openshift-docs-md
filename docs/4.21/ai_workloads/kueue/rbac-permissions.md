@@ -14,17 +14,37 @@ This cluster role includes the permissions to manage jobs and to view local queu
 
 You can configure permissions for batch administrators by binding the `kueue-batch-admin-role` cluster role to a user or group of users.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Red Hat build of Kueue Operator is installed on your cluster.
 
 - You have cluster administrator permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `ClusterRoleBinding` object as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ClusterRoleBinding` object**
+    <div class="title">
+
+    Example `ClusterRoleBinding` object
 
     </div>
 
@@ -43,6 +63,8 @@ You can configure permissions for batch administrators by binding the `kueue-bat
       apiGroup: rbac.authorization.k8s.io
     ```
 
+    </div>
+
     where:
 
     `metadata.name`
@@ -60,15 +82,27 @@ You can configure permissions for batch administrators by binding the `kueue-bat
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - You can verify that the `ClusterRoleBinding` object was applied correctly by running the following command and verifying that the output contains the correct information for the `kueue-batch-admin-role` cluster role:
 
   ``` yaml
   $ oc describe clusterrolebinding.rbac
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -87,9 +121,21 @@ You can configure permissions for batch administrators by binding the `kueue-bat
   ...
   ```
 
+  </div>
+
+</div>
+
 # Configuring permissions for users
 
 You can configure permissions for Red Hat build of Kueue users by binding the `kueue-batch-user-role` cluster role to a user or group of users.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The Red Hat build of Kueue Operator is installed on your cluster.
 
@@ -97,11 +143,23 @@ You can configure permissions for Red Hat build of Kueue users by binding the `
 
 - You have installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `RoleBinding` object as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ClusterRoleBinding` object**
+    <div class="title">
+
+    Example `ClusterRoleBinding` object
 
     </div>
 
@@ -120,6 +178,8 @@ You can configure permissions for Red Hat build of Kueue users by binding the `
       name: kueue-batch-user-role
       apiGroup: rbac.authorization.k8s.io
     ```
+
+    </div>
 
     where:
 
@@ -141,15 +201,27 @@ You can configure permissions for Red Hat build of Kueue users by binding the `
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - You can verify that the `RoleBinding` object was applied correctly by running the following command and verifying that the output contains the correct information for the `kueue-batch-user-role` cluster role:
 
   ``` yaml
   $ oc describe rolebinding.rbac
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -167,6 +239,10 @@ You can configure permissions for Red Hat build of Kueue users by binding the `
     Group           team-a@example.com        user-namespace
   ...
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

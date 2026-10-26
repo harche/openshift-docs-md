@@ -35,11 +35,8 @@ This `systemd` service runs the `fencing-parameter-tuning.sh` script after Pacem
 
 The script runs on only one node whose hostname appears alphabetically-first because Pacemaker synchronizes configuration changes between nodes internally.
 
-<div class="note">
-
-The tuning values persist in the Pacemaker cluster configuration independently of the `MachineConfig` resource. Deleting the `MachineConfig` resource removes the files and service but does not revert the tuned values.
-
-</div>
+> [!NOTE]
+> The tuning values persist in the Pacemaker cluster configuration independently of the `MachineConfig` resource. Deleting the `MachineConfig` resource removes the files and service but does not revert the tuned values.
 
 # Applying a fencing tuning preset
 
@@ -53,11 +50,29 @@ Raise the Corosync token from `3000` ms to `5000` ms. Use this preset when nodes
 `slow-bmc`
 Increases fence agent timeouts for BMC hardware where the default values are insufficient, for example HPE ProLiant with iLO. Sets `power_timeout=120`, `shell_timeout=15`, `login_timeout=15`, and `retry_on=3`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have the `oc` CLI tool installed.
 
 - Both control plane nodes are `Ready` and all Pacemaker resources are started.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `apply-fencing-tuning.sh` with the following content:
 
@@ -256,6 +271,16 @@ Increases fence agent timeouts for BMC hardware where the default values are ins
 
     Wait until `UPDATED` is `True` and `UPDATING` is `False`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that both nodes are `Ready` by running the following command:
 
   ``` terminal
@@ -279,9 +304,19 @@ Increases fence agent timeouts for BMC hardware where the default values are ins
 
   The output shows `power_timeout=120`, `shell_timeout=15`, `login_timeout=15`, and `retry_on=3`.
 
+</div>
+
 # Applying custom fencing tuning values
 
 If your scenario does not match a preset, you can edit individual parameter values in the `apply-fencing-tuning.sh` script. Change only the parameters that address your observed symptom.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -289,13 +324,25 @@ If your scenario does not match a preset, you can edit individual parameter valu
 
 - Both control plane nodes are in the `Ready` state and all Pacemaker resources are started.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Save the `apply-fencing-tuning.sh` script to a local file.
 
 2.  Open the script in a text editor and modify the values in the `DEFAULT VALUES` section at the top of the script. For example, to increase the Corosync token to `6000` ms and the etcd stop timeout to `120` seconds:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -304,6 +351,8 @@ If your scenario does not match a preset, you can edit individual parameter valu
 
     ETCD_OP_STOP_TIMEOUT=120s
     ```
+
+    </div>
 
     For valid ranges and fencing risk for each parameter, see "Fencing tuning parameter reference".
 
@@ -321,7 +370,15 @@ If your scenario does not match a preset, you can edit individual parameter valu
 
     Wait until `UPDATED` is `True` and `UPDATING` is `False`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the Corosync token value by running the following command:
 
@@ -349,13 +406,20 @@ If your scenario does not match a preset, you can edit individual parameter valu
 
 5.  To change values after the initial application, edit the script with new values and run it again. The MCO detects the change and rolls out a new update.
 
+</div>
+
 # Reverting fencing tuning to defaults
 
 You can restore fencing parameters to their default values when removing custom tuning from your two-node OpenShift Container Platform cluster. This ensures all changes are properly reverted before deletion.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not run `oc delete mc 99-fencing-parameter-tuning` without reverting first. Deleting the `MachineConfig` resource removes the tuning service but does not undo the Pacemaker changes. The tuned values remain active in the cluster configuration.
 
-Do not run `oc delete mc 99-fencing-parameter-tuning` without reverting first. Deleting the `MachineConfig` resource removes the tuning service but does not undo the Pacemaker changes. The tuned values remain active in the cluster configuration.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -364,6 +428,16 @@ Do not run `oc delete mc 99-fencing-parameter-tuning` without reverting first. D
 - You have the `oc` CLI tool installed.
 
 - The fencing parameter tuning `MachineConfig` resource is currently applied.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the `apply-fencing-tuning.sh` script with the `--revert` flag by running the following command:
 
@@ -393,7 +467,15 @@ Do not run `oc delete mc 99-fencing-parameter-tuning` without reverting first. D
     $ oc get mcp master -w
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the Corosync token is back to the default value by running the following command:
 
@@ -409,60 +491,56 @@ Do not run `oc delete mc 99-fencing-parameter-tuning` without reverting first. D
     $ oc get nodes
     ```
 
+</div>
+
 # Fencing tuning parameter reference
 
 You can refer the fencing parameters that you can tune, their default values, and which settings pose the highest risk of triggering unnecessary node fencing.
 
-| Parameter        | Default | Safe range    | Effect                                                                                                                                                                                                                      |
-|------------------|---------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `COROSYNC_TOKEN` | 3000    | 3000-10000 ms | How long before a silent node is declared dead and fenced. Lower values provide faster detection but a higher risk of false positives. Higher values are more tolerant of load spikes but slower to detect actual failures. |
+| Parameter | Default | Safe range | Effect |
+|----|----|----|----|
+| `COROSYNC_TOKEN` | 3000 | 3000-10000 ms | How long before a silent node is declared dead and fenced. Lower values provide faster detection but a higher risk of false positives. Higher values are more tolerant of load spikes but slower to detect actual failures. |
 
 Corosync parameters
 
 The token value and resource agent timeouts are independent. Changing the token does not require changing etcd or kubelet timeouts.
 
-| Parameter                     | Default | Fencing risk                                                                 |
-|-------------------------------|---------|------------------------------------------------------------------------------|
-| `KUBELET_OP_START_TIMEOUT`    | 180s    | None. Start failure blocks the resource and requires `pcs resource cleanup`. |
-| `KUBELET_OP_STOP_TIMEOUT`     | 100s    | **Direct.** Stop failure always triggers fencing.                            |
-| `KUBELET_OP_MONITOR_TIMEOUT`  | 100s    | Indirect. Monitor failure triggers recovery, which runs stop then start.     |
-| `KUBELET_OP_MONITOR_INTERVAL` | 60s     | None. Controls health check frequency.                                       |
+| Parameter | Default | Fencing risk |
+|----|----|----|
+| `KUBELET_OP_START_TIMEOUT` | 180s | None. Start failure blocks the resource and requires `pcs resource cleanup`. |
+| `KUBELET_OP_STOP_TIMEOUT` | 100s | **Direct.** Stop failure always triggers fencing. |
+| `KUBELET_OP_MONITOR_TIMEOUT` | 100s | Indirect. Monitor failure triggers recovery, which runs stop then start. |
+| `KUBELET_OP_MONITOR_INTERVAL` | 60s | None. Controls health check frequency. |
 
 Kubelet resource agent parameters
 
-| Parameter               | Default | Fencing risk                                                                 |
-|-------------------------|---------|------------------------------------------------------------------------------|
-| `ETCD_OP_STOP_TIMEOUT`  | 90s     | **Direct.** Stop failure always triggers fencing.                            |
-| `ETCD_OP_START_TIMEOUT` | 600s    | None. Start failure blocks the resource and requires `pcs resource cleanup`. |
+| Parameter | Default | Fencing risk |
+|----|----|----|
+| `ETCD_OP_STOP_TIMEOUT` | 90s | **Direct.** Stop failure always triggers fencing. |
+| `ETCD_OP_START_TIMEOUT` | 600s | None. Start failure blocks the resource and requires `pcs resource cleanup`. |
 
 Etcd resource agent parameters
 
-<div class="note">
+> [!NOTE]
+> The fence agent parameter values depend on your BMC hardware. Test your fence agent response times before setting these values by running the following command:
+>
+> ``` terminal
+> $ fence_<type> -a <bmc_ip> -l <user> -p <pass> -o status
+> ```
 
-The fence agent parameter values depend on your BMC hardware. Test your fence agent response times before setting these values by running the following command:
-
-``` terminal
-$ fence_<type> -a <bmc_ip> -l <user> -p <pass> -o status
-```
-
-</div>
-
-| Parameter             | Default | Description                                              |
-|-----------------------|---------|----------------------------------------------------------|
-| `FENCE_POWER_TIMEOUT` | 25      | Wait for BMC to confirm power state change after ON/OFF. |
-| `FENCE_SHELL_TIMEOUT` | 3       | Wait for BMC to respond to a command.                    |
-| `FENCE_LOGIN_TIMEOUT` | 5       | Wait for BMC login prompt after connecting.              |
-| `FENCE_POWER_WAIT`    | 0       | Wait after toggling power before checking new state.     |
-| `FENCE_RETRY_ON`      | 1       | Number of power-on retry attempts.                       |
-| `FENCE_DELAY`         | 0       | Fixed wait before executing the fence action.            |
+| Parameter | Default | Description |
+|----|----|----|
+| `FENCE_POWER_TIMEOUT` | 25 | Wait for BMC to confirm power state change after ON/OFF. |
+| `FENCE_SHELL_TIMEOUT` | 3 | Wait for BMC to respond to a command. |
+| `FENCE_LOGIN_TIMEOUT` | 5 | Wait for BMC login prompt after connecting. |
+| `FENCE_POWER_WAIT` | 0 | Wait after toggling power before checking new state. |
+| `FENCE_RETRY_ON` | 1 | Number of power-on retry attempts. |
+| `FENCE_DELAY` | 0 | Fixed wait before executing the fence action. |
 
 Fence agent parameters
 
-<div class="important">
-
-Do not modify `pcmk_delay_base`. This parameter is managed by the cluster etcd Operator with different values per node to control the fencing race. Changing it can cause both nodes to fence simultaneously.
-
-</div>
+> [!IMPORTANT]
+> Do not modify `pcmk_delay_base`. This parameter is managed by the cluster etcd Operator with different values per node to control the fencing race. Changing it can cause both nodes to fence simultaneously.
 
 You must tune the following parameters that can cause fencing:
 
@@ -488,10 +566,10 @@ You can observe which fencing parameters persist after the cluster etcd Operator
 
 The cluster etcd Operator manages initial Pacemaker configuration. The following table shows which tuned parameters survive Operator reconciliation:
 
-| Category                    | Parameters                                                                           | Safe from Operator? | Details                                                                                                                                                                                                                 |
-|-----------------------------|--------------------------------------------------------------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Corosync                    | `token`                                                                              | Yes                 | The Operator never sets Corosync totem values. Tuning survives job re-runs and node replacement.                                                                                                                        |
-| Kubelet resource operations | `start`, `stop`, `monitor` timeouts                                                  | Yes                 | The Operator creates the kubelet resource once. Operation timeouts set by using `pcs resource update` are not overwritten by subsequent Operator runs.                                                                  |
-| Etcd resource operations    | `start`, `stop` timeouts                                                             | Yes                 | Same behavior as kubelet. Created once and guarded by a presence check.                                                                                                                                                 |
-| STONITH fence agent         | `power_timeout`, `shell_timeout`, `login_timeout`, `power_wait`, `retry_on`, `delay` | Yes                 | The `pcs stonith update` command only modifies specified attributes. The Operator does not set these values.                                                                                                            |
-| STONITH `pcmk_delay_base`   |  —                                                                                   | **No**              | The Operator sets different values per node, for example `10s` and `1s`, to control the fencing race. A fencing credential change triggers the Operator to re-run and reset these values. Do not modify this parameter. |
+| Category | Parameters | Safe from Operator? | Details |
+|----|----|----|----|
+| Corosync | `token` | Yes | The Operator never sets Corosync totem values. Tuning survives job re-runs and node replacement. |
+| Kubelet resource operations | `start`, `stop`, `monitor` timeouts | Yes | The Operator creates the kubelet resource once. Operation timeouts set by using `pcs resource update` are not overwritten by subsequent Operator runs. |
+| Etcd resource operations | `start`, `stop` timeouts | Yes | Same behavior as kubelet. Created once and guarded by a presence check. |
+| STONITH fence agent | `power_timeout`, `shell_timeout`, `login_timeout`, `power_wait`, `retry_on`, `delay` | Yes | The `pcs stonith update` command only modifies specified attributes. The Operator does not set these values. |
+| STONITH `pcmk_delay_base` |  —  | **No** | The Operator sets different values per node, for example `10s` and `1s`, to control the fencing race. A fencing credential change triggers the Operator to re-run and reset these values. Do not modify this parameter. |

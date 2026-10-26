@@ -8,17 +8,22 @@ You can use the `oc adm prune renderedmachineconfigs` command without the `--con
 
 Use the `list` subcommand to display all the rendered machine configs in the cluster or a specific machine config pool.
 
-<div class="note">
-
-The `oc adm prune renderedmachineconfigs` command deletes only rendered machine configs that are not in use. If a rendered machine configs are in use by a machine config pool, the rendered machine config is not deleted. In this case, the command output specifies the reason that the rendered machine config was not deleted.
-
-</div>
+> [!NOTE]
+> The `oc adm prune renderedmachineconfigs` command deletes only rendered machine configs that are not in use. If a rendered machine configs are in use by a machine config pool, the rendered machine config is not deleted. In this case, the command output specifies the reason that the rendered machine config was not deleted.
 
 # View rendered machine configs
 
 You can view a list of rendered machine configs by using the `oc adm prune renderedmachineconfigs` command with the `list` subcommand to determine which objects you can remove.
 
 For example, the command in the following procedure would list all rendered machine configs for the `worker` machine config pool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Optional: List the rendered machine configs by using the following command:
 
@@ -37,9 +42,11 @@ For example, the command in the following procedure would list all rendered mach
   `--pool-name`
   Optional: Specifies the machine config pool from which to display the machine configs.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -50,6 +57,8 @@ For example, the command in the following procedure would list all rendered mach
   rendered-worker-fc94397dc7c43808c7014683c208956e-- 2025-01-30 17:20:53 +0000 UTC (Currently in use: false)
   rendered-worker-708c652868f7597eaa1e2622edc366ef -- 2025-01-31 18:01:16 +0000 UTC (Currently in use: true)
   ```
+
+  </div>
 
 - List the rendered machine configs that you can remove automatically by running the following command. Any rendered machine config marked with the `as it’s currently in use` message in the command output cannot be removed.
 
@@ -64,9 +73,11 @@ For example, the command in the following procedure would list all rendered mach
   `--pool-name`
   Optional: Displays the machine configs in the specified machine config pool.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -77,11 +88,23 @@ For example, the command in the following procedure would list all rendered mach
   Skip dry-run deleting rendered MachineConfig rendered-worker-708c652868f7597eaa1e2622edc366ef as it's currently in use
   ```
 
+  </div>
+
+</div>
+
 # Remove unused rendered machine configs
 
 You can remove unused rendered machine configs by using the `oc adm prune renderedmachineconfigs` command with the `--confirm` command, reducing disk space and performance issues.
 
 If any rendered machine config is not deleted, the command output indicates which was not deleted and lists the reason for skipping the deletion.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Optional: List the rendered machine configs that you can remove automatically by running the following command. Any rendered machine config marked with the `as it’s currently in use` message in the command output cannot be removed.
 
@@ -89,9 +112,11 @@ If any rendered machine config is not deleted, the command output indicates whic
     $ oc adm prune renderedmachineconfigs --pool-name=worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -101,6 +126,8 @@ If any rendered machine config is not deleted, the command output indicates whic
     dry-run deleting MachineConfig rendered-worker-fc94397dc7c43808c7014683c208956e
     Skip dry-run deleting rendered MachineConfig rendered-worker-708c652868f7597eaa1e2622edc366ef as it's currently in use
     ```
+
+    </div>
 
     where:
 
@@ -124,9 +151,11 @@ If any rendered machine config is not deleted, the command output indicates whic
     `--pool-name`
     Optional: Specifies the machine config pool from which you want to delete the machine. If not specified, all the pools are evaluated.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -135,3 +164,7 @@ If any rendered machine config is not deleted, the command output indicates whic
     deleting rendered MachineConfig rendered-worker-fc94397dc7c43808c7014683c208956e
     Skip deleting rendered MachineConfig rendered-worker-708c652868f7597eaa1e2622edc366ef as it's currently in use
     ```
+
+    </div>
+
+</div>

@@ -14,11 +14,21 @@ After the CIFS/SMB CSI Driver Operator is installed, it does not create a storag
 CIFS/SMB CSI driver
 The CIFS/SMB CSI driver enables you to create and mount CIFS/SMB PVs.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
 
 - [Dynamic provisioning](../../storage/container_storage_interface/persistent-storage-csi-smb-cifs.xml#persistent-storage-csi-smb-cifs-provision-dynamic_persistent-storage-csi-smb-cifs)
+
+</div>
 
 # About CSI
 
@@ -50,7 +60,25 @@ The following limitations apply to the CIFS/SMB CSI Driver Operator:
 
 Install and configure the CIFS/SMB Container Storage Interface (CSI) Driver Operator to enable CIFS/SMB storage in your cluster. This Red Hat Operator is not installed by default and requires manual installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the web console.
 
@@ -74,21 +102,45 @@ Install and configure the CIFS/SMB Container Storage Interface (CSI) Driver Oper
 
         After the installation finishes, the CIFS/SMB CSI Operator is listed in the **Installed Operators** section of the web console.
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Install the CIFS/SMB CSI Driver.
 
+</div>
+
 # Installing the CIFS/SMB CSI Driver
 
 To use network file shares as persistent volumes (PVs) in your cluster, create a `ClusterCSIDriver` resource after installing the CIFS/SMB CSI Driver Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console.
 
 - CIFS/SMB CSI Driver Operator installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Administration** → **CustomResourceDefinitions** → **ClusterCSIDriver**.
 
@@ -113,11 +165,21 @@ To use network file shares as persistent volumes (PVs) in your cluster, create a
 
     - `SambaDriverNodeServiceControllerAvailable`
 
+</div>
+
 # Dynamic provisioning for CIFS/SMB
 
 To automatically provision Common Internet File System (CIFS)/Server Message Block (SMB) volumes without pre-creating shares, create a Secret for server credentials, a storage class for the SMB source, and persistent volume claims (PVCs).
 
 When dynamically provisioning volumes, a subdirectory is created with the persistent volume (PV) name under `source` defined in the storage class.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - CIFS/SMB CSI Driver Operator and driver installed.
 
@@ -131,15 +193,27 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
 
   - Username and password
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a Secret for access to the Samba server running the following command with the following example YAML file:
 
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Secret YAML file**
+    <div class="title">
+
+    Example Secret YAML file
 
     </div>
 
@@ -153,6 +227,8 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
       username: <username>
       password: <password>
     ```
+
+    </div>
 
     - `metadata.name`: Specifies the name of the Secret for the Samba server.
 
@@ -170,9 +246,11 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
 
     Where `<sc_file_name>.yaml` is the name of the storage class YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example storage class YAML file**
+    <div class="title">
+
+    Example storage class YAML file
 
     </div>
 
@@ -197,6 +275,8 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
       - gid=1001
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the storage class.
 
     - `parameters.source`: The Samba server must be installed somewhere that is reachable from the cluster with `<hostname>` being the hostname for the Samba server and `<shares>` the path the server is configured to have among the exported shares.
@@ -215,9 +295,11 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
 
         Where `<pv_file_name>.yaml` is the name of the PVC YAML file.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example PVC YAML file**
+        <div class="title">
+
+        Example PVC YAML file
 
         </div>
 
@@ -235,6 +317,8 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
           storageClassName: <sc_name>
         ```
 
+        </div>
+
         - `metadata.name`: Specifies the name of the PVC.
 
         - `spec.resources.requests.storage`: Specifies the storage request amount.
@@ -249,9 +333,11 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
 
         Where `<pvc_name>` is the name of the PVC that you created in the preceding step.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -263,11 +349,23 @@ When dynamically provisioning volumes, a subdirectory is created with the persis
         ...
         ```
 
+        </div>
+
         PVC is in Bound status.
+
+</div>
 
 # Static provisioning for CIFS/SMB
 
 You can use static provisioning to create a persistent volume (PV) and persistent volume claim (PVC) to consume existing Server Message Block protocol (SMB) shares:
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the OpenShift Container Platform web console.
 
@@ -281,15 +379,27 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
   - Username and password
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a Secret for access to the Samba server running the following command with the following example YAML file:
 
     ``` terminal
     $ oc create -f <file_name>.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Secret YAML file**
+    <div class="title">
+
+    Example Secret YAML file
 
     </div>
 
@@ -303,6 +413,8 @@ You can use static provisioning to create a persistent volume (PV) and persisten
       username: <username>
       password: <password>
     ```
+
+    </div>
 
     - `metadata.name`: Specifies the name of the Secret for the Samba server.
 
@@ -320,9 +432,11 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
     Where `<pv_file_name>.yaml` is the name of the PV YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PV YAML file**
+    <div class="title">
+
+    Example PV YAML file
 
     </div>
 
@@ -353,6 +467,8 @@ You can use static provisioning to create a persistent volume (PV) and persisten
           namespace: <namespace>
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the PV.
 
     - `spec.csi.volumeHandle` format: `{smb-server-address}#{sub-dir-name}#{share-name}`. Ensure that this value is unique for every share in the cluster.
@@ -373,9 +489,11 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
         Where `<pv_file_name>.yaml` is the name of the PVC YAML file.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example PVC YAML file**
+        <div class="title">
+
+        Example PVC YAML file
 
         </div>
 
@@ -394,6 +512,8 @@ You can use static provisioning to create a persistent volume (PV) and persisten
           volumeName: <pv_name>
         ```
 
+        </div>
+
         - `metadata.name`: Specifies the name of the PVC.
 
         - `spec.resources.requests.storage`: Specifies the storage request amount.
@@ -408,9 +528,11 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
         Where `<pvc_name>` is the name of the PVC that you created in the preceding step.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -422,15 +544,14 @@ You can use static provisioning to create a persistent volume (PV) and persisten
         ...
         ```
 
+        </div>
+
         PVC is in `Bound` status.
 
 4.  Create a deployment on Linux by running the following command with the following example YAML file:
 
-    <div class="note">
-
-    The following deployment is not mandatory for using the PV and PVC created in the previous steps. It is example of how they can be used.
-
-    </div>
+    > [!NOTE]
+    > The following deployment is not mandatory for using the PV and PVC created in the previous steps. It is example of how they can be used.
 
     ``` terminal
     $ oc create -f <deployment_file_name>.yaml
@@ -438,9 +559,11 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
     Where `<deployment_file_name>.yaml` is the name of the deployment YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example deployment YAML file**
+    <div class="title">
+
+    Example deployment YAML file
 
     </div>
 
@@ -486,6 +609,8 @@ You can use static provisioning to create a persistent volume (PV) and persisten
         type: RollingUpdate
     ```
 
+    </div>
+
     - `metadata.name` and `spec.template.name`: Specifies the name of the deployment.
 
     - `spec.template.spec.containers.command.set` and `spec.template.spec.containers.volumeMounts.mountpath`: Specifies the volume mount path.
@@ -502,9 +627,11 @@ You can use static provisioning to create a persistent volume (PV) and persisten
 
     Where `<pod_name>` is the name of the pod.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -516,4 +643,8 @@ You can use static provisioning to create a persistent volume (PV) and persisten
     ...
     ```
 
+    </div>
+
     In this example, there is a `/mnt/smb` directory mounted as a Common Internet File System (CIFS) filesystem.
+
+</div>

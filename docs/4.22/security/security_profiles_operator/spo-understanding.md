@@ -1,10 +1,7 @@
 OpenShift Container Platform administrators can use the Security Profiles Operator to define increased security measures in clusters.
 
-<div class="important">
-
-The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
-
-</div>
+> [!IMPORTANT]
+> The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes. Red Hat Enterprise Linux (RHEL) nodes are not supported.
 
 # About security profiles
 

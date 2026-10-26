@@ -24,19 +24,32 @@ You can accept the default behavior, or you can set the error policy to one of t
 
 - `enospace`, which produces an error indicating that there is not enough disk space.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The volume access mode must be `ReadWriteMany` (RWX) if the VMs that are sharing disks are running on different nodes.
 
   If the VMs that are sharing disks are running on the same node, `ReadWriteOnce` (RWO) volume access mode is sufficient.
 
-  <div class="note">
-
-  Not all filesystem and format combinations support RWX mode. For example, XFS format does not support RWX mode. When multiple VMs write to an XFS-formatted volume, data corruption occurs and only the writing VM can access the data.
-
-  </div>
+  > [!NOTE]
+  > Not all filesystem and format combinations support RWX mode. For example, XFS format does not support RWX mode. When multiple VMs write to an XFS-formatted volume, data corruption occurs and only the writing VM can access the data.
 
 - The storage provider must support the required Container Storage Interface (CSI) driver.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -71,6 +84,8 @@ You can accept the default behavior, or you can set the error policy to one of t
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
+</div>
+
 # Configuring disk sharing by using LUN
 
 To secure data on your VM from outside access, you can enable SCSI persistent reservation and configure a LUN-backed virtual machine disk to be shared among multiple virtual machines.
@@ -89,6 +104,14 @@ You can set an error policy for each LUN disk. The error policy controls how the
 
 For a LUN disk with an SCSi connection and a persistent reservation, as required for Windows Failover Clustering for shared volumes, you set the error policy to `report`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have cluster administrator privileges to configure the feature gate option.
 
 - The volume access mode must be `ReadWriteMany` (RWX) if the VMs that are sharing disks are running on different nodes.
@@ -100,6 +123,16 @@ For a LUN disk with an SCSi connection and a persistent reservation, as required
 - If you are a cluster administrator and intend to configure disk sharing by using LUN, you must enable the cluster’s feature gate on the `HyperConverged` custom resource (CR).
 
 - Disks that you want to share must be in block mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit or create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -142,11 +175,31 @@ For a LUN disk with an SCSi connection and a persistent reservation, as required
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
+</div>
+
 ## Configuring disk sharing by using LUN and the web console
 
 You can use the OpenShift Container Platform web console to configure disk sharing by using LUN.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The cluster administrator must enable the `persistentreservation` feature gate setting.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** in the web console.
 
@@ -168,9 +221,19 @@ You can use the OpenShift Container Platform web console to configure disk shari
 
 10. Click **Save**.
 
+</div>
+
 ## Configuring disk sharing by using LUN and the CLI
 
 You can use the command line to configure disk sharing by using LUN.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit or create the `VirtualMachine` manifest for your VM to set the required values, as shown in the following example:
 
@@ -213,6 +276,8 @@ You can use the command line to configure disk sharing by using LUN.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
+</div>
+
 # Enable the PersistentReservation feature
 
 You can enable the SCSI `persistentReservation` feature and allow a logical unit number (LUN)-backed block mode virtual machine (VM) disk to be shared among many virtual machines.
@@ -231,17 +296,45 @@ The `persistentReservation` feature is disabled by default. You can enable the `
 
 You must enable the PersistentReservation feature to allow a logical unit number (LUN)-backed block mode virtual machine (VM) disk to be shared among many virtual machines. Enabling the feature requires cluster administrator privileges.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Click **Virtualization** → **Settings** in the web console.
 
 2.  Select **Cluster**.
 
 3.  Expand **SCSI persistent reservation** and set **Enable persistent reservation** to on.
 
+</div>
+
 ## Enable the PersistentReservation feature by using the CLI
 
 You can enable the `persistentReservation` feature by using the command line. Enabling the feature requires cluster administrator privileges.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable the `persistentReservation` feature by running the following command:
 
@@ -249,6 +342,8 @@ You can enable the `persistentReservation` feature by using the command line. En
     $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type merge \
       -p '{"spec":{"storage":{"persistentReservationConfiguration":{"enabled":true}}}}'
     ```
+
+</div>
 
 # Additional resources
 

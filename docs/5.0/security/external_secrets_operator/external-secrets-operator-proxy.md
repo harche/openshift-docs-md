@@ -6,9 +6,27 @@ The egress proxy can be configured in the `ExternalSecretsConfig` or the `Extern
 
 The Operator can automatically create and manage a `NetworkPolicy` such as `eso-sys-allow-proxy-egress`, that allows all `external-secrets` pods to reach the proxy server. You control this behavior by using the `networkPolicyProvisioning` field. The field can be set in either the `ExternalSecretsConfig` CR or the `ExternalSecretsManager` CR, and can be configured independently of proxy URL fields. For example, when the proxy is provided by Operator Lifecycle Manager (OLM) environment variables at the cluster level, you can set only `networkPolicyProvisioning` in either CR without specifying any proxy URLs.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have created the `ExternalSecretsConfig` custom CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To set the proxy in the `ExternalSecretsConfig` resource, perform the following steps:
 
@@ -84,11 +102,8 @@ The Operator can automatically create and manage a `NetworkPolicy` such as `eso-
         `spec.appConfig.proxy.networkPolicyProvisioning`
         Specifies whether the Operator automatically creates and manages the `eso-sys-allow-proxy-egress` `NetworkPolicy`. The values are\`Managed\`, which is the default, and `Unmanaged`.
 
-        <div class="note">
-
-        When `networkPolicyProvisioning` is set in both the `ExternalSecretsConfig` CR and the `ExternalSecretsManager` CR, the value in the `ExternalSecretsConfig` CR takes precedence.
-
-        </div>
+        > [!NOTE]
+        > When `networkPolicyProvisioning` is set in both the `ExternalSecretsConfig` CR and the `ExternalSecretsManager` CR, the value in the `ExternalSecretsConfig` CR takes precedence.
 
 3.  If the proxy is configured at the cluster level through OLM environment variables and you only want to control `NetworkPolicy` provisioning without specifying proxy URLs in a CR, set only the `networkPolicyProvisioning` field in either CR as follows:
 
@@ -102,7 +117,15 @@ The Operator can automatically create and manage a `NetworkPolicy` such as `eso-
           networkPolicyProvisioning: Unmanaged
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the proxy egress `NetworkPolicy` was created by running the following command:
 
@@ -117,6 +140,8 @@ The Operator can automatically create and manage a `NetworkPolicy` such as `eso-
     ``` terminal
     $ oc set env deployment/external-secrets -n external-secrets --list | grep -i proxy
     ```
+
+</div>
 
 # Additional resources
 

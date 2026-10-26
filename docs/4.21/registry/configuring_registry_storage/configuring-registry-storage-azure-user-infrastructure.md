@@ -10,7 +10,13 @@ For Azure registry storage, the secret is expected to contain one key whose valu
 
 - `REGISTRY_STORAGE_AZURE_ACCOUNTKEY`
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create an OpenShift Container Platform secret that contains the required key.
 
@@ -18,9 +24,19 @@ For Azure registry storage, the secret is expected to contain one key whose valu
   $ oc create secret generic image-registry-private-configuration-user --from-literal=REGISTRY_STORAGE_AZURE_ACCOUNTKEY=<accountkey> --namespace openshift-image-registry
   ```
 
+</div>
+
 # Configuring registry storage for Azure
 
 During installation, your cloud credentials are sufficient to create Azure Blob Storage, and the Registry Operator automatically configures storage.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - A cluster on Azure with user-provisioned infrastructure.
 
@@ -30,6 +46,16 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
 
   - `REGISTRY_STORAGE_AZURE_ACCOUNTKEY`
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an [Azure storage container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal).
 
 2.  Fill in the storage configuration in `configs.imageregistry.operator.openshift.io/cluster`:
@@ -38,9 +64,11 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
     $ oc edit configs.imageregistry.operator.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration**
+    <div class="title">
+
+    Example configuration
 
     </div>
 
@@ -56,9 +84,21 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
           container: <container_name>
     ```
 
+    </div>
+
+</div>
+
 # Configuring registry storage for Azure Government
 
 During installation, your cloud credentials are sufficient to create Azure Blob Storage, and the Registry Operator automatically configures storage.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - A cluster on Azure with user-provisioned infrastructure in a government region.
 
@@ -68,6 +108,16 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
 
   - `REGISTRY_STORAGE_AZURE_ACCOUNTKEY`
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an [Azure storage container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal).
 
 2.  Fill in the storage configuration in `configs.imageregistry.operator.openshift.io/cluster`:
@@ -76,9 +126,11 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
     $ oc edit configs.imageregistry.operator.openshift.io/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example configuration**
+    <div class="title">
+
+    Example configuration
 
     </div>
 
@@ -90,4 +142,8 @@ During installation, your cloud credentials are sufficient to create Azure Blob 
         cloudName: AzureUSGovernmentCloud
     ```
 
+    </div>
+
     `cloudName` is the name of the Azure cloud environment, which can be used to configure the Azure SDK with the appropriate Azure API endpoints. Defaults to `AzurePublicCloud`. You can also set `cloudName` to `AzureUSGovernmentCloud`, `AzureChinaCloud`, or `AzureGermanCloud` with sufficient credentials.
+
+</div>

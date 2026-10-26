@@ -6,7 +6,25 @@ MetalLB and IP failover are incompatible. If you configured IP failover for your
 
 As a cluster administrator, you can install the MetalLB Operator by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
@@ -22,7 +40,15 @@ As a cluster administrator, you can install the MetalLB Operator by using the Op
 
 5.  The web console displays the progress of the installation. When the installation is complete, click **View installed Operators**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To confirm that the installation is successful:
 
@@ -36,17 +62,37 @@ As a cluster administrator, you can install the MetalLB Operator by using the Op
 
     2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the `metallb-system` project that are reporting issues.
 
+</div>
+
 # Install from the software catalog using the CLI
 
 To install the MetalLB Operator from the software catalog in OpenShift Container Platform without using the web console, you can use the OpenShift CLI (`oc`).
 
 It is recommended that when using the CLI you install the Operator in the `metallb-system` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A cluster installed on bare-metal hardware.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for the MetalLB Operator by entering the following command:
 
@@ -115,13 +161,19 @@ It is recommended that when using the CLI you install the Operator in the `metal
     $ oc label ns metallb-system "openshift.io/cluster-monitoring=true"
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 The verification steps assume the MetalLB Operator is installed in the `metallb-system` namespace.
+
+</div>
 
 1.  Verify that the Operator installed successfully by running the following command. Wait until the `PHASE` displays `Succeeded`:
 
@@ -137,11 +189,8 @@ The verification steps assume the MetalLB Operator is installed in the `metallb-
     metallb-operator.{product-version}.0-nnnnnnnnnnnn   Succeeded
     ```
 
-    <div class="note">
-
-    Installation of the Operator might take a few seconds.
-
-    </div>
+    > [!NOTE]
+    > Installation of the Operator might take a few seconds.
 
 2.  Confirm that the install plan is in the namespace:
 
@@ -160,11 +209,29 @@ The verification steps assume the MetalLB Operator is installed in the `metallb-
 
 To start MetalLB on your cluster after installing the MetalLB Operator in OpenShift Container Platform, you create a single MetalLB custom resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Install the MetalLB Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a single instance of a MetalLB custom resource:
 
@@ -180,19 +247,22 @@ To start MetalLB on your cluster after installing the MetalLB Operator in OpenSh
 
     - For the `metadata.namespace` parameter, substitute `metallb-system` with `openshift-operators` if you installed the MetalLB Operator using the web console.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 Confirm that the deployment for the MetalLB controller and the daemon set for the MetalLB speaker are running.
 
-<div class="note">
-
-It might take a few seconds for the controller deployment and speaker daemon set to become available after you create the `MetalLB` custom resource.
-
 </div>
+
+> [!NOTE]
+> It might take a few seconds for the controller deployment and speaker daemon set to become available after you create the `MetalLB` custom resource.
 
 1.  Verify that the deployment for the controller is running:
 
@@ -246,9 +316,11 @@ The most common reason to limit the `speaker` pods to specific nodes is to ensur
 
 If you limit the `speaker` pods to specific nodes and specify `local` for the external traffic policy of a service, then you must ensure that the application pods for the service are deployed to the same nodes.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration to limit `speaker` pods to worker nodes**
+<div class="title">
+
+Example configuration to limit `speaker` pods to worker nodes
 
 </div>
 
@@ -267,6 +339,8 @@ spec:
     effect: "NoExecute"
 ```
 
+</div>
+
 - In this example configuration, the `spec.nodeSelector` field assigns the `speaker` pods to worker nodes. You can specify labels that you assigned to nodes or any valid node selector.
 
 - In this example configuration, `spec.speakerToTolerations` pod that this toleration is attached to tolerates any taint that matches the `key` and `effect` values by using the `operator` value.
@@ -283,11 +357,29 @@ The pod priority indicates the relative importance of a pod on a node and schedu
 
 Pod affinity manages relationships among pods. Assign pod affinity to the `controller` or `speaker` pods to control on what node the scheduler places the pod in the context of pod relationships. For example, you can use pod affinity rules to ensure that certain pods are located on the same node or nodes, which can help improve network communication and reduce latency between those components.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in as a user with `cluster-admin` privileges.
 
 - You have installed the MetalLB Operator.
 
 - You have started the MetalLB Operator on your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `PriorityClass` custom resource, such as `myPriorityClass.yaml`, to configure the priority level. This example defines a `PriorityClass` named `high-priority` with a value of `1000000`. Pods that are assigned this priority class are considered higher priority during scheduling compared to pods with lower priority classes:
 
@@ -349,15 +441,27 @@ Pod affinity manages relationships among pods. Assign pod affinity to the `contr
     $ oc apply -f MetalLBPodConfig.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To view the priority class that you assigned to pods in the `metallb-system` namespace, run the following command:
 
   ``` terminal
   $ oc get pods -n metallb-system -o custom-columns=NAME:.metadata.name,PRIORITY:.spec.priorityClassName
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -369,19 +473,41 @@ Pod affinity manages relationships among pods. Assign pod affinity to the `contr
   speaker-dddf7                                        high-priority
   ```
 
+  </div>
+
 - Verify that the scheduler placed pods according to pod affinity rules by viewing the metadata for the node of the pod. For example:
 
   ``` terminal
   $ oc get pod -o=custom-columns=NODE:.spec.nodeName,NAME:.metadata.name -n metallb-system
   ```
 
+</div>
+
 ## Configuring pod CPU limits in a MetalLB deployment
 
 To manage compute resources on nodes running MetalLB in OpenShift Container Platform, you can assign CPU limits to the `controller` and `speaker` pods in the `MetalLB` custom resource. This ensures that all pods on the node have the necessary compute resources to manage workloads and cluster housekeeping.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in as a user with `cluster-admin` privileges.
 
 - You have installed the MetalLB Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `MetalLB` custom resource file, such as `CPULimits.yaml`, to specify the `cpu` value for the `controller` and `speaker` pods:
 
@@ -409,11 +535,23 @@ To manage compute resources on nodes running MetalLB in OpenShift Container Plat
     $ oc apply -f CPULimits.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To view compute resources for a pod, run the following command, replacing `<pod_name>` with your target pod:
 
   ``` bash
   $ oc describe pod <pod_name>
   ```
+
+</div>
 
 # Additional resources
 

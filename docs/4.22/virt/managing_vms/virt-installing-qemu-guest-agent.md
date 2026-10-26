@@ -8,7 +8,25 @@ The QEMU guest agent takes a consistent snapshot by attempting to quiesce the VM
 
 The conditions under which a snapshot is taken are reflected in the snapshot indications that are displayed in the web console or CLI. If these conditions do not meet your requirements, try creating the snapshot again, or use an offline snapshot
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the VM by using a console or SSH.
 
@@ -24,11 +42,23 @@ The conditions under which a snapshot is taken are reflected in the snapshot ind
     $ systemctl enable --now qemu-guest-agent
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Run the following command to verify that `AgentConnected` is listed in the VM spec:
 
   ``` terminal
   $ oc get vm <vm_name>
   ```
+
+</div>
 
 # Installing the QEMU guest agent on a Windows VM
 
@@ -42,11 +72,27 @@ Note that in a Windows guest operating system, quiescing also requires the Volum
 
 The conditions under which a snapshot is taken are reflected in the snapshot indications that are displayed in the web console or CLI. If these conditions do not meet your requirements, try creating the snapshot again or use an offline snapshot.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the Windows guest operating system, use the **File Explorer** to navigate to the `guest-agent` directory in the `virtio-win` CD drive.
 
 2.  Run the `qemu-ga-x86_64.msi` installer.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Obtain a list of network services by running the following command:
 
@@ -55,3 +101,5 @@ The conditions under which a snapshot is taken are reflected in the snapshot ind
     ```
 
 2.  Verify that the output contains the `QEMU Guest Agent`.
+
+</div>

@@ -18,13 +18,10 @@ To successfully assign network addresses to your gateway, complete the following
 
 OpenShift Container Platform automatically handles address assignment by provisioning a `LoadBalancer` service when you create a `Gateway` resource. The network address assigned to your gateway corresponds to the IP address or hostname of this underlying load balancer.
 
-<div class="important">
-
-Do not define the `spec.addresses` field. Manually requesting specific network addresses is not currently supported in OpenShift Container Platform. If you attempt to request a specific address manually, the gateway enters an error state.
-
-The `status.addresses` field is populated automatically by the gateway controller. This field lists the actual, active network address assigned to your gateway by the load balancing infrastructure.
-
-</div>
+> [!IMPORTANT]
+> Do not define the `spec.addresses` field. Manually requesting specific network addresses is not currently supported in OpenShift Container Platform. If you attempt to request a specific address manually, the gateway enters an error state.
+>
+> The `status.addresses` field is populated automatically by the gateway controller. This field lists the actual, active network address assigned to your gateway by the load balancing infrastructure.
 
 When the controller dynamically assigns an address to your gateway and populates the `status.addresses` field, it uses one of the following primary types to reflect the underlying load balancer:
 
@@ -40,11 +37,8 @@ Understand the specific routing and load balancing requirements for on-premise G
 
 Unlike cloud environments where load balancers are dynamically provisioned, on-premise clusters require a preconfigured load balancer controller. Red Hat tests and certifies Gateway API on on-premise platforms specifically with MetalLB.
 
-<div class="warning">
-
-If you attempt to use Gateway API on an on-premise cluster without a functional load balancer controller, the gateway service will remain in a "pending" state indefinitely.
-
-</div>
+> [!WARNING]
+> If you attempt to use Gateway API on an on-premise cluster without a functional load balancer controller, the gateway service will remain in a "pending" state indefinitely.
 
 Additionally, be aware of the following topology and load balancer limitations for on-premise environments:
 
@@ -58,11 +52,29 @@ When you create a gateway resource, you must configure it for automatic address 
 
 By intentionally omitting the addresses field, you allow the controller to seamlessly provision and bind the necessary external network addresses to your gateway.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have an existing `GatewayClass` custom resource, such as `openshift-default`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file, such as `hello-gateway.yaml`, that defines your `Gateway` object.
 
@@ -107,9 +119,11 @@ By intentionally omitting the addresses field, you allow the controller to seaml
     $ oc -n openshift-ingress get gateway sample-gateway
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -118,11 +132,23 @@ By intentionally omitting the addresses field, you allow the controller to seaml
     sample-gateway   openshift-default   <gateway_address>   True         6m16s
     ```
 
+    </div>
+
     The `ADDRESS` column in the output displays the dynamically provisioned network address for your gateway.
+
+</div>
 
 # Configuring an internal load balancer for a gateway
 
 By default, Gateway API provisions an external load balancer. To restrict your gateway traffic to your private network, you can configure Gateway API to provision an internal load balancer by adding a cloud-specific annotation to your `Gateway` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -130,13 +156,25 @@ By default, Gateway API provisions an external load balancer. To restrict your g
 
 - You have configured a `GatewayClass` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create or edit your `Gateway` CR to include the cloud-specific annotation under `spec.infrastructure.annotations`.
 
     The following example provisions an internal load balancer for an AWS cluster:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `Gateway` CR for an AWS internal load balancer**
+    <div class="title">
+
+    Example `Gateway` CR for an AWS internal load balancer
 
     </div>
 
@@ -164,11 +202,23 @@ By default, Gateway API provisions an external load balancer. To restrict your g
     # ...
     ```
 
+    </div>
+
 2.  Apply the updated `Gateway` CR by running the following command:
 
     ``` terminal
     $ oc apply -f <gateway_filename>.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the load balancer service is provisioned and has an internal IP address by running the following command:
 
@@ -176,18 +226,20 @@ By default, Gateway API provisions an external load balancer. To restrict your g
   $ oc -n openshift-ingress get svc
   ```
 
+</div>
+
 ## Cloud provider annotations for internal load balancers
 
 To provision an internal load balancer for clusters deployed in private environments, you must add specific annotations to the `spec.infrastructure.annotations` field of your `Gateway` custom resource (CR).
 
 This configuration is supported on Amazon Web Services (AWS), Microsoft Azure, Google Cloud, Red Hat OpenStack Platform (RHOSP), and IBM Cloud. The following table details the required cloud-specific annotations and their corresponding values.
 
-| Cloud Provider                      | Annotation                                                       | Value        |
-|-------------------------------------|------------------------------------------------------------------|--------------|
-| AWS                                 | `service.beta.kubernetes.io/aws-load-balancer-internal`          | `"true"`     |
-| Azure                               | `service.beta.kubernetes.io/azure-load-balancer-internal`        | `"true"`     |
-| Google Cloud                        | `cloud.google.com/load-balancer-type`                            | `"Internal"` |
-| RHOSP                               | `service.beta.kubernetes.io/openstack-internal-load-balancer`    | `"true"`     |
-| IBM Cloud/ IBM Power Virtual Server | `service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type` | `"private"`  |
+| Cloud Provider | Annotation | Value |
+|----|----|----|
+| AWS | `service.beta.kubernetes.io/aws-load-balancer-internal` | `"true"` |
+| Azure | `service.beta.kubernetes.io/azure-load-balancer-internal` | `"true"` |
+| Google Cloud | `cloud.google.com/load-balancer-type` | `"Internal"` |
+| RHOSP | `service.beta.kubernetes.io/openstack-internal-load-balancer` | `"true"` |
+| IBM Cloud/ IBM Power Virtual Server | `service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type` | `"private"` |
 
 Internal load balancer annotations by cloud provider

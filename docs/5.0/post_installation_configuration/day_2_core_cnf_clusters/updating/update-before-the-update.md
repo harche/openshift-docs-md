@@ -4,6 +4,14 @@ Before you start the cluster update, you must pause worker nodes, back up the et
 
 You must pause the worker nodes before you proceed with the update. In the following example, there are 2 `mcp` groups, `mcp-1` and `mcp-2`. You patch the `spec.paused` field to `true` for each of the `MachineConfigPool` groups.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Patch the `mcp` CRs to pause the nodes and drain and remove the pods from those nodes by running the following command:
 
     ``` terminal
@@ -20,9 +28,11 @@ You must pause the worker nodes before you proceed with the update. In the follo
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -34,11 +44,12 @@ You must pause the worker nodes before you proceed with the update. In the follo
     mcp-2   true
     ```
 
-    <div class="note">
-
-    The default control plane and worker `mcp` groups are not changed during an update.
-
     </div>
+
+    > [!NOTE]
+    > The default control plane and worker `mcp` groups are not changed during an update.
+
+</div>
 
 # Backup the etcd database before you proceed with the update
 
@@ -48,23 +59,35 @@ You must backup the etcd database before you proceed with the update.
 
 You can back up etcd data by creating an etcd snapshot and saving the static pod resources on a control plane host. This backup preserves the cluster state and provides the resources required to restore etcd at a later time.
 
-<div class="important">
-
-Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
-
-</div>
+> [!IMPORTANT]
+> Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
 
 For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data on only one node in the cluster. The cluster restore process is driven by data from a single node, so you can perform the etcd backup steps on only one node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have verified whether the cluster-wide proxy is enabled.
 
-  <div class="tip">
+  > [!TIP]
+  > You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
 
-  You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug session as root for a control plane node:
 
@@ -94,19 +117,18 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
 
 4.  Run the `cluster-backup.sh` script with the path to the directory where you want to save the backup:
 
-    <div class="tip">
-
-    The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
-
-    </div>
+    > [!TIP]
+    > The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
 
     ``` terminal
     sh-4.4# /usr/local/bin/cluster-backup.sh /home/core/assets/backup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example script output**
+    <div class="title">
+
+    Example script output
 
     </div>
 
@@ -129,27 +151,46 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
     snapshot db and kube resources are successfully saved to /home/core/assets/backup
     ```
 
+    </div>
+
     In this example, two files are created in the `/home/core/assets/backup/` directory on the control plane host:
 
     - `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The `cluster-backup.sh` script confirms the validity of the snapshot.
 
     - `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
 
-      <div class="note">
+      > [!NOTE]
+      > If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+      >
+      > The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
 
-      If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
-
-      The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
-
-      </div>
+</div>
 
 ## Creating a single automated etcd backup
 
 You can create a single automated etcd backup by applying an `EtcdBackup` custom resource (CR). Backup data is stored on either dynamically-provisioned or local storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If dynamically-provisioned storage is available, complete the following steps to create a single automated etcd backup:
 
@@ -187,9 +228,11 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc get pvc
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -198,11 +241,10 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         etcd-backup-pvc   Bound                                                       51s
         ```
 
-        <div class="note">
-
-        Dynamic PVCs stay in the `Pending` state until they are mounted.
-
         </div>
+
+        > [!NOTE]
+        > Dynamic PVCs stay in the `Pending` state until they are mounted.
 
     4.  Create a CR file named `etcd-single-backup.yaml` with contents such as the following example:
 
@@ -287,9 +329,11 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc get pv
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -297,6 +341,8 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         NAME                    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS                REASON   AGE
         etcd-backup-pv-fs       100Gi      RWO            Retain           Available           etcd-backup-local-storage            10s
         ```
+
+        </div>
 
     5.  Create a PVC named `etcd-backup-pvc.yaml` with contents such as the following example:
 
@@ -349,11 +395,31 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc apply -f etcd-single-backup.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Backing up etcd](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
+
+</div>
 
 # Checking the cluster health
 
 You should check the cluster health often during the update. Check for the node status, cluster Operators status and failed pods.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the status of the cluster Operators by running the following command:
 
@@ -361,9 +427,11 @@ You should check the cluster health often during the update. Check for the node 
     $ oc get co
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -381,15 +449,19 @@ You should check the cluster health often during the update. Check for the node 
     storage                                    4.14.34   True        False         False      4d22h
     ```
 
+    </div>
+
 2.  Check the status of the cluster nodes:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -402,8 +474,12 @@ You should check the cluster health often during the update. Check for the node 
     worker-1       Ready    mcp-2,worker           4d22h   v1.27.15+6147456
     ```
 
+    </div>
+
 3.  Check that there are no in-progress or failed pods. There should be no pods returned when you run the following command.
 
     ``` terminal
     $ oc get po -A | grep -E -iv 'running|complete'
     ```
+
+</div>

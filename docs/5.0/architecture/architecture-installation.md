@@ -26,11 +26,19 @@ Each method deploys a cluster with the following characteristics:
 
 - Administrators can control what updates are applied and when.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Assisted Installer](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
 - [Agent-based Installer](https://console.redhat.com/openshift/install/metal/agent-based)
+
+</div>
 
 ## The installation program
 
@@ -59,23 +67,23 @@ If you use RHCOS as the operating system for all cluster machines, the cluster m
 
 Review the platform support matrix to choose the installation method that meets your requirements.
 
-| Platform                                                | Installer-provisioned infrastructure <sup>\[1\]</sup> | User-provisioned infrastructure <sup>\[2\]</sup> | Agent-based Installer | Assisted Installer |
-|---------------------------------------------------------|-------------------------------------------------------|--------------------------------------------------|-----------------------|--------------------|
-| **Amazon Web Services (AWS)**                           | X                                                     | X                                                |                       |                    |
-| **Bare metal**                                          | X                                                     | X                                                | X                     | X                  |
-| **External**                                            |                                                       |                                                  | X                     | X                  |
-| **Google Cloud**                                        | X                                                     | X                                                |                       |                    |
-| **IBM Cloud® Classic**                                  | X                                                     |                                                  |                       |                    |
-| **IBM Cloud® Virtual Private Cloud (VPC)**              | X                                                     |                                                  |                       |                    |
-| **IBM Power®**                                          |                                                       | X                                                | X                     | X                  |
-| **IBM Z® or IBM® LinuxONE**                             |                                                       | X                                                | X                     | X                  |
-| **Microsoft Azure**                                     | X                                                     | X                                                |                       |                    |
-| **Microsoft Azure Stack Hub**                           | X                                                     | X                                                |                       |                    |
-| **None**                                                |                                                       |                                                  | X                     | X                  |
-| **Nutanix**                                             | X                                                     |                                                  |                       | X                  |
-| **Oracle Cloud Infrastructure (OCI)**                   |                                                       |                                                  | X                     | X                  |
-| **Red Hat OpenStack Platform (RHOSP) <sup>\[3\]</sup>** | X                                                     | X                                                |                       |                    |
-| **VMware vSphere**                                      | X                                                     | X                                                | X                     | X                  |
+| Platform | Installer-provisioned infrastructure <sup>\[1\]</sup> | User-provisioned infrastructure <sup>\[2\]</sup> | Agent-based Installer | Assisted Installer |
+|----|----|----|----|----|
+| **Amazon Web Services (AWS)** | X | X |  |  |
+| **Bare metal** | X | X | X | X |
+| **External** |  |  | X | X |
+| **Google Cloud** | X | X |  |  |
+| **IBM Cloud® Classic** | X |  |  |  |
+| **IBM Cloud® Virtual Private Cloud (VPC)** | X |  |  |  |
+| **IBM Power®** |  | X | X | X |
+| **IBM Z® or IBM® LinuxONE** |  | X | X | X |
+| **Microsoft Azure** | X | X |  |  |
+| **Microsoft Azure Stack Hub** | X | X |  |  |
+| **None** |  |  | X | X |
+| **Nutanix** | X |  |  | X |
+| **Oracle Cloud Infrastructure (OCI)** |  |  | X | X |
+| **Red Hat OpenStack Platform (RHOSP) <sup>\[3\]</sup>** | X | X |  |  |
+| **VMware vSphere** | X | X | X | X |
 
 Supported platforms
 
@@ -83,15 +91,12 @@ The following list describes three different deployment pathways and their prere
 
 - For installer-provisioned infrastructure: All machines, including the computer that you run the installation process on, must have direct internet access to pull images for platform containers and provide telemetry data to Red Hat.
 
-  <div class="important">
-
-  After installation, the following changes are not supported:
-
-  - Mixing cloud provider platforms.
-
-  - Mixing cloud provider components. For example, using a persistent storage framework from another platform on the platform where you installed the cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > After installation, the following changes are not supported:
+  >
+  > - Mixing cloud provider platforms.
+  >
+  > - Mixing cloud provider components. For example, using a persistent storage framework from another platform on the platform where you installed the cluster.
 
 - For user-provisioned infrastructure: Depending on the supported cases for the platform, you can perform installations on user-provisioned infrastructure so that you can run machines with full internet access, place your cluster behind a proxy, or perform a disconnected installation.
 
@@ -99,11 +104,19 @@ The following list describes three different deployment pathways and their prere
 
 - For Red Hat OpenStack Platform (RHOSP): The latest OpenShift Container Platform release supports both the latest RHOSP long-life release and intermediate release. For complete RHOSP release compatibility, see "OpenShift Container Platform on RHOSP support matrix". See "OpenShift Container Platform 4.x Tested Integrations" for details about integration testing for different platforms.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [OpenShift Container Platform on RHOSP support matrix](https://access.redhat.com/articles/4679401)
 
 - [OpenShift Container Platform 4.x Tested Integrations](https://access.redhat.com/articles/4128421)
+
+</div>
 
 ## Installation process
 
@@ -129,21 +142,15 @@ In OpenShift Container Platform 4.17, the installation program is a Go binary fi
 
 The installation program uses three sets of files during installation: an installation configuration file that is named `install-config.yaml`, Kubernetes manifests, and Ignition config files for your machine types.
 
-<div class="important">
-
-You can modify Kubernetes and the Ignition config files that control the underlying RHCOS operating system during installation. However, no validation is available to confirm the suitability of any modifications that you make to these objects. If you modify these objects, you might render your cluster non-functional. Because of this risk, modifying Kubernetes and Ignition config files is not supported unless you are following documented procedures or are instructed to do so by Red Hat support.
-
-</div>
+> [!IMPORTANT]
+> You can modify Kubernetes and the Ignition config files that control the underlying RHCOS operating system during installation. However, no validation is available to confirm the suitability of any modifications that you make to these objects. If you modify these objects, you might render your cluster non-functional. Because of this risk, modifying Kubernetes and Ignition config files is not supported unless you are following documented procedures or are instructed to do so by Red Hat support.
 
 The installation configuration file is transformed into Kubernetes manifests, and then the manifests are wrapped into Ignition config files. The installation program uses these Ignition config files to create the cluster.
 
 The installation configuration files are all pruned when you run the installation program, ensure you back up all the configuration files that you want to use again.
 
-<div class="important">
-
-You cannot modify the parameters that you set during installation, but you can modify many cluster attributes after installation.
-
-</div>
+> [!IMPORTANT]
+> You cannot modify the parameters that you set during installation, but you can modify many cluster attributes after installation.
 
 The installation process with the Assisted Installer
 Installation with the Assisted Installer involves creating a cluster configuration interactively by using the web-based user interface or the RESTful API. The Assisted Installer user interface prompts you for required values and provides reasonable default values for the remaining parameters, unless you change them in the user interface or with the API. The Assisted Installer generates a discovery image, which you download and use to boot the cluster machines. The image installs RHCOS and an agent, and the agent handles the provisioning for you. You can install OpenShift Container Platform with the Assisted Installer and full integration on Nutanix, vSphere, and bare metal. Additionally, you can install OpenShift Container Platform with the Assisted Installer on other platforms without integration.
@@ -181,11 +188,21 @@ If you do not use infrastructure that the installation program provisioned, you 
 
   If your cluster uses user-provisioned infrastructure, you have the option of adding RHEL compute machines to your cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Recommended etcd practices](../etcd/etcd-practices.xml#recommended-etcd-practices)
 
 - [Control plane node sizing](../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#master-node-sizing_recommended-control-plane-practices)
 
 - [Available cluster customizations](../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+</div>
 
 ## Installation process details
 
@@ -198,15 +215,16 @@ The temporary bootstrap machine boots by using an Ignition config file that desc
 <figcaption>Creating the bootstrap, control plane, and compute machines</figcaption>
 </figure>
 
-<div class="important">
-
-While planning to deploy your cluster, review the recommended practices for performance and scalability, particularly the requirements for input/output (I/O) latency for etcd storage and the requirements for the recommended control plane node sizing. For more information, see “Recommended etcd practices” and “Control plane node sizing”.
-
-</div>
+> [!IMPORTANT]
+> While planning to deploy your cluster, review the recommended practices for performance and scalability, particularly the requirements for input/output (I/O) latency for etcd storage and the requirements for the recommended control plane node sizing. For more information, see “Recommended etcd practices” and “Control plane node sizing”.
 
 After the cluster machines initialize, the bootstrap machine is destroyed. All clusters use the bootstrap process to initialize the cluster, but if you provision the infrastructure for your cluster, you must complete many of the steps manually.
 
 <div class="important">
+
+<div class="title">
+
+</div>
 
 - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
@@ -238,11 +256,21 @@ Bootstrapping a cluster involves the following steps:
 
 The result of this bootstrapping process is a running OpenShift Container Platform cluster. The cluster then downloads and configures remaining components needed for the day-to-day operations, including the creation of compute machines in supported environments.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Cluster Type](https://console.redhat.com/openshift/create)
 
 - [Assisted Installer](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform)
 
 - [Agent-based Installer](https://console.redhat.com/openshift/install/metal/agent-based)
+
+</div>
 
 # About the OpenShift Update Service
 
@@ -258,27 +286,18 @@ The OpenShift Update Service (OSUS) supports a single-stream release model, wher
 
 The updated release provides support for upgrades from all OpenShift Container Platform versions starting after 4.8 up to the new release version.
 
-<div class="important">
-
-The OpenShift Update Service displays all recommended updates for your current cluster. If an update path is not recommended by the OpenShift Update Service, it might be because of a known issue related to the update path, such as incompatibility or availability.
-
-</div>
+> [!IMPORTANT]
+> The OpenShift Update Service displays all recommended updates for your current cluster. If an update path is not recommended by the OpenShift Update Service, it might be because of a known issue related to the update path, such as incompatibility or availability.
 
 Two controllers run during continuous update mode. The first controller continuously updates the payload manifests, applies the manifests to the cluster, and outputs the controlled rollout status of the Operators to indicate whether they are available, upgrading, or failed. The second controller polls the OpenShift Update Service to determine if updates are available.
 
-<div class="important">
-
-Only updating to a newer version is supported. Reverting or rolling back your cluster to a previous version is not supported. If your update fails, contact Red Hat support.
-
-</div>
+> [!IMPORTANT]
+> Only updating to a newer version is supported. Reverting or rolling back your cluster to a previous version is not supported. If your update fails, contact Red Hat support.
 
 During the update process, the Machine Config Operator (MCO) applies the new configuration to your cluster machines. The MCO cordons the number of nodes specified by the `maxUnavailable` field on the machine configuration pool and marks them unavailable. By default, this value is set to `1`. The MCO updates the affected nodes alphabetically by zone, based on the `topology.kubernetes.io/zone` label. If a zone has more than one node, the oldest nodes are updated first. For nodes that do not use zones, such as in bare metal deployments, the nodes are updated by age, with the oldest nodes updated first. The MCO updates the number of nodes as specified by the `maxUnavailable` field on the machine configuration pool at a time. The MCO then applies the new configuration and reboots the machine.
 
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 If you use Red Hat Enterprise Linux (RHEL) machines as workers, the MCO does not update the kubelet because you must update the OpenShift API on the machines first.
 
@@ -300,11 +319,8 @@ An Operator can be set to an unmanaged state using the following methods:
 
   Changing the `managementState` parameter to `Unmanaged` means that the Operator is not actively managing its resources and will take no action related to the related component. Some Operators might not support this management state as it might damage the cluster and require manual recovery.
 
-  <div class="warning">
-
-  Changing individual Operators to the `Unmanaged` state renders that particular component and functionality unsupported. Reported issues must be reproduced in `Managed` state for support to proceed.
-
-  </div>
+  > [!WARNING]
+  > Changing individual Operators to the `Unmanaged` state renders that particular component and functionality unsupported. Reported issues must be reproduced in `Managed` state for support to proceed.
 
 - **Cluster Version Operator (CVO) overrides**
 
@@ -314,11 +330,8 @@ An Operator can be set to an unmanaged state using the following methods:
   Disabling ownership via cluster version overrides prevents upgrades. Please remove overrides before continuing.
   ```
 
-  <div class="warning">
-
-  Setting a CVO override puts the entire cluster in an unsupported state. Reported issues must be reproduced after removing any overrides for support to proceed.
-
-  </div>
+  > [!WARNING]
+  > Setting a CVO override puts the entire cluster in an unsupported state. Reported issues must be reproduced after removing any overrides for support to proceed.
 
 # Additional resources
 

@@ -10,6 +10,14 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following, procedure to configure the image registry to use Ceph RGW storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
@@ -17,6 +25,16 @@ Use the following, procedure to configure the image registry to use Ceph RGW sto
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and Ceph RGW object storage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the object bucket claim using the `ocs-storagecluster-ceph-rgw` storage class. For example:
 
@@ -79,6 +97,8 @@ Use the following, procedure to configure the image registry to use Ceph RGW sto
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","s3":{"bucket":'\"${bucket_name}\"',"region":"us-east-1","regionEndpoint":'\"https://${route_host}\"',"virtualHostedStyle":false,"encrypt":false,"trustedCA":{"name":"image-registry-s3-bundle"}}}}}' --type=merge
     ```
 
+</div>
+
 # Configuring the Image Registry Operator to use Noobaa storage with Red Hat OpenShift Data Foundation
 
 Red Hat OpenShift Data Foundation integrates multiple storage types that you can use with the OpenShift image registry:
@@ -89,6 +109,14 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following the procedure to configure the image registry to use Noobaa storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
@@ -96,6 +124,16 @@ Use the following the procedure to configure the image registry to use Noobaa st
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and Noobaa object storage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the object bucket claim using the `openshift-storage.noobaa.io` storage class. For example:
 
@@ -158,6 +196,8 @@ Use the following the procedure to configure the image registry to use Noobaa st
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","s3":{"bucket":'\"${bucket_name}\"',"region":"us-east-1","regionEndpoint":'\"https://${route_host}\"',"virtualHostedStyle":false,"encrypt":false,"trustedCA":{"name":"image-registry-s3-bundle"}}}}}' --type=merge
     ```
 
+</div>
+
 # Configuring the Image Registry Operator to use CephFS storage with Red Hat OpenShift Data Foundation
 
 Red Hat OpenShift Data Foundation integrates multiple storage types that you can use with the OpenShift image registry:
@@ -168,9 +208,14 @@ Red Hat OpenShift Data Foundation integrates multiple storage types that you can
 
 Use the following procedure to configure the image registry to use CephFS storage.
 
-<div class="note">
+> [!NOTE]
+> CephFS uses persistent volume claim (PVC) storage. It is not recommended to use PVCs for image registry storage if there are other options are available, such as Ceph RGW or Noobaa.
 
-CephFS uses persistent volume claim (PVC) storage. It is not recommended to use PVCs for image registry storage if there are other options are available, such as Ceph RGW or Noobaa.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -181,6 +226,16 @@ CephFS uses persistent volume claim (PVC) storage. It is not recommended to use 
 - You installed the `oc` CLI.
 
 - You installed the [OpenShift Data Foundation Operator](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest) to provide object storage and CephFS file storage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a PVC to use the `cephfs` storage class. For example:
 
@@ -206,6 +261,8 @@ CephFS uses persistent volume claim (PVC) storage. It is not recommended to use 
     ``` terminal
     $ oc patch config.image/cluster -p '{"spec":{"managementState":"Managed","replicas":2,"storage":{"managementState":"Unmanaged","pvc":{"claim":"registry-storage-pvc"}}}}' --type=merge
     ```
+
+</div>
 
 # Additional resources
 

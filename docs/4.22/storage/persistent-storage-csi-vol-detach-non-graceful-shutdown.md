@@ -10,7 +10,25 @@ A graceful node shutdown occurs when the kubelet’s node shutdown manager detec
 
 After non-graceful shutdowns, to trigger automatic volume detachment and enable pod rescheduling, apply an out-of-service taint to the node. This recovers workloads faster than manually detaching volumes from failed nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  After a node is detected as unhealthy, shut down the worker node.
 
@@ -22,19 +40,13 @@ After non-graceful shutdowns, to trigger automatic volume detachment and enable 
 
     - Use the `<node_name>` to specify the node that shut down non-gracefully.
 
-      <div class="important">
-
-      If the node is not completely shut down, do not proceed with tainting the node. If the node is still up and the taint is applied, filesystem corruption can occur.
-
-      </div>
+      > [!IMPORTANT]
+      > If the node is not completely shut down, do not proceed with tainting the node. If the node is still up and the taint is applied, filesystem corruption can occur.
 
 3.  Taint the corresponding node object by running the following command:
 
-    <div class="important">
-
-    Tainting a node this way deletes all pods on that node. This also causes any pods that are backed by statefulsets to be evicted, and replacement pods to be created on a different node.
-
-    </div>
+    > [!IMPORTANT]
+    > Tainting a node this way deletes all pods on that node. This also causes any pods that are backed by statefulsets to be evicted, and replacement pods to be created on a different node.
 
     ``` terminal
     $ oc adm taint node <node_name> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute
@@ -46,9 +58,11 @@ After non-graceful shutdowns, to trigger automatic volume detachment and enable 
 
       The resulting YAML file resembles the following example file:
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example node YAML file with out-of-service taint applied**
+      <div class="title">
+
+      Example node YAML file with out-of-service taint applied
 
       </div>
 
@@ -60,6 +74,8 @@ After non-graceful shutdowns, to trigger automatic volume detachment and enable 
           value: nodeshutdown
       ```
 
+      </div>
+
 4.  Restart the node.
 
 5.  Remove the taint from the corresponding node object by running the following command:
@@ -69,3 +85,5 @@ After non-graceful shutdowns, to trigger automatic volume detachment and enable 
     ```
 
     - Use the `<node_name>` to specify the node that shut down non-gracefully
+
+</div>

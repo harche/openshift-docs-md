@@ -16,13 +16,10 @@ The cert-manager Operator for Red Hat OpenShift provides the following features:
 
 - Automatic certificate renewal
 
-<div class="important">
-
-Do not attempt to use both cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform and the community cert-manager Operator at the same time in your cluster.
-
-Also, you should not install cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform in multiple namespaces within a single OpenShift cluster.
-
-</div>
+> [!IMPORTANT]
+> Do not attempt to use both cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform and the community cert-manager Operator at the same time in your cluster.
+>
+> Also, you should not install cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform in multiple namespaces within a single OpenShift cluster.
 
 # cert-manager Operator for Red Hat OpenShift issuer providers
 
@@ -42,11 +39,8 @@ To configure certificate authorities for your cluster, review the issuer provide
 
 - Google Cloud Certificate Authority Service (Google CAS)
 
-<div class="note">
-
-OpenShift Container Platform does not test all factors associated with third-party cert-manager Operator for Red Hat OpenShift provider functionality. For more information about third-party support, see "OpenShift Container Platform third-party support policy" in Additional resources.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform does not test all factors associated with third-party cert-manager Operator for Red Hat OpenShift provider functionality. For more information about third-party support, see "OpenShift Container Platform third-party support policy" in Additional resources.
 
 # Certificate request methods
 

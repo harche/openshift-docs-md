@@ -1,12 +1,28 @@
 You can configure live migration settings to ensure that the migration processes do not overwhelm the cluster. You can configure live migration policies to apply different migration configurations to groups of virtual machines (VMs).
 
-# Configuring live migration limits and timeouts
+# Configure live migration limits and timeouts
 
 Configure live migration limits and timeouts for the cluster by updating the `HyperConverged` custom resource (CR), which is located in the `openshift-cnv` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the `HyperConverged` CR and add the necessary live migration parameters:
 
@@ -52,11 +68,10 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
   `allowPostCopy`
   Specifies whether the post copy mode is enabled. You can enable post copy mode to allow the migration of one node to another to converge, even if a VM is running a heavy workload and the memory dirty rate is too high. By default, `allowPostCopy` is set to `false`.
 
-  <div class="note">
+  > [!NOTE]
+  > You can restore the default value for any `spec.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
 
-  You can restore the default value for any `spec.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
-
-  </div>
+</div>
 
 # Configure live migration for heavy workloads
 
@@ -64,7 +79,25 @@ When migrating a VM running a heavy workload, such as database processing, highe
 
 Configure live migration for heavy workloads by updating the `HyperConverged` custom resource (CR) in the `openshift-cnv` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HyperConverged` CR and add the necessary parameters for migrating heavy workloads:
 
@@ -112,23 +145,19 @@ Configure live migration for heavy workloads by updating the `HyperConverged` cu
 
 2.  Optional: If your main network is too busy for the migration, configure a secondary, dedicated migration network.
 
-    <div class="note">
+    > [!NOTE]
+    > Post copy mode can impact performance during the transfer, and should not be used for critical data, or with unstable networks.
 
-    Post copy mode can impact performance during the transfer, and should not be used for critical data, or with unstable networks.
-
-    </div>
+</div>
 
 # Live migration policies
 
 You can create live migration policies to apply different migration configurations to groups of VMs that are defined by VM or project labels.
 
-<div class="tip">
+> [!TIP]
+> You can create live migration policies by using the OpenShift Container Platform web console.
 
-You can create live migration policies by using the OpenShift Container Platform web console.
-
-</div>
-
-# Creating a live migration policy by using the CLI
+# Create a live migration policy by using the CLI
 
 You can create a live migration policy by using the command line.
 
@@ -140,15 +169,30 @@ KubeVirt applies the live migration policy to selected virtual machines (VMs) by
 
 For the policy to apply to a specific group of VMs, all labels on the group of VMs must match the labels of the policy.
 
-<div class="note">
+> [!NOTE]
+> If multiple live migration policies apply to a VM, the policy with the greatest number of matching labels takes precedence.
+>
+> If multiple policies meet this criteria, the policies are sorted by alphabetical order of the matching label keys, and the first one in that order takes precedence.
 
-If multiple live migration policies apply to a VM, the policy with the greatest number of matching labels takes precedence.
+<div>
 
-If multiple policies meet this criteria, the policies are sorted by alphabetical order of the matching label keys, and the first one in that order takes precedence.
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the VM object to which you want to apply a live migration policy, and add the corresponding VM labels.
 
@@ -210,6 +254,8 @@ If multiple policies meet this criteria, the policies are sorted by alphabetical
     ``` terminal
     $ oc create -f <migration_policy>.yaml
     ```
+
+</div>
 
 # Additional resources
 

@@ -4,9 +4,27 @@ You can restore kubelet certificates on your OpenShift Container Platform cluste
 
 You can restore kubelet certificates by manually approving pending `node-bootstrapper` certificate signing requests (CSRs) and, on user-provisioned installations, kubelet serving CSRs. Approved CSRs return nodes to a healthy state after control plane certificates expire.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the list of current CSRs by running the following command:
 
@@ -14,9 +32,11 @@ You can restore kubelet certificates by manually approving pending `node-bootstr
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -28,6 +48,8 @@ You can restore kubelet certificates by manually approving pending `node-bootstr
     csr-zhhhp   3m8s   kubernetes.io/kube-apiserver-client-kubelet   system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Pending
     ...
     ```
+
+    </div>
 
     In the example output, CSRs with a `SIGNERNAME` of `kubernetes.io/kubelet-serving` are kubelet serving CSRs. You see this CSR type on user-provisioned installations. CSRs with a `SIGNERNAME` of `kubernetes.io/kube-apiserver-client-kubelet` and a `node-bootstrapper` requestor are `node-bootstrapper` CSRs that you must approve to restore kubelet certificates.
 
@@ -50,3 +72,5 @@ You can restore kubelet certificates by manually approving pending `node-bootstr
     ``` terminal
     $ oc adm certificate approve <csr_name>
     ```
+
+</div>

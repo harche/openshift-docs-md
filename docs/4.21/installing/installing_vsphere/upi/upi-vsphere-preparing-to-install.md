@@ -4,19 +4,13 @@ You prepare to install an OpenShift Container Platform cluster on vSphere by com
 
 - Downloading the installation program.
 
-  <div class="note">
-
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
-
-  </div>
+  > [!NOTE]
+  > If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
 
 - Installing the OpenShift CLI (`oc`).
 
-  <div class="note">
-
-  If you are installing in a disconnected environment, install `oc` to the mirror host.
-
-  </div>
+  > [!NOTE]
+  > If you are installing in a disconnected environment, install `oc` to the mirror host.
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
@@ -28,15 +22,30 @@ You prepare to install an OpenShift Container Platform cluster on vSphere by com
 
 Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to the [Cluster Type](https://console.redhat.com/openshift/install) page on the Red Hat Hybrid Cloud Console. If you have a Red Hat account, log in with your credentials. If you do not, create an account.
 
-    <div class="tip">
-
-    You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
-
-    </div>
+    > [!TIP]
+    > You can also [download the binaries for a specific OpenShift Container Platform release](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/).
 
 2.  Select your infrastructure provider from the **Run it yourself** section of the page.
 
@@ -45,6 +54,10 @@ Before you install OpenShift Container Platform, download the installation file 
 4.  Place the downloaded file in the directory where you want to store the installation configuration files.
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - The installation program creates several files on the computer that you use to install your cluster. You must keep the installation program and the files that the installation program creates after you finish installing the cluster. Both of the files are required to delete the cluster.
 
@@ -60,21 +73,25 @@ Before you install OpenShift Container Platform, download the installation file 
 
 6.  Download your installation [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
 
-    <div class="tip">
+    > [!TIP]
+    > Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
 
-    Alternatively, you can retrieve the installation program from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/), where you can specify a version of the installation program to download. However, you must have an active subscription to access this page.
-
-    </div>
+</div>
 
 # Install the OpenShift CLI on Linux
 
 To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -100,21 +117,38 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
 
+</div>
+
 # Install the OpenShift CLI on Windows
 
 To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -134,21 +168,38 @@ Download and install the new version of `oc`.
     C:\> path
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you install the OpenShift CLI, it is available using the `oc` command:
 
   ``` terminal
   C:\> oc <command>
   ```
 
+</div>
+
 # Install the OpenShift CLI on macOS
 
 To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
-<div class="important">
+> [!IMPORTANT]
+> If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+>
+> Download and install the new version of `oc`.
 
-If you installed an earlier version of `oc`, you cannot use it to complete all of the commands in OpenShift Container Platform.
+<div>
 
-Download and install the new version of `oc`.
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -160,11 +211,8 @@ Download and install the new version of `oc`.
 
 4.  Click **Download Now** next to the **OpenShift v4.17 macOS Clients** entry and save the file.
 
-    <div class="note">
-
-    For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
-
-    </div>
+    > [!NOTE]
+    > For macOS arm64, choose the **OpenShift v4.17 macOS arm64 Client** entry.
 
 5.  Extract the archive.
 
@@ -176,11 +224,23 @@ Download and install the new version of `oc`.
     $ echo $PATH
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify your installation by using an `oc` command:
 
   ``` terminal
   $ oc <command>
   ```
+
+</div>
 
 # Generating a key pair for cluster node SSH access
 
@@ -190,15 +250,17 @@ The key is added to the `~/.ssh/authorized_keys` list for the `core` user on eac
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not skip this procedure in production environments, where disaster recovery and debugging is required.
 
-Do not skip this procedure in production environments, where disaster recovery and debugging is required.
+> [!NOTE]
+> You must use a local key, not one that you configured with platform-specific approaches.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-You must use a local key, not one that you configured with platform-specific approaches.
+Procedure
 
 </div>
 
@@ -210,11 +272,8 @@ You must use a local key, not one that you configured with platform-specific app
 
     Specifies the path and file name, such as `~/.ssh/id_ed25519`, of the new SSH key. If you have an existing key pair, ensure your public key is in the your `~/.ssh` directory.
 
-    <div class="note">
-
-    If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
-
-    </div>
+    > [!NOTE]
+    > If you plan to install an OpenShift Container Platform cluster that uses the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the `x86_64`, `ppc64le`, and `s390x` architectures, do not create a key that uses the `ed25519` algorithm. Instead, create a key that uses the `rsa` or `ecdsa` algorithm.
 
 2.  View the public SSH key:
 
@@ -230,11 +289,8 @@ You must use a local key, not one that you configured with platform-specific app
 
 3.  Add the SSH private key identity to the SSH agent for your local user, if it has not already been added. SSH agent management of the key is required for password-less SSH authentication onto your cluster nodes, or if you want to use the `./openshift-install gather` command.
 
-    <div class="note">
-
-    On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
-
-    </div>
+    > [!NOTE]
+    > On some distributions, default SSH private key identities such as `~/.ssh/id_rsa` and `~/.ssh/id_dsa` are managed automatically.
 
     1.  If the `ssh-agent` process is not already running for your local user, start it as a background task:
 
@@ -242,9 +298,11 @@ You must use a local key, not one that you configured with platform-specific app
         $ eval "$(ssh-agent -s)"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -252,11 +310,10 @@ You must use a local key, not one that you configured with platform-specific app
         Agent pid 31874
         ```
 
-        <div class="note">
-
-        If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
-
         </div>
+
+        > [!NOTE]
+        > If your cluster is in FIPS mode, only use FIPS-compliant algorithms to generate the SSH key. The key must be either RSA or ECDSA.
 
 4.  Add your SSH private key to the `ssh-agent`:
 
@@ -266,9 +323,11 @@ You must use a local key, not one that you configured with platform-specific app
 
     Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -276,7 +335,21 @@ You must use a local key, not one that you configured with platform-specific app
     Identity added: /home/<you>/<path>/<file_name> (<computer_name>)
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program. If you install a cluster on infrastructure that you provision, you must provide the key to the installation program.
+
+</div>
 
 # Preparing the user-provisioned infrastructure
 
@@ -286,9 +359,27 @@ This section provides details about the high-level steps required to set up your
 
 After preparation, your cluster infrastructure must meet the requirements outlined in the *Requirements for a cluster with user-provisioned infrastructure* section.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have reviewed the [OpenShift Container Platform 4.x Tested Integrations](https://access.redhat.com/articles/4128421) page.
 
 - You have reviewed the infrastructure requirements detailed in the *Requirements for a cluster with user-provisioned infrastructure* section.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you are using DHCP to provide the IP networking configuration to your cluster nodes, configure your DHCP service.
 
@@ -296,33 +387,24 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
     2.  When you use DHCP to configure IP addressing for the cluster machines, the machines also obtain the DNS server information through DHCP. Define the persistent DNS server address that is used by the cluster nodes through your DHCP server configuration.
 
-        <div class="note">
-
-        If you are not using a DHCP service, you must provide the IP networking configuration and the address of the DNS server to the nodes at RHCOS install time. These can be passed as boot arguments if you are installing from an ISO image. See the *Installing RHCOS and starting the OpenShift Container Platform bootstrap process* section for more information about static IP provisioning and advanced networking options.
-
-        </div>
+        > [!NOTE]
+        > If you are not using a DHCP service, you must provide the IP networking configuration and the address of the DNS server to the nodes at RHCOS install time. These can be passed as boot arguments if you are installing from an ISO image. See the *Installing RHCOS and starting the OpenShift Container Platform bootstrap process* section for more information about static IP provisioning and advanced networking options.
 
     3.  Define the hostnames of your cluster nodes in your DHCP server configuration. See the *Setting the cluster node hostnames through DHCP* section for details about hostname considerations.
 
-        <div class="note">
-
-        If you are not using a DHCP service, the cluster nodes obtain their hostname through a reverse DNS lookup.
-
-        </div>
+        > [!NOTE]
+        > If you are not using a DHCP service, the cluster nodes obtain their hostname through a reverse DNS lookup.
 
 2.  Ensure that your network infrastructure provides the required network connectivity between the cluster components. See the *Networking requirements for user-provisioned infrastructure* section for details about the requirements.
 
 3.  Configure your firewall to enable the ports required for the OpenShift Container Platform cluster components to communicate. See *Networking requirements for user-provisioned infrastructure* section for details about the ports that are required.
 
-    <div class="important">
-
-    By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
-
-    For ingress health check probes, the `/healthz/ready` endpoint is available on this port.
-
-    Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
-
-    </div>
+    > [!IMPORTANT]
+    > By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
+    >
+    > For ingress health check probes, the `/healthz/ready` endpoint is available on this port.
+    >
+    > Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
 
 4.  Setup the required DNS infrastructure for your cluster.
 
@@ -342,11 +424,10 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
 6.  Provision the required API and application ingress load balancing infrastructure. See the *Load balancing requirements for user-provisioned infrastructure* section for more information about the requirements.
 
-    <div class="note">
+    > [!NOTE]
+    > Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
 
-    Some load balancing solutions require the DNS name resolution for the cluster nodes to be in place before the load balancing is initialized.
-
-    </div>
+</div>
 
 ## Example load balancer configuration for user-provisioned clusters
 
@@ -354,23 +435,19 @@ Reference the example API and application Ingress load balancer configuration so
 
 The sample is an `/etc/haproxy/haproxy.cfg` configuration for an HAProxy load balancer. The example is not meant to provide advice for choosing one load balancing solution over another.
 
-<div class="tip">
-
-If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
-
-</div>
+> [!TIP]
+> If you are using HAProxy as a load balancer, you can check that the `haproxy` process is listening on ports `6443`, `22623`, `443`, and `80` by running `netstat -nltupe` on the HAProxy node.
 
 In the example, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
-<div class="note">
+> [!NOTE]
+> If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
 
-If you are using HAProxy as a load balancer and SELinux is set to `enforcing`, you must ensure that the HAProxy service can bind to the configured TCP port by running `setsebool -P haproxy_connect_any=1`.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Sample API and application Ingress load balancer configuration**
+Sample API and application Ingress load balancer configuration
 
 </div>
 
@@ -426,6 +503,8 @@ listen ingress-router-80
   server compute1 compute1.ocp4.example.com:80 check inter 1s
 ```
 
+</div>
+
 where:
 
 `listen api-server-6443`
@@ -443,23 +522,35 @@ Port `443` handles the HTTPS traffic and points to the machines that run the Ing
 `listen ingress-router-80`
 Port `80` handles the HTTP traffic and points to the machines that run the Ingress Controller pods. The Ingress Controller pods run on the compute machines by default.
 
-<div class="note">
-
-If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
-
-</div>
+> [!NOTE]
+> If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 # Validating DNS resolution for user-provisioned infrastructure
 
 To prevent network-related installation failures and ensure node connectivity in OpenShift Container Platform, validate your DNS configuration before deploying on user-provisioned infrastructure.
 
-<div class="important">
+> [!IMPORTANT]
+> The validation steps detailed in this section must succeed before you install your cluster.
 
-The validation steps detailed in this section must succeed before you install your cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have configured the required DNS records for your user-provisioned infrastructure.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From your installation node, run DNS lookups against the record names of the Kubernetes API, the wildcard routes, and the cluster nodes. Validate that the IP addresses contained in the responses correspond to the correct components.
 
@@ -471,9 +562,11 @@ The validation steps detailed in this section must succeed before you install yo
 
         Replace `<nameserver_ip>` with the IP address of the name server, `<cluster_name>` with your cluster name, and `<base_domain>` with your base domain name.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -481,15 +574,19 @@ The validation steps detailed in this section must succeed before you install yo
         api.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
+        </div>
+
     2.  Perform a lookup against the Kubernetes internal API record name. Check that the result points to the IP address of the API load balancer:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> api-int.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -497,15 +594,19 @@ The validation steps detailed in this section must succeed before you install yo
         api-int.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
+        </div>
+
     3.  Test an example `*.apps.<cluster_name>.<base_domain>` DNS wildcard lookup. All of the application wildcard lookups must resolve to the IP address of the application ingress load balancer:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> random.apps.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -513,11 +614,10 @@ The validation steps detailed in this section must succeed before you install yo
         random.apps.ocp4.example.com.        604800  IN  A   192.168.1.5
         ```
 
-        <div class="note">
-
-        In the example outputs, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
-
         </div>
+
+        > [!NOTE]
+        > In the example outputs, the same load balancer is used for the Kubernetes API and application ingress traffic. In production scenarios, you can deploy the API and application ingress load balancers separately so that you can scale the load balancer infrastructure for each in isolation.
 
         You can replace `random` with another wildcard value. For example, you can query the route to the OpenShift Container Platform console:
 
@@ -525,9 +625,11 @@ The validation steps detailed in this section must succeed before you install yo
         $ dig +noall +answer @<nameserver_ip> console-openshift-console.apps.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -535,21 +637,27 @@ The validation steps detailed in this section must succeed before you install yo
         console-openshift-console.apps.ocp4.example.com. 604800 IN   A 192.168.1.5
         ```
 
+        </div>
+
     4.  Run a lookup against the bootstrap DNS record name. Check that the result points to the IP address of the bootstrap node:
 
         ``` terminal
         $ dig +noall +answer @<nameserver_ip> bootstrap.<cluster_name>.<base_domain>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         bootstrap.ocp4.example.com.      604800  IN  A   192.168.1.96
         ```
+
+        </div>
 
     5.  Use this method to perform lookups against the DNS record names for the control plane and compute nodes. Check that the results correspond to the IP addresses of each node.
 
@@ -561,9 +669,11 @@ The validation steps detailed in this section must succeed before you install yo
         $ dig +noall +answer @<nameserver_ip> -x 192.168.1.5
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -571,6 +681,8 @@ The validation steps detailed in this section must succeed before you install yo
         5.1.168.192.in-addr.arpa. 604800 IN  PTR api-int.ocp4.example.com.
         5.1.168.192.in-addr.arpa. 604800    IN  PTR api.ocp4.example.com.
         ```
+
+        </div>
 
         where:
 
@@ -580,11 +692,8 @@ The validation steps detailed in this section must succeed before you install yo
         `api.ocp4.example.com`
         Specifies the record name for the Kubernetes API.
 
-        <div class="note">
-
-        A PTR record is not required for the OpenShift Container Platform application wildcard. No validation step is needed for reverse DNS resolution against the IP address of the application ingress load balancer.
-
-        </div>
+        > [!NOTE]
+        > A PTR record is not required for the OpenShift Container Platform application wildcard. No validation step is needed for reverse DNS resolution against the IP address of the application ingress load balancer.
 
     2.  Perform a reverse lookup against the IP address of the bootstrap node. Check that the result points to the DNS record name of the bootstrap node:
 
@@ -592,9 +701,11 @@ The validation steps detailed in this section must succeed before you install yo
         $ dig +noall +answer @<nameserver_ip> -x 192.168.1.96
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -602,7 +713,11 @@ The validation steps detailed in this section must succeed before you install yo
         96.1.168.192.in-addr.arpa. 604800    IN  PTR bootstrap.ocp4.example.com.
         ```
 
+        </div>
+
     3.  Use this method to perform reverse lookups against the IP addresses for the control plane and compute nodes. Check that the results correspond to the DNS record names of each node.
+
+</div>
 
 # Additional resources
 

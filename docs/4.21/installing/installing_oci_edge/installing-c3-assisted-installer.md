@@ -55,15 +55,43 @@ The main steps of the procedure are as follows:
 
 5.  Installing the cluster by using the Assisted Installer web console.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Access and considerations (Oracle documentation)](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP)
 
 - [Oracle Cloud Infrastructure](https://catalog.redhat.com/cloud/detail/216977)
+
+</div>
 
 # Preparing the OCI bastion server
 
 By implementing a bastion host, you can securely and efficiently manage access to your Oracle Cloud Infrastructure (OCI) resources, ensuring that your private instances remain protected and accessible only through a secure, controlled entry point.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - See the "Bastion server - prerequisites" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the bastion server. For details, see the "Bastion Installation" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
@@ -71,7 +99,19 @@ By implementing a bastion host, you can securely and efficiently manage access t
 
 3.  Install and configure the OCI command-line interface (CLI). For details, see the "Installing and Configuring the OCI CLI" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Quick start - Installing the CLI (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm)
+
+</div>
 
 # Running the Terraform script via the Home region
 
@@ -79,7 +119,25 @@ Copy the Terraform scripts `createInfraResources.tf` and `terraform.tfvars` onto
 
 These resources include dynamic groups, policies, and tags.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have tenancy privileges to create Dynamic Groups and Policies. If not, you can manually provision them during this procedure.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the bastion server via SSH.
 
@@ -93,6 +151,8 @@ These resources include dynamic groups, policies, and tags.
 
     For the full procedure, see the "Terraform Script Execution Part-1 (Run Script via Home Region)" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
+</div>
+
 # Preparing the OCI image
 
 Generate the OpenShift Container Platform ISO image in the Assisted Installer on the Red Hat portal. Then, convert the image to an Oracle Edge Cloud compatible image and upload it to the **Custom Images** page of your Oracle Edge Cloud environment.
@@ -102,6 +162,14 @@ You can generate, convert and upload the image on your laptop and not on the bas
 ## Generating the image in the Assisted Installer
 
 Create a cluster and download the discovery ISO image.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to [Assisted Installer web console](https://console.redhat.com/) with your credentials.
 
@@ -121,25 +189,25 @@ Create a cluster and download the discovery ISO image.
     <col style="width: 75%" />
     </colgroup>
     <thead>
-    <tr class="header">
+    <tr>
     <th style="text-align: left;">Field</th>
     <th style="text-align: left;">Action required</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p><strong>Cluster name</strong></p></td>
     <td style="text-align: left;"><p>Specify the name of your OpenShift Container Platform cluster. This name is the same name you used to create the resource via the Terraform scripts. The name must be between 1-54 characters. It can use lowercase alphanumeric characters or hyphen (-), but must start and end with a lowercase letter or a number.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p><strong>Base domain</strong></p></td>
     <td style="text-align: left;"><p>Specify the base domain of the cluster. This is the value used for the <code>zone_dns</code> variables in the Terraform scripts that run on Oracle® Edge Cloud. Make a note of the value.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p><strong>OpenShift version</strong></p></td>
     <td style="text-align: left;"><p>Select <strong>OpenShift 4.16.20</strong>. If it is not immediately visible, scroll to the end of the dropdown menu, select <strong>Show all available versions</strong>, and type the version in the search box.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p><strong>Integrate with external partner platforms</strong></p></td>
     <td style="text-align: left;"><p>Select <strong>Oracle Cloud Infrastructure</strong>.</p>
     <p>After you specify this value, the <strong>Include custom manifests</strong> checkbox is selected by default and the <strong>Custom manifests</strong> page is added to the wizard.</p></td>
@@ -153,11 +221,8 @@ Create a cluster and download the discovery ISO image.
 
 9.  On the **Host Discovery** page, click **Add hosts** and complete the following steps:
 
-    <div class="note">
-
-    The minimal ISO image is the mandatory **Provisioning type** for the Oracle Edge Cloud, and cannot be changed.
-
-    </div>
+    > [!NOTE]
+    > The minimal ISO image is the mandatory **Provisioning type** for the Oracle Edge Cloud, and cannot be changed.
 
     1.  In the **SSH public key** field, add the SSH public key by copying the output of the following command:
 
@@ -182,9 +247,19 @@ Create a cluster and download the discovery ISO image.
 
 10. Click **Download Discovery ISO** to save the file to your local system. After you download the ISO file, you can rename it as required, for example `discovery_image_<your_cluster_name>.iso`.
 
+</div>
+
 ## Converting and uploading the image to Oracle Edge Cloud
 
 Convert the ISO image to an Oracle Cloud Infrastructure (OCI) image and upload it to your Oracle Edge Cloud system from your OCI Home Region Object Store.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Convert the image from ISO to OCI.
 
@@ -196,11 +271,21 @@ Convert the ISO image to an Oracle Cloud Infrastructure (OCI) image and upload i
 
     For the full procedure, see step 6 - 8 in the "OpenShift Image Preparation" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
+</div>
+
 # Running the Terraform script via the C3 region
 
 Run the `terraform.tfvars` Terraform script to create all infrastructure resources on Oracle® Edge Cloud. These resources include the OpenShift Container Platform VCN, public and private subnets, load balancers, internet GW, NAT GW, and DNS server.
 
 This procedure deploys a cluster consisting of three control plane (master) and three compute (worker) nodes. After deployment, you must rename and reboot the nodes. This process temporarily duplicates nodes, requiring manual cleanup in the next procedure.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the bastion server via SSH.
 
@@ -214,6 +299,8 @@ This procedure deploys a cluster consisting of three control plane (master) and 
 
     For the full procedure, see the "Terraform Script Execution - Part 2" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
+</div>
+
 # Completing the installation by using the Assisted Installer web console
 
 After you configure the infrastructure, the instances are now running and are ready to be registered with Red Hat.
@@ -223,6 +310,14 @@ After you configure the infrastructure, the instances are now running and are re
 If the Terraform scripts completed successfully, twelve hosts are now listed for the cluster. Three control plane hosts and three compute hosts have the status "Disconnected". Three control plane hosts and three compute hosts have the status "Insufficient".
 
 Delete the disconnected hosts and assign roles to the remaining hosts.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the [Assisted Installer web console](https://console.redhat.com/openshift/assisted-installer/clusters), select the cluster and navigate to the **Host discovery** page.
 
@@ -236,9 +331,19 @@ Delete the disconnected hosts and assign roles to the remaining hosts.
 
 6.  On the **Storage** page, click **Next**.
 
+</div>
+
 ## Configuring networking
 
 On the **Networking** page, add the NTP sources for any hosts that display the `Some validations failed` status.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Host inventory** table, click the **Some validations failed** link for each host displaying this status.
 
@@ -247,6 +352,8 @@ On the **Networking** page, add the NTP sources for any hosts that display the `
 3.  Wait for 2 - 3 minutes until all the **Some validations failed** indicators disappear.
 
 4.  Select **Next**.
+
+</div>
 
 ## Adding custom manifests
 
@@ -264,9 +371,25 @@ Create, modify, and upload the four mandatory custom manifests provided by Oracl
 
   - `machineconfig-csi.yml`
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Prepare the custom manifests. For details, see step 8 in the "Install the Cluster using the RH Assisted Installer UI" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Custom manifests** page.
 
@@ -300,8 +423,20 @@ Create, modify, and upload the four mandatory custom manifests provided by Oracl
 
 5.  From the **Review and create** page, click **Install cluster** to create your OpenShift Container Platform cluster. This process takes approximately thirty minutes.
 
+</div>
+
 # Opening OpenShift Container Platform from the Oracle Edge Cloud web console
 
 After cluster installation has been completed, access the OpenShift Container Platform console from Oracle Edge Cloud.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - See steps 15 - 17 in the "Install the Cluster using the RH Assisted Installer UI" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+
+</div>

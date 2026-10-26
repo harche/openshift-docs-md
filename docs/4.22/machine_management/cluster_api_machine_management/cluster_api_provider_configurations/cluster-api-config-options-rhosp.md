@@ -1,12 +1,9 @@
 You can change the configuration of your Red Hat OpenStack Platform (RHOSP) Cluster API machines by updating values in the Cluster API custom resource manifests.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Sample YAML for configuring RHOSP clusters
 
@@ -48,7 +45,17 @@ Specifies the RHOSP flavor to use. For more information, see "Creating flavors f
 `spec.template.spec.image.filter.name`
 Specifies the image to use.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating flavors for launching instances](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_the_compute_service_for_instance_creation/assembly_creating-flavors-for-launching-instances_instance-flavors)
+
+</div>
 
 ## Sample YAML for a Cluster API compute machine set resource on RHOSP
 

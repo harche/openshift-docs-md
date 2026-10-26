@@ -14,11 +14,8 @@ Because OpenShift Container Platform 4.17 runs on RHCOS hosts, with the option o
 
 - *SELinux* provides an additional layer of security to keep containers isolated from each other and from the host. SELinux allows administrators to enforce mandatory access controls (MAC) for every user, application, process, and file.
 
-<div class="warning">
-
-Disabling SELinux on RHCOS is not supported.
-
-</div>
+> [!WARNING]
+> Disabling SELinux on RHCOS is not supported.
 
 - *CGroups* (control groups) limit, account for, and isolate the resource usage (CPU, memory, disk I/O, network, and so on.) of a collection of processes. CGroups are used to ensure that containers on the same host are not impacted by each other.
 
@@ -28,9 +25,14 @@ Disabling SELinux on RHCOS is not supported.
 
 RHCOS is a version of Red Hat Enterprise Linux (RHEL) that is specially configured to work as control plane (master) and worker nodes on OpenShift Container Platform clusters. So RHCOS is tuned to efficiently run container workloads, along with Kubernetes and OpenShift Container Platform services.
 
-<div class="note">
+> [!NOTE]
+> To further protect RHCOS systems in OpenShift Container Platform clusters, most containers, except those managing or monitoring the host system itself, should run as a non-root user. Dropping the privilege level or creating containers with the least amount of privileges possible is recommended best practice for protecting your own OpenShift Container Platform clusters.
 
-To further protect RHCOS systems in OpenShift Container Platform clusters, most containers, except those managing or monitoring the host system itself, should run as a non-root user. Dropping the privilege level or creating containers with the least amount of privileges possible is recommended best practice for protecting your own OpenShift Container Platform clusters.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -60,6 +62,8 @@ To further protect RHCOS systems in OpenShift Container Platform clusters, most 
 
 - [FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
 
+</div>
+
 # Compare virtualization and containers
 
 You should understand the differences between containers and VMs to learn the advantages and drawbacks that influence the use cases in which these technologies are typically applied.
@@ -72,7 +76,17 @@ Containers can be run inside guest VMs, and there might be use cases where this 
 
 Container separation on a single host, however, provides a more lightweight, flexible, and easier-to-scale deployment solution. This deployment model is particularly appropriate for cloud-native applications. Containers are generally much smaller than VMs and consume less memory and CPU.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Linux Containers Compared to KVM Virtualization](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html/overview_of_containers_in_red_hat_systems/introduction_to_linux_containers#linux_containers_compared_to_kvm_virtualization)
+
+</div>
 
 # Secure OpenShift Container Platform
 
@@ -100,4 +114,14 @@ In pursuit of those goals, most node changes should be done during installation 
 
 Besides the Machine Config Operator, there are several other Operators available to configure OpenShift Container Platform infrastructure that are managed by the Cluster Version Operator (CVO). The CVO is able to automate many aspects of OpenShift Container Platform cluster updates.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [FIPS cryptography](../../installing/overview/installing-fips.xml#installing-fips)
+
+</div>

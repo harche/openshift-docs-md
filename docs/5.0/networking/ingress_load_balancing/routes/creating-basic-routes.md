@@ -6,11 +6,29 @@ You can use the following procedure to create a simple HTTP-based route to a web
 
 You can create a route to host your application at a public URL. The route can either be secure or unsecured, depending on the network security configuration of your application. An HTTP-based route is an unsecured route that uses the basic HTTP routing protocol and exposes a service on an unsecured application port.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You are logged in as an administrator.
 
 - You have a web application that exposes a port and a TCP endpoint listening for traffic on the port.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a project called `hello-openshift` by running the following command:
 
@@ -36,15 +54,27 @@ You can create a route to host your application at a public URL. The route can e
     $ oc expose svc hello-openshift
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the `route` resource that you created, run the following command:
 
   ``` terminal
   $ oc get routes -o yaml hello-openshift
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example YAML definition of the created unsecured route**
+  <div class="title">
+
+  Example YAML definition of the created unsecured route
 
   </div>
 
@@ -62,6 +92,8 @@ You can create a route to host your application at a public URL. The route can e
       name: hello-openshift
   ```
 
+  </div>
+
   where:
 
   `host`
@@ -70,15 +102,14 @@ You can create a route to host your application at a public URL. The route can e
   `targetPort`
   Specifies the target port on pods that is selected by the service that this route points to.
 
-  <div class="note">
+  > [!NOTE]
+  > To display your default ingress domain, run the following command:
+  >
+  > ``` terminal
+  > $ oc get ingresses.config/cluster -o jsonpath={.spec.domain}
+  > ```
 
-  To display your default ingress domain, run the following command:
-
-  ``` terminal
-  $ oc get ingresses.config/cluster -o jsonpath={.spec.domain}
-  ```
-
-  </div>
+</div>
 
 # Path-based routes
 
@@ -86,20 +117,22 @@ To serve multiple applications by using a single hostname, configure path-based 
 
 The following table shows example routes and their accessibility:
 
-| Route                                        | When compared to       | Accessible                               |
-|----------------------------------------------|------------------------|------------------------------------------|
-| *www.example.com/test*                       | *www.example.com/test* | Yes                                      |
-| *www.example.com*                            | No                     |                                          |
-| *www.example.com/test* and *www.example.com* | *www.example.com/test* | Yes                                      |
-| *www.example.com*                            | Yes                    |                                          |
-| *www.example.com*                            | *www.example.com/text* | Yes (Matched by the host, not the route) |
-| *www.example.com*                            | Yes                    |                                          |
+| Route | When compared to | Accessible |
+|----|----|----|
+| *www.example.com/test* | *www.example.com/test* | Yes |
+| *www.example.com* | No |  |
+| *www.example.com/test* and *www.example.com* | *www.example.com/test* | Yes |
+| *www.example.com* | Yes |  |
+| *www.example.com* | *www.example.com/text* | Yes (Matched by the host, not the route) |
+| *www.example.com* | Yes |  |
 
 Route availability
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of an unsecured route with a path**
+<div class="title">
+
+Example of an unsecured route with a path
 
 </div>
 
@@ -116,17 +149,24 @@ spec:
     name: service-name
 ```
 
+</div>
+
 - `spec.host`: Specifies the path attribute for a path-based route.
 
-<div class="note">
-
-Path-based routing is not available when using passthrough TLS, as the router does not terminate TLS in that case and cannot read the contents of the request.
-
-</div>
+> [!NOTE]
+> Path-based routing is not available when using passthrough TLS, as the router does not terminate TLS in that case and cannot read the contents of the request.
 
 # Creating a route for Ingress Controller sharding
 
 Ingress Controller sharding balances incoming traffic among a set of Ingress Controllers and can isolate traffic to a specific Ingress Controller. You create a route to direct traffic to the appropriate shard.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -135,6 +175,16 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
 - You have a web application that exposes a port and an HTTP or TLS endpoint listening for traffic on the port.
 
 - You have configured the Ingress Controller for sharding.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a project called `hello-openshift` by running the following command:
 
@@ -156,9 +206,11 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
 
 4.  Create a route definition called `hello-openshift-route.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition of the created route for sharding**
+    <div class="title">
+
+    YAML definition of the created route for sharding
 
     </div>
 
@@ -179,6 +231,8 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
         name: hello-openshift
     ```
 
+    </div>
+
     where:
 
     `type`
@@ -193,6 +247,16 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
     $ oc -n hello-openshift create -f hello-openshift-route.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Get the status of the route with the following command:
 
   ``` terminal
@@ -201,9 +265,11 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
 
   The resulting `Route` resource should look similar to the following:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -229,6 +295,8 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
       routerName: sharded
   ```
 
+  </div>
+
   where:
 
   `host`
@@ -240,9 +308,19 @@ Ingress Controller sharding balances incoming traffic among a set of Ingress Con
   `routerName`
   Specifies the name of the Ingress Controller. In this example, the Ingress Controller has the name `sharded`.
 
+</div>
+
 # Create a route through an Ingress object
 
 To integrate ecosystem components that require Ingress resources, configure an Ingress object. OpenShift Container Platform automatically manages the lifecycle of the corresponding route objects, creating and deleting them to ensure seamless connectivity.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - If clients must receive a full certificate chain, you must combine the PEM-encoded leaf certificate and intermediates into a single file. Place the leaf certificate first, followed by each issuer in chain order.
 
@@ -256,11 +334,23 @@ To integrate ecosystem components that require Ingress resources, configure an I
 
 - You created a `Secret` of type `kubernetes.io/tls` in the same namespace as the `Ingress`. The `secretName` must match the `spec.tls[].secretName` field. If you have not created the secret, you must do so before you apply the `Ingress` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Define an Ingress object in the OpenShift Container Platform console or by entering the `oc create` command:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML Definition of an Ingress**
+    <div class="title">
+
+    YAML Definition of an Ingress
 
     </div>
 
@@ -290,6 +380,8 @@ To integrate ecosystem components that require Ingress resources, configure an I
         secretName: example-com-tls-certificate
     # ...
     ```
+
+    </div>
 
     where:
 
@@ -342,9 +434,11 @@ To integrate ecosystem components that require Ingress resources, configure an I
     frontend-gnztq   www.example.com           frontend    443     reencrypt/Redirect   None
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition example of an autogenerated route**
+    <div class="title">
+
+    YAML definition example of an autogenerated route
 
     </div>
 
@@ -384,17 +478,18 @@ To integrate ecosystem components that require Ingress resources, configure an I
         name: frontend
     ```
 
+    </div>
+
+</div>
+
 # About label propagation from Ingress to Route resources
 
 You can opt-in to a feature that enables the Ingress Operator to automatically propagate labels. This allows you to add metadata that helps track or manage resources, or to control specific behaviors that depend on labels.
 
 By default, the managed `Route` object does not inherit labels from the `Ingress` resource. When you enable the propagation feature, the Operator actively reconciles the labels on the generated `Route` resource to match the labels on the parent `Ingress` resource.
 
-<div class="note">
-
-When label propagation is enabled, the Ingress Operator replaces all labels on the managed `Route` resource with the exact set of labels from the parent `Ingress` resource. Any labels that were manually added to the `Route` resource are removed.
-
-</div>
+> [!NOTE]
+> When label propagation is enabled, the Ingress Operator replaces all labels on the managed `Route` resource with the exact set of labels from the parent `Ingress` resource. Any labels that were manually added to the `Route` resource are removed.
 
 The propagation behavior is controlled by the `route.openshift.io/reconcile-labels` annotation on the `Ingress` resource. The Operator’s behavior changes depending on the state of this annotation:
 
@@ -410,9 +505,27 @@ The propagation behavior is controlled by the `route.openshift.io/reconcile-labe
 
 You can enable the Ingress Operator to automatically propagate labels from an `Ingress` resource to the `Route` resource it manages. To enable this, you must add the `reconcile-labels` annotation to an `Ingress` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster.
 
 - You have the `cluster-admin` role or permissions to create and edit `Ingress` resources in a project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit an `Ingress` resource manifest.
 
@@ -467,3 +580,5 @@ You can enable the Ingress Operator to automatically propagate labels from an `I
     NAME          HOST/PORT     PATH   SERVICES          PORT    TERMINATION   WILDCARD   LABELS
     example-rt    example.com   /      example-service   8080                  None       app=my-app,owner=dev-team
     ```
+
+</div>

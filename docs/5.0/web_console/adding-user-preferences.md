@@ -6,6 +6,14 @@ The changes made to the user preferences are automatically saved.
 
 You can set the default user preferences for your cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the OpenShift Container Platform web console using your login credentials.
 
 2.  Use the masthead to access the user preferences under the user profile.
@@ -29,3 +37,5 @@ You can set the default user preferences for your cluster.
     1.  You can view the default **Resource type**. For example, if the OpenShift Serverless Operator is installed, the default resource type is **Serverless Deployment**. Otherwise, the default resource type is **Deployment**.
 
     2.  You can select another resource type to be the default resource type from the **Resource Type** field.
+
+</div>

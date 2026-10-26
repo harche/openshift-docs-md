@@ -2,21 +2,46 @@ After you define cluster templates and onboard bare-metal servers, external clie
 
 The Inventory API provides read-only access to locations, resource pools, and physical resources. The Artifacts API exposes available cluster templates. The Cluster API provides information about provisioned clusters.
 
-<div class="important">
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [O-Cloud Manager REST API reference](../infrastructure_lifecycle_management/ocloud-rest-api-reference.xml#ocloud-rest-api-reference)
 
+</div>
+
 # Query infrastructure resources
 
 You can query the O-Cloud Manager Inventory API to discover available infrastructure resources, including locations, sites, resource pools, and physical servers. This enables a Service Management and Orchestration (SMO) framework or automation system to identify what infrastructure is available before submitting provisioning requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List all resource pools by running the following command:
 
@@ -25,9 +50,11 @@ You can query the O-Cloud Manager Inventory API to discover available infrastruc
       "https://${API_BASE_URL}/O2ims_infrastructureInventory/v2/resourcePools" | jq
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -43,6 +70,8 @@ You can query the O-Cloud Manager Inventory API to discover available infrastruc
     ]
     ```
 
+    </div>
+
 2.  List the resources within a specific resource pool by running the following command:
 
     ``` terminal
@@ -52,9 +81,11 @@ You can query the O-Cloud Manager Inventory API to discover available infrastruc
 
     - Replace `<resource_pool_id>` with the target `resourcePoolId` value.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -78,13 +109,12 @@ You can query the O-Cloud Manager Inventory API to discover available infrastruc
       ]
       ```
 
+      </div>
+
     - A resource with `usageState: IDLE` and `adminState: LOCKED` is available for allocation by a new provisioning request.
 
-      <div class="note">
-
-      A `BareMetalHost` resource appears in the Inventory API only if it has a `resources.clcm.openshift.io/resourcePoolName` label and has completed hardware inspection. Servers that have not reached the `available` provisioning state or later do not appear in the API response.
-
-      </div>
+      > [!NOTE]
+      > A `BareMetalHost` resource appears in the Inventory API only if it has a `resources.clcm.openshift.io/resourcePoolName` label and has completed hardware inspection. Servers that have not reached the `available` provisioning state or later do not appear in the API response.
 
 3.  List all locations to view geographic site information by running the following command:
 
@@ -125,13 +155,33 @@ You can query the O-Cloud Manager Inventory API to discover available infrastruc
 
     - Replace `<pool_name>` with the name of the resource pool to filter.
 
+</div>
+
 # Query available cluster templates
 
 You can query the O-Cloud Manager Artifacts API to discover which cluster templates are available for provisioning.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
 
 - At least one validated `ClusterTemplate` custom resource (CR) exists on the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List all available cluster templates by running the following command:
 
@@ -169,9 +219,11 @@ You can query the O-Cloud Manager Artifacts API to discover which cluster templa
 
     - Replace `<template_id>` with the `managedInfrastructureTemplateId` value, which follows the format `<name>.<version>`, for example `sno-ran-du.v4-18-5-v1`.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -196,15 +248,37 @@ You can query the O-Cloud Manager Artifacts API to discover which cluster templa
       }
       ```
 
+      </div>
+
       The defaults response includes the merged content of the `clusterinstance-defaults` and `policytemplates-defaults` ConfigMap resources referenced by the `ClusterTemplate` CR.
+
+</div>
 
 # Query provisioned clusters
 
 You can query the O-Cloud Manager Cluster API to discover clusters provisioned through the O-Cloud Manager, their types, and the individual nodes within them. Each managed cluster registered with RHACM corresponds to a node cluster in the API.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You authenticated to the O-Cloud Manager REST API and set the `API_BASE_URL` and `MY_TOKEN` environment variables.
 
 - You provisioned at least one cluster through the O-Cloud Manager.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List all provisioned node clusters by running the following command:
 
@@ -213,9 +287,11 @@ You can query the O-Cloud Manager Cluster API to discover clusters provisioned t
       "https://${API_BASE_URL}/O2ims_infrastructureCluster/v1/nodeClusters" | jq
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -234,6 +310,8 @@ You can query the O-Cloud Manager Cluster API to discover clusters provisioned t
       }
     ]
     ```
+
+    </div>
 
 2.  Get details for a specific cluster by running the following command:
 
@@ -297,3 +375,5 @@ You can query the O-Cloud Manager Cluster API to discover clusters provisioned t
         $ curl -ks -H "Authorization: Bearer ${MY_TOKEN}" \
           "https://${API_BASE_URL}/O2ims_infrastructureCluster/v1/subscriptions" | jq
         ```
+
+</div>

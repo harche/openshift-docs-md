@@ -40,9 +40,27 @@ A health alert banner that directs you to the dashboard can appear on the **Netw
 
 View the **Netobserv/Health** dashboard within the OpenShift Container Platform web console to monitor the health status and resource usage of the Network Observability Operator and its components.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have the Network Observability Operator installed.
 
 - You have access to the cluster as a user with the `cluster-admin` role or with view permissions for all projects.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Administrator** perspective in the web console, navigate to **Observe** → **Dashboards**.
 
@@ -50,9 +68,19 @@ View the **Netobserv/Health** dashboard within the OpenShift Container Platform 
 
 3.  View the metrics about the health of the Operator that are displayed on the page.
 
+</div>
+
 ## Disable health alerts
 
 Disable specific health alerts, such as `NetObservLokiError` or `NetObservNoFlows`, by editing the `FlowCollector` resource and using the `spec.processor.metrics.disableAlerts` specification.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -78,15 +106,35 @@ Disable specific health alerts, such as `NetObservLokiError` or `NetObservNoFlow
     `spec.processor.metrics.disableAlerts`
     Specifies one or more types of alerts to disable.
 
+</div>
+
 # Create Loki rate limit alerts for the NetObserv dashboard
 
 Create a custom `AlertingRule` resource based on Loki metrics to monitor for and trigger alerts when the Loki ingestion rate limits are reached, indicated by HTTP 429 errors.
 
 You can create custom alerting rules for the **Netobserv** dashboard metrics to trigger alerts when Loki rate limits have been reached.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the cluster-admin role or with view permissions for all projects.
 
 - You have the Network Observability Operator installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file by clicking the import icon, **+**.
 
@@ -115,15 +163,22 @@ You can create custom alerting rules for the **Netobserv** dashboard metrics to 
 
 3.  Click **Create** to apply the configuration file to the cluster.
 
+</div>
+
 # Use the eBPF agent alert
 
 Resolve the `NetObservAgentFlowsDropped` alert, which occurs when the eBPF agent hashmap is full, by increasing the `spec.agent.ebpf.cacheMaxFlows` value in the `FlowCollector` custom resource.
 
 An alert, `NetObservAgentFlowsDropped`, is also triggered when the capacity limiter is triggered. If you see this alert, consider increasing the `cacheMaxFlows` in the `FlowCollector`, as shown in the following example.
 
-<div class="note">
+> [!NOTE]
+> Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent.
 
-Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -154,4 +209,16 @@ Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent
     `spec.agent.ebpf.cacheMaxFlows`
     Specifies the maximum number of flows to cache. If a `NetObservAgentFlowsDropped` alert occurs, increase this value from its current level.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)
+
+</div>

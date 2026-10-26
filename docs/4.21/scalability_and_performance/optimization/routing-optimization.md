@@ -73,17 +73,14 @@ The liveness and readiness probes of the router use the default timeout value of
 
 You can update the `timeoutSeconds` value on the `livenessProbe`, `readinessProbe`, and `startupProbe` parameters of the router container.
 
-| Parameter        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `livenessProbe`  | The `livenessProbe` reports to the kubelet whether a pod is dead and needs to be restarted.                                                                                                                                                                                                                                                                                                                                                                     |
+| Parameter | Description |
+|----|----|
+| `livenessProbe` | The `livenessProbe` reports to the kubelet whether a pod is dead and needs to be restarted. |
 | `readinessProbe` | The `readinessProbe` reports whether a pod is healthy or unhealthy. When the readiness probe reports an unhealthy pod, then the kubelet marks the pod as not ready to accept traffic. Subsequently, the endpoints for that pod are marked as not ready, and this status propagates to the kube-proxy. On cloud platforms with a configured load balancer, the kube-proxy communicates to the cloud load-balancer not to send traffic to the node with that pod. |
-| `startupProbe`   | The `startupProbe` gives the router pod up to 2 minutes to initialize before the kubelet begins sending the router liveness and readiness probes. This initialization time can prevent routers with many routes or endpoints from prematurely restarting.                                                                                                                                                                                                       |
+| `startupProbe` | The `startupProbe` gives the router pod up to 2 minutes to initialize before the kubelet begins sending the router liveness and readiness probes. This initialization time can prevent routers with many routes or endpoints from prematurely restarting. |
 
-<div class="important">
-
-The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that cause probes to time out.
-
-</div>
+> [!IMPORTANT]
+> The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that cause probes to time out.
 
 The following example demonstrates how you can directly patch the default router deployment to set a 5-second timeout for the liveness and readiness probes:
 
@@ -91,9 +88,11 @@ The following example demonstrates how you can directly patch the default router
 $ oc -n openshift-ingress patch deploy/router-default --type=strategic --patch='{"spec":{"template":{"spec":{"containers":[{"name":"router","livenessProbe":{"timeoutSeconds":5},"readinessProbe":{"timeoutSeconds":5}}]}}}}'
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Verification**
+<div class="title">
+
+Verification
 
 </div>
 
@@ -103,15 +102,14 @@ $ oc -n openshift-ingress describe deploy/router-default | grep -e Liveness: -e 
     Readiness:  http-get http://:1936/healthz/ready delay=0s timeout=5s period=10s #success=1 #failure=3
 ```
 
+</div>
+
 # Configure HAProxy reload interval
 
 To reduce how often the router reloads HAProxy, change the minimum reload interval on the Ingress Controller. By doing this task, you can spread reload work over time and limit resource use from long-lived connections.
 
-<div class="note">
-
-The higher the reload interval, the longer a route update takes.
-
-</div>
+> [!NOTE]
+> The higher the reload interval, the longer a route update takes.
 
 When you update a route or an endpoint associated with a route, the OpenShift Container Platform router updates the configuration for HAProxy and reloads it so those changes take effect. Each reload starts a new HAProxy process for new connections while the old process handles existing connections until they close.
 
@@ -119,9 +117,14 @@ When connections last a long time, old processes can accumulate and consume reso
 
 The default minimum HAProxy reload interval is 5 seconds. You can configure an Ingress Controller by using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
 
-<div class="warning">
+> [!WARNING]
+> Setting a large value for the minimum HAProxy reload interval can cause latency in observing updates to routes and their endpoints. To lessen the risk, avoid setting a value larger than the tolerable latency for updates.
 
-Setting a large value for the minimum HAProxy reload interval can cause latency in observing updates to routes and their endpoints. To lessen the risk, avoid setting a value larger than the tolerable latency for updates.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -130,3 +133,5 @@ Setting a large value for the minimum HAProxy reload interval can cause latency 
   ``` terminal
   $ oc -n openshift-ingress-operator patch ingresscontrollers/default --type=merge --patch='{"spec":{"tuningOptions":{"reloadInterval":"15s"}}}'
   ```
+
+</div>

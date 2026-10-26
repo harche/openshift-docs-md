@@ -4,15 +4,30 @@ Labels and annotations are metadata administrators attach to virtual machines. L
 
 Create labels that are automatically applied to every virtual machine created in a cluster. Labels allow administrators to group and filter virtual machines.
 
-<div class="important">
+> [!IMPORTANT]
+> New labels are only applied to virtual machines created after the label is created.
 
-New labels are only applied to virtual machines created after the label is created.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **Settings** on the side menu to access the cluster settings.
 
@@ -26,11 +41,8 @@ New labels are only applied to virtual machines created after the label is creat
 
 6.  Click the checkmark icon to save the new label.
 
-    <div class="note">
-
-    Click the trash can icon to discard the change if needed.
-
-    </div>
+    > [!NOTE]
+    > Click the trash can icon to discard the change if needed.
 
 7.  Optional: Enter a default value in the **Value** field.
 
@@ -42,13 +54,33 @@ New labels are only applied to virtual machines created after the label is creat
 
 8.  Optional: Select the **Required** slider to make a value for this label mandatory for all cluster VMs.
 
+</div>
+
 # Editing user auto-applied labels
 
 Edit labels that are automatically applied to every virtual machine created by a specific user in a cluster. Labels allow administrators to group and filter virtual machines.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **Settings** on the side menu to access the cluster settings.
 
@@ -64,19 +96,36 @@ Edit labels that are automatically applied to every virtual machine created by a
 
     3.  Click the checkmark icon to save the new value.
 
+</div>
+
 # Applying VM labels
 
 Apply labels to a virtual machine in a cluster. Some labels are automatically applied and others are applied on a per-virtual machine basis. Labels allow administrators to group and filter virtual machines.
 
-<div class="important">
+> [!IMPORTANT]
+> New labels are only applied to virtual machines created after the label is created.
 
-New labels are only applied to virtual machines created after the label is created.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** on the side menu to access the cluster settings.
 
@@ -100,13 +149,33 @@ New labels are only applied to virtual machines created after the label is creat
 
 8.  Optional: Delete a label using the minus icon to the right of the **Value** field.
 
+</div>
+
 # Applying VM annotations
 
 Apply annotations to a virtual machine in a cluster to attach descriptive information.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
 - You have `edit` or `admin` permissions in the target project.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** on the side menu to access the cluster settings.
 
@@ -129,3 +198,5 @@ Apply annotations to a virtual machine in a cluster to attach descriptive inform
     3.  Click **Save**.
 
 8.  Optional: Delete an annotation using the minus icon to the right of the **Value** field.
+
+</div>

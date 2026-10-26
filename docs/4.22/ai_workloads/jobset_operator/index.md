@@ -16,7 +16,17 @@ The JobSet Operator offers startup control, allowing you to define a specific st
 
 JobSet Operator makes managing large, distributed, and coordinated computing tasks on OpenShift Container Platform easier, turning many individual components into one resilient and manageable system.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [JobSet project](https://jobset.sigs.k8s.io/docs/overview/)
+
+</div>
 
 # Additional resources
 

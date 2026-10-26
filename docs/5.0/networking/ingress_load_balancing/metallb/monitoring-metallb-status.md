@@ -6,12 +6,12 @@ MetalLB provides a scalable framework for monitoring the health of network traff
 
 MetalLB exposes status information for several key components, providing a comprehensive view of its configuration and operation.
 
-| Resource                           | Description                                                                                                                                                                                                                                                          | Troubleshooting command                                               |
-|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| **`IPAddressPool` (status field)** | Shows the cluster-wide allocation and availability of IP addresses within a defined pool, including the number of assigned and available addresses for both IPv4 and IPv6.                                                                                           | `oc get ipaddresspool <IPAddressPool-name> -n metallb-system -o yaml` |
-| **`ServiceBGPStatus`**             | Shows which service IP addresses the system announces to specific BGP peers across the network infrastructure.                                                                                                                                                       | `oc get servicebgpstatus -n metallb-system`                           |
-| **`BGPSessionStatus`**             | Shows the real-time operational state of the border gateway protocol (BGP) and bidirectional forwarding detection (BFD) sessions between a specific cluster node and a BGP peer, indicating if the channel is `Established` or `Up` based on routing stack feedback. | `oc get bgpsessionstatus -o wide`                                     |
-| **`ConfigurationState`**           | Shows whether the MetalLB controller and speakers have successfully validated and applied the current configuration. MetalLB creates one resource for the controller and one for each speaker node. Reports errors when custom resources are incompatible.           | `oc get configurationstates -n metallb-system`                        |
+| Resource | Description | Troubleshooting command |
+|----|----|----|
+| **`IPAddressPool` (status field)** | Shows the cluster-wide allocation and availability of IP addresses within a defined pool, including the number of assigned and available addresses for both IPv4 and IPv6. | `oc get ipaddresspool <IPAddressPool-name> -n metallb-system -o yaml` |
+| **`ServiceBGPStatus`** | Shows which service IP addresses the system announces to specific BGP peers across the network infrastructure. | `oc get servicebgpstatus -n metallb-system` |
+| **`BGPSessionStatus`** | Shows the real-time operational state of the border gateway protocol (BGP) and bidirectional forwarding detection (BFD) sessions between a specific cluster node and a BGP peer, indicating if the channel is `Established` or `Up` based on routing stack feedback. | `oc get bgpsessionstatus -o wide` |
+| **`ConfigurationState`** | Shows whether the MetalLB controller and speakers have successfully validated and applied the current configuration. MetalLB creates one resource for the controller and one for each speaker node. Reports errors when custom resources are incompatible. | `oc get configurationstates -n metallb-system` |
 
 MetalLB status resources
 
@@ -23,9 +23,27 @@ Check IP address allocation from your MetalLB pools by viewing the `IPAddressPoo
 
 As a cluster administrator, you can add address pools to your cluster to control the IP addresses that MetalLB can assign to load-balancer services. This example shows how to create an `IPAddressPool` custom resource (CR) and view its status. The configuration sets the advertisement mode to Layer 2 (L2).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an OpenShift Container Platform cluster with the MetalLB Operator installed.
 
 - You have deployed a MetalLB instance.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an IP address pool.
 
@@ -164,11 +182,8 @@ As a cluster administrator, you can add address pools to your cluster to control
           type: LoadBalancer
         ```
 
-        <div class="important">
-
-        The service must be in the same namespace as your application deployment. The `metallb.universe.tf/address-pool` annotation tells MetalLB which `IPAddressPool` to use for IP allocation.
-
-        </div>
+        > [!IMPORTANT]
+        > The service must be in the same namespace as your application deployment. The `metallb.universe.tf/address-pool` annotation tells MetalLB which `IPAddressPool` to use for IP allocation.
 
     4.  Apply the service configuration by running the following command:
 
@@ -211,15 +226,22 @@ As a cluster administrator, you can add address pools to your cluster to control
 
     The `assignedIPv4` value of `1` indicates that one IPv4 address from this pool has been successfully assigned by MetalLB to your `nginx-service` `LoadBalancer`.
 
+</div>
+
 # View the ServiceBGPStatus custom resource
 
 You can verify border gateway protocol (BGP) advertisement status for your services by viewing the `ServiceBGPStatus` custom resource, which shows which BGP peers receive advertisements from each node. This is essential for debugging connectivity in telco environments.
 
 The `ServiceBGPStatus` CR reports the BGP peering status for a service, detailing which neighbors are receiving updates from a specific node.
 
-<div class="note">
+> [!NOTE]
+> `ServiceBGPStatus` resources are created in the `metallb-system` namespace, not in the namespace where your `LoadBalancer` service is deployed. Always query these resources with `-n metallb-system`.
 
-`ServiceBGPStatus` resources are created in the `metallb-system` namespace, not in the namespace where your `LoadBalancer` service is deployed. Always query these resources with `-n metallb-system`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -227,7 +249,17 @@ The `ServiceBGPStatus` CR reports the BGP peering status for a service, detailin
 
 - You have deployed a MetalLB instance.
 
+</div>
+
 This example shows how to configure MetalLB for BGP mode, deploy a service, and view the `ServiceBGPStatus` to verify BGP advertisements.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `IPAddressPool` CR for BGP, like the following example, and save it as `ipaddresspool.yaml`:
 
@@ -339,11 +371,8 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
       type: LoadBalancer
     ```
 
-    <div class="important">
-
-    The system creates `ServiceBGPStatus` resources automatically only when the service has at least one ready endpoint (running pod). Ensure your application pods are running before checking for `ServiceBGPStatus` resources.
-
-    </div>
+    > [!IMPORTANT]
+    > The system creates `ServiceBGPStatus` resources automatically only when the service has at least one ready endpoint (running pod). Ensure your application pods are running before checking for `ServiceBGPStatus` resources.
 
 10. Apply the service configuration by running the following command:
 
@@ -377,15 +406,12 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
     bgp-xxxxx             worker0    test-service   default
     ```
 
-    <div class="note">
-
-    `ServiceBGPStatus` resources are created with generated names. Use labels to find the status for your service:
-
-    ``` terminal
-    $ oc get servicebgpstatus -n metallb-system -l metallb.io/service-name=test-service
-    ```
-
-    </div>
+    > [!NOTE]
+    > `ServiceBGPStatus` resources are created with generated names. Use labels to find the status for your service:
+    >
+    > ``` terminal
+    > $ oc get servicebgpstatus -n metallb-system -l metallb.io/service-name=test-service
+    > ```
 
 13. View the details of the `ServiceBGPStatus` CR for your service:
 
@@ -427,13 +453,20 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
 
     - `status.serviceNamespace` indicates the namespace of the service being advertised.
 
+</div>
+
 # Verify BGP session state
 
 After you configure MetalLB for BGP mode, you can examine the `BGPSessionState` and `FRRNodeState` custom resources (CRs) to verify that BGP sessions are established and routes are advertised.
 
-<div class="note">
+> [!NOTE]
+> The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It can take up to 2 minutes for the CR to reflect the actual BGP state.
 
-The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It can take up to 2 minutes for the CR to reflect the actual BGP state.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -448,6 +481,16 @@ The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It 
   - A `BGPAdvertisement`
 
 - You have deployed at least one `LoadBalancer` service.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check BGP session status by running the following command:
 
@@ -501,11 +544,21 @@ The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It 
 
     This confirms that BGP is advertising the service IP.
 
+</div>
+
 # Check MetalLB configuration status
 
 You can verify that the MetalLB controller and speakers have successfully applied the current configuration by viewing the `ConfigurationState` custom resource (CR). MetalLB creates a `ConfigurationState` resource for the controller and one for each speaker node.
 
 These resources report whether the configuration is valid and surface error details when validation fails, such as incompatible custom resources.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have an OpenShift Container Platform cluster with the MetalLB Operator installed.
 
@@ -513,15 +566,27 @@ These resources report whether the configuration is valid and surface error deta
 
 - You have configured MetalLB resources such as `IPAddressPool`, `BGPPeer`, `BFDProfile`, `Community`, or `FRRConfiguration`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  List the `ConfigurationState` resources by running the following command:
 
     ``` terminal
     $ oc get configurationstates -n metallb-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -531,6 +596,8 @@ These resources report whether the configuration is valid and surface error deta
     speaker-mysno-sno.demo.lab   Valid                   28m
     ```
 
+    </div>
+
     The `controller` resource shows the status for the MetalLB controller. Each `speaker-<node-name>` resource shows the status for the speaker on that node.
 
 2.  Verify that the controller has a valid configuration by inspecting the `ConfigurationState` details. Run the following command:
@@ -539,9 +606,11 @@ These resources report whether the configuration is valid and surface error deta
     $ oc get configurationstates controller -n metallb-system -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -567,6 +636,8 @@ These resources report whether the configuration is valid and surface error deta
       result: Valid
     ```
 
+    </div>
+
     Confirm that the output has the following values:
 
     - `result: Valid` indicates that all configured resources are compatible and active. If this value is `Invalid`, check the `errorSummary` field for aggregated error messages that identify which part of the configuration has failed.
@@ -575,11 +646,8 @@ These resources report whether the configuration is valid and surface error deta
 
     - `reason: Reconciled` with `status: "True"` confirms that the reconciler has successfully processed the configuration. If the `reason` is `ReconciliationFailed` and `status` is `"False"`, the `message` field contains details about the failure.
 
-      <div class="note">
-
-      The controller does not validate peer-level settings. Errors such as a missing `BFDProfile`, undefined `Community`, or missing authentication secret are reported only by the speakers. A `Valid` controller with one or more `Invalid` speakers is expected in these cases. Always check both controller and speaker `ConfigurationState` resources.
-
-      </div>
+      > [!NOTE]
+      > The controller does not validate peer-level settings. Errors such as a missing `BFDProfile`, undefined `Community`, or missing authentication secret are reported only by the speakers. A `Valid` controller with one or more `Invalid` speakers is expected in these cases. Always check both controller and speaker `ConfigurationState` resources.
 
       If the configuration is invalid, the output is similar to the following example:
 
@@ -617,11 +685,8 @@ These resources report whether the configuration is valid and surface error deta
 
     - In this example, the `BGPPeer` resource `peer1` references a `BFDProfile` named `my-bfd-profile` that does not exist. To resolve this error, either create the missing `BFDProfile` resource or update the `BGPPeer` to reference an existing `BFDProfile`.
 
-      <div class="note">
-
-      The `ConfigurationState` resource does not report errors that arise when the configuration applied by the speaker to the `frr-k8s` daemon conflicts with other external configurations within that daemon.
-
-      </div>
+      > [!NOTE]
+      > The `ConfigurationState` resource does not report errors that arise when the configuration applied by the speaker to the `frr-k8s` daemon conflicts with other external configurations within that daemon.
 
 3.  After correcting the configuration, verify that the status shows a valid configuration by running the following command:
 
@@ -630,6 +695,8 @@ These resources report whether the configuration is valid and surface error deta
     ```
 
     A return value of `Valid` for all entries confirms that the MetalLB controller and speakers are operating with a valid configuration.
+
+</div>
 
 # Additional resources
 

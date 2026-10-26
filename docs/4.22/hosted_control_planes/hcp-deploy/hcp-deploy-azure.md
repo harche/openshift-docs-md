@@ -1,12 +1,9 @@
 With hosted control planes on Microsoft Azure, you can reduce the cost associated with dedicated control-plane node VMs for each cluster. You can provision compute nodes as Azure Virtual Machine Scale sets for dynamic scaling, and ensure credential isolation with per-cluster Azure service principals.
 
-<div class="important">
-
-Hosted control planes on Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Hosted control planes on Azure is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Overview of hosted control planes on Azure
 
@@ -60,7 +57,17 @@ In this phase, you create and configure hosted clusters. This phase involves the
 
 4.  Configuring private endpoint access (optional)
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Azure Workload Identity documentation](https://azure.github.io/azure-workload-identity/docs/)
+
+</div>
 
 ## Azure infrastructure and credentials
 
@@ -99,12 +106,12 @@ Permissions
 
 You can set up hosted control planes on Azure with or without external DNS. If you plan to use a private or a public-private topology, external DNS is required. See the following table for more information:
 
-|                      | With external DNS                              | Without external DNS                                     |
-|----------------------|------------------------------------------------|----------------------------------------------------------|
-| **Best for**         | Production, multi-cluster                      | Development, testing                                     |
-| **API server DNS**   | Custom (`api-cluster.example.com`)             | Azure Load Balancer (`abc123.region.cloudapp.azure.com`) |
-| **Setup complexity** | Low, requires DNS zones and service principals | None                                                     |
-| **Management**       | Fully automatic                                | Manual or Azure-provided                                 |
+|  | With external DNS | Without external DNS |
+|----|----|----|
+| **Best for** | Production, multi-cluster | Development, testing |
+| **API server DNS** | Custom (`api-cluster.example.com`) | Azure Load Balancer (`abc123.region.cloudapp.azure.com`) |
+| **Setup complexity** | Low, requires DNS zones and service principals | None |
+| **Management** | Fully automatic | Manual or Azure-provided |
 
 DNS approaches for hosted control planes on Azure
 
@@ -134,6 +141,14 @@ Before you can create management and hosted clusters for your deployment of host
 
 To prepare to deploy hosted control planes on Azure, you need to set up an OIDC issuer for hosted clusters.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Azure command-line interface (CLI) is installed and configured.
 
 - The `jq` command-line JSON processor is installed.
@@ -141,6 +156,16 @@ To prepare to deploy hosted control planes on Azure, you need to set up an OIDC 
 - The Cloud Credential Operator utility (`ccoctl`) is installed. For more information, see "How to obtain the ccoctl tool for OpenShift 4".
 
 - The appropriate Azure permissions are set.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set your environment variables as shown in the following example:
 
@@ -197,15 +222,35 @@ To prepare to deploy hosted control planes on Azure, you need to set up an OIDC 
         OIDC_ISSUER_URL="https://${OIDC_STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${OIDC_STORAGE_ACCOUNT_NAME}"
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Try to access the OIDC issuer by entering the following command:
 
   ``` terminal
   $ curl -s "${OIDC_ISSUER_URL}/.well-known/openid-configuration" | jq .
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [How to obtain the ccoctl tool for OpenShift 4 (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/7001811)
+
+</div>
 
 ## Creating Azure Workload Identities
 
@@ -213,11 +258,21 @@ To ensure control over Identity and Access Management (IAM) resources in your Az
 
 Workload Identities authenticate hosted cluster components to Azure services by using OIDC federation. You must create identities separately and then consume them during infrastructure or cluster creation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an Azure credentials file in the following format:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example file**
+  <div class="title">
+
+  Example file
 
   </div>
 
@@ -230,9 +285,21 @@ Workload Identities authenticate hosted cluster components to Azure services by 
   }
   ```
 
+  </div>
+
 - You have a resource group to create the managed identities in.
 
 - You have an OIDC issuer URL for Workload Identity federation. For more information, see "Setting up an OIDC issuer".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set environment variables as shown in the following example:
 
@@ -283,11 +350,23 @@ Workload Identities authenticate hosted cluster components to Azure services by 
     `<my_cloud_environment>`
     Specifies the Azure cloud environment. The default value is `AzurePublicCloud`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Review the output file, which looks like the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -312,6 +391,8 @@ Workload Identities authenticate hosted cluster components to Azure services by 
   }
   ```
 
+  </div>
+
   The output includes 8 user-assigned identities, one per cluster component, along with federated credentials for each identity:
 
   - Disk CSI driver
@@ -330,9 +411,19 @@ Workload Identities authenticate hosted cluster components to Azure services by 
 
   - Control Plane Operator
 
+</div>
+
 ## Creating Azure infrastructure
 
 Create an Azure infrastructure separately so that when you create a hosted cluster on Azure, you can use pre-existing infrastructure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have an Azure credentials file with the following format:
 
@@ -349,7 +440,15 @@ Create an Azure infrastructure separately so that when you create a hosted clust
 
 - You created Workload Identities. For more information, see "Creating Azure Workload Identities".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To create the infrastructure with a new virtual network, subnet, and network security group, enter the following command:
 
@@ -430,15 +529,33 @@ Create an Azure infrastructure separately so that when you create a hosted clust
 
   - `--output-file` specifies the file where the details of the infrastructure are stored in YAML format.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating Azure Workload Identities](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-workload-id_hcp-deploy-azure)
+
+</div>
 
 # Configuring an Azure management cluster for hosted control planes
 
 To configure the management cluster for hosted control planes on Azure, you need to ensure that external DNS and the HyperShift Operator are set up on the cluster.
 
 The configuration steps include configuring the DNS zone, delegating the DNS records for your cluster, and creating a dedicated service principal for external DNS.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the multicluster engine Operator 2.5 or later on an OpenShift Container Platform cluster. You can install multicluster engine Operator as an Operator from the OpenShift Container Platform software catalog. Or, if you already use Red Hat Advanced Cluster Management, the Operator is automatically installed. The HyperShift Operator is enabled by default in the operator package for multicluster engine Operator.
 
@@ -449,6 +566,16 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
 - You have an OpenShift Container Platform management cluster on Azure.
 
 - If you are using external DNS, the `jq` command-line JSON processor is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the DNS configuration variables as shown in the following example:
 
@@ -612,15 +739,27 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
     $ oc apply -f hypershift-operator-install-flags.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that both the HyperShift Operator and the external DNS are running by entering the following command:
 
   ``` terminal
   $ oc get pods -n hypershift
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -630,11 +769,23 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
   operator-xxxxx-xxxxx           1/1     Running   0          1m
   ```
 
+  </div>
+
+</div>
+
 # Creating a hosted cluster on Azure
 
 Hosted clusters are where your applications run. Each hosted cluster has its own control plane that runs on the management cluster and a set of compute node virtual machines (VMs) in Azure.
 
 The hosted cluster uses Workload Identities to securely access Azure services without storing credentials.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the Azure command-line interface (CLI).
 
@@ -654,7 +805,15 @@ The hosted cluster uses Workload Identities to securely access Azure services wi
 
   - For Microsoft Graph API, you must have the `Application.ReadWrite.OwnedBy` permission.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create the `HostedCluster` custom resource by entering the following command:
 
@@ -685,6 +844,16 @@ The hosted cluster uses Workload Identities to securely access Azure services wi
   - The `--disable-cluster-capabilities` flag is optional. Include it when you want to disable optional capabilities in your hosted cluster. For more information, see "Capabilities for hosted clusters".
 
   - The `--enable-cluster-capabilities` flag is optional. Include it when you want to enable optional capabilities in your hosted cluster. For more information, see "Capabilities for hosted clusters".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the cluster status by entering the following command:
 
@@ -726,17 +895,16 @@ The hosted cluster uses Workload Identities to securely access Azure services wi
     $ oc get clusterversion
     ```
 
+</div>
+
 # Capabilities for hosted clusters
 
 To reduce resource consumption and prevent unnecessary Operators and operands from being deployed, administrators can enable or disable optional OpenShift Container Platform components when they create a hosted cluster.
 
 When capabilities are not specified on a `HostedCluster` resource, the cluster uses the OpenShift Container Platform version’s `DefaultCapabilitySet` settings, excluding the `baremetal` capability. As a result, most optional components are enabled by default.
 
-<div class="important">
-
-Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
-
-</div>
+> [!IMPORTANT]
+> Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
 
 ## Capabilities that you can enable or disable for a hosted cluster
 
@@ -744,15 +912,15 @@ Familiarize yourself with the supported capabilities that you can enable or disa
 
 The capabilities are described in the following table:
 
-| Capability          | Description                                                                                                                                                        |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ImageRegistry`     | The OpenShift Image Registry Operator and its operands, including cloud storage infrastructure, such as S3 buckets and Identity and Access Management (IAM) users. |
-| `openshift-samples` | The OpenShift Samples Operator, which manages example `ImageStreams` and templates.                                                                                |
-| `Insights`          | The Insights Operator, which collects and uploads cluster telemetry data.                                                                                          |
-| `baremetal`         | The Bare Metal Infrastructure Operator. This capability is excluded from the default set. If needed, you must explicitly enable it.                                |
-| `Console`           | The OpenShift Web Console Operator and its operands.                                                                                                               |
-| `NodeTuning`        | The Node Tuning Operator, which manages node-level performance tuning by using TuneD and performance profiles.                                                     |
-| `Ingress`           | The OpenShift Ingress Operator, which manages the default router of the cluster.                                                                                   |
+| Capability | Description |
+|----|----|
+| `ImageRegistry` | The OpenShift Image Registry Operator and its operands, including cloud storage infrastructure, such as S3 buckets and Identity and Access Management (IAM) users. |
+| `openshift-samples` | The OpenShift Samples Operator, which manages example `ImageStreams` and templates. |
+| `Insights` | The Insights Operator, which collects and uploads cluster telemetry data. |
+| `baremetal` | The Bare Metal Infrastructure Operator. This capability is excluded from the default set. If needed, you must explicitly enable it. |
+| `Console` | The OpenShift Web Console Operator and its operands. |
+| `NodeTuning` | The Node Tuning Operator, which manages node-level performance tuning by using TuneD and performance profiles. |
+| `Ingress` | The OpenShift Ingress Operator, which manages the default router of the cluster. |
 
 The following rules apply when you combine capability settings:
 
@@ -772,13 +940,18 @@ The `baremetal` capability is excluded from the default set. You can add it to t
 
 To reduce unnecessary resource consumption, you can control which optional capabilities are enabled for a hosted cluster when you create the cluster.
 
-<div class="important">
-
-Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
-
-</div>
+> [!IMPORTANT]
+> Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
 
 You can specify which capabilities are enabled by either using the `hcp` command-line interface (CLI) or by setting the `HostedCluster` manifest.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To specify which capabilities are enabled in a hosted cluster by using the CLI, you can add the `--disable-cluster-capabilities` flag, the `--enable-cluster-capabilities` flag, or both. The following example shows how to disable the `ImageRegistry`, `Console`, and `Ingress` capabilities and enable the `baremetal` capability while you create a hosted cluster on AWS by using the `hcp` command-line interface:
 
@@ -857,6 +1030,8 @@ You can specify which capabilities are enabled by either using the `hcp` command
       # ...
     ```
 
+</div>
+
 # Private hosted clusters on Azure
 
 By default, hosted clusters are accessible through public DNS and the default router of the management cluster. If you want communication between your compute nodes and the hosted control plane to be private, you can create hosted clusters that use Azure Private Link for communication.
@@ -869,9 +1044,14 @@ Azure Private Link requires a dedicated subnet for network address translator (N
 
 By manually creating the subnet, you have control over classless inter-domain routing (CIDR) allocation and naming. The following steps apply to manually creating the subnet. If you want the subnet to be automatically created, skip this procedure.
 
-<div class="note">
+> [!NOTE]
+> Azure Private Link, the NAT subnet, and the internal load balancer of the management cluster must all be in the same Azure region. Private Link is automatically created in the location where the hosted cluster is created. Azure rejects the creation of Private Link if the NAT subnet is in a different region.
 
-Azure Private Link, the NAT subnet, and the internal load balancer of the management cluster must all be in the same Azure region. Private Link is automatically created in the location where the hosted cluster is created. Azure rejects the creation of Private Link if the NAT subnet is in a different region.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -884,6 +1064,16 @@ Azure Private Link, the NAT subnet, and the internal load balancer of the manage
 - If you are using external DNS, the `jq` command-line JSON processor is installed.
 
 - You configured an OIDC issuer. For more information, see "Setting up an OIDC issuer".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify the Azure Virtual Network (VNet) of the management cluster.
 
@@ -944,17 +1134,34 @@ Azure Private Link, the NAT subnet, and the internal load balancer of the manage
       --query id -o tsv)
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring an Azure management cluster for hosted control planes](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-mgmt-cluster_hcp-deploy-azure)
 
 - [Setting up an OIDC issuer](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-oidc_hcp-deploy-azure)
+
+</div>
 
 ## Installing the HyperShift Operator with private platform support
 
 To set up an environment that supports private clusters, you must install the HyperShift Operator with flags that configure Azure Private Link management.
 
-<div class="note">
+> [!NOTE]
+> If you already installed the HyperShift Operator but you did not include the `--private-platform Azure` setting, you must run the `hcp install` command again with the private platform flags before you can create private clusters.
 
-If you already installed the HyperShift Operator but you did not include the `--private-platform Azure` setting, you must run the `hcp install` command again with the private platform flags before you can create private clusters.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -967,6 +1174,16 @@ If you already installed the HyperShift Operator but you did not include the `--
 - If you are using external DNS, the `jq` command-line JSON processor is installed.
 
 - You configured an OIDC issuer. For more information, see "Setting up an OIDC issuer".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Obtain credentials so that the Operator can manage Private Link resources.
 
@@ -1009,25 +1226,42 @@ If you already installed the HyperShift Operator but you did not include the `--
 
     - `--azure-private-creds` specifies the path to the Azure credentials file that is used for Private Link operations.
 
-      <div class="note">
-
-      Besides using the `--azure-private-creds` flag, you can use one of the following authentication methods. Be sure to use only one authentication method.
-
-      - `--azure-private-secret` specifies an existing Kubernetes secret that has Azure credentials. This flag has a companion flag, `--azure-private-secret-key`. Its default value is `credentials`, but you can customize it for secrets that have non-standard key names.
-
-      - `--azure-pls-managed-identity-client-id` specifies the client ID of a managed identity for Private Link operations through Workload Identity federation. If you specify this flag, you must also include the `--azure-pls-subscription-id` flag, which specifies the Azure subscription ID for Private Link operations.
-
-      </div>
+      > [!NOTE]
+      > Besides using the `--azure-private-creds` flag, you can use one of the following authentication methods. Be sure to use only one authentication method.
+      >
+      > - `--azure-private-secret` specifies an existing Kubernetes secret that has Azure credentials. This flag has a companion flag, `--azure-private-secret-key`. Its default value is `credentials`, but you can customize it for secrets that have non-standard key names.
+      >
+      > - `--azure-pls-managed-identity-client-id` specifies the client ID of a managed identity for Private Link operations through Workload Identity federation. If you specify this flag, you must also include the `--azure-pls-subscription-id` flag, which specifies the Azure subscription ID for Private Link operations.
 
     - `--azure-pls-resource-group` specifies the resource group where the Private Link resources are to be created. This resource group is the same as the resource group of the infrastructure for the management cluster.
 
     - `--external-dns-credentials` specifies the path to a file that contains DNS credentials. If preferred, you can use the `--external-dns-secret` flag instead to specify a Kubernetes secret that has DNS credentials.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Setting up an OIDC issuer](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-oidc_hcp-deploy-azure)
+
+</div>
 
 ## Configuring IAM resources for a private hosted cluster
 
 Create Workload Identities so that your private clusters can manage private endpoints and private DNS zones.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have an OpenShift Container Platform management cluster on Azure that has the HyperShift Operator installed.
 
@@ -1038,6 +1272,16 @@ Create Workload Identities so that your private clusters can manage private endp
 - If you are using external DNS, the `jq` command-line JSON processor is installed.
 
 - You configured an OIDC issuer. For more information, see "Setting up an OIDC issuer".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set your environment variables:
 
@@ -1098,13 +1342,33 @@ Create Workload Identities so that your private clusters can manage private endp
 
     The command creates 8 Workload Identities. For `Private` and `PublicAndPrivate` clusters, the Control Plane Operator identity is used to create and manage private endpoints, private DNS zones, Azure Virtual Network (VNet) links, and DNS A records. The Control Plane Identity is assigned the `Contributor` role by default. To use a more restrictive role, use the `--assign-custom-hcp-roles` flag.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Setting up an OIDC issuer](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-oidc_hcp-deploy-azure)
 
 - [Creating Azure Workload Identities](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-workload-id_hcp-deploy-azure)
 
+</div>
+
 ## Creating infrastructure for a private hosted cluster
 
 Set up infrastructure so that you can create private hosted clusters.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have an OpenShift Container Platform management cluster on Azure that has the HyperShift Operator installed.
 
@@ -1115,6 +1379,16 @@ Set up infrastructure so that you can create private hosted clusters.
 - If you are using external DNS, the `yq` command-line YAML processor is installed.
 
 - You configured an OIDC issuer. For more information, see "Setting up an OIDC issuer".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set your environment variables:
 
@@ -1179,11 +1453,31 @@ Set up infrastructure so that you can create private hosted clusters.
 
         Note the resource IDs because you need them to create the private hosted cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Setting up an OIDC issuer](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-oidc_hcp-deploy-azure)
+
+</div>
 
 ## Creating a private Azure hosted cluster
 
 Create a private hosted cluster to ensure that the communication between compute nodes and the hosted control plane occurs over Azure Private Link.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You configured a subnet, as described in "Preparing a subnet for a private hosted cluster on Azure".
 
@@ -1194,6 +1488,16 @@ Create a private hosted cluster to ensure that the communication between compute
 - You created infrastructure, as described in "Creating infrastructure for a private hosted cluster".
 
 - This procedure relies on environment variables that you created in the prerequisite procedures. Be sure to complete this procedure in the same terminal where you already defined the environment variables.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the private hosted cluster by entering the following command:
 
@@ -1236,7 +1540,15 @@ Create a private hosted cluster to ensure that the communication between compute
 
         If you need to allow `Private` endpoint connections from Azure subscriptions other than the hosted cluster’s subscription, use the following flag: `--endpoint-access-private-additional-allowed-subscriptions "sub-id-1, sub-id-2"`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the Private Link resources by entering the following command:
 
@@ -1250,13 +1562,13 @@ Create a private hosted cluster to ensure that the communication between compute
     $ oc get azureprivatelinkservices -n clusters-${CLUSTER_NAME} -o yaml
     ```
 
-    | Condition                            | Description                                                     |
-    |--------------------------------------|-----------------------------------------------------------------|
-    | `AzureInternalLoadBalancerAvailable` | The internal load balancer has a front-end IP address.          |
-    | `AzurePLSCreated`                    | Private Link is created in the management cluster.              |
-    | `AzurePrivateEndpointAvailable`      | Private endpoint is created in the hosted cluster VNet.         |
-    | `AzurePrivateDNSAvailable`           | Private DNS zones and A records are created.                    |
-    | `AzurePrivateLinkServiceAvailable`   | All components are ready and private connectivity is available. |
+    | Condition | Description |
+    |----|----|
+    | `AzureInternalLoadBalancerAvailable` | The internal load balancer has a front-end IP address. |
+    | `AzurePLSCreated` | Private Link is created in the management cluster. |
+    | `AzurePrivateEndpointAvailable` | Private endpoint is created in the hosted cluster VNet. |
+    | `AzurePrivateDNSAvailable` | Private DNS zones and A records are created. |
+    | `AzurePrivateLinkServiceAvailable` | All components are ready and private connectivity is available. |
 
     Setup progress conditions
 
@@ -1272,6 +1584,16 @@ Create a private hosted cluster to ensure that the communication between compute
     $ oc wait --for=condition=Available hostedcluster/${CLUSTER_NAME} -n clusters --timeout=30m
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Preparing a subnet for a private hosted cluster on Azure](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-private-subnet_hcp-deploy-azure)
 
 - [Installing the HyperShift Operator with private platform support](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-private-operator_hcp-deploy-azure)
@@ -1280,13 +1602,31 @@ Create a private hosted cluster to ensure that the communication between compute
 
 - [Creating infrastructure for a private hosted cluster](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-private-infra_hcp-deploy-azure)
 
+</div>
+
 ## Accessing a private Azure hosted cluster
 
 After you create a private hosted cluster, you need to take additional steps to access it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You completed the steps in "Creating a private Azure hosted cluster".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To access a private hosted cluster by generating a `kubeconfig` file, enter the following command:
 
@@ -1313,11 +1653,8 @@ After you create a private hosted cluster, you need to take additional steps to 
 
 - If you have a virtual machine (VM) in an Azure Virtual Network (VNet) that is peered with the hosted cluster’s VNet, you can access the API server, but you must first link the private DNS zones to the peered VNet.
 
-  <div class="note">
-
-  The Control Plane Operator links private DNS zones only to the hosted cluster’s VNet. If you want to resolve the API server hostname from a peered VNet, you must manually link the private DNS zones to that VNet as shown in the following steps. Otherwise, DNS resolution fails from the peered VNet.
-
-  </div>
+  > [!NOTE]
+  > The Control Plane Operator links private DNS zones only to the hosted cluster’s VNet. If you want to resolve the API server hostname from a peered VNet, you must manually link the private DNS zones to that VNet as shown in the following steps. Otherwise, DNS resolution fails from the peered VNet.
 
   1.  Link the private DNS zone to your peered VNet as shown in the following example:
 
@@ -1353,13 +1690,31 @@ After you create a private hosted cluster, you need to take additional steps to 
       $ KUBECONFIG=${CLUSTER_NAME}-kubeconfig oc get nodes
       ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating a private Azure hosted cluster](../../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-azure-private-hosted_hcp-deploy-azure)
+
+</div>
 
 ## Troubleshooting private hosted clusters on Azure
 
 If your private hosted cluster gets stuck, check the `AzurePrivateLinkService` custom resource conditions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enter the following command to check the Private Link conditions:
 
@@ -1371,14 +1726,16 @@ If your private hosted cluster gets stuck, check the `AzurePrivateLinkService` c
 
 2.  Review the output and compare it to the following condition table:
 
-    | Condition                                      | Possible cause                                                                                                                                                                            |
-    |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `AzureInternalLoadBalancerAvailable` = `False` | The `private-router` service has not received an internal load balancer IP address yet. Check the service status and Azure networking.                                                    |
-    | `AzurePLSCreated` = `False`                    | Private Link creation failed. Check the NAT subnet policies, credentials, and the HyperShift Operator logs.                                                                               |
-    | `AzurePrivateEndpointAvailable` = `False`      | Private endpoint creation failed or the connection was not approved. Check the Private Link auto-approval list and the Control Plane Operator logs.                                       |
-    | `AzurePrivateDNSAvailable` = `False`           | The DNS zone or record creation failed. In the Azure subscription that stores the infrastructure resources for the hosted cluster, check the Control Plane Operator identity permissions. |
+    | Condition | Possible cause |
+    |----|----|
+    | `AzureInternalLoadBalancerAvailable` = `False` | The `private-router` service has not received an internal load balancer IP address yet. Check the service status and Azure networking. |
+    | `AzurePLSCreated` = `False` | Private Link creation failed. Check the NAT subnet policies, credentials, and the HyperShift Operator logs. |
+    | `AzurePrivateEndpointAvailable` = `False` | Private endpoint creation failed or the connection was not approved. Check the Private Link auto-approval list and the Control Plane Operator logs. |
+    | `AzurePrivateDNSAvailable` = `False` | The DNS zone or record creation failed. In the Azure subscription that stores the infrastructure resources for the hosted cluster, check the Control Plane Operator identity permissions. |
 
     Private cluster stuck conditions
+
+</div>
 
 # Example: Autoscaling a hosted cluster on Azure
 
@@ -1388,11 +1745,8 @@ When you scale up `NodePool` objects, the Cluster API Provider for Azure provisi
 
 To configure autoscaling for a hosted cluster on Azure, you edit the `spec.autoscaling` parameters in the `HostedCluster` resource. The following example shows a `HostedCluster` resource with 2 Azure node pools.
 
-<div class="note">
-
-This example shows only the autoscaling-related fields.
-
-</div>
+> [!NOTE]
+> This example shows only the autoscaling-related fields.
 
 ``` yaml
 apiVersion: hypershift.openshift.io/v1beta1
@@ -1449,11 +1803,8 @@ spec:
 
   On Amazon Web Services (AWS) and Azure hosted clusters running OpenShift Container Platform 4.18 or later, you can set `spec.autoScaling.min` to `0` for eligible tainted workload pools. For more information, see "Configuring autoscaling to and from zero on hosted control planes node pools".
 
-  <div class="note">
-
-  Earlier versions of this example stated that scaling from zero (`autoScaling.min: 0`) is not supported on Azure. OpenShift Container Platform 4.18 and later support `min: 0` on Amazon Web Services (AWS) and Azure when the HyperShift Operator backport is available.
-
-  </div>
+  > [!NOTE]
+  > Earlier versions of this example stated that scaling from zero (`autoScaling.min: 0`) is not supported on Azure. OpenShift Container Platform 4.18 and later support `min: 0` on Amazon Web Services (AWS) and Azure when the HyperShift Operator backport is available.
 
 # Deleting an Azure hosted cluster and its resources
 
@@ -1462,6 +1813,14 @@ If you no longer need a hosted cluster, you can remove it and its infrastructure
 ## Deleting a hosted cluster on Azure
 
 If you are no longer using a hosted cluster on Azure, you can delete it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete a hosted cluster, enter the following command:
 
@@ -1481,6 +1840,8 @@ If you are no longer using a hosted cluster on Azure, you can delete it.
 
   - `--preserve-resource-group` specifies that the infrastructure will be preserved. If you do not want to preserve the infrastructure, do not include this flag.
 
+</div>
+
 ## Deleting Azure infrastructure
 
 If you have Azure infrastructure without a hosted cluster, you can remove the infrastructure if you are not using it.
@@ -1490,6 +1851,14 @@ For example, this scenario can happen if you created the infrastructure standalo
 You can delete the entire infrastructure, or delete cluster-specific resources but preserve the main resource group. Preserving the main resource group is helpful when you have other resources in the same resource group that you want to keep.
 
 If you have a hosted cluster and want to delete infrastructure while you delete the hosted cluster, follow the steps in "Deleting a hosted cluster on Azure", but omit the `--preserve-resource-group` flag.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete the infrastructure, enter one of the following commands:
 
@@ -1526,15 +1895,33 @@ If you have a hosted cluster and want to delete infrastructure while you delete 
 
     - `--preserve-resource-group` specifies that you want to preserve the resource group.
 
+</div>
+
 ## Deleting Azure Workload Identities
 
 As part of the process to delete a hosted cluster on Azure, you need to delete the Workload Identities.
 
 To delete the Workload Identities, you enter a command on the hosted control planes command-line interface, `hcp`. The command uses the file that was generated when you created the Workload Identities to identify the identities to delete. Both the managed identities and their federated credentials are removed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - If you created infrastructure by using the Workload Identities, delete the infrastructure before you delete the identities.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enter the following command:
 
@@ -1563,6 +1950,8 @@ To delete the Workload Identities, you enter a command on the hosted control pla
 
   - `<my_cloud_environment>` specifies the Azure cloud environment. Setting the `--cloud` flag is optional. The default value is `AzurePublicCloud`.
 
+</div>
+
 ## Deleting a private hosted cluster on Azure
 
 If you are no longer using a private hosted cluster on Azure, you can delete it.
@@ -1574,6 +1963,14 @@ The deletion process automatically cleans up Private Link resources in the follo
 2.  The `hcp destroy` command removes role-based access control (RBAC) role assignments.
 
 3.  The HyperShift Operator removes Private Link.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete a private hosted cluster, enter the following command:
 
@@ -1592,3 +1989,5 @@ The deletion process automatically cleans up Private Link resources in the follo
   - `--resource-group-name` specifies the name of the resource group where you created identities.
 
   - `--dns-zone-rg-name` specifies the name of the resource group that contains your DNS zone.
+
+</div>

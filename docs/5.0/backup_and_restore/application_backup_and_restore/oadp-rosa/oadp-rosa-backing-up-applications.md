@@ -22,13 +22,18 @@ This process is performed in the following two stages:
 
 Prepare and configure an Amazon Web Services account to install OpenShift API for Data Protection (OADP).
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the following environment variables by running the following commands:
 
-    <div class="important">
-
-    Change the cluster name to match your cluster, and ensure you are logged into the cluster as an administrator. Ensure that all fields are outputted correctly before continuing.
-
-    </div>
+    > [!IMPORTANT]
+    > Change the cluster name to match your cluster, and ensure you are logged into the cluster as an administrator. Ensure that all fields are outputted correctly before continuing.
 
     ``` terminal
     $ export CLUSTER_NAME=<my_cluster>
@@ -85,11 +90,8 @@ Prepare and configure an Amazon Web Services account to install OpenShift API fo
 
     2.  Enter the following command to create the policy JSON file and then create the policy:
 
-        <div class="note">
-
-        If the policy ARN is not found, the command creates the policy. If the policy ARN already exists, the `if` statement intentionally skips the policy creation.
-
-        </div>
+        > [!NOTE]
+        > If the policy ARN is not found, the command creates the policy. If the policy ARN already exists, the `if` statement intentionally skips the policy creation.
 
         ``` terminal
         $ if [[ -z "${POLICY_ARN}" ]]; then
@@ -199,33 +201,50 @@ Prepare and configure an Amazon Web Services account to install OpenShift API fo
       --policy-arn ${POLICY_ARN}
     ```
 
+</div>
+
 # Install the OADP Operator and provide the IAM role
 
 Install OpenShift API for Data Protection (OADP) on clusters with AWS STS. AWS Security Token Service (AWS STS) is a global web service that provides short-term credentials for IAM or federated users. OpenShift Container Platform with STS is the recommended credential mode.
 
-<div class="important">
+> [!IMPORTANT]
+> Restic is unsupported.
+>
+> Kopia file system backup (FSB) is supported when backing up file systems that do not support Container Storage Interface (CSI) snapshots.
+>
+> Example file systems include the following:
+>
+> - Amazon Elastic File System (EFS)
+>
+> - Network File System (NFS)
+>
+> - `emptyDir` volumes
+>
+> - Local volumes
+>
+> For backing up volumes, OADP on ROSA with AWS STS recommends native snapshots and Container Storage Interface (CSI) snapshots. Data Mover backups are supported, but can be slower than native snapshots.
+>
+> In an Amazon ROSA cluster that uses STS authentication, restoring backed-up data in a different AWS region is not supported.
 
-Restic is unsupported.
+<div>
 
-Kopia file system backup (FSB) is supported when backing up file systems that do not support Container Storage Interface (CSI) snapshots.
+<div class="title">
 
-Example file systems include the following:
-
-- Amazon Elastic File System (EFS)
-
-- Network File System (NFS)
-
-- `emptyDir` volumes
-
-- Local volumes
-
-For backing up volumes, OADP on ROSA with AWS STS recommends native snapshots and Container Storage Interface (CSI) snapshots. Data Mover backups are supported, but can be slower than native snapshots.
-
-In an Amazon ROSA cluster that uses STS authentication, restoring backed-up data in a different AWS region is not supported.
+Prerequisites
 
 </div>
 
 - An OpenShift Container Platform cluster with the required access and tokens. For instructions, see the previous procedure *Preparing AWS credentials for OADP*. If you plan to use two different clusters for backing up and restoring, you must prepare AWS credentials, including `ROLE_ARN`, for each cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an OpenShift Container Platform secret from your AWS token file by entering the following commands:
 
@@ -255,13 +274,10 @@ In an Amazon ROSA cluster that uses STS authentication, restoring backed-up data
           --from-file=${SCRATCH}/credentials
         ```
 
-        <div class="note">
-
-        In OpenShift Container Platform versions 4.15 and later, the OADP Operator supports a new standardized STS workflow through the Operator Lifecycle Manager (OLM) and Cloud Credentials Operator (CCO). In this workflow, you do not need to create the above secret, you only need to supply the role ARN during the installation of OLM-managed operators using the OpenShift Container Platform web console, for more information see *Installing from software catalog using the web console*.
-
-        The preceding secret is created automatically by CCO.
-
-        </div>
+        > [!NOTE]
+        > In OpenShift Container Platform versions 4.15 and later, the OADP Operator supports a new standardized STS workflow through the Operator Lifecycle Manager (OLM) and Cloud Credentials Operator (CCO). In this workflow, you do not need to create the above secret, you only need to supply the role ARN during the installation of OLM-managed operators using the OpenShift Container Platform web console, for more information see *Installing from software catalog using the web console*.
+        >
+        > The preceding secret is created automatically by CCO.
 
 2.  Install the OADP Operator:
 
@@ -317,19 +333,16 @@ In an Amazon ROSA cluster that uses STS authentication, restoring backed-up data
     gp3-csi (default)   ebs.csi.aws.com         Delete          WaitForFirstConsumer   true                   4d21h
     ```
 
-    <div class="note">
-
-    The following storage classes will work:
-
-    - gp3-csi
-
-    - gp2-csi
-
-    - gp3
-
-    - gp2
-
-    </div>
+    > [!NOTE]
+    > The following storage classes will work:
+    >
+    > - gp3-csi
+    >
+    > - gp2-csi
+    >
+    > - gp3
+    >
+    > - gp2
 
     If the application or applications that are being backed up are all using persistent volumes (PVs) with Container Storage Interface (CSI), it is advisable to include the CSI plugin in the OADP DPA configuration.
 
@@ -446,13 +459,12 @@ In an Amazon ROSA cluster that uses STS authentication, restoring backed-up data
 
         You are now ready to back up and restore OpenShift Container Platform applications, as described in *Backing up applications*.
 
-        <div class="important">
-
-        The `enable` parameter of `restic` is set to `false` in this configuration, because OADP does not support Restic in ROSA environments.
-
-        </div>
+        > [!IMPORTANT]
+        > The `enable` parameter of `restic` is set to `false` in this configuration, because OADP does not support Restic in ROSA environments.
 
     If you want to use two different clusters for backing up and restoring, the two clusters must have the same AWS S3 storage names in both the cloud storage CR and the OADP `DataProtectionApplication` configuration.
+
+</div>
 
 # Update the IAM role ARN in the OADP Operator subscription
 
@@ -460,9 +472,27 @@ Update the OADP Operator subscription to fix an installation error due to incorr
 
 While installing the OADP Operator on a ROSA Security Token Service (STS) cluster, if you provide an incorrect IAM role Amazon Resource Name (ARN), the `openshift-adp-controller` pod gives an error. The credential requests that are generated contain the wrong IAM role ARN. To update the credential requests object with the correct IAM role ARN, you can edit the OADP Operator subscription and patch the IAM role ARN with the correct value. By editing the OADP Operator subscription, you do not have to uninstall and reinstall OADP to update the IAM role ARN.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a Red Hat OpenShift Service on AWS STS cluster with the required access and tokens.
 
 - You have installed OADP on the ROSA STS cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To verify that the OADP subscription has the wrong IAM role ARN environment variable set, run the following command:
 
@@ -470,9 +500,11 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
     $ oc get sub -o yaml redhat-oadp-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example subscription**
+    <div class="title">
+
+    Example subscription
 
     </div>
 
@@ -502,6 +534,8 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
       startingCSV: oadp-operator.v1.4.2
     ```
 
+    </div>
+
     where:
 
     `ROLEARN`
@@ -524,9 +558,11 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
     $ oc get secret cloud-credentials -o jsonpath='{.data.credentials}' | base64 -d
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -536,6 +572,8 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
     role_arn = arn:aws:iam::160.....6956:role/oadprosa.....8wlf
     web_identity_token_file = /var/run/secrets/openshift/serviceaccount/token
     ```
+
+    </div>
 
 4.  Configure the `DataProtectionApplication` custom resource (CR) manifest file as shown in the following example:
 
@@ -581,9 +619,11 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
     $  oc get dpa -n openshift-adp -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `DataProtectionApplication`**
+    <div class="title">
+
+    Example `DataProtectionApplication`
 
     </div>
 
@@ -600,15 +640,19 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
           type: Reconciled
     ```
 
+    </div>
+
 7.  Verify that the `BackupStorageLocation` CR is in an available state by running the following command:
 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `BackupStorageLocation`**
+    <div class="title">
+
+    Example `BackupStorageLocation`
 
     </div>
 
@@ -616,6 +660,18 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
     NAME       PHASE       LAST VALIDATED   AGE   DEFAULT
     ts-dpa-1   Available   3s               6s    true
     ```
+
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing from the software catalog using the web console](../../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-from-software-catalog-using-web-console_olm-installing-operators-in-namespace)
 
@@ -625,11 +681,21 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
 
 - [Red Hat OpenShift Cluster Manager](https://docs.openshift.com/dedicated/ocm/ocm-overview.html)
 
+</div>
+
 # Example: Performing a backup with OADP and OpenShift Container Platform
 
 Perform a backup by using OpenShift API for Data Protection (OADP) with OpenShift Container Platform. The following example `hello-world` application has no persistent volumes (PVs) attached.
 
 Either Data Protection Application (DPA) configuration will work.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a workload to back up by running the following commands:
 
@@ -765,15 +831,22 @@ Either Data Protection Application (DPA) configuration will work.
     Hello OpenShift!
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
 
-    For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
-
-    </div>
+</div>
 
 # Clean up a cluster after a backup with OADP and ROSA STS
 
 Uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from the hello-world example.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the workload by running the following command:
 
@@ -793,15 +866,12 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     $ oc -n openshift-adp delete cloudstorage ${CLUSTER_NAME}-oadp
     ```
 
-    <div class="warning">
-
-    If this command hangs, you might need to delete the finalizer by running the following command:
-
-    ``` terminal
-    $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
-    ```
-
-    </div>
+    > [!WARNING]
+    > If this command hangs, you might need to delete the finalizer by running the following command:
+    >
+    > ``` terminal
+    > $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
+    > ```
 
 4.  If the Operator is no longer required, remove it by running the following command:
 
@@ -854,3 +924,5 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     ``` terminal
     $ aws iam delete-role --role-name "${ROLE_NAME}"
     ```
+
+</div>

@@ -12,11 +12,8 @@ You can use `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources in O
 
 - Implement egress traffic control towards external destinations outside the cluster using `networks` peer
 
-<div class="note">
-
-For ANP and BANP, `nodes` and `networks` peers can be specified for egress rules only.
-
-</div>
+> [!NOTE]
+> For ANP and BANP, `nodes` and `networks` peers can be specified for egress rules only.
 
 ## Using nodes peer to control egress traffic to cluster nodes
 
@@ -24,9 +21,11 @@ Using the `nodes` peer administrators can control egress traffic from pods to no
 
 The following example allows egress traffic to the Kubernetes API server on port `6443` by any of the namespaces with a `restricted`, `confidential`, or `internal` level of security using the node selector peer. It also denies traffic to all worker nodes in your cluster from any of the namespaces with a `restricted`, `confidential`, or `internal` level of security.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of ANP `Allow` egress using `nodes` peer**
+<div class="title">
+
+Example of ANP `Allow` egress using `nodes` peer
 
 </div>
 
@@ -71,6 +70,8 @@ spec:
         - internal
 ```
 
+</div>
+
 where:
 
 `spec.egress.to.nodes.matchExpressions`
@@ -88,17 +89,16 @@ Cluster administrators can use CIDR ranges in `networks` peer and apply a policy
 
 The following example uses `networks` peer and combines ANP and BANP policies to restrict egress traffic.
 
-<div class="important">
+> [!IMPORTANT]
+> Use the empty selector ({}) in the `namespace` field for ANP and BANP with caution. When using an empty selector, it also selects OpenShift namespaces.
+>
+> If you use values of `0.0.0.0/0` in a ANP or BANP `Deny` rule, you must set a higher priority ANP `Allow` rule to necessary destinations before setting the `Deny` to `0.0.0.0/0`.
 
-Use the empty selector ({}) in the `namespace` field for ANP and BANP with caution. When using an empty selector, it also selects OpenShift namespaces.
+<div class="formalpara">
 
-If you use values of `0.0.0.0/0` in a ANP or BANP `Deny` rule, you must set a higher priority ANP `Allow` rule to necessary destinations before setting the `Deny` to `0.0.0.0/0`.
+<div class="title">
 
-</div>
-
-<div class="formalpara-title">
-
-**Example of ANP and BANP using `networks` peers**
+Example of ANP and BANP using `networks` peers
 
 </div>
 
@@ -155,6 +155,8 @@ spec:
 ---
 ```
 
+</div>
+
 where:
 
 - The `spec.egress.to.networks` field for the egress rule with the name `deny-egress-to-external-dns-servers` specifies a range of CIDR networks outside of the cluster.
@@ -177,9 +179,11 @@ Collectively the `network-as-egress-peer` ANP and `default` BANP using `networks
 
 Cluster administrators can combine `nodes` and `networks` peer in your ANP and BANP policies.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of `nodes` and `networks` peer**
+<div class="title">
+
+Example of `nodes` and `networks` peer
 
 </div>
 
@@ -237,6 +241,8 @@ spec:
       matchLabels:
         apps: all-apps
 ```
+
+</div>
 
 where:
 

@@ -2,13 +2,10 @@ You can install an OpenShift Container Platform cluster in a disconnected enviro
 
 The following sections outline all of the supported methods for installing a cluster in a disconnected environment.
 
-<div class="note">
-
-To learn about other requirements for installing a cluster using a particular method, be sure to review other content in the procedure’s respective section of the documentation.
-
-For example, if you plan to install a cluster on AWS with installer-provisioned infrastructure, see "Configuring an AWS account" and "Preparing to install a cluster on AWS".
-
-</div>
+> [!NOTE]
+> To learn about other requirements for installing a cluster using a particular method, be sure to review other content in the procedure’s respective section of the documentation.
+>
+> For example, if you plan to install a cluster on AWS with installer-provisioned infrastructure, see "Configuring an AWS account" and "Preparing to install a cluster on AWS".
 
 # Install a cluster with the Agent-based Installer
 

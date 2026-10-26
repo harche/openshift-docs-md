@@ -8,7 +8,25 @@ You can delete an OpenShift Update Service application by using the OpenShift Co
 
 You can use the OpenShift Container Platform web console to delete an OpenShift Update Service application by using the OpenShift Update Service Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OpenShift Update Service Operator has been installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, click **Ecosystem** → **Installed Operators**.
 
@@ -20,9 +38,19 @@ You can use the OpenShift Container Platform web console to delete an OpenShift 
 
 5.  From the **Delete UpdateService?** confirmation dialog, click **Delete** to confirm the deletion.
 
+</div>
+
 ## Deleting an OpenShift Update Service application by using the CLI
 
 You can use the OpenShift CLI (`oc`) to delete an OpenShift Update Service application.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the OpenShift Update Service application name using the namespace the OpenShift Update Service application was created in, for example, `openshift-update-service`:
 
@@ -30,9 +58,11 @@ You can use the OpenShift CLI (`oc`) to delete an OpenShift Update Service appli
     $ oc get updateservice -n openshift-update-service
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -41,21 +71,29 @@ You can use the OpenShift CLI (`oc`) to delete an OpenShift Update Service appli
     service   6s
     ```
 
+    </div>
+
 2.  Delete the OpenShift Update Service application using the `NAME` value from the previous step and the namespace the OpenShift Update Service application was created in, for example, `openshift-update-service`:
 
     ``` terminal
     $ oc delete updateservice service -n openshift-update-service
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     updateservice.updateservice.operator.openshift.io "service" deleted
     ```
+
+    </div>
+
+</div>
 
 # Uninstall the OpenShift Update Service Operator
 
@@ -65,7 +103,25 @@ You can uninstall the OpenShift Update Service Operator by using the OpenShift C
 
 You can use the OpenShift Container Platform web console to uninstall the OpenShift Update Service Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - All OpenShift Update Service applications have been deleted.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, click **Ecosystem** → **Installed Operators**.
 
@@ -73,11 +129,31 @@ You can use the OpenShift Container Platform web console to uninstall the OpenSh
 
 3.  From the **Uninstall Operator?** confirmation dialog, click **Uninstall** to confirm the uninstallation.
 
+</div>
+
 ## Uninstall the OpenShift Update Service Operator by using the CLI
 
 You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - All OpenShift Update Service applications have been deleted.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the project containing the OpenShift Update Service Operator, for example, `openshift-update-service`:
 
@@ -85,9 +161,11 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     $ oc project openshift-update-service
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -95,15 +173,19 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     Now using project "openshift-update-service" on server "https://example.com:6443".
     ```
 
+    </div>
+
 2.  Get the name of the OpenShift Update Service Operator operator group:
 
     ``` terminal
     $ oc get operatorgroup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -112,15 +194,19 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     openshift-update-service-fprx2   4m41s
     ```
 
+    </div>
+
 3.  Delete the operator group, for example, `openshift-update-service-fprx2`:
 
     ``` terminal
     $ oc delete operatorgroup openshift-update-service-fprx2
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -128,15 +214,19 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     operatorgroup.operators.coreos.com "openshift-update-service-fprx2" deleted
     ```
 
+    </div>
+
 4.  Get the name of the OpenShift Update Service Operator subscription:
 
     ``` terminal
     $ oc get subscription
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -145,15 +235,19 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     update-service-operator   update-service-operator   updateservice-index-catalog   v1
     ```
 
+    </div>
+
 5.  Using the `Name` value from the previous step, check the current version of the subscribed OpenShift Update Service Operator in the `currentCSV` field:
 
     ``` terminal
     $ oc get subscription update-service-operator -o yaml | grep " currentCSV"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -161,15 +255,19 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
       currentCSV: update-service-operator.v0.0.1
     ```
 
+    </div>
+
 6.  Delete the subscription, for example, `update-service-operator`:
 
     ``` terminal
     $ oc delete subscription update-service-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -177,18 +275,26 @@ You can use the OpenShift CLI (`oc`) to uninstall the OpenShift Update Service O
     subscription.operators.coreos.com "update-service-operator" deleted
     ```
 
+    </div>
+
 7.  Delete the CSV for the OpenShift Update Service Operator using the `currentCSV` value from the previous step:
 
     ``` terminal
     $ oc delete clusterserviceversion update-service-operator.v0.0.1
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     clusterserviceversion.operators.coreos.com "update-service-operator.v0.0.1" deleted
     ```
+
+    </div>
+
+</div>

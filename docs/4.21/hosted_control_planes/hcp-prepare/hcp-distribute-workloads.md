@@ -1,10 +1,7 @@
 In hosted control planes for OpenShift Container Platform, cluster management is separate from cluster workload. As you prepare your deployment, ensure you know how you want to distribute your hosted cluster workloads.
 
-<div class="important">
-
-Do not use the management cluster for your workload. Workloads must not run on nodes where control planes run.
-
-</div>
+> [!IMPORTANT]
+> Do not use the management cluster for your workload. Workloads must not run on nodes where control planes run.
 
 # Node labeling for hosted control planes
 
@@ -24,9 +21,19 @@ Node labeling is also important for the following reasons:
 
 For more information about dedicating a node to a single hosted cluster, see "Labeling management cluster nodes".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 - [Network isolation for hosted clusters](../../hosted_control_planes/hcp-networking.xml#hcp-isolation-overview_hcp-networking)
+
+</div>
 
 # Label management cluster nodes
 
@@ -56,6 +63,14 @@ Pods for a hosted cluster have tolerations, and the scheduler uses affinity rule
 
 For the `ControllerAvailabilityPolicy` option, use `HighlyAvailable`, which is the default value that the hosted control planes command-line interface, `hcp`, deploys. When you use that option, you can schedule pods for each deployment within a hosted cluster across different failure domains by setting `topology.kubernetes.io/zone` as the topology key. Scheduling pods for a deployment within a hosted cluster across different failure domains is available only for highly available control planes.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To enable a hosted cluster to require its pods to be scheduled into infrastructure nodes, set the `HostedCluster.spec.nodeSelector` specification, as shown in the following example:
 
   ``` yaml
@@ -65,6 +80,8 @@ For the `ControllerAvailabilityPolicy` option, use `HighlyAvailable`, which is t
   ```
 
   This way, hosted control planes for each hosted cluster are eligible infrastructure node workloads, and you do not need to entitle the underlying OpenShift Container Platform nodes.
+
+</div>
 
 # Priority classes
 
@@ -84,17 +101,16 @@ You can create the pods in the management cluster in the following order from hi
 
 By default, pods for a hosted cluster tolerate the `control-plane` and `cluster` taints. However, you can also use custom taints on nodes so that hosted clusters can tolerate those taints on a per-hosted-cluster basis by setting the `HostedCluster.spec.tolerations` specification.
 
-<div class="important">
+> [!IMPORTANT]
+> Passing tolerations for a hosted cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Passing tolerations for a hosted cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div class="formalpara">
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
 
-</div>
-
-<div class="formalpara-title">
-
-**Example configuration**
+Example configuration
 
 </div>
 
@@ -106,17 +122,23 @@ For more information about the support scope of Red Hat Technology Preview featu
       operator: Exists
 ```
 
+</div>
+
 You can also set tolerations on the hosted cluster while you create a cluster by using the `--tolerations` hcp CLI argument.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CLI argument**
+<div class="title">
+
+Example CLI argument
 
 </div>
 
 ``` terminal
 --toleration="key=kubernetes.io/custom,operator=Exists,effect=NoSchedule"
 ```
+
+</div>
 
 For fine granular control of hosted cluster pod placement on a per-hosted-cluster basis, use custom tolerations with `nodeSelectors`. You can co-locate groups of hosted clusters and isolate them from other hosted clusters. You can also place hosted clusters in infra and control plane nodes.
 

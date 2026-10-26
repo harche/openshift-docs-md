@@ -69,11 +69,27 @@ The machine lifecycle proceeds in the following order. Interruptions due to erro
 
 To troubleshoot issues with a machine, you can find the phase of a machine by using the OpenShift CLI (`oc`).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - You have installed the `oc` CLI.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - List the machines on the cluster by running the following command:
 
@@ -81,9 +97,11 @@ To troubleshoot issues with a machine, you can find the phase of a machine by us
   $ oc get machine -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -97,13 +115,35 @@ To troubleshoot issues with a machine, you can find the phase of a machine by us
   mycluster-5kbsp-worker-us-west-1b-c8qzm   Running   m6i.xlarge   us-west-1   us-west-1b   4h51m
   ```
 
+  </div>
+
   The `PHASE` column of the output contains the phase of each machine.
+
+</div>
 
 # Determining the phase of a machine by using the web console
 
 To troubleshoot issues with a machine, you can find the phase of a machine by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the web console as a user with the `cluster-admin` role.
 
@@ -115,9 +155,11 @@ To troubleshoot issues with a machine, you can find the phase of a machine by us
 
 5.  In the YAML block, find the value of the `status.phase` field.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML snippet**
+    <div class="title">
+
+    Example YAML snippet
 
     </div>
 
@@ -131,7 +173,11 @@ To troubleshoot issues with a machine, you can find the phase of a machine by us
       phase: Running
     ```
 
+    </div>
+
     In this example, the phase is `Running`.
+
+</div>
 
 # Additional resources
 

@@ -12,6 +12,14 @@ Use these procedures if the following issues occur:
 
 `ServiceMonitor` resources enable you to determine how to use the metrics exposed by a service in user-defined projects. Follow the steps outlined in this procedure if you have created a `ServiceMonitor` resource but cannot see any corresponding metrics in the Metrics UI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -19,6 +27,16 @@ Use these procedures if the following issues occur:
 - You have enabled and configured monitoring for user-defined projects.
 
 - You have created a `ServiceMonitor` resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure that your project and resources are not excluded from user workload monitoring. The following examples use the `ns1` project.
 
@@ -28,11 +46,8 @@ Use these procedures if the following issues occur:
         $ oc get namespace ns1 --show-labels | grep 'openshift.io/user-monitoring=false'
         ```
 
-        <div class="note">
-
-        The default label set for user workload projects is `openshift.io/user-monitoring=true`. However, the label is not visible unless you manually apply it.
-
-        </div>
+        > [!NOTE]
+        > The default label set for user workload projects is `openshift.io/user-monitoring=true`. However, the label is not visible unless you manually apply it.
 
     2.  Verify that the `ServiceMonitor` and `PodMonitor` resources *do not* have the `openshift.io/user-monitoring=false` label attached. The following example checks the `prometheus-example-monitor` service monitor.
 
@@ -42,9 +57,11 @@ Use these procedures if the following issues occur:
 
     3.  If the label is attached, remove the label:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example of removing the label from the project**
+        <div class="title">
+
+        Example of removing the label from the project
 
         </div>
 
@@ -52,9 +69,13 @@ Use these procedures if the following issues occur:
         $ oc label namespace ns1 'openshift.io/user-monitoring-'
         ```
 
-        <div class="formalpara-title">
+        </div>
 
-        **Example of removing the label from the resource**
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example of removing the label from the resource
 
         </div>
 
@@ -62,15 +83,21 @@ Use these procedures if the following issues occur:
         $ oc -n ns1 label servicemonitor prometheus-example-monitor 'openshift.io/user-monitoring-'
         ```
 
-        <div class="formalpara-title">
+        </div>
 
-        **Example output**
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         namespace/ns1 unlabeled
         ```
+
+        </div>
 
 2.  Check that the corresponding labels match in the service and `ServiceMonitor` resource configurations. The following examples use the `prometheus-example-app` service, the `prometheus-example-monitor` service monitor, and the `ns1` project.
 
@@ -80,9 +107,11 @@ Use these procedures if the following issues occur:
         $ oc -n ns1 get service prometheus-example-app -o yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -91,15 +120,19 @@ Use these procedures if the following issues occur:
             app: prometheus-example-app
         ```
 
+        </div>
+
     2.  Check that the `matchLabels` definition in the `ServiceMonitor` resource configuration matches the label output in the previous step.
 
         ``` terminal
         $ oc -n ns1 get servicemonitor prometheus-example-monitor -o yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -119,11 +152,10 @@ Use these procedures if the following issues occur:
               app: prometheus-example-app
         ```
 
-        <div class="note">
-
-        You can check service and `ServiceMonitor` resource labels as a developer with view permissions for the project.
-
         </div>
+
+        > [!NOTE]
+        > You can check service and `ServiceMonitor` resource labels as a developer with view permissions for the project.
 
 3.  Inspect the logs for the Prometheus Operator in the `openshift-user-workload-monitoring` project.
 
@@ -133,9 +165,11 @@ Use these procedures if the following issues occur:
         $ oc -n openshift-user-workload-monitoring get pods
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -147,6 +181,8 @@ Use these procedures if the following issues occur:
         thanos-ruler-user-workload-0           3/3     Running   0          132m
         thanos-ruler-user-workload-1           3/3     Running   0          132m
         ```
+
+        </div>
 
     2.  Obtain the logs from the `prometheus-operator` container in the `prometheus-operator` pod. In the following example, the pod is called `prometheus-operator-776fcbbd56-2nbfm`:
 
@@ -199,15 +235,19 @@ Use these procedures if the following issues occur:
         $ oc -n openshift-user-workload-monitoring get deploy prometheus-operator -o yaml |  grep "log-level"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
                 - --log-level=debug
         ```
+
+        </div>
 
         Debug level logging will show all calls made by the Prometheus Operator.
 
@@ -217,13 +257,12 @@ Use these procedures if the following issues occur:
         $ oc -n openshift-user-workload-monitoring get pods
         ```
 
-        <div class="note">
-
-        If an unrecognized Prometheus Operator `loglevel` value is included in the config map, the `prometheus-operator` pod might not restart successfully.
-
-        </div>
+        > [!NOTE]
+        > If an unrecognized Prometheus Operator `loglevel` value is included in the config map, the `prometheus-operator` pod might not restart successfully.
 
     6.  Review the debug logs to see if the Prometheus Operator is using the `ServiceMonitor` resource. Review the logs for other related errors.
+
+</div>
 
 # Additional resources
 
@@ -247,19 +286,32 @@ You can use the following measures when Prometheus consumes a lot of disk:
 
 - **Reduce the number of unique time series that are created** by reducing the number of unbound attributes that are assigned to user-defined metrics.
 
-  <div class="note">
-
-  Using attributes that are bound to a limited set of possible values reduces the number of potential key-value pair combinations.
-
-  </div>
+  > [!NOTE]
+  > Using attributes that are bound to a limited set of possible values reduces the number of potential key-value pair combinations.
 
 - **Enforce limits on the number of samples that can be scraped** across user-defined projects. This requires cluster administrator privileges.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Observe** → **Metrics**.
 
@@ -303,9 +355,11 @@ You can use the following measures when Prometheus consumes a lot of disk:
         $ curl -H "Authorization: Bearer $TOKEN" -k "https://$HOST/api/v1/status/tsdb"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -318,6 +372,10 @@ You can use the following measures when Prometheus consumes a lot of disk:
         ...
         ```
 
+        </div>
+
+</div>
+
 # Additional resources
 
 - [Setting scrape intervals, evaluation intervals, and enforced limits for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/configuring-performance-and-scalability-uwm#setting-scrape-and-evaluation-intervals-limits-for-user-defined-projects_configuring-performance-and-scalability-uwm)
@@ -328,21 +386,36 @@ As a cluster administrator, you can resolve the `KubePersistentVolumeFillingUp` 
 
 The critical alert fires when a persistent volume (PV) claimed by a `prometheus-k8s-*` pod in the `openshift-monitoring` project has less than 3% total space remaining. This can cause Prometheus to function abnormally.
 
-<div class="note">
-
-There are two `KubePersistentVolumeFillingUp` alerts:
-
-- **Critical alert**: The alert with the `severity="critical"` label is triggered when the mounted PV has less than 3% total space remaining.
-
-- **Warning alert**: The alert with the `severity="warning"` label is triggered when the mounted PV has less than 15% total space remaining and is expected to fill up within four days.
-
-</div>
+> [!NOTE]
+> There are two `KubePersistentVolumeFillingUp` alerts:
+>
+> - **Critical alert**: The alert with the `severity="critical"` label is triggered when the mounted PV has less than 3% total space remaining.
+>
+> - **Warning alert**: The alert with the `severity="warning"` label is triggered when the mounted PV has less than 15% total space remaining and is expected to fill up within four days.
 
 To address this issue, you can remove Prometheus time-series database (TSDB) blocks to create more space for the PV.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the size of all TSDB blocks, sorted from oldest to newest, by running the following command:
 
@@ -355,9 +428,11 @@ To address this issue, you can remove Prometheus time-series database (TSDB) blo
 
     Replace `<prometheus_k8s_pod_name>` with the pod mentioned in the `KubePersistentVolumeFillingUp` alert description.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -373,6 +448,8 @@ To address this issue, you can remove Prometheus time-series database (TSDB) blo
     216M    01HTHXB60A7F239HN7S2TENPNS
     104M    01HTHMGRXGS0WXA3WATRXHR36B
     ```
+
+    </div>
 
 2.  Identify which and how many blocks could be removed, then remove the blocks. The following example command removes the three oldest Prometheus TSDB blocks from the `prometheus-k8s-0` pod:
 
@@ -396,9 +473,11 @@ To address this issue, you can remove Prometheus time-series database (TSDB) blo
 
     The following example output shows the mounted PV claimed by the `prometheus-k8s-0` pod that has 63% of space remaining:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -409,3 +488,7 @@ To address this issue, you can remove Prometheus time-series database (TSDB) blo
 
     Removing debug pod ...
     ```
+
+    </div>
+
+</div>

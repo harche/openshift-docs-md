@@ -2,19 +2,34 @@ The cert-manager Operator for Red Hat OpenShift is not installed in OpenShift Co
 
 The cert-manager Operator for Red Hat OpenShift sets the `features.operators.openshift.io/token-auth-aws`, `features.operators.openshift.io/token-auth-azure`, and `features.operators.openshift.io/token-auth-gcp` annotations in the `ClusterServiceVersion` custom resource of the Operator. The OpenShift Container Platform web console requires the credential details when these annotations are set. Currently, the Operator does not use the values collected by the OpenShift web console and you can provide any value when asked for the input. For example, when installing on the managed OpenShift Container Platform cluster, the `identity-provider-arn` is asked and any value can be provided to proceed.
 
-<div class="important">
-
-The cert-manager Operator for Red Hat OpenShift version 1.15 or later supports the `AllNamespaces`, `SingleNamespace`, and `OwnNamespace` installation modes. Earlier versions, such as 1.14, support only the `SingleNamespace` and `OwnNamespace` installation modes.
-
-</div>
+> [!IMPORTANT]
+> The cert-manager Operator for Red Hat OpenShift version 1.15 or later supports the `AllNamespaces`, `SingleNamespace`, and `OwnNamespace` installation modes. Earlier versions, such as 1.14, support only the `SingleNamespace` and `OwnNamespace` installation modes.
 
 # Install the cert-manager Operator for Red Hat OpenShift by using the web console
 
 You can use the web console to install the cert-manager Operator for Red Hat OpenShift.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -26,11 +41,8 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
 
 5.  Select the cert-manager Operator for Red Hat OpenShift version from **Version** drop-down list, and click **Install**.
 
-    <div class="note">
-
-    See supported cert-manager Operator for Red Hat OpenShift versions in the following "Additional resources" section.
-
-    </div>
+    > [!NOTE]
+    > See supported cert-manager Operator for Red Hat OpenShift versions in the following "Additional resources" section.
 
 6.  On the **Install Operator** page:
 
@@ -40,11 +52,8 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
 
         If the `cert-manager-operator` namespace does not exist, it is created for you.
 
-        <div class="note">
-
-        During the installation, the OpenShift Container Platform web console allows you to select between `AllNamespaces` and `SingleNamespace` installation modes. For installations with cert-manager Operator for Red Hat OpenShift version 1.15.0 or later, it is recommended to choose the `AllNamespaces` installation mode. `SingleNamespace` and `OwnNamespace` support will remain for earlier versions but will be deprecated in future versions.
-
-        </div>
+        > [!NOTE]
+        > During the installation, the OpenShift Container Platform web console allows you to select between `AllNamespaces` and `SingleNamespace` installation modes. For installations with cert-manager Operator for Red Hat OpenShift version 1.15.0 or later, it is recommended to choose the `AllNamespaces` installation mode. `SingleNamespace` and `OwnNamespace` support will remain for earlier versions but will be deprecated in future versions.
 
     3.  Select an **Update approval** strategy.
 
@@ -54,7 +63,15 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
 
     4.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
@@ -66,9 +83,11 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
     $ oc get pods -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -79,13 +98,35 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
     cert-manager-webhook-d4f79d7f7-9dg9w       1/1     Running   0          4m9s
     ```
 
+    </div>
+
     You can use the cert-manager Operator for Red Hat OpenShift only after cert-manager pods are up and running.
+
+</div>
 
 # Install the cert-manager Operator for Red Hat OpenShift by using the CLI
 
 You can install the cert-manager Operator for Red Hat OpenShift by using the command-line interface (CLI).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new project named `cert-manager-operator` by running the following command:
 
@@ -121,11 +162,8 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
           spec: {}
         ```
 
-        <div class="note">
-
-        Starting from cert-manager Operator for Red Hat OpenShift version 1.15.0, it is recommended to install the Operator using the `AllNamespaces` OLM `installMode`. Older versions can continue using the `SingleNamespace` or `OwnNamespace` OLM `installMode`. Support for `SingleNamespace` and `OwnNamespace` will be deprecated in future versions.
-
-        </div>
+        > [!NOTE]
+        > Starting from cert-manager Operator for Red Hat OpenShift version 1.15.0, it is recommended to install the Operator using the `AllNamespaces` OLM `installMode`. Older versions can continue using the `SingleNamespace` or `OwnNamespace` OLM `installMode`. Support for `SingleNamespace` and `OwnNamespace` will be deprecated in future versions.
 
     3.  Create the `OperatorGroup` object by running the following command:
 
@@ -157,7 +195,15 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
         $ oc create -f subscription.yaml
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the OLM subscription is created by running the following command:
 
@@ -165,9 +211,11 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
     $ oc get subscription -n cert-manager-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -176,15 +224,19 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
     openshift-cert-manager-operator   openshift-cert-manager-operator   redhat-operators   stable-v1
     ```
 
+    </div>
+
 2.  Verify whether the Operator is successfully installed by running the following command:
 
     ``` terminal
     $ oc get csv -n cert-manager-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -193,15 +245,19 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
     cert-manager-operator.v1.13.0   cert-manager Operator for Red Hat OpenShift   1.13.0    cert-manager-operator.v1.12.1   Succeeded
     ```
 
+    </div>
+
 3.  Verify that the status cert-manager Operator for Red Hat OpenShift is `Running` by running the following command:
 
     ``` terminal
     $ oc get pods -n cert-manager-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -210,15 +266,19 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
     cert-manager-operator-controller-manager-695b4d46cb-r4hld   2/2     Running   0          7m4s
     ```
 
+    </div>
+
 4.  Verify that the status of cert-manager pods is `Running` by running the following command:
 
     ``` terminal
     $ oc get pods -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -229,7 +289,21 @@ You can install the cert-manager Operator for Red Hat OpenShift by using the com
     cert-manager-webhook-9bc98cbdd-f972x       1/1     Running   0          7m40s
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Supported cert-manager Operator for Red Hat OpenShift versions](../cert_manager_operator/index.xml#cert-manager-operator-supported-versions_cert-manager-operator-about)
+
+</div>
 
 # Understand update channels of the cert-manager Operator for Red Hat OpenShift
 
@@ -243,11 +317,8 @@ Update channels are the mechanism by which you can declare the version of your c
 
 The `stable-v1` channel installs and updates the latest release version of the cert-manager Operator for Red Hat OpenShift. Select the `stable-v1` channel if you want to use the latest stable release of the cert-manager Operator for Red Hat OpenShift.
 
-<div class="note">
-
-The `stable-v1` channel is the default and suggested channel while installing the cert-manager Operator for Red Hat OpenShift.
-
-</div>
+> [!NOTE]
+> The `stable-v1` channel is the default and suggested channel while installing the cert-manager Operator for Red Hat OpenShift.
 
 The `stable-v1` channel offers the following update approval strategies:
 

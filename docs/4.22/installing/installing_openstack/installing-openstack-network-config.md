@@ -4,15 +4,30 @@ You can configure network settings for an OpenShift Container Platform on Red Ha
 
 After you install OpenShift Container Platform, configure Red Hat OpenStack Platform (RHOSP) to allow application network traffic by attaching a floating IP address to the ingress port.
 
-<div class="note">
+> [!NOTE]
+> You do not need to perform this procedure if you provided values for `platform.openstack.apiFloatingIP` and `platform.openstack.ingressFloatingIP` in the `install-config.yaml` file, or `os_api_fip` and `os_ingress_fip` in the `inventory.yaml` playbook, during installation. The floating IP addresses are already set.
 
-You do not need to perform this procedure if you provided values for `platform.openstack.apiFloatingIP` and `platform.openstack.ingressFloatingIP` in the `install-config.yaml` file, or `os_api_fip` and `os_ingress_fip` in the `inventory.yaml` playbook, during installation. The floating IP addresses are already set.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - OpenShift Container Platform cluster must be installed
 
 - Floating IP addresses are enabled as described in the OpenShift Container Platform on RHOSP installation documentation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Attach a floating IP address to the ingress port by completing the following commands:
 
@@ -34,19 +49,18 @@ You do not need to perform this procedure if you provided values for `platform.o
     *.apps.<cluster_name>.<base_domain>  IN  A  <apps_FIP>
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > If you do not control the DNS server but want to enable application access for non-production purposes, you can add these hostnames to the `/etc/hosts` file:
+    >
+    > ``` dns
+    > <apps_FIP> console-openshift-console.apps.<cluster name>.<base domain>
+    > <apps_FIP> integrated-oauth-server-openshift-authentication.apps.<cluster name>.<base domain>
+    > <apps_FIP> oauth-openshift.apps.<cluster name>.<base domain>
+    > <apps_FIP> prometheus-k8s-openshift-monitoring.apps.<cluster name>.<base domain>
+    > <apps_FIP> <app name>.apps.<cluster name>.<base domain>
+    > ```
 
-    If you do not control the DNS server but want to enable application access for non-production purposes, you can add these hostnames to the `/etc/hosts` file:
-
-    ``` dns
-    <apps_FIP> console-openshift-console.apps.<cluster name>.<base domain>
-    <apps_FIP> integrated-oauth-server-openshift-authentication.apps.<cluster name>.<base domain>
-    <apps_FIP> oauth-openshift.apps.<cluster name>.<base domain>
-    <apps_FIP> prometheus-k8s-openshift-monitoring.apps.<cluster name>.<base domain>
-    <apps_FIP> <app name>.apps.<cluster name>.<base domain>
-    ```
-
-    </div>
+</div>
 
 # Enabling OVS hardware offloading
 
@@ -54,23 +68,40 @@ For clusters that run on Red Hat OpenStack Platform (RHOSP), you can enable [Ope
 
 OVS is a multi-layer virtual switch that enables large-scale, multi-server network virtualization.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed a cluster on RHOSP that is configured for single-root input/output virtualization (SR-IOV).
 
 - You installed the SR-IOV Network Operator on your cluster.
 
 - You created two `hw-offload` type virtual function (VF) interfaces on your cluster.
 
-<div class="note">
+</div>
 
-Application layer gateway flows are broken in OpenShift Container Platform version 4.10, 4.11, and 4.12. Also, you cannot offload the application layer gateway flow for OpenShift Container Platform version 4.13.
+> [!NOTE]
+> Application layer gateway flows are broken in OpenShift Container Platform version 4.10, 4.11, and 4.12. Also, you cannot offload the application layer gateway flow for OpenShift Container Platform version 4.13.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create an `SriovNetworkNodePolicy` policy for the two `hw-offload` type VF interfaces that are on your cluster:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **The first virtual function interface**
+    <div class="title">
+
+    The first virtual function interface
 
     </div>
 
@@ -93,6 +124,8 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
       resourceName: "hwoffload9"
     ```
 
+    </div>
+
     where:
 
     `kind`
@@ -101,9 +134,11 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
     `spec.nicSelector.pfNames`
     Specifies the physical function (PF) name. Both interfaces must include PF names.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **The second virtual function interface**
+    <div class="title">
+
+    The second virtual function interface
 
     </div>
 
@@ -126,6 +161,8 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
       resourceName: "hwoffload10"
     ```
 
+    </div>
+
     where:
 
     `kind`
@@ -136,9 +173,11 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
 
 2.  Create `NetworkAttachmentDefinition` resources for the two interfaces:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **A `NetworkAttachmentDefinition` resource for the first interface**
+    <div class="title">
+
+    A `NetworkAttachmentDefinition` resource for the first interface
 
     </div>
 
@@ -155,9 +194,13 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
         }'
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **A `NetworkAttachmentDefinition` resource for the second interface**
+    <div class="formalpara">
+
+    <div class="title">
+
+    A `NetworkAttachmentDefinition` resource for the second interface
 
     </div>
 
@@ -174,11 +217,15 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
         }'
     ```
 
+    </div>
+
 3.  Use the interfaces that you created with a pod. For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **A pod that uses the two OVS offload interfaces**
+    <div class="title">
+
+    A pod that uses the two OVS offload interfaces
 
     </div>
 
@@ -190,7 +237,6 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
       namespace: default
       annotations:
         irq-load-balancing.crio.io: disable
-        cpu-quota.crio.io: disable
         k8s.v1.cni.cncf.io/resourceName: openshift.io/hwoffload9
         k8s.v1.cni.cncf.io/resourceName: openshift.io/hwoffload10
     spec:
@@ -200,13 +246,35 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
         image: quay.io/krister/centos8_nfv-container-dpdk-testpmd:latest
     ```
 
+    </div>
+
+</div>
+
 # Attaching an OVS hardware offloading network
 
 You can attach an Open vSwitch (OVS) hardware offloading network to your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your cluster is installed and running.
 
 - You provisioned an OVS hardware offloading network on Red Hat OpenStack Platform (RHOSP) to use with your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `network.yaml` from the following template:
 
@@ -234,23 +302,30 @@ You can attach an Open vSwitch (OVS) hardware offloading network to your cluster
     $ oc apply -f network.yaml
     ```
 
+</div>
+
 # Enabling IPv6 connectivity to pods on RHOSP
 
 To enable IPv6 connectivity between pods on additional networks across different nodes, disable port security for the IPv6 port of the server.
 
 Disabling port security removes the need to create allowed address pairs for each IPv6 address assigned to pods and enables traffic on the security group.
 
-<div class="important">
+> [!IMPORTANT]
+> Only the following IPv6 additional network configurations are supported:
+>
+> - SLAAC and host-device
+>
+> - SLAAC and MACVLAN
+>
+> - DHCP stateless and host-device
+>
+> - DHCP stateless and MACVLAN
 
-Only the following IPv6 additional network configurations are supported:
+<div>
 
-- SLAAC and host-device
+<div class="title">
 
-- SLAAC and MACVLAN
-
-- DHCP stateless and host-device
-
-- DHCP stateless and MACVLAN
+Procedure
 
 </div>
 
@@ -262,15 +337,22 @@ Only the following IPv6 additional network configurations are supported:
 
   Replace `<compute_ipv6_port>` with the IPv6 port of the compute server.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > This command removes security groups from the port and disables port security. Traffic restrictions are removed entirely from the port.
 
-  This command removes security groups from the port and disables port security. Traffic restrictions are removed entirely from the port.
-
-  </div>
+</div>
 
 # Create pods that have IPv6 connectivity on RHOSP
 
 After you enable and add IPv6 connectivity to pods, you can create pods that have secondary IPv6 connections.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define pods that use your IPv6 namespace and the annotation `k8s.v1.cni.cncf.io/networks: <additional_network_name>`, where `<additional_network_name>` is the name of the additional network. For example, as part of a `Deployment` object:
 
@@ -325,9 +407,19 @@ After you enable and add IPv6 connectivity to pods, you can create pods that hav
 
     Replace `<ipv6_enabled_resource>` with the file that contains your resource definition.
 
+</div>
+
 # Adding IPv6 connectivity to pods on RHOSP
 
 After you enable IPv6 connectivity in pods, add connectivity to the pods by using a Container Network Interface (CNI) configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To edit the Cluster Network Operator (CNO), enter the following command:
 
@@ -355,15 +447,22 @@ After you enable IPv6 connectivity in pods, add connectivity to the pods by usin
     `spec.additionalNetworks.rawCNIConfig`
     The interface in the network attachment `"master"` field can differ from `"ens4"` when more networks are configured or when a different kernel driver is used.
 
-    <div class="note">
-
-    If you are using stateful address mode, include the IP Address Management (IPAM) in the CNI configuration.
-
-    DHCPv6 is not supported by Multus.
-
-    </div>
+    > [!NOTE]
+    > If you are using stateful address mode, include the IP Address Management (IPAM) in the CNI configuration.
+    >
+    > DHCPv6 is not supported by Multus.
 
 3.  Save your changes and quit the text editor to commit your changes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the IPv6 connectivity was added to pods, enter the following command:
 
@@ -371,9 +470,11 @@ After you enable IPv6 connectivity in pods, add connectivity to the pods by usin
   $ oc get network-attachment-definitions -A
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -382,4 +483,8 @@ After you enable IPv6 connectivity in pods, add connectivity to the pods by usin
   ipv6            ipv6            21h
   ```
 
+  </div>
+
   You can now create pods that have secondary IPv6 connections.
+
+</div>

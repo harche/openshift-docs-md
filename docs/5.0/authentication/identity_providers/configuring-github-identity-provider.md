@@ -2,21 +2,15 @@ Configure the `github` identity provider so users can log in to OpenShift Contai
 
 You can use the GitHub integration to connect to either GitHub or GitHub Enterprise. For GitHub Enterprise integrations, you must provide the `hostname` of your instance and can optionally provide a `ca` certificate bundle to use in requests to the server.
 
-<div class="note">
-
-The following steps apply to both GitHub and GitHub Enterprise unless noted.
-
-</div>
+> [!NOTE]
+> The following steps apply to both GitHub and GitHub Enterprise unless noted.
 
 # Identity providers in OpenShift Container Platform
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
-<div class="note">
-
-OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 # About GitHub authentication
 
@@ -27,6 +21,14 @@ To prevent anyone with any GitHub user ID from logging in to your OpenShift Cont
 # Register a GitHub application
 
 Register an OAuth application on GitHub or GitHub Enterprise to obtain the client ID and client secret for the identity provider configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start the registration process by navigating to the appropriate page in GitHub or GitHub Enterprise:
 
@@ -52,9 +54,19 @@ Register an OAuth application on GitHub or GitHub Enterprise to obtain the clien
 
 7.  Click **Register application**. GitHub provides a client ID and a client secret. You need these values to complete the identity provider configuration.
 
+</div>
+
 # Create the secret
 
 Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -81,13 +93,20 @@ Create a `Secret` object in the `openshift-config` namespace to store the client
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
+</div>
+
 # Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
 
-<div class="note">
+> [!NOTE]
+> This procedure is required only for GitHub Enterprise.
 
-This procedure is required only for GitHub Enterprise.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -111,6 +130,8 @@ This procedure is required only for GitHub Enterprise.
     ```
 
     The CA must be stored in the `ca.crt` key of the `ConfigMap` object.
+
+</div>
 
 # Sample GitHub CR
 
@@ -167,17 +188,32 @@ Specifies the list of organizations. Either the `organizations` or `teams` field
 `spec.identityProviders.github.teams`
 Specifies the list of teams. Either the `teams` or `organizations` field must be set unless the `hostname` field is set, or if `mappingMethod` is set to `lookup`. Cannot be used in combination with the `organizations` field.
 
-<div class="note">
+> [!NOTE]
+> If `organizations` or `teams` is specified, only GitHub users that are members of at least one of the listed organizations are allowed to log in. If the GitHub OAuth application configured in `clientID` is not owned by the organization, an organization owner must grant third-party access to use this option. This can be done during the first GitHub login by the administrator of the organization, or from the GitHub organization settings.
 
-If `organizations` or `teams` is specified, only GitHub users that are members of at least one of the listed organizations are allowed to log in. If the GitHub OAuth application configured in `clientID` is not owned by the organization, an organization owner must grant third-party access to use this option. This can be done during the first GitHub login by the administrator of the organization, or from the GitHub organization settings.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
+</div>
+
 # Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to a OpenShift Container Platform cluster.
 
@@ -185,17 +221,24 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
 
 - You are logged in as an administrator.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    <div class="note">
-
-    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
-
-    </div>
+    > [!NOTE]
+    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
 
 2.  Obtain a token from the OAuth server.
 
@@ -209,11 +252,8 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     $ oc login --token=<token>
     ```
 
-    <div class="note">
-
-    This identity provider does not support logging in with a username and password.
-
-    </div>
+    > [!NOTE]
+    > This identity provider does not support logging in with a username and password.
 
 4.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
@@ -221,4 +261,16 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     $ oc whoami
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [GitHub authentication (GitHub documentation)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps)
+
+</div>

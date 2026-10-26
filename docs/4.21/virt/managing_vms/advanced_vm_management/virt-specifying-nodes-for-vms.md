@@ -1,8 +1,8 @@
 You can place virtual machines (VMs) on specific nodes by using node placement rules.
 
-# About node placement for virtual machines
+# Node placement rules for VMs
 
-To ensure that virtual machines (VMs) run on appropriate nodes, you can configure node placement rules.
+Node placement rules control which nodes a virtual machine (VM) can run on. Use them to spread VMs across nodes for fault tolerance, to keep related VMs together, or to place a VM on a node with hardware that the VM requires.
 
 You might want to do this if:
 
@@ -14,11 +14,8 @@ You might want to do this if:
 
 - You have a pod that adds capabilities to a node, and you want to place a VM on that node so that it can use those capabilities.
 
-<div class="note">
-
-Virtual machine placement relies on any existing node placement rules for workloads. If workloads are excluded from specific nodes on the component level, virtual machines cannot be placed on those nodes.
-
-</div>
+> [!NOTE]
+> Virtual machine placement relies on any existing node placement rules for workloads. If workloads are excluded from specific nodes on the component level, virtual machines cannot be placed on those nodes.
 
 You can use the following rule types in the `spec` field of a `VirtualMachine` manifest:
 
@@ -31,23 +28,27 @@ Enables you to use more expressive syntax to set rules that match nodes with vir
 `tolerations`
 Allows virtual machines to be scheduled on nodes that have matching taints. If a taint is applied to a node, that node only accepts virtual machines that tolerate the taint.
 
-<div class="note">
-
-Affinity rules only apply during scheduling. OpenShift Container Platform does not reschedule running workloads if the constraints are no longer met.
-
-</div>
+> [!NOTE]
+> Affinity rules only apply during scheduling. OpenShift Container Platform does not reschedule running workloads if the constraints are no longer met.
 
 # Node placement examples
 
 The following example YAML file snippets use `nodePlacement`, `affinity`, and `tolerations` fields to customize node placement for virtual machines.
 
-## Example: VM node placement with nodeSelector
+## VM node placement with nodeSelector
+
+Use a `nodeSelector` rule to run a virtual machine (VM) only on nodes that carry every label you specify.
 
 In this example, the virtual machine requires a node that has metadata containing both `example-key-1 = example-value-1` and `example-key-2 = example-value-2` labels.
 
-<div class="warning">
+> [!WARNING]
+> If there are no nodes that fit this description, the virtual machine is not scheduled.
 
-If there are no nodes that fit this description, the virtual machine is not scheduled.
+<div class="example">
+
+<div class="title">
+
+Example VM manifest
 
 </div>
 
@@ -65,11 +66,23 @@ spec:
 # ...
 ```
 
-## Example: VM node placement with pod affinity and pod anti-affinity
+</div>
+
+## VM node placement with pod affinity and pod anti-affinity
+
+Use pod affinity and pod anti-affinity rules to place a virtual machine (VM) on the same node as specific pods, or away from them.
 
 In this example, the VM must be scheduled on a node that has a running pod with the label `example-key-1 = example-value-1`. If there is no such pod running on any node, the VM is not scheduled.
 
 If possible, the VM is not scheduled on a node that has any pod with the label `example-key-2 = example-value-2`. However, if all candidate nodes have a pod with this label, the scheduler ignores this constraint.
+
+<div class="example">
+
+<div class="title">
+
+Example VM manifest
+
+</div>
 
 ``` yaml
 metadata:
@@ -107,11 +120,23 @@ spec:
 
 - If you use the `preferredDuringSchedulingIgnoredDuringExecution` rule type, the VM is still scheduled if the constraint is not met, provided that all required constraints are met.
 
-## Example: VM node placement with node affinity
+</div>
+
+## VM node placement with node affinity
+
+Use a node affinity rule to run a virtual machine (VM) on nodes that match the labels you specify, as either a hard requirement or a preference.
 
 In this example, the VM must be scheduled on a node that has the label `example.io/example-key = example-value-1` or the label `example.io/example-key = example-value-2`. The constraint is met if only one of the labels is present on the node. If neither label is present, the VM is not scheduled.
 
 If possible, the scheduler avoids nodes that have the label `example-node-label-key = example-node-label-value`. However, if all candidate nodes have this label, the scheduler ignores this constraint.
+
+<div class="example">
+
+<div class="title">
+
+Example VM manifest
+
+</div>
 
 ``` yaml
 metadata:
@@ -146,13 +171,22 @@ spec:
 
 - If you use the `preferredDuringSchedulingIgnoredDuringExecution` rule type, the VM is still scheduled if the constraint is not met, provided that all required constraints are met.
 
-## Example: VM node placement with tolerations
+</div>
 
-In this example, nodes that are reserved for virtual machines are already labeled with the `key=virtualization:NoSchedule` taint. Because this virtual machine has matching `tolerations`, it can schedule onto the tainted nodes.
+## VM node placement with tolerations
 
-<div class="note">
+Use tolerations to let a virtual machine (VM) run on nodes that are reserved by a taint, such as nodes set aside for virtualization workloads.
 
-A virtual machine that tolerates a taint is not required to schedule onto a node with that taint.
+In this example, nodes that are reserved for virtual machines are already tainted with `key=virtualization:NoSchedule`. Because this virtual machine has matching `tolerations`, it can schedule onto the tainted nodes.
+
+> [!NOTE]
+> A virtual machine that tolerates a taint is not required to schedule onto a node with that taint.
+
+<div class="example">
+
+<div class="title">
+
+Example VM manifest
 
 </div>
 
@@ -169,6 +203,8 @@ spec:
     effect: "NoSchedule"
 # ...
 ```
+
+</div>
 
 # Additional resources
 

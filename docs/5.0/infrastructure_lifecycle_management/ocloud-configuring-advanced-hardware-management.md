@@ -2,13 +2,10 @@ After provisioning clusters with a basic template, you can configure advanced ha
 
 You can perform these operations by editing the `ProvisioningRequest` CR directly or through the Provisioning REST API. For more information about advanced provisioning with the Provisioning API, see "Provision with hardware overrides using the Provisioning API".
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Template reuse strategies
 
@@ -23,11 +20,8 @@ Use this approach when deployments share the same cluster topology, OpenShift Co
 Create a new `ClusterTemplate` CR
 Use this approach when deployments differ in cluster topology (single-node versus multi-node), node count, OpenShift Container Platform release version, or Day 2 policy configuration. These structural differences require a separate template because they affect installation flow, `ConfigMap` defaults, or policy rendering beyond what hardware overrides can address.
 
-<div class="note">
-
-`ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation by the O-Cloud Manager. To change `hwMgmtDefaults` or any other template default, you must create a new `ClusterTemplate` CR version and update the `ProvisioningRequest` CR to reference it.
-
-</div>
+> [!NOTE]
+> `ClusterTemplate` CRs and their referenced `ConfigMap` CRs are immutable after validation by the O-Cloud Manager. To change `hwMgmtDefaults` or any other template default, you must create a new `ClusterTemplate` CR version and update the `ProvisioningRequest` CR to reference it.
 
 # Select hosts by hardware specifications
 
@@ -35,11 +29,29 @@ You can define the base hardware selection criteria in a `ClusterTemplate` CR us
 
 The `resourceSelector` field supports both label selectors that match `BareMetalHost` CR labels and `hardwaredata/` selectors that match against the inspected `HardwareData` CR for physical characteristics such as CPU, memory, NICs, and storage devices. You can use either or both together. This base configuration applies to all clusters provisioned with this template unless overridden with the `hwMgmtParameters` field in the `ProvisioningRequest` CR.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The O-Cloud Manager Operator is installed on the hub cluster.
 
 - Bare-metal servers are onboarded and their `HardwareData` CRs are populated by Bare Metal Operator inspection.
 
 - If your template references `HardwareProfile` CRs, those CRs must exist in the O-Cloud Manager Operator namespace ,`oran-o2ims`, regardless of the namespace where the `ClusterTemplate` CR is stored.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define the `resourceSelector` in your `ClusterTemplate` CR’s `hwMgmtDefaults.nodeGroupData[]` entry to include hardware data criteria. The following example selects hosts with at least 64 CPU threads, 128 GiB RAM, four 25 Gbps NICs, and two NVMe storage devices:
 
@@ -112,13 +124,20 @@ The `resourceSelector` field supports both label selectors that match `BareMetal
 
     - `count` - number of devices matching the other sub-criteria
 
-      <div class="note">
-
-      All criteria within a `resourceSelector` must match for a `BareMetalHost` CR to be selected. Only hosts in the `Available` provisioning state are evaluated.
-
-      </div>
+      > [!NOTE]
+      > All criteria within a `resourceSelector` must match for a `BareMetalHost` CR to be selected. Only hosts in the `Available` provisioning state are evaluated.
 
 2.  Apply the `ClusterTemplate` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the `ClusterTemplate` passes validation by running the following command:
 
@@ -128,15 +147,35 @@ The `resourceSelector` field supports both label selectors that match `BareMetal
 
   A `STATE` of `Completed` confirms that the template and its resource selector configuration are valid.
 
+</div>
+
 # Override hardware profiles for each deployment site
 
 When deployments share the same cluster topology but differ in hardware at each site, you can use a single `ClusterTemplate` CR across multiple deployment sites by overriding the template’s `hwMgmtDefaults` in each `ProvisioningRequest` CR. The `hwMgmtParameters` field in the `ProvisioningRequest` supplies site-specific values such as server model, firmware profile, or resource selector criteria, which avoids creating a separate template for every site.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The O-Cloud Manager Operator is installed on the hub cluster.
 
 - A validated `ClusterTemplate` CR exists with `hwMgmtParameters` defined in its `templateParameterSchema`.
 
 - Bare-metal servers at the target site are onboarded with labels matching the override criteria.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure the `ClusterTemplate` CR includes `hwMgmtParameters` in the `templateParameterSchema` to permit overrides. The following snippet shows the required schema section for this example:
 
@@ -226,13 +265,20 @@ When deployments share the same cluster topology but differ in hardware at each 
 
       When both the `ClusterTemplate` CR and the `ProvisioningRequest` CR specify the same field, the `ProvisioningRequest` value takes precedence.
 
-      <div class="note">
-
-      Node groups in the override that do not match any existing group by name are appended as new groups. This supports scaling scenarios where a `ProvisioningRequest` CR adds a `worker` node group not defined in the template defaults.
-
-      </div>
+      > [!NOTE]
+      > Node groups in the override that do not match any existing group by name are appended as new groups. This supports scaling scenarios where a `ProvisioningRequest` CR adds a `worker` node group not defined in the template defaults.
 
 3.  Apply the `ProvisioningRequest` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the provisioning request is accepted and progressing by running the following command:
 
@@ -242,15 +288,35 @@ When deployments share the same cluster topology but differ in hardware at each 
 
   A `provisioningPhase` of `fulfilled` indicates that the overridden hardware profile and resource selector were applied successfully and the cluster provisioning completed.
 
+</div>
+
 # Provision with hardware overrides using the Provisioning API
 
 You can provision a cluster with per-site hardware overrides through the Provisioning REST API by including `hwMgmtParameters` in the POST request body.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You authenticated to the O-Cloud Manager REST API and set the `MY_TOKEN` environment variable.
 
 - A validated `ClusterTemplate` CR exists with `hwMgmtParameters` defined in the `templateParameterSchema`.
 
 - Bare-metal servers matching the override `resourceSelector` criteria are onboarded.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the O-Cloud Manager API hostname by running the following command:
 
@@ -320,11 +386,18 @@ You can provision a cluster with per-site hardware overrides through the Provisi
 
     - The `resourceSelector` labels in `hwMgmtParameters` replace (not merge with) the template defaults for the specified node group.
 
-      <div class="note">
+      > [!NOTE]
+      > The `provisioningRequestId` must be a valid UUID. The O-Cloud Manager validates the supplied `hwMgmtParameters` against the schema defined in the referenced `ClusterTemplate` CR before starting provisioning.
 
-      The `provisioningRequestId` must be a valid UUID. The O-Cloud Manager validates the supplied `hwMgmtParameters` against the schema defined in the referenced `ClusterTemplate` CR before starting provisioning.
+</div>
 
-      </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Query the provisioning request status and verify that provisioning starts by running the following command:
 
@@ -334,3 +407,5 @@ You can provision a cluster with per-site hardware overrides through the Provisi
   ```
 
   The `provisioningPhase` transitions from `pending` to `progressing` as hardware provisioning begins, and reaches `fulfilled` when the cluster is fully provisioned and configured.
+
+</div>

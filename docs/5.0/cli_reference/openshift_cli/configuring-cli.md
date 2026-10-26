@@ -8,9 +8,27 @@ You can enable tab completion for the Bash or Zsh shells.
 
 After you install the OpenShift CLI (`oc`), you can enable tab completion to automatically complete `oc` commands or suggest options when you press Tab. The following procedure enables tab completion for the Bash shell.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have the OpenShift CLI (`oc`) installed.
 
 - You must have the package `bash-completion` installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the Bash completion code to a file:
 
@@ -26,13 +44,31 @@ After you install the OpenShift CLI (`oc`), you can enable tab completion to aut
 
     You can also save the file to a local directory and source it from your `.bashrc` file instead. Tab completion is enabled when you open a new terminal.
 
+</div>
+
 ## Enable tab completion for Zsh
 
 After you install the OpenShift CLI (`oc`), you can enable tab completion to automatically complete `oc` commands or suggest options when you press Tab. The following procedure enables tab completion for the Zsh shell.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have the OpenShift CLI (`oc`) installed.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To add tab completion for `oc` to your `.zshrc` file, run the following command:
 
@@ -49,17 +85,34 @@ After you install the OpenShift CLI (`oc`), you can enable tab completion to aut
 
   Tab completion is enabled when you open a new terminal.
 
+</div>
+
 # Access kubeconfig by using the oc CLI
 
 You can use the `oc` CLI to log in to your OpenShift cluster and retrieve a kubeconfig file for accessing the cluster from the command line.
 
-<div class="important">
+> [!IMPORTANT]
+> If you plan to reuse the exported `kubeconfig` file across sessions or machines, store it securely and avoid committing it to source control.
 
-If you plan to reuse the exported `kubeconfig` file across sessions or machines, store it securely and avoid committing it to source control.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the OpenShift Container Platform web console or API server endpoint.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to your OpenShift cluster by running the following command:
 
@@ -95,3 +148,5 @@ If you plan to reuse the exported `kubeconfig` file across sessions or machines,
     ``` terminal
     $ oc get nodes
     ```
+
+</div>

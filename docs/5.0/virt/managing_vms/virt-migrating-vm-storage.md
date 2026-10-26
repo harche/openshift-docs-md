@@ -4,7 +4,25 @@ To optimize performance or reduce costs, you can migrate virtual machines (VMs) 
 
 Cluster administrators must grant users permission to perform storage migrations. Permissions to perform storage migrations are not part of the administrative or editing roles in the cluster by default.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have cluster administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  (Optional) To assign the user single namespace storage migration permissions, run the following command:
 
@@ -41,9 +59,19 @@ Cluster administrators must grant users permission to perform storage migrations
     \<user_name\>
     The user to assign the storage migration permission.
 
+</div>
+
 # Migrating VM disks to a different storage class by using the web console
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When migrating a running VM, the VM operation is not interrupted and the data on the migrated disks remains accessible.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -83,15 +111,33 @@ You can migrate one or more disks attached to a virtual machine (VM) to a differ
 
 10. (Optional) Click **View storage migrations** to view all storage migration plans.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  From the **VirtualMachine details** page, navigate to **Configuration** → **Storage**.
 
 2.  Verify that all disks have the expected storage class listed in the **Storage class** column.
 
-# Migrating VMs in a single cluster to a different storage class by using the web console
+</div>
+
+# Migrate VM disks to a different storage class
 
 You can migrate the disks attached to single cluster virtual machines (VMs) from one storage class to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 
@@ -107,11 +153,8 @@ You can migrate the disks attached to single cluster virtual machines (VMs) from
 
     2.  Use the provided option buttons to select whether to migrate **The entire VirtualMachine** or **Selected volumes**.
 
-        <div class="note">
-
-        If you select **The entire VirtualMachine**, all disks on all selected VMs are migrated to the same target storage.
-
-        </div>
+        > [!NOTE]
+        > If you select **The entire VirtualMachine**, all disks on all selected VMs are migrated to the same target storage.
 
     3.  (Optional) If you selected **Selected volumes** in the previous step, use the provided checkboxes to select the volumes to migrate. Volumes that cannot be migrated have a greyed out checkbox.
 
@@ -135,15 +178,33 @@ You can migrate the disks attached to single cluster virtual machines (VMs) from
 
 11. (Optional) Click **View storage migrations** to view all storage migration plans.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  From the **VirtualMachine details** page for each VM, navigate to **Configuration** → **Storage**.
 
 2.  Verify that all disks have the expected storage class listed in the **Storage class** column.
 
-# Canceling a storage migration by using the web console
+</div>
+
+# Cancel a storage migration by using the web console
 
 You can cancel a storage migration by deleting the associated storage migration plan by using the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Migration** → **Storage migrations** in the web console.
 
@@ -161,9 +222,19 @@ You can cancel a storage migration by deleting the associated storage migration 
 
 6.  Click **Delete**.
 
-# Deleting storage migration plans by using the web console
+</div>
+
+# Delete storage migration plans by using the web console
 
 You can delete old or unwanted storage migration plans by using the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Migration** → **Storage migrations** in the web console.
 
@@ -181,11 +252,21 @@ You can delete old or unwanted storage migration plans by using the OpenShift Co
 
 6.  Click **Delete**.
 
-# Deleting persistent volume claims by using the web console
+</div>
+
+# Delete persistent volume claims by using the web console
 
 You can delete old or unwanted persistent volume claims (PVC) by using the OpenShift Container Platform web console.
 
 If you chose to keep the original source volumes during a storage migration, follow this procedure to delete them when you no longer want to retain them.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Storage** → **PersistentVolumeClaims** in the web console.
 
@@ -202,3 +283,5 @@ If you chose to keep the original source volumes during a storage migration, fol
 4.  Click **Delete PersistentVolumeClaim**.
 
 5.  Click **Delete**.
+
+</div>

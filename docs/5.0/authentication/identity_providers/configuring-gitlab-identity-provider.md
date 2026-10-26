@@ -4,11 +4,8 @@ Configure the `gitlab` identity provider so users can log in to OpenShift Contai
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
-<div class="note">
-
-OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 # About GitLab authentication
 
@@ -16,13 +13,31 @@ Review GitLab authentication options for OpenShift Container Platform. Use this 
 
 If you use GitLab version 7.7.0 to 11.0, you connect using OAuth integration. If you use GitLab version 11.1 or later, you can use OpenID Connect (OIDC) to connect instead of OAuth.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OAuth integration](https://docs.gitlab.com/ce/integration/oauth_provider.html)
 
 - [OpenID Connect](https://docs.gitlab.com/ce/integration/openid_connect_provider.html)
 
+</div>
+
 # Create the secret
 
 Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -49,9 +64,19 @@ Create a `Secret` object in the `openshift-config` namespace to store the client
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
+</div>
+
 # Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define an OpenShift Container Platform `ConfigMap` object containing the CA by running the following command:
 
@@ -73,6 +98,8 @@ Create a `ConfigMap` object in the `openshift-config` namespace that contains th
     ```
 
     The CA must be stored in the `ca.crt` key of the `ConfigMap` object.
+
+</div>
 
 # Sample GitLab custom resource
 
@@ -117,11 +144,29 @@ Specifies the host URL of a GitLab provider. This could either be `https://gitla
 `spec.identityProviders.gitlab.ca`
 Specifies a reference to an OpenShift Container Platform `ConfigMap` object containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL. This value is optional.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
+
+</div>
 
 # Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to a OpenShift Container Platform cluster.
 
@@ -129,17 +174,24 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
 
 - You are logged in as an administrator.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    <div class="note">
-
-    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
-
-    </div>
+    > [!NOTE]
+    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
 
 2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
 
@@ -152,6 +204,8 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     ``` terminal
     $ oc whoami
     ```
+
+</div>
 
 # Additional resources
 

@@ -1,16 +1,34 @@
 To troubleshoot OVN-Kubernetes in OpenShift Container Platform, you can use built-in health checks, alerting, logs, and connectivity checks. Follow these sections to examine your cluster before opening a support case.
 
-OVN-Kubernetes has many sources of built-in health checks and logs. Follow the instructions in these sections to examine your cluster. If a support case is necessary, collect additional information through a `must-gather` as described in "Gathering data about your cluster for Red Hat Support". Only use the `-- gather_network_logs` option when instructed by support.
+OVN-Kubernetes has many sources of built-in health checks and logs. Follow the instructions in these sections to examine your cluster. If a support case is necessary, collect additional information through a `must-gather` as described in "Gathering data about your cluster for Red Hat Support". Only use the `--gather_network_logs` option when instructed by support.
 
 # Monitoring OVN-Kubernetes health by using readiness probes
 
 To monitor OVN-Kubernetes component health in OpenShift Container Platform, you can review readiness probe configuration and status for `ovnkube-control-plane` and `ovnkube-node` pods.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the OpenShift CLI (`oc`).
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed `jq`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Review the details of the `ovnkube-node` readiness probe by running the following command:
 
@@ -50,13 +68,22 @@ To monitor OVN-Kubernetes component health in OpenShift Container Platform, you 
     done
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The expectation is all container statuses are reporting as `true`. Failure of a readiness probe sets the status to `false`.
 
-    The expectation is all container statuses are reporting as `true`. Failure of a readiness probe sets the status to `false`.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Monitoring application health by using health checks](../../applications/application-health.xml#application-health)
+
+</div>
 
 # Viewing OVN-Kubernetes alerts in the console
 
@@ -64,21 +91,59 @@ To view OVN-Kubernetes alerts in the OpenShift Container Platform web console, y
 
 The Alerting UI provides detailed information about alerts and their governing alerting rules and silences.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a developer or as a user with view permissions for the project that you are viewing metrics for.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Administrator** perspective, select **Observe** → **Alerting**. The three main pages in the Alerting UI in this perspective are the **Alerts**, **Silences**, and **Alerting Rules** pages.
 
 2.  View the rules for OVN-Kubernetes alerts by selecting **Observe** → **Alerting** → **Alerting Rules**.
 
+</div>
+
 # Viewing OVN-Kubernetes alerts in the CLI
 
 To view OVN-Kubernetes alerts from the command line in OpenShift Container Platform, you can query the `Alertmanager` API for active alerts and related rules.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift CLI (`oc`) installed.
 
 - You have installed `jq`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View active or firing alerts by running the following commands.
 
@@ -101,15 +166,35 @@ To view OVN-Kubernetes alerts from the command line in OpenShift Container Platf
     $ oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 -- curl -s 'http://localhost:9090/api/v1/rules' | jq '.data.groups[].rules[] | select(((.name|contains("ovn")) or (.name|contains("OVN")) or (.name|contains("Ovn")) or (.name|contains("North")) or (.name|contains("South"))) and .type=="alerting")'
     ```
 
+</div>
+
 # View the OVN-Kubernetes logs using the CLI
 
 To view OVN-Kubernetes pod logs in OpenShift Container Platform, you can use the OpenShift CLI (`oc`) to examine logs from containers in the `openshift-ovn-kubernetes` namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Access to the OpenShift CLI (`oc`).
 
 - You have installed `jq`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the log for a specific pod:
 
@@ -159,11 +244,31 @@ To view OVN-Kubernetes pod logs in OpenShift Container Platform, you can use the
     $ oc logs -l app=ovnkube-node -n openshift-ovn-kubernetes --all-containers --tail 5
     ```
 
+</div>
+
 # View the OVN-Kubernetes logs using the web console
 
 To view OVN-Kubernetes pod logs in the OpenShift Container Platform web console, you can open pod logs for each container in the `openshift-ovn-kubernetes` project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, navigate to **Workloads** → **Pods** or navigate to the pod through the resource you want to investigate.
 
@@ -175,15 +280,35 @@ To view OVN-Kubernetes pod logs in the OpenShift Container Platform web console,
 
 5.  Use the down-down menu to select logs for each container in turn.
 
+</div>
+
 ## Changing the OVN-Kubernetes log levels
 
 To debug OVN-Kubernetes in OpenShift Container Platform, you can raise log levels by applying an `env-overrides` `ConfigMap` and restarting affected pods.
 
 The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the log level to 5. Follow this procedure to increase the log level of the OVN-Kubernetes to help you debug an issue.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to get detailed information for all pods in the OVN-Kubernetes project:
 
@@ -191,9 +316,11 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
     $ oc get po -o wide -n openshift-ovn-kubernetes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -209,11 +336,15 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
     ovnkube-node-zrj9f                       8/8     Running   0              134m   10.0.128.3   ci-ln-3njdr9b-72292-5nwkp-worker-b-v78h7   <none>           <none>
     ```
 
+    </div>
+
 2.  Create a `ConfigMap` file similar to the following example and use a filename such as `env-overrides.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ConfigMap` file**
+    <div class="title">
+
+    Example `ConfigMap` file
 
     </div>
 
@@ -241,6 +372,8 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
         OVN_LOG_LEVEL=dbg
     ```
 
+    </div>
+
     where; `ci-ln-3njdr9b-72292-5nwkp-master-0:`
     Specifies the name of the node you want to set the debug log level on.
 
@@ -253,15 +386,19 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
     $ oc apply -n openshift-ovn-kubernetes -f env-overrides.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     configmap/env-overrides.yaml created
     ```
+
+    </div>
 
 4.  Restart the `ovnkube` pods to apply the new log level by using the following commands:
 
@@ -308,9 +445,11 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
     for f in $(oc -n openshift-ovn-kubernetes get po -l 'app=ovnkube-node' --no-headers -o custom-columns=N:.metadata.name) ; do echo "---- $f ----" ; oc -n openshift-ovn-kubernetes exec -c ovnkube-controller $f --  pgrep -a -f  init-ovnkube-controller | grep -P -o '^.*loglevel\s+\d' ; done
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -329,17 +468,39 @@ The default log level for OVN-Kubernetes is 4. To debug OVN-Kubernetes, set the 
     181328 /usr/bin/ovnkube --init-ovnkube-controller xpst8-master-1.c.openshift-qe.internal --init-node xpst8-master-1.c.openshift-qe.internal --config-file=/run/ovnkube-config/ovnkube.conf --ovn-empty-lb-events --loglevel 4
     ```
 
+    </div>
+
+</div>
+
 # Checking the OVN-Kubernetes pod network connectivity
 
 To verify pod network connectivity in OpenShift Container Platform, you can inspect `PodNetworkConnectivityCheck` resources in the `openshift-network-diagnostics` namespace.
 
 The connectivity check controller, in OpenShift Container Platform 4.10 and later, orchestrates connection verification checks in your cluster. These include Kubernetes API, OpenShift API and individual nodes. The results for the connection tests are stored in `PodNetworkConnectivity` objects in the `openshift-network-diagnostics` namespace. Connection tests are performed every minute in parallel.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with the `cluster-admin` role.
 
 - You have installed `jq`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To list the current `PodNetworkConnectivityCheck` objects, enter the following command:
 
@@ -386,17 +547,16 @@ The connectivity check controller, in OpenShift Container Platform 4.10 and late
     '{component="openshift-network-diagnostics"}'
     ```
 
+</div>
+
 # Checking OVN-Kubernetes network traffic with OVS sampling using the CLI
 
 To trace OVN-Kubernetes network traffic with OVS sampling in OpenShift Container Platform, you can enable the `OVNObservability` feature gate and run `ovnkube-observ` from an `ovnkube-node` pod.
 
-<div class="important">
-
-Checking OVN-Kubernetes network traffic with OVS sampling is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Checking OVN-Kubernetes network traffic with OVS sampling is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 OVN-Kubernetes network traffic can be viewed with OVS sampling via the CLI for the following network APIs:
 
@@ -420,11 +580,29 @@ Administrators can add the `--add-ovs-collect` option to view network traffic ac
 
 Use the following procedure to view OVN-Kubernetes network traffic using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - You have created a source pod and a destination pod and ran traffic between them.
 
 - You have created at least one of the following network APIs: `NetworkPolicy`, `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `UserDefinedNetwork` isolation, multicast, or egress firewalls.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To enable the `OVNObservability` with OVS sampling feature, enable `TechPreviewNoUpgrade` feature set in the `FeatureGate` CR named `cluster` by entering the following command:
 
@@ -432,9 +610,11 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     $ oc patch --type=merge --patch '{"spec": {"featureSet": "TechPreviewNoUpgrade"}}' featuregate/cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -442,15 +622,19 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     featuregate.config.openshift.io/cluster patched
     ```
 
+    </div>
+
 2.  Confirm that the `OVNObservability` feature is enabled by entering the following command:
 
     ``` terminal
     $ oc get featuregate cluster -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -461,15 +645,19 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
         - name: OVNObservability
     ```
 
+    </div>
+
 3.  Obtain a list of the pods inside of the namespace in which you have created one of the relevant network APIs by entering the following command. Note the `NODE` name of the pods, as they are used in the following step.
 
     ``` terminal
     $ oc get pods -n <namespace> -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -479,15 +667,19 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     source-pod        1/1     Running   0          56s     10.131.0.22   ci-ln-1gqp7b2-72292-bb9dv-worker-a-gtmpc   <none>           <none>
     ```
 
+    </div>
+
 4.  Obtain a list of OVN-Kubernetes pods and locate the pod that shares the same `NODE` as the pods from the previous step by entering the following command:
 
     ``` terminal
     $ oc get pods -n openshift-ovn-kubernetes -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -497,6 +689,8 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     ovnkube-node-jzn5b              8/8     Running   1 (34m ago)   37m   10.0.128.2   ci-ln-1gqp7b2-72292-bb9dv-worker-a-gtmpc   <none>
     ...
     ```
+
+    </div>
 
 5.  Open a bash shell inside of the `ovnkube-node` pod by entering the following command:
 
@@ -510,9 +704,11 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     # /usr/bin/ovnkube-observ -add-ovs-collector
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -526,15 +722,19 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     ...
     ```
 
+    </div>
+
 7.  You can filter the content by type, such as source pods, by entering the following command with the `-filter-src-ip` flag and your pod’s IP address. For example:
 
     ``` terminal
     # /usr/bin/ovnkube-observ -add-ovs-collector -filter-src-ip <pod_ip_address>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -555,7 +755,11 @@ Use the following procedure to view OVN-Kubernetes network traffic using the CLI
     ...
     ```
 
+    </div>
+
     For a full list of flags that can be passed in with `/usr/bin/ovnkube-observ`, see "OVN-Kubernetes network traffic with OVS sampling flags".
+
+</div>
 
 ## OVN-Kubernetes network traffic with OVS sampling flags
 
@@ -563,9 +767,11 @@ To filter OVN-Kubernetes traffic samples from `ovnkube-observ`, you can pass com
 
 After you have opened a bash shell inside of the `ovnkube-node` pod, the following flags are available and can be appended using the following syntax:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Command syntax**
+<div class="title">
+
+Command syntax
 
 </div>
 
@@ -573,18 +779,22 @@ After you have opened a bash shell inside of the `ovnkube-node` pod, the followi
 # /usr/bin/ovnkube-observ <flag>
 ```
 
-| Flag                 | Description                                                                                            |
-|----------------------|--------------------------------------------------------------------------------------------------------|
-| `-h`                 | Returns a complete list flags that can be used with the `usr/bin/ovnkube-observ` command. \`           |
-| `-add-ovs-collector` | Add OVS collector to enable sampling. Use with caution. Make sure no one else is using observability.  |
-| `-enable-enrichment` | Enrich samples with NBDB data. Defaults to `true`.                                                     |
-| `-filter-dst-ip`     | Filter only packets to a given destination IP.                                                         |
-| `-filter-src-ip`     | Filters only packets from a given source IP.                                                           |
-| `-log-cookie`        | Print raw sample cookie with psample group_id.                                                         |
-| `-output-file`       | Output file to write the samples to.                                                                   |
+</div>
+
+| Flag | Description |
+|----|----|
+| `-h` | Returns a complete list flags that can be used with the `usr/bin/ovnkube-observ` command. \` |
+| `-add-ovs-collector` | Add OVS collector to enable sampling. Use with caution. Make sure no one else is using observability. |
+| `-enable-enrichment` | Enrich samples with NBDB data. Defaults to `true`. |
+| `-filter-dst-ip` | Filter only packets to a given destination IP. |
+| `-filter-src-ip` | Filters only packets from a given source IP. |
+| `-log-cookie` | Print raw sample cookie with psample group_id. |
+| `-output-file` | Output file to write the samples to. |
 | `-print-full-packet` | Print full received packet. When false, only source and destination IPs are printed with every sample. |
 
 # Additional resources
+
+- [Troubleshooting OVN-Kubernetes with the MCP server](../../networking/ovn_kubernetes_network_provider/troubleshooting-ovn-kubernetes-with-mcp-server.xml#troubleshooting-ovn-kubernetes-with-mcp-server)
 
 - [Gathering data about your cluster for Red Hat Support](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
 

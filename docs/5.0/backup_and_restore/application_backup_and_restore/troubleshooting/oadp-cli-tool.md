@@ -4,7 +4,25 @@ Use the OADP CLI plugin for all backup and restore operations, including viewing
 
 The OADP command-line interface (CLI) plugin is available from the **Command-line tools** page in the OpenShift Container Platform web console when the OADP Operator is installed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster with the OADP Operator installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with access to the cluster.
 
@@ -19,6 +37,8 @@ The OADP command-line interface (CLI) plugin is available from the **Command-lin
     ``` terminal
     $ oc oadp version
     ```
+
+</div>
 
 ## OADP-Velero-OpenShift Container Platform version relationship
 
@@ -38,15 +58,33 @@ Review the version relationship between OADP, Velero, and OpenShift Container Pl
 | 1.4.3        | 1.14           | 4.14-4.18                            |
 | 1.5.0        | 1.16           | 4.19                                 |
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Velero 1.12 documentation](https://velero.io/docs/v1.12/)
 
 - [Velero 1.14 documentation](https://velero.io/docs/v1.14/)
 
 - [Velero 1.16 documentation](https://velero.io/docs/v1.16/)
 
+</div>
+
 # Debug Velero resources with the OpenShift CLI tool
 
 Debug a failed backup or restore by checking Velero custom resources (CRs) and the `Velero` pod log with the OpenShift CLI tool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `oc describe` command:
 
@@ -62,11 +100,8 @@ Debug a failed backup or restore by checking Velero custom resources (CRs) and t
 
 - Specify the Velero log level in the `DataProtectionApplication` resource as shown in the following example.
 
-  <div class="note">
-
-  This option is available starting from OADP 1.0.3.
-
-  </div>
+  > [!NOTE]
+  > This option is available starting from OADP 1.0.3.
 
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
@@ -96,6 +131,8 @@ Debug a failed backup or restore by checking Velero custom resources (CRs) and t
   - `panic`
 
     Use the `info` `logLevel` value for most logs.
+
+</div>
 
 # Debug backups and restores using the OADP CLI
 

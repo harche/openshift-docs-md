@@ -2,25 +2,37 @@ Install Zero Trust Workload Identity Manager to help ensure secure communication
 
 If you install the Operator into a custom namespace (for example, `my-custom-namespace`), all managed operand resources are deployed within that same namespace. All secrets and ConfigMaps referenced by the Custom Resources (CRs) must also exist in that custom namespace.
 
-<div class="important">
-
-The Operator installation is not supported in the `openshift-*` namespaces and the `default` namespace.
-
-</div>
+> [!IMPORTANT]
+> The Operator installation is not supported in the `openshift-*` namespaces and the `default` namespace.
 
 # Install the Zero Trust Workload Identity Manager by using the web console
 
 Use the Software Catalog in the OpenShift Container Platform web console to install the Zero Trust Workload Identity Manager. This process streamlines deployment and helps ensure the Operator is installed in the correct namespace with the appropriate installation mode.
 
-<div class="note">
+> [!NOTE]
+> A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 
-A minimum of 1Gi persistent volume is required to install the SPIRE Server.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -36,11 +48,8 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 
         If the `zero-trust-workload-identity-manager` namespace does not exist, it is created for you.
 
-        <div class="note">
-
-        The Operator and operands are deployed in the same namespace.
-
-        </div>
+        > [!NOTE]
+        > The Operator and operands are deployed in the same namespace.
 
     3.  Select an **Update Approval** strategy
 
@@ -50,7 +59,15 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 
 5.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
@@ -62,9 +79,11 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
         $ oc get deployment -l name=zero-trust-workload-identity-manager -n zero-trust-workload-identity-manager
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -73,21 +92,40 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
         zero-trust-workload-identity-manager-controller-manager   1/1     1            1           3h36m
         ```
 
+        </div>
+
 2.  To check the Operator logs, run the following command:
 
     ``` terminal
     $ oc logs -f deployment/zero-trust-workload-identity-manager-controller-manager -n zero-trust-workload-identity-manager
     ```
 
+</div>
+
 # Install the Zero Trust Workload Identity Manager by using the CLI
 
 Install the Zero Trust Workload Identity Manager by using the command-line interface (CLI) to create the required project, `OperatorGroup`, and `Subscription` objects. You can then deploy the Operator components necessary for managing workload identities on your OpenShift Container Platform cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
-<div class="note">
+</div>
 
-A minimum of 1Gi persistent volume is required to install the SPIRE Server.
+> [!NOTE]
+> A minimum of 1Gi persistent volume is required to install the SPIRE Server.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -141,15 +179,27 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
         $ oc create -f subscription.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the OLM subscription is created by running the following command:
 
   ``` terminal
   $ oc get subscription -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -158,15 +208,19 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
   openshift-zero-trust-workload-identity-manager   zero-trust-workload-identity-manager   redhat-operators   stable-v1
   ```
 
+  </div>
+
 - Verify whether the Operator is successfully installed by running the following command:
 
   ``` terminal
   $ oc get csv -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -175,15 +229,19 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
   zero-trust-workload-identity-manager.v1.0.0   Zero Trust Workload Identity Manager   1.0.0    Succeeded
   ```
 
+  </div>
+
 - Verify that the Zero Trust Workload Identity Manager controller manager is ready by running the following command:
 
   ``` terminal
   $ oc get deployment -l name=zero-trust-workload-identity-manager -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -191,3 +249,7 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
   NAME                                                      READY   UP-TO-DATE   AVAILABLE   AGE
   zero-trust-workload-identity-manager-controller-manager   1/1     1            1           43m
   ```
+
+  </div>
+
+</div>

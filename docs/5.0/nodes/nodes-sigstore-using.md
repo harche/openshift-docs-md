@@ -2,13 +2,19 @@ To improve supply chain security, cluster administrators or application develope
 
 Sigstore is a collection of open source tools that you can use individually or together to improve your software supply chain security by securely signing and verifying software artifacts.
 
-# About sigstore
+# Understand image signature verification
 
-Cluster administrators or application developers can use the sigstore project to improve supply chain security. Developers can sign-off on what they build and administrators can verify those signatures and monitor workflows at scale.
+Cluster administrators or application developers can use the sigstore project to improve supply chain security by verifying that container images have not been tampered with and come from trusted sources. You can configure signature verification for all platform and Operator images, including in disconnected environments. This capability is useful for organizations that require strict supply chain security.
 
-With the sigstore project, signatures can be stored in the same registry as the build images. A second server is not needed. The identity piece of a signature is tied to the OpenID Connect (OIDC) identity through the Fulcio certificate authority, which simplifies the signature process by allowing key-less signing. Additionally, sigstore includes Rekor, which records signature metadata to an immutable, tamper-resistant ledger.
+With the sigstore project, signatures can be stored in the same registry as the container images, eliminating the need for a separate signature server. When using mirror registries, you must also mirror the sigstore signatures. The oc-mirror plugin v2 mirrors signatures automatically.
 
-You can use the `ClusterImagePolicy` and `ImagePolicy` custom resource (CR) objects to enable and configure sigstore support at the cluster or namespace scope. These objects specify the images and repositories to be verified and how the signatures must be verified.
+You can use the `ClusterImagePolicy` and `ImagePolicy` custom resource (CR) objects to enable and configure sigstore support at the cluster or namespace scope. These objects specify the images and repositories to be verified and how the signatures must be verified. When enabled, pods that attempt to use unsigned or incorrectly signed images are blocked from starting.
+
+## Cluster upgrade considerations
+
+Before upgrading a cluster that has signature verification enabled, mirror all required signatures to your disconnected registry. The Cluster Version Operator (CVO) requires verified images to move pods to new nodes during the upgrade process. If signatures are missing or invalid, the upgrade can fail.
+
+The default `ClusterImagePolicy` object named `openshift` enforces signature verification for OpenShift Container Platform release images in the `quay.io/openshift-release-dev/ocp-release`, `quay.io/openshift-release-dev/ocp-v4.0-art-dev`, and `quay.io/openshift-release-dev/ocp-v5.0-art-dev` repositories.
 
 # About configuring sigstore support
 
@@ -18,19 +24,18 @@ The `ClusterImagePolicy` and `ImagePolicy` objects contain a policy that specifi
 
 - Cluster image policy. A cluster image policy object enables a cluster administrator to configure a sigstore signature verification policy for the entire cluster. When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy` object and updates the `/etc/containers/policy.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all nodes in the cluster.
 
-  <div class="note">
-
-  The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` repository.
-
-  </div>
+  > [!NOTE]
+  > The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` repository.
 
 - Image policy. An image policy enables a cluster administrator or application developer to configure a sigstore signature verification policy for a specific namespace. The MCO watches an `ImagePolicy` instance in different namespaces and creates or updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all nodes in the cluster.
 
   If the image or repository in an image policy is nested under one of the images or repositories in a cluster image policy, only the policy from cluster image policy is applied. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace uses the policy from the cluster image policy. The image policy object is created and shows an error similar to the following message:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example image policy with a conflicting image identity**
+  <div class="title">
+
+  Example image policy with a conflicting image identity
 
   </div>
 
@@ -46,6 +51,8 @@ The `ClusterImagePolicy` and `ImagePolicy` objects contain a policy that specifi
       Reason: ConflictScopes
   # ...
   ```
+
+  </div>
 
 ## About cluster and image policy parameters
 
@@ -109,11 +116,8 @@ You can modify or remove a cluster image policy or an image policy by using the 
 
 You can modify an existing policy by editing the policy YAML and running an `oc apply` command on the file or directly editing the `ClusterImagePolicy` or `ImagePolicy` object. Both methods apply the changes in the same manner.
 
-<div class="note">
-
-The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
-
-</div>
+> [!NOTE]
+> The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
 
 You can create multiple policies for a cluster or namespace. This allows you to create different policies for different images or repositories.
 
@@ -127,9 +131,14 @@ When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy`
 
 The following example shows general guidelines on how to configure a `ClusterImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters."
 
-<div class="note">
+> [!NOTE]
+> The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images, which are stored in the `quay.io/openshift-release-dev/ocp-release` repository. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
 
-The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images, which are stored in the `quay.io/openshift-release-dev/ocp-release` repository. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -147,6 +156,16 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
   $ oc image mirror quay.io/openshift-release-dev/ocp-release:sha256-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef.sig \
   mirror.com/image/repo:sha256-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef.sig
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a cluster image policy object similar to the following examples. See "About image policy parameters" for specific details on these parameters.
 
@@ -207,7 +226,7 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
     The following example cluster image policy object uses a BYOPKI policy and the `MatchRepository` match policy:
 
     ``` yaml
-    apiVersion: config.openshift.io/v1alpha1
+    apiVersion: config.openshift.io/v1
     kind: ClusterImagePolicy
     metadata:
       name: pki-policy
@@ -334,131 +353,181 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
 
     The Machine Config Operator (MCO) updates the machine config pools (MCP) in your cluster. Scheduling on each node is disabled as the change is being applied.
 
-- After the nodes in your cluster are updated, you can verify that the cluster image policy has been configured:
+</div>
 
-  1.  Start a debug pod for the node by running the following command:
+<div>
 
-      ``` terminal
-      $ oc debug node/<node_name>
-      ```
+<div class="title">
 
-  2.  Set `/host` as the root directory within the debug shell by running the following command:
+Verification
 
-      ``` terminal
-      sh-5.1# chroot /host/
-      ```
+</div>
 
-  3.  Examine the `policy.json` file by running the following command:
+1.  After the nodes in your cluster are updated, verify that the cluster image policy has been configured:
 
-      ``` terminal
-      sh-5.1# cat /etc/containers/policy.json
-      ```
+    1.  Start a debug pod for the node by running the following command:
 
-      <div class="formalpara-title">
+        ``` terminal
+        $ oc debug node/<node_name>
+        ```
 
-      **Example output for the cluster image policy object with a public key showing the new cluster image policy**
+    2.  Set `/host` as the root directory within the debug shell by running the following command:
 
-      </div>
+        ``` terminal
+        sh-5.1# chroot /host/
+        ```
 
-      ``` json
-      # ...
-        "transports": {
-      # ...
-          "docker": {
-            "example.com": [
-              {
-                "type": "sigstoreSigned",
-                "keyData": "a2V5RGF0YQ==",
-                "rekorPublicKeyData": "cmVrb3JLZXlEYXRh",
-                "signedIdentity": {
-                  "type": "matchRepoDigestOrExact"
+    3.  Examine the `policy.json` file by running the following command:
+
+        ``` terminal
+        sh-5.1# cat /etc/containers/policy.json
+        ```
+
+        The following example output shows the cluster image policy with a public key:
+
+        ``` json
+        # ...
+          "transports": {
+        # ...
+            "docker": {
+              "example.com": [
+                {
+                  "type": "sigstoreSigned",
+                  "keyData": "a2V5RGF0YQ==",
+                  "rekorPublicKeyData": "cmVrb3JLZXlEYXRh",
+                  "signedIdentity": {
+                    "type": "matchRepoDigestOrExact"
+                  }
                 }
-              }
-            ],
-      # ...
-      ```
+              ],
+        # ...
+        ```
 
-      <div class="formalpara-title">
+        The following example output shows the cluster image policy with a BYOPKI certificate:
 
-      **Example output for the cluster image policy object for a BYOPKI certificate showing the new cluster image policy**
-
-      </div>
-
-      ``` json
-      # ...
-        "transports": {
-      # ...
-          "docker": {
-            "example.io": [
-              {
-                "type": "sigstoreSigned",
-                "pki": {
-                  "caRootsData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk....URS0tLS0t",
-                  "caIntermediatesData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1J....lDQVRFLS0tLS0=",
-                  "subjectEmail": "email@example.com",
-                  "subjectHostname": "myhost.example.com"
-                },
-                "signedIdentity": {
-                  "type": "matchRepository"
+        ``` json
+        # ...
+          "transports": {
+        # ...
+            "docker": {
+              "example.io": [
+                {
+                  "type": "sigstoreSigned",
+                  "pki": {
+                    "caRootsData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk....URS0tLS0t",
+                    "caIntermediatesData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1J....lDQVRFLS0tLS0=",
+                    "subjectEmail": "email@example.com",
+                    "subjectHostname": "myhost.example.com"
+                  },
+                  "signedIdentity": {
+                    "type": "matchRepository"
+                  }
                 }
-              }
-            ],
-      ```
+              ],
+        ```
 
-      <div class="formalpara-title">
+        The following example output shows the cluster image policy with a Fulcio certificate:
 
-      **Example output for the cluster image policy object with a Fulcio certificate showing the new cluster image policy**
-
-      </div>
-
-      ``` json
-      # ...
-        "transports": {
-      # ...
-          "docker": {
-            "example.com": [
-              {
-                "type": "sigstoreSigned",
-                "fulcio": {
-                  "caData": "a2V5RGF0YQ==",
-                  "oidcIssuer": "https://expected.OIDC.issuer/",
-                  "subjectEmail": "expected-signing-user@example.com"
-                },
-                "rekorPublicKeyData": "cmVrb3JLZXlEYXRh",
-                "signedIdentity": {
-                  "type": "remapIdentity",
-                  "prefix": "example.com",
-                  "signedPrefix": "mirror-example.com"
+        ``` json
+        # ...
+          "transports": {
+        # ...
+            "docker": {
+              "example.com": [
+                {
+                  "type": "sigstoreSigned",
+                  "fulcio": {
+                    "caData": "a2V5RGF0YQ==",
+                    "oidcIssuer": "https://expected.OIDC.issuer/",
+                    "subjectEmail": "expected-signing-user@example.com"
+                  },
+                  "rekorPublicKeyData": "cmVrb3JLZXlEYXRh",
+                  "signedIdentity": {
+                    "type": "remapIdentity",
+                    "prefix": "example.com",
+                    "signedPrefix": "mirror-example.com"
+                  }
                 }
-              }
-            ],
-      # ...
-      ```
+              ],
+        # ...
+        ```
 
-  4.  Examine the `sigstore-registries.yaml` file by running the following command:
+    4.  Examine the `sigstore-registries.yaml` file by running the following command:
 
-      ``` terminal
-      sh-5.1# cat /etc/containers/registries.d/sigstore-registries.yaml
-      ```
+        ``` terminal
+        sh-5.1# cat /etc/containers/registries.d/sigstore-registries.yaml
+        ```
 
-      <div class="formalpara-title">
+        The following example output shows that the scoped registry was added:
 
-      **Example output showing that the scoped registry was added**
+        ``` yaml
+        docker:
+          example.com:
+            use-sigstore-attachments: true
+          quay.io/openshift-release-dev/ocp-release:
+            use-sigstore-attachments: true
+        ```
 
-      </div>
+        where:
 
-      ``` yaml
-      docker:
-        example.com:
-          use-sigstore-attachments: true
-        quay.io/openshift-release-dev/ocp-release:
-          use-sigstore-attachments: true
-      ```
+        - `docker.example.com.use-sigstore-attachments` — Specifies that sigstore signatures are read along with the image when set to `true`.
 
-      where:
+2.  Verify that unsigned or incorrectly signed images are blocked from running:
 
-      `docker.example.com.use-sigstore-attachments`
-      When `true`, specifies that sigstore signatures are going to be read along with the image.
+    1.  Create a test pod that uses an unsigned image from the scoped registry:
+
+        ``` terminal
+        $ oc run test-unsigned --image=<scoped_registry>/<unsigned_image>:<tag> --restart=Never
+        ```
+
+        where:
+
+        - `<scoped_registry>` — Specifies the registry defined in your `ClusterImagePolicy` scope.
+
+        - `<unsigned_image>` — Specifies an image that does not have a valid sigstore signature.
+
+        - `<tag>` — Specifies the image tag.
+
+    2.  Check the pod status:
+
+        ``` terminal
+        $ oc get pod test-unsigned -o jsonpath='{.status.containerStatuses[0].state}'
+        ```
+
+        The following example output shows that the image was blocked:
+
+        ``` json
+        { "waiting": { "message": "Back-off pulling image \"registry.example.com/example:v1\": SignatureValidationFailed: image pull failed for registry.example.com/example:v1 because the signature validation failed: unable to pull image or OCI artifact: pull image err: Source image rejected: A signature was required, but no signature exists; artifact err: image reference: reference is a container image, not an OCI artifact", "reason": "ImagePullBackOff" }}
+        ```
+
+        The `SignatureValidationFailed` error with a "Source image rejected" message confirms that the signature verification policy is blocking unsigned images.
+
+    3.  Check the pod events for detailed error information:
+
+        ``` terminal
+        $ oc describe pod test-unsigned
+        ```
+
+        The following example output shows signature verification failure in the pod events:
+
+        ``` terminal
+        Events:
+          Type     Reason                    Age                     From     Message
+          ----     ------                    ----                    ----     -------
+        ...
+          Warning  Failed                    4m36s (x5 over 7m36s)   kubelet  spec.containers{sleep-container}: Failed to pull image "registry.example.com/my-namespace/unsigned-image:v1.0": SignatureValidationFailed: unable to pull image or OCI artifact: pull image err: Source image rejected: A signature was required, but no signature exists; artifact err: image reference: reference is a container image, not an OCI artifact
+          Warning  Failed                    4m36s (x5 over 7m36s)   kubelet  spec.containers{sleep-container}: Error: SignatureValidationFailed
+          Normal   BackOff                   2m28s (x21 over 7m35s)  kubelet  spec.containers{sleep-container}: Back-off pulling image "registry.example.com/my-namespace/unsigned-image:v1.0"
+          Warning  Failed                    2m28s (x21 over 7m35s)  kubelet  spec.containers{sleep-container}: Error: ImagePullBackOff
+        ```
+
+    4.  Delete the test pod:
+
+        ``` terminal
+        $ oc delete pod test-unsigned --ignore-not-found
+        ```
+
+</div>
 
 # Create an image policy CR
 
@@ -466,19 +535,34 @@ A cluster administrator or application developer can use an `ImagePolicy` custom
 
 The MCO watches `ImagePolicy` instances in different namespaces and updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
 
-<div class="note">
-
-If a scoped image or repository in an image policy is nested under one of the scoped images or repositories in a cluster image policy, only the policy from cluster image policy is applied. However, the image policy object is created with an error message. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace inherits the policy from the cluster image policy.
-
-</div>
+> [!NOTE]
+> If a scoped image or repository in an image policy is nested under one of the scoped images or repositories in a cluster image policy, only the policy from cluster image policy is applied. However, the image policy object is created with an error message. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace inherits the policy from the cluster image policy.
 
 The following example shows general guidelines on how to configure an `ImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters".
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a sigstore-supported public key infrastructure (PKI) key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or provide a Cosign public and private key pair for signing operations.
 
 - You have a signing process in place to sign your images.
 
 - You have access to a registry that supports Cosign signatures, if you are using Cosign signatures.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an image policy object similar to the following examples. See "About cluster and image policy parameters" for specific details on these parameters.
 
@@ -543,7 +627,7 @@ The following example shows general guidelines on how to configure an `ImagePoli
     The following example image policy object uses a BYOPKI policy and the `MatchRepository` match policy:
 
     ``` yaml
-    apiVersion: config.openshift.io/v1alpha1
+    apiVersion: config.openshift.io/v1
     kind: ImagePolicy
     metadata:
       name: pki-policy
@@ -674,6 +758,16 @@ The following example shows general guidelines on how to configure an `ImagePoli
 
     The Machine Config Operator (MCO) updates the machine config pools (MCP) in your cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After the nodes in your cluster are updated, you can verify that the image policy has been configured:
 
   1.  Start a debug pod for the node by running the following command:
@@ -694,9 +788,11 @@ The following example shows general guidelines on how to configure an `ImagePoli
       sh-5.1# cat /etc/crio/policies/<namespace>.json
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output for the image policy object with a public key showing the new image policy**
+      <div class="title">
+
+      Example output for the image policy object with a public key showing the new image policy
 
       </div>
 
@@ -717,9 +813,13 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the image policy object for a BYOPKI certificate showing the new image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the image policy object for a BYOPKI certificate showing the new image policy
 
       </div>
 
@@ -744,9 +844,13 @@ The following example shows general guidelines on how to configure an `ImagePoli
             ],
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the image policy object with a Fulcio certificate showing the new image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the image policy object with a Fulcio certificate showing the new image policy
 
       </div>
 
@@ -773,15 +877,19 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
+      </div>
+
   4.  Examine the `sigstore-registries.yaml` file by running the following command:
 
       ``` terminal
       sh-5.1# cat /etc/containers/registries.d/sigstore-registries.yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output showing that the scoped registry was added**
+      <div class="title">
+
+      Example output showing that the scoped registry was added
 
       </div>
 
@@ -792,6 +900,8 @@ The following example shows general guidelines on how to configure an `ImagePoli
         quay.io/openshift-release-dev/ocp-release:
           use-sigstore-attachments: true
       ```
+
+      </div>
 
       where:
 
@@ -804,9 +914,11 @@ The following example shows general guidelines on how to configure an `ImagePoli
       sh-5.1#  journalctl -u crio | grep -A 100 "Pulling image: example.io/crio"
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output with timestamp removed**
+      <div class="title">
+
+      Example output with timestamp removed
 
       </div>
 
@@ -823,9 +935,61 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
+      </div>
+
       The `IsRunningImageAllowed` line confirms that image is allowed by the configured sigstore verification policy.
 
       The `Using transport \"docker\" specific policy section \"example.io/crio/signed\"" file="signature/policy_eval.go:150` line confirms that the image policy has been applied.
+
+</div>
+
+# Performance and resource considerations for signature verification
+
+Enabling signature verification on your cluster has minimal impact on performance and resource consumption. You can use signature verification on clusters with large numbers of Operators and workloads without significant performance impact. Review these considerations to understand the impact on your environment and ensure your deployment is properly configured.
+
+## Pod startup latency
+
+Signature verification adds a small amount of latency to pod startup time. This latency is primarily due to fetching the signature image from the registry. Because signature images are small, fetching is typically fast, but times can vary depending on network conditions.
+
+## Scalability
+
+Signature verification scales to large clusters with many Operators and workloads, including clusters with:
+
+- A large number of Operator images
+
+- Multiple `ClusterImagePolicy` and `ImagePolicy` objects
+
+- Concurrent pod scheduling across many nodes
+
+The Machine Config Operator (MCO) efficiently distributes the policy configuration to all nodes in the cluster. After the initial configuration is applied, later pod startups verify signatures without additional MCO processing.
+
+## Resource consumption
+
+Signature verification has minimal resource impact:
+
+Storage
+Signature images are small (typically a few KB) and are stored alongside the container images in your registry. The storage requirements for signatures are negligible compared to the container images themselves.
+
+Memory
+Cryptographic signature validation uses minimal memory during the verification process.
+
+Network
+Signature verification requires fetching the signature image from the registry during image pull. Because signatures are small, the network impact is minimal. In disconnected environments, the cluster fetches all signature images from your local mirror registry.
+
+CPU
+Cryptographic signature validation requires minimal CPU resources. The verification process is not computationally intensive and has negligible impact on cluster performance.
+
+## GitOps and ZTP compatibility
+
+Signature verification is compatible with GitOps-based deployment workflows, including Red Hat Advanced Cluster Management (RHACM) and Zero Touch Provisioning (ZTP). You can include `ClusterImagePolicy` and `ImagePolicy` manifests in your GitOps repository and deploy them alongside other cluster configuration.
+
+When using GitOps:
+
+- Include the `ClusterImagePolicy` manifests in your configuration repository.
+
+- Apply the policy manifests before pulling any images covered by that policy.
+
+- Verify that all required images and signatures are mirrored before applying policies that enforce verification.
 
 # Additional resources
 
@@ -838,3 +1002,11 @@ The following example shows general guidelines on how to configure an `ImagePoli
 - [Cosign public and private key pair (Sigstore documentation)](https://docs.sigstore.dev/cosign/signing/overview/)
 
 - [About cluster and image policy parameters](../nodes/nodes-sigstore-using.xml#nodes-sigstore-configure-parameters_nodes-sigstore-using)
+
+- [Customizing extra installation manifests in the ZTP pipeline](../edge_computing/ztp-advanced-install-ztp.xml#ztp-customizing-the-install-extra-manifests_ztp-advanced-install-ztp)
+
+- [About signature mirroring](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#oc-mirror-signature-mirroring_about-installing-oc-mirror-v2)
+
+- [Creating the image set configuration](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2)
+
+- [`ImageSet` configuration parameters for oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#oc-mirror-imageset-config-parameters-v2_about-installing-oc-mirror-v2)

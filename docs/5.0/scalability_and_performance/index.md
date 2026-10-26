@@ -4,11 +4,8 @@ The following documentation provides information on recommended performance and 
 
 To contact Red Hat support, see "Getting support".
 
-<div class="note">
-
-Some performance and scalability Operators have release cycles that are independent from OpenShift Container Platform release cycles. For more information, see "OpenShift Operators".
-
-</div>
+> [!NOTE]
+> Some performance and scalability Operators have release cycles that are independent from OpenShift Container Platform release cycles. For more information, see "OpenShift Operators".
 
 # Recommended performance and scalability practices
 

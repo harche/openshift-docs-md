@@ -2,11 +2,8 @@ To assist in troubleshooting a failed OpenShift Container Platform installation,
 
 If you are unable to resolve the issue by using the logs and debug information, see "Determining where installation issues occur" in the *Additional resources* section.
 
-<div class="note">
-
-If your OpenShift Container Platform installation fails and the debug output or logs contain network timeouts or other connectivity errors, review the guidelines "Configuring your firewall" in the *Additional resources* section. By gathering logs from your firewall and load balancer, you can diagnose network-related errors.
-
-</div>
+> [!NOTE]
+> If your OpenShift Container Platform installation fails and the debug output or logs contain network timeouts or other connectivity errors, review the guidelines "Configuring your firewall" in the *Additional resources* section. By gathering logs from your firewall and load balancer, you can diagnose network-related errors.
 
 # Prerequisites
 
@@ -16,9 +13,14 @@ If your OpenShift Container Platform installation fails and the debug output or 
 
 If you provided an SSH key to your installation program, you can gather data about your failed installation.
 
-<div class="note">
+> [!NOTE]
+> You use a different command to gather logs about an unsuccessful installation than to gather logs from a running cluster. If you must gather logs from a running cluster, use the `oc adm must-gather` command.
 
-You use a different command to gather logs about an unsuccessful installation than to gather logs from a running cluster. If you must gather logs from a running cluster, use the `oc adm must-gather` command.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -27,6 +29,16 @@ You use a different command to gather logs about an unsuccessful installation th
 - The `ssh-agent` process is active on your computer, and you provided the same SSH key to both the `ssh-agent` process and the installation program.
 
 - If you tried to install a cluster on infrastructure that you provisioned, you must have the fully qualified domain names of the bootstrap and control plane nodes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate the commands that are required to obtain the installation logs from the bootstrap and control plane machines:
 
@@ -58,15 +70,14 @@ You use a different command to gather logs about an unsuccessful installation th
 
       - `<master_*_address>`:: For each control plane, or master, machine in your cluster, replace this placeholder with its fully qualified domain name or IP address.
 
-        <div class="note">
+        > [!NOTE]
+        > A default cluster contains three control plane machines. List all of your control plane machines as shown, no matter how many your cluster uses.
 
-        A default cluster contains three control plane machines. List all of your control plane machines as shown, no matter how many your cluster uses.
+      <div class="formalpara">
 
-        </div>
+      <div class="title">
 
-      <div class="formalpara-title">
-
-      **Example output**
+      Example output
 
       </div>
 
@@ -75,19 +86,38 @@ You use a different command to gather logs about an unsuccessful installation th
       INFO Bootstrap gather logs captured here "<installation_directory>/log-bundle-<timestamp>.tar.gz"
       ```
 
+      </div>
+
       If you open a Red Hat support case about your installation failure, include the compressed logs when opening a Red Hat support case.
+
+</div>
 
 # Manually gathering logs with SSH access to your hosts
 
 Manually gather logs in situations where `must-gather` or automated collection methods do not work.
 
-<div class="important">
+> [!IMPORTANT]
+> By default, SSH access to the OpenShift Container Platform nodes is disabled on the Red Hat OpenStack Platform (RHOSP) based installations.
 
-By default, SSH access to the OpenShift Container Platform nodes is disabled on the Red Hat OpenStack Platform (RHOSP) based installations.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You must have SSH access to your hosts.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Collect the `bootkube.service` service logs from the bootstrap host by entering the `journalctl` command:
 
@@ -119,17 +149,37 @@ By default, SSH access to the OpenShift Container Platform nodes is disabled on 
     $ sudo tail -f /var/log/containers/*
     ```
 
+</div>
+
 # Manually gathering logs without SSH access to your host(s)
 
 Manually gather logs in situations where `must-gather` or automated collection methods do not work.
 
 If you do not have SSH access to your node, you can access the systems journal to investigate what is happening on your host.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your OpenShift Container Platform installation must be complete.
 
 - Your API service is still functional.
 
 - You have system administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Access `journald` unit logs under `/var/log` by running:
 
@@ -143,9 +193,19 @@ If you do not have SSH access to your node, you can access the systems journal t
     $ oc adm node-logs --role=master --path=openshift-apiserver
     ```
 
+</div>
+
 # Getting debug information from the installation program
 
 You can choose between two methods to get debug information from the installation program.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Look at debug messages from a past installation in the hidden `.openshift_install.log` file. To do this task, enter a command similar to the following example:
 
@@ -163,11 +223,21 @@ You can choose between two methods to get debug information from the installatio
 
   For `<installation_directory>`, specify the same directory you specified when you ran `./openshift-install create cluster`.
 
+</div>
+
 # Reinstalling the OpenShift Container Platform cluster
 
 If you are unable to debug and resolve issues in the failed OpenShift Container Platform installation, consider installing a new OpenShift Container Platform cluster. Before starting the installation process again, you must complete thorough cleanup.
 
 For a user-provisioned infrastructure installation, you must manually destroy the cluster and delete all associated resources. The following procedure is for an installer-provisioned infrastructure installation.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Destroy the cluster and remove all the resources associated with the cluster, including the hidden installer state files in the installation directory:
 
@@ -184,6 +254,8 @@ For a user-provisioned infrastructure installation, you must manually destroy th
     ```
 
 3.  Follow the procedure for installing a new OpenShift Container Platform cluster.
+
+</div>
 
 # Additional resources
 

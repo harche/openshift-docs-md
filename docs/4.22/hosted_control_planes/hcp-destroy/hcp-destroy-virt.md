@@ -4,6 +4,14 @@ You might want to remove a hosted cluster if you are no longer using it, you are
 
 You can use the command-line interface (CLI) to destroy a hosted cluster and its managed cluster resource on OpenShift Virtualization.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Delete the managed cluster resource on multicluster engine Operator by running the following command:
 
     ``` terminal
@@ -15,3 +23,5 @@ You can use the command-line interface (CLI) to destroy a hosted cluster and its
     ``` terminal
     $ hcp destroy cluster kubevirt --name <hosted_cluster_name>
     ```
+
+</div>

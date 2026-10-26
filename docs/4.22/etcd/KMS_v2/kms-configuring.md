@@ -1,16 +1,21 @@
 You can configure external KMS encryption for etcd to centralize key management and meet regulatory compliance requirements.
 
-<div class="important">
-
-Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Enable KMS encryption
 
 You can enable external Key Management Service (KMS) encryption for etcd data to centralize key management and meet compliance requirements.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -29,6 +34,8 @@ You can enable external Key Management Service (KMS) encryption for etcd data to
   - Vault policy allowing the Kubernetes KMS v2 plugin to encrypt, decrypt, and read key information
 
   - Authentication method (token, `AppRole`, or `userpass`) configured with the policy attached
+
+</div>
 
 The Kubernetes KMS v2 plugin requires a Vault policy with the following capabilities:
 
@@ -52,9 +59,14 @@ path "auth/token/lookup-self" {
 
 Replace `kms-key` with your Vault Transit key name if using a different name.
 
-<div class="important">
+> [!IMPORTANT]
+> Create an etcd backup before enabling KMS encryption.
 
-Create an etcd backup before enabling KMS encryption.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -135,11 +147,8 @@ Create an etcd backup before enabling KMS encryption.
 
     The manifest uses the Red Hat certified container image from Quay.io (`quay.io/redhat-isv-containers/698df066f8d1ddf179c15ef9`), which is the recommended image for OpenShift Container Platform.
 
-    <div class="note">
-
-    Alternatively, you can use the [HashiCorp image from Docker Hub](https://hub.docker.com/r/hashicorp/vault-kube-kms) by replacing the image field with `docker.io/hashicorp/vault-kube-kms:0.1.0-beta-ubi`.
-
-    </div>
+    > [!NOTE]
+    > Alternatively, you can use the [HashiCorp image from Docker Hub](https://hub.docker.com/r/hashicorp/vault-kube-kms) by replacing the image field with `docker.io/hashicorp/vault-kube-kms:0.1.0-beta-ubi`.
 
 3.  Deploy the static pod manifest to each control plane node by running the following commands:
 
@@ -160,9 +169,11 @@ Create an etcd backup before enabling KMS encryption.
     $ oc get pods -n kube-system -o wide | grep vault-kms
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -172,6 +183,8 @@ Create an etcd backup before enabling KMS encryption.
     vault-kms-plugin-ip-10-0-69-106.compute.internal  1/1  Running  0  2m  10.0.69.106
     ```
 
+    </div>
+
     Static pod names include the node name as a suffix. You should see one pod per control plane node.
 
 5.  Verify the socket exists on a control plane node by entering the following command:
@@ -180,9 +193,11 @@ Create an etcd backup before enabling KMS encryption.
     $ oc debug node/<node_name> -- chroot /host ls -la /var/run/kmsplugin/kms.sock
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -190,11 +205,10 @@ Create an etcd backup before enabling KMS encryption.
     srwxr-xr-x. 1 root root 0 <timestamp> /var/run/kmsplugin/kms.sock
     ```
 
-    <div class="note">
-
-    Static pods are managed by kubelet on each node and cannot be deleted with `oc delete pod`. To remove a static pod, delete the manifest file from `/etc/kubernetes/manifests/` on each control plane node.
-
     </div>
+
+    > [!NOTE]
+    > Static pods are managed by kubelet on each node and cannot be deleted with `oc delete pod`. To remove a static pod, delete the manifest file from `/etc/kubernetes/manifests/` on each control plane node.
 
 6.  Edit the `APIServer` custom resource by entering the following command:
 
@@ -218,13 +232,18 @@ Create an etcd backup before enabling KMS encryption.
 
     Migration begins automatically. The `kube-apiserver`, `openshift-apiserver` and `oauth-apiserver` Operators will restart and roll out new revisions.
 
-    <div class="note">
+    > [!NOTE]
+    > The `openshift-apiserver` and `authentication` operators typically complete migration in 5-10 minutes. The `kube-apiserver` operator uses a conservative rollout strategy, updating one control plane node at a time and waiting for health checks before proceeding to the next node. This process can take 30 minutes or longer depending on cluster load.
 
-    The `openshift-apiserver` and `authentication` operators typically complete migration in 5-10 minutes. The `kube-apiserver` operator uses a conservative rollout strategy, updating one control plane node at a time and waiting for health checks before proceeding to the next node. This process can take 30 minutes or longer depending on cluster load.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the encryption type by entering the following command:
 
@@ -240,9 +259,11 @@ Create an etcd backup before enabling KMS encryption.
     $ oc get kubeapiserver cluster -o jsonpath='{.status.nodeStatuses}' | jq -r '.[] | "\(.nodeName | split(".")[0]): current=\(.currentRevision) target=\(.targetRevision)"'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output during rollout**
+    <div class="title">
+
+    Example output during rollout
 
     </div>
 
@@ -252,6 +273,8 @@ Create an etcd backup before enabling KMS encryption.
     ip-10-0-69-106: current=9 target=0
     ```
 
+    </div>
+
     The operator rolls out one node at a time. When all nodes show the same `current` revision and `target` is `0`, the rollout is complete.
 
 3.  Check the encryption migration status by entering the following command:
@@ -260,9 +283,11 @@ Create an etcd backup before enabling KMS encryption.
     $ oc get kubeapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output when complete**
+    <div class="title">
+
+    Example output when complete
 
     </div>
 
@@ -276,15 +301,14 @@ Create an etcd backup before enabling KMS encryption.
     }
     ```
 
+    </div>
+
     Wait for `reason` to show `EncryptionCompleted` before proceeding to verify encryption in etcd.
 
 4.  Verify secrets are encrypted in etcd:
 
-    <div class="warning">
-
-    Wait for the `kube-apiserver` rollout to complete on all control plane nodes before verifying encryption. During the rollout, API requests are distributed across nodes, and secrets created while some nodes are still on an earlier revision will not be encrypted with Kubernetes KMS v2.
-
-    </div>
+    > [!WARNING]
+    > Wait for the `kube-apiserver` rollout to complete on all control plane nodes before verifying encryption. During the rollout, API requests are distributed across nodes, and secrets created while some nodes are still on an earlier revision will not be encrypted with Kubernetes KMS v2.
 
     1.  Create a test secret by entering the following command:
 
@@ -312,6 +336,16 @@ Create an etcd backup before enabling KMS encryption.
         $ oc delete secret test-secret -n default
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Vault Transit Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/transit)
 
 - [Vault API: Create Key](https://developer.hashicorp.com/vault/api-docs/secret/transit#create-key)
@@ -320,15 +354,35 @@ Create an etcd backup before enabling KMS encryption.
 
 - [Vault Authentication Methods](https://developer.hashicorp.com/vault/docs/auth)
 
+</div>
+
 # Rotate the Vault encryption key
 
 You can rotate your Vault Transit encryption key to generate a new key version while maintaining access to data encrypted with earlier versions.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to your Vault instance with permissions to rotate keys.
 
 - Kubernetes KMS v2 encryption is enabled and functioning.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Rotate the Vault encryption key by entering the following command:
 
@@ -346,17 +400,34 @@ You can rotate your Vault Transit encryption key to generate a new key version w
 
     The `latest_version` field shows the current key version number.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that existing secrets remain accessible by entering the following command:
 
   ``` terminal
   $ oc get secret -A
   ```
 
+</div>
+
 All secrets should be readable without errors.
 
-<div class="note">
+> [!NOTE]
+> Existing encrypted secrets do not need re-encryption. Vault maintains all key versions and automatically uses the appropriate version for decryption.
 
-Existing encrypted secrets do not need re-encryption. Vault maintains all key versions and automatically uses the appropriate version for decryption.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -366,9 +437,19 @@ Existing encrypted secrets do not need re-encryption. Vault maintains all key ve
 
 - [Vault Transit: Key Rotation](https://developer.hashicorp.com/vault/docs/secrets/transit#key-rotation)
 
+</div>
+
 # Migrate from local encryption to KMS encryption
 
 You can migrate from local etcd encryption to external KMS encryption to centralize key management and improve compliance.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -380,9 +461,16 @@ You can migrate from local etcd encryption to external KMS encryption to central
 
 - Control plane nodes have network access to the KMS provider.
 
-<div class="important">
+</div>
 
-Create an etcd backup before migrating.
+> [!IMPORTANT]
+> Create an etcd backup before migrating.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -430,9 +518,19 @@ Create an etcd backup before migrating.
 
     All outputs should show `EncryptionCompleted`.
 
+</div>
+
 # Monitor KMS encryption status
 
 You can monitor KMS encryption status by using Operator and API server logs to verify successful configuration and detect issues.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the kube-apiserver operator logs for KMS-related events by entering the following command:
 
@@ -452,7 +550,19 @@ You can monitor KMS encryption status by using Operator and API server logs to v
     $ oc get apiserver cluster -o jsonpath='{.spec.encryption}' | jq
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Kubernetes KMS provider documentation](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+
+</div>
 
 # KMS encryption troubleshooting
 
@@ -530,11 +640,8 @@ $ oc debug node/<node_name> -- chroot /host journalctl -u kms-plugin | grep -i "
 
 - Ensure KMS provider maintains access to previous key versions
 
-<div class="warning">
-
-Deleted KMS keys prevent data recovery. Align key retention with backup policies.
-
-</div>
+> [!WARNING]
+> Deleted KMS keys prevent data recovery. Align key retention with backup policies.
 
 ## API server degraded or unavailable
 
@@ -620,11 +727,8 @@ Collect KMS provider information:
 
 - Network connectivity test results
 
-<div class="note">
-
-Redact credentials, tokens, and sensitive data before sharing logs.
-
-</div>
+> [!NOTE]
+> Redact credentials, tokens, and sensitive data before sharing logs.
 
 # Additional resources
 

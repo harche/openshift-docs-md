@@ -1,18 +1,33 @@
 OpenShift Virtualization is now integrated with Red Hat OpenShift Service Mesh. You can monitor, visualize, and control traffic between pods that run virtual machine (VM) workloads on the default pod network with IPv4.
 
-# Adding a virtual machine to a service mesh
+# Connect a virtual machine to a service mesh
 
 To add a virtual machine (VM) workload to a service mesh, enable automatic sidecar injection in the VM configuration file by setting the `sidecar.istio.io/inject` annotation to `true`. Then expose your VM as a service to view your application in the mesh.
 
-<div class="important">
+> [!IMPORTANT]
+> To avoid port conflicts, do not use ports used by the Istio sidecar proxy. These include ports 15000, 15001, 15006, 15008, 15020, 15021, and 15090.
 
-To avoid port conflicts, do not use ports used by the Istio sidecar proxy. These include ports 15000, 15001, 15006, 15008, 15020, 15021, and 15090.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the Service Mesh Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the VM configuration file to add the `sidecar.istio.io/inject: "true"` annotation.
 
@@ -105,6 +120,8 @@ To avoid port conflicts, do not use ports used by the Istio sidecar proxy. These
 
     `<service_name>`
     Specifies the name of the service YAML file.
+
+</div>
 
 # Additional resources
 

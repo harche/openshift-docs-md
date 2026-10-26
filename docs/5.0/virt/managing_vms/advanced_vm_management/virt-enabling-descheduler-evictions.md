@@ -65,11 +65,8 @@ spec:
     - psi=1
 ```
 
-<div class="note">
-
-The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
-
-</div>
+> [!NOTE]
+> The name of the `MachineConfig` object is significant because machine configs are processed in lexicographical order. By default, a config that starts with `98-` disables PSI. To ensure that PSI is enabled, name your config with a higher prefix, such as `99-openshift-machineconfig-worker-psi-karg`.
 
 You can use this profile with the `SoftTopologyAndDuplicates` profile to also rebalance pods based on soft topology constraints, which can be useful in hosted control plane environments.
 
@@ -79,15 +76,30 @@ The descheduler is not available by default. To enable the descheduler, you must
 
 By default, the descheduler runs in predictive mode, which means that it only simulates pod evictions. You must change the mode to automatic for the descheduler to perform the pod evictions.
 
-<div class="important">
+> [!IMPORTANT]
+> If you have enabled hosted control planes in your cluster, set a custom priority threshold to lower the chance that pods in the hosted control plane namespaces are evicted. Set the priority threshold class name to `hypershift-control-plane`, because it has the lowest priority value (`100000000`) of the hosted control plane priority classes.
 
-If you have enabled hosted control planes in your cluster, set a custom priority threshold to lower the chance that pods in the hosted control plane namespaces are evicted. Set the priority threshold class name to `hypershift-control-plane`, because it has the lowest priority value (`100000000`) of the hosted control plane priority classes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - Access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -123,17 +135,34 @@ If you have enabled hosted control planes in your cluster, set a custom priority
 
         2.  Expand the **Profiles** section and select `KubeVirtRelieveAndMigrate`. The `AffinityAndTaints` profile is enabled by default.
 
-            <div class="note">
+            > [!NOTE]
+            > You can also configure the profiles and settings for the descheduler later using the OpenShift CLI (`oc`).
 
-            You can also configure the profiles and settings for the descheduler later using the OpenShift CLI (`oc`).
+</div>
 
-            </div>
+# Control which VMs the descheduler evicts
 
-# Configuring descheduler evictions for virtual machines
+After the descheduler is installed, all migratable virtual machines (VMs) are eligible for eviction by default. You can exclude specific VMs from eviction, and limit how many VMs are evicted at once.
 
-After the descheduler is installed and configured, all migratable virtual machines (VMs) are eligible for eviction by default. You can configure the descheduler to manage VM evictions across the cluster and optionally exclude specific VMs from eviction.
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the descheduler in the OpenShift Container Platform web console or OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop the VM.
 
@@ -191,13 +220,19 @@ After the descheduler is installed and configured, all migratable virtual machin
 
 6.  Start the VM.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 The VM is now configured according to the descheduler settings.
+
+</div>
 
 # Additional resources
 

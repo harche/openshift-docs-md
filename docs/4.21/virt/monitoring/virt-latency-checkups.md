@@ -1,28 +1,40 @@
 You can use a latency checkup to verify network connectivity and measure latency between two virtual machines (VMs) that are attached to a secondary network interface. The predefined latency checkup uses the ping utility.
 
-<div class="important">
-
-Before you run a latency checkup, you must first [create a bridge interface](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge) on the cluster nodes to connect the VM’s secondary interface to any interface on the node. If you do not create a bridge interface, the VMs do not start and the job fails.
-
-</div>
+> [!IMPORTANT]
+> Before you run a latency checkup, you must first [create a bridge interface](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge) on the cluster nodes to connect the VM’s secondary interface to any interface on the node. If you do not create a bridge interface, the VMs do not start and the job fails.
 
 Running a predefined checkup in an existing namespace involves setting up a service account for the checkup, creating the `Role` and `RoleBinding` objects for the service account, enabling permissions for the checkup, and creating the input config map and the checkup job. You can run a checkup multiple times.
 
-<div class="important">
-
-You must always:
-
-- Verify that the checkup image is from a trustworthy source before applying it.
-
-- Review the checkup permissions before creating the `Role` and `RoleBinding` objects.
-
-</div>
+> [!IMPORTANT]
+> You must always:
+>
+> - Verify that the checkup image is from a trustworthy source before applying it.
+>
+> - Review the checkup permissions before creating the `Role` and `RoleBinding` objects.
 
 # Running a latency checkup by using the web console
 
 Run a latency checkup to verify network connectivity and measure the latency between two virtual machines attached to a secondary network interface.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must add a `NetworkAttachmentDefinition` to the namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Checkups** in the web console.
 
@@ -44,17 +56,47 @@ Run a latency checkup to verify network connectivity and measure the latency bet
 
 10. Click **Run**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To view the status of the latency checkup, go to the **Checkups** list on the **Latency checkup** tab. Click on the name of the checkup for more details.
+
+</div>
 
 # Running a latency checkup by using the CLI
 
 Verify that network latency between virtual machines on a secondary network meets your performance requirements.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
 - The cluster has at least two worker nodes.
 
 - You configured a network attachment definition for a namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ServiceAccount`, `Role`, and `RoleBinding` manifest for the latency checkup.
 
@@ -283,3 +325,5 @@ Verify that network latency between virtual machines on a secondary network meet
     ``` terminal
     $ oc delete -f <latency_sa_roles_rolebinding>.yaml
     ```
+
+</div>

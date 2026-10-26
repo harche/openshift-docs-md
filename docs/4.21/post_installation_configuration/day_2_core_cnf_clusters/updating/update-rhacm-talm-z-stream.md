@@ -6,9 +6,14 @@ You can update clusters to z-stream patch releases by using RHACM policies and T
 
 Apply z-stream updates as soon as they become available to address critical vulnerabilities and maintain security compliance.
 
-<div class="note">
+> [!NOTE]
+> The following procedure uses `spoke1` and `spoke2` as example cluster names. Replace these with your actual cluster names throughout.
 
-The following procedure uses `spoke1` and `spoke2` as example cluster names. Replace these with your actual cluster names throughout.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -19,6 +24,16 @@ The following procedure uses `spoke1` and `spoke2` as example cluster names. Rep
 - A z-stream patch release is available on the Red Hat Customer Portal.
 
 - A recent etcd backup exists that was created within the past 24 hours.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify the current cluster version by running the following command:
 
@@ -170,7 +185,15 @@ The following procedure uses `spoke1` and `spoke2` as example cluster names. Rep
 
     Operators update sequentially during the z-stream update.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the cluster version and Operator health by running the following commands:
 
@@ -201,6 +224,16 @@ The following procedure uses `spoke1` and `spoke2` as example cluster names. Rep
 
 4.  Run smoke tests for critical workloads to ensure functionality after the update.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If the `ClusterGroupUpgrade` CR is stuck in `Preparing` state, check policy compliance in RHACM by running the following command:
 
   ``` terminal
@@ -218,6 +251,8 @@ The following procedure uses `spoke1` and `spoke2` as example cluster names. Rep
   ``` terminal
   $ oc --context=spoke1 get events -A --sort-by='.lastTimestamp' | tail -20
   ```
+
+</div>
 
 # Additional resources
 

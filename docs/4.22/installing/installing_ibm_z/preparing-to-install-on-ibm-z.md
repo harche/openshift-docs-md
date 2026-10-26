@@ -1,10 +1,7 @@
 You can install an OpenShift Container Platform cluster on IBM Z® and IBM® LinuxONE by using a variety of different installation methods. Choose the method that best fits your environment, such as a disconnected deployment or a minimally configured installation.
 
-<div class="note">
-
-While this document refers only to IBM Z®, all information in it also applies to IBM® LinuxONE.
-
-</div>
+> [!NOTE]
+> While this document refers only to IBM Z®, all information in it also applies to IBM® LinuxONE.
 
 # Choosing a method to install OpenShift Container Platform on IBM Z or IBM LinuxONE
 
@@ -18,14 +15,14 @@ The OpenShift Container Platform installation program offers the following metho
 
 - **Full control**: You can deploy a cluster on infrastructure that you prepare and support, which provides maximum customizability. You can deploy clusters in connected or disconnected environments.
 
-|                                         | Assisted Installer | Agent-based Installer | User-provisioned installation | Installer-provisioned installation |
-|-----------------------------------------|--------------------|-----------------------|-------------------------------|------------------------------------|
-| IBM Z® with z/VM                        | ✓                  | ✓                     | ✓                             |                                    |
-| Restricted network IBM Z® with z/VM     |                    | ✓                     | ✓                             |                                    |
-| IBM Z® with RHEL KVM                    | ✓                  | ✓                     | ✓                             |                                    |
-| Restricted network IBM Z® with RHEL KVM |                    | ✓                     | ✓                             |                                    |
-| IBM Z® in an LPAR                       | ✓                  | ✓                     | ✓                             |                                    |
-| Restricted network IBM Z® in an LPAR    |                    | ✓                     | ✓                             |                                    |
+|  | Assisted Installer | Agent-based Installer | User-provisioned installation | Installer-provisioned installation |
+|----|----|----|----|----|
+| IBM Z® with z/VM | ✓ | ✓ | ✓ |  |
+| Restricted network IBM Z® with z/VM |  | ✓ | ✓ |  |
+| IBM Z® with RHEL KVM | ✓ | ✓ | ✓ |  |
+| Restricted network IBM Z® with RHEL KVM |  | ✓ | ✓ |  |
+| IBM Z® in an LPAR | ✓ | ✓ | ✓ |  |
+| Restricted network IBM Z® in an LPAR |  | ✓ | ✓ |  |
 
 IBM Z® installation options
 
@@ -35,11 +32,8 @@ For more information about the installation process, see Installation process in
 
 User-provisioned infrastructure requires that you manage all resources that OpenShift Container Platform needs, including networking, load balancing, storage, and compute. This approach suits organizations with specific needs or those in air-gapped networks.
 
-<div class="important">
-
-These steps for performing a user-provisioned infrastructure installation are an example only. Installing a cluster with infrastructure you offer requires knowledge of the IBM Z® platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
-
-</div>
+> [!IMPORTANT]
+> These steps for performing a user-provisioned infrastructure installation are an example only. Installing a cluster with infrastructure you offer requires knowledge of the IBM Z® platform and the installation process of OpenShift Container Platform. Use the user-provisioned infrastructure installation instructions as a guide; you are free to create the required resources through other methods.
 
 - **Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE**: You can install OpenShift Container Platform with z/VM on IBM Z® or IBM® LinuxONE infrastructure that you provision.
 

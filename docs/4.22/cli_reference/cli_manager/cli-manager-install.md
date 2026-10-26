@@ -1,20 +1,22 @@
 You can simplify the installation and management of CLI plugins in connected and disconnected environments with the CLI Manager Operator. The CLI Manager Operator makes Krew compatible with the `oc` CLI, allowing cluster administrators to manage custom CLI plugin resources.
 
-<div class="important">
-
-Using the CLI Manager Operator to install and manage plugins for the OpenShift CLI is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Using the CLI Manager Operator to install and manage plugins for the OpenShift CLI is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Installing the CLI Manager Operator
 
 You can install the CLI Manager Operator to facilitate adding CLI plugins in both connected and disconnected environments.
 
-<div class="note">
+> [!NOTE]
+> Krew always works with OpenShift CLI (`oc`) without the CLI Manager Operator installed. You can use the same commands outlined in this documentation to use Krew with `oc`. For more information, see [Krew documentation](https://krew.sigs.k8s.io/docs/).
 
-Krew always works with OpenShift CLI (`oc`) without the CLI Manager Operator installed. You can use the same commands outlined in this documentation to use Krew with `oc`. For more information, see [Krew documentation](https://krew.sigs.k8s.io/docs/).
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -23,6 +25,16 @@ Krew always works with OpenShift CLI (`oc`) without the CLI Manager Operator ins
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -64,25 +76,50 @@ Krew always works with OpenShift CLI (`oc`) without the CLI Manager Operator ins
 
         1.  The new `CliManager` resource is listed in the **CLI Manager** tab.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Verify that **CLI Manager Operator** is listed with a **Status** of **Succeeded**.
 
+</div>
+
 # Adding the CLI Manager Operator custom index to Krew
 
 You can use the terminal to add the CLI Manager Operator custom index to Krew so that the CLI Manager Operator will work in disconnected environments. This procedure is required for the CLI Manager Operator to function correctly and needs to be done only once.
 
-<div class="note">
+> [!NOTE]
+> If you use self-signed certificates, mark the certificate as trusted on your local operating system to use Krew.
 
-If you use self-signed certificates, mark the certificate as trusted on your local operating system to use Krew.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - [Krew is installed](https://krew.sigs.k8s.io/docs/user-guide/setup/install).
 
 - The CLI Manager Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To establish the `ROUTE` variable, enter the following command:
 
@@ -102,9 +139,11 @@ If you use self-signed certificates, mark the certificate as trusted on your loc
     $ oc krew update
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -115,13 +154,35 @@ If you use self-signed certificates, mark the certificate as trusted on your loc
     * ocp/<plugin_name>
     ```
 
+    </div>
+
+</div>
+
 # Adding a plugin to the CLI Manager Operator
 
 You can add a CLI plugin to the CLI Manager Operator by creating a new plugin resource in the OpenShift Container Platform web console’s YAML view.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - The CLI Manager Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -135,9 +196,11 @@ You can add a CLI plugin to the CLI Manager Operator by creating a new plugin re
 
 6.  In the text box, enter the information for the plugin you are installing. See the following example YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file to add a plugin**
+    <div class="title">
+
+    Example YAML file to add a plugin
 
     </div>
 
@@ -161,6 +224,8 @@ You can add a CLI plugin to the CLI Manager Operator by creating a new plugin re
       version: <version>
     ```
 
+    </div>
+
     where:
 
     `<plugin_name>`
@@ -180,7 +245,19 @@ You can add a CLI plugin to the CLI Manager Operator by creating a new plugin re
 
 7.  Click **Save**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Enter the following command to see if the plugin is listed and has been added successfully:
+
+</div>
 
 ``` terminal
 $ oc get plugin/<plugin_name> -o yaml

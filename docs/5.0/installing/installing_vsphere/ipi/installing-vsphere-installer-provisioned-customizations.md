@@ -22,11 +22,8 @@ You must set most of the network configuration parameters during installation, a
 
 - If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
-  <div class="note">
-
-  Be sure to also review this site list if you are configuring a proxy.
-
-  </div>
+  > [!NOTE]
+  > Be sure to also review this site list if you are configuring a proxy.
 
 # Internet access for OpenShift Container Platform
 
@@ -40,11 +37,8 @@ You must have internet access to perform the following actions:
 
 - Obtain the packages that are required to perform cluster updates.
 
-<div class="important">
-
-If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
-
-</div>
+> [!IMPORTANT]
+> If your cluster cannot have direct internet access, you can perform a restricted network installation on some types of infrastructure that you provision. During that process, you download the required content and use it to populate a mirror registry with the installation packages. With some installation types, the environment that you install your cluster in will not require internet access. Before you update the cluster, you update the content of the mirror registry.
 
 # VMware vSphere region and zone enablement
 
@@ -52,13 +46,10 @@ You can deploy an OpenShift Container Platform cluster to multiple vSphere data 
 
 To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
-<div class="important">
-
-The VMware vSphere region and zone enablement feature requires the vSphere Container Storage Interface (CSI) driver as the default storage driver in the cluster. As a result, the feature is only available on a newly installed cluster.
-
-For a cluster that was upgraded from a previous release, you must enable CSI automatic migration for the cluster. You can then configure multiple regions and zones for the upgraded cluster.
-
-</div>
+> [!IMPORTANT]
+> The VMware vSphere region and zone enablement feature requires the vSphere Container Storage Interface (CSI) driver as the default storage driver in the cluster. As a result, the feature is only available on a newly installed cluster.
+>
+> For a cluster that was upgraded from a previous release, you must enable CSI automatic migration for the cluster. You can then configure multiple regions and zones for the upgraded cluster.
 
 The default installation configuration deploys a cluster to a single vSphere data center. If you want to deploy a cluster to multiple vSphere data centers, you must create an installation configuration file that enables the region and zone feature.
 
@@ -72,11 +63,8 @@ The following list describes terms associated with defining zones and regions fo
 
 - Zone: Specifies a vCenter cluster. You define a zone by using a tag from the `openshift-zone` tag category.
 
-<div class="note">
-
-If you plan on specifying more than one failure domain in your `install-config.yaml` file, you must create tag categories, zone tags, and region tags in advance of creating the configuration file.
-
-</div>
+> [!NOTE]
+> If you plan on specifying more than one failure domain in your `install-config.yaml` file, you must create tag categories, zone tags, and region tags in advance of creating the configuration file.
 
 You must create a vCenter tag for each vCenter data center, which represents a region. Additionally, you must create a vCenter tag for each cluster than runs in a data center, which represents a zone. After you create the tags, you must attach each tag to their respective data centers and clusters.
 
@@ -121,7 +109,13 @@ Review the following key terms, which correspond to parameters in your `install-
 
 - Zone type: Specifies the `HostGroup` zone type to enable this feature.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Additional VMware vSphere configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-configuration-parameters-additional-vsphere_installation-config-parameters-vsphere)
 
@@ -131,11 +125,31 @@ Review the following key terms, which correspond to parameters in your `install-
 
 - [VMware vSphere CSI Driver Operator](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-top-aware_persistent-storage-csi-vsphere)
 
+</div>
+
 # Creating the installation configuration file
 
 You can customize the OpenShift Container Platform cluster you install on VMware vSphere.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `install-config.yaml` file.
 
@@ -157,11 +171,8 @@ You can customize the OpenShift Container Platform cluster you install on VMware
 
         1.  Optional: Select an SSH key to use to access your cluster machines.
 
-            <div class="note">
-
-            For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-            </div>
+            > [!NOTE]
+            > For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 
         2.  Select **vsphere** as the platform to target.
 
@@ -173,21 +184,15 @@ You can customize the OpenShift Container Platform cluster you install on VMware
 
         5.  Select the data center in your vCenter instance to connect to.
 
-            <div class="note">
-
-            After you create the installation configuration file, you can modify the file to create a multiple vSphere data center environment. This means that you can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. For more information about creating this environment, see the section named *VMware vSphere region and zone enablement*.
-
-            </div>
+            > [!NOTE]
+            > After you create the installation configuration file, you can modify the file to create a multiple vSphere data center environment. This means that you can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. For more information about creating this environment, see the section named *VMware vSphere region and zone enablement*.
 
         6.  Select the default vCenter datastore to use.
 
-            <div class="warning">
-
-            You can specify the path of any datastore that exists in a datastore cluster. By default, Storage Distributed Resource Scheduler (SDRS), which uses Storage vMotion, is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable Storage DRS to avoid data loss issues for your OpenShift Container Platform cluster.
-
-            You cannot specify more than one datastore path. If you must specify VMs across multiple datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
-
-            </div>
+            > [!WARNING]
+            > You can specify the path of any datastore that exists in a datastore cluster. By default, Storage Distributed Resource Scheduler (SDRS), which uses Storage vMotion, is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable Storage DRS to avoid data loss issues for your OpenShift Container Platform cluster.
+            >
+            > You cannot specify more than one datastore path. If you must specify VMs across multiple datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
 
         7.  Select the vCenter cluster to install the OpenShift Container Platform cluster in. The installation program uses the root resource pool of the vSphere cluster as the default resource pool.
 
@@ -205,31 +210,34 @@ You can customize the OpenShift Container Platform cluster you install on VMware
 
 2.  Modify the `install-config.yaml` file. You can find more information about the available parameters in the "Installation configuration parameters" section.
 
-    <div class="note">
-
-    If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on vSphere".
-
-    </div>
+    > [!NOTE]
+    > If you are installing a three-node cluster, be sure to set the `compute.replicas` parameter to `0`. This ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on vSphere".
 
 3.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
 
-    The `install-config.yaml` file is consumed during the installation process. If you want to reuse the file, you must back it up now.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installation configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
+
+</div>
 
 ## Sample install-config.yaml file for a VMware vSphere cluster
 
 You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
 
-<div class="important">
-
-Carefully review the "Installation configuration parameters for vSphere" page for detailed parameter explanations.
-
-</div>
+> [!IMPORTANT]
+> Carefully review the "Installation configuration parameters for vSphere" page for detailed parameter explanations.
 
 ``` yaml
 apiVersion: v1
@@ -291,17 +299,32 @@ Specifies the parameters that apply to the configuration of the platform hosting
 
 Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` file.
 
 - You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
-  <div class="note">
+  > [!NOTE]
+  > The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  >
+  > For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
-  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+</div>
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
+<div>
 
-  </div>
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your `install-config.yaml` file and add the proxy settings. For example:
 
@@ -337,43 +360,33 @@ Production environments can deny direct access to the internet and instead have 
     `additionalTrustBundlePolicy`
     Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
-    <div class="note">
+    > [!NOTE]
+    > The installation program does not support the proxy `readinessEndpoints` field.
 
-    The installation program does not support the proxy `readinessEndpoints` field.
-
-    </div>
-
-    <div class="note">
-
-    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
-
-    ``` terminal
-    $ ./openshift-install wait-for install-complete --log-level debug
-    ```
-
-    </div>
+    > [!NOTE]
+    > If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
+    >
+    > ``` terminal
+    > $ ./openshift-install wait-for install-complete --log-level debug
+    > ```
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
     The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
-    <div class="note">
+    > [!NOTE]
+    > Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
-    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
-
-    </div>
+</div>
 
 ## Deploying IP addressing with dual-stack networking
 
 When deploying IP addressing with dual-stack networking for the bootstrap virtual machine (VM), the bootstrap VM functions with a single IP version.
 
-<div class="note">
-
-The following examples are for DHCP. DHCP-based dual stack clusters can deploy with one IPv4 and one IPv6 virtual IP address (VIP) each from Day 1.
-
-Deploying a cluster with static IP addresses involves configuring IP addresses for the bootstrap VM, API, and ingress VIPs. Configuring dual-stack with a static IP set in `install-config` requires one VIP each for API and ingress. Add secondary VIPs after deployment.
-
-</div>
+> [!NOTE]
+> The following examples are for DHCP. DHCP-based dual stack clusters can deploy with one IPv4 and one IPv6 virtual IP address (VIP) each from Day 1.
+>
+> Deploying a cluster with static IP addresses involves configuring IP addresses for the bootstrap VM, API, and ingress VIPs. Configuring dual-stack with a static IP set in `install-config` requires one VIP each for API and ingress. Add secondary VIPs after deployment.
 
 For dual-stack networking in OpenShift Container Platform clusters, you can configure IPv4 and IPv6 address endpoints for cluster nodes. To configure IPv4 and IPv6 address endpoints for cluster nodes, edit the `machineNetwork`, `clusterNetwork`, and `serviceNetwork` configuration settings in the `install-config.yaml` file. Each setting must have two CIDR entries each. For a cluster with the IPv4 family as the primary address family, specify the IPv4 setting first. For a cluster with the IPv6 family as the primary address family, specify the IPv6 setting first.
 
@@ -391,27 +404,28 @@ serviceNetwork:
 - fd03::/112
 ```
 
-<div class="important">
-
-On a bare metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
-
-<div class="formalpara-title">
-
-**Example NMState YAML configuration file that includes the `wait-ip` parameter**
-
-</div>
-
-``` yaml
-networkConfig:
-  nmstate:
-    interfaces:
-    - name: <interface_name>
-# ...
-      wait-ip: ipv4+ipv6
-# ...
-```
-
-</div>
+> [!IMPORTANT]
+> On a bare metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
+>
+> <div class="formalpara">
+>
+> <div class="title">
+>
+> Example NMState YAML configuration file that includes the `wait-ip` parameter
+>
+> </div>
+>
+> ``` yaml
+> networkConfig:
+>   nmstate:
+>     interfaces:
+>     - name: <interface_name>
+> # ...
+>       wait-ip: ipv4+ipv6
+> # ...
+> ```
+>
+> </div>
 
 To provide an interface to the cluster for applications that use IPv4 and IPv6 addresses, configure IPv4 and IPv6 virtual IP (VIP) address endpoints for the Ingress VIP and API VIP services. To configure IPv4 and IPv6 address endpoints, edit the `apiVIPs` and `ingressVIPs` configuration settings in the `install-config.yaml` file . The `apiVIPs` and `ingressVIPs` configuration settings use a list format. The order of the list indicates the primary and secondary VIP address for each service.
 
@@ -426,11 +440,8 @@ platform:
       - <wildcard_ipv6>
 ```
 
-<div class="note">
-
-For a cluster with dual-stack networking configuration, you must assign both IPv4 and IPv6 addresses to the same interface.
-
-</div>
+> [!NOTE]
+> For a cluster with dual-stack networking configuration, you must assign both IPv4 and IPv6 addresses to the same interface.
 
 ## Configuring regions and zones for a VMware vCenter
 
@@ -438,29 +449,38 @@ You can modify the default installation configuration file, so that you can depl
 
 The default `install-config.yaml` file configuration from the previous release of OpenShift Container Platform is deprecated. You can continue to use the deprecated default configuration, but the `openshift-installer` will prompt you with a warning message that indicates the use of deprecated fields in the configuration file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` installation configuration file.
 
-  <div class="important">
-
-  You must specify at least one failure domain for your OpenShift Container Platform cluster, so that you can provision data center objects for your VMware vCenter server. Consider specifying multiple failure domains if you need to provision virtual machine nodes in different data centers, clusters, datastores, and other components. To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > You must specify at least one failure domain for your OpenShift Container Platform cluster, so that you can provision data center objects for your VMware vCenter server. Consider specifying multiple failure domains if you need to provision virtual machine nodes in different data centers, clusters, datastores, and other components. To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
 - You have installed the `govc` command line tool.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > The example uses the `govc` command. The `govc` command is an open source command available from VMware; it is not available from Red Hat. The Red Hat support team does not maintain the `govc` command. Instructions for downloading and installing `govc` are found on the VMware documentation website.
 
-  The example uses the `govc` command. The `govc` command is an open source command available from VMware; it is not available from Red Hat. The Red Hat support team does not maintain the `govc` command. Instructions for downloading and installing `govc` are found on the VMware documentation website.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `openshift-region` and `openshift-zone` vCenter tag categories by running the following commands:
 
-    <div class="important">
-
-    If you specify different names for the `openshift-region` and `openshift-zone` vCenter tag categories, the installation of the OpenShift Container Platform cluster fails.
-
-    </div>
+    > [!IMPORTANT]
+    > If you specify different names for the `openshift-region` and `openshift-zone` vCenter tag categories, the installation of the OpenShift Container Platform cluster fails.
 
     ``` terminal
     $ govc tags.category.create -d "OpenShift region" openshift-region
@@ -496,9 +516,11 @@ The default `install-config.yaml` file configuration from the previous release o
 
 6.  Change to the directory that contains the installation program and initialize the cluster deployment according to your chosen installation requirements.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `install-config.yaml` file with multiple data centers defined in a vSphere center**
+    <div class="title">
+
+    Sample `install-config.yaml` file with multiple data centers defined in a vSphere center
 
     </div>
 
@@ -553,11 +575,23 @@ The default `install-config.yaml` file configuration from the previous release o
     # ...
     ```
 
+    </div>
+
+</div>
+
 ## Configuring host groups for a VMware vCenter
 
 You can modify the default installation configuration file to deploy an OpenShift Container Platform cluster on a VMware vSphere stretched cluster, where ESXi hosts are grouped into host groups by physical location.
 
 The default `install-config.yaml` file configuration from previous releases of OpenShift Container Platform is deprecated. Though you can still use it, the OpenShift Container Platform installer will display a warning message that indicates the use of deprecated fields in the configuration file.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have an existing `install-config.yaml` installation configuration file.
 
@@ -567,19 +601,23 @@ The default `install-config.yaml` file configuration from previous releases of O
 
 - You have downloaded and installed the `govc` command line tool. Instructions can be found on the VMware documentation website. Note that `govc` is an open-source tool that is not maintained by the Red Hat support team.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > To enable host group support, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
-  To enable host group support, you must define multiple failure domains for your OpenShift Container Platform cluster.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `openshift-region` and `openshift-zone` vCenter tag categories by running the following commands:
 
-    <div class="important">
-
-    If you specify different names for the `openshift-region` and `openshift-zone` vCenter tag categories, the installation of the OpenShift Container Platform cluster fails.
-
-    </div>
+    > [!IMPORTANT]
+    > If you specify different names for the `openshift-region` and `openshift-zone` vCenter tag categories, the installation of the OpenShift Container Platform cluster fails.
 
     ``` terminal
     $ govc tags.category.create -d "OpenShift region" openshift-region
@@ -615,9 +653,11 @@ The default `install-config.yaml` file configuration from previous releases of O
 
 6.  Change to the directory that contains the installation program and initialize the cluster deployment according to your chosen installation requirements.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `install-config.yaml` file with multiple host groups**
+    <div class="title">
+
+    Sample `install-config.yaml` file with multiple host groups
 
     </div>
 
@@ -661,9 +701,21 @@ The default `install-config.yaml` file configuration from previous releases of O
             folder: "/<data_center_1>/vm/<folder_1>"
     ```
 
+    </div>
+
+</div>
+
 ## Configuring multiple NICs
 
 For scenarios requiring multiple network interface controller (NIC), you can configure multiple network adapters per node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Specify the network adapter names in the networks section of `platform.vsphere.failureDomains[*].topology` as shown in the following `install-config.yaml` file:
 
@@ -693,9 +745,11 @@ For scenarios requiring multiple network interface controller (NIC), you can con
 
     - `networking.machineNetwork`
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example configuration**
+      <div class="title">
+
+      Example configuration
 
       </div>
 
@@ -707,17 +761,18 @@ For scenarios requiring multiple network interface controller (NIC), you can con
         ...
       ```
 
-      <div class="note">
-
-      The `networking.machineNetwork.cidr` field must correspond to an address on the first adapter defined in `topology.networks`.
-
       </div>
+
+      > [!NOTE]
+      > The `networking.machineNetwork.cidr` field must correspond to an address on the first adapter defined in `topology.networks`.
 
     - Add a `nodeNetworking` object to the `install-config.yaml` file and specify internal and external network subnet CIDR implementations for the object.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example configuration**
+      <div class="title">
+
+      Example configuration
 
       </div>
 
@@ -738,7 +793,21 @@ For scenarios requiring multiple network interface controller (NIC), you can con
             region: <default_region_name>
       ```
 
+      </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Network configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-configuration-parameters-network_installation-config-parameters-vsphere)
+
+</div>
 
 # Network configuration phases
 
@@ -759,17 +828,11 @@ You can customize the following network-related fields in the `install-config.ya
 
   For more information, see "Installation configuration parameters".
 
-  <div class="note">
+  > [!NOTE]
+  > Set the `networking.machineNetwork` to match the Classless Inter-Domain Routing (CIDR) where the preferred subnet is located.
 
-  Set the `networking.machineNetwork` to match the Classless Inter-Domain Routing (CIDR) where the preferred subnet is located.
-
-  </div>
-
-  <div class="important">
-
-  The CIDR range `172.17.0.0/16` is reserved by `libVirt`. You cannot use any other CIDR range that overlaps with the `172.17.0.0/16` CIDR range for networks in your cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > The CIDR range `172.17.0.0/16` is reserved by `libVirt`. You cannot use any other CIDR range that overlaps with the `172.17.0.0/16` CIDR range for networks in your cluster.
 
 Phase 2
 After creating the manifest files by running `openshift-install create manifests`, you can define a customized Cluster Network Operator manifest with only the fields you want to modify. You can use the manifest to specify an advanced network configuration.
@@ -782,13 +845,28 @@ You can use advanced network configuration for your OpenShift Container Platform
 
 You can specify advanced network configuration only before you install the cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> Customizing your network configuration by modifying the OpenShift Container Platform manifest files created by the installation program is not supported. Applying a manifest file that you create, as in the following procedure, is supported.
 
-Customizing your network configuration by modifying the OpenShift Container Platform manifest files created by the installation program is not supported. Applying a manifest file that you create, as in the following procedure, is supported.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have created the `install-config.yaml` file and completed any modifications to it.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the directory that contains the installation program and create the manifests:
 
@@ -826,38 +904,54 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
 4.  Optional: Back up the `manifests/cluster-network-03-config.yml` file. The installation program consumes the `manifests/` directory when you create the Ignition config files.
 
+</div>
+
 ## Specifying multiple subnets for your network
 
 Before you install an OpenShift Container Platform cluster on a vSphere host, you can specify multiple subnets so that the vSphere cloud controller manager (CCM) can select the appropriate subnet for managing pods and services.
 
 For this configuration, you must specify internal and external Classless Inter-Domain Routing (CIDR) implementations in the vSphere CCM configuration. Each CIDR implementation lists an IP address range that the CCM uses to decide what subnets interact with traffic from internal and external networks.
 
-<div class="important">
+> [!IMPORTANT]
+> Failure to configure internal and external CIDR implementations in the vSphere CCM configuration can cause the vSphere CCM to select the wrong subnet. This situation causes the following error:
+>
+>     ERROR Bootstrap failed to complete: timed out waiting for the condition
+>     ERROR Failed to wait for bootstrapping to complete. This error usually happens when there is a problem with control plane hosts that prevents the control plane operators from creating the control plane.
+>
+> This configuration can cause new nodes that associate with a `MachineSet` object with a single subnet to become unusable as each new node receives the `node.cloudprovider.kubernetes.io/uninitialized` taint. These situations can cause communication issues with the Kubernetes API server that can cause installation of the cluster to fail.
 
-Failure to configure internal and external CIDR implementations in the vSphere CCM configuration can cause the vSphere CCM to select the wrong subnet. This situation causes the following error:
+<div>
 
-    ERROR Bootstrap failed to complete: timed out waiting for the condition
-    ERROR Failed to wait for bootstrapping to complete. This error usually happens when there is a problem with control plane hosts that prevents the control plane operators from creating the control plane.
+<div class="title">
 
-This configuration can cause new nodes that associate with a `MachineSet` object with a single subnet to become unusable as each new node receives the `node.cloudprovider.kubernetes.io/uninitialized` taint. These situations can cause communication issues with the Kubernetes API server that can cause installation of the cluster to fail.
+Prerequisites
 
 </div>
 
 - You created Kubernetes manifest files for your OpenShift Container Platform cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  From the directory where you store your OpenShift Container Platform cluster manifest files, open the `manifests/cluster-infrastructure-02-config.yml` manifest file.
 
 2.  Add a `nodeNetworking` object to the file and specify internal and external network subnet CIDR implementations for the object.
 
-    <div class="tip">
+    > [!TIP]
+    > For most networking situations, consider setting the standard multiple-subnet configuration. This configuration requires that you set the same IP address ranges in the `nodeNetworking.internal.networkSubnetCidr` and `nodeNetworking.external.networkSubnetCidr` parameters.
 
-    For most networking situations, consider setting the standard multiple-subnet configuration. This configuration requires that you set the same IP address ranges in the `nodeNetworking.internal.networkSubnetCidr` and `nodeNetworking.external.networkSubnetCidr` parameters.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example of a configured `cluster-infrastructure-02-config.yml` manifest file**
+    Example of a configured `cluster-infrastructure-02-config.yml` manifest file
 
     </div>
 
@@ -888,7 +982,21 @@ This configuration can cause new nodes that associate with a `MachineSet` object
     # ...
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [`.spec.platformSpec.vsphere.nodeNetworking`](../../../rest_api/config_apis/infrastructure-config-openshift-io-v1.xml#spec-platformspec-vsphere-nodenetworking)
+
+</div>
 
 # Cluster Network Operator configuration
 
@@ -921,19 +1029,19 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>metadata.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The name of the CNO object. This name is always <code>cluster</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.clusterNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>A list specifying the blocks of IP addresses from which pod IP addresses are allocated and the subnet prefix length assigned to each individual node in the cluster. If you use dual-stack networking, specify IPv4 and IPv6 address families. For example:</p>
@@ -945,7 +1053,7 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">64</span></span></code></pre></div>
 <p>If you install a cluster on AWS with dual-stack networking, the order of addresses must match the dual-stack configuration you selected. For example, if you specified the <code>DualStackIPv4Primary</code>, list the IPv4 address first.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.serviceNetwork</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>A block of IP addresses for services. If you use dual-stack networking, specify IPv4 and IPv6 address families. For example:</p>
@@ -956,12 +1064,12 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <p>If you install a cluster on AWS with dual-stack networking, the order of addresses must match the dual-stack configuration you selected. For example, if you specified the <code>DualStackIPv4Primary</code>, list the IPv4 address first.</p>
 <p>You can customize this field only in the <code>install-config.yaml</code> file before you create the manifests. The value is read-only in the manifest file.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.defaultNetwork</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Configures the network plugin for the cluster network.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.additionalRoutingCapabilities.providers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>This setting enables a dynamic routing provider. The FRR routing capability provider is required for the route advertisement feature. The only supported value is <code>FRR</code>.</p>
@@ -973,16 +1081,22 @@ The fields for the Cluster Network Operator (CNO) are described in the following
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">providers</span><span class="kw">:</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> FRR</span></span></code></pre></div></td>
 </tr>
+<tr>
+<td style="text-align: left;"><p><code>spec.networkObservability</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Optional: Configures the Network Observability Operator installation during cluster creation.</p>
+<p>You can configure this field in the <code>install-config.yaml</code> file before creating the cluster to control whether network observability is enabled by default.</p>
+<div class="note">
+<div class="title">
+&#10;</div>
+<p>Network observability automatic installation configuration is a Technology Preview feature. You must enable the <code>NetworkObservabilityInstall</code> feature gate before you can use the <code>networkObservability</code> field.</p>
+</div></td>
+</tr>
 </tbody>
 </table>
 
-Cluster Network Operator configuration object
-
-<div class="important">
-
-For a cluster that needs to deploy objects across multiple networks, ensure that you specify the same value for the `clusterNetwork.hostPrefix` parameter for each network type that is defined in the `install-config.yaml` file. Setting a different value for each `clusterNetwork.hostPrefix` parameter can impact the OVN-Kubernetes network plugin, where the plugin cannot effectively route object traffic among different nodes.
-
-</div>
+> [!IMPORTANT]
+> For a cluster that needs to deploy objects across multiple networks, ensure that you specify the same value for the `clusterNetwork.hostPrefix` parameter for each network type that is defined in the `install-config.yaml` file. Setting a different value for each `clusterNetwork.hostPrefix` parameter can impact the OVN-Kubernetes network plugin, where the plugin cannot effectively route object traffic among different nodes.
 
 ## defaultNetwork object configuration
 
@@ -996,30 +1110,30 @@ The values for the `defaultNetwork` object are defined in the following table:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>OVNKubernetes</code>. The Red Hat OpenShift Networking network plugin is selected during installation. This value cannot be changed after cluster installation.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>OpenShift Container Platform uses the OVN-Kubernetes network plugin by default.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ovnKubernetesConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>This object is only valid for the OVN-Kubernetes network plugin.</p></td>
 </tr>
 </tbody>
 </table>
-
-`defaultNetwork` object
 
 ## Configuration for the OVN-Kubernetes network plugin
 
@@ -1033,46 +1147,46 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mtu</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The maximum transmission unit (MTU) for the Geneve (Generic Network Virtualization Encapsulation) overlay network. This is detected automatically based on the MTU of the primary network interface. You do not normally need to override the detected MTU.</p>
 <p>If the auto-detected value is not what you expect it to be, confirm that the MTU on the primary network interface on your nodes is correct. You cannot use this option to change the MTU value of the primary network interface on the nodes.</p>
 <p>If your cluster requires different MTU values for different nodes, you must set this value to <code>100</code> less than the lowest MTU value in your cluster. For example, if some nodes in your cluster have an MTU of <code>9001</code>, and some have an MTU of <code>1500</code>, you must set this value to <code>1400</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>genevePort</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The port to use for all Geneve packets. The default value is <code>6081</code>. This value cannot be changed after cluster installation.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipsecConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specify a configuration object for customizing the IPsec configuration.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipv4</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies a configuration object for IPv4 settings.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipv6</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specifies a configuration object for IPv6 settings.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>policyAuditConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Specify a configuration object for customizing network policy audit logging. If unset, the defaults audit log settings are used.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>routeAdvertisements</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies whether to advertise cluster network routes. The default value is <code>Disabled</code>.</p>
@@ -1081,18 +1195,18 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <li><p><code>Disabled</code>: Do not import routes to the cluster network or advertise cluster network routes.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>gatewayConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. If you are using hardware offloading, Red Hat recommends to use the default <code>Shared</code> gateway mode to bypass the host routing plane. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>While migrating egress traffic, you can expect some disruption to workloads and service traffic until the Cluster Network Operator (CNO) successfully rolls out the changes.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig` object
 
 <table>
 <caption><code>ovnKubernetesConfig.ipv4</code> object</caption>
@@ -1102,20 +1216,20 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalTransitSwitchSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>100.88.0.0/16</code> IPv4 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. The subnet for the distributed transit switch that enables east-west traffic. This subnet cannot overlap with any other subnets used by OVN-Kubernetes or on the host itself. It must be large enough to accommodate one IP address per node in your cluster.</p>
 <p>The default value is <code>100.88.0.0/16</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>internalJoinSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>100.64.0.0/16</code> IPv4 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. You must ensure that the IP address range does not overlap with any other subnet used by your OpenShift Container Platform installation. The IP address range must be larger than the maximum number of nodes that can be added to the cluster. For example, if the <code>clusterNetwork.cidr</code> value is <code>10.128.0.0/14</code> and the <code>clusterNetwork.hostPrefix</code> value is <code>/23</code>, then the maximum number of nodes is <code>2^(23-14)=512</code>.</p>
@@ -1123,8 +1237,6 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig.ipv4` object
 
 <table>
 <caption><code>ovnKubernetesConfig.ipv6</code> object</caption>
@@ -1134,20 +1246,20 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalTransitSwitchSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>fd97::/64</code> IPv6 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. The subnet for the distributed transit switch that enables east-west traffic. This subnet cannot overlap with any other subnets used by OVN-Kubernetes or on the host itself. It must be large enough to accommodate one IP address per node in your cluster.</p>
 <p>The default value is <code>fd97::/64</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>internalJoinSubnet</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>If your existing network infrastructure overlaps with the <code>fd98::/64</code> IPv6 subnet, you can specify a different IP address range for internal use by OVN-Kubernetes. You must ensure that the IP address range does not overlap with any other subnet used by your OpenShift Container Platform installation. The IP address range must be larger than the maximum number of nodes that can be added to the cluster.</p>
@@ -1155,8 +1267,6 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tr>
 </tbody>
 </table>
-
-`ovnKubernetesConfig.ipv6` object
 
 <table>
 <caption><code>policyAuditConfig</code> object</caption>
@@ -1166,29 +1276,29 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>rateLimit</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of messages to generate every second per node. The default value is <code>20</code> messages per second.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>maxFileSize</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum size for the audit log in bytes. The default value is <code>50000000</code> or 50 MB.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>maxLogFiles</code></p></td>
 <td style="text-align: left;"><p>integer</p></td>
 <td style="text-align: left;"><p>The maximum number of log files that are retained.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>destination</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>One of the following additional audit log targets:</p>
@@ -1211,7 +1321,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 </dl></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>syslogFacility</code></p></td>
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>The syslog facility, such as <code>kern</code>, as defined by RFC5424. The default value is <code>local0</code>.</p></td>
@@ -1219,9 +1329,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`policyAuditConfig` object
-
-<table>
+<table id="gatewayConfig-object_installing-vsphere-installer-provisioned-customizations">
 <caption><code>gatewayConfig</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -1229,33 +1337,35 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>routingViaHost</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Set this field to <code>true</code> to send egress traffic from pods to the host networking stack. For highly-specialized installations and applications that rely on manually configured routes in the kernel routing table, you might want to route egress traffic to the host networking stack. By default, egress traffic is processed in OVN to exit the cluster and is not affected by specialized routes in the kernel routing table. The default value is <code>false</code>.</p>
 <p>This field has an interaction with the Open vSwitch hardware offloading feature. If you set this field to <code>true</code>, you do not receive the performance benefits of the offloading because egress traffic is processed by the host networking stack.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipForwarding</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>You can control IP forwarding for all traffic on OVN-Kubernetes managed interfaces by using the <code>ipForwarding</code> specification in the <code>Network</code> resource. Specify <code>Restricted</code> to only allow IP forwarding for Kubernetes related traffic. Specify <code>Global</code> to allow forwarding of all IP traffic. For new installations, the default is <code>Restricted</code>. For updates to OpenShift Container Platform 4.14 or later, the default is <code>Global</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>The default value of <code>Restricted</code> sets the IP forwarding to drop.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ipv4</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify an object to configure the internal OVN-Kubernetes masquerade address for host to service traffic for IPv4 addresses.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ipv6</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional: Specify an object to configure the internal OVN-Kubernetes masquerade address for host to service traffic for IPv6 addresses.</p></td>
@@ -1263,9 +1373,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`gatewayConfig` object
-
-<table>
+<table id="gatewayconfig-ipv4-object_installing-vsphere-installer-provisioned-customizations">
 <caption><code>gatewayConfig.ipv4</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -1273,27 +1381,27 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-`gatewayConfig.ipv4` object
-
-<table>
+<table id="gatewayconfig-ipv6-object_installing-vsphere-installer-provisioned-customizations">
 <caption><code>gatewayConfig.ipv6</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -1301,27 +1409,27 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-`gatewayConfig.ipv6` object
-
-<table>
+<table id="nw-operator-cr-ipsec_installing-vsphere-installer-provisioned-customizations">
 <caption><code>ipsecConfig</code> object</caption>
 <colgroup>
 <col style="width: 20%" />
@@ -1329,14 +1437,14 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>mode</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the behavior of the IPsec implementation. Must be one of the following values:</p>
@@ -1349,11 +1457,52 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </tbody>
 </table>
 
-`ipsecConfig` object
+<table id="nw-operator-cr-networkobservability_installing-vsphere-installer-provisioned-customizations">
+<caption><code>networkObservability</code> object</caption>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 20%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><p><code>installationPolicy</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Controls whether the Network Observability Operator is installed during cluster creation. Valid values are:</p>
+<ul>
+<li><p><code>InstallAndEnable</code>: Install the Network Observability Operator and create a default <code>FlowCollector</code> configuration during cluster creation on all cluster types, including single-node OpenShift clusters.</p></li>
+<li><p><code>NoAction</code>: Do not install the Network Observability Operator during cluster creation.</p></li>
+</ul>
+<p>When the <code>networkObservability</code> field is omitted entirely (default behavior), the CNO automatically installs network observability on standard multi-node clusters and Hosted Control Plane clusters. single-node OpenShift clusters skip installation by default due to resource constraints.</p>
+<p>After deployment, the CNO does not monitor or reinstall the Network Observability Operator if it is removed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> operator.openshift.io/v1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Network</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> cluster</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">networkObservability</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">installationPolicy</span><span class="kw">:</span><span class="at"> InstallAndEnable</span></span></code></pre></div>
+<div class="note">
+<div class="title">
+&#10;</div>
+<p>This field is only available when the <code>NetworkObservabilityInstall</code> feature gate is enabled. This is a Technology Preview feature.</p>
+</div></td>
+</tr>
+</tbody>
+</table>
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example OVN-Kubernetes configuration with IPsec enabled**
+<div class="title">
+
+Example OVN-Kubernetes configuration with IPsec enabled
 
 </div>
 
@@ -1367,17 +1516,16 @@ defaultNetwork:
       mode: Full
 ```
 
+</div>
+
 # Services for a user-managed load balancer
 
 You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Configuring a user-managed load balancer depends on your vendor’s load balancer.
-
-The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
-
-</div>
+> [!IMPORTANT]
+> Configuring a user-managed load balancer depends on your vendor’s load balancer.
+>
+> The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
 
 Red Hat supports the following services for a user-managed load balancer:
 
@@ -1410,11 +1558,8 @@ The following configuration options are supported for user-managed load balancer
 
 - Target all IP addresses on a subnet. This configuration can reduce the effort required to maintain the load balancer, because you can create and destroy nodes within those networks without reconfiguring the load balancer targets. If you deploy your ingress pods by using a machine set on a smaller network, such as a `/27` or `/28`, you can simplify your load balancer targets.
 
-  <div class="tip">
-
-  You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
-
-  </div>
+  > [!TIP]
+  > You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
 
 Before you configure a user-managed load balancer for your OpenShift Container Platform cluster, consider the following information:
 
@@ -1432,27 +1577,25 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
-
-</div>
+> [!IMPORTANT]
+> Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
 
 Read the following prerequisites that apply to the service that you want to configure for your user-managed load balancer.
 
-<div class="note">
+> [!NOTE]
+> MetalLB, which runs on a cluster, functions as a user-managed load balancer.
 
-MetalLB, which runs on a cluster, functions as a user-managed load balancer.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Prerequisites**
+Prerequisites
 
 </div>
 
 The following list details OpenShift API prerequisites:
+
+</div>
 
 - You defined a front-end IP address.
 
@@ -1514,11 +1657,21 @@ Timeout: 5
 Interval: 10
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure the HAProxy Ingress Controller, so that you can enable access to the cluster from your load balancer on ports 6443, 22623, 443, and 80. Depending on your needs, you can specify the IP address of a single subnet or IP addresses from multiple subnets in your HAProxy configuration.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example HAProxy configuration with one listed subnet**
+    <div class="title">
+
+    Example HAProxy configuration with one listed subnet
 
     </div>
 
@@ -1574,9 +1727,13 @@ Interval: 10
     # ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example HAProxy configuration with multiple listed subnets**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example HAProxy configuration with multiple listed subnets
 
     </div>
 
@@ -1631,6 +1788,8 @@ Interval: 10
           server bootstrap 192.168.80.89:5050 check inter 1s
     # ...
     ```
+
+    </div>
 
 2.  Use the `curl` CLI command to verify that the user-managed load balancer and its resources are operational:
 
@@ -1718,11 +1877,8 @@ Interval: 10
     A record pointing to Load Balancer Front End
     ```
 
-    <div class="important">
-
-    DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
-
-    </div>
+    > [!IMPORTANT]
+    > DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
 
 4.  For your OpenShift Container Platform cluster to use the user-managed load balancer, you must specify the following configuration in your cluster’s `install-config.yaml` file:
 
@@ -1750,7 +1906,15 @@ Interval: 10
     `<ingress_ip>`
     Specifies the user-managed load balancer’s public IP address for ingress traffic. Mandatory parameter.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Use the `curl` CLI command to verify that the user-managed load balancer and DNS record configuration are operational:
 
@@ -1836,13 +2000,20 @@ Interval: 10
         cache-control: private
         ```
 
+</div>
+
 # Deploying the cluster
 
 To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
-<div class="important">
+> [!IMPORTANT]
+> You can run the `create cluster` command of the installation program only once, during initial installation.
 
-You can run the `create cluster` command of the installation program only once, during initial installation.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1852,13 +2023,18 @@ You can run the `create cluster` command of the installation program only once, 
 
 - Optional: Before you create the cluster, you configured an external load balancer in place of the default load balancer.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > You do not need to specify API and Ingress static addresses for your installation program. If you choose this configuration, you must take additional actions to define network targets that accept an IP address from each referenced vSphere subnet. See the section "Configuring a user-managed load balancer".
 
-  You do not need to specify API and Ingress static addresses for your installation program. If you choose this configuration, you must take additional actions to define network targets that accept an IP address from each referenced vSphere subnet. See the section "Configuring a user-managed load balancer".
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the directory that contains the installation program, initialize the cluster deployment by running the following command:
 
@@ -1873,23 +2049,26 @@ You can run the `create cluster` command of the installation program only once, 
 
   - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 When the cluster deployment completes successfully:
 
+</div>
+
 - The terminal displays directions for accessing your cluster, including a link to the web console and credentials for the `kubeadmin` user.
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-  <div class="important">
-
-  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
-
-  </div>
+  > [!IMPORTANT]
+  > Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
   The following example shows the expected output:
 
@@ -1904,6 +2083,10 @@ When the cluster deployment completes successfully:
 
   <div class="important">
 
+  <div class="title">
+
+  </div>
+
   - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
   - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
@@ -1916,9 +2099,27 @@ To log in to your cluster as the default system user, export the `kubeconfig` fi
 
 The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You deployed an OpenShift Container Platform cluster.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the `kubeadmin` credentials by running the following command:
 
@@ -1937,9 +2138,11 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     $ oc whoami
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1947,9 +2150,23 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
     system:admin
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - "Customize your cluster"
 
 - "Remote health reporting"
+
+</div>
 
 # Image registry removed during installation
 
@@ -1969,35 +2186,44 @@ You can also allow the image registry to use block storage types by using the `R
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Cluster administrator permissions.
 
 - A cluster on VMware vSphere.
 
 - Persistent storage provisioned for your cluster, such as Red Hat OpenShift Data Foundation.
 
-  <div class="important">
-
-  OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
-
-  </div>
+  > [!IMPORTANT]
+  > OpenShift Container Platform supports `ReadWriteOnce` access for image registry storage when you have only one replica. `ReadWriteOnce` access also requires that the registry uses the `Recreate` rollout strategy. To deploy an image registry that supports high availability with two or more replicas, `ReadWriteMany` access is required.
 
 - Must have "100Gi" capacity.
 
-<div class="important">
+</div>
 
-Testing shows issues with using the NFS server on RHEL as storage backend for core services. This includes the OpenShift Container Registry and Quay, Prometheus for monitoring storage, and Elasticsearch for logging storage. Therefore, using RHEL NFS to back PVs used by core services is not recommended.
+> [!IMPORTANT]
+> Testing shows issues with using the NFS server on RHEL as storage backend for core services. This includes the OpenShift Container Registry and Quay, Prometheus for monitoring storage, and Elasticsearch for logging storage. Therefore, using RHEL NFS to back PVs used by core services is not recommended.
+>
+> Other NFS implementations on the marketplace might not have these issues. Contact the individual NFS implementation vendor for more information on any testing that was possibly completed against these OpenShift Container Platform core components.
 
-Other NFS implementations on the marketplace might not have these issues. Contact the individual NFS implementation vendor for more information on any testing that was possibly completed against these OpenShift Container Platform core components.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Change the `spec.storage.pvc` field in the `configs.imageregistry/cluster` resource.
 
-    <div class="note">
-
-    When you use shared storage, review your security settings to prevent outside access.
-
-    </div>
+    > [!NOTE]
+    > When you use shared storage, review your security settings to prevent outside access.
 
 2.  Verify that you do not have a registry pod by running the following command:
 
@@ -2005,9 +2231,11 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     $ oc get pod -n openshift-image-registry -l docker-registry=default
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2015,11 +2243,10 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     No resourses found in openshift-image-registry namespace
     ```
 
-    <div class="note">
-
-    If you do have a registry pod in your output, you do not need to continue with this procedure.
-
     </div>
+
+    > [!NOTE]
+    > If you do have a registry pod in your output, you do not need to continue with this procedure.
 
 3.  Check the registry configuration by running the following command:
 
@@ -2027,9 +2254,11 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     $ oc edit configs.imageregistry.operator.openshift.io
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2039,6 +2268,8 @@ Other NFS implementations on the marketplace might not have these issues. Contac
         claim:
     ```
 
+    </div>
+
     Leave the `claim` field blank to allow the automatic creation of an `image-registry-storage` persistent volume claim (PVC). The PVC is generated based on the default storage class. However, be aware that the default storage class might provide ReadWriteOnce (RWO) volumes, such as a RADOS Block Device (RBD), which can cause issues when you replicate to more than one replica.
 
 4.  Check the `clusteroperator` status by running the following command:
@@ -2047,9 +2278,11 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     $ oc get clusteroperator image-registry
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2058,13 +2291,22 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     image-registry   4.7       True        False         False      6h50m
     ```
 
+    </div>
+
+</div>
+
 ## Configure block registry storage for VMware vSphere
 
 To allow the image registry to use block storage types such as vSphere Virtual Machine Disk (VMDK) during upgrades as a cluster administrator, you can use the `Recreate` rollout strategy.
 
-<div class="important">
+> [!IMPORTANT]
+> Block storage volumes are supported but not recommended for use with image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
 
-Block storage volumes are supported but not recommended for use with image registry on production clusters. An installation where the registry is configured on block storage is not highly available because the registry cannot have more than one replica.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -2094,6 +2336,8 @@ Block storage volumes are supported but not recommended for use with image regis
 
         where:
 
+</div>
+
 `metadata.name`
 Specifies a unique name that represents the `PersistentVolumeClaim` object.
 
@@ -2118,9 +2362,11 @@ Specifies the size of the persistent volume claim.
         $ oc edit config.imageregistry.operator.openshift.io -o yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -2130,9 +2376,21 @@ Specifies the size of the persistent volume claim.
             claim:
         ```
 
+        </div>
+
         By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere)
+
+</div>
 
 # Telemetry access for OpenShift Container Platform
 
@@ -2140,7 +2398,17 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+
+</div>
 
 # Configuring network components to run on the control plane
 
@@ -2148,21 +2416,23 @@ You can configure networking components to run exclusively on the control plane 
 
 By default, OpenShift Container Platform allows any node in the machine config pool to host the `ingressVIP` virtual IP address. However, some environments deploy compute nodes in separate subnets from the control plane nodes, which requires configuring the `ingressVIP` virtual IP address to run on the control plane nodes.
 
-<div class="note">
+> [!NOTE]
+> You can scale the remote nodes by creating a compute machine set in a separate subnet.
 
-You can scale the remote nodes by creating a compute machine set in a separate subnet.
-
-</div>
-
-<div class="important">
-
-When deploying remote nodes in separate subnets, you must place the `ingressVIP` virtual IP address exclusively with the control plane nodes.
-
-</div>
+> [!IMPORTANT]
+> When deploying remote nodes in separate subnets, you must place the `ingressVIP` virtual IP address exclusively with the control plane nodes.
 
 <figure>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAcAAAIxCAIAAAC+VUafAACd30lEQVR4nOzdZ2AU1d4G8DOzsztbsikbklACofcaCL33XkSvUgQRBCuIgAjS4YoICChY6BZUpAnSWyjSQ6+BUAIE0rMp26e8Hw7u3TeBsEBCkt3n9+FenJw95+xMMjP/UxlZlgkAAAAAAHgxtqArAAAAAAAABQxRAQAAAACAt0NUAAAAAADg7RAVAAAAAAB4O0QFAAAAAADeDlEBAAAAAIC3Q1QAAAAAAODtEBUAAAAAAHg7RAUAAAAAAN4OUQEAAAAAgLdDVAAAAAAA4O0QFQAAAAAAeDtEBQAAAAAA3g5RAQAAAACAt0NUAAAAAADg7RAVAAAAAAB4O0QFAAAAAADeDlEBAAAAAIC3Q1QAAAAAAODtEBUAAAAAAHg7RAUAAAAAAN4OUQEAAAAAgLdDVAAAAAAA4O0QFQAAAAAAeDtEBQAAAAAA3g5RAQAAAACAt0NUAAAAAADg7RAVAAAAAAB4O0QFAAAAAADeDlEBAAAAAIC3Q1QAAAAAAODtEBUAAAAAAHg7RAUAAAAAAN4OUQEAAAAAgLdDVAAAAAAA4O0QFQAAAAAAeDtEBQAAAAAA3g5RAQAAAACAt0NUAAAAAADg7Tj6f7IsL1iwID4+vk2bNl26dCnYOgEAAAAAwMv0v6hgyZIlt27dstvtzxEVxMTEbN++3WAwDBw4MK9rmJeKSj0BAAAAAF6m/40gMhgMWq1Wr9c/Ry6LFy8eNWrUuXPn8qxe+aOo1BMAAAAA4GXKm3kFAQEBhJDniyhepqJSTwAAAACAl4nL5WdWq9VqtarVarVaTQgxmUyCIKhUKo1G40yTkZEhy3JcXJxSqYyLi0tPTyeE8DxPP+JkNpsdDodCodBqtSz7/0IRWZZpJv7+/s5S9Ho9y7LuVMCVw+GwWq2yLKtUqmwVcLOermw2m81mk2VZoVDodDqGYR6bTJIks9ksSRLHcVqt9kln0m63syzL87xSqcyZIJfz4/xqdrtdFEWFQqHRaHKmeWoCAAAAAIAnye3d8bPPPgsICBg/fnxGRkb79u19fHxKlSoVFhY2Y8YMQRAIIXa7PTg42N/f/88//zQYDH/++ae/v7+/v/8HH3zgzOTatWs9e/YMDg4OCAgICAho1arV4cOHXUtJT0/39/c3GAzp6enbt2/X6/X+/v6RkZHuVMBJEITFixdXrVo1KCjI39+/XLlykyZNslgs9Kfu1NNJluXDhw/36tUrLCysRIkSJUuWLFasWOfOnS9evJgz5a5du1q0aFGsWLESJUqUKFGiS5cux48fd02Tmpo6bty48uXLlyhRIiQkpFq1arNnz3ZWzJ3zI0nS8uXLq1ev7uvr6+fn5+/v37Zt2xUrVpjNZjcTAAAAAAA8hSzLsiyLotigQQOtVjtp0iT5X5MmTdJqtbVq1QoNDW3duvWoUaNKlCgRGBioVCqnTp0qy7IgCLNmzZo0aVJ4eLi/v394ePikSZPGjRu3fft2msPx48d5nvfz8wsNDR09enSrVq14nmdZ9s8//3SWYjQatVptcHDwZ599xnFczZo1K1SosHfvXncqQAmC0KdPH61Wq9Vqe/ToMXLkSB8fH57nw8PDTSaTO/V0JUlSeHg4x3FlypRp0KBBeHi4r68vLTQ5OdmZTBTFQYMG8Tyv1WqLFy8eHh4eHBys0+kIIQcOHKBpzp075+fnp9VqdTpdjRo1qlevrtPpeJ6vW7euIAhunp8ff/xRqVT6+/uPHz9+4cKFXbp04TiOEBIVFeVmAgAAAACA3D09KihWrNg///xDjxiNxlatWgUGBvr5+ZnNZmfKadOmEUKmTZvmmnVWVlZISEhgYOCIESNoYlEUN2zY4OPjo1AokpKSnHnSqCAwMPDEiROCIDgcDlEU3a/Ad999R3M4efIkPZKSktK2bVue58ePH+9apcfWM6fY2Njjx4/bbDZRFEVRjIqKCgoK0mq1ixcvdqZZuXKlVqv18/P7+uuvMzMzRVHMzMycN29enz59LBaLLMsWiyU0NDQwMLBhw4YXL150OBwOh+Py5cutWrXavXu3m+fH4XBUrFhRr9cfP37cWXRiYqLzhDw1AQAAAADAUz1l9LnNZuvfv3+zZs3of9KXYDoI3uFwOJPR8TzZRvVs3749MzMzMDDwu+++ozMBWJZ95ZVXXnvtNY7j/vjjD9fEFotl48aNDRs2VCgUHMc5h8U/tQIOh2POnDkKheKbb76JiIigyQwGw6pVq3ie//HHH61Wa+71zKlMmTKNGjVSqVQsy7IsW79+/QEDBlit1oSEBGc+s2fPVigU77zzzujRo318fFiW9fHxGTNmzIYNG+hchZ07d6amplqt1q1bt9asWZPjOI7jqlevHhkZ2aFDB0LItm3b3Dk/tLYPHz60Wq2SJBFCgoKCnCfEnQQAAAAAALnLbbYxIUQURToJ2Kly5cp03q0sy7l/NiYmhhBiMpnee+895xRblmXPnDkjiuIvv/zy4YcfOhMLglC/fv3nqIDVak1OTuZ5funSpUeOHKGvxYQQs9lMpwtfvHjRGS24SRTFI0eO/PPPP3TOQ/fu3WmU4szcYrE8ePBAkqTBgwdn+6xzUvLVq1dFUezYsWNQUNBjE9y8efOp54fjuAkTJrz33nsDBgzQaDSlS5fu1q1b3bp1O3bs6OvrSwh5agIAAAAAgKd6SlRAXF6FKVEU3czaYrGIoliyZEmtVuvsWJAkqWPHjj169PD19ZVl2fmKzDDMk5rwc68A7fJgGKZ8+fKuKX18fMaOHWu32591HVKr1dqtW7dDhw4JglCmTBlCyOTJk318fDQajbO2kiTRQosXL/6kfGiHRuXKlZ+UwM3z884779SsWfOrr746e/bsjRs3Zs+erVQqeZ4/dOhQnTp1CCFPTQAAAAAAkLunRwXuUygUrv9ZunRpQoher1+wYEEelpKNSqXSarW0xT08PNydj2SrZza//vrroUOHWrZsuW7dOtpNkZWV9cYbb+zfv9+1UJVKZbfbIyMjX3vttcfmExISolarN2zYQAc45Uzg5vlhGKZp06Z//fWX3W53OBzR0dGzZs2KjIx87733/vnnH5Zln5rAjVMCAAAAAF4tb14ZJUlSKBTJycmuB1u2bEkIOX78+Lp161yPuw70f3E8z9OJxe+++67rWpySJOXsfHhsPbO5d++eJEnt27c3GAx0XoGvr2+NGjVc51Go1eoOHTqoVKqvvvoqLS3NeTwtLe38+fP03+3btxdFMSUl5bfffnPN/9ixYzabjbh9fhwOh8lkIoSoVCqdThceHr5o0SK73X7v3j3abfLUBAAAAAAAucubqECv1/M8v379+qVLl+7cufP06dOEkCpVqkyfPt3hcLz11lvTpk27dOnS5cuX58+fX7p06Z9++ump0xLcxDDMjz/+yDDM1atX27Vrt3nz5rt37+7YsaNjx44RERGur+xPqmc2ZcqUUSqVy5cvP3v2rN1ut1qtO3fuXL16tet+ZwzDzJ0712q13rhxo1atWt99992ePXu+/fbbmjVr1q1bNyoqihBStWrVt956SxTFd999t3///tu2bduyZUu/fv1atmzZrVs3SZLcOT+SJA0YMKBq1arff/99cnKy2Wy+dOnSxx9/LIrim2++qVQqn5ogT04yAAAAAHg4Oi5fFMXy5csTQkaNGuVcn2jUqFHZjsiy7HzPTktLcx6Mjo5WKpU6nY6OV3n77bed2X755Zd0DX76KZZl1Wp1v3796NqjT8rwOSrQsGFDuk4/pVarg4KCTp8+7frZJ9XTlcViadOmDa2zn5+fUqksUaIEnT+QrSbnz5+vV6+e89vRrYvbtGmTmppKEwiCMGPGDJ7neZ6nteJ53sfH57fffqMzE556fgRB6Nu3r1qtdh0IxHFchw4d6PqnT00AAAAAAPBUjCzLNDZYsGBBfHx8mzZtunTpQl8ud+zYsXv37o4dOzqPEEKsVuuUKVMIITNmzHBtPr9x48a2bdtSUlJYlu3Zs6frgkJJSUlbt26NjY1VKBRhYWGdO3cODg5+aobPWgFBEI4fP37s2LGMjIyAgIAmTZrUr19fpVJli4JyqaeTw+HYtm3b5cuXzWZztWrVXn311b179+7fv79Dhw6uNSGE2O32HTt23Lx502g0BgcHN2/evHbt2tmG8l+7du3IkSP37t1Tq9UVKlTo2LGjn5+fa4Lczw8hJDExcc+ePffv38/IyAgMDGzatGnDhg1dS3lqAgAAAACAXDyKCgAAAAAAwGuhORkAAAAAwNshKgAAAAAA8HaICgAAAAAAvB2iAgAAAAAAb4eoAAAAAADA2yEqAAAAAADwdogKAAAAAAC8HaICAAAAAABvh6gAAAAAAMDbISoAAAAAAPB2iAoAAAAAALwdogIAAAAAAG+HqAAAAAAAwNshKgAAAAAA8HaICgAAAAAAvB2iAgAAAAAAb8cRQu6b7PFmO+IDAAAAcBdDbIIsyrJWyRK5oCsDAE8mE8IwTE2DVsUyuSTj1t1MXno14aVVCwAAAAAAXiZRJlX9Nd82L6dgnhgYcMuvJaoV6CcAAAAAAPBY0UazRZB8lIonJeAaBOlOJma9zDoBAABAkcYSRqX4X4ujXZQljCICKNzUCoUq154ARpCkkwlZ9002huQ20ggAAACAEEIYYhGkrbFpZkGkB3qWNQTwHOICgMJJJrKSZRqF6EtoVbkk4xQM06S4nhD9S6sZAAAAFHX/xGfQqECU5beqBCtzncUIAIUfZhQAAADAs5EJkV16BkQZ3QQARR6iAgAAAAAAb4eoAAAAAADA2yEqAAAAAADwdogKAAAAAAC8HaICAAAAAABvh6gAAAAAAMDbISoAAAAAAPB2iAoAAAAAALwdogIAAAAAAG+HqAAAAAAAwNshKgAAAAAA8HaICgAAAAAAvB2iAgAAAAAAb4eoAAAAAADA2yEqAAAAAADwdogKAAAAAAC8HaICAAAAAABvh6gAAAAAAMDbISoAAAAAAPB2iAoAAAAAALwdogIAAAAAAG+HqAAAAAAAwNshKgAAAAAA8HaICgAAAAAAvB2iAgAAAAAAb4eoAAAAAADA2yEqAAAAAADwdogKAAAAAAC8HaICAAAAAABvh6gAAAAAAMDbISoAAAAAAPB2iAoAAAAAALwdogIAAAAAAG+HqAAAAAAAwNtxBV0BAAAAKGIYQhhOKXOEECLLsoJBI+PTybJssVgKuhb5S6PRMAxT0LV4TjabTRTFgq5FPlKpVByX25s/ogIAAABPIMvykSNH7ty58xLKsgii+dptH4eDECITsjS2nJ9G/RLK9fPz69q1q0KheAll5bnNmzevXLlSpVIVdEXyi91uf/vtt3v37l3QFXke9+/fHz16tCzLBV2RfFS8ePGFCxfmEhggKgAAAPAEVqv1yy+/VKtfxts5yzC8glH++58H716XXsrrlNVqDQ4ObtSo0UsoK2/Jsrxv3z5fX19CiN1ulySpoGuUl1iWValUarV63759vXr1KordBTdu3JBlWa1WC4IgCEJBVyePqVQqlmXj4+PtdjuiAgAAAA8nSZJarVar1ZIk2e32/C1Lli3CS21V5TiOvs1YrdaXWW4eUiqVhBCGYapWrcrzfEFXJy/ZbLbbt2/Lsky/Y1FEO6AkSSpRokSxYsUKujp5LDY2Nisr66nJEBUAAAB4AtpAa7fbK1WqNHDgwIKuTh47fPjw3r17yb9fs4iSJInn+Q8++CAkJKSg65KXEhISPvvsM5vNVtAVeVF2u71NmzY9e/Ys6IrksdmzZ58+ffqpyRAVAAAAeA5Jknx8fKpVq1bQFcljN27c8JhRN/ndk/PyedI38rzhQ4QQN/92sGgAAACAR/GYt2dXHvmuBlCoICoAAAAAAPB2iAoAAAAAALwdogIAAABvkZ6e/tdffx0/fjzbuuyyLB8/fvyvv/5KT0/P9pHExMQNGzacP38+23FRFA8cOLB582aTyZS/lQaAlwKzjQEAALzFr7/+um3bNl9f3zlz5oSFhTmPx8bGLliwICsrKz4+/t1333Uel2V5xYoVhw4dKlWq1OzZs4OCgpw/unTp0jfffGO3220223/+85+X+jUAIB+grwAAAMBbpKSkaLVah8ORrYHfbDYLgqDRaBITE12Pi6JoNBp1Op0gCBaLxfVHRqORYRi1Wp2amvoyqg4A+QxRAQAAgLegWzUxDJNt1X/nEZrAFcuyj/0Iy7L0CE0AAEUd/pIBAAAAALwd5hUAAABAAbt9+3ZKSkr16tW1Wm1B16UgZWVl2e32Z92/WaFQ+Pr65lOVJEnasWPHiRMnypUr169fP7VanU8FFX6CIGRkZDzr1ZFl2d/fP/+61KKjozds2KBUKvv27Vu+fPkXyQpRAQAAABSkI0eOLF682Gw2169ff+zYsV4bGERFRa1evZoQ8kzvnbIsi6LYp0+fjh075ketrly5snLlSkLI2bNnAwMDe/bsmR+lFH7p6enffPPNgwcPOO7ZXp4dDkfVqlXfe+89nufzvFZWq3XFihXR0dGyLKenp0+ZMkWlUj13bogKAAAAoCDt3bvXZrPp9frTp0/fuXOnevXqBV2jgnHixImbN2/6+PhkWzc2dwzDmEymw4cP51NUkJ6e7nA4fH19BUGIj4/PjyKKhLi4uGPHjj1HyCpJUmpqat++fUuXLp3ntbLZbBkZGTzPy7KclpZmt9sRFQAAAEBRVa5cuaioKJPJZDAYDAZDQVenwLRt2/bOnTtms/mZRpvIssyybPv27fOpVrVq1apfv/6lS5dKly6df6UUfmFhYe3atYuJiXmmvgJZliVJqlOnTkhISH7Uys/Pr2PHjuvXryeEdOrUycfH50VyQ1QAAAAABem1117jeT45OblFixbFixcv6OoUmGrVqv33v//Nysp61hFEGo1Go9HkU618fX0nTJgQGxsbHBzs5+eXT6UUfjqd7pNPPjEajc/6QZZl8/W8vfLKKxEREYSQF++LQFQAAAAABUmj0bz++usFXYtCQaVSFcLeEpVKValSpYKuRcFjGCYgIKCga/EYeTU2CSuTAgAAAAB4O0QFAAAAAADeDiOIAAAAvIUgCKIoyrKcbZUbSZIcDgfLspIkuR5nGEYURVEUHQ5Hto/IsiwIAk3wMqoOAPkMfQUAAADeIiIiQqvVVqxYMduKKCEhIRUrVtRqtQ0aNHA9rlAo6tevz/N85cqVAwMDXX9Uvnz50qVL6/X6unXrvoSaA0B+Q18BAACAt+jatWvdunV9fHyybYVbrFixqVOnZmVllSxZMttH/vOf/zRr1sxgMGRbqT00NHTGjBk2m82bVw0C8CSICgAAALxIzvd+ytfXN1uoQDEMExoa+tiPFM71WADg+WAEEQAAAACAt0NUAAAAAADg7RAVAAAAeBSW9cCHO8d5zphnlUpV0FXIY570jTzpN83JzXuCB35zAAAAr8WybFZW1tWrVwu6InksPj4+58KpRQ7LsoIgLFmyhOf5gq5LXrLZbIIgeEA4qlKpIiMjL168WNAVyWOxsbEqlcput+eeDFEBAACAJ6D7CahUqtu3b0+ePLmgq5PHOI5TqVRWq7Xobo/gcDgIIbIsX7t2raiHN9mwLEu7C+h3LIroFWFZ9uHDh/fu3Svo6uQxlUrlTsxW5KM6AAAAIIQoFAqr1Wq1Wp/aIlgUCYJAv11wcHBB1+V5MAzTrl27jIwMq9XqYSEBIUSSJKvVmpGR0alTJ4ZhCro6z6Ny5cr0L0gQhIKuS96z2+1WqzU0NDT3sV5Mtq0KAQAAoIg6efLk9evXC7oW+SgoKKhjx45F9L1TlmWr1erB710Mw2g0moKuxfOz2+0eGRI48TyvUChySYCoAAAAAADA22EEEQAAAACAt0NUAAAAAADg7RAVAAAAAAB4O0QFAAAAAADeDlEBAAAAAIC3Q1QAAAAAAODtEBUAAAAAAHg7RAUAAAAAAN4OUQEAAAAAgLdDVAAAAAAA4O0QFQAAAAAAeDtEBQAAAAAA3g5RAQAAAACAt0NUAAAAAADg7biCrgAAAADkPVEUrVYrwzDZjjMMo9FoCqRK8FjXr19fvnw5z/POI0ql0mAwhIeHh4eHq9XqbOllWV6wYEF8fHybNm26dOmSM8MdO3ZERkYWL1589OjROX8BMjMz//nnn9jY2Pj4eJ1OV7Jkyfr161etWjX3KlFarbZKlSqdO3fWarXP/4U9Ar0KaWlprgf9/f2DgoI6deoUEhKS8yNWq3XKlCksy3bq1KlNmzY5E+zYsWP37t0dO3bMdllTUlL27t1779699PT0gICAkJCQevXqVa1alWXzunFfBgAAAI+zZ88elUplMBj8/f39/uXr6xsUFNS5c+fjx4/ndwVsNltSUpIgCPldUFG3bds2QohOp3N9yWNZVqfTBQcHb9y4UZIk1/SiKJYvX54QMmrUqMdmOGrUKEJI+fLlRVF0Pe5wOBYtWhQSEuJaFs/zPM9369bt6tWruVfJWauSJUueOXMmH85EUUKvgk6nyxY70fPZu3fvlJSUbB+hIYRWq2UYJjo6Omee9MK5XlZRFL/66iuNRuNaCsuyPM83btx47969DocjD78U+goAAAA8E8dxHMfZ7XaGYWRZJoQwDGM2m48dO9a0adP169f36dMnn4q+ePFi165dk5KSUlJSdDpdPpXiGXie12q1PM9PmzatfPnykiQJgnDp0qWVK1fa7faBAwf26tXr119/dX1BNxgM8fHxer3+sRnq9XqtVmswGFwPWq3WHj16HD16VKFQBAUFDR48uHr16unp6X/99de+ffuOHDlSrVq1EydONGzY8LFVIoRIknT27NlvvvlGEIQuXbrExMT4+Pjk54kp7AwGg9FojIiI+OijjyRJYhgmJSVl48aNhw8fPnz4cLly5fbu3RsREeFMzzCMVqvV6XRqtXrIkCEHDhxQKpWuGdIL6npZv/nmm88//1yr1bZt2/bNN9/09fVNSUmJiopatmzZxYsX27dvf/HixZo1a+bZV8rDCAMAAAAKib1792q1Wr1ef+3aNZOL06dPR0REBAYGKhSK1NTUfCp9x44dWq3W39/fZDLlUxEeg14pjUaTlZXlejw9Pb1Pnz5+fn5arXb+/PnO46IoNmjQQKvVTpo06bEZTpo0SavVNmjQwNlXIElS7969aX/Rf//7X7PZ7Jo+KiqqcuXKlStXTk5Ozr1Ksizv3LnT399fq9X+8ccfL/jFizR6FTQazbRp01yPS5K0e/durVYbHBxcrFix9PR054+MRqNWqw0KCgoODtZoNDNnzsyW56RJkwghzstqtVqDgoL0ev1XX32VLWVaWtqYMWNmzZqVt18Ks40BAAA8liAIoaGhWhfh4eGrVq2yWq08z+/evTvnRxwOhyiKL1iuTqeTZZlhGIVC8aQ0DoeDNkLnzs1kRR3DMIIguB7x9fVdu3Ztw4YNNRrNpEmTUlJSnjvzEydObN++XZKkMWPGTJw4MdvEkvr16584ceLEiROBgYG5V4kQ0qFDh5IlSxJCoqOjn7s+HiPnKWIYpkOHDlu2bDGbzTabbc6cOTk/Uq1aNY1GM3v27CNHjuSSudVqNZlMgiAMHDgw24/8/f3nzZs3ceLEPPkWTogKAAAAPNZjX+wqVapE57CmpqY6DwqCsHbt2l69elWtWrVevXqffvrppUuXsn1wx44do0eP3rFjh+vB8+fPf/rpp//9739pLHHu3LmxY8fOmDFDo9EoFIqRI0dOnDhx7NixVquVpnc4HL///nvXrl0rV65cv379r776KiMjI1spH3/8cWRkpCiKs2fPrlKlysCBA2VZzqNTUpQolcrFixfbbDZCyLp161x/JMsyxz1+HDjHca6nS5bladOm6fV6X1/fsWPHPvYj/v7+/v7+7lSJYRg6xj3n7xU4tWvXrnv37iqV6ocffnD+5lOCICxfvrxTp04ajeb111/Pysp6UiYsy4qiyHHcn3/++djf/5xTyV8QogIAAACPJctyztb6mzdv0jcV59Bzi8XStWvXwYMH7927NyEh4datW0uWLKlTp84ff/zh+sFdu3YtXLhw165drgcvXLgwd+7c+fPn06jg/Pnz8+fPP3XqFMdxLMuuWrVq9uzZ8+fPpyVaLJZOnToNGjRo//79ZrP5xo0b06dPr1SpkmsEsmvXrkWLFm3ZsuXrr7+eOHFiYmLikSNHvDMqIIRUrFixbNmyWq128+bNrieB47i4uLj0x4mLi3MNGKxW66lTp+x2+/Dhw59p+anHBh7nz5+PjY0lhJQpU+bFvpmHGzRokNlstlqtV65ccT1usVhCQ0OXLl1qtVqtVuvQoUOflIOPj0/79u1Zlp06dWrXrl1//PHHbdu2JSQkWCyWfKozogIAAACPxXFccnKy4192u/3ChQtDhgxRq9WSJHXu3JkQIsty//79T548qdFovv322/v379++fbtPnz56vb5///6ugxxyzoYkhGg0Gq1WW6xYMdpyOWDAgKysrG+//dZisUiSdP36dZPJlJWV5efnJ8vyq6++eurUqbp16x49ejQ2NvbWrVutW7e22WydOnUymUzOUuiw9a1btx4/fjw+Pv6xI528BMuyHTp0sNvtN27ccG2e12g0GzZsKPk4GzZscH37dzgcVqtVEITq1as/U9Ecx926dcsZbCQkJKxevbpHjx4cxzkcjr59++bZl/REDRo0oH8RMTExrscZhrHb7T4+Pn/++afFYtm6deuWLVsemwPDMH/++Wfjxo2tVmtkZOT777//+uuvly9fvkyZ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zOl/4oknvv/++507d5aUlJw9e3bZsmUbN24sLy/vZlNzWUvmh/Gjbnad9fX106dPnzx58tdff927d++TJ08uXbo0dD3V1dXJZDJsX5A9cje7g9AIv/vuu++8887mzZuvvfbasEX0vn37wmqQ+vr6qVOndvlaQum8F198MawVycvLW7t27bZt2zZs2NC7d+9ffvnllVdeWbNmTXFx8aeffrpixYrwueL1119///33r7766tbW1pqamtbW1lDGtKKiYs6cOUZYoJsu+xSFxsbGhQsXvvHGG2VlZWfOnGlqaiooKCgqKioqKgr7y5w5cyZsAvXoo4+GYsk33XTTypUrw2KpUIyitrY2bC8f7irMnz//0jZ4am5unjlz5tChQ8+ePRv2qzp06FBNTU13nhtqw73wwgszZ848c+ZMmIdaXV0dCs6cOnVqzJgxb775ZqgkfbEnlslkSkpKMpnM/v37a2pqQo91+vTp6667bvny5Z3N4G9sbJw4ceLtt98e7hrv2rVr6dKlixYtWrVq1eHDhy9h24S2R77hhhvWrl1bVlYWJu0cPXq0srKyuro6Pz///Pnz27ZtO3DgwN+sk3NRl7ShoWHmzJmPPfZYOp0OGamhoWHv3r0nT54cPHhwSUlJ20uUyWRaWlqef/75sPA3LHrevXt3VVVVOp0uLCysrKz8/PPPwzS29evXHzx4MNzL+uKLLz788MMwKTadThcVFT355JNd1tju1avXjh073n777TAgN3LkyCVLltx6660LFy4Ms4PCEFd1dXWfPn2effbZ2267LZ1Oh8HFurq6AwcO1NfXh0UODQ0Nc+fOXbx4cdvljBCJvLy8CRMmZL9samoaN25cRUVFiOWZTGby5MnZKS4hM2RHiC5rE93c3NyrV68VK1aEXXeKioqqqqqWL18e/k6709Rc7kLDoUp1d7rOMLDy8ssvp1Kp06dP9+jRI4SHP/74o6CgYMiQIe26m252B8XFxVVVVZs3bw7LsisrK7du3bphw4adO3em0+kzZ87873//mzNnTu5Vv6F+xksvvbR3797CwsKGhoZHHnlk2rRpjz/++OjRo8M2NeHuazKZnD59+tNPP11cXJxOp/Pz8xsaGkKHnkwme/Tocfr06fLy8lCtzggLdNPlvVeQSCTCpMO5c+fefPPNW7du3bFjR01NzcmTJxOJRGlpaXl5+bRp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" alt="Installer-provisioned networking" />
 </figure>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change to the directory storing the `install-config.yaml` file:
 
@@ -2232,11 +2502,18 @@ When deploying remote nodes in separate subnets, you must place the `ingressVIP`
 
         $ sed -i "s;mastersSchedulable: false;mastersSchedulable: true;g" clusterconfigs/manifests/cluster-scheduler-02-config.yml
 
-    <div class="note">
+    > [!NOTE]
+    > If control plane nodes are not schedulable after completing this procedure, deploying the cluster will fail.
 
-    If control plane nodes are not schedulable after completing this procedure, deploying the cluster will fail.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install)
 
@@ -2255,3 +2532,5 @@ When deploying remote nodes in separate subnets, you must place the `ingressVIP`
 - [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)
 
 - [View the events from the vSphere Problem Detector Operator to determine if the cluster has permission or storage configuration issues](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector)
+
+</div>

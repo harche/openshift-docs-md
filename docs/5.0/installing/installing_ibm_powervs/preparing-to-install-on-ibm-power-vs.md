@@ -12,11 +12,8 @@ Review the available installer-provisioned methods for installing a OpenShift Co
 
 - **Installing a cluster on IBM Power® Virtual Server in a restricted network**: You can install OpenShift Container Platform on installer-provisioned IBM Power® Virtual Server infrastructure by using an internal mirror of the installation release content. You can use this method to install a cluster that does not require an active internet connection to obtain the software components.
 
-<div class="note">
-
-Installing OpenShift Container Platform on IBM Power® Virtual Server using user-provisioned infrastructure is the same as for IBM Power®.
-
-</div>
+> [!NOTE]
+> Installing OpenShift Container Platform on IBM Power® Virtual Server using user-provisioned infrastructure is the same as for IBM Power®.
 
 # Configuring the Cloud Credential Operator utility
 
@@ -24,15 +21,30 @@ The Cloud Credential Operator (CCO) manages cloud provider credentials as Kubern
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-<div class="note">
+> [!NOTE]
+> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
-The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator access.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -46,11 +58,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    <div class="note">
-
-    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
-
-    </div>
+    > [!NOTE]
+    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -66,11 +75,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
     - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    <div class="note">
-
-    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
-
-    </div>
+    > [!NOTE]
+    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -78,15 +84,27 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ chmod 775 ccoctl
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -109,6 +127,10 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
   Use "ccoctl [command] --help" for more information about a command.
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

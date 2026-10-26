@@ -4,11 +4,29 @@ You can use the Leader Worker Set Operator to manage distributed inference workl
 
 You can install the Leader Worker Set Operator through the OpenShift Container Platform web console to begin managing distributed AI workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have installed the cert-manager Operator for Red Hat OpenShift.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -46,11 +64,31 @@ You can install the Leader Worker Set Operator through the OpenShift Container P
 
     3.  Click **Create**.
 
+</div>
+
 # Deploy a leader worker set
 
 You can use the Leader Worker Set Operator to deploy a leader worker set to assist with managing distributed workloads across nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the Leader Worker Set Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new project by running the following command:
 
@@ -136,7 +174,15 @@ You can use the Leader Worker Set Operator to deploy a leader worker set to assi
     $ oc apply -f leader-worker-set.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that pods were created by running the following command:
 
@@ -144,9 +190,11 @@ You can use the Leader Worker Set Operator to deploy a leader worker set to assi
     $ oc get pods -n my-namespace
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -160,6 +208,8 @@ You can use the Leader Worker Set Operator to deploy a leader worker set to assi
     my-lws-1-2   1/1     Running   0          6s
     ```
 
+    </div>
+
     - `my-lws-0` is the leader pod for the first group.
 
     - `my-lws-1` is the leader pod for the second group.
@@ -170,9 +220,11 @@ You can use the Leader Worker Set Operator to deploy a leader worker set to assi
     $ oc get statefulsets
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -183,11 +235,15 @@ You can use the Leader Worker Set Operator to deploy a leader worker set to assi
     my-lws-1   2/2     60s
     ```
 
+    </div>
+
     - `my-lws` is the leader stateful set for all leader-worker groups.
 
     - `my-lws-0` is the worker stateful set for the first group.
 
     - `my-lws-1` is the worker stateful set for the second group.
+
+</div>
 
 # Additional resources
 

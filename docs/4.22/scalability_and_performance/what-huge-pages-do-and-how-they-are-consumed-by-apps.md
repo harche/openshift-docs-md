@@ -46,11 +46,8 @@ spec:
 
 - `spec.containers.resources.limits.hugepages-2Mi`: Specifies the amount of memory for `hugepages` as the exact amount to be allocated.
 
-  <div class="important">
-
-  Do not specify this value as the amount of memory for `hugepages` multiplied by the size of the page. For example, given a huge page size of 2 MB, if you want to use 100 MB of huge-page-backed RAM for your application, then you would allocate 50 huge pages. OpenShift Container Platform handles the math for you. As in the above example, you can specify `100MB` directly.
-
-  </div>
+  > [!IMPORTANT]
+  > Do not specify this value as the amount of memory for `hugepages` multiplied by the size of the page. For example, given a huge page size of 2 MB, if you want to use 100 MB of huge-page-backed RAM for your application, then you would allocate 50 huge pages. OpenShift Container Platform handles the math for you. As in the above example, you can specify `100MB` directly.
 
 ## Allocating huge pages of a specific size
 
@@ -71,6 +68,14 @@ Some platforms support multiple huge page sizes. To allocate huge pages of a spe
 To inject information about the huge pages resources consumed by a container, use the Downward API.
 
 You can inject the resource allocation as environment variables, a volume plugin, or both. Applications that you develop and run in the container can determine the resources that are available by reading the environment variables or files in the specified volumes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `hugepages-volume-pod.yaml` file that is similar to the following example:
 
@@ -137,7 +142,15 @@ You can inject the resource allocation as environment variables, a volume plugin
     $ oc create -f hugepages-volume-pod.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the value of the `REQUESTS_HUGEPAGES_1GI` environment variable:
 
@@ -146,15 +159,19 @@ You can inject the resource allocation as environment variables, a volume plugin
          -- env | grep REQUESTS_HUGEPAGES_1GI
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     REQUESTS_HUGEPAGES_1GI=2147483648
     ```
+
+    </div>
 
 2.  Check the value of the `/etc/podinfo/hugepages_1G_request` file:
 
@@ -163,9 +180,11 @@ You can inject the resource allocation as environment variables, a volume plugin
          -- cat /etc/podinfo/hugepages_1G_request
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -173,7 +192,21 @@ You can inject the resource allocation as environment variables, a volume plugin
     2
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Allowing containers to consume Downward API objects](../nodes/containers/nodes-containers-downward-api.xml#nodes-containers-downward-api)
+
+</div>
 
 # Configure huge pages at boot time
 
@@ -181,9 +214,14 @@ To ensure nodes in your OpenShift Container Platform cluster pre-allocate memory
 
 There are two ways of reserving huge pages: at boot time and at run time. Reserving at boot time increases the possibility of success because the memory has not yet been significantly fragmented. The Node Tuning Operator currently supports boot-time allocation of huge pages on specific nodes.
 
-<div class="note">
+> [!NOTE]
+> The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) compute nodes.
 
-The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) compute nodes.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -263,6 +301,16 @@ The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHC
     $ oc create -f hugepages-mcp.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To check that enough non-fragmented memory exists and that all the nodes in the `worker-hp` machine config pool now have 50 2Mi huge pages allocated, enter the following command:
 
   ``` terminal
@@ -270,11 +318,21 @@ The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHC
   100Mi
   ```
 
+</div>
+
 # Disable transparent huge pages
 
 If your application can handle huge pages on its own, you can disable transparent huge pages (THP) to optimally handle huge pages for all types of workloads and avoid the performance regressions that THP can cause.
 
 Disabling THP prevents them from attempting to automate most aspects of creating, managing, and using huge pages. You can disable THP by using the Node Tuning Operator (NTO).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file with the following content and name it `thp-disable-tuned.yaml`:
 
@@ -315,18 +373,34 @@ Disabling THP prevents them from attempting to automate most aspects of creating
     $ oc get profile -n openshift-cluster-node-tuning-operator
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Log in to one of the nodes and do a regular THP check to verify if the nodes applied the profile successfully:
 
   ``` terminal
   $ cat /sys/kernel/mm/transparent_hugepage/enabled
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   always madvise [never]
   ```
+
+  </div>
+
+</div>

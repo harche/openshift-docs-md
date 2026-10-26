@@ -1,24 +1,36 @@
 You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can also create a VM from an operating system image that you import, upload, build into a container disk, or clone from an existing persistent volume claim (PVC).
 
-<div class="note">
+> [!NOTE]
+> You can also create VMs from instance types by using the OpenShift Container Platform web console.
 
-You can also create VMs from instance types by using the OpenShift Container Platform web console.
-
-</div>
-
-<div class="important">
-
-You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
-
-</div>
+> [!IMPORTANT]
+> You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
 # Creating a VM from a VirtualMachine manifest
 
 You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simplify the creation of these manifests, you can use the `virtctl` command-line tool.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM, run the following command:
 
@@ -28,15 +40,14 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
 
 2.  Review the `VirtualMachine` manifest for your VM:
 
-    <div class="note">
+    > [!NOTE]
+    > This example manifest does not configure VM authentication.
 
-    This example manifest does not configure VM authentication.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example manifest for a RHEL VM**
+    Example manifest for a RHEL VM
 
     </div>
 
@@ -79,6 +90,8 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
             name: imported-volume-mk4lj
     ```
 
+    </div>
+
     - `name: rhel-9-minimal` specifies the name of the VM.
 
     - `name: rhel9` specifies the boot source for the guest operating system in the `sourceRef` section.
@@ -103,17 +116,37 @@ You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simpl
     $ virtctl start <vm_name>
     ```
 
+</div>
+
 # Creating a VM from an image on a web page by using the CLI
 
 You can create a virtual machine (VM) from an image on a web page by using the command line.
 
 When the VM is created, the data volume with the image is imported into persistent storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have access credentials for the web page that contains the image.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM from an image on a web page, run the following command:
 
@@ -179,7 +212,15 @@ When the VM is created, the data volume with the image is imported into persiste
 
     Data volume provisioning happens in the background, so there is no need to monitor the process.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  The importer pod downloads the image from the specified URL and stores it on the provisioned persistent volume. View the status of the importer pod:
 
@@ -214,17 +255,37 @@ When the VM is created, the data volume with the image is imported into persiste
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
 
+</div>
+
 # Generalizing a VM image
 
 You can generalize a Red Hat Enterprise Linux (RHEL) image to remove all system-specific configuration data before you use the image to create a boot source image, a preconfigured snapshot of a virtual machine (VM). You can use a boot source image to deploy new VMs.
 
 You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-sysprep` tools.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a RHEL virtual machine (VM) to use as a base VM.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed the `virtctl` tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Stop the RHEL VM if it is running, by entering the following command:
 
@@ -259,13 +320,10 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
     <my_vm_volume> Bound  …
     ```
 
-    <div class="note">
-
-    If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a boot source image.
-
-    If you are creating a boot source image by cloning a PVC, continue with the next steps, using the cloned PVC.
-
-    </div>
+    > [!NOTE]
+    > If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a boot source image.
+    >
+    > If you are creating a boot source image by cloning a PVC, continue with the next steps, using the cloned PVC.
 
 5.  Deploy a new interactive container with `libguestfs-tools` and attach the PVC to it by running the following command:
 
@@ -303,27 +361,48 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 
     8.  Click **Save**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 The new volume appears in the **Select volume to boot from** list. This is your new boot source image. You can use this volume to create new VMs.
 
+</div>
+
 # Creating a Windows VM
 
 You can create a Windows virtual machine (VM) by uploading a Windows image to a persistent volume claim (PVC) and then cloning the PVC when you create a VM by using the OpenShift Container Platform web console.
 
-<div class="important">
+> [!IMPORTANT]
+> You must install VirtIO drivers on Windows VMs. Download VirtIO drivers only from official Red Hat sources.
 
-You must install VirtIO drivers on Windows VMs. Download VirtIO drivers only from official Red Hat sources.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You created a Windows installation DVD or USB with the Windows Media Creation Tool. See [Create Windows 10 installation media](https://www.microsoft.com/en-us/software-download/windows10) in the Microsoft documentation.
 
 - You created an `autounattend.xml` answer file. See [Answer files (unattend.xml)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs) in the Microsoft documentation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Upload the Windows image as a new PVC:
 
@@ -367,13 +446,33 @@ You must install VirtIO drivers on Windows VMs. Download VirtIO drivers only fro
 
     The VM boots from the `sysprep` disk containing the `autounattend.xml` answer file.
 
+</div>
+
 ## Generalizing a Windows VM image
 
 You can generalize a Windows operating system image to remove all system-specific configuration data before you use the image to create a new virtual machine (VM).
 
 Before generalizing the VM, you must ensure the `sysprep` tool cannot detect an answer file after the unattended Windows installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A running Windows VM with the QEMU guest agent installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **VirtualMachines**.
 
@@ -395,21 +494,45 @@ Before generalizing the VM, you must ensure the `sysprep` tool cannot detect an 
 
 8.  After the `sysprep` tool completes, the Windows VM shuts down. The disk image of the VM is now available to use as an installation image for Windows VMs.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 You can now specialize the VM.
 
+</div>
+
 ## Specializing a Windows VM image
 
 Specializing a Windows virtual machine (VM) configures the computer-specific information from a generalized Windows image onto the VM.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a generalized Windows disk image.
 
 - You must create an `unattend.xml` answer file. See the [Microsoft documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) for details.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform console, click **Virtualization** → **Catalog**.
 
@@ -427,17 +550,31 @@ Specializing a Windows virtual machine (VM) configures the computer-specific inf
 
 8.  Click **Create VirtualMachine**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 During the initial boot, Windows uses the `unattend.xml` answer file to specialize the VM. The VM is now ready to use.
 
+</div>
+
 # Uploading a virtual machine image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have an `ISO`, `IMG`, or `QCOW2` operating system image file.
 
@@ -448,6 +585,16 @@ You can upload an operating system image by using the `virtctl` command-line too
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Upload the image by running the `virtctl image-upload` command:
 
@@ -468,6 +615,10 @@ You can upload an operating system image by using the `virtctl` command-line too
 
     <div class="note">
 
+    <div class="title">
+
+    </div>
+
     - If you do not want to create a new data volume, omit the `--size` parameter and include the `--no-create` flag.
 
     - When uploading a disk image to a PVC, the PVC size must be larger than the size of the uncompressed virtual disk.
@@ -481,6 +632,8 @@ You can upload an operating system image by using the `virtctl` command-line too
     ``` terminal
     $ oc get dvs
     ```
+
+</div>
 
 # Building and uploading a container disk
 
@@ -496,25 +649,37 @@ You create a VM from a container disk by performing the following steps:
 
 3.  Create a VM with the container disk as the disk source by using the OpenShift Container Platform web console or the command line.
 
-<div class="important">
+> [!IMPORTANT]
+> If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to reclaim resources:
+>
+> - Prune `DeploymentConfig` objects.
+>
+> - Configure garbage collection.
 
-If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to reclaim resources:
+> [!NOTE]
+> For [Red Hat Quay](https://access.redhat.com/documentation/en-us/red_hat_quay/), you can change the maximum layer size by editing the YAML configuration file that is created when Red Hat Quay is first deployed.
 
-- Prune `DeploymentConfig` objects.
+<div>
 
-- Configure garbage collection.
+<div class="title">
 
-</div>
-
-<div class="note">
-
-For [Red Hat Quay](https://access.redhat.com/documentation/en-us/red_hat_quay/), you can change the maximum layer size by editing the YAML configuration file that is created when Red Hat Quay is first deployed.
+Prerequisites
 
 </div>
 
 - You must have `podman` installed.
 
 - You must have a QCOW2 or RAW image file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a Dockerfile to build the VM image into a container image. The VM image must be owned by QEMU, which has a UID of `107`, and placed in the `/disk/` directory inside the container. Permissions for the `/disk/` directory must then be set to `0440`.
 
@@ -548,11 +713,31 @@ For [Red Hat Quay](https://access.redhat.com/documentation/en-us/red_hat_quay/)
     $ podman push <registry>/<container_disk_name>:latest
     ```
 
+</div>
+
 # Disabling TLS for a container registry
 
 You can disable TLS (transport layer security) for one or more container registries by editing the `insecureRegistries` field of the `HyperConverged` custom resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -580,15 +765,35 @@ You can disable TLS (transport layer security) for one or more container registr
 
     Replace the examples in the `insecureRegistries` list with valid registry hostnames.
 
+</div>
+
 # Creating a VM from a container disk by using the CLI
 
 You can create a virtual machine (VM) from a container disk by using the command line.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have access credentials for the container registry that contains the container disk.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM from a container disk, run the following command:
 
@@ -637,7 +842,15 @@ You can create a virtual machine (VM) from a container disk by using the command
     $ oc create -f <vm_manifest_file>.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Monitor the status of the VM:
 
@@ -663,6 +876,8 @@ You can create a virtual machine (VM) from a container disk by using the command
     ``` terminal
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
+
+</div>
 
 # About cloning
 
@@ -747,6 +962,14 @@ After a certain number of clones are created from a persistent volume claim (PVC
 
 To improve performance when creating hundreds of clones from a single source PVC, use the `VolumeSnapshot` cloning method instead of the default `csi-clone` strategy.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `VolumeSnapshot` custom resource (CR) of the source image by using the following content:
 
     ``` yaml
@@ -771,6 +994,8 @@ To improve performance when creating hundreds of clones from a single source PVC
           name: golden-volumesnapshot
     ```
 
+</div>
+
 ## Cloning a PVC to a data volume
 
 You can clone the persistent volume claim (PVC) of an existing virtual machine (VM) disk to a data volume by using the command line.
@@ -779,11 +1004,16 @@ You create a data volume that references the original source PVC. The lifecycle 
 
 Cloning between different volume modes is supported for host-assisted cloning, such as cloning from a block persistent volume (PV) to a file system PV, as long as the source and target PVs belong to the `kubevirt` content type.
 
-<div class="note">
+> [!NOTE]
+> Smart-cloning is faster and more efficient than host-assisted cloning because it uses snapshots to clone PVCs. Smart-cloning is supported by storage providers that support snapshots, such as Red Hat OpenShift Data Foundation.
+>
+> Cloning between different volume modes is not supported for smart-cloning.
 
-Smart-cloning is faster and more efficient than host-assisted cloning because it uses snapshots to clone PVCs. Smart-cloning is supported by storage providers that support snapshots, such as Red Hat OpenShift Data Foundation.
+<div>
 
-Cloning between different volume modes is not supported for smart-cloning.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -819,6 +1049,16 @@ Cloning between different volume modes is not supported for smart-cloning.
     provisioner: openshift-storage.rbd.csi.ceph.com
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `DataVolume` manifest as shown in the following example:
 
     ``` yaml
@@ -851,21 +1091,38 @@ Cloning between different volume modes is not supported for smart-cloning.
     $ oc create -f <datavolume>.yaml
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > Data volumes prevent a VM from starting before the PVC is prepared. You can create a VM that references the new data volume while the PVC is being cloned.
 
-    Data volumes prevent a VM from starting before the PVC is prepared. You can create a VM that references the new data volume while the PVC is being cloned.
-
-    </div>
+</div>
 
 ## Creating a VM from a cloned PVC by using a data volume template
 
 You can create a virtual machine (VM) that clones the persistent volume claim (PVC) of an existing VM by using a data volume template. This method creates a data volume whose lifecycle is independent on the original VM.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The VM with the source PVC must be powered down.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file, for example:
 
@@ -928,6 +1185,8 @@ You can create a virtual machine (VM) that clones the persistent volume claim (P
     $ oc create -f <vm_manifest_file>.yaml
     ```
 
+</div>
+
 # Supported custom video device types
 
 When creating a virtual machine (VM), you can configure a custom video device type to override the default video configuration.
@@ -957,12 +1216,12 @@ You can configure the following video device types:
 
 - ramfb: a simple, unaccelerated virtual display device primarily used in the QEMU emulator, and useful for ARM architecture.
 
-| Architecture | Boot mode | Default type | Supported types                             |
-|--------------|-----------|--------------|---------------------------------------------|
-| AMD/x86_64   | BIOS      | `vga`        | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
-| AMD/x86_64   | EFI       | `bochs`      | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
-| ARM64        | BIOS/EFI  | `virtio`     | `virtio`, `ramfb`                           |
-| s390x        | BIOS/EFI  | `virtio`     | `virtio`                                    |
+| Architecture | Boot mode | Default type | Supported types |
+|----|----|----|----|
+| AMD/x86_64 | BIOS | `vga` | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
+| AMD/x86_64 | EFI | `bochs` | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
+| ARM64 | BIOS/EFI | `virtio` | `virtio`, `ramfb` |
+| s390x | BIOS/EFI | `virtio` | `virtio` |
 
 Video device support by architecture
 

@@ -1,22 +1,16 @@
 When problems occur on your OpenShift Container Platform cluster, you want to determine exactly what is happening, so that you can fix the issue as soon as possible. The MCP server for Red Hat OpenShift feature provides an AI tool to quickly and easily diagnose your OpenShift Container Platform cluster.
 
-<div class="important">
-
-MCP server for Red Hat OpenShift is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> MCP server for Red Hat OpenShift is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # AI safety
 
 Because MCP server for Red Hat OpenShift grants AI agents access to cluster resources, you must follow safety practices to protect your cluster from unauthorized actions, data exposure, and prompt injection risks.
 
-<div class="important">
-
-This feature uses AI technology. Do not include any personal information or other sensitive information in your input. Interactions may be used to improve Red Hat’s products or services. Always review AI-generated content before using it.
-
-</div>
+> [!IMPORTANT]
+> This feature uses AI technology. Do not include any personal information or other sensitive information in your input. Interactions may be used to improve Red Hat’s products or services. Always review AI-generated content before using it.
 
 ## Data ownership
 
@@ -126,11 +120,19 @@ In an emergency, you can use any of the following possible actions to revoke acc
   $ oc delete mcpsr <name of registration>
   ```
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Revoke access to Custom Resources](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-revoke-cr-access_mcp-server-overview)
 
 - [Install the MCP server](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-install-helm_mcp-server-overview)
+
+</div>
 
 # Model Context Protocol overview
 
@@ -220,9 +222,27 @@ Install and configure the MCP server for Red Hat OpenShift to enable AI agents t
 
 To install the MCP server for Red Hat OpenShift feature, complete the following procedures.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to OpenShift console with admin rights.
 
 - Installed MCP-compatible client, such as Claude Code, Visual Studio Code (VS Code), Cursor, or OpenShift LightSpeed (OLS).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the MCP server for Red Hat OpenShift Helm chart.
 
@@ -242,11 +262,31 @@ To install the MCP server for Red Hat OpenShift feature, complete the following 
 
 9.  Set up MCP gateway authorization.
 
+</div>
+
 ## Install the MCP server Helm chart
 
 Install the Model Context Protocol (MCP) server Helm chart to deploy the MCP server for Red Hat OpenShift on your cluster, enabling AI agents to diagnose and inspect cluster resources.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to OpenShift console with admin rights.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the MCP server for Red Hat OpenShift Helm chart by running one of the following commands:
 
@@ -276,24 +316,36 @@ Install the Model Context Protocol (MCP) server Helm chart to deploy the MCP ser
 
     - `<toolset-names>` can include toolsets from the following table.
 
-      | Toolset    | Description                                                                         | Default | Status             |
-      |------------|-------------------------------------------------------------------------------------|---------|--------------------|
-      | `core`     | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) | Yes     | Technology Preview |
-      | `config`   | View and manage the current local Kubernetes configuration (kubeconfig)             | Yes     | Technology Preview |
-      | `netedge`  | NetEdge troubleshooting tools for OpenShift Container Platform                      | No      | Technology Preview |
-      | `helm`     | Tools for managing Helm charts and releases                                         | No      | Technology Preview |
-      | `metrics`  | Toolset for querying Prometheus and Alertmanager endpoints in efficient ways        | No      | Technology Preview |
-      | `ossm`     | Most common tools for managing OSSM                                                 | No      | Technology Preview |
-      | `kubevirt` | KubeVirt virtual machine management tools                                           | No      | Developer Preview  |
-      | `tekton`   | Tekton pipeline management tools for Pipelines, PipelineRuns, Tasks, and TaskRuns   | No      | Developer Preview  |
+      | Toolset | Description | Default | Status |
+      |----|----|----|----|
+      | `core` | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) | Yes | Technology Preview |
+      | `config` | View and manage the current local Kubernetes configuration (kubeconfig) | Yes | Technology Preview |
+      | `netedge` | NetEdge troubleshooting tools for OpenShift Container Platform | No | Technology Preview |
+      | `helm` | Tools for managing Helm charts and releases | No | Technology Preview |
+      | `metrics` | Toolset for querying Prometheus and Alertmanager endpoints in efficient ways | No | Technology Preview |
+      | `ossm` | Most common tools for managing OSSM | No | Technology Preview |
+      | `kubevirt` | KubeVirt virtual machine management tools | No | Developer Preview |
+      | `tekton` | Tekton pipeline management tools for Pipelines, PipelineRuns, Tasks, and TaskRuns | No | Developer Preview |
 
       Available toolsets
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check that the command returns output similar to the following:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -307,13 +359,35 @@ Install the Model Context Protocol (MCP) server Helm chart to deploy the MCP ser
   TEST SUITE: None
   ```
 
+  </div>
+
+</div>
+
 ## Connect a client to the MCP server
 
 Connect a client that is compatible with the Model Context Protocol (MCP) to the MCP server so that an AI agent can interact with your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to OpenShift console with admin rights.
 
 - The MCP server Helm chart is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the following lines to your client configuration file:
 
@@ -336,9 +410,19 @@ Connect a client that is compatible with the Model Context Protocol (MCP) to the
 
 2.  Accept the CA certificate when prompted by the client.
 
+</div>
+
 ## Install the MCP gateway
 
 Install the Model Context Protocol (MCP) gateway to provide a secure, centralized entry point that enforces authentication, authorization, and rate limiting for all MCP server traffic.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -346,17 +430,47 @@ Install the Model Context Protocol (MCP) gateway to provide a secure, centralize
 
 - MCP-compatible client connected.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the MCP gateway.
 
     For information about how to install the MCP gateway, see "Install the MCP gateway (Red Hat Connectivity Link)".
 
     After installation, the controller automatically creates the HTTPRoute for gateway access. The MCP gateway acts as a reverse proxy that aggregates multiple MCP servers into a single endpoint and provides a layer for authentication and rate limiting.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Install the MCP gateway (Red Hat Connectivity Link)](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html/install_the_mcp_gateway/index)
+
+</div>
 
 ## Verify the MCP gateway deployment
 
 Verify that the Model Context Protocol (MCP) gateway is deployed and running correctly before configuring routing, authentication, and authorization.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift Container Platform console with admin rights.
 
@@ -368,21 +482,30 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
 
 - MCP gateway is installed.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check the status of your deployment by running the following command:
 
     ``` terminal
     $ oc get pods -n gateway-namespace -l "app.kubernetes.io/name=mcp-gateway"
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > This example uses the namespace "gateway-namespace" for installing the gateway. If you install the gateway in a different namespace than "gateway-namespace", use that namespace instead throughout the procedure.
 
-    This example uses the namespace "gateway-namespace" for installing the gateway. If you install the gateway in a different namespace than "gateway-namespace", use that namespace instead throughout the procedure.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example**
+    Example
 
     </div>
 
@@ -391,15 +514,19 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
     mcp-gateway-controller-594b9649cf-zstfw   1/1     Running   0          22s
     ```
 
+    </div>
+
 2.  Ensure that the MCP gateway Extension exists by running the following command:
 
     ``` terminal
     $ oc get mcpgatewayextension -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -407,6 +534,8 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
     NAMESPACE          NAME          READY   AGE
     gateway-namespace  mcp-gateway           105s
     ```
+
+    </div>
 
 3.  Verify the broker-router deployment by running the following command:
 
@@ -420,9 +549,19 @@ Verify that the Model Context Protocol (MCP) gateway is deployed and running cor
     $ oc get envoyfilter -n gateway-namespace -l app.kubernetes.io/managed-by=mcp-gateway-controller
     ```
 
+</div>
+
 ## Configure the MCP gateway
 
 Configure the Model Context Protocol (MCP) gateway so that it can route client traffic to your MCP server and discover the tools the server exposes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -431,6 +570,16 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 - MCP-compatible client connected.
 
 - MCP gateway is installed and verified.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Before creating the `HTTPRoute`, verify the exact name of your MCP server service by entering the following command:
 
@@ -507,9 +656,11 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
     $ oc get mcpsr -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -517,6 +668,8 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
     NAMESPACE             NAME                PREFIX      TARGET                     PATH   READY   TOOLS   CREDENTIALS   AGE
     openshift-mcp-server  my-mcp-server-reg   myserver_   mcp-api-key-server-route   /mcp   True    4                     30s
     ```
+
+    </div>
 
     The **READY** column should display `True` and the **TOOLS** column should show the number of tools discovered.
 
@@ -577,11 +730,21 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
         You should now see your MCP server tools in the response, prefixed with your configured `prefix` value, such as `openshift_`.
 
+</div>
+
 ## Configure RBAC enforcement
 
 To control which cluster resources the Model Context Protocol (MCP) server can access, configure role-based access control (RBAC) so that AI agents are limited to only the resources they need.
 
 By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -593,13 +756,25 @@ By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBin
 
 - The MCP gateway is configured.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure RBAC enforcement by extending ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings.
 
     Use the following example RBAC YAML file to extend ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example RBAC settings YAML file**
+    <div class="title">
+
+    Example RBAC settings YAML file
 
     </div>
 
@@ -636,6 +811,8 @@ By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBin
           name: acm-cluster-proxy-discovery
     ```
 
+    </div>
+
 2.  Apply the RBAC configuration by saving the preceding example to a file (for example, `rbac-values.yaml`), and then run the following command:
 
     ``` terminal
@@ -644,9 +821,19 @@ By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBin
         -f rbac-values.yaml
     ```
 
+</div>
+
 ## Revoke access to Custom Resources
 
 To prevent AI agents from reading or exposing confidential cluster data, you can revoke Model Context Protocol (MCP) server access to sensitive Custom Resources (CRs), such as Secrets and ConfigMaps, .
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -660,13 +847,25 @@ To prevent AI agents from reading or exposing confidential cluster data, you can
 
 - RBAC is configured.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure denied resources to limit access to sensitive CRs.
 
     Use the following example file to revoke access to Secrets, ConfigMaps, and RBAC resources:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -705,6 +904,8 @@ To prevent AI agents from reading or exposing confidential cluster data, you can
     kind = "ClusterRoleBinding"
     ```
 
+    </div>
+
 2.  Apply this configuration by doing one of the following:
 
     - Save the configuration to a file (for example, `deny-resources.toml`) and pass it using a Helm values file:
@@ -723,9 +924,19 @@ To prevent AI agents from reading or exposing confidential cluster data, you can
           --set-json 'config.deniedResources=[{"group":"","version":"v1","kind":"Secret"},{"group":"","version":"v1","kind":"ConfigMap"}]'
       ```
 
+</div>
+
 ## Set up MCP gateway authentication
 
 To ensure that only verified users can access MCP server for Red Hat OpenShift tools and cluster resources, set up OAuth-based authentication for the Model Context Protocol (MCP) gateway.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -740,6 +951,16 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
 - You have revoked access to specific Custom Resources (CRs) as needed.
 
 - You have access to an Identity Provider (Entra ID).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure OAuth metadata discovery by setting environment variables on the MCP gateway broker-router deployment by running the following command:
 
@@ -861,7 +1082,15 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
     EOF
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify OAuth Discovery by testing that the broker now serves OAuth discovery information by running the following command:
 
@@ -871,9 +1100,11 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
 
     The command should show OAuth 2.0 Protected Resource Metadata similar to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -895,6 +1126,8 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
     }
     ```
 
+    </div>
+
 2.  Test that protected endpoints now require authentication by running the following command:
 
     ``` terminal
@@ -903,9 +1136,11 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
       -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -916,11 +1151,33 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
     }
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id)
+
+</div>
 
 ## Set up MCP gateway authorization
 
 Set up tool-level authorization for the Model Context Protocol (MCP) gateway to control which users can access specific MCP server tools, ensuring that each user can only use the operations permitted by their role.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to OpenShift console with admin rights.
 
@@ -938,13 +1195,25 @@ Set up tool-level authorization for the Model Context Protocol (MCP) gateway to 
 
 - Your identity provider is configured to include group/role claims in JWT tokens.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Ensure that your identity provider includes necessary group/role claims in the issued JWT tokens.
 
     The issued OAuth token should include claims similar to:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -960,6 +1229,8 @@ Set up tool-level authorization for the Model Context Protocol (MCP) gateway to 
       }
     }
     ```
+
+    </div>
 
     - The namespace should match the namespace of the `MCPServerRegistration` CR.
 
@@ -1016,7 +1287,15 @@ Set up tool-level authorization for the Model Context Protocol (MCP) gateway to 
 
     - `<cluster-name>.<domain-name>` is the name and domain of your cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Test that authorization now controls tool access by setting up the MCP Inspector:
 
@@ -1073,19 +1352,18 @@ Set up tool-level authorization for the Model Context Protocol (MCP) gateway to 
         $ oc logs -n kuadrant-system -l authorino-resource=authorino
         ```
 
+</div>
+
 # MCP server for Red Hat OpenShift prompting
 
 Use Model Context Protocol (MCP) server prompts to query a Large Language Model (LLM) to identify and diagnose issues across your OpenShift Container Platform cluster.
 
-<div class="note">
-
-To ensure that you get the best results when prompting be sure to:
-
-- Specify the namespace.
-
-- For Red Hat Advanced Cluster Management (ACM) for Kubernetes environments, specify the cluster.
-
-</div>
+> [!NOTE]
+> To ensure that you get the best results when prompting be sure to:
+>
+> - Specify the namespace.
+>
+> - For Red Hat Advanced Cluster Management (ACM) for Kubernetes environments, specify the cluster.
 
 ## MCP prompts
 
@@ -1103,9 +1381,11 @@ They combine:
 
 Define custom prompts in your `config.toml` file. Code changes and recompilation are not needed.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example custom prompts**
+<div class="title">
+
+Example custom prompts
 
 </div>
 
@@ -1134,21 +1414,63 @@ role = "assistant"
 content = "I'll retrieve and analyze the logs for you."
 ```
 
-| Prompt Fields                                                                                                                                                                                                                |                                                        |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| name (required)                                                                                                                                                                                                              | Unique identifier for the prompt                       |
-| title (optional)                                                                                                                                                                                                             | Human-readable display name                            |
-| description (required)                                                                                                                                                                                                       | Brief explanation of what the prompt does              |
-| arguments (optional)                                                                                                                                                                                                         | List of parameters the prompt accepts                  |
-| messages (required)                                                                                                                                                                                                          | Conversation template with role/content pairs          |
-| Argument Fields                                                                                                                                                                                                              |                                                        |
-| name (required)                                                                                                                                                                                                              | Argument identifier                                    |
-| description (optional)                                                                                                                                                                                                       | Explanation of the argument’s purpose                  |
-| required (optional)                                                                                                                                                                                                          | Whether the argument must be provided (default: false) |
-| Argument Substitution                                                                                                                                                                                                        |                                                        |
-| Use {{argument_name}} placeholders in message content. The template engine replaces these with actual values when the prompt is called. If an optional argument is not provided, its placeholder is removed from the output. |                                                        |
+</div>
 
-Configuration reference
+<table>
+<caption>Configuration reference</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" style="text-align: left;">Prompt Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><p>name (required)</p></td>
+<td style="text-align: left;"><p>Unique identifier for the prompt</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>title (optional)</p></td>
+<td style="text-align: left;"><p>Human-readable display name</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>description (required)</p></td>
+<td style="text-align: left;"><p>Brief explanation of what the prompt does</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>arguments (optional)</p></td>
+<td style="text-align: left;"><p>List of parameters the prompt accepts</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>messages (required)</p></td>
+<td style="text-align: left;"><p>Conversation template with role/content pairs</p></td>
+</tr>
+<tr>
+<td colspan="2" style="text-align: left;"><p>Argument Fields</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>name (required)</p></td>
+<td style="text-align: left;"><p>Argument identifier</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>description (optional)</p></td>
+<td style="text-align: left;"><p>Explanation of the argument’s purpose</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>required (optional)</p></td>
+<td style="text-align: left;"><p>Whether the argument must be provided (default: false)</p></td>
+</tr>
+<tr>
+<td colspan="2" style="text-align: left;"><p>Argument Substitution</p></td>
+</tr>
+<tr>
+<td colspan="2" style="text-align: left;"><p>Use {{argument_name}} placeholders in message content. The template engine replaces these with actual values when the prompt is called. If an optional argument is not provided, its placeholder is removed from the output.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## Built-in prompts
 

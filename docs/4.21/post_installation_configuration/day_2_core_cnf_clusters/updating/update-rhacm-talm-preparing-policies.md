@@ -4,6 +4,14 @@ Before you can perform policy-based cluster updates, you must configure your hub
 
 You can organize your Git repository, configure cluster labels, and create placement rules to target clusters for policy-based updates.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - RHACM hub cluster is deployed and managing target clusters. For more information, see [Red Hat Advanced Cluster Management for Kubernetes documentation](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/).
 
 - Topology Aware Lifecycle Manager (TALM) is installed on the RHACM hub cluster. For more information, see "Installing Topology Aware Lifecycle Manager by using the CLI".
@@ -13,6 +21,16 @@ You can organize your Git repository, configure cluster labels, and create place
 - You have cluster-admin privileges on the RHACM hub cluster.
 
 - The `oc` CLI tool is installed and configured.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Prepare your Git repository structure similar to the following example:
 
@@ -31,19 +49,13 @@ You can organize your Git repository, configure cluster labels, and create place
         └── core-eus-upgrade.yaml
     ```
 
-    <div class="note">
-
-    If you are using Kustomize for policy management with Argo CD or Flux, you can add a `kustomization.yaml` file to manage policy overlays. This file is optional if you apply policies directly with `oc apply`.
-
-    </div>
+    > [!NOTE]
+    > If you are using Kustomize for policy management with Argo CD or Flux, you can add a `kustomization.yaml` file to manage policy overlays. This file is optional if you apply policies directly with `oc apply`.
 
 2.  Create a `Placement` rule so that update policies can be bound to clusters through labels.
 
-    <div class="note">
-
-    If you use PolicyGenerator with Argo CD or a ZTP pipeline, `Placement` and `PlacementBinding` resources are generated automatically from your PolicyGenerator configuration. The following manual steps are provided for environments that do not use PolicyGenerator or for reference when troubleshooting placement issues.
-
-    </div>
+    > [!NOTE]
+    > If you use PolicyGenerator with Argo CD or a ZTP pipeline, `Placement` and `PlacementBinding` resources are generated automatically from your PolicyGenerator configuration. The following manual steps are provided for environments that do not use PolicyGenerator or for reference when troubleshooting placement issues.
 
     The following example uses the label `upgrade-version-to-4-21=""` to bind a policy to a cluster:
 
@@ -142,6 +154,16 @@ You can organize your Git repository, configure cluster labels, and create place
     $ oc apply -f managedclusterset.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that TALM is active, cluster labels are applied, and the `ManagedClusterSet` resource exists by running the following commands:
 
   ``` terminal
@@ -156,15 +178,14 @@ You can organize your Git repository, configure cluster labels, and create place
   cluster-group-upgrades-controller-manager-5d7b9c8f7d-abc12   2/2     Running   0          5m
   ```
 
+</div>
+
 # ClusterGroupUpgrade custom resource configuration
 
 You can configure `ClusterGroupUpgrade` custom resources (CRs) to orchestrate cluster updates with Topology Aware Lifecycle Manager (TALM). A `ClusterGroupUpgrade` CR defines which clusters to update, which policies to apply, and how to manage batching and concurrency.
 
-<div class="important">
-
-RHACM policies used for updates must be set to `inform` mode. The `ClusterGroupUpgrade` CR temporarily changes these policies to `enforce` mode at the scheduled update time, applying them to the target clusters. When the `ClusterGroupUpgrade` CR completes or times out, the policies automatically revert to `inform` mode. This ensures that update policies are only enforced at the specific time you intend, rather than immediately when the policy is created.
-
-</div>
+> [!IMPORTANT]
+> RHACM policies used for updates must be set to `inform` mode. The `ClusterGroupUpgrade` CR temporarily changes these policies to `enforce` mode at the scheduled update time, applying them to the target clusters. When the `ClusterGroupUpgrade` CR completes or times out, the policies automatically revert to `inform` mode. This ensures that update policies are only enforced at the specific time you intend, rather than immediately when the policy is created.
 
 ## Basic ClusterGroupUpgrade CR
 
@@ -188,15 +209,15 @@ spec:
     timeout: <timeout_minutes>
 ```
 
-| Field             | Description                                                                                                                                                              |
-|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`            | Specifies a name for your `ClusterGroupUpgrade` CR, for example `core-zstream-upgrade-4.20.1`.                                                                           |
-| `namespace`       | Specifies the namespace for the resource, for example `openshift-upgrade-policies`.                                                                                      |
-| `clusters`        | Specifies the names of your target clusters.                                                                                                                             |
-| `managedPolicies` | Specifies the names of your update policies.                                                                                                                             |
-| `enable`          | Set to `false` to create the resource without starting the update. Set to `true` to start the update immediately.                                                        |
-| `maxConcurrency`  | Specifies the number of clusters to update simultaneously. Use `1` for canary testing, `2-5` for production rollouts, or higher for large fleets with proven procedures. |
-| `timeout`         | Specifies the maximum time in minutes to wait for each cluster update. See the timeout guidelines that follow.                                                           |
+| Field | Description |
+|----|----|
+| `name` | Specifies a name for your `ClusterGroupUpgrade` CR, for example `core-zstream-upgrade-4.20.1`. |
+| `namespace` | Specifies the namespace for the resource, for example `openshift-upgrade-policies`. |
+| `clusters` | Specifies the names of your target clusters. |
+| `managedPolicies` | Specifies the names of your update policies. |
+| `enable` | Set to `false` to create the resource without starting the update. Set to `true` to start the update immediately. |
+| `maxConcurrency` | Specifies the number of clusters to update simultaneously. Use `1` for canary testing, `2-5` for production rollouts, or higher for large fleets with proven procedures. |
+| `timeout` | Specifies the maximum time in minutes to wait for each cluster update. See the timeout guidelines that follow. |
 
 ClusterGroupUpgrade CR fields
 

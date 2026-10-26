@@ -4,6 +4,14 @@ By default, the OpenShift image registry is secured during cluster installation 
 
 You can gain external access to the default OpenShift image registry by exposing it with a route. External access lets you log in from outside the cluster and tag and push images to an existing project by using the route host.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The following prerequisites are automatically performed:
 
   - Deploy the Registry Operator.
@@ -11,6 +19,16 @@ You can gain external access to the default OpenShift image registry by exposing
   - Deploy the Ingress Operator.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To expose the registry by using the `defaultRoute` parameter that exists in the `configs.imageregistry.operator.openshift.io` resource, set `defaultRoute` to `true` by running the following command:
 
@@ -48,11 +66,21 @@ You can gain external access to the default OpenShift image registry by exposing
     $ sudo podman login -u kubeadmin -p $(oc whoami -t) $HOST
     ```
 
+</div>
+
 # Expose a secure registry manually
 
 You can gain external access to the OpenShift image registry by exposing it with a route. External access lets you log in from outside the cluster and tag and push images to an existing project by using the route host.
 
 You can expose the route by using `DefaultRoute` parameter in the `configs.imageregistry.operator.openshift.io` resource or by using custom routes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The following prerequisites are automatically performed:
 
@@ -61,6 +89,16 @@ You can expose the route by using `DefaultRoute` parameter in the `configs.image
   - Deploy the Ingress Operator.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To expose the registry using `DefaultRoute` parameter, set `DefaultRoute` to `True`:
 
@@ -104,10 +142,19 @@ You can expose the route by using `DefaultRoute` parameter in the `configs.image
     ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > Only set `secretName` if you are providing a custom TLS configuration for the route of the registry.
 
-    Only set `secretName` if you are providing a custom TLS configuration for the route of the registry.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 - [Error creating TLS secret](https://access.redhat.com/solutions/5419501)
+
+</div>

@@ -4,6 +4,14 @@ By backing up and restoring etcd on a hosted cluster, you can fix failures, such
 
 Fix failures by taking a snapshot of etcd on a hosted cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The `oc` and `jq` binaries have been installed.
 
 - For hosted control planes on AWS, the OIDC provider configuration must be accessible so that any necessary fixes can be completed after the restore process. See the following procedure for more information about applying any necessary fixes.
@@ -30,9 +38,16 @@ Fix failures by taking a snapshot of etcd on a hosted cluster.
 
   - When you restore a hosted cluster to a different management cluster, all services in the hosted cluster must be configured with a fixed hostname in its `servicePublishingStrategy` property. This requirement applies to all platforms. Restoring a hosted cluster to a different management cluster is a Technology Preview feature. Restoring a hosted cluster to its original management cluster is supported.
 
-<div class="important">
+</div>
 
-After you back up the hosted cluster, Red Hat recommends to also back up any workloads running in the data plane cluster before proceeding with the restore process. While the etcd backup captures the control plane state, the backup does not include application data or persistent volumes in the data plane.
+> [!IMPORTANT]
+> After you back up the hosted cluster, Red Hat recommends to also back up any workloads running in the data plane cluster before proceeding with the restore process. While the etcd backup captures the control plane state, the backup does not include application data or persistent volumes in the data plane.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -118,17 +133,44 @@ After you back up the hosted cluster, Red Hat recommends to also back up any wor
                 /tmp/etcd.snapshot.db
               ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring Amazon Web Services](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#migration-configuring-aws-s3_installing-oadp-aws)
+
+</div>
 
 # Restoring etcd on a hosted cluster
 
 Fix failures by restoring a snapshot of etcd on a hosted cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You completed the steps in "Backing up etcd on a hosted cluster". Ensure that you meet the prerequisites listed in that procedure.
 
-<div class="important">
+</div>
 
-After you back up the hosted cluster, Red Hat recommends to also back up any workloads running in the data plane cluster before proceeding with the restore process. While the etcd backup captures the control plane state, the backup does not include application data or persistent volumes in the data plane.
+> [!IMPORTANT]
+> After you back up the hosted cluster, Red Hat recommends to also back up any workloads running in the data plane cluster before proceeding with the restore process. While the etcd backup captures the control plane state, the backup does not include application data or persistent volumes in the data plane.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -308,3 +350,5 @@ After you back up the hosted cluster, Red Hat recommends to also back up any wor
     ```
 
     This command regenerates the OIDC in S3 in case OIDC is deleted.
+
+</div>

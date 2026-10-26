@@ -58,11 +58,11 @@ The following nodes are created:
 
 For more information, see the IBM Cloud® documentation on "supported profiles".
 
-| VSI component | Default IBM Cloud® quota | Default cluster configuration                 | Maximum number of clusters |
-|---------------|--------------------------|-----------------------------------------------|----------------------------|
-| vCPU          | 200 vCPUs per region     | 28 vCPUs, or 24 vCPUs after bootstrap removal | 8 per region               |
-| RAM           | 1600 GB per region       | 112 GB, or 96 GB after bootstrap removal      | 16 per region              |
-| Storage       | 18 TB per region         | 1050 GB, or 900 GB after bootstrap removal    | 19 per region              |
+| VSI component | Default IBM Cloud® quota | Default cluster configuration | Maximum number of clusters |
+|----|----|----|----|
+| vCPU | 200 vCPUs per region | 28 vCPUs, or 24 vCPUs after bootstrap removal | 8 per region |
+| RAM | 1600 GB per region | 112 GB, or 96 GB after bootstrap removal | 16 per region |
+| Storage | 18 TB per region | 1050 GB, or 900 GB after bootstrap removal | 19 per region |
 
 VSI component quotas and limits
 
@@ -72,9 +72,19 @@ If you plan to exceed the resources stated in the table, you must increase your 
 
 For each VPC machine, a block storage device is attached for its boot volume. The default cluster configuration creates seven VPC machines, resulting in seven block storage volumes. Additional Kubernetes persistent volume claims (PVCs) of the IBM Cloud® storage class create additional block storage volumes. The default quota of VPC block storage volumes is 300 per region. To have more than 300 volumes, you must increase this quota.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Quotas and service limits (IBM Cloud® documentation)](https://cloud.ibm.com/docs/vpc?topic=vpc-quotas)
 
 - [Supported profiles (IBM Cloud® documentation)](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles)
+
+</div>
 
 # DNS resolution configuration
 
@@ -90,17 +100,32 @@ How you configure DNS resolution depends on the type of OpenShift Container Plat
 
 The installation program uses IBM Cloud® Internet Services (CIS) to configure cluster DNS resolution and provide name lookup for a public cluster.
 
-<div class="note">
-
-This offering does not support IPv6, so dual stack or IPv6 environments are not possible.
-
-</div>
+> [!NOTE]
+> This offering does not support IPv6, so dual stack or IPv6 environments are not possible.
 
 You must create a domain zone in CIS in the same account as your cluster. You must also ensure the zone is authoritative for the domain. You can do this using a root domain or subdomain.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the IBM Cloud® CLI. For more information, see "IBM Cloud® CLI".
 
 - You have an existing domain and registrar. For more information, see the "IBM® DNS documentation".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a CIS instance to use with your cluster:
 
@@ -118,11 +143,8 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
         At a minimum, you require a `Standard Next` plan for CIS to manage the cluster subdomain and its DNS records.
 
-        <div class="note">
-
-        After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
-
-        </div>
+        > [!NOTE]
+        > After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
 
 2.  Connect an existing domain to your CIS instance:
 
@@ -142,15 +164,22 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
         Replace `<domain_name>` with the fully qualified domain name. You can use either the root domain or subdomain value as the domain name, depending on which you plan to configure.
 
-        <div class="note">
-
-        A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
-
-        </div>
+        > [!NOTE]
+        > A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
 
 3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers are used in the next step. For more information, see "CIS web console".
 
 4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® documentation for "Configuring name servers".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [IBM Cloud® CLI (IBM Cloud® documentation)](https://www.ibm.com/cloud/cli)
 
@@ -160,21 +189,38 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
 - [IBM Cloud® documentation for configuring name servers](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider)
 
+</div>
+
 ## Using IBM Cloud DNS Services for DNS resolution
 
 The installation program uses IBM Cloud® DNS Services to configure cluster DNS resolution and provide name lookup for a private cluster.
 
 You configure DNS resolution by creating a DNS services instance for the cluster, and then adding a DNS zone to the DNS Services instance. Ensure that the zone is authoritative for the domain. You can do this using a root domain or subdomain.
 
-<div class="note">
+> [!NOTE]
+> IBM Cloud® does not support IPv6, so dual stack or IPv6 environments are not possible.
 
-IBM Cloud® does not support IPv6, so dual stack or IPv6 environments are not possible.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the IBM Cloud® CLI. For more information, see "IBM Cloud® CLI".
 
 - You have an existing domain and registrar. For more information, see the "IBM® DNS documentation".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a DNS Services instance to use with your cluster:
 
@@ -192,11 +238,8 @@ IBM Cloud® does not support IPv6, so dual stack or IPv6 environments are not po
 
         At a minimum, you require a `Standard DNS` plan for DNS Services to manage the cluster subdomain and its DNS records.
 
-        <div class="note">
-
-        After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
-
-        </div>
+        > [!NOTE]
+        > After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
 
 2.  Create a DNS zone for the DNS Services instance:
 
@@ -216,15 +259,24 @@ IBM Cloud® does not support IPv6, so dual stack or IPv6 environments are not po
 
 3.  Record the name of the DNS zone you have created. As part of the installation process, you must update the `install-config.yaml` file before deploying the cluster. Use the name of the DNS zone as the value for the `baseDomain` parameter.
 
-    <div class="note">
+    > [!NOTE]
+    > You do not have to manage permitted networks or configure an "A" DNS resource record. As required, the installation program configures these resources automatically.
 
-    You do not have to manage permitted networks or configure an "A" DNS resource record. As required, the installation program configures these resources automatically.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [IBM Cloud® CLI (IBM Cloud® documentation)](https://www.ibm.com/cloud/cli)
 
 - [IBM® DNS documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started)
+
+</div>
 
 # IBM Cloud IAM policies and API key
 
@@ -236,15 +288,15 @@ For an IBM Cloud® IAM overview, see the "IBM Cloud® IAM overview" documentatio
 
 You must assign the required access policies to your IBM Cloud® account.
 
-| Service type       | Service                        | Access policy scope                    | Platform access                         | Service access                                                        |
-|--------------------|--------------------------------|----------------------------------------|-----------------------------------------|-----------------------------------------------------------------------|
-| Account management | IAM Identity Service           | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Service ID creator                                                    |
-| Account management | Identity and Access Management | All resources                          | Editor, Operator, Viewer, Administrator |                                                                       |
-| Account management | Resource group only            | All resource groups in the account     | Administrator                           |                                                                       |
-| IAM services       | Cloud Object Storage           | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager, Content Reader, Object Reader, Object Writer |
-| IAM services       | Internet Services              | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
-| IAM services       | DNS Services                   | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
-| IAM services       | VPC Infrastructure Services    | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
+| Service type | Service | Access policy scope | Platform access | Service access |
+|----|----|----|----|----|
+| Account management | IAM Identity Service | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Service ID creator |
+| Account management | Identity and Access Management | All resources | Editor, Operator, Viewer, Administrator |  |
+| Account management | Resource group only | All resource groups in the account | Administrator |  |
+| IAM services | Cloud Object Storage | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager, Content Reader, Object Reader, Object Writer |
+| IAM services | Internet Services | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager |
+| IAM services | DNS Services | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager |
+| IAM services | VPC Infrastructure Services | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager |
 
 Required access policies
 
@@ -266,35 +318,58 @@ In IBM Cloud® IAM, access policies can be attached to different subjects:
 
 - User
 
-<div class="note">
-
-The recommended method is to define IAM access policies in an access group. This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to users and service IDs directly, if desired.
-
-For more information, see "Access groups" and "Users and service IDs".
-
-</div>
+> [!NOTE]
+> The recommended method is to define IAM access policies in an access group. This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to users and service IDs directly, if desired.
+>
+> For more information, see "Access groups" and "Users and service IDs".
 
 ## Creating an API key
 
 You must create a user API key or a service ID API key for your IBM Cloud® account.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have assigned the required access policies to your IBM Cloud® account.
 
 - You have attached your IAM access policies to an access group, or other appropriate resource.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create an API key, depending on how you defined your IAM access policies.
 
   For example, if you assigned your access policies to a user, you must create a user API key. If you assigned your access policies to a service ID, you must create a service ID API key. If your access policies are assigned to an access group, you can use either API key type. For more information on IBM Cloud® API keys, see "User API key", "Service ID API key", and "Understanding API keys".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [User API key (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-userapikey)
 
 - [Service ID API key (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-serviceidapikeys)
 
 - [Understanding API keys (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-manapikey&interface=ui)
+
+</div>
 
 # Supported IBM Cloud regions
 
@@ -322,11 +397,8 @@ You can deploy an OpenShift Container Platform cluster to the following regions:
 
 - `us-south` (Dallas, United States)
 
-<div class="note">
-
-Deploying your cluster in the `eu-es` (Madrid, Spain) region is not supported for OpenShift Container Platform 4.14.6 and earlier versions.
-
-</div>
+> [!NOTE]
+> Deploying your cluster in the `eu-es` (Madrid, Spain) region is not supported for OpenShift Container Platform 4.14.6 and earlier versions.
 
 # Additional resources
 

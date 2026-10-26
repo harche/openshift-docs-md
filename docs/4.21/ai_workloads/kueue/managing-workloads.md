@@ -6,13 +6,29 @@ Red Hat build of Kueue does not directly manipulate your jobs. Instead, Red Ha
 
 You must add the `kueue.openshift.io/managed=true` label to each namespace where you want Red Hat build of Kueue to manage jobs, because the Operator only enforces policies on labeled namespaces.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have cluster administrator permissions.
 
 - The Red Hat build of Kueue Operator is installed on your cluster, and you have created a `Kueue` custom resource (CR).
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add the `kueue.openshift.io/managed=true` label to a namespace by running the following command:
 
@@ -21,6 +37,8 @@ You must add the `kueue.openshift.io/managed=true` label to each namespace where
   ```
 
   When you add this label, you instruct the Red Hat build of Kueue Operator that the namespace is managed by its webhook admission controllers. As a result, any Red Hat build of Kueue resources within that namespace are properly validated and mutated.
+
+</div>
 
 # Configuring label policies for jobs
 
@@ -32,9 +50,11 @@ If the `labelPolicy` setting is omitted or empty (`""`), the default policy is t
 
 If the `labelPolicy` setting is set to `None`, jobs are managed by Red Hat build of Kueue even if they do not have the `kueue.x-k8s.io/queue-name` label.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `workloadManagement` spec configuration**
+<div class="title">
+
+Example `workloadManagement` spec configuration
 
 </div>
 
@@ -54,9 +74,13 @@ spec:
 # ...
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example user-created `Job` object containing the `kueue.x-k8s.io/queue-name` label**
+<div class="formalpara">
+
+<div class="title">
+
+Example user-created `Job` object containing the `kueue.x-k8s.io/queue-name` label
 
 </div>
 
@@ -71,3 +95,5 @@ metadata:
 spec:
 # ...
 ```
+
+</div>

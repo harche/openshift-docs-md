@@ -10,9 +10,11 @@ You can customize the cert-manager Operator for Red Hat OpenShift after installa
 
 - Configure the cluster `APIServer` custom resource (CR) to apply the cluster-wide TLS security profile to cert-manager components.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example CertManager CR YAML file**
+<div class="title">
+
+Example CertManager CR YAML file
 
 </div>
 
@@ -67,11 +69,10 @@ spec:
 #...
 ```
 
-<div class="warning">
-
-To override unsupported arguments, you can add `spec.unsupportedConfigOverrides` section in the `CertManager` resource, but using `spec.unsupportedConfigOverrides` is unsupported.
-
 </div>
+
+> [!WARNING]
+> To override unsupported arguments, you can add `spec.unsupportedConfigOverrides` section in the `CertManager` resource, but using `spec.unsupportedConfigOverrides` is unsupported.
 
 # Explanation of fields in the CertManager custom resource
 
@@ -85,9 +86,17 @@ The core components of the cert-manager Operator for Red Hat OpenShift are as fo
 
 - CA injector: You can use the `spec.cainjectorConfig` field to configure the CA injector pod.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Deleting a TLS secret automatically upon Certificate removal](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-override-flag-controller_cert-manager-customizing-api-fields)
+
+</div>
 
 ## Common configurable fields in the CertManager CR for the cert-manager components
 
@@ -101,24 +110,24 @@ You can configure common fields in the `spec.controllerConfig`, `spec.webhookCon
 <col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>overrideArgs</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>You can override the supported arguments for the cert-manager components.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>overrideEnv</code></p></td>
 <td style="text-align: left;"><p><code>dict</code></p></td>
 <td style="text-align: left;"><p>You can override the supported environment variables for the cert-manager controller. This field is only supported for the cert-manager controller component.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>overrideReplicas</code></p></td>
 <td style="text-align: left;"><p><code>int</code></p></td>
 <td style="text-align: left;"><p>You can configure the replicas for the cert-manager components. The default value is <code>1</code>. For production environments, the following replica counts are recommended:</p>
@@ -128,12 +137,12 @@ You can configure common fields in the `spec.controllerConfig`, `spec.webhookCon
 <li><p>webhook: At least 3.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>overrideResources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>You can configure the CPU and memory limits for the cert-manager components.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>overrideScheduling</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>You can configure the pod scheduling constraints for the cert-manager components.</p></td>
@@ -141,9 +150,17 @@ You can configure common fields in the `spec.controllerConfig`, `spec.webhookCon
 </tbody>
 </table>
 
-Common configurable fields in the CertManager CR for the cert-manager components
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [High Availability](https://cert-manager.io/docs/installation/best-practice/#high-availability)
+
+</div>
 
 ## Overridable arguments for the cert-manager components
 
@@ -159,100 +176,100 @@ The following table describes the overridable arguments for the cert-manager com
 <col style="width: 36%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Argument</th>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--dns01-recursive-nameservers=&lt;server_address&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Provide a comma-separated list of nameservers to query for the DNS-01 self check. The nameservers can be specified either as <code>&lt;host&gt;:&lt;port&gt;</code>, for example, <code>1.1.1.1:53</code>, or use DNS over HTTPS (DoH), for example, <code>https://1.1.1.1/dns-query</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>DNS over HTTPS (DoH) is supported starting only from cert-manager Operator for Red Hat OpenShift version 1.13.0 and later.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--dns01-recursive-nameservers-only</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Specify to only use recursive nameservers instead of checking the authoritative nameservers associated with that domain.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--acme-http01-solver-nameservers=&lt;host&gt;:&lt;port&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Provide a comma-separated list of <code>&lt;host&gt;:&lt;port&gt;</code> nameservers to query for the Automated Certificate Management Environment (ACME) HTTP01 self check. For example, <code>--acme-http01-solver-nameservers=1.1.1.1:53</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--metrics-listen-address=&lt;host&gt;:&lt;port&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Specify the host and port for the metrics endpoint. The default value is <code>--metrics-listen-address=0.0.0.0:9402</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--issuer-ambient-credentials</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>You can use this argument to configure an ACME Issuer to solve DNS-01 challenges by using ambient credentials.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--enable-certificate-owner-ref</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>This argument sets the certificate resource as an owner of the secret where the TLS certificate is stored. For more information, see "Deleting a TLS secret automatically upon Certificate removal".</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--acme-http01-solver-resource-limits-cpu</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Defines the maximum CPU limit for ACME HTTP‑01 solver pods. The default value is <code>100m</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--acme-http01-solver-resource-limits-memory</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Defines the maximum memory limit for ACME HTTP‑01 solver pods. The default value is <code>64Mi</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--acme-http01-solver-resource-request-cpu</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Defines the minimum CPU request for ACME HTTP‑01 solver pods. The default value is <code>10m</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--acme-http01-solver-resource-request-memory</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Defines the minimum memory request for ACME HTTP‑01 solver pods. The default value is <code>64Mi</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--certificate-request-minimum-backoff-duration</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>Specify the minimum backoff duration for certificate requests. The default value is <code>1h0m0s</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--concurrent-workers</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>The number of concurrent workers for each controller. The default value is <code>5</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--kube-api-qps</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>The maximum number of queries per second sent to the Kubernetes API server. The default value is <code>20</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--kube-api-burst</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>The maximum burst of queries per second sent to the Kubernetes API server. Must be greater than or equal to <code>--kube-api-qps</code>. The default value is <code>50</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>--max-concurrent-challenges</code></p></td>
 <td style="text-align: left;"><p>Controller</p></td>
 <td style="text-align: left;"><p>The maximum number of ACME challenges that can run concurrently. The default value is <code>60</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>--v=&lt;verbosity_level&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller, Webhook, CA injector</p></td>
 <td style="text-align: left;"><p>Specify the log level verbosity to determine the verbosity of log messages.</p></td>
 </tr>
 </tbody>
 </table>
-
-Overridable arguments for the cert-manager components
 
 ## Overridable environment variables for the cert-manager controller
 
@@ -274,11 +291,11 @@ You can configure the CPU and memory request and limits for the cert-manager com
 
 The following table describes the overridable resource parameters for the cert-manager components:
 
-| Field                               | Description                                                                          |
-|-------------------------------------|--------------------------------------------------------------------------------------|
-| `overrideResources.limits.cpu`      | Defines the maximum amount of CPU that a component pod can use.                      |
-| `overrideResources.limits.memory`   | Defines the maximum amount of memory that a component pod can use.                   |
-| `overrideResources.requests.cpu`    | Defines the minimum amount of CPU requested by the scheduler for a component pod.    |
+| Field | Description |
+|----|----|
+| `overrideResources.limits.cpu` | Defines the maximum amount of CPU that a component pod can use. |
+| `overrideResources.limits.memory` | Defines the maximum amount of memory that a component pod can use. |
+| `overrideResources.requests.cpu` | Defines the minimum amount of CPU requested by the scheduler for a component pod. |
 | `overrideResources.requests.memory` | Defines the minimum amount of memory requested by the scheduler for a component pod. |
 
 Overridable resource parameters for the cert-manager components
@@ -291,10 +308,10 @@ You can easily configure node selectors and tolerations by modifying the `spec.c
 
 The following table describes the pod scheduling parameters for the cert-manager components:
 
-| Field                             | Description                                              |
-|-----------------------------------|----------------------------------------------------------|
+| Field | Description |
+|----|----|
 | `overrideScheduling.nodeSelector` | Key and value pairs to constrain pods to specific nodes. |
-| `overrideScheduling.tolerations`  | List of tolerations to schedule pods on tainted nodes.   |
+| `overrideScheduling.tolerations` | List of tolerations to schedule pods on tainted nodes. |
 
 Overridable scheduling parameters for the cert-manager components
 
@@ -306,7 +323,25 @@ You can customize these variables through the Operator API to apply configuratio
 
 You can override the supported environment variables for the cert-manager Operator for Red Hat OpenShift by adding a `spec.controllerConfig` section in the `CertManager` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `CertManager` resource by running the following command:
 
@@ -342,15 +377,20 @@ You can override the supported environment variables for the cert-manager Operat
     `NO_PROXY`
     Specifies a comma separated list of domains. These domains are ignored by the proxy server.
 
-    <div class="note">
-
-    For more information about the overridable environment variables, see "Overridable environment variables for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
-
-    </div>
+    > [!NOTE]
+    > For more information about the overridable environment variables, see "Overridable environment variables for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
 
 3.  Save your changes and quit the text editor to apply your changes.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the cert-manager controller pod is redeployed by running the following command:
 
@@ -358,9 +398,11 @@ You can override the supported environment variables for the cert-manager Operat
     $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -369,15 +411,19 @@ You can override the supported environment variables for the cert-manager Operat
     cert-manager-bd7fbb9fc-wvbbt  1/1     Running   0          39s
     ```
 
+    </div>
+
 2.  Verify that environment variables are updated for the cert-manager pod by running the following command:
 
     ``` terminal
     $ oc get pod <redeployed_cert-manager_controller_pod> -n cert-manager -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -392,13 +438,45 @@ You can override the supported environment variables for the cert-manager Operat
           value: <IGNORE_PROXY_DOMAINS>
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
+
+</div>
 
 # Customize cert-manager by overriding arguments from the cert-manager Operator API
 
 You can override the supported arguments for the cert-manager Operator for Red Hat OpenShift by adding a `spec.controllerConfig` section in the `CertManager` resource.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `CertManager` resource by running the following command:
 
@@ -445,15 +523,27 @@ You can override the supported arguments for the cert-manager Operator for Red H
 
 3.  Save your changes and quit the text editor to apply your changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that arguments are updated for cert-manager pods by running the following command:
 
   ``` terminal
   $ oc get pods -n cert-manager -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -498,9 +588,21 @@ You can override the supported arguments for the cert-manager Operator for Red H
           - --v=2
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
+
+</div>
 
 # Delete a TLS secret automatically upon Certificate removal
 
@@ -508,9 +610,14 @@ You can enable the `--enable-certificate-owner-ref` flag for the cert-manager Op
 
 The `--enable-certificate-owner-ref` flag sets the certificate resource as an owner of the secret where the TLS certificate is stored.
 
-<div class="warning">
+> [!WARNING]
+> If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certificate resources from the cluster, the secret is deleted automatically. This might cause network connectivity issues depending upon where the certificate TLS secret is being used.
 
-If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certificate resources from the cluster, the secret is deleted automatically. This might cause network connectivity issues depending upon where the certificate TLS secret is being used.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -518,15 +625,27 @@ If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certi
 
 - You have installed version 1.12.0 or later of the cert-manager Operator for Red Hat OpenShift.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check that the `Certificate` object and its secret are available by running the following command:
 
     ``` terminal
     $ oc get certificate
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -534,6 +653,8 @@ If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certi
     NAME                                             READY   SECRET                                           AGE
     certificate-from-clusterissuer-route53-ambient   True    certificate-from-clusterissuer-route53-ambient   8h
     ```
+
+    </div>
 
 2.  Edit the `CertManager` resource by running the following command:
 
@@ -558,15 +679,27 @@ If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certi
 
 4.  Save your changes and quit the text editor to apply your changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `--enable-certificate-owner-ref` flag is updated for cert-manager controller pod by running the following command:
 
   ``` terminal
   $ oc get pods -l app.kubernetes.io/name=cert-manager -n cert-manager -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -582,13 +715,35 @@ If you uninstall the cert-manager Operator for Red Hat OpenShift or delete certi
         - --enable-certificate-owner-ref
   ```
 
+  </div>
+
+</div>
+
 # Override CPU and memory limits for the cert-manager components
 
 To ensure stable resource allocation and operation, configure CPU and memory limits for cert-manager Operator for Red Hat OpenShift components. You can set specific constraints for the cert-manager controller, CA injector, and Webhook to align with your specific cluster requirements.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
 - You have installed version 1.12.0 or later of the cert-manager Operator for Red Hat OpenShift.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check that the deployments of the cert-manager controller, CA injector, and Webhook are available by entering the following command:
 
@@ -596,9 +751,11 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
     $ oc get deployment -n cert-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -609,15 +766,19 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
     cert-manager-webhook      1/1     1            1           53m
     ```
 
+    </div>
+
 2.  Before setting the CPU and memory limit, check the existing configuration for the cert-manager controller, CA injector, and Webhook by entering the following command:
 
     ``` terminal
     $ oc get deployment -n cert-manager -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -657,6 +818,8 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
               resources: {}
     # ...
     ```
+
+    </div>
 
     The `spec.resources` field is empty by default. The cert-manager components do not have CPU and memory limits.
 
@@ -694,9 +857,11 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
 
     For information about the overridable resource parameters, see "Overridable resource parameters for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -704,7 +869,17 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
     certmanager.operator.openshift.io/cluster patched
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the CPU and memory limits are updated for the cert-manager components:
 
@@ -712,9 +887,11 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
     $ oc get deployment -n cert-manager -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -773,17 +950,47 @@ To ensure stable resource allocation and operation, configure CPU and memory lim
     # ...
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
+
+</div>
 
 # Configure scheduling overrides for cert-manager components
 
 You can configure the pod scheduling from the cert-manager Operator for Red Hat OpenShift API for the cert-manager Operator for Red Hat OpenShift components, such as the cert-manager controller, CA injector, and Webhook.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
 - You have installed version 1.15.0 or later of the cert-manager Operator for Red Hat OpenShift.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the `certmanager.operator` custom resource to configure pod scheduling overrides for the desired components by running the following command. Use the `overrideScheduling` field under the `controllerConfig`, `webhookConfig`, or `cainjectorConfig` sections to define `nodeSelector` and `tolerations` settings.
 
@@ -819,6 +1026,16 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
 
   For information about the overridable scheduling parameters, see "Overridable scheduling parameters for the cert-manager components" in "Explanation of fields in the CertManager custom resource".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Verify pod scheduling settings for `cert-manager` pods:
 
     1.  Check the deployments in the `cert-manager` namespace to confirm they have the correct `nodeSelector` and `tolerations` by running the following command:
@@ -827,9 +1044,11 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
         $ oc get pods -n cert-manager -o wide
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -840,15 +1059,19 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
         cert-manager-webhook-7f54b4b858-29bsp      1/1     Running   0          11m   10.129.0.35   ip-10-0-1-106.ec2.internal   <none>           <none>
         ```
 
+        </div>
+
     2.  Check the `nodeSelector` and `tolerations` settings applied to deployments by running the following command:
 
         ``` terminal
         $ oc get deployments -n cert-manager -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{.spec.template.spec.nodeSelector}{"\n"}{.spec.template.spec.tolerations}{"\n\n"}{end}'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -866,13 +1089,27 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
         [{"effect":"NoSchedule","key":"node-role.kubernetes.io/master","operator":"Exists"}]
         ```
 
+        </div>
+
 2.  Verify pod scheduling events in the `cert-manager` namespace by running the following command:
 
     ``` terminal
     $ oc get events -n cert-manager --field-selector reason=Scheduled
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
+
+</div>
 
 # Configure cluster TLS security profile adherence for cert-manager components
 
@@ -880,11 +1117,16 @@ You can configure the cert-manager Operator for Red Hat OpenShift to apply the c
 
 When the adherence policy is set to `StrictAllComponents`, cert-manager components automatically apply the cluster TLS security profile settings.
 
-<div class="important">
+> [!IMPORTANT]
+> TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -893,6 +1135,16 @@ For more information about the support scope of Red Hat Technology Preview featu
 - You installed the cert-manager Operator for Red Hat OpenShift.
 
 - You enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the cluster `APIServer` custom resource (CR) by running the following command:
 
@@ -924,13 +1176,31 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 3.  Save the changes and exit the editor.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  The cert-manager Operator for Red Hat OpenShift automatically applies the cluster TLS security profile to the cert-manager controller, webhook, and CA injector deployments. Check that the TLS configuration is applied to the cert-manager components. For more information, see "Verifying TLS security profile adherence for cert-manager components".
+
+</div>
 
 # Verify TLS security profile adherence for cert-manager components
 
 After configuring the cluster TLS security profile adherence, you can verify that the TLS configuration is applied to the cert-manager controller, webhook, and CA injector deployments.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -940,15 +1210,27 @@ After configuring the cluster TLS security profile adherence, you can verify tha
 
 - You configured the cluster TLS security profile adherence for cert-manager components. For more information, see "Configuring cluster TLS security profile adherence for cert-manager components".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Verify that the cert-manager controller deployment has the TLS configuration applied by running the following command:
 
     ``` terminal
     $ oc get deployment -n cert-manager cert-manager -o yaml | grep -A 15 "args:"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -963,6 +1245,8 @@ After configuring the cluster TLS security profile adherence, you can verify tha
     - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
     ```
 
+    </div>
+
     The `--metrics-tls-min-version` flag shows the minimum TLS version configured based on the cluster TLS security profile. The `--metrics-tls-cipher-suites` flag shows TLS cipher suites configured based on the cluster TLS security profile.
 
 2.  Verify that the webhook deployment has the TLS configuration applied by running the following command:
@@ -971,9 +1255,11 @@ After configuring the cluster TLS security profile adherence, you can verify tha
     $ oc get deployment -n cert-manager cert-manager-webhook -o yaml | grep -A 20 "args:"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -989,6 +1275,8 @@ After configuring the cluster TLS security profile adherence, you can verify tha
     - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
     ```
 
+    </div>
+
     The webhook deployment includes serving TLS flags (`--tls-min-version` and `--tls-cipher-suites`) for the webhook HTTPS endpoint, and TLS flags for the metrics endpoint.
 
 3.  Verify that the CA injector deployment has the TLS configuration applied by running the following command:
@@ -997,9 +1285,11 @@ After configuring the cluster TLS security profile adherence, you can verify tha
     $ oc get deployment -n cert-manager cert-manager-cainjector -o yaml | grep -A 10 "args:"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1011,16 +1301,27 @@ After configuring the cluster TLS security profile adherence, you can verify tha
     - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
     ```
 
+    </div>
+
     The CA injector deployment includes metrics endpoint TLS flags.
 
-    <div class="note">
+    > [!NOTE]
+    > TLS profile enforcement is not available for the IstioCSR and TrustManager operands.
+    >
+    > When the cluster TLS security profile is set to `Modern` (TLS 1.3), the cipher suite flags are automatically omitted.
 
-    TLS profile enforcement is not available for the IstioCSR and TrustManager operands.
+</div>
 
-    When the cluster TLS security profile is set to `Modern` (TLS 1.3), the cipher suite flags are automatically omitted.
+<div>
 
-    </div>
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling)
 
 - [Understanding TLS security profiles](../../security/tls-security-profiles.xml#tls-profiles-understanding_tls-security-profiles)
+
+</div>

@@ -12,12 +12,19 @@ Automatically generates `ImageContentSourcePolicy` resources and requires manual
 oc-mirror plugin v2
 Automatically generates `ImageDigestMirrorSet`, `ImageTagMirrorSet`, and `ClusterCatalog` resources.
 
-<div class="note">
+> [!NOTE]
+> The oc-mirror plugin v2 is the recommended version for mirroring.
 
-The oc-mirror plugin v2 is the recommended version for mirroring.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Mirroring images for a disconnected installation using the oc-mirror plugin v1](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected)
 
 - [Mirroring images for a disconnected installation using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
+</div>

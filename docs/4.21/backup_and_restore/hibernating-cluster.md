@@ -18,33 +18,55 @@ You might need to restore from the backup if any of the following conditions occ
 
 If the cluster does not recover after restart, follow the steps to restore to a previous cluster state.
 
-<div class="important">
-
-If you must hibernate your cluster before the 24 hour certificate rotation, use the workaround in "Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs" instead.
-
-</div>
+> [!IMPORTANT]
+> If you must hibernate your cluster before the 24 hour certificate rotation, use the workaround in "Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs" instead.
 
 When hibernating a cluster, you must hibernate all cluster nodes. Suspending only selected nodes is not supported.
 
 After resuming, it can take up to 45 minutes for the cluster to become ready.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs (Red Hat Blog)](https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms)
+
+</div>
 
 # Hibernating a cluster
 
 Hibernate your cluster by verifying node and Operator health, then stopping the cluster virtual machines. This process pauses the cluster in a supported state so you can resume it later.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The cluster has been running for at least 24 hours to allow the first certificate rotation to complete.
 
 - You created an etcd backup before hibernating the cluster.
 
-  <div class="important">
-
-  Without a recent etcd backup, you might not be able to restore the cluster if hibernation or resume fails.
-
-  </div>
+  > [!IMPORTANT]
+  > Without a recent etcd backup, you might not be able to restore the cluster if hibernation or resume fails.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that your cluster has been installed for at least 24 hours.
 
@@ -54,9 +76,11 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -70,6 +94,8 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
     ```
 
+    </div>
+
     All nodes should show `Ready` in the `STATUS` column.
 
 3.  Ensure that all cluster Operators are in a good state by running the following command:
@@ -78,9 +104,11 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     $ oc get clusteroperators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -97,6 +125,8 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     ...
     ```
 
+    </div>
+
     All cluster Operators should show `AVAILABLE`=`True`, `PROGRESSING`=`False`, and `DEGRADED`=`False`.
 
 4.  Ensure that all machine config pools are in a good state by running the following command:
@@ -105,9 +135,11 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -117,21 +149,32 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
     worker  rendered-worker-3c4c459dc5d90017983d7e72928b8aed  True     False     False     3             3                  3                    0                     96m
     ```
 
+    </div>
+
     All machine config pools should show `UPDATING`=`False` and `DEGRADED`=`False`.
 
 5.  Stop the cluster virtual machines:
 
     Use the tools native to the cloud environment of your cluster to shut down the cluster virtual machines.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > If you use a bastion virtual machine, do not shut down this virtual machine.
 
-    If you use a bastion virtual machine, do not shut down this virtual machine.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
 - [Restoring to an earlier cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+</div>
 
 # Resuming a hibernated cluster
 
@@ -139,9 +182,27 @@ Resume a hibernated cluster by starting the cluster virtual machines and approvi
 
 It can take around 45 minutes for the cluster to resume, depending on the size of your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You hibernated your cluster less than 90 days ago.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Within 90 days of cluster hibernation, resume the cluster virtual machines:
 
@@ -157,9 +218,11 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
         $ oc get csr
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -170,6 +233,8 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
         csr-4wk5x  51m  kubernetes.io/kubelet-serving                system:node:ci-ln-812tb4k-72292-8bcj7-master-1                             <none>             Pending
         csr-84vb6  51m  kubernetes.io/kube-apiserver-client-kubelet  system:serviceaccount:openshift-machine-config-operator:node-bootstrapper  <none>             Pending
         ```
+
+        </div>
 
     2.  Approve each valid CSR by running the following command:
 
@@ -183,9 +248,11 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
         $ oc get csr
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -197,6 +264,8 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
         csr-84vb6  51m  kubernetes.io/kube-apiserver-client-kubelet  system:serviceaccount:openshift-machine-config-operator:node-bootstrapper  <none>             Approved,Issued
         ```
 
+        </div>
+
         CSRs should show `Approved,Issued` in the `CONDITION` column.
 
 4.  Verify that all nodes now show as ready by running the following command:
@@ -205,9 +274,11 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -221,6 +292,8 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
     ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
     ```
 
+    </div>
+
     All nodes should show `Ready` in the `STATUS` column. It might take a few minutes for all nodes to become ready after approving the CSRs.
 
 5.  Wait for cluster Operators to restart to load the new certificates.
@@ -233,9 +306,11 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
     $ oc get clusteroperators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -252,4 +327,8 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
     ...
     ```
 
+    </div>
+
     All cluster Operators should show `AVAILABLE`=`True`, `PROGRESSING`=`False`, and `DEGRADED`=`False`.
+
+</div>

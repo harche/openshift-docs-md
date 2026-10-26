@@ -8,6 +8,14 @@ Configure the persistent disk type for your machine set on Google Cloud to match
 
 For more information about persistent disk types, compatibility, regional availability, and limitations, see the Google Cloud Compute Engine documentation about [persistent disks](https://cloud.google.com/compute/docs/disks#pdspecs).
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
 2.  Edit the following line under the `providerSpec` field:
@@ -30,17 +38,34 @@ For more information about persistent disk types, compatibility, regional availa
     `spec.template.spec.providerSpec.value.disks.type`
     Uses the `pd-ssd` disk type for control plane nodes. Using the `pd-ssd` disk type is required for control plane nodes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Using the Google Cloud console, review the details for a machine deployed by the machine set and verify that the `Type` field matches the configured disk type.
 
-# Configure Confidential VM by using machine sets
+</div>
+
+# Configure Confidential VM by using machine sets on Google Cloud
 
 You create machine sets to scale clusters on Google Cloud. By editing the machine set YAML file, you can configure the Confidential VM options that a machine set uses for machines that it deploys.
 
 For more information about Confidential VM features, functions, and compatibility, see the Google Cloud Compute Engine documentation about [Confidential VM](https://cloud.google.com/confidential-computing/confidential-vm/docs/about-cvm#confidential-vm).
 
-<div class="note">
+> [!NOTE]
+> Confidential VMs are currently not supported on 64-bit ARM architectures. If you use Confidential VM, you must ensure that you select a supported region. For details on supported regions and configurations, see the Google Cloud Compute Engine documentation about [supported zones](https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones).
 
-Confidential VMs are currently not supported on 64-bit ARM architectures. If you use Confidential VM, you must ensure that you select a supported region. For details on supported regions and configurations, see the Google Cloud Compute Engine documentation about [supported zones](https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones).
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -70,11 +95,8 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `Enabled`
     Enables Confidential VM with a default selection of Confidential VM technology. The default selection is AMD Secure Encrypted Virtualization (AMD SEV).
 
-    <div class="important">
-
-    The `Enabled` value selects Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV), which is deprecated.
-
-    </div>
+    > [!IMPORTANT]
+    > The `Enabled` value selects Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV), which is deprecated.
 
     `Disabled`
     Disables Confidential VM.
@@ -85,11 +107,8 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `AMDEncryptedVirtualization`
     Enables Confidential VM using AMD SEV. AMD SEV supports c2d, n2d, and c3d machines.
 
-    <div class="important">
-
-    The use of Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV) has been deprecated and will be removed in a future release.
-
-    </div>
+    > [!IMPORTANT]
+    > The use of Confidential Computing with AMD Secure Encrypted Virtualization (AMD SEV) has been deprecated and will be removed in a future release.
 
     `IntelTrustedDomainExtensions`
     Enables Confidential VM using Intel Trusted Domain Extensions (Intel TDX). Intel TDX supports n2d machines.
@@ -100,13 +119,33 @@ Confidential VMs are currently not supported on 64-bit ARM architectures. If you
     `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.machineType`
     Specifies a machine type that supports the Confidential VM option that you specified in the `confidentialCompute` field.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - On the Google Cloud console, review the details for a machine deployed by the machine set and verify that the Confidential VM options match the values that you configured.
 
-# Configuring Shielded VM options by using machine sets
+</div>
+
+# Configuring Shielded VM options by using machine sets on Google Cloud
 
 To help secure your cluster instances, you can configure Shielded Virtual Machine (VM) options for your machine sets on Google Cloud by editing the `MachineSet` YAML file.
 
 For more information about Shielded VM features and functionality, see the Google Cloud Compute Engine documentation about [Shielded VM](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
@@ -136,11 +175,8 @@ For more information about Shielded VM features and functionality, see the Googl
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.integrityMonitoring`
     Specifies whether integrity monitoring is enabled. Valid values are `Disabled` or `Enabled`.
 
-    <div class="note">
-
-    When integrity monitoring is enabled, you must not disable virtual trusted platform module (vTPM).
-
-    </div>
+    > [!NOTE]
+    > When integrity monitoring is enabled, you must not disable virtual trusted platform module (vTPM).
 
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.secureBoot`
     Specifies whether UEFI Secure Boot is enabled. Valid values are `Disabled` or `Enabled`.
@@ -148,9 +184,27 @@ For more information about Shielded VM features and functionality, see the Googl
     `spec.template.spec.providerSpec.value.shieldedInstanceConfig.virtualizedTrustedPlatformModule`
     Specifies whether vTPM is enabled. Valid values are `Disabled` or `Enabled`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Using the Google Cloud console, review the details for a machine deployed by the machine set and verify that the Shielded VM options match the values that you configured.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [What is Shielded VM? (Google Cloud documentation)](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm)
 
@@ -160,15 +214,22 @@ For more information about Shielded VM features and functionality, see the Googl
 
 - [Integrity monitoring (Google Cloud documentation)](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#integrity-monitoring)
 
-# Enable customer-managed encryption keys for a machine set
+</div>
+
+# Enable customer-managed encryption keys for a machine set on Google Cloud Compute Engine
 
 Use Google Cloud Compute Engine to supply an encryption key to encrypt data on disks at rest. The key is used to encrypt the data encryption key, not to encrypt the customer’s data. By default, Compute Engine encrypts this data by using Compute Engine keys.
 
 You can enable encryption with a customer-managed key in clusters that use the Machine API. You must first [create a KMS key](https://cloud.google.com/compute/docs/disks/customer-managed-encryption#before_you_begin) and assign the correct permissions to a service account. The KMS key name, key ring name, and location are required to allow a service account to use your key.
 
-<div class="note">
+> [!NOTE]
+> If you do not want to use a dedicated service account for the KMS encryption, the Compute Engine default service account is used instead. You must grant the default service account permission to access the keys if you do not use a dedicated service account. The Compute Engine default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern.
 
-If you do not want to use a dedicated service account for the KMS encryption, the Compute Engine default service account is used instead. You must grant the default service account permission to access the keys if you do not use a dedicated service account. The Compute Engine default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -222,6 +283,8 @@ If you do not want to use a dedicated service account for the KMS encryption, th
     Optional: Specifies the service account that is used for the encryption request for the given KMS key. If a service account is not set, the Compute Engine default service account is used.
 
     When a new machine is created by using the updated `providerSpec` object configuration, the disk encryption key is encrypted with the KMS key.
+
+</div>
 
 # Additional resources
 

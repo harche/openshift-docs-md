@@ -126,6 +126,14 @@ There are some primary components that generate this traffic:
 
 You can configure custom serving certificates for the public hostnames of the API server and web console during initial installation or when redeploying certificates. You can also use a custom CA.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Introduction to OpenShift Container Platform](../../architecture/architecture.xml#architecture-platform-introduction_architecture)
 
 - [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
@@ -147,3 +155,5 @@ You can configure custom serving certificates for the public hostnames of the AP
 - [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-certificates)
 
 - [Running APIcast on Red Hat OpenShift](https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.0/html/deployment_options/apicast-openshift)
+
+</div>

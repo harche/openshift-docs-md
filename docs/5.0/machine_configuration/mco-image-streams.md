@@ -4,27 +4,31 @@ For new installations of OpenShift Container Platform 5.0, RHCOS 10.x is install
 
 RHCOS is a purpose-designed operating system for use with containers that is deployed by default on all OpenShift Container Platform nodes. Each version of RHCOS is based on a specific version of Red Hat Enterprise Linux (RHEL). RHCOS 10.x is based on RHEL 10.x.
 
-<div class="important">
-
-You cannot update the RHCOS version in a cluster that is using the runC container runtime, because runC is deprecated in OpenShift Container Platform 5.0. You must configure your cluster to use the crun container runtime. Starting in OpenShift Container Platform 4.18, crun is the default container runtime for new installations. For more information, see "Configuring the container runtime".
-
-</div>
+> [!IMPORTANT]
+> You cannot update the RHCOS version in a cluster that is using the runC container runtime, because runC is deprecated in OpenShift Container Platform 5.0. You must configure your cluster to use the crun container runtime. Starting in OpenShift Container Platform 4.18, crun is the default container runtime for new installations. For more information, see "Configuring the container runtime".
 
 # Updating the nodes in an existing cluster from RHCOS 9.x to RHCOS 10.x
 
 For an existing OpenShift Container Platform 5.0 cluster that is using Red Hat Enterprise Linux CoreOS (RHCOS) 9.x, you can move the nodes to RHCOS 10.x.
 
-<div class="important">
-
-Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
-
-</div>
+> [!IMPORTANT]
+> Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
 
 The following procedure shows how to upgrade the nodes in your cluster to run RHCOS 10.x.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The boot image in your cluster is at least RHCOS 9.x. Note that the boot image on each node remains at RHCOS 9.x after installing or upgrading to RHCOS 10.x. After you configure RHCOS 10.x in your cluster, new nodes boot using RHCOS 9.x initially and automatically upgrade to RHCOS 10.x. For more information, see "Manually updating the boot image".
 
 - Your cluster is updated to OpenShift Container Platform 5.0.
+
+- The nodes in your cluster use [hardware compatible with RHCOS 10.x](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/10.2_release_notes/overview#in_place_upgrade_from_rhel_9_to_rhel_10). For example, `x86-64-v2` CPUs are not compatible with RHCOS 10.x, and must be replaced with newer CPUs before initiating an update to RHCOS 10.x.
 
 - The nodes in your cluster are configured to use crun as the default container runtime. You cannot update the RHCOS version on nodes that use the runC container runtime, because runC is deprecated in OpenShift Container Platform 5.0. If you attempt to update a machine config pool (MCP) that has runC nodes, the nodes in the pool will degrade and will not update. The MCP status reports the following error:
 
@@ -55,21 +59,35 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
 
   You must configure your cluster to use the crun container runtime. For more information, see "Configuring the container runtime".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Confirm that your cluster has the RHCOS 10.x stream available by running the following command:
 
     ``` terminal
     $ oc get osImageStreams/cluster -o yaml | grep rhel-10
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
       - name: rhel-10
     ```
+
+    </div>
 
 2.  Update the nodes in your cluster to use RHCOS 10.x by running the following command to edit the `OSImageStream` custom resource:
 
@@ -79,13 +97,20 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
 
     The `spec.defaultStream: rhel-10` parameter specifies that new nodes use the image referenced in `status.availableStreams.osImage.name: rhel-10` in the `OSImageStream` custom resource.
 
-    <div class="important">
-
-    Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
-
-    </div>
+    > [!IMPORTANT]
+    > Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
 
     Wait for the pools to finish rolling out the update.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - After the nodes have returned to the `READY` state, check the machine config pool status for the nodes in a machine config pool to view the current RHCOS version by running the following command:
 
@@ -95,9 +120,11 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
 
   Replace `<machine_config_pool_name>` with the name of a machine config pool.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -113,6 +140,8 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
       name: rhel-10
   ```
 
+  </div>
+
 - Examine the `/etc/redhat-release` file on a node to see the current RHCOS version on that node by running the following command:
 
   ``` terminal
@@ -121,15 +150,19 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
 
   Replace `<node_name>` with the name of the node.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   Red Hat Enterprise Linux release 10.2 (Coughlan)
   ```
+
+  </div>
 
 - Examine the `/etc/os-release` file on a node to see the current RHCOS version on that node by running the following command:
 
@@ -139,9 +172,11 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
 
   Replace `<node_name>` with the name of the node.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -156,6 +191,10 @@ The following procedure shows how to upgrade the nodes in your cluster to run RH
   PRETTY_NAME="Red Hat Enterprise Linux CoreOS 10.2.20260824-0 (Coughlan)"
   # ...
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

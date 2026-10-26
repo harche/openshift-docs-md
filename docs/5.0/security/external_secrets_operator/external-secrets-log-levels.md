@@ -8,17 +8,43 @@ All supported options are defined in the `ExternalSecretsConfig` CR (for example
 
 For the complete list of fields and allowed values, see the `ExternalSecretsConfig` API reference in the External Secrets Operator for Red Hat OpenShift documentation.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [External Secrets Operator for Red Hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
+
+</div>
 
 # Set a log level for the External Secrets Operator for Red Hat OpenShift
 
 You can configure the log verbosity for the lifecycle manager. You must adjust this setting to troubleshoot issues related to the installation, upgrade, or configuration of the operator itself, rather than secret synchronization.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the subscription object for the External Secrets Operator for Red Hat OpenShift to provide the verbosity level for the operator logs by running the following command:
 
@@ -33,6 +59,16 @@ You can configure the log verbosity for the lifecycle manager. You must adjust t
 
   log_level
   Specifies the level of log detail. Values range from 1-5. The default is 2.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  The External Secrets Operator pod is redeployed. Verify that the log level of the External Secrets Operator for Red Hat OpenShift is updated by running the following command:
 
@@ -53,13 +89,33 @@ You can configure the log verbosity for the lifecycle manager. You must adjust t
     $ oc logs -n external-secrets-operator -f deployments/external-secrets-operator-controller-manager -c manager
     ```
 
+</div>
+
 # Set a log level for the External Secrets Operator for Red Hat OpenShift operand
 
 You can troubleshoot common issues, such as secret synchronization failures, provider authentication errors, or data formatting problems, by configuring the log verbosity for the core controller.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` CR by running the following command:
 
@@ -93,15 +149,35 @@ You can troubleshoot common issues, such as secret synchronization failures, pro
 
 3.  Save your changes and exit the editor.
 
+</div>
+
 # Configure cert-manager for the external-secrets certificate requirements
 
 You can optionally configure cert-manager to manage certificates for the External Secrets Operator for Red Hat OpenShift webhook and plugins. If you do not use cert-manager, the Operator automatically generates webhook certificates, but you must manually configure certificates for any plugins.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
 
 - You have installed the cert-manager Operator for Red Hat OpenShift. For more information, see "Installing the cert-manager Operator for Red Hat OpenShift"
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` custom resource by running the following command:
 
@@ -170,19 +246,49 @@ You can optionally configure cert-manager to manage certificates for the Externa
     $ oc delete secrets external-secrets-webhook -n external-secrets
     ```
 
+</div>
+
+<div id="external-secrets-log-levels_additional-resources">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [External Secrets Operator for Red Hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
 
 - [cert-manager Operator for Red Hat Openshift](../cert_manager_operator/index.xml#cert-manager-operator-about)
 
 - [Installing the cert-manager-Operator for Red Hat Openshift](../cert_manager_operator/cert-manager-operator-install.xml#cert-manager-operator-install)
 
+</div>
+
 # Configure the bitwardenSecretManagerProvider plugin
 
 You must configure the `bitwardenSecretManagerProvider` plugin to enable communication with the Bitwarden API. This configuration enables the Operator to authenticate and fetch secrets for synchronization.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` custom resource by running the following command:
 
@@ -229,6 +335,8 @@ You must configure the `bitwardenSecretManagerProvider` plugin to enable communi
     $ oc delete serviceaccounts bitwarden-sdk-server -n external-secrets
     ```
 
+</div>
+
 # Add custom annotations to external-secrets resources
 
 To customize your resources, you can define up to 20 custom annotations in the custom resource (CR). The Operator merges the annotations with the defaults, prioritizes them, and safely preserves annotations set by external systems.
@@ -245,11 +353,27 @@ Annotation keys containing the following reserved domain prefixes are not allowe
 
 - `cert-manager.io/`
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` CR by running the following command:
 
@@ -271,7 +395,15 @@ Annotation keys containing the following reserved domain prefixes are not allowe
           example.com/environment: "production"
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that annotations are applied to the external-secrets deployment by running the following command:
 
@@ -297,24 +429,44 @@ Annotation keys containing the following reserved domain prefixes are not allowe
 
     The output should include the custom annotations you specified.
 
+</div>
+
 # Configure the revisionHistoryLimit for external-secrets components
 
 Configure the number of old `ReplicaSet` objects retained for rollback by setting the `revisionHistoryLimit` parameter for `external-secrets` components.
 
 The following components can be configured:
 
-| Component name                  | Description                                 |
-|---------------------------------|---------------------------------------------|
-| `ExternalSecretsCoreController` | The main `external-secrets` controller.     |
-| `Webhook`                       | The `external-secrets` webhook server.      |
-| `CertController`                | The certificate controller for webhook TLS. |
-| `BitwardenSDKServer`            | The Bitwarden SDK server plugin.            |
+| Component name | Description |
+|----|----|
+| `ExternalSecretsCoreController` | The main `external-secrets` controller. |
+| `Webhook` | The `external-secrets` webhook server. |
+| `CertController` | The certificate controller for webhook TLS. |
+| `BitwardenSDKServer` | The Bitwarden SDK server plugin. |
 
 Each component can only have one configuration entry. A maximum of 4 component configuration entries are allowed, one per component.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` CR by running the following command:
 
@@ -345,6 +497,16 @@ Each component can only have one configuration entry. A maximum of 4 component c
     `spec.controllerConfig.componentConfigs.componentName.deploymentConfigs.revisionHistoryLimit`
     Specifies the number of old `ReplicaSet` objects to retain for rollback. The value must be at least 1 to ensure rollback capability. The maximum value is 50. If not specified, the default is 10.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `revisionHistoryLimit` parameter is applied to the deployment by running the following command:
 
   ``` terminal
@@ -352,6 +514,8 @@ Each component can only have one configuration entry. A maximum of 4 component c
   ```
 
   The output should display the value you configured.
+
+</div>
 
 # Set custom environment variables for external-secrets components
 
@@ -367,11 +531,27 @@ The environment variable names starting with the following prefixes are reserved
 
 - `EXTERNAL_SECRETS_`
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have created the `ExternalSecretsConfig` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsConfig` CR by running the following command:
 
@@ -403,6 +583,16 @@ The environment variable names starting with the following prefixes are reserved
     `spec.controllerConfig.componentConfigs.overrideEnv.value`
     Specifies the value of the environment variable.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the environment variable is set on the deployment by running the following command:
 
   ``` terminal
@@ -411,25 +601,42 @@ The environment variable names starting with the following prefixes are reserved
 
   The output should include the custom environment variable you specified.
 
+</div>
+
 # Enable optional features for External Secrets Operator for Red Hat OpenShift
 
 The External Secrets Operator for Red Hat OpenShift supports optional capabilities that can be enabled cluster-wide through the `ExternalSecretsManager` custom resource (CR). Features are disabled by default and must be explicitly enabled.
 
 You can enable or disable a feature at any time. The Operator reconciles the core controller deployment when the feature state changes, without requiring a restart or reinstallation.
 
-<div class="warning">
-
-`UnsafeAllowGenericTargets` is a pre-release feature. It is not recommended for production use. Enabling this feature allows `ExternalSecret` resources to write secret data to arbitrary Kubernetes resource types beyond Secret objects. This might cause data managed by other controllers to be overwritten and can expose sensitive values through non-secret resources. This feature provides no additional access control beyond standard Kubernetes role-based access control (RBAC).
-
-</div>
+> [!WARNING]
+> `UnsafeAllowGenericTargets` is a pre-release feature. It is not recommended for production use. Enabling this feature allows `ExternalSecret` resources to write secret data to arbitrary Kubernetes resource types beyond Secret objects. This might cause data managed by other controllers to be overwritten and can expose sensitive values through non-secret resources. This feature provides no additional access control beyond standard Kubernetes role-based access control (RBAC).
 
 When enabled, `ExternalSecret` resources can target arbitrary Kubernetes resource types as their sync destination, instead of being limited to `Secret` objects.
 
 The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `external-secrets` controller. The webhook and cert-controller are not affected.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift and created the `ExternalSecretsConfig` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ExternalSecretsManager` CR by running the following command:
 
@@ -452,7 +659,15 @@ The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `
 
     To disable the feature, set `mode: Disabled` or remove the entry from the features list.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the feature flag is passed to the core controller by running the following command:
 
@@ -462,9 +677,11 @@ The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `
       -o jsonpath='{.spec.template.spec.containers[0].args}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -482,6 +699,8 @@ The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `
     ]
     ```
 
+    </div>
+
     When the feature is enabled, the output includes `--unsafe-allow-generic-targets=true`. When disabled or not configured, the flag is absent.
 
 2.  Verify that the `ExternalSecretsManager` CR reflects the configured feature by running the following command:
@@ -490,9 +709,11 @@ The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `
     $ oc get externalsecretsmanagers.operator.openshift.io cluster -o jsonpath='{.spec.features}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -504,6 +725,10 @@ The Operator passes the `--unsafe-allow-generic-targets=true` flag to the core `
       }
     ]
     ```
+
+    </div>
+
+</div>
 
 # Mount a custom trusted certificate authority bundle for external-secrets
 
@@ -525,13 +750,29 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
 
 - If the `ConfigMap` has the `config.openshift.io/inject-trusted-cabundle: "true"` label and a cluster proxy is configured, the Operator skips the user-defined mount. The cluster-wide CA bundle injected by the Cluster Network Operator (CNO) is already available to the controller through the proxy CA bundle mechanism.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed the External Secrets Operator for Red Hat OpenShift and created the `ExternalSecretsConfig` CR.
 
 - A `ConfigMap` containing PEM-encoded X.509 CA certificates exists in the `external-secrets` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `ConfigMap` containing your CA bundle by running the following command:
 
@@ -569,7 +810,15 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
     `spec.controllerConfig.trustedCABundle.key`
     Optional. Specifies the key within the `ConfigMap` that holds the PEM-encoded CA bundle. The default is `ca-bundle.crt`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the CA bundle volume is mounted on the core controller deployment by running the following command:
 
@@ -579,9 +828,11 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
       -o jsonpath='{.spec.template.spec.volumes}' | jq '.[] | select(.name=="user-ca-bundle")'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -601,6 +852,8 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
     }
     ```
 
+    </div>
+
 2.  Verify that the `SSL_CERT_DIR` is set on the core controller container by running the following command:
 
     ``` terminal
@@ -609,15 +862,19 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
       --list | grep SSL_CERT_DIR
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     SSL_CERT_DIR=/etc/pki/tls/user-certs:/etc/pki/tls/certs:/etc/ssl/certs
     ```
+
+    </div>
 
 3.  Verify that the `ExternalSecretsConfig` CR is not in a `Degraded` state by running the following command:
 
@@ -626,9 +883,11 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
       -o jsonpath='{.status.conditions[?(@.type=="Degraded")]}' | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -643,15 +902,24 @@ The External Secrets Operator for Red Hat OpenShift applies the following rules 
     }
     ```
 
+    </div>
+
     The `Degraded` condition should show `"status": "False"`. If the condition is `True,` review the message field for the specific validation error and correct the referenced `ConfigMap`.
+
+</div>
 
 # Override operand container arguments for the External Secrets Operator for Red Hat OpenShift
 
 You can override container arguments for the `external-secrets` operand deployments by setting environment variables on the External Secrets Operator for Red Hat OpenShift subscription. Use this method when you need to pass additional or replacement `--key=value` flags to operand containers.
 
-<div class="note">
+> [!NOTE]
+> This is a temporary feature available only in the External Secrets Operator for Red Hat OpenShift 1.1 and 1.2 z-streams. External Secrets Operator for Red Hat OpenShift 1.3.0 adds support in the `ExternalSecretsConfig` API to configure the same behavior. Consider migrating to the `ExternalSecretsConfig` API when upgrading to External Secrets Operator 1.3.0. This subscription-based method is scheduled to be deprecated and removed in External Secrets Operator for Red Hat OpenShift 1.4.0.
 
-This is a temporary feature available only in the External Secrets Operator for Red Hat OpenShift 1.1 and 1.2 z-streams. External Secrets Operator for Red Hat OpenShift 1.3.0 adds support in the `ExternalSecretsConfig` API to configure the same behavior. Consider migrating to the `ExternalSecretsConfig` API when upgrading to External Secrets Operator 1.3.0. This subscription-based method is scheduled to be deprecated and removed in External Secrets Operator for Red Hat OpenShift 1.4.0.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -659,7 +927,15 @@ This is a temporary feature available only in the External Secrets Operator for 
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the Subscription for the External Secrets Operator to set the operand argument overrides by running the following command:
 
@@ -686,15 +962,27 @@ This is a temporary feature available only in the External Secrets Operator for 
 
   Set only the environment variables you need. Omit any unused entries from the `env` list.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Verify that the environment variables are set on the Operator by running the following command:
 
     ``` terminal
     $ oc set env deploy/external-secrets-operator-controller-manager -n <external_secrets_operator_namespace> --list | grep -e OPERAND_ -e container
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -704,18 +992,26 @@ This is a temporary feature available only in the External Secrets Operator for 
     OPERAND_WEBHOOK_ARGS=--tls-ciphers=TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,--loglevel=debug
     ```
 
+    </div>
+
 2.  Verify that the operand `Deployment` container arguments were updated by running the following command:
 
     ``` terminal
     $ oc get deploy/external-secrets-webhook -n <operand_namespace> -o jsonpath='{.spec.template.spec.containers[0].args}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     $ ["webhook","--dns-name=external-secrets-webhook.external-secrets.svc","--port=10250","--cert-dir=/tmp/certs","--check-interval=15m0s","--metrics-addr=:8080","--healthz-addr=:8081","--loglevel=debug","--zap-time-encoding=epoch","--tls-ciphers=TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"]
     ```
+
+    </div>
+
+</div>

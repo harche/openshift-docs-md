@@ -1,10 +1,7 @@
 To create a cluster with multi-architecture compute machines on IBM Power® (`ppc64le`), you must have an existing single-architecture (`x86_64`) cluster. You can then add `ppc64le` compute machines to your OpenShift Container Platform cluster.
 
-<div class="important">
-
-Before you can add `ppc64le` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see "Migrating to a cluster with multi-architecture compute machines".
-
-</div>
+> [!IMPORTANT]
+> Before you can add `ppc64le` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see "Migrating to a cluster with multi-architecture compute machines".
 
 The following procedures explain how to complete the following tasks:
 
@@ -14,9 +11,14 @@ The following procedures explain how to complete the following tasks:
 
 To create an IBM Power® (`ppc64le`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for "Installing a cluster on IBM Power®". You can then add `x86_64` compute machines as described in "Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z".
 
-<div class="note">
+> [!NOTE]
+> Before adding a secondary architecture node to your cluster, Red Hat recommends that you install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
-Before adding a secondary architecture node to your cluster, Red Hat recommends that you install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -28,13 +30,33 @@ Before adding a secondary architecture node to your cluster, Red Hat recommends 
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
+</div>
+
 # Create RHCOS machines by using an ISO image
 
 To scale your OpenShift Container Platform cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using an ISO image.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
 - You must have the OpenShift CLI (`oc`) installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the Ignition config file from the cluster by running the following command:
 
@@ -64,11 +86,8 @@ To scale your OpenShift Container Platform cluster, you can create more Red Hat
 
 6.  Boot the RHCOS ISO image without specifying any options, or interrupting the live boot sequence. Wait for the installer to boot into a shell prompt in the RHCOS live environment.
 
-    <div class="note">
-
-    You can interrupt the RHCOS installation boot process to add kernel arguments. However, for this ISO procedure you must use the `coreos-installer` command as outlined in the following steps, instead of adding kernel arguments.
-
-    </div>
+    > [!NOTE]
+    > You can interrupt the RHCOS installation boot process to add kernel arguments. However, for this ISO procedure you must use the `coreos-installer` command as outlined in the following steps, instead of adding kernel arguments.
 
 7.  Run the `coreos-installer` command by using `sudo`. The `core` user does not have the root privileges required to perform the installation. Specify the options that meet your installation requirements. At a minimum, you must specify the URL that points to the Ignition config file for the node type, and the device that you are installing to.
 
@@ -81,11 +100,8 @@ To scale your OpenShift Container Platform cluster, you can create more Red Hat
     `<digest>`
     Specifies the Ignition config file SHA512 digest obtained through an HTTP URL to validate the authenticity of the Ignition config file on the cluster node.
 
-    <div class="note">
-
-    If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
-
-    </div>
+    > [!NOTE]
+    > If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
 
     The following example initializes a compute node installation to the `/dev/sda` device. The Ignition config file for the compute node is obtained from an HTTP web server with the IP address 192.168.1.2:
 
@@ -95,17 +111,24 @@ To scale your OpenShift Container Platform cluster, you can create more Red Hat
 
 8.  Monitor the progress of the RHCOS installation on the console of the machine.
 
-    <div class="important">
-
-    Ensure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
-
-    </div>
+    > [!IMPORTANT]
+    > Ensure that the installation is successful on each node before commencing with the OpenShift Container Platform installation. Observing the installation process can also help to determine the cause of RHCOS installation issues that might arise.
 
 9.  Continue to create more compute machines for your cluster.
+
+</div>
 
 # Create RHCOS machines by PXE or iPXE booting
 
 To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using PXE or iPXE booting.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -114,6 +137,16 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
 - You have access to the PXE booting infrastructure that you used to create the machines for your OpenShift Container Platform cluster during installation. The machines must boot from their local disks after RHCOS is installed on them.
 
 - If you use UEFI, you have access to the `grub.conf` file that you modified during OpenShift Container Platform installation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that your PXE or iPXE installation for the RHCOS images is correct.
 
@@ -143,11 +176,8 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
       `coreos.live.rootfs_url`
       Specifies the location of the live `rootfs` file. This parameter supports only HTTP and HTTPS.
 
-      <div class="note">
-
-      This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?".
-
-      </div>
+      > [!NOTE]
+      > This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?".
 
     - For iPXE (`x86_64` + `ppc64le`):
 
@@ -174,17 +204,18 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
 
       <div class="note">
 
+      <div class="title">
+
+      </div>
+
       - If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
 
       - This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?" in the Additional resources section and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
 
       </div>
 
-      <div class="note">
-
-      To network boot the CoreOS `kernel` on `ppc64le` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. For more information, see "IMAGE_GZIP option in iPXE".
-
-      </div>
+      > [!NOTE]
+      > To network boot the CoreOS `kernel` on `ppc64le` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. For more information, see "IMAGE_GZIP option in iPXE".
 
     - For PXE (with UEFI and GRUB as second stage) on `ppc64le`:
 
@@ -207,19 +238,36 @@ To scale your OpenShift Container Platform bare metal cluster, you can create mo
       `initrd`
       Specifies the location of the live `initramfs` file on your TFTP server.
 
-      <div class="note">
-
-      If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
-
-      </div>
+      > [!NOTE]
+      > If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
 
 2.  Use the PXE or iPXE infrastructure to create the required compute machines for your cluster.
+
+</div>
 
 # Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You added machines to your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -227,9 +275,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -240,13 +290,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     master-2  Ready     master  64m  v1.36.3
     ```
 
+    </div>
+
     The output lists all of the machines that you created.
 
-    <div class="note">
-
-    The preceding output might not include the compute nodes until you approve some CSRs.
-
-    </div>
+    > [!NOTE]
+    > The preceding output might not include the compute nodes until you approve some CSRs.
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -254,9 +303,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -267,21 +318,17 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     ...
     ```
 
+    </div>
+
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    <div class="note">
+    > [!NOTE]
+    > You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
-
-    </div>
-
-    <div class="note">
-
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
-
-    </div>
+    > [!NOTE]
+    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -300,11 +347,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      <div class="note">
-
-      Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
-
-      </div>
+      > [!NOTE]
+      > Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
 
 4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
@@ -312,9 +356,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -324,6 +370,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
+
+    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -350,9 +398,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -367,8 +417,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     worker-1-x86       Ready    worker                 75d   v1.36.3   10.248.0.44      10.248.0.44   Red Hat Enterprise Linux CoreOS 415.92.202309261919-0 (Plow)   5.14.0-284.34.1.el9_2.x86_64    cri-o://1.36.3-3.rhaos4.15.gitb36169e.el9
     ```
 
-    <div class="note">
-
-    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
-
     </div>
+
+    > [!NOTE]
+    > You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
+
+</div>

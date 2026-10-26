@@ -14,23 +14,17 @@ You can use *pod affinity* and *pod anti-affinity* to constrain which nodes your
 
 For example, using affinity rules, you could spread or pack pods within a service or relative to pods in other services. Anti-affinity rules allow you to prevent pods of a particular service from scheduling on the same nodes as pods of another service that are known to interfere with the performance of the pods of the first service. Or, you could spread the pods of a service across nodes, availability zones, or availability sets to reduce correlated failures.
 
-<div class="note">
-
-A label selector might match pods with multiple pod deployments. Use unique combinations of labels when configuring anti-affinity rules to avoid matching pods.
-
-</div>
+> [!NOTE]
+> A label selector might match pods with multiple pod deployments. Use unique combinations of labels when configuring anti-affinity rules to avoid matching pods.
 
 There are two types of pod affinity rules: *required* and *preferred*.
 
 Required rules **must** be met before a pod can be scheduled on a node. Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
 
-<div class="note">
-
-Depending on your pod priority and preemption settings, the scheduler might not be able to find an appropriate node for a pod without violating affinity requirements. If so, a pod might not be scheduled.
-
-To prevent this situation, carefully configure pod affinity with equal-priority pods.
-
-</div>
+> [!NOTE]
+> Depending on your pod priority and preemption settings, the scheduler might not be able to find an appropriate node for a pod without violating affinity requirements. If so, a pod might not be scheduled.
+>
+> To prevent this situation, carefully configure pod affinity with equal-priority pods.
 
 You configure pod affinity/anti-affinity through the `Pod` spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
@@ -38,9 +32,11 @@ The following example shows a `Pod` spec configured for pod affinity and anti-af
 
 In this example, the pod affinity rule indicates that the pod can schedule onto a node only if that node has at least one already-running pod with a label that has the key `security` and value `S1`. The pod anti-affinity rule says that the pod prefers to not schedule onto a node if that node is already running a pod with label having key `security` and value `S2`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `Pod` config file with pod affinity**
+<div class="title">
+
+Sample `Pod` config file with pod affinity
 
 </div>
 
@@ -73,6 +69,8 @@ spec:
         drop: [ALL]
 ```
 
+</div>
+
 where:
 
 `spec.affinity.podAffinity`
@@ -90,9 +88,11 @@ Specifies the value of the key/value pair (label) that must be matched to apply 
 `operator`
 Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `Pod` config file with pod anti-affinity**
+<div class="title">
+
+Sample `Pod` config file with pod anti-affinity
 
 </div>
 
@@ -127,6 +127,8 @@ spec:
         drop: [ALL]
 ```
 
+</div>
+
 where:
 
 `spec.affinity.podAffinity`
@@ -147,19 +149,21 @@ Specifies the value of the key/value pair (label) that must be matched to apply 
 `operator`
 Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
-<div class="note">
-
-If labels on a node change at runtime such that the affinity rules on a pod are no longer met, the pod continues to run on the node.
-
-</div>
+> [!NOTE]
+> If labels on a node change at runtime such that the affinity rules on a pod are no longer met, the pod continues to run on the node.
 
 # Configure a pod affinity rule
 
 You can use the following example pod specifications to create a pod with a label and a pod that uses affinity to allow scheduling with that pod.
 
-<div class="note">
+> [!NOTE]
+> You cannot add an affinity directly to a scheduled pod.
 
-You cannot add an affinity directly to a scheduled pod.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -246,15 +250,22 @@ You cannot add an affinity directly to a scheduled pod.
         $ oc create -f <pod-spec>.yaml
         ```
 
+</div>
+
 # Configure a pod anti-affinity rule
 
 To specify a preference to prevent a pod from being scheduling with another pod, you can create a pod with a label and a pod that uses an anti-affinity preferred rule.
 
 The following steps demonstrate a simple two-pod configuration that creates pod with a label and a pod that uses an anti-affinity preferred rule to attempt to prevent scheduling with that pod.
 
-<div class="note">
+> [!NOTE]
+> You cannot add an affinity directly to a scheduled pod.
 
-You cannot add an affinity directly to a scheduled pod.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -346,6 +357,8 @@ You cannot add an affinity directly to a scheduled pod.
         ``` terminal
         $ oc create -f <pod-spec>.yaml
         ```
+
+</div>
 
 # Sample pod affinity and anti-affinity rules
 
@@ -543,9 +556,11 @@ The following example demonstrates pod affinity for pods without matching labels
 
 - The pod **pod-s2** is not scheduled unless there is a node with a pod that has the `security:s2` label. If there is no other pod with that label, the new pod remains in a pending state:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -553,6 +568,8 @@ The following example demonstrates pod affinity for pods without matching labels
   NAME      READY     STATUS    RESTARTS   AGE       IP        NODE
   pod-s2    0/1       Pending   0          32s       <none>
   ```
+
+  </div>
 
 # Using pod affinity and anti-affinity to control where an Operator is installed
 
@@ -630,6 +647,14 @@ This pod anti-affinity prevents the Operator’s pod from being scheduled on a n
 
 To control the placement of an Operator pod, complete the following steps.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the Operator as usual.
 
 2.  If needed, ensure that your nodes are labeled to properly respond to the affinity.
@@ -666,15 +691,27 @@ To control the placement of an Operator pod, complete the following steps.
     `spec.config.affinity`
     Specifies a `podAffinity` or `podAntiAffinity`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To ensure that the pod is deployed on the specific node, run the following command:
 
   ``` yaml
   $ oc get pods -o wide
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -682,6 +719,10 @@ To control the placement of an Operator pod, complete the following steps.
   NAME                                                  READY   STATUS    RESTARTS   AGE   IP            NODE                           NOMINATED NODE   READINESS GATES
   custom-metrics-autoscaler-operator-5dcc45d656-bhshg   1/1     Running   0          50s   10.131.0.20   ip-10-0-185-229.ec2.internal   <none>           <none>
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

@@ -17,14 +17,14 @@ For developers, a self-service experience allows provisioning and configuring in
 
 The following custom resource definitions (CRDs) are defined and managed by Operator Lifecycle Manager (OLM) in OpenShift Container Platform. Use these resources to configure catalog sources, subscriptions, install plans, cluster service versions (CSVs), and Operator groups.
 
-| Resource                      | Short name | Description                                                                                                                                                            |
-|-------------------------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ClusterServiceVersion` (CSV) | `csv`      | Application metadata. For example: name, version, icon, required resources.                                                                                            |
-| `CatalogSource`               | `catsrc`   | A repository of CSVs, CRDs, and packages that define an application.                                                                                                   |
-| `Subscription`                | `sub`      | Keeps CSVs up to date by tracking a channel in a package.                                                                                                              |
-| `InstallPlan`                 | `ip`       | Calculated list of resources to be created to automatically install or upgrade a CSV.                                                                                  |
-| `OperatorGroup`               | `og`       | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
-| `OperatorConditions`          | \-         | Creates a communication channel between OLM and an Operator it manages. Operators can write to the `Status.Conditions` array to communicate complex states to OLM.     |
+| Resource | Short name | Description |
+|----|----|----|
+| `ClusterServiceVersion` (CSV) | `csv` | Application metadata. For example: name, version, icon, required resources. |
+| `CatalogSource` | `catsrc` | A repository of CSVs, CRDs, and packages that define an application. |
+| `Subscription` | `sub` | Keeps CSVs up to date by tracking a channel in a package. |
+| `InstallPlan` | `ip` | Calculated list of resources to be created to automatically install or upgrade a CSV. |
+| `OperatorGroup` | `og` | Configures all Operators deployed in the same namespace as the `OperatorGroup` object to watch for their custom resource (CR) in a list of namespaces or cluster-wide. |
+| `OperatorConditions` | \- | Creates a communication channel between OLM and an Operator it manages. Operators can write to the `Status.Conditions` array to communicate complex states to OLM. |
 
 CRDs managed by OLM and Catalog Operators
 
@@ -40,17 +40,16 @@ A CSV is also a source of technical information required to run the Operator, su
 
 A *catalog source* represents a store of metadata, typically by referencing an *index image* stored in a container registry. Operator Lifecycle Manager (OLM) queries catalog sources to discover and install Operators and their dependencies. The software catalog in the OpenShift Container Platform web console also displays the Operators provided by catalog sources.
 
-<div class="tip">
-
-Cluster administrators can view the full list of Operators provided by an enabled catalog source on a cluster by using the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page in the web console.
-
-</div>
+> [!TIP]
+> Cluster administrators can view the full list of Operators provided by an enabled catalog source on a cluster by using the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page in the web console.
 
 The `spec` of a `CatalogSource` object indicates how to construct a pod or how to communicate with a service that serves the Operator Registry gRPC API.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `CatalogSource` object**
+<div class="title">
+
+Example `CatalogSource` object
 
 </div>
 
@@ -97,6 +96,8 @@ status:
     serviceNamespace: openshift-marketplace
 ```
 
+</div>
+
 where:
 
 `metadata.name`
@@ -131,11 +132,8 @@ Specifies one of the following source types:
 `spec.grpcPodConfig.securityContextConfig`
 Specifies the pod security admissions (PSA) policy for the catalog source pod. It accepts the values of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-<div class="note">
-
-If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
-
-</div>
+> [!NOTE]
+> If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
 
 `spec.grpcPodConfig.nodeSelector`
 Overrides the default node selector for the pod serving the content in `spec.image` for `grpc` type catalog sources. This field is optional.
@@ -166,9 +164,11 @@ Displays status information for the catalog’s Operator Registry service.
 
 Referencing the `name` of a `CatalogSource` object in a subscription instructs OLM where to search to find a requested Operator:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Subscription` object referencing a catalog source**
+<div class="title">
+
+Example `Subscription` object referencing a catalog source
 
 </div>
 
@@ -185,6 +185,16 @@ spec:
   sourceNamespace: openshift-marketplace
 ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding the software catalog](../../../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog)
 
 - [Red Hat-provided Operator catalogs](../../../operators/understanding/olm-rh-catalogs.xml#olm-rh-catalogs)
@@ -200,6 +210,8 @@ spec:
 - [Understanding and managing pod security admission](../../../authentication/understanding-and-managing-pod-security-admission.xml#understanding-and-managing-pod-security-admission)
 
 - [Catalog source pod scheduling](../../../operators/admin/olm-cs-podsched.xml#olm-cs-podsched)
+
+</div>
 
 ### Image template for custom catalog sources
 
@@ -227,17 +239,19 @@ Starting in OpenShift Container Platform 4.9, cluster administrators can add the
 
 - `kube_patch_version`
 
-<div class="note">
-
-You must specify the Kubernetes cluster version and not the OpenShift Container Platform cluster version, as the latter is not currently available for templating.
-
-</div>
+> [!NOTE]
+> You must specify the Kubernetes cluster version and not the OpenShift Container Platform cluster version, as the latter is not currently available for templating.
 
 Provided that you have created and pushed an index image with a tag specifying the updated Kubernetes version, setting this annotation enables the index image versions in custom catalogs to be automatically changed after a cluster upgrade. The annotation value is used to set or update the image reference in the `spec.image` field of the `CatalogSource` object. This helps avoid cluster upgrades leaving Operator installations in unsupported states or without a continued update path.
 
-<div class="important">
+> [!IMPORTANT]
+> You must ensure that the index image with the updated tag, in whichever registry it is stored in, is accessible by the cluster at the time of the cluster upgrade.
 
-You must ensure that the index image with the updated tag, in whichever registry it is stored in, is accessible by the cluster at the time of the cluster upgrade.
+<div class="example">
+
+<div class="title">
+
+Example catalog source with an image template
 
 </div>
 
@@ -258,13 +272,12 @@ spec:
   publisher: Example Org
 ```
 
-<div class="note">
-
-If the `spec.image` field and the `olm.catalogImageTemplate` annotation are both set, the `spec.image` field is overwritten by the resolved value from the annotation. If the annotation does not resolve to a usable pull spec, the catalog source falls back to the set `spec.image` value.
-
-If the `spec.image` field is not set and the annotation does not resolve to a usable pull spec, OLM stops reconciliation of the catalog source and sets it into a human-readable error condition.
-
 </div>
+
+> [!NOTE]
+> If the `spec.image` field and the `olm.catalogImageTemplate` annotation are both set, the `spec.image` field is overwritten by the resolved value from the annotation. If the annotation does not resolve to a usable pull spec, the catalog source falls back to the set `spec.image` value.
+>
+> If the `spec.image` field is not set and the annotation does not resolve to a usable pull spec, OLM stops reconciliation of the catalog source and sets it into a human-readable error condition.
 
 For an OpenShift Container Platform 4.17 cluster, which uses Kubernetes 1.35, the `olm.catalogImageTemplate` annotation in the preceding example resolves to the following image reference:
 
@@ -284,9 +297,19 @@ For example, if Catalog A is unhealthy, a subscription referencing Catalog A cou
 
 As a cluster administrator, if you observe an unhealthy catalog and want to consider the catalog as invalid and resume Operator installations, see the "Removing custom catalogs" or "Disabling the default software catalog sources" sections for information about removing the unhealthy catalog.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Removing custom catalogs](../../../operators/admin/olm-managing-custom-catalogs.xml#olm-removing-catalogs_olm-managing-custom-catalogs)
 
 - [Disabling the default OperatorHub catalog sources](../../../operators/admin/olm-managing-custom-catalogs.xml#olm-restricted-networks-operatorhub_olm-managing-custom-catalogs)
+
+</div>
 
 ## Subscription
 
@@ -294,9 +317,11 @@ A *subscription*, defined by a `Subscription` object, represents an intention to
 
 Subscriptions describe which channel of an Operator package to subscribe to, and whether to perform updates automatically or manually. If set to automatic, the subscription ensures Operator Lifecycle Manager (OLM) manages and upgrades the Operator to ensure that the latest version is always running in the cluster.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Subscription` object**
+<div class="title">
+
+Example `Subscription` object
 
 </div>
 
@@ -313,15 +338,27 @@ spec:
   sourceNamespace: openshift-marketplace
 ```
 
+</div>
+
 This `Subscription` object defines the name and namespace of the Operator, as well as the catalog from which the Operator data can be found. The channel, such as `alpha`, `beta`, or `stable`, helps determine which Operator stream should be installed from the catalog source.
 
 The names of channels in a subscription can differ between Operators, but the naming scheme should follow a common convention within a given Operator. For example, channel names might follow a minor release update stream for the application provided by the Operator (`1.2`, `1.3`) or a release frequency (`stable`, `fast`).
 
 In addition to being easily visible from the OpenShift Container Platform web console, it is possible to identify when there is a newer version of an Operator available by inspecting the status of the related subscription. The value associated with the `currentCSV` field is the newest version that is known to OLM, and `installedCSV` is the version that is installed on the cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Multitenancy and Operator colocation](../../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
 
 - [Viewing Operator subscription status by using the CLI](../../../operators/admin/olm-status.xml#olm-status-viewing-cli_olm-status)
+
+</div>
 
 ## Install plan
 
@@ -336,6 +373,14 @@ The install plan must then be approved according to one of the following approva
 - If the subscription’s `spec.installPlanApproval` field is set to `Manual`, the install plan must be manually approved by a cluster administrator or user with proper permissions.
 
 After the install plan is approved, OLM creates the specified resources and installs the Operator in the namespace that is specified by the subscription.
+
+<div class="example">
+
+<div class="title">
+
+Example `InstallPlan` object
+
+</div>
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -417,9 +462,21 @@ status:
       ...
 ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Multitenancy and Operator colocation](../../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
 
 - [Allowing non-cluster administrators to install Operators](../../../operators/admin/olm-creating-policy.xml#olm-creating-policy)
+
+</div>
 
 ## Operator groups
 
@@ -427,16 +484,56 @@ An Operator group defines multitenant configuration for OLM-installed Operators 
 
 The set of target namespaces is provided by a comma-delimited string stored in the `olm.targetNamespaces` annotation of a cluster service version (CSV). This annotation is applied to the CSV instances of member Operators and is projected into their deployments.
 
+> [!WARNING]
+> Do not install Operators that require cluster-scoped permissions in namespaces where non-administrator users have any of the following permissions:
+>
+> - Default `edit` cluster role
+>
+> - Service account token creation
+>
+> - Workload creation, for example:
+>
+>   - Pods
+>
+>   - Replica sets
+>
+>   - Deployments
+>
+>   - Jobs
+>
+>   - Cron jobs
+>
+>   - Daemon sets
+>
+> For more information, see [Audit and secure delegated Operator installations (Red Hat Knowledgebase)](https://access.redhat.com/articles/7149230).
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Operator groups](../../../operators/understanding/olm/olm-understanding-operatorgroups.xml#olm-understanding-operatorgroups)
+
+</div>
 
 ## Operator conditions
 
 Operator Lifecycle Manager (OLM) infers Operator state from Kubernetes resources, but some conditions require explicit communication. You can use the `OperatorCondition` custom resource definition (CRD) to tell OLM about supported conditions that affect lifecycle management.
 
-<div class="note">
+> [!NOTE]
+> By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
 
-By default, the `Spec.Conditions` array is not present in an `OperatorCondition` object until it is either added by a user or as a result of custom Operator logic.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Operator conditions](../../../operators/understanding/olm/olm-operatorconditions.xml#olm-operatorconditions)
+
+</div>

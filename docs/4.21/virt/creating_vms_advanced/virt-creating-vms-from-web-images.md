@@ -1,16 +1,31 @@
 You can create virtual machines (VMs) by importing operating system images from web pages.
 
-<div class="important">
-
-You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
-
-</div>
+> [!IMPORTANT]
+> You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
 # Creating a VM from an image on a web page by using the web console
 
 You can create a virtual machine (VM) by importing an image from a web page by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have access to the web page that contains the image.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -28,17 +43,37 @@ You can create a virtual machine (VM) by importing an image from a web page by u
 
 8.  Click **Create VirtualMachine**.
 
+</div>
+
 # Creating a VM from an image on a web page by using the CLI
 
 You can create a virtual machine (VM) from an image on a web page by using the command line.
 
 When the VM is created, the data volume with the image is imported into persistent storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have access credentials for the web page that contains the image.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file. For example, to create a minimal Red Hat Enterprise Linux (RHEL) VM from an image on a web page, run the following command:
 
@@ -104,7 +139,15 @@ When the VM is created, the data volume with the image is imported into persiste
 
     Data volume provisioning happens in the background, so there is no need to monitor the process.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  The importer pod downloads the image from the specified URL and stores it on the provisioned persistent volume. View the status of the importer pod:
 
@@ -138,6 +181,8 @@ When the VM is created, the data volume with the image is imported into persiste
     ``` terminal
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
+
+</div>
 
 # Additional resources
 

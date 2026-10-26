@@ -1,10 +1,7 @@
 For scenarios where you want to allow temporary deviations from the reference design, you can apply more advanced customizations.
 
-<div class="warning">
-
-These customizations override the default matching process that the `cluster-compare` plugin uses during a comparison. Use caution when applying these advanced customizations as it can lead to unintended consequences, such as excluding consequential information from a cluster comparison.
-
-</div>
+> [!WARNING]
+> These customizations override the default matching process that the `cluster-compare` plugin uses during a comparison. Use caution when applying these advanced customizations as it can lead to unintended consequences, such as excluding consequential information from a cluster comparison.
 
 Some advanced tasks to dynamically customize your reference configuration include the following:
 
@@ -24,11 +21,21 @@ By default, the plugin maps a CR to a template based on the `apiversion`, `kind`
 
 When a CR matches multiple templates, the plugin uses a tie-breaking mechanism that selects the template with the fewest differences. To explicitly control which template the plugin chooses, you can create a user configuration YAML file that defines manual matching rules. You can pass this configuration file to the `cluster-compare` command to enforce the required template selection.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a user configuration file to define the manual matching criteria:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `user-config.yaml` file**
+    <div class="title">
+
+    Example `user-config.yaml` file
 
     </div>
 
@@ -39,6 +46,8 @@ When a CR matches multiple templates, the plugin uses a tie-breaking mechanism t
             ptp.openshift.io/v1_PtpConfig_openshift-ptp_grandmaster: optional/ptp-config/PtpOperatorConfig.yaml
             ptp.openshift.io/v1_PtpOperatorConfig_openshift-ptp_default: optional/ptp-config/PtpOperatorConfig.yaml
     ```
+
+    </div>
 
     where:
 
@@ -65,6 +74,8 @@ When a CR matches multiple templates, the plugin uses a tie-breaking mechanism t
     `-c <path_to_user_config>/user-config.yaml`
     Specify the `user-config.yaml` file by using the `-c` option.
 
+</div>
+
 # Patching a reference configuration
 
 In certain scenarios, you might need to patch the reference configuration to handle expected deviations in a cluster configuration. The plugin applies the patch during the comparison process, modifying the specified resource fields as defined in the patch file.
@@ -81,6 +92,14 @@ You can create a patch file in two ways:
 
 You can use the `cluster-compare` plugin to generate a patch for specific template files. The plugin adjusts the template to ensure it matches with the cluster custom resource (CR). Any previously valid differences in the patched template are not reported. The plugin highlights the patched files in the output.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Generate patches for templates by running the following command:
 
     ``` terminal
@@ -95,19 +114,18 @@ You can use the `cluster-compare` plugin to generate a patch for specific templa
 
     - `--generate-override-for` specifies a path to the template that requires a patch.
 
-      <div class="note">
-
-      You must use a file path for the target template that is relative to the `metadata.yaml` file. For example, if the file path for the `metadata.yaml` file is `./compare/metadata.yaml`, a relative file path for the template might be `optional/my-template.yaml`.
-
-      </div>
+      > [!NOTE]
+      > You must use a file path for the target template that is relative to the `metadata.yaml` file. For example, if the file path for the `metadata.yaml` file is `./compare/metadata.yaml`, a relative file path for the template might be `optional/my-template.yaml`.
 
     - `<path_to_patches_file>` specifies the filename and path for your patch.
 
 2.  Optional: Review the patch file before applying to the reference configuration:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `patch-config` file**
+    <div class="title">
+
+    Example `patch-config` file
 
     </div>
 
@@ -120,6 +138,8 @@ You can use the `cluster-compare` plugin to generate a patch for specific templa
       templatePath: optional/local-storage-operator/StorageClass.yaml
       type: mergepatch
     ```
+
+    </div>
 
     where:
 
@@ -141,6 +161,8 @@ You can use the `cluster-compare` plugin to generate a patch for specific templa
     - `-r` specifies the path to the metadata.yaml file of the reference configuration.
 
     - `-p` specifies the path to the patch file.
+
+</div>
 
 The following is example output:
 
@@ -166,25 +188,32 @@ Cluster CRs with patches applied: 1
 
 You can write a patch file to handle expected deviations in a cluster configuration.
 
-<div class="note">
+> [!NOTE]
+> Patches have three possible values for the `type` field:
+>
+> - `mergepatch` - Merges the JSON into the target template. Unspecified fields remain unchanged.
+>
+> - `rfc6902` - Merges the JSON in the target template using `add`, `remove`, `replace`, `move`, and `copy` operations. Each operation targets a specific path.
+>
+> - `go-template` - Defines a Golang template. The plugin renders the template using the cluster custom resource (CR) as input and generates either a `mergepatch` or `rfc6902` patch for the target template.
+>
+> The following example shows the same patch using all three different formats.
 
-Patches have three possible values for the `type` field:
+<div>
 
-- `mergepatch` - Merges the JSON into the target template. Unspecified fields remain unchanged.
+<div class="title">
 
-- `rfc6902` - Merges the JSON in the target template using `add`, `remove`, `replace`, `move`, and `copy` operations. Each operation targets a specific path.
-
-- `go-template` - Defines a Golang template. The plugin renders the template using the cluster custom resource (CR) as input and generates either a `mergepatch` or `rfc6902` patch for the target template.
-
-The following example shows the same patch using all three different formats.
+Procedure
 
 </div>
 
 1.  Create a patch file to match your use case. Use the following structure as an example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `patch-config`**
+    <div class="title">
+
+    Example `patch-config`
 
     </div>
 
@@ -246,6 +275,8 @@ The following example shows the same patch using all three different formats.
         }
     ```
 
+    </div>
+
     The patches use the `kind`, `apiVersion`, `name`, and `namespace` fields to match the patch with the correct cluster CR.
 
 2.  Apply the patch to the reference configuration by running the following command:
@@ -257,6 +288,8 @@ The following example shows the same patch using all three different formats.
     - `-r` specifies the path to the metadata.yaml file of the reference configuration.
 
     - `p` specifies the path to the patch file.
+
+</div>
 
 The following is example output:
 

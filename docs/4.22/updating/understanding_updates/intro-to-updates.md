@@ -10,17 +10,24 @@ Red Hat hosts a public OpenShift Update Service (OSUS), which serves a graph of
 
 An update begins when either a cluster administrator or an automatic update controller edits the custom resource (CR) of the Cluster Version Operator (CVO) with a new version. To reconcile the cluster with the newly specified version, the CVO retrieves the target release image from an image registry and begins to apply changes to the cluster.
 
-<div class="note">
-
-Operators previously installed through Operator Lifecycle Manager (OLM) follow a different process for updates. See "Updating installed Operators" for more information.
-
-</div>
+> [!NOTE]
+> Operators previously installed through Operator Lifecycle Manager (OLM) follow a different process for updates. See "Updating installed Operators" for more information.
 
 The target release image contains manifest files for all cluster components that form a specific OCP version. When updating the cluster to a new version, the CVO applies manifests in separate stages called Runlevels. Most, but not all, manifests support one of the cluster Operators. As the CVO applies a manifest to a cluster Operator, the Operator might perform update tasks to reconcile itself with its new specified version.
 
 The CVO monitors the state of each applied resource and the states reported by all cluster Operators. The CVO only proceeds with the update when all manifests and cluster Operators in the active Runlevel reach a stable condition. After the CVO updates the entire control plane through this process, the Machine Config Operator (MCO) updates the operating system and configuration of every node in the cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
+
+</div>
 
 # Common questions about update availability
 
@@ -36,11 +43,8 @@ The following list provides common questions regarding the availability of an up
 
 - After a delay, a release on the `fast` channel is finally promoted to the `stable` channel. This delay represents the only difference between the `fast` and `stable` channels.
 
-  <div class="note">
-
-  For the latest z-stream releases, this delay may generally be a week or two. However, the delay for initial updates to the latest minor version may take much longer, generally 45-90 days.
-
-  </div>
+  > [!NOTE]
+  > For the latest z-stream releases, this delay may generally be a week or two. However, the delay for initial updates to the latest minor version may take much longer, generally 45-90 days.
 
 - Releases promoted to the `stable` channel are simultaneously promoted to the `eus` channel. The primary purpose of the `eus` channel is to serve as a convenience for clusters performing a Control Plane Only update.
 
@@ -68,17 +72,22 @@ The following list provides common questions regarding the availability of an up
 
 - While the specific cadence can vary based on a number of factors, new z-stream releases for the latest minor version are typically made available about every week. Older minor versions, which have become more stable over time, may take much longer for new z-stream releases to be made available.
 
-  <div class="important">
-
-  These are only estimates based on past data about z-stream releases. Red Hat reserves the right to change the release frequency as needed. Any number of issues could cause irregularities and delays in this release cadence.
-
-  </div>
+  > [!IMPORTANT]
+  > These are only estimates based on past data about z-stream releases. Red Hat reserves the right to change the release frequency as needed. Any number of issues could cause irregularities and delays in this release cadence.
 
 - Once a z-stream release is published, it also appears in the `fast` channel for that minor version. After a delay, the z-stream release may then appear in that minor version’s `stable` channel.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
+
+</div>
 
 # About the OpenShift Update Service
 
@@ -94,27 +103,18 @@ The OpenShift Update Service (OSUS) supports a single-stream release model, wher
 
 The updated release provides support for upgrades from all OpenShift Container Platform versions starting after 4.8 up to the new release version.
 
-<div class="important">
-
-The OpenShift Update Service displays all recommended updates for your current cluster. If an update path is not recommended by the OpenShift Update Service, it might be because of a known issue related to the update path, such as incompatibility or availability.
-
-</div>
+> [!IMPORTANT]
+> The OpenShift Update Service displays all recommended updates for your current cluster. If an update path is not recommended by the OpenShift Update Service, it might be because of a known issue related to the update path, such as incompatibility or availability.
 
 Two controllers run during continuous update mode. The first controller continuously updates the payload manifests, applies the manifests to the cluster, and outputs the controlled rollout status of the Operators to indicate whether they are available, upgrading, or failed. The second controller polls the OpenShift Update Service to determine if updates are available.
 
-<div class="important">
-
-Only updating to a newer version is supported. Reverting or rolling back your cluster to a previous version is not supported. If your update fails, contact Red Hat support.
-
-</div>
+> [!IMPORTANT]
+> Only updating to a newer version is supported. Reverting or rolling back your cluster to a previous version is not supported. If your update fails, contact Red Hat support.
 
 During the update process, the Machine Config Operator (MCO) applies the new configuration to your cluster machines. The MCO cordons the number of nodes specified by the `maxUnavailable` field on the machine configuration pool and marks them unavailable. By default, this value is set to `1`. The MCO updates the affected nodes alphabetically by zone, based on the `topology.kubernetes.io/zone` label. If a zone has more than one node, the oldest nodes are updated first. For nodes that do not use zones, such as in bare metal deployments, the nodes are updated by age, with the oldest nodes updated first. The MCO updates the number of nodes as specified by the `maxUnavailable` field on the machine configuration pool at a time. The MCO then applies the new configuration and reboots the machine.
 
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 If you use Red Hat Enterprise Linux (RHEL) machines as workers, the MCO does not update the kubelet because you must update the OpenShift API on the machines first.
 
@@ -140,11 +140,8 @@ The Cluster Version Operator (CVO) is responsible for collecting the status cond
 
   There might be a different condition type if the transition from one state to another does not persist over a long enough period to report `Degraded`. An Operator does not report `Degraded` during the course of a normal update. An Operator may report `Degraded` in response to a persistent infrastructure failure that requires eventual administrator intervention.
 
-  <div class="note">
-
-  This condition type is only an indication that something may need investigation and adjustment. As long as the Operator is available, the `Degraded` condition does not cause user workload failure or application downtime.
-
-  </div>
+  > [!NOTE]
+  > This condition type is only an indication that something may need investigation and adjustment. As long as the Operator is available, the `Degraded` condition does not cause user workload failure or application downtime.
 
 - Upgradeable: The condition type `Upgradeable` indicates whether the Operator is safe to update based on the current cluster state. The message field contains a human-readable description of what the administrator needs to do for the cluster to successfully update. The CVO allows updates when this condition is `True`, `Unknown` or missing.
 
@@ -188,11 +185,21 @@ Channels
 Recommended update edge
 A *recommended update edge* is a recommended update between OpenShift Container Platform releases. Whether a given update is recommended can depend on the cluster’s configured channel, current version, known bugs, and other information. OSUS communicates the recommended edges to the CVO, which runs in every cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Machine Config Overview](../../machine_configuration/index.xml#machine-config-overview)
 
 - [Using the OpenShift Update Service in a disconnected environment](../../disconnected/updating/disconnected-update-osus.xml#update-service-overview_updating-disconnected-cluster-osus)
 
 - [Update channels](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels_understanding-update-channels-releases)
+
+</div>
 
 # Additional resources
 

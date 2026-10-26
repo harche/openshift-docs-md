@@ -47,9 +47,27 @@ Specifies the name of the ConfigMap that stores the SPIRE trust bundle. This Con
 
 Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). This establishes a central authority that manages and issues identities to the workloads in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed Zero Trust Workload Identity Manager in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `SpireServer` CR:
 
@@ -159,15 +177,27 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
         $ oc apply -f SpireServer.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the stateful set of SPIRE Server is ready and available by running the following command:
 
   ``` terminal
   $ oc get statefulset -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -176,15 +206,19 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
   spire-server    1/1     65s
   ```
 
+  </div>
+
 - Verify that the status of the SPIRE Server pod is `Running` by running the following command:
 
   ``` terminal
   $ oc get po -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -193,15 +227,19 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
   spire-server-0     2/2     Running   1 (108s ago)    111s
   ```
 
+  </div>
+
 - Verify that the persistent volume claim (PVC) is bound, by running the following command:
 
   ``` terminal
   $ oc get pvc -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -210,13 +248,35 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
   spire-data-spire-server-0   Bound     pvc-27a36535-18a1-4fde-ab6d-e7ee7d3c2744   5Gi        RW0           gp3-csi       <unset>               22m
   ```
 
+  </div>
+
+</div>
+
 # Deploy the SPIRE Agent
 
 Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on your nodes. This defines how the agent verifies workloads and manages identity attestation across your OpenShift Container Platform cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed Zero Trust Workload Identity Manager in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `SpireAgent` CR:
 
@@ -286,15 +346,27 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
         $ oc apply -f SpireAgent.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the daemon set of the SPIRE Agent is ready and available by running the following command:
 
   ``` terminal
   $ oc get daemonset -l app.kubernetes.io/name=spire-agent -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -303,15 +375,19 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
   spire-agent   3         3         3       3            3           <none>          10m
   ```
 
+  </div>
+
 - Verify that the status of SPIRE Agent pods is `Running` by running the following command:
 
   ``` terminal
   $ oc get po -l app.kubernetes.io/name=spire-agent -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -322,21 +398,45 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
   spire-agent-vtvlk   1/1     Running   0          12m
   ```
 
+  </div>
+
+</div>
+
 # Deploy the SPIFFE Container Storage Interface driver
 
 Configure the Container Storage Interface (CSI) driver using the `SpiffeCSIDriver` CR. This configuration mounts SPIFFE sockets directly into workload pods, which allows your applications to access the SPIFFE Workload API securely.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed Zero Trust Workload Identity Manager in the cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the `SpiffeCSIDriver` CR:
 
     1.  Create a YAML file that defines the `SpiffeCSIDriver` CR object, for example, `SpiffeCSIDriver.yaml`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `SpiffeCSIDriver.yaml`**
+        <div class="title">
+
+        Example `SpiffeCSIDriver.yaml`
 
         </div>
 
@@ -349,6 +449,8 @@ Configure the Container Storage Interface (CSI) driver using the `SpiffeCSIDrive
           agentSocketPath: "/run/spire/agent-sockets"
           pluginName: "csi.spiffe.io"
         ```
+
+        </div>
 
         where:
 
@@ -367,15 +469,27 @@ Configure the Container Storage Interface (CSI) driver using the `SpiffeCSIDrive
         $ oc apply -f SpiffeCSIDriver.yaml
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the daemon set of the SPIFFE CSI driver is ready and available by running the following command:
 
   ``` terminal
   $ oc get daemonset -l app.kubernetes.io/name=spiffe-csi-driver -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -384,15 +498,19 @@ Configure the Container Storage Interface (CSI) driver using the `SpiffeCSIDrive
   spire-spiffe-csi-driver   3         3         3       3            3           <none>          114s
   ```
 
+  </div>
+
 - Verify that the status of SPIFFE Container Storage Interface (CSI) Driver pods is `Running` by running the following command:
 
   ``` terminal
   $ oc get po -l app.kubernetes.io/name=spiffe-csi-driver -n zero-trust-workload-identity-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -403,21 +521,45 @@ Configure the Container Storage Interface (CSI) driver using the `SpiffeCSIDrive
   spire-spiffe-csi-driver-w6s6q   2/2     Running   0          2m37s
   ```
 
+  </div>
+
+</div>
+
 # Deploy the SPIRE OpenID Connect Discovery Provider
 
 Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `SpireOIDCDiscoveryProvider` CR. This allows you to define the trust domain and JSON web token (JWT) issuer for your cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed Zero Trust Workload Identity Manager in the cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the `SpireOIDCDiscoveryProvider` CR:
 
     1.  Create a YAML file that defines the `SpireOIDCDiscoveryProvider` CR, for example, `SpireOIDCDiscoveryProvider.yaml`:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `SpireOIDCDiscoveryProvider` YAML**
+        <div class="title">
+
+        Example `SpireOIDCDiscoveryProvider` YAML
 
         </div>
 
@@ -435,6 +577,8 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
           managedRoute: "true"
           externalSecretRef: ""
         ```
+
+        </div>
 
         where:
 
@@ -468,7 +612,15 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
         $ oc apply -f SpireOIDCDiscoveryProvider.yaml
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the deployment of OIDC Discovery Provider is ready and available by running the following command:
 
@@ -476,9 +628,11 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
     $ oc get deployment -l app.kubernetes.io/name=spiffe-oidc-discovery-provider -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -487,15 +641,19 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
     spire-spiffe-oidc-discovery-provider    1/1    1           1          2m58s
     ```
 
+    </div>
+
 2.  Verify that the status of OIDC Discovery Provider pods is `Running` by running the following command:
 
     ``` terminal
     $ oc get po -l app.kubernetes.io/name=spiffe-oidc-discovery-provider -n zero-trust-workload-identity-manager
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -503,6 +661,10 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
     NAME                                                    READY   STATUS    RESTARTS   AGE
     spire-spiffe-oidc-discovery-provider-64586d599f-lcc94   2/2     Running   0          7m15s
     ```
+
+    </div>
+
+</div>
 
 # Verify the health of the operands
 
@@ -514,9 +676,11 @@ View the status fields to verify the operational health of managed components. T
   oc get ZeroTrustWorkloadIdentityManager cluster -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -553,19 +717,36 @@ View the status fields to verify the operational health of managed components. T
      # ...
   ```
 
+  </div>
+
 This status is reflected when all operands are healthy and stable.
 
-<div class="important">
-
-The Operator adds the owner reference for the `ZeroTrustWorkloadIdentityManager` CR on the other operands' CRs. This causes the operands' resources to be deleted once the `ZeroTrustWorkloadIdentityManager` CRs are deleted.
-
-</div>
+> [!IMPORTANT]
+> The Operator adds the owner reference for the `ZeroTrustWorkloadIdentityManager` CR on the other operands' CRs. This causes the operands' resources to be deleted once the `ZeroTrustWorkloadIdentityManager` CRs are deleted.
 
 # Manually delete the custom security context constraints
 
 You can delete the `spire-spiffe-csi-driver` custom SCC when the SPIFFE CSI driver is ready and its pods are using the `privileged` security context constraint (SCC).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have upgraded Zero Trust Workload Identity Manager to 1.1.0 from the **OperatorHub** catalog.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm the SPIFFE CSI driver is ready by running the following command:
 
@@ -605,3 +786,5 @@ You can delete the `spire-spiffe-csi-driver` custom SCC when the SPIFFE CSI driv
     ```
 
     If the SCC is already absent, no action is needed.
+
+</div>

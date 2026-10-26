@@ -6,13 +6,29 @@ As a cluster administrator, you can configure additional route advertisements fo
 
 To improve network reachability and failover visibility, you can enable additional routing support for your cluster. You can enable route advertisements to manage network traffic within your environment.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster as a user with the `cluster-admin` role.
 
 - The cluster is installed on compatible infrastructure.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To enable a routing provider and additional route advertisements, enter the following command:
 
@@ -28,3 +44,5 @@ To improve network reachability and failover visibility, you can enable addition
               "routeAdvertisements": "Enabled"
       }}}}'
   ```
+
+</div>

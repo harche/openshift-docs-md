@@ -1,26 +1,38 @@
 Before you can provision clusters with the O-Cloud Manager, you must define reusable cluster blueprints and register bare-metal servers in resource pools. These resources establish the hardware profiles, default configurations, and allocation criteria that the O-Cloud Manager uses when processing a provisioning request.
 
-<div class="important">
-
-The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The O-Cloud Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Configure hardware profiles for bare-metal nodes
 
 You can optionally define a `HardwareProfile` custom resource (CR) to specify the required firmware levels and BIOS settings for a class of bare-metal servers. The O-Cloud Manager applies the hardware profile during provisioning to ensure servers meet the required hardware state before cluster installation begins.
 
-<div class="note">
+> [!NOTE]
+> Hardware profiles are optional. If you do not specify a hardware profile, the O-Cloud Manager skips firmware and BIOS configuration during provisioning and uses the server in its current hardware state.
 
-Hardware profiles are optional. If you do not specify a hardware profile, the O-Cloud Manager skips firmware and BIOS configuration during provisioning and uses the server in its current hardware state.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - The O-Cloud Manager Operator is installed on the hub cluster.
 
 - You know the target firmware versions and BIOS settings for your server hardware.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `HardwareProfile` CR that defines the required hardware state, such as the following example:
 
@@ -63,13 +75,20 @@ Hardware profiles are optional. If you do not specify a hardware profile, the O-
     `spec.nicFirmware`
     Defines the target NIC firmware as a list, allowing you to specify firmware for multiple NICs. Each entry configures a `version` and an optional `url` pointing to the firmware binary.
 
-    <div class="note">
-
-    All firmware fields are optional. Specify only the components you need to manage. For example, you can define only `spec.bios.attributes` without any firmware fields if firmware management is not required.
-
-    </div>
+    > [!NOTE]
+    > All firmware fields are optional. Specify only the components you need to manage. For example, you can define only `spec.bios.attributes` without any firmware fields if firmware management is not required.
 
 2.  Apply the `HardwareProfile` resource to the hub cluster, or commit it to the `hardwareprofiles/` directory in the GitOps repository for ArgoCD synchronization.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the `HardwareProfile` resource exists on the hub cluster:
 
@@ -77,13 +96,33 @@ Hardware profiles are optional. If you do not specify a hardware profile, the O-
   $ oc get hardwareprofiles.clcm.openshift.io -A
   ```
 
+</div>
+
 # Onboard bare-metal servers to resource pools
 
 You can register bare-metal servers with the O-Cloud Manager by defining an infrastructure hierarchy and creating `BareMetalHost` custom resources (CRs) with resource selector labels. Onboarded servers become available for allocation when a `ProvisioningRequest` CR references a `ClusterTemplate` CR with matching resource selectors.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The O-Cloud Manager Operator is installed on the hub cluster.
 
 - You have Baseboard Management Controller (BMC) credentials for each server.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the infrastructure hierarchy by defining `Location`, `OCloudSite`, and `ResourcePool` CRs, for example:
 
@@ -219,7 +258,15 @@ You can register bare-metal servers with the O-Cloud Manager by defining an infr
 
       After the `BareMetalHost` CR is created, the Bare Metal Operator connects to the BMC, inspects the physical hardware, and populates a `HardwareData` CR with CPU, memory, NIC, and storage details. This data is used for hardware data filtering during resource selection.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the infrastructure hierarchy resources are created by running the following commands:
 
@@ -237,7 +284,19 @@ You can register bare-metal servers with the O-Cloud Manager by defining an infr
 
     The server should show a provisioning state of `available` after inspection completes, indicating it is ready for allocation.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configure advanced hardware management](../infrastructure_lifecycle_management/ocloud-configuring-advanced-hardware-management.xml#ocloud-configuring-advanced-hardware-management)
+
+</div>
 
 # Create a ClusterTemplate CR for single-node cluster provisioning
 
@@ -247,11 +306,16 @@ A `ClusterTemplate` CR references `ConfigMap` resources that contain defaults fo
 
 When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manager merges the site-specific parameters from the request with these defaults to produce the final cluster and policy definitions.
 
-<div class="note">
+> [!NOTE]
+> For multi-node clusters with distinct hardware requirements for each node role, see "Create a ClusterTemplate CR for multi-node cluster provisioning".
+>
+> For advanced hardware selection using hardware data selectors and site-specific overrides, see "Configure advanced hardware management".
 
-For multi-node clusters with distinct hardware requirements for each node role, see "Create a ClusterTemplate CR for multi-node cluster provisioning".
+<div>
 
-For advanced hardware selection using hardware data selectors and site-specific overrides, see "Configure advanced hardware management".
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -262,6 +326,16 @@ For advanced hardware selection using hardware data selectors and site-specific 
 - Bare-metal servers are onboarded to resource pools with appropriate resource selector labels.
 
 - If firmware or BIOS management is required, `HardwareProfile` resources are defined.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for the `ClusterTemplate` and its associated resources by running the following command:
 
@@ -354,11 +428,8 @@ For advanced hardware selection using hardware data selectors and site-specific 
 
     - The `boot-interface` label on a network interface is required. Using this label, the O-Cloud Manager resolves the boot NIC’s MAC address from hardware inventory data.
 
-      <div class="note">
-
-      For image-based installation (IBI) provisioning, replace the `templateRefs` values with `ibi-cluster-templates-v1` and `ibi-node-templates-v1`. These templates instruct the installation program to use the seed image on the preinstalled host instead of performing a full installation. The Image Based Install (IBI) Operator must be enabled in the `MultiClusterEngine` resource, and servers must be preinstalled with the seed image using the live installation ISO before provisioning.
-
-      </div>
+      > [!NOTE]
+      > For image-based installation (IBI) provisioning, replace the `templateRefs` values with `ibi-cluster-templates-v1` and `ibi-node-templates-v1`. These templates instruct the installation program to use the seed image on the preinstalled host instead of performing a full installation. The Image Based Install (IBI) Operator must be enabled in the `MultiClusterEngine` resource, and servers must be preinstalled with the seed image using the live installation ISO before provisioning.
 
 3.  Create a `ConfigMap` CR containing default values for Day 2 configuration policy parameters, such as the following example:
 
@@ -384,13 +455,10 @@ For advanced hardware selection using hardware data selectors and site-specific 
 
 4.  Create an RHACM `PolicyGenerator` manifest, such as the following example, that defines the Day 2 configuration policies for clusters provisioned with this `ClusterTemplate` CR:
 
-    <div class="note">
-
-    The `PolicyGenerator` CR is the mechanism that turns policy defaults into enforceable policies on managed clusters. When a `ProvisioningRequest` CR is created, the O-Cloud Manager creates a `ConfigMap` CR named `<cluster-name>-pg` on the hub cluster, populated by merging the values from the policy defaults `ConfigMap` with any overrides from the `ProvisioningRequest` CR.
-
-    The `PolicyGenerator` CR uses templating expressions (`{{hub …​ hub}}`) as placeholders that RHACM resolves at runtime by reading values from this `<cluster-name>-pg` `ConfigMap` CR. The result is `Policy` CRs that RHACM enforces on the managed cluster.
-
-    </div>
+    > [!NOTE]
+    > The `PolicyGenerator` CR is the mechanism that turns policy defaults into enforceable policies on managed clusters. When a `ProvisioningRequest` CR is created, the O-Cloud Manager creates a `ConfigMap` CR named `<cluster-name>-pg` on the hub cluster, populated by merging the values from the policy defaults `ConfigMap` with any overrides from the `ProvisioningRequest` CR.
+    >
+    > The `PolicyGenerator` CR uses templating expressions (`{{hub …​ hub}}`) as placeholders that RHACM resolves at runtime by reading values from this `<cluster-name>-pg` `ConfigMap` CR. The result is `Policy` CRs that RHACM enforces on the managed cluster.
 
     ``` yaml
     apiVersion: policy.open-cluster-management.io/v1
@@ -443,11 +511,8 @@ For advanced hardware selection using hardware data selectors and site-specific 
     `source-crs/`
     Contains the base manifests for Day 2 configuration resources such as `PerformanceProfile` CRs, `SriovNetworkNodePolicy` CRs, and Operator subscriptions. These CRs must match the target OpenShift Container Platform release version.
 
-    <div class="note">
-
-    All parameters referenced as placeholders, such as `cpu-isolated` and `install-plan-approval`, must be declared in the `templateParameterSchema.policyTemplateParameters` section of the `ClusterTemplate` CR and supplied either through the policy defaults `ConfigMap` CR or the `ProvisioningRequest` CR.
-
-    </div>
+    > [!NOTE]
+    > All parameters referenced as placeholders, such as `cpu-isolated` and `install-plan-approval`, must be declared in the `templateParameterSchema.policyTemplateParameters` section of the `ClusterTemplate` CR and supplied either through the policy defaults `ConfigMap` CR or the `ProvisioningRequest` CR.
 
 5.  Create the `ClusterTemplate` CR, such as the following example:
 
@@ -721,7 +786,15 @@ For advanced hardware selection using hardware data selectors and site-specific 
 
 6.  Apply the resources to the hub cluster, or commit them to the GitOps repository for ArgoCD synchronization.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `ClusterTemplate` CR is validated by running the following command:
 
@@ -729,9 +802,11 @@ For advanced hardware selection using hardware data selectors and site-specific 
     $ oc get clustertemplates.clcm.openshift.io -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -740,9 +815,23 @@ For advanced hardware selection using hardware data selectors and site-specific 
     ocloud-templates   sno-ran-du.v4-Y-Z-1   18s   Completed   The cluster template validation succeeded
     ```
 
+    </div>
+
     A `STATE` of `Completed` with a `ClusterTemplateValidated` condition of `True` indicates that the template passed validation and is ready for use. After successful validation, the `ClusterTemplate` CR and its referenced `ConfigMap` CRs become immutable.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the `BareMetalHost` resource](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-about-the-baremetalhost-resource_bare-metal-postinstallation-configuration)
+
+</div>
 
 # Create a ClusterTemplate CR for multi-node cluster provisioning
 
@@ -752,6 +841,14 @@ A `ClusterTemplate` CR references `ConfigMap` resources that contain defaults fo
 
 When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manager merges the site-specific parameters from the request with these defaults to produce the final cluster and policy definitions.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The O-Cloud Manager Operator is installed on the hub cluster.
 
 - The GitOps repository is configured and synchronized with ArgoCD.
@@ -759,6 +856,16 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
 - Bare-metal servers are onboarded to resource pools with appropriate resource selector labels.
 
 - If firmware or BIOS management is required, `HardwareProfile` resources are defined.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ConfigMap` CR that defines the cluster installation defaults for a multi-node topology. The `ConfigMap` CR must include a `nodeGroup` entry for each node role. The following example defines `master` and `worker` groups with distinct network interface configurations:
 
@@ -894,13 +1001,10 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
 
 3.  Create an RHACM `PolicyGenerator` manifest, such as the following example, that defines the Day 2 configuration policies for clusters provisioned with this `ClusterTemplate` CR:
 
-    <div class="note">
-
-    The `PolicyGenerator` CR is the mechanism that turns policy defaults into enforceable policies on managed clusters. When a `ProvisioningRequest` CR is created, the O-Cloud Manager creates a `ConfigMap` CR named `<cluster-name>-pg` on the hub cluster, populated by merging the values from the policy defaults `ConfigMap` with any overrides from the `ProvisioningRequest` CR.
-
-    The `PolicyGenerator` CR uses templating expressions (`{{hub …​ hub}}`) as placeholders that RHACM resolves at runtime by reading values from this `<cluster-name>-pg` `ConfigMap` CR. The result is `Policy` CRs that RHACM enforces on the managed cluster.
-
-    </div>
+    > [!NOTE]
+    > The `PolicyGenerator` CR is the mechanism that turns policy defaults into enforceable policies on managed clusters. When a `ProvisioningRequest` CR is created, the O-Cloud Manager creates a `ConfigMap` CR named `<cluster-name>-pg` on the hub cluster, populated by merging the values from the policy defaults `ConfigMap` with any overrides from the `ProvisioningRequest` CR.
+    >
+    > The `PolicyGenerator` CR uses templating expressions (`{{hub …​ hub}}`) as placeholders that RHACM resolves at runtime by reading values from this `<cluster-name>-pg` `ConfigMap` CR. The result is `Policy` CRs that RHACM enforces on the managed cluster.
 
     ``` yaml
     apiVersion: policy.open-cluster-management.io/v1
@@ -978,11 +1082,8 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
     `source-crs/`
     Contains the base manifests for Day 2 configuration resources such as `PerformanceProfile` CRs, `SriovNetworkNodePolicy` CRs, and Operator subscriptions. These CRs must match the target OpenShift Container Platform release version.
 
-    <div class="note">
-
-    All parameters referenced as placeholders, such as `cpu-isolated` and `sriov-network-vlan-1`, must be declared in the `templateParameterSchema.policyTemplateParameters` section of the `ClusterTemplate` CR and supplied either through the policy defaults `ConfigMap` CR or the `ProvisioningRequest` CR.
-
-    </div>
+    > [!NOTE]
+    > All parameters referenced as placeholders, such as `cpu-isolated` and `sriov-network-vlan-1`, must be declared in the `templateParameterSchema.policyTemplateParameters` section of the `ClusterTemplate` CR and supplied either through the policy defaults `ConfigMap` CR or the `ProvisioningRequest` CR.
 
 4.  Create a `ClusterTemplate` CR for the multi-node cluster topology, such as the following example that defines distinct hardware for each node group:
 
@@ -1249,15 +1350,20 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
     `templateParameterSchema.hwMgmtParameters`
     Enables site-specific overrides of hardware profiles and resource selectors. Including this in the schema allows site engineers to adjust hardware selection for individual node groups in their `ProvisioningRequest` CR without modifying the template.
 
-    <div class="note">
-
-    The `templateParameterSchema` is identical for both single-node and multi-node topologies. The schema defines which fields are permitted; the number of `nodeGroups` entries is determined by the deployment.
-
-    </div>
+    > [!NOTE]
+    > The `templateParameterSchema` is identical for both single-node and multi-node topologies. The schema defines which fields are permitted; the number of `nodeGroups` entries is determined by the deployment.
 
 5.  Apply the `ClusterTemplate` CR to the hub cluster, or commit it to the GitOps repository for ArgoCD synchronization.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the multi-node template passes validation by running the following command:
 
@@ -1265,9 +1371,11 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
     $ oc get clustertemplates.clcm.openshift.io -n <template_namespace> std-ran-du.v4-Y-Z-1
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1276,6 +1384,20 @@ When a site engineer creates a `ProvisioningRequest` resource, the O-Cloud Manag
     ocloud-templates   std-ran-du.v4-Y-Z-1   12s   Completed   The cluster template validation succeeded
     ```
 
+    </div>
+
     A `STATE` of `Completed` confirms that all node group configurations, resource selectors, and the parameter schema are valid. When a `ProvisioningRequest` CR references this template, the O-Cloud Manager allocates hosts independently for each node group, matching each group’s `resourceSelector` against available `BareMetalHost` CRs.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the `BareMetalHost` resource](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-about-the-baremetalhost-resource_bare-metal-postinstallation-configuration)
+
+</div>

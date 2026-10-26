@@ -1,28 +1,27 @@
 For OpenShift Container Platform platforms that do not support automatic boot image updating or for clusters configured with the boot image management feature disabled, you can manually update the boot image used by the compute nodes in your cluster. By updating the boot image, you can ensure that newly scaled up nodes are able to successfully use the latest Red Hat Enterprise Linux CoreOS (RHCOS) version and join the cluster.
 
-<div class="note">
-
-Red Hat does not support manually updating the boot image in control plane nodes.
-
-</div>
+> [!NOTE]
+> Red Hat does not support manually updating the boot image in control plane nodes.
 
 # Manually updating the boot image on an Azure cluster
 
 You can manually update the boot image for your Microsoft Azure cluster by configuring your machine sets to use the latest OpenShift Container Platform image as the boot image to ensure that new nodes can scale up properly.
 
-<div class="note">
-
-Boot image updates are not supported for Azure confidential virtual machines and Azure Stack Hub clusters. Contact Red Hat Support for these cases.
-
-</div>
+> [!NOTE]
+> Boot image updates are not supported for Azure confidential virtual machines and Azure Stack Hub clusters. Contact Red Hat Support for these cases.
 
 Use the following procedure to create environment variables that facilitate running the required commands, identify the correct boot image to use as the new boot image, and modify your compute machine sets to use that image.
 
 The process requires you to determine the product variant and Hyper-V generation of your Azure boot image. The following procedure helps determine both values, which you need in order to look up the target image.
 
-<div class="note">
+> [!NOTE]
+> For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure Red Hat OpenShift (ARO), or Azure Marketplace image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
 
-For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure Red Hat OpenShift (ARO), or Azure Marketplace image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -38,6 +37,16 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
 - You have installed the [`jq`](https://stedolan.github.io/jq/) program.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Set an environment variable with your cluster architecture by running the following command:
 
     ``` terminal
@@ -52,9 +61,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
     You can find the architecture as a label in any `MachineSet` object.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example machine set with an architecture label**
+    <div class="title">
+
+    Example machine set with an architecture label
 
     </div>
 
@@ -67,6 +78,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
     # ...
     ```
 
+    </div>
+
 2.  Determine your Azure image variant and Hyper-V generation:
 
     1.  Obtain the required values from your machine set by running the following command:
@@ -76,9 +89,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
           -o jsonpath='{.spec.template.spec.providerSpec.value.image}'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -86,18 +101,20 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         {"offer":"rh-ocp-worker","publisher":"redhat","resourceID":"","sku":"rh-ocp-worker","type":"MarketplaceWithPlan","version":"4.16.20231023"}
         ```
 
+        </div>
+
     2.  Determine your image variant by comparing the output to the entries in the following table:
 
-        | Output parmeters                                               | Variant            |
-        |----------------------------------------------------------------|--------------------|
-        | `resourceID` is non-empty                                      | `no-purchase-plan` |
-        | `publisher` is `azureopenshift`                                | `no-purchase-plan` |
-        | `publisher` is `redhat` and `offer` is `rh-ocp-worker`         | `ocp`              |
-        | `publisher` is `redhat` and `offer` is `rh-opp-worker`         | `opp`              |
-        | `publisher` is `redhat` and `offer` is `rh-oke-worker`         | `oke`              |
-        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `ocp-emea`         |
-        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `opp-emea`         |
-        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `oke-emea`         |
+        | Output parmeters | Variant |
+        |----|----|
+        | `resourceID` is non-empty | `no-purchase-plan` |
+        | `publisher` is `azureopenshift` | `no-purchase-plan` |
+        | `publisher` is `redhat` and `offer` is `rh-ocp-worker` | `ocp` |
+        | `publisher` is `redhat` and `offer` is `rh-opp-worker` | `opp` |
+        | `publisher` is `redhat` and `offer` is `rh-oke-worker` | `oke` |
+        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `ocp-emea` |
+        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `opp-emea` |
+        | `publisher` is `redhat-limited` and `offer` is `rh-ocp-worker` | `oke-emea` |
 
         Make note of the variant for later use.
 
@@ -110,14 +127,14 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         <col style="width: 33%" />
         </colgroup>
         <thead>
-        <tr class="header">
+        <tr>
         <th style="text-align: left;">Output</th>
         <th style="text-align: left;">Image type</th>
         <th style="text-align: left;">Hyper-V generation</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="odd">
+        <tr>
         <td style="text-align: left;"><p><code>resourceID</code> is non-empty</p></td>
         <td style="text-align: left;"><p>Legacy uploaded</p></td>
         <td style="text-align: left;"><ul>
@@ -125,7 +142,7 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         <li><p><code>hyperVGen1</code> if the <code>resourceID</code> value does not contain <code>gen2</code></p></li>
         </ul></td>
         </tr>
-        <tr class="even">
+        <tr>
         <td style="text-align: left;"><p><code>publisher</code> is <code>azureopenshift</code></p></td>
         <td style="text-align: left;"><p>Unpaid marketplace</p></td>
         <td style="text-align: left;"><ul>
@@ -133,7 +150,7 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         <li><p><code>hyperVGen1</code> for all other images</p></li>
         </ul></td>
         </tr>
-        <tr class="odd">
+        <tr>
         <td style="text-align: left;"><p><code>publisher</code> is <code>redhat</code> or <code>redhat-limited</code>.</p></td>
         <td style="text-align: left;"><p>Paid marketplace</p></td>
         <td style="text-align: left;"><ul>
@@ -156,9 +173,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
         In the output of the command, locate your variant and generation as shown in the following example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -171,6 +190,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
               "sku": "rh-ocp-worker",
               "version": "4.18.2025031114"
         ```
+
+        </div>
 
         If the boot image referenced in the `version` parameter of your machine set matches or is later than the version in this output, no further action on your part is required to update the boot image. If not, continue with this procedure.
 
@@ -186,9 +207,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
     2.  In the output of the command, locate your variant and generation as shown in the following example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -201,6 +224,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
               "sku": "rh-ocp-worker",
               "version": "9.6.20251015"
         ```
+
+        </div>
 
     3.  Set an environment variable with your image variant by running the following command:
 
@@ -244,15 +269,19 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         $ echo $VERSION
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         9.6.20251015
         ```
+
+        </div>
 
         Make note of the RHCOS version for later use.
 
@@ -276,9 +305,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -288,6 +319,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         ci-ln-lbf9h9k-1d09d-fwh4l-worker-eastus22   1         1         1       1           135m
         ci-ln-lbf9h9k-1d09d-fwh4l-worker-eastus23   1         1         1       1           135m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -300,7 +333,15 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
 5.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -340,9 +381,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -353,6 +396,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
         "version": "9.6.20251015"
     }
     ```
+
+    </div>
 
     where:
 
@@ -365,15 +410,21 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS), Azure 
     $ echo $VERSION
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     9.6.20251015
     ```
+
+    </div>
+
+</div>
 
 # Manually updating the boot image on an AWS cluster
 
@@ -383,9 +434,14 @@ Use the following procedure to create environment variables that facilitate runn
 
 The process differs for clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image and clusters that use a custom RHCOS image from the AWS Marketplace. The following procedure helps determine which type of image you use.
 
-<div class="note">
+> [!NOTE]
+> For clusters that use a default RHCOS image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
 
-For clusters that use a default RHCOS image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -406,6 +462,16 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
   - You have downloaded the latest version of the OpenShift Container Platform installation program from the [OpenShift Cluster Manager](https://console.redhat.com/openshift). For more information, see "Obtaining the installation program."
 
   - For a cluster that uses a default RHCOS image, you have installed the [`jq`](https://jqlang.org/) program.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Determine if your cluster uses a default RHCOS image or a custom RHCOS image from the AWS Marketplace image:
 
@@ -439,20 +505,26 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
         - If the output for the `PRODUCT_ID` environment variable is empty, as shown in the following example, your cluster uses a standard OpenShift Container Platform image.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example with empty output**
+          <div class="title">
+
+          Example with empty output
 
           </div>
 
           ``` terminal
           ```
 
+          </div>
+
         - If the output for the `PRODUCT_ID` environment variable is not empty, as shown in the following example, your cluster uses an AWS Marketplace image.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example with non-empty output**
+          <div class="title">
+
+          Example with non-empty output
 
           </div>
 
@@ -460,23 +532,25 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
           59ead7de-2540-4653-a8b0-fa7926d5c845
           ```
 
+          </div>
+
         - If the command returns an error, and you are unable to determine your cluster variant, contact Red Hat Support. If Red Hat Support determines that your cluster uses an AWS Marketplace image, you can set the `PRODUCT_ID` environment variable with the appropriate product ID from the following table.
 
           ``` terminal
           $ export PRODUCT_ID=<Product_ID_from_table>
           ```
 
-          | Variant                                                                                                                                                  | Product ID                             |
-          |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-          | [OpenShift Container Platform on x86 - NA](https://aws.amazon.com/marketplace/procurement/?productId=59ead7de-2540-4653-a8b0-fa7926d5c845)               | `59ead7de-2540-4653-a8b0-fa7926d5c845` |
-          | [OpenShift Kubernetes Engine on x86 - NA](https://aws.amazon.com/marketplace/procurement?productId=963b36c3-de6f-48ed-b802-2b38b2a2cdeb)                 | `963b36c3-de6f-48ed-b802-2b38b2a2cdeb` |
-          | [OpenShift Platform Plus on x86 - NA](https://aws.amazon.com/marketplace/procurement?productId=f5da01a6-d046-487c-9072-42fe53b1cad4)                     | `f5da01a6-d046-487c-9072-42fe53b1cad4` |
-          | [OpenShift Container Platform on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=abc249f8-7440-45f7-a4b1-c026baff64c1)                | `abc249f8-7440-45f7-a4b1-c026baff64c1` |
-          | [OpenShift Kubernetes Engine on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=d2d3ebcd-c1ca-43d8-bf0a-530433200f35)                 | `d2d3ebcd-c1ca-43d8-bf0a-530433200f35` |
-          | [OpenShift Platform Plus on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=be6d3e94-c8dc-4a3e-9218-4b449b11f06f)                     | `be6d3e94-c8dc-4a3e-9218-4b449b11f06f` |
+          | Variant | Product ID |
+          |----|----|
+          | [OpenShift Container Platform on x86 - NA](https://aws.amazon.com/marketplace/procurement/?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) | `59ead7de-2540-4653-a8b0-fa7926d5c845` |
+          | [OpenShift Kubernetes Engine on x86 - NA](https://aws.amazon.com/marketplace/procurement?productId=963b36c3-de6f-48ed-b802-2b38b2a2cdeb) | `963b36c3-de6f-48ed-b802-2b38b2a2cdeb` |
+          | [OpenShift Platform Plus on x86 - NA](https://aws.amazon.com/marketplace/procurement?productId=f5da01a6-d046-487c-9072-42fe53b1cad4) | `f5da01a6-d046-487c-9072-42fe53b1cad4` |
+          | [OpenShift Container Platform on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=abc249f8-7440-45f7-a4b1-c026baff64c1) | `abc249f8-7440-45f7-a4b1-c026baff64c1` |
+          | [OpenShift Kubernetes Engine on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=d2d3ebcd-c1ca-43d8-bf0a-530433200f35) | `d2d3ebcd-c1ca-43d8-bf0a-530433200f35` |
+          | [OpenShift Platform Plus on ARM - NA](https://aws.amazon.com/marketplace/procurement?productId=be6d3e94-c8dc-4a3e-9218-4b449b11f06f) | `be6d3e94-c8dc-4a3e-9218-4b449b11f06f` |
           | [OpenShift Container Platform on x86 - EU, ME and Africa](https://aws.amazon.com/marketplace/procurement?productId=962791c7-3ae5-46d1-ba62-c7a5ebac54fd) | `962791c7-3ae5-46d1-ba62-c7a5ebac54fd` |
-          | [OpenShift Kubernetes Engine on x86 - EU, ME and Africa](https://aws.amazon.com/marketplace/procurement?productId=7026c8d7-392c-4010-b93c-f93f7bc5495f)  | `7026c8d7-392c-4010-b93c-f93f7bc5495f` |
-          | [OpenShift Platform Plus on x86 - EU, ME and Africa](https://aws.amazon.com/marketplace/procurement?productId=628c9df3-0254-4f91-bc1f-8619d1b8eaa8)      | `628c9df3-0254-4f91-bc1f-8619d1b8eaa8` |
+          | [OpenShift Kubernetes Engine on x86 - EU, ME and Africa](https://aws.amazon.com/marketplace/procurement?productId=7026c8d7-392c-4010-b93c-f93f7bc5495f) | `7026c8d7-392c-4010-b93c-f93f7bc5495f` |
+          | [OpenShift Platform Plus on x86 - EU, ME and Africa](https://aws.amazon.com/marketplace/procurement?productId=628c9df3-0254-4f91-bc1f-8619d1b8eaa8) | `628c9df3-0254-4f91-bc1f-8619d1b8eaa8` |
 
 2.  Determine the AMI for the new boot image by using one of the following steps, depending upon the type of image used in your cluster:
 
@@ -500,9 +574,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
           You can find the architecture as a label in any `MachineSet` object.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example machine set with an architecture label**
+          <div class="title">
+
+          Example machine set with an architecture label
 
           </div>
 
@@ -514,6 +590,8 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
               capacity.cluster-autoscaler.kubernetes.io/labels: kubernetes.io/arch=amd64
           # ...
           ```
+
+          </div>
 
       2.  Obtain the AMI for the new boot image and set an environment variable with the AMI by running the following command:
 
@@ -529,15 +607,19 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
           $ openshift-install coreos print-stream-json | jq -r ".architectures.\"${ARCH}\".images.aws.regions.\"${REGION}\".release"
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
           ``` terminal
           9.6.20251212-1
           ```
+
+          </div>
 
           Make note of the RHCOS version for later use.
 
@@ -570,9 +652,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -581,6 +665,8 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
         rhhdrbk-b5564-4pcm9-worker-0         3         3         3       3           123m
         ci-ln-xj96skb-72292-48nm5-worker-d   1         1         1       1           27m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -594,7 +680,15 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
 4.  If boot image skew enforcement in your cluster is set to the manual mode, update the boot image version in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version."
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -634,9 +728,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -648,10 +744,14 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
     }
     ```
 
+    </div>
+
     where:
 
     `version`
     Specifies the boot image version.
+
+</div>
 
 # Manually updating the boot image on an Google Cloud cluster
 
@@ -663,9 +763,14 @@ The process differs for clusters that use a default Red Hat Enterprise Linux Co
 
 For user-provisioned infrastructure Google Cloud clusters, which typically have no Machine API compute machine sets, you can provision new nodes based on the new boot image by updating the underlying Google Cloud infrastructure with the new boot image, such as instance templates, Deployment Manager templates, or Terraform configuration. For more information, see "Creating additional worker machines in Google Cloud".
 
-<div class="note">
+> [!NOTE]
+> For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
 
-For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -691,6 +796,16 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
 
   - You have created a Google Cloud service account.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Determine which image in the machine set is the boot image and set the value in an environment variable:
 
     1.  Set the boot image value in an environment variable by running the following command:
@@ -706,9 +821,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         $ echo $BOOT_DISK_INDEX
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -716,17 +833,23 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         0
         ```
 
+        </div>
+
         If the output for the `BOOT_DISK_INDEX` environment variable is `null`, none of the disks in the machine set has the `boot` field explicitly set. In this case, the boot disk is typically the first disk.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example null output**
+        <div class="title">
+
+        Example null output
 
         </div>
 
         ``` terminal
         null
         ```
+
+        </div>
 
     3.  If the `BOOT_DISK_INDEX` output is `null`, set the boot image to the first image by running the following command:
 
@@ -751,9 +874,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         $ echo $CURRENT_IMAGE
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -761,34 +886,33 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         projects/rhcos-cloud/global/images/rhcos-416-94-202510081640-0-gcp-x86-64
         ```
 
+        </div>
+
     3.  Compare the prefix of the image name to the entries in the following table:
 
-        | Current image prefix                                | Variant                         |
-        |-----------------------------------------------------|---------------------------------|
-        | `projects/rhcos-cloud/global/images/`               | Default                         |
-        | `projects/redhat-marketplace-public/global/images/` | GCP Marketplace RHCOS image     |
-        | No machine set present/custom prefix                | User-provisioned infrastructure |
+        | Current image prefix | Variant |
+        |----|----|
+        | `projects/rhcos-cloud/global/images/` | Default |
+        | `projects/redhat-marketplace-public/global/images/` | GCP Marketplace RHCOS image |
+        | No machine set present/custom prefix | User-provisioned infrastructure |
 
         Default RHCOS clusters use images from the `rhcos-cloud` project in the `rhcos-<version>-<platform>-<arch>` format.
 
         GCP Marketplace RHCOS clusters use images from the `redhat-marketplace-public` project in the `redhat-coreos-<offering>-<version>-<arch>-<date>` format.
 
-        <div class="note">
-
-        The following images are the latest Google Cloud Marketplace images for the OpenShift Container Platform:
-
-        OpenShift Container Platform
-        `redhat-coreos-ocp-413-x86-64-202305021736`
-
-        OpenShift Platform Plus
-        `redhat-coreos-opp-413-x86-64-202305021736`
-
-        OpenShift Kubernetes Engine
-        `redhat-coreos-oke-413-x86-64-202305021736`
-
-        Red Hat has not published Marketplace images for OpenShift Container Platform later than these OpenShift Container Platform 4.13 images. If the current boot image in your cluster matches one of the listed images, no further action is necessary.
-
-        </div>
+        > [!NOTE]
+        > The following images are the latest Google Cloud Marketplace images for the OpenShift Container Platform:
+        >
+        > OpenShift Container Platform
+        > `redhat-coreos-ocp-413-x86-64-202305021736`
+        >
+        > OpenShift Platform Plus
+        > `redhat-coreos-opp-413-x86-64-202305021736`
+        >
+        > OpenShift Kubernetes Engine
+        > `redhat-coreos-oke-413-x86-64-202305021736`
+        >
+        > Red Hat has not published Marketplace images for OpenShift Container Platform later than these OpenShift Container Platform 4.13 images. If the current boot image in your cluster matches one of the listed images, no further action is necessary.
 
 3.  Obtain the name of the new boot image by using one of the following steps, depending upon your cluster:
 
@@ -812,9 +936,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
 
           You can find the architecture as a label in any `MachineSet` object.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example machine set with an architecture label**
+          <div class="title">
+
+          Example machine set with an architecture label
 
           </div>
 
@@ -826,6 +952,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
               capacity.cluster-autoscaler.kubernetes.io/labels: kubernetes.io/arch=amd64
           # ...
           ```
+
+          </div>
 
       2.  Set an environment variable with the name of the new boot image by running the following command:
 
@@ -849,15 +977,19 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
           $ openshift-install coreos print-stream-json | jq -r ".architectures.\"${ARCH}\".images.gcp.release"
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
           ``` terminal
           9.6.20251212-1
           ```
+
+          </div>
 
           Make note of the RHCOS version for later use.
 
@@ -931,9 +1063,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -943,6 +1077,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         ci-ln-xw7zmyt-72292-x7nqv-worker-b   1         1         1       1           53m
         ci-ln-xw7zmyt-72292-x7nqv-worker-c   1         1         1       1           53m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -957,7 +1093,15 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
 
 5.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -997,9 +1141,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1010,6 +1156,8 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
         "version": "9.6.20251212-1"
     }
     ```
+
+    </div>
 
     where:
 
@@ -1024,9 +1172,11 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
 
     `RHCOS_URL` is the environment variable you created in a previous step.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1034,15 +1184,16 @@ For clusters that use a default Red Hat Enterprise Linux CoreOS (RHCOS) image, 
     https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-9.6/builds/9.6.20251212-1/x86_64/rhcos-9.6.20251212-1-nutanix.x86_64.qcow2
     ```
 
+    </div>
+
+</div>
+
 # Manually updating the boot image on a bare-metal cluster
 
 For a bare-metal cluster that was installed with OpenShift Container Platform version 4.9 or earlier, you need to change how the cluster provisions new nodes in order to update the boot image used with those nodes. Using an up-to-date boot image ensures that any new nodes can scale up properly.
 
-<div class="note">
-
-The standard boot image management feature is not supported for bare-metal clusters.
-
-</div>
+> [!NOTE]
+> The standard boot image management feature is not supported for bare-metal clusters.
 
 If your bare-metal cluster was installed with OpenShift Container Platform version 4.10 or later, boot images are kept current by the Cluster Version Operator (CVO) and are not at risk of boot image skew. Skew enforcement is disabled for the cluster by default. No further action on your part is required to maintain the boot image versioning.
 
@@ -1050,9 +1201,14 @@ If your bare-metal cluster was installed with OpenShift Container Platform versi
 
 Use the following procedure to enable the `install_coreos` deployment method and disable the qcow2 image cache. With these changes, the Cluster Baremetal Operator (CBO) will use the `machine-os-images` container from the release payload for new node provisioning. The cluster will have no skew risk, the same as a cluster at version 4.10 or later. Skew enforcement is automatically disabled after the migration is complete.
 
-<div class="note">
+> [!NOTE]
+> Boot image updates are not required for Agent-based Installer clusters. The boot image for Agent-based Installer nodes is generated from the current release payload through the `oc adm node-image create` command and does not have skew issues.
 
-Boot image updates are not required for Agent-based Installer clusters. The boot image for Agent-based Installer nodes is generated from the current release payload through the `oc adm node-image create` command and does not have skew issues.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1061,6 +1217,16 @@ Boot image updates are not required for Agent-based Installer clusters. The boot
 - You have the OpenShift CLI (`oc`) installed.
 
 - A new physical host must be registered and in the `available` state and an associated `BareMetalHost` object must be present in the `openshift-machine-api` namespace so that you can scale a new machine to verify the procedure.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check whether your cluster is using the legacy boot image provisioning path by running the following command:
 
@@ -1092,7 +1258,15 @@ Boot image updates are not required for Agent-based Installer clusters. The boot
 
         This process migrates the cluster to the `machine-os-images` provisioning method, which ensures that the latest boot image is used for scaling nodes.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -1132,9 +1306,11 @@ Boot image updates are not required for Agent-based Installer clusters. The boot
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1146,24 +1322,33 @@ Boot image updates are not required for Agent-based Installer clusters. The boot
     }
     ```
 
+    </div>
+
     where:
 
     `version`
     Specifies the boot image version.
 
+</div>
+
 # Manually updating the boot image on an IBM Cloud® cluster
 
 For an IBM Cloud cluster, you can manually update the boot image for the compute nodes in your cluster by configuring your machine sets to use the latest OpenShift Container Platform image as the boot image to help ensure any new nodes can scale up properly.
 
-<div class="note">
-
-The standard boot image management feature is not supported for IBM Cloud clusters.
-
-</div>
+> [!NOTE]
+> The standard boot image management feature is not supported for IBM Cloud clusters.
 
 The following procedure, which includes steps to create environment variables that facilitate running the required commands, shows how to obtain IBM Cloud authentication credentials, download a boot image, upload that image to the IBM Cloud image service, and modify your compute machine sets to use the new boot image.
 
 This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in your cluster, which was created during cluster installation. Each COS bucket has a specific Cloud Resource Name (CRN), which the IBM Cloud CLI uses the to select the correct COS bucket. The following procedure shows how to obtain the CRN for the default COS bucket. For more information on the CRN, see [Cloud Resource Names in the IBM Cloud documentation](https://cloud.ibm.com/docs/account?topic=account-crn).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have completed the general boot image prerequisites as described in the "Prerequisites" section of the [OpenShift Container Platform Boot Image Updates knowledgebase article](https://access.redhat.com/articles/7053165#prerequisites-2).
 
@@ -1176,6 +1361,16 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 - You have installed the IBM Cloud Virtual Private Cloud (VPC) CLI plugin.
 
 - You have installed the IBM Cloud Object Storage plugin.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Obtain the resource group and region from the `infrastructure` object and set the values in an environment variable by running the following commands:
 
@@ -1207,9 +1402,11 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 
         `IBM_API_KEY`, `REGION`, and `RESOURCE_GROUP` are environment variables you created in previous steps.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1231,6 +1428,8 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
         Account:          xxxxx
         Resource group:   xxxxx
         ```
+
+        </div>
 
 3.  Obtain the URL of the RHCOS image to use as the boot image and set the location in an environment variable by running one of the following commands, based on your cluster architecture:
 
@@ -1300,9 +1499,11 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 
         `RESOURCE_GROUP` and `REGION` are environment variables you created in previous steps.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1310,6 +1511,8 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
         OK
         Found 2 objects in bucket 'xxxxxx-ibm3h-9pbgg-vsi-image':
         ```
+
+        </div>
 
     6.  Set an environment variable to create a descriptive name for your boot image:
 
@@ -1357,9 +1560,11 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1368,6 +1573,8 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
         rhhdrbk-b5564-4pcm9-worker-0         3         3         3       3           123m
         ci-ln-xj96skb-72292-48nm5-worker-d   1         1         1       1           27m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -1382,7 +1589,15 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 
 7.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -1422,9 +1637,11 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 
         Replace `<new_node>` with the name of your new node.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1436,6 +1653,8 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
         }
         ```
 
+        </div>
+
         where:
 
         `<version>`
@@ -1443,19 +1662,26 @@ This procedure uses the default IBM Cloud Cloud Object Storage (COS) bucket in y
 
     After you migrate all machine sets to the new boot image, the old boot image is no longer needed. You can remove the old boot image from your COS bucket.
 
+</div>
+
 # Manually updating the boot image on a Nutanix cluster
 
 You can manually update the boot image for your Nutanix cluster by configuring your machine sets to use the latest OpenShift Container Platform image as the boot image to ensure that new nodes can scale up properly.
 
-<div class="note">
-
-The standard boot image management feature is not supported for Nutanix clusters.
-
-</div>
+> [!NOTE]
+> The standard boot image management feature is not supported for Nutanix clusters.
 
 The following procedure, which includes steps to create environment variables that facilitate running the required commands, shows how to obtain Nutanix authentication credentials, download a boot image, upload that image to the Nutanix Prism Central, and modify your compute machine sets to use the new boot image.
 
 This procedure requires Nutanix authentication credentials, which you need to access Prism Central. If you need to recover your credentials, you can get them from an OpenShift Container Platform secret, the name of which you can find in the default compute machine set. You can decrypt this secret and export the credentials to create the `clouds.yaml` file, as described in the following procedure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have completed the general boot image prerequisites as described in the "Prerequisites" section of the [OpenShift Container Platform Boot Image Updates knowledgebase article](https://access.redhat.com/articles/7053165#prerequisites-2).
 
@@ -1465,6 +1691,16 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
 - You have installed the [`jq`](https://stedolan.github.io/jq/) program.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  If you need to recover your Nutanix authentication credentials, perform the following steps:
 
     1.  Obtain the name of the secret that contains your credentials by running the following command:
@@ -1473,9 +1709,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
         $ oc get machineset -n openshift-machine-api -o yaml | grep credentialsSecret -A 1
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1483,6 +1721,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
             credentialsSecret:
               name: nutanix-credentials
         ```
+
+        </div>
 
     2.  Decrypt the secret by running the following command:
 
@@ -1492,15 +1732,19 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
         Replace `<secret_name>` with the name of the secret, which you obtained in the previous step.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         [{"type":"basic_auth","data":{"prismCentral":{"username":"","password":""},"prismElements":null}}]
         ```
+
+        </div>
 
 2.  Set an environment variable for the Nutanix username by running the following command:
 
@@ -1520,9 +1764,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
     $ oc get configmap cloud-provider-config -n openshift-config -o jsonpath='{.data.config}' | grep prismCentral -A 8
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1537,6 +1783,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
             }
         },
     ```
+
+    </div>
 
     where:
 
@@ -1565,15 +1813,19 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
         Setting a descriptive name for your boot image in Prism Central, such as using the Red Hat Enterprise Linux CoreOS (RHCOS) version number in the image name, makes it easier to track which version is currently deployed if you update the cluster in the future.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example command**
+        <div class="title">
+
+        Example command
 
         </div>
 
         ``` terminal
         $ export IMAGE_NAME="rhcos-9.6-boot-image"
         ```
+
+        </div>
 
     3.  Upload the image to Prism Central by running the following command:
 
@@ -1609,9 +1861,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
           }'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1622,6 +1876,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
         }
         ```
 
+        </div>
+
 7.  Update each of your compute machine sets to include the new boot image:
 
     1.  Obtain the name of your machine sets for use in the following step by running the following command:
@@ -1630,9 +1886,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1641,6 +1899,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
         rhhdrbk-b5564-4pcm9-worker-0         3         3         3       3           123m
         ci-ln-xj96skb-72292-48nm5-worker-d   1         1         1       1           27m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -1652,7 +1912,15 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
 8.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -1692,9 +1960,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1705,6 +1975,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
         "version": "9.6.20251212-1"
     }
     ```
+
+    </div>
 
     where:
 
@@ -1717,9 +1989,11 @@ This procedure requires Nutanix authentication credentials, which you need to ac
     $ echo ${RHCOS_URL}
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1727,25 +2001,31 @@ This procedure requires Nutanix authentication credentials, which you need to ac
     https://rhcos.mirror.openshift.com/art/storage/prod/streams/rhel-9.6/builds/9.6.20251212-1/x86_64/rhcos-9.6.20251212-1-nutanix.x86_64.qcow2
     ```
 
+    </div>
+
     After you migrate all machine sets to the new boot image, you can remove the old boot image from Prism Central.
+
+</div>
 
 # Manually updating the boot image on an RHOSP cluster
 
 For a Red Hat OpenStack Platform (RHOSP) cluster, you can manually update the boot image for your cluster by configuring your machine sets to use the latest OpenShift Container Platform image as the boot image to help ensure any new nodes can scale up properly.
 
-<div class="note">
-
-The standard boot image management feature is not supported for RHOSP clusters.
-
-</div>
+> [!NOTE]
+> The standard boot image management feature is not supported for RHOSP clusters.
 
 The following procedure, which includes steps to create environment variables that facilitate running the required commands, shows how to obtain RHOSP authentication credentials, download a boot image, upload that image to the RHOSP image service (Glance), and modify your worker machine sets to use the new boot image.
 
 This procedure requires the `clouds.yaml` file, which is needed by the OpenStackClient CLI to connect to your RHOSP cloud. If you need to re-create this file, you can get the RHOSP credentials from an OpenShift Container Platform secret, the name of which you can find in the default compute machine set. You can decrypt this secret and export the credentials to create the `clouds.yaml` file, as described in the following procedure.
 
-<div class="note">
+> [!NOTE]
+> Updating control plane machine sets is not supported in RHOSP.
 
-Updating control plane machine sets is not supported in RHOSP.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1759,6 +2039,16 @@ Updating control plane machine sets is not supported in RHOSP.
 
 - You have installed the [`jq`](https://stedolan.github.io/jq/) program.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  If you need to re-create the `clouds.yaml` file, perform the following steps:
 
     1.  Obtain the name of the secret that contains your credentials by running the following command:
@@ -1767,9 +2057,11 @@ Updating control plane machine sets is not supported in RHOSP.
         $ oc get machineset -n openshift-machine-api -o yaml | grep cloudsSecret -A 1
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1777,6 +2069,8 @@ Updating control plane machine sets is not supported in RHOSP.
         cloudsSecret:
           name: openstack-cloud-credentials
         ```
+
+        </div>
 
     2.  Decrypt the secret and add the contents to the `clouds.yaml` file by running the following command:
 
@@ -1794,9 +2088,11 @@ Updating control plane machine sets is not supported in RHOSP.
 
         Replace `<file_path>` with the path to the `clouds.yaml` file.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1811,6 +2107,8 @@ Updating control plane machine sets is not supported in RHOSP.
               user_domain_name: "Default"
               project_domain_name: "Default"
         ```
+
+        </div>
 
 2.  Set an environment variable for the location of the `clouds.yaml` file by running the following command:
 
@@ -1877,15 +2175,19 @@ Updating control plane machine sets is not supported in RHOSP.
 
         Setting a descriptive name for your boot image, such as using the Red Hat Enterprise Linux CoreOS (RHCOS) version number in the image name, makes it easier to track which version is currently deployed if you update the cluster in the future.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example command**
+        <div class="title">
+
+        Example command
 
         </div>
 
         ``` terminal
         $ export IMAGE_NAME="rhcos 9.6 boot image"
         ```
+
+        </div>
 
     4.  Upload the image to Glance by using the following command:
 
@@ -1904,9 +2206,11 @@ Updating control plane machine sets is not supported in RHOSP.
 
         It might take several minutes for the image to upload. When the upload is complete, details on the image displays, similar to the following example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1921,15 +2225,19 @@ Updating control plane machine sets is not supported in RHOSP.
         | name             | rhcos 9.6 boot image
         ```
 
+        </div>
+
     5.  Optional: Verify that the image has uploaded and is in active state by running the following command:
 
         ``` terminal
         $ openstack --os-cloud "${CLOUD_NAME}" image show "${IMAGE_NAME}" -f json | jq '{name: .name, status: .status}'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1940,6 +2248,8 @@ Updating control plane machine sets is not supported in RHOSP.
         }
         ```
 
+        </div>
+
 6.  Update each of your compute machine sets to include the new boot image:
 
     1.  Obtain the name of your machine sets for use in the following step by running the following command:
@@ -1948,9 +2258,11 @@ Updating control plane machine sets is not supported in RHOSP.
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -1959,6 +2271,8 @@ Updating control plane machine sets is not supported in RHOSP.
         rhhdrbk-b5564-4pcm9-worker-0         3         3         3       3           123m
         ci-ln-xj96skb-72292-48nm5-worker-d   1         1         1       1           27m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -1973,7 +2287,15 @@ Updating control plane machine sets is not supported in RHOSP.
 
 7.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -2013,9 +2335,11 @@ Updating control plane machine sets is not supported in RHOSP.
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2027,6 +2351,8 @@ Updating control plane machine sets is not supported in RHOSP.
     }
     ```
 
+    </div>
+
     where:
 
     `version`
@@ -2034,15 +2360,22 @@ Updating control plane machine sets is not supported in RHOSP.
 
     After you migrate all machine sets to the new boot image, you can remove the old boot image from Glance.
 
+</div>
+
 # Manually updating the boot image on a vSphere cluster
 
 You can manually update the boot image for your VMware vSphere cluster by configuring your machine sets to use the latest OpenShift Container Platform image as the boot image to ensure that new nodes can scale up properly.
 
 vSphere boot images use a template that you create by uploading a Red Hat Enterprise Linux CoreOS (RHCOS) OVA image to the vSphere vCenter. The template image is used by all machine sets as the boot image. Use the following procedure to identify the correct boot image to use as the new boot image, create the template from the image in vCenter, and modify your compute machine sets to use that template image.
 
-<div class="note">
+> [!NOTE]
+> For clusters that use a default RHCOS image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
 
-For clusters that use a default RHCOS image, you can configure the cluster to automatically update the boot image each time the cluster is updated. If you are using the following procedure, ensure that automatic boot image updates are disabled and skew enforcement is in manual mode. For more information, see "Boot image management" and "Boot image skew enforcement".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -2056,6 +2389,16 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
 - You have downloaded the latest version of the OpenShift Container Platform installation program from the [OpenShift Cluster Manager](https://console.redhat.com/openshift). For more information, see "Obtaining the installation program."
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Obtain the latest boot image to use as the new boot image:
 
     1.  Obtain the name of the new boot image by running the following command:
@@ -2064,9 +2407,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
         $ openshift-install coreos print-stream-json | jq '.architectures.x86_64.artifacts.vmware'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -2083,6 +2428,8 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
           }
         }
         ```
+
+        </div>
 
     2.  Use the URL in the `location` field to download the image.
 
@@ -2124,9 +2471,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
         $ oc get machineset -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -2134,6 +2483,8 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
         NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
         ci-ln-xw7zmyt-72292-x7nqv-worker-a   1         1         1       1           53m
         ```
+
+        </div>
 
     2.  Edit a machine set to update the `image` field in the `providerSpec` stanza to add your boot image by running the following command:
 
@@ -2146,7 +2497,15 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
 4.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
 
@@ -2186,9 +2545,11 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
 
     Replace `<new_node>` with the name of your new node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2200,10 +2561,14 @@ For clusters that use a default RHCOS image, you can configure the cluster to au
     }
     ```
 
+    </div>
+
     where:
 
     `version`
     Specifies the boot image version.
+
+</div>
 
 # Manually updating the boot image on a platform none or external cluster
 
@@ -2211,19 +2576,16 @@ For `platform: None` and `platform: External` clusters, you can manually update 
 
 For these clusters, OpenShift Container Platform does not manage node provisioning or Red Hat Enterprise Linux CoreOS (RHCOS) boot images. These clusters do not use Machine API machine sets.
 
-<div class="note">
-
-The standard boot image management feature is not supported for `platform: None` or `platform: External` clusters.
-
-</div>
+> [!NOTE]
+> The standard boot image management feature is not supported for `platform: None` or `platform: External` clusters.
 
 The method for updating boot images depends on how nodes are added to your cluster as a day-2 operation.
 
-| Method                                                       | Description                                                                                  |
-|--------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| User-provisioned infrastructure clusters                     | Nodes are provisioned manually by a user-managed infrastructure.                             |
+| Method | Description |
+|----|----|
+| User-provisioned infrastructure clusters | Nodes are provisioned manually by a user-managed infrastructure. |
 | Red Hat Advanced Cluster Management (RHACM)-managed clusters | Nodes are added by using a discovery ISO managed by an `InfraEnv` object on the hub cluster. |
-| External provider clusters                                   | Nodes are provisioned by using provider-specific tooling with a user-uploaded RHCOS image.   |
+| External provider clusters | Nodes are provisioned by using provider-specific tooling with a user-uploaded RHCOS image. |
 
 User-provisioned infrastructure
 For user-provisioned infrastructure clusters, you manage boot images as part of your infrastructure. To update the boot image, download the latest RHCOS image for your architecture from [mirror.openshift.com](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/) and update your infrastructure to serve the new image.

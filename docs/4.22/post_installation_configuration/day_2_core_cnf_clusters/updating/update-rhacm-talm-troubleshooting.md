@@ -4,9 +4,27 @@ If a cluster update gets stuck, fails, or results in degraded cluster Operators,
 
 If a `ClusterGroupUpgrade` custom resource (CR) is stuck in the `Preparing` state, the issue is typically related to policy compliance, cluster readiness, or blocking custom resources.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a `ClusterGroupUpgrade` CR that is stuck in `Preparing` state.
 
 - You have access to the Red Hat Advanced Cluster Management (RHACM) hub cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the `ClusterGroupUpgrade` status by running the following command:
 
@@ -30,13 +48,33 @@ If a `ClusterGroupUpgrade` custom resource (CR) is stuck in the `Preparing` stat
 
     Resolve policy compliance issues before the `ClusterGroupUpgrade` CR can proceed.
 
+</div>
+
 # Diagnosing a ClusterGroupUpgrade CR that failed on some clusters
 
 If a `ClusterGroupUpgrade` custom resource (CR) completes but some clusters show a `failed` status, investigate the failed clusters individually to identify the root cause.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a `ClusterGroupUpgrade` CR that shows failed clusters.
 
 - You have access to the Red Hat Advanced Cluster Management (RHACM) hub cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check detailed cluster status in the `ClusterGroupUpgrade` CR by running the following command:
 
@@ -66,15 +104,35 @@ If a `ClusterGroupUpgrade` custom resource (CR) completes but some clusters show
     $ oc --context=<failed_cluster> get events -A --sort-by='.lastTimestamp' | tail -20
     ```
 
+</div>
+
 # Diagnosing degraded cluster Operators during an update
 
 If a cluster Operator becomes degraded during an update, identify the affected Operator and investigate the root cause.
 
 Common Operators that degrade during updates include `authentication`, `console`, `monitoring`, and `network`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a cluster update in progress with one or more degraded Operators.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify degraded Operators by running the following command:
 
@@ -103,13 +161,33 @@ Common Operators that degrade during updates include `authentication`, `console`
     $ oc logs -n openshift-authentication deployment/oauth-openshift
     ```
 
+</div>
+
 # Diagnosing an update stuck in Working towards state
 
 If the cluster version shows a "Working towards" message for an extended period, identify which Operators are blocking the update from completing. Updates typically complete within 90 to 180 minutes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a cluster update that appears stuck in the "Working towards" state.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check `ClusterVersion` status by running the following command:
 
@@ -135,13 +213,33 @@ If the cluster version shows a "Working towards" message for an extended period,
 
     A missing or stalled history entry indicates the update has timed out.
 
+</div>
+
 # Diagnosing worker nodes stuck in NotReady state
 
 If worker nodes show `NotReady` status during an update, common causes include disk pressure, memory pressure, network connectivity issues, and PID pressure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have worker nodes showing `NotReady` status during a cluster update.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify `NotReady` nodes by running the following command:
 
@@ -161,13 +259,33 @@ If worker nodes show `NotReady` status during an update, common causes include d
     $ oc debug node/<node_name> -- chroot /host journalctl -u kubelet -n 100
     ```
 
+</div>
+
 # Diagnosing a stuck worker node update
 
 If worker node updates are stuck, the issue is typically related to pod disruption budgets, machine config daemon failures, or node reboot failures.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a worker node update that is not progressing.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the `MachineConfigPool` resource status by running the following command:
 
@@ -191,13 +309,33 @@ If worker node updates are stuck, the issue is typically related to pod disrupti
     $ oc logs -n openshift-machine-config-operator <machine_config_daemon_pod>
     ```
 
+</div>
+
 # Diagnosing etcd issues during control plane updates
 
 If etcd members become unhealthy during a control plane update, identify the affected members and investigate the root cause before proceeding.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a control plane update with suspected etcd issues.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check etcd cluster health by running the following command:
 
@@ -227,13 +365,33 @@ If etcd members become unhealthy during a control plane update, identify the aff
     $ oc logs -n openshift-etcd <etcd_pod> etcd
     ```
 
+</div>
+
 # Diagnosing image pull failures during updates
 
 If image pull failures occur during an update, common causes include registry connectivity issues, images not mirrored to a disconnected registry, and image pull authentication failures.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have image pull failures during a cluster update.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check image pull status on nodes by running the following command:
 
@@ -247,11 +405,8 @@ If image pull failures occur during an update, common causes include registry co
     $ oc get imagedigestmirrorset
     ```
 
-    <div class="note">
-
-    In OpenShift Container Platform 4.13 and earlier, image mirroring was configured with `ImageContentSourcePolicy` resources. In OpenShift Container Platform 4.14 and later, `ImageDigestMirrorSet` resources replace `ImageContentSourcePolicy`. If your cluster was originally installed on a version earlier than 4.14, check both resource types.
-
-    </div>
+    > [!NOTE]
+    > In OpenShift Container Platform 4.13 and earlier, image mirroring was configured with `ImageContentSourcePolicy` resources. In OpenShift Container Platform 4.14 and later, `ImageDigestMirrorSet` resources replace `ImageContentSourcePolicy`. If your cluster was originally installed on a version earlier than 4.14, check both resource types.
 
 3.  Test image pull from a node by running the following command:
 
@@ -259,13 +414,33 @@ If image pull failures occur during an update, common causes include registry co
     $ oc debug node/<node_name> -- chroot /host podman pull <image_url>
     ```
 
+</div>
+
 # Diagnosing update timeout exceeded
 
 If TALM reports that the update timeout was exceeded, investigate cluster resource utilization, image pull speed, and network latency.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a `ClusterGroupUpgrade` custom resource (CR) that has timed out.
 
 - You have access to the target cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check cluster resource utilization by running the following command:
 
@@ -288,6 +463,8 @@ If TALM reports that the update timeout was exceeded, investigate cluster resour
     ``` terminal
     $ oc patch cgu <cgu_name> -n <namespace> --type merge -p '{"spec":{"remediationStrategy":{"timeout":240}}}'
     ```
+
+</div>
 
 # Resolving a noncompliant policy hold during an update
 
@@ -325,9 +502,27 @@ Fix the issue, then re-create the `ClusterGroupUpgrade` CR to resume the update.
 
 If you cannot resolve the update issue, collect diagnostic information and contact Red Hat support for assistance.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a cluster update issue that you cannot resolve.
 
 - You have access to the target cluster and the Red Hat Advanced Cluster Management (RHACM) hub cluster with cluster-admin privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Collect must-gather data by running the following command:
 
@@ -352,6 +547,8 @@ If you cannot resolve the update issue, collect diagnostic information and conta
     ``` terminal
     $ oc get cgu <cgu_name> -n <namespace> -o yaml > cgu-status.yaml
     ```
+
+</div>
 
 # Additional resources
 

@@ -20,19 +20,31 @@ The SR-IOV Network Operator webhook rejects the creation of an `SriovNetwork` re
 
 Follow this procedure to create an `SriovNetwork` resource in an application namespace and attach a pod to the additional network.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 The following steps must be completed by a cluster administrator before an application owner can configure a namespaced SriovNetwork resource:
+
+</div>
 
 - The SR-IOV Network Operator is installed in the `openshift-sriov-network-operator` namespace.
 
 - Nodes with SR-IOV hardware are labeled for the operator to identify the nodes.
 
 As an application owner you need to have administrator privileges on the application namespace.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Specify the SR-IOV network device configuration for a node by creating an SR-IOV network node policy. The `SriovNetworkNodePolicy` object is created in the `openshift-sriov-network-operator` namespace to define the SR-IOV network device configuration for nodes. Example configuration for Intel DPK is as follows:
 
@@ -124,7 +136,15 @@ As an application owner you need to have administrator privileges on the applica
     $ oc create -f test-pod.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the NetworkAttachmentDefinition has been created in the same namespace by running the following command:
 
@@ -158,3 +178,5 @@ As an application owner you need to have administrator privileges on the applica
     ```
 
     Look for a secondary network interface, for example `net1` or `eth1`, in addition to the default eth0 interface. The `net1` interface should have an IP address from the subnet you defined in the SriovNetwork object, for example `10.0.0.0/24`. This confirms the pod is using the new network attachment definition.
+
+</div>

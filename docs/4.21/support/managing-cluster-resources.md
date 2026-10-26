@@ -4,9 +4,27 @@ To keep consistent behavior across your OpenShift Container Platform cluster, se
 
 To view and edit the global configuration of your OpenShift Container Platform cluster, use the OpenShift CLI (`oc`) to query and change cluster resources.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the web console or you have installed the `oc` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To check which configuration Operators apply to your cluster, run the following command:
 
@@ -31,3 +49,5 @@ To view and edit the global configuration of your OpenShift Container Platform c
     ``` terminal
     $ oc edit <resource_name>.config -o yaml
     ```
+
+</div>

@@ -29,9 +29,11 @@ The ability to intelligently compare a configuration from a cluster with a refer
 
 The `cluster-compare` plugin uses a reference configuration to validate a configuration from a live cluster. The reference configuration consists of a YAML file called `metadata.yaml`, which references a set of templates that represent the baseline configuration.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example directory structure for a reference configuration**
+<div class="title">
+
+Example directory structure for a reference configuration
 
 </div>
 
@@ -49,6 +51,8 @@ The `cluster-compare` plugin uses a reference configuration to validate a config
     ├── clusterResource3.yaml
     └── clusterResource4.yaml
 ```
+
+</div>
 
 where:
 

@@ -1,12 +1,9 @@
 Track the development of the CLI Manager Operator for OpenShift Container Platform, which enables you to install CLI plugins in both connected and disconnected environments.
 
-<div class="important">
-
-Using the CLI Manager Operator to install and manage plugins for the OpenShift CLI is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Using the CLI Manager Operator to install and manage plugins for the OpenShift CLI is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # CLI Manager Operator 0.2.0 (Technology Preview)
 
@@ -38,4 +35,14 @@ The following advisory is available for the CLI Manager Operator 0.1.1:
 
 This release of the CLI Manager updates the Kubernetes version to 1.32.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the CLI Manager Operator](../../cli_reference/cli_manager/index.xml#cli-manager-overview)
+
+</div>

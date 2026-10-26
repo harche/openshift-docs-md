@@ -1,14 +1,42 @@
 You can deploy applications on your OpenShift Container Platform cluster from Operators that a cluster administrator installed. Use the **Installed Operators** page in the web console to create an application from an Operator custom resource (CR) API.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [What are Operators?](../../operators/understanding/olm-what-operators-are.xml#olm-what-operators-are)
+
+</div>
 
 # Creating an etcd cluster using an Operator
 
 You can create an etcd cluster using the etcd Operator in the OpenShift Container Platform web console. The Operator creates the pods, services, and other cluster resources for you.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform 4.17 cluster.
 
 - The etcd Operator already installed cluster-wide by an administrator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new project in the OpenShift Container Platform web console for this procedure. This example uses a project called `my-etcd`.
 
@@ -16,15 +44,12 @@ You can create an etcd cluster using the etcd Operator in the OpenShift Containe
 
     The Operators installed on the cluster by the cluster administrator and available for use are shown here as a list of cluster service versions (CSVs). Each CSV launches and manages the software provided by the Operator.
 
-    <div class="tip">
-
-    You can get this list from the CLI by running the following command:
-
-    ``` terminal
-    $ oc get csv
-    ```
-
-    </div>
+    > [!TIP]
+    > You can get this list from the CLI by running the following command:
+    >
+    > ``` terminal
+    > $ oc get csv
+    > ```
 
 3.  On the **Installed Operators** page, click the etcd Operator to view more details and available actions.
 
@@ -56,10 +81,16 @@ You can create an etcd cluster using the etcd Operator in the OpenShift Containe
 
     Users with the `edit` role in a project can create, manage, and delete Operator-managed application instances, such as an etcd cluster.
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 You have an etcd cluster that reacts to failures and rebalances data as pods become unhealthy or migrate between nodes in the cluster. Cluster administrators or developers with proper access can use the database with their applications.
+
+</div>

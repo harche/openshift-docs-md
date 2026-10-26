@@ -4,6 +4,14 @@ Expand persistent volumes to increase storage capacity as your application data 
 
 To enable volume expansion, the `StorageClass` object must have the `allowVolumeExpansion` field set to `true`. This prerequisite configuration allows persistent volume claims (PVCs) to be expanded after creation as your storage needs grow.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Edit the `StorageClass` object and add the `allowVolumeExpansion` attribute by running the following command:
 
   ``` terminal
@@ -14,9 +22,11 @@ To enable volume expansion, the `StorageClass` object must have the `allowVolume
 
   The following example shows adding this line at the bottom of the storage class configuration.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example storage class YAML file with `allowVolumeExpansion` field set to `true`**
+  <div class="title">
+
+  Example storage class YAML file with `allowVolumeExpansion` field set to `true`
 
   </div>
 
@@ -30,15 +40,24 @@ To enable volume expansion, the `StorageClass` object must have the `allowVolume
   allowVolumeExpansion: true
   ```
 
+  </div>
+
   - `parameters.allowVolumeExpansion`: Setting this field to `true` allows persistent volume claims (PVCs) to be expanded after creation.
+
+</div>
 
 # Expanding CSI volumes
 
 You can use the Container Storage Interface (CSI) to expand storage volumes after they have already been created.
 
-<div class="important">
+> [!IMPORTANT]
+> Shrinking persistent volumes (PVs) is *not* supported.
 
-Shrinking persistent volumes (PVs) is *not* supported.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -52,13 +71,31 @@ Shrinking persistent volumes (PVs) is *not* supported.
 
   For more information, see section *Enabling volume expansion support*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - For the persistent volume claim (PVC), set `.spec.resources.requests.storage` to the desired new size.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To confirm that the resize is finished, look at the `status.conditions` field of the PVC . OpenShift Container Platform adds the `Resizing` condition to the PVC during expansion, which is removed after expansion completes.
+
+</div>
 
 # Expanding FlexVolume with a supported driver
 
@@ -66,9 +103,14 @@ To expand your FlexVolume storage capacity and meet growing data needs, update t
 
 Similar to other volume types, FlexVolume volumes can also be expanded when in use by a pod.
 
-<div class="important">
+> [!IMPORTANT]
+> Because OpenShift Container Platform does not support installation of FlexVolume plugins on control plane nodes, it does not support control plane expansion of FlexVolume.
 
-Because OpenShift Container Platform does not support installation of FlexVolume plugins on control plane nodes, it does not support control plane expansion of FlexVolume.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -84,7 +126,15 @@ Because OpenShift Container Platform does not support installation of FlexVolume
 
   For more information, see section *Enabling volume expansion support*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To use resizing in the FlexVolume plugin, you must implement the `ExpandableVolumePlugin` interface using these methods:
 
@@ -96,9 +146,19 @@ Because OpenShift Container Platform does not support installation of FlexVolume
 
     If `true`, calls `ExpandFS` to resize filesystem after physical volume expansion is done. The volume driver can also perform physical volume resize together with filesystem resize.
 
+</div>
+
 # Expanding local volumes
 
 To expand your Local Storage Operator (LSO) storage capacity and meet growing data needs, update the storage request in your persistent volume (PV) and persistent volume claim (PVC). This increases capacity for existing volumes without recreating them.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Expand the underlying devices. Ensure that appropriate capacity is available on these devices.
 
@@ -108,13 +168,19 @@ To expand your Local Storage Operator (LSO) storage capacity and meet growing da
 
 4.  For the PVC, set `.spec.resources.requests.storage` to match the new size.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 Kubelet should automatically expand the underlying file system on the volume, if necessary, and update the status field of the PVC to reflect the new size.
+
+</div>
 
 # Expanding persistent volume claims (PVCs) with a file system
 
@@ -124,17 +190,35 @@ Expanding persistent volume claims (PVCs) based on volume types that need file s
 
 Expanding the file system on the node only happens when a new pod is started with the volume.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The controlling storage class has the `allowVolumeExpansion` field set to `true`.
 
   For more information, see section *Enabling volume expansion support*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit the PVC and request a new size by editing `spec.resources.requests`. For example, the following expands the `ebs` PVC to 8 Gi:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example PVC YAML file**
+  <div class="title">
+
+  Example PVC YAML file
 
   </div>
 
@@ -152,15 +236,23 @@ Expanding the file system on the node only happens when a new pod is started wit
         storage: 8Gi
   ```
 
+  </div>
+
   Where updating `spec.resources.requests` to a larger amount expands the PVC.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 After the cloud provider object has finished resizing, the PVC is set to `FileSystemResizePending`.
+
+</div>
 
 - Check the condition by running the following command:
 
@@ -168,19 +260,31 @@ After the cloud provider object has finished resizing, the PVC is set to `FileSy
   $ oc describe pvc <pvc_name>
   ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Next steps**
+<div class="title">
+
+Next steps
 
 </div>
 
 When the cloud provider object has finished resizing, the `PersistentVolume` object reflects the newly requested size in `PersistentVolume.Spec.Capacity`. You can now create or recreate a new pod from the PVC to finish the file system resizing. After the pod is running, the newly requested size is available and the `FileSystemResizePending` condition is removed from the PVC.
+
+</div>
 
 # Recovering from failure when expanding volumes
 
 If a resize request fails or remains in a pending state, you can try again by entering a different resize value in `.spec.resources.requests.storage` for the persistent volume claim (PVC). The new value must be larger than the original volume size.
 
 If entering another smaller resize value in `.spec.resources.requests.storage` for the PVC does not work, use the following procedure to recover.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Mark the persistent volume (PV) that is bound to the PVC with the `Retain` reclaim policy. Change the `persistentVolumeReclaimPolicy` field to `Retain`.
 
@@ -193,6 +297,8 @@ If entering another smaller resize value in `.spec.resources.requests.storage` f
 5.  Set the `volumeName` field of the PVC to the name of the PV. This binds the PVC to the provisioned PV only.
 
 6.  Restore the reclaim policy on the PV.
+
+</div>
 
 # Viewing the status of volume resize
 

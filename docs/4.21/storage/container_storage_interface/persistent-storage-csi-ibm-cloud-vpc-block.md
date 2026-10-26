@@ -14,11 +14,21 @@ The IBM Cloud® VPC Block CSI Driver Operator provides three storage classes nam
 IBM Cloud® VPC Block CSI driver
 The IBM Cloud® VPC Block CSI driver enables you to create and mount IBM Cloud® VPC Block PVs.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
 
 - [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)
+
+</div>
 
 # About CSI
 
@@ -36,21 +46,15 @@ This features supports the following storage types:
 
 - Amazon Web Services (AWS) Elastic Block storage (EBS)
 
-  <div class="note">
-
-  If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
-
-  </div>
+  > [!NOTE]
+  > If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
 
   For information about installing AWS EBS with user-managed encryption, see "Optional AWS configuration parameters".
 
 - Microsoft Azure Disk storage
 
-  <div class="note">
-
-  If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
-
-  </div>
+  > [!NOTE]
+  > If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
 
   For information about installing Azure Disk with user-managed encryption, see "Preparing an Azure Disk Encryption Set".
 
@@ -62,8 +66,16 @@ This features supports the following storage types:
 
   For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [User-managed encryption for IBM Cloud](../../installing/installing_ibm_cloud/user-managed-encryption-ibm-cloud.xml#user-managed-encryption-ibm-cloud)
 
 - [Preparing to install on IBM Cloud](../../installing/installing_ibm_cloud/preparing-to-install-on-ibm-cloud.xml#prerequisites_preparing-to-install-on-ibm-cloud)
+
+</div>

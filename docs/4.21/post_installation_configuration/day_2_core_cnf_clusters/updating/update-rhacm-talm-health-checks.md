@@ -6,9 +6,27 @@ You can perform comprehensive health checks before updating clusters to ensure c
 
 Complete these health checks before starting any cluster update to minimize the risk of update failures.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to target clusters with cluster-admin privileges.
 
 - The `oc` CLI tool is installed and configured for the target cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify control plane node readiness by running the following command:
 
@@ -210,6 +228,16 @@ Complete these health checks before starting any cluster update to minimize the 
 
     Nodes should have sufficient headroom for rolling updates. CPU usage should be below 80%, and memory usage should be below 85%.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If cluster Operators are degraded, check Operator logs by running the following command:
 
   ``` terminal
@@ -237,6 +265,8 @@ Complete these health checks before starting any cluster update to minimize the 
   ```
 
   Common causes for `NotReady` nodes include disk pressure, memory pressure, and network connectivity issues.
+
+</div>
 
 # Additional resources
 

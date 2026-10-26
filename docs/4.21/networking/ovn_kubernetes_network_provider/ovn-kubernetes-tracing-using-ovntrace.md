@@ -8,9 +8,27 @@ To run `ovnkube-trace` from your local host against a cluster, you can copy the 
 
 The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traffic between points in an OVN-Kubernetes driven OpenShift Container Platform cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a pod variable by using the following command:
 
@@ -24,11 +42,8 @@ The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traf
     $  oc cp -n openshift-ovn-kubernetes $POD:/usr/bin/ovnkube-trace -c ovnkube-cluster-manager ovnkube-trace
     ```
 
-    <div class="note">
-
-    If you are using Red Hat Enterprise Linux (RHEL) 8 to run the `ovnkube-trace` tool, you must copy the file `/usr/lib/rhel8/ovnkube-trace` to your local host.
-
-    </div>
+    > [!NOTE]
+    > If you are using Red Hat Enterprise Linux (RHEL) 8 to run the `ovnkube-trace` tool, you must copy the file `/usr/lib/rhel8/ovnkube-trace` to your local host.
 
 3.  Make `ovnkube-trace` executable by running the following command:
 
@@ -42,9 +57,11 @@ The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traf
     $  ./ovnkube-trace -help
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -80,6 +97,8 @@ The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traf
             use udp transport protocol
     ```
 
+    </div>
+
     The command-line arguments supported are familiar Kubernetes constructs, such as namespaces, pods, services so you do not need to find the MAC address, the IP address of the destination nodes, or the ICMP type.
 
     The log levels are:
@@ -90,17 +109,37 @@ The `ovnkube-trace` tool traces packet simulations for arbitrary UDP or TCP traf
 
     - 5 (debug output)
 
+</div>
+
 # Running ovnkube-trace
 
 To simulate packet forwarding in an OVN logical network, you can run `ovnkube-trace` with source and destination pods, ports, and log levels.
 
 The examples in the following procedure show DNS resolution and default-deny network policy troubleshooting.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
 
 - You have installed the `ovnkube-trace` binary on your local host.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a web service in the default namespace by entering the following command:
 
@@ -204,15 +243,35 @@ The examples in the following procedure show DNS resolution and default-deny net
 
     The output from this increased log level is too much to list here. In a failure situation the output of this command shows which flow is dropping that traffic. For example an egress or ingress network policy may be configured on the cluster that does not allow that traffic.
 
+</div>
+
 # Testing a default deny policy with ovnkube-trace
 
 To verify that an ingress default deny network policy blocks traffic in OpenShift Container Platform, you can run `ovnkube-trace` with a higher log level and read the ACL debug output. You can add an allow policy for labeled namespaces and confirm that traffic succeeds.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You are logged in to the cluster with a user with `cluster-admin` privileges.
 
 - You have installed the `ovnkube-trace` binary on your local host.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the following YAML that defines a `deny-by-default` policy to deny ingress from all pods in all namespaces. Save the YAML in the `deny-by-default.yaml` file:
 
@@ -233,15 +292,19 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
     $ oc apply -f deny-by-default.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     networkpolicy.networking.k8s.io/deny-by-default created
     ```
+
+    </div>
 
 3.  Start a web service in the `default` namespace by entering the following command:
 
@@ -281,15 +344,19 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
      -loglevel 0
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     ovn-trace source pod to destination pod indicates failure from test-6459 to web
     ```
+
+    </div>
 
 9.  Increase the log level to 2 to expose the reason for the failure by running the following command:
 
@@ -303,9 +370,11 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
      -loglevel 2
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -328,6 +397,8 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
         next;
     ...
     ```
+
+    </div>
 
     where: `ct_commit { ct_mark.blocked = 1; };`:: Specifies that ingress traffic is blocked due to the default deny policy being in place.
 
@@ -370,9 +441,11 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
      -loglevel 0
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -385,15 +458,19 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
     ovn-detrace destination pod to source pod indicates success from web to test-6459
     ```
 
+    </div>
+
 13. Run the following command in the shell that was opened in step six to connect nginx to the web-server:
 
     ``` terminal
     $ wget -qO- --timeout=2 http://web.default
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -424,6 +501,10 @@ To verify that an ingress default deny network policy blocks traffic in OpenShif
     </body>
     </html>
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

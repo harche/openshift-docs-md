@@ -38,11 +38,29 @@ To configure this authentication method, complete the following tasks:
 
 You can use the Google Cloud console to create a workload identity pool and provider and allow an OpenShift Container Platform service account to impersonate a Google Cloud service account.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your Google Cloud cluster uses GCP Workload Identity.
 
 - You have access to the Google Cloud console as a user with privileges to manage Identity and Access Management (IAM) and workload identity configurations.
 
 - You have created a Google Cloud project to use with your application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the IAM configuration for your Google Cloud project, identify the identity pool and provider that the cluster uses for GCP Workload Identity authentication.
 
@@ -50,9 +68,19 @@ You can use the Google Cloud console to create a workload identity pool and prov
 
     For more information, see Google Cloud documentation about [allowing your external workload to access Google Cloud resources](https://cloud.google.com/iam/docs/workload-identity-federation-with-other-clouds#service-account-impersonation).
 
+</div>
+
 ## Create an OpenShift Container Platform service account for Google Cloud
 
 You create an OpenShift Container Platform service account and annotate it to impersonate a Google Cloud service account.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your Google Cloud cluster uses GCP Workload Identity.
 
@@ -61,6 +89,16 @@ You create an OpenShift Container Platform service account and annotate it to im
 - You have access to the OpenShift CLI (`oc`) as a user with the `cluster-admin` role.
 
 - You have access to the Google Cloud CLI (`gcloud`) as a user with privileges to manage Identity and Access Management (IAM) and workload identity configurations.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an OpenShift Container Platform service account to use for GCP Workload Identity pod authentication by running the following command:
 
@@ -76,11 +114,8 @@ You create an OpenShift Container Platform service account and annotate it to im
 
     Replace `<project_number>`, `<identity_pool>`, and `<identity_provider>` with the values for your configuration.
 
-    <div class="note">
-
-    For `<project_number>`, specify the Google Cloud project number, not the project ID.
-
-    </div>
+    > [!NOTE]
+    > For `<project_number>`, specify the Google Cloud project number, not the project ID.
 
 3.  Annotate the service account with the email address for the Google Cloud service account by running the following command:
 
@@ -90,11 +125,8 @@ You create an OpenShift Container Platform service account and annotate it to im
 
     Replace `<service_account_email>` with the email address for the Google Cloud service account.
 
-    <div class="tip">
-
-    Google Cloud service account email addresses typically use the format `<service_account_name>@<project_id>.iam.gserviceaccount.com`
-
-    </div>
+    > [!TIP]
+    > Google Cloud service account email addresses typically use the format `<service_account_name>@<project_id>.iam.gserviceaccount.com`
 
 4.  Annotate the service account to use the `direct` external credentials configuration injection mode by running the following command:
 
@@ -112,6 +144,16 @@ You create an OpenShift Container Platform service account and annotate it to im
 
     Replace `<role_for_workload_permissions>` with the role for the workload. Specify a role that grants the permissions that your workload requires.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify the service account configuration, inspect the `ServiceAccount` manifest by running the following command:
 
   ``` terminal
@@ -120,9 +162,11 @@ You create an OpenShift Container Platform service account and annotate it to im
 
   In the following example, the `service-a/app-x` OpenShift Container Platform service account can impersonate a Google Cloud service account called `app-x`:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -141,6 +185,8 @@ You create an OpenShift Container Platform service account and annotate it to im
       cloud.google.com/injection-mode: "direct"
   ```
 
+  </div>
+
   where:
 
   `metadata.annotations.cloud.google.com/workload-identity-provider`
@@ -155,11 +201,21 @@ You create an OpenShift Container Platform service account and annotate it to im
   `metadata.annotations.cloud.google.com/injection-mode`
   Specifies the `direct` external credentials configuration injection mode.
 
+</div>
+
 ## Deploy customer workloads that authenticate with GCP Workload Identity
 
 To use short-term authentication in your application, you must configure its related pods to use the OpenShift Container Platform service account. Use of the OpenShift Container Platform service account triggers the webhook to mutate the pods so they can impersonate the Google Cloud service account.
 
 The following example demonstrates how to deploy a pod that uses the OpenShift Container Platform service account and verify the configuration.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Your Google Cloud cluster uses GCP Workload Identity.
 
@@ -167,11 +223,23 @@ The following example demonstrates how to deploy a pod that uses the OpenShift C
 
 - You have created an OpenShift Container Platform service account for Google Cloud.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To create a pod that authenticates with GCP Workload Identity, create a deployment YAML file similar to the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample deployment**
+    <div class="title">
+
+    Sample deployment
 
     </div>
 
@@ -201,6 +269,8 @@ The following example demonstrates how to deploy a pod that uses the OpenShift C
                   sleep infinity
     ```
 
+    </div>
+
     Replace \<service_account_name\> with the name of the OpenShift Container Platform service account.
 
 2.  Apply the deployment file by running the following command:
@@ -209,7 +279,15 @@ The following example demonstrates how to deploy a pod that uses the OpenShift C
     $ oc apply -f deployment.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To verify that a pod is using short-term authentication, run the following command:
 
@@ -217,15 +295,19 @@ The following example demonstrates how to deploy a pod that uses the OpenShift C
     $ oc get pods -o json | jq -r '.items[0].spec.containers[0].env[] | select(.name=="GOOGLE_APPLICATION_CREDENTIALS")'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output:**
+    <div class="title">
+
+    Example output:
 
     </div>
 
     ``` terminal
     {   "name": "GOOGLE_APPLICATION_CREDENTIALS",   "value": "/var/run/secrets/workload-identity/federation.json" }
     ```
+
+    </div>
 
     The presence of the `GOOGLE_APPLICATION_CREDENTIALS` environment variable indicates a pod that authenticates with GCP Workload Identity.
 
@@ -302,6 +384,8 @@ The following example demonstrates how to deploy a pod that uses the OpenShift C
 
     `spec.containers.env`
     Specifies the webhook-injected environment variables for token-based authentication.
+
+</div>
 
 # Additional resources
 

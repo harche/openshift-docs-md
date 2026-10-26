@@ -4,11 +4,8 @@ If you already have a container image registry, such as Red Hat Quay, you can s
 
 For more information, see "Red Hat Quay".
 
-<div class="important">
-
-The *mirror registry for Red Hat OpenShift* is not intended to be a substitute for a production deployment of Red Hat Quay.
-
-</div>
+> [!IMPORTANT]
+> The *mirror registry for Red Hat OpenShift* is not intended to be a substitute for a production deployment of Red Hat Quay.
 
 # Prerequisites for creating a mirror registry
 
@@ -31,6 +28,10 @@ The following prerequisites must be met:
 - About 12 GB for OpenShift Container Platform 4.17 release images, or about 358 GB for OpenShift Container Platform 4.17 release images and OpenShift Container Platform 4.17 Red Hat Operator images.
 
   <div class="important">
+
+  <div class="title">
+
+  </div>
 
   - Up to 1 TB per stream or more is suggested.
 
@@ -60,11 +61,8 @@ The following limitations apply to the *mirror registry for Red Hat OpenShift*:
 
 - The *mirror registry for Red Hat OpenShift* is only supported for hosting images that are required to install a disconnected OpenShift Container Platform cluster, such as Release images or Red Hat Operator images. It uses local storage on your Red Hat Enterprise Linux (RHEL) machine, and storage supported by RHEL is supported by the *mirror registry for Red Hat OpenShift*.
 
-  <div class="note">
-
-  Because the *mirror registry for Red Hat OpenShift* uses local storage, you should remain aware of the storage usage consumed when mirroring images and use Red Hat Quay’s garbage collection feature to mitigate potential issues. For more information about this feature, see "Red Hat Quay garbage collection".
-
-  </div>
+  > [!NOTE]
+  > Because the *mirror registry for Red Hat OpenShift* uses local storage, you should remain aware of the storage usage consumed when mirroring images and use Red Hat Quay’s garbage collection feature to mitigate potential issues. For more information about this feature, see "Red Hat Quay garbage collection".
 
 - Support for Red Hat product images that are pushed to the *mirror registry for Red Hat OpenShift* for bootstrapping purposes are covered by valid subscriptions for each respective product. For a list of exceptions to further enable the bootstrap experience, see "Self-managed Red Hat OpenShift sizing and subscription guide".
 
@@ -72,11 +70,19 @@ The following limitations apply to the *mirror registry for Red Hat OpenShift*:
 
 - Using the *mirror registry for Red Hat OpenShift* with more than one cluster is discouraged because multiple clusters can create a single point of failure when updating your cluster fleet. Instead, use the *mirror registry for Red Hat OpenShift* to install a cluster that can host a production-grade, highly-available registry such as Red Hat Quay, which can serve OpenShift Container Platform content to other clusters.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [OpenShift console Downloads](https://console.redhat.com/openshift/downloads#tool-mirror-registry)
 
 - [Self-managed Red Hat OpenShift sizing and subscription guide](https://www.redhat.com/en/resources/self-managed-openshift-sizing-subscription-guide)
+
+</div>
 
 # Configure rootless Podman networking
 
@@ -89,7 +95,25 @@ Error: pasta failed with exit code 1:
 External interface not usable
 ```
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have updated to RHEL 9.5 or Podman 5.0.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use your preferred IDE to modify the `/etc/containers/containers.conf` or `~/.config/containers/container.conf` file.
 
@@ -120,13 +144,20 @@ External interface not usable
     $ podman system migrate
     ```
 
+</div>
+
 # Mirror on a local host with mirror registry for Red Hat OpenShift
 
 You can install the *mirror registry for Red Hat OpenShift* on a local host by using the `mirror-registry` installer tool. By doing so, users can create a local host registry running on port 443 for the purpose of storing a mirror of OpenShift Container Platform images.
 
-<div class="note">
+> [!NOTE]
+> Installing the *mirror registry for Red Hat OpenShift* using the `mirror-registry` CLI tool makes several changes to your machine. After installation, a `$HOME/quay-install` directory is created, which has installation files, local storage, and the configuration bundle. Trusted SSH keys are generated in case the deployment target is the local host, and systemd files on the host machine are set up to ensure that container runtimes are persistent. Additionally, an initial user named `init` is created with an automatically generated password. All access credentials are printed at the end of the install routine.
 
-Installing the *mirror registry for Red Hat OpenShift* using the `mirror-registry` CLI tool makes several changes to your machine. After installation, a `$HOME/quay-install` directory is created, which has installation files, local storage, and the configuration bundle. Trusted SSH keys are generated in case the deployment target is the local host, and systemd files on the host machine are set up to ensure that container runtimes are persistent. Additionally, an initial user named `init` is created with an automatically generated password. All access credentials are printed at the end of the install routine.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -151,43 +182,52 @@ Installing the *mirror registry for Red Hat OpenShift* using the `mirror-regist
 
     You can avoid running `--tls-verify=false` by configuring your system to trust the generated rootCA certificates. See "Securing Red Hat Quay" and "Configuring the system to trust the certificate authority" for more information.
 
-    <div class="note">
-
-    You can also log in by accessing the UI at `https://<host.example.com>:8443` after installation.
-
-    </div>
+    > [!NOTE]
+    > You can also log in by accessing the UI at `https://<host.example.com>:8443` after installation.
 
 4.  You can mirror OpenShift Container Platform images after logging in. Depending on your needs, see either the "Mirroring the OpenShift Container Platform image repository" or the "Mirroring Operator catalogs for use with disconnected clusters" sections of this document.
 
-    <div class="note">
+    > [!NOTE]
+    > If there are issues with images stored by the *mirror registry for Red Hat OpenShift* due to storage layer problems, you can re-mirror the OpenShift Container Platform images, or reinstall mirror registry on more stable storage.
 
-    If there are issues with images stored by the *mirror registry for Red Hat OpenShift* due to storage layer problems, you can re-mirror the OpenShift Container Platform images, or reinstall mirror registry on more stable storage.
-
-    </div>
+</div>
 
 # Updating mirror registry for Red Hat OpenShift from a local host
 
 You can update the *mirror registry for Red Hat OpenShift* from a local host by using the `upgrade` command. Updating to the latest version ensures new features, bug fixes, and security vulnerability fixes.
 
-<div class="important">
+> [!IMPORTANT]
+> When upgrading from version 1 to version 2, be aware of the following constraints:
+>
+> - The worker count is set to `1` because multiple writes are not allowed in SQLite.
+>
+> - You must not use the *mirror registry for Red Hat OpenShift* user interface (UP).
+>
+> - Do not access the `sqlite-storage` Podman volume during the upgrade.
+>
+> - There is intermittent downtime of your mirror registry because it is restarted during the upgrade process.
+>
+> - PostgreSQL data is backed up under the `/$HOME/quay-install/quay-postgres-backup/` directory for recovery.
 
-When upgrading from version 1 to version 2, be aware of the following constraints:
+<div>
 
-- The worker count is set to `1` because multiple writes are not allowed in SQLite.
+<div class="title">
 
-- You must not use the *mirror registry for Red Hat OpenShift* user interface (UP).
-
-- Do not access the `sqlite-storage` Podman volume during the upgrade.
-
-- There is intermittent downtime of your mirror registry because it is restarted during the upgrade process.
-
-- PostgreSQL data is backed up under the `/$HOME/quay-install/quay-postgres-backup/` directory for recovery.
+Prerequisites
 
 </div>
 
 - You have installed the *mirror registry for Red Hat OpenShift* on a local host.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To upgrade the *mirror registry for Red Hat OpenShift* using the existing certificates, enter the following command:
 
@@ -196,6 +236,10 @@ When upgrading from version 1 to version 2, be aware of the following constraint
   ```
 
   <div class="note">
+
+  <div class="title">
+
+  </div>
 
   - Starting with *mirror registry for Red Hat OpenShift* 2.0.11, the `upgrade` command preserves the existing `SERVER_HOSTNAME`, including custom ports, and the `quayRoot`, `quayStorage`, and `sqliteStorage` settings from the current installation. You do not need to pass `--quayHostname`, `--quayRoot`, `--quayStorage`, or `--sqliteStorage` for a standard upgrade. Pass these flags only when you want to override the preserved values.
 
@@ -227,6 +271,10 @@ When upgrading from version 1 to version 2, be aware of the following constraint
 
   <div class="important">
 
+  <div class="title">
+
+  </div>
+
   - If you do not pass SSL flags, the upgrade uses the existing certificates. A warning is displayed if the existing certificates are not found on the target host.
 
   - During a PostgreSQL to SQLite migration, missing certificates block the upgrade before any database changes are made.
@@ -235,15 +283,27 @@ When upgrading from version 1 to version 2, be aware of the following constraint
 
   </div>
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Ensure that *mirror registry for Red Hat OpenShift* has been updated by running the following command:
 
     ``` terminal
     $ podman ps
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -251,13 +311,22 @@ When upgrading from version 1 to version 2, be aware of the following constraint
     registry.redhat.io/quay/quay-rhel8:v3.12.10
     ```
 
+    </div>
+
+</div>
+
 # Mirror on a remote host with mirror registry for Red Hat OpenShift
 
 You can install the *mirror registry for Red Hat OpenShift* on a remote host by using the `mirror-registry` tool. By doing so, users can create a registry to hold a mirror of OpenShift Container Platform images.
 
-<div class="note">
+> [!NOTE]
+> Installing the *mirror registry for Red Hat OpenShift* using the `mirror-registry` CLI tool makes several changes to your machine. After installation, a `$HOME/quay-install` directory is created, which has installation files, local storage, and the configuration bundle. Trusted SSH keys are generated in case the deployment target is the local host, and systemd files on the host machine are set up to ensure that container runtimes are persistent. Additionally, an initial user named `init` is created with an automatically generated password. All access credentials are printed at the end of the install routine.
 
-Installing the *mirror registry for Red Hat OpenShift* using the `mirror-registry` CLI tool makes several changes to your machine. After installation, a `$HOME/quay-install` directory is created, which has installation files, local storage, and the configuration bundle. Trusted SSH keys are generated in case the deployment target is the local host, and systemd files on the host machine are set up to ensure that container runtimes are persistent. Additionally, an initial user named `init` is created with an automatically generated password. All access credentials are printed at the end of the install routine.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -285,43 +354,52 @@ Installing the *mirror registry for Red Hat OpenShift* using the `mirror-regist
 
     You can avoid running `--tls-verify=false` by configuring your system to trust the generated rootCA certificates. See "Securing Red Hat Quay" and "Configuring the system to trust the certificate authority" for more information.
 
-    <div class="note">
-
-    You can also log in by accessing the UI at `https://<host.example.com>:8443` after installation.
-
-    </div>
+    > [!NOTE]
+    > You can also log in by accessing the UI at `https://<host.example.com>:8443` after installation.
 
 4.  You can mirror OpenShift Container Platform images after logging in. Depending on your needs, see either the "Mirroring the OpenShift Container Platform image repository" or the "Mirroring Operator catalogs for use with disconnected clusters" sections of this document.
 
-    <div class="note">
+    > [!NOTE]
+    > If there are issues with images stored by the *mirror registry for Red Hat OpenShift* due to storage layer problems, you can re-mirror the OpenShift Container Platform images, or reinstall mirror registry on more stable storage.
 
-    If there are issues with images stored by the *mirror registry for Red Hat OpenShift* due to storage layer problems, you can re-mirror the OpenShift Container Platform images, or reinstall mirror registry on more stable storage.
-
-    </div>
+</div>
 
 # Updating mirror registry for Red Hat OpenShift from a remote host
 
 You can update the *mirror registry for Red Hat OpenShift* from a remote host by using the `upgrade` command. Updating to the latest version ensures bug fixes and security vulnerability fixes.
 
-<div class="important">
+> [!IMPORTANT]
+> When upgrading from version 1 to version 2, be aware of the following constraints:
+>
+> - The worker count is set to `1` because multiple writes are not allowed in SQLite.
+>
+> - You must not use the *mirror registry for Red Hat OpenShift* user interface (UP).
+>
+> - Do not access the `sqlite-storage` Podman volume during the upgrade.
+>
+> - There is intermittent downtime of your mirror registry because it is restarted during the upgrade process.
+>
+> - PostgreSQL data is backed up under the `/$HOME/quay-install/quay-postgres-backup/` directory for recovery.
 
-When upgrading from version 1 to version 2, be aware of the following constraints:
+<div>
 
-- The worker count is set to `1` because multiple writes are not allowed in SQLite.
+<div class="title">
 
-- You must not use the *mirror registry for Red Hat OpenShift* user interface (UP).
-
-- Do not access the `sqlite-storage` Podman volume during the upgrade.
-
-- There is intermittent downtime of your mirror registry because it is restarted during the upgrade process.
-
-- PostgreSQL data is backed up under the `/$HOME/quay-install/quay-postgres-backup/` directory for recovery.
+Prerequisites
 
 </div>
 
 - You have installed the *mirror registry for Red Hat OpenShift* on a remote host.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To upgrade the *mirror registry for Red Hat OpenShift* from a remote host using the existing certificates, enter the following command:
 
@@ -330,11 +408,8 @@ When upgrading from version 1 to version 2, be aware of the following constraint
     --targetUsername <user_name> -k ~/.ssh/my_ssh_key
   ```
 
-  <div class="note">
-
-  Starting with *mirror registry for Red Hat OpenShift* 2.0.11, the `./mirror-registry upgrade` command preserves the existing `SERVER_HOSTNAME`, including custom ports, and the `quayRoot`, `quayStorage`, and `sqliteStorage` settings from the current installation. You do not need to pass `--quayHostname`, `--quayRoot`, `--quayStorage`, or `--sqliteStorage` for a standard upgrade. Pass these flags only when you want to override the preserved values.
-
-  </div>
+  > [!NOTE]
+  > Starting with *mirror registry for Red Hat OpenShift* 2.0.11, the `./mirror-registry upgrade` command preserves the existing `SERVER_HOSTNAME`, including custom ports, and the `quayRoot`, `quayStorage`, and `sqliteStorage` settings from the current installation. You do not need to pass `--quayHostname`, `--quayRoot`, `--quayStorage`, or `--sqliteStorage` for a standard upgrade. Pass these flags only when you want to override the preserved values.
 
 - Optional: To override preserved hostname, install, or storage paths during upgrade, pass the corresponding flags. For example:
 
@@ -365,6 +440,10 @@ When upgrading from version 1 to version 2, be aware of the following constraint
 
   <div class="important">
 
+  <div class="title">
+
+  </div>
+
   - If you do not pass SSL flags, the upgrade uses the existing certificates. A warning is displayed if the existing certificates are not found on the target host.
 
   - During a PostgreSQL to SQLite migration, missing certificates block the upgrade before any database changes are made.
@@ -373,21 +452,37 @@ When upgrading from version 1 to version 2, be aware of the following constraint
 
   </div>
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Ensure that *mirror registry for Red Hat OpenShift* has been updated by running the following command:
 
     ``` terminal
     $ podman ps
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     registry.redhat.io/quay/quay-rhel8:v3.12.10
     ```
+
+    </div>
+
+</div>
 
 # Replacing mirror registry for Red Hat OpenShift SSL/TLS certificates
 
@@ -401,9 +496,25 @@ Use the following procedure to replace SSL/TLS certificates for the *mirror regi
 
 - If you are periodically updating the *mirror registry for Red Hat OpenShift* certificate.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have downloaded and installed the `./mirror-registry` binary from the [OpenShift console **Downloads**](https://console.redhat.com/openshift/downloads#tool-mirror-registry) page.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enter the following command to install the *mirror registry for Red Hat OpenShift*:
 
@@ -441,13 +552,31 @@ Use the following procedure to replace SSL/TLS certificates for the *mirror regi
     $ systemctl --user restart quay-app
     ```
 
+</div>
+
 # Uninstalling the mirror registry for Red Hat OpenShift
 
 You can uninstall the *mirror registry for Red Hat OpenShift* from your local host.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed *mirror registry for Red Hat OpenShift* on a local host.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Uninstall the *mirror registry for Red Hat OpenShift* from your local host by running the following command:
 
@@ -458,11 +587,17 @@ You can uninstall the *mirror registry for Red Hat OpenShift* from your local h
 
   <div class="note">
 
+  <div class="title">
+
+  </div>
+
   - Deleting the *mirror registry for Red Hat OpenShift* prompts the user before deletion. You can use `--autoApprove` to skip this prompt.
 
   - Users who install the *mirror registry for Red Hat OpenShift* with the `--quayRoot` flag must include the `--quayRoot` flag when uninstalling. For example, if you installed the *mirror registry for Red Hat OpenShift* with `--quayRoot example_directory_name`, you must include that string to properly uninstall the mirror registry.
 
   </div>
+
+</div>
 
 # Mirror registry for Red Hat OpenShift flags
 
@@ -470,24 +605,24 @@ You can use flags when managing the *mirror registry for Red Hat OpenShift*.
 
 The following flags are available for the *mirror registry for Red Hat OpenShift*:
 
-| Flags                    | Description                                                                                                                                                                                                                                                     |
-|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--autoApprove`          | A boolean value that disables interactive prompts. If set to `true`, the `quayRoot` directory is automatically deleted when uninstalling the mirror registry. Defaults to `false` if left unspecified.                                                          |
-| `--initPassword`         | The password of the init user created during Quay installation. Must be at least eight characters and contain no whitespace.                                                                                                                                    |
-| `--initUser string`      | Shows the username of the initial user. Defaults to `init` if left unspecified.                                                                                                                                                                                 |
-| `--no-color`, `-c`       | Allows users to disable color sequences and propagate that to Ansible when running install, uninstall, and upgrade commands.                                                                                                                                    |
-| `--quayHostname`         | The fully-qualified domain name of the mirror registry that clients will use to contact the registry. Equivalent to `SERVER_HOSTNAME` in the Quay `config.yaml`. Must resolve by DNS. Defaults to `<targetHostname>:8443` if left unspecified. <sup>\[1\]</sup> |
-| `--quayStorage`          | The folder where Quay persistent storage data is saved. Defaults to the `quay-storage` Podman volume. Root privileges are required to uninstall.                                                                                                                |
-| `--quayRoot`, `-r`       | The directory where container image layer and configuration data is saved, including `rootCA.key`, `rootCA.pem`, and `rootCA.srl` certificates. Defaults to `$HOME/quay-install` if left unspecified.                                                           |
-| `--sqliteStorage`        | The folder where SQLite database data is saved. Defaults to `sqlite-storage` Podman volume if not specified. Root is required to uninstall.                                                                                                                     |
-| `--ssh-key`, `-k`        | The path of your SSH identity key. Defaults to `~/.ssh/quay_installer` if left unspecified.                                                                                                                                                                     |
-| `--sslCert`              | The path to the SSL/TLS public key / certificate. Defaults to `{quayRoot}/quay-config` and is auto-generated if left unspecified.                                                                                                                               |
-| `--sslCheckSkip`         | Skips the check for the certificate hostname against the `SERVER_HOSTNAME` in the `config.yaml` file. <sup>\[2\]</sup>                                                                                                                                          |
-| `--sslKey`               | The path to the SSL/TLS private key used for HTTPS communication. Defaults to `{quayRoot}/quay-config` and is auto-generated if left unspecified.                                                                                                               |
-| `--targetHostname`, `-H` | The hostname of the target you want to install Quay to. Defaults to `$HOST`, for example, a local host, if left unspecified.                                                                                                                                    |
-| `--targetUsername`, `-u` | The user on the target host which will be used for SSH. Defaults to `$USER`, for example, the current user if left unspecified.                                                                                                                                 |
-| `--verbose`, `-v`        | Shows debug logs and Ansible Playbook outputs.                                                                                                                                                                                                                  |
-| `--version`              | Shows the version for the *mirror registry for Red Hat OpenShift*.                                                                                                                                                                                              |
+| Flags | Description |
+|----|----|
+| `--autoApprove` | A boolean value that disables interactive prompts. If set to `true`, the `quayRoot` directory is automatically deleted when uninstalling the mirror registry. Defaults to `false` if left unspecified. |
+| `--initPassword` | The password of the init user created during Quay installation. Must be at least eight characters and contain no whitespace. |
+| `--initUser string` | Shows the username of the initial user. Defaults to `init` if left unspecified. |
+| `--no-color`, `-c` | Allows users to disable color sequences and propagate that to Ansible when running install, uninstall, and upgrade commands. |
+| `--quayHostname` | The fully-qualified domain name of the mirror registry that clients will use to contact the registry. Equivalent to `SERVER_HOSTNAME` in the Quay `config.yaml`. Must resolve by DNS. Defaults to `<targetHostname>:8443` if left unspecified. <sup>\[1\]</sup> |
+| `--quayStorage` | The folder where Quay persistent storage data is saved. Defaults to the `quay-storage` Podman volume. Root privileges are required to uninstall. |
+| `--quayRoot`, `-r` | The directory where container image layer and configuration data is saved, including `rootCA.key`, `rootCA.pem`, and `rootCA.srl` certificates. Defaults to `$HOME/quay-install` if left unspecified. |
+| `--sqliteStorage` | The folder where SQLite database data is saved. Defaults to `sqlite-storage` Podman volume if not specified. Root is required to uninstall. |
+| `--ssh-key`, `-k` | The path of your SSH identity key. Defaults to `~/.ssh/quay_installer` if left unspecified. |
+| `--sslCert` | The path to the SSL/TLS public key / certificate. Defaults to `{quayRoot}/quay-config` and is auto-generated if left unspecified. |
+| `--sslCheckSkip` | Skips the check for the certificate hostname against the `SERVER_HOSTNAME` in the `config.yaml` file. <sup>\[2\]</sup> |
+| `--sslKey` | The path to the SSL/TLS private key used for HTTPS communication. Defaults to `{quayRoot}/quay-config` and is auto-generated if left unspecified. |
+| `--targetHostname`, `-H` | The hostname of the target you want to install Quay to. Defaults to `$HOST`, for example, a local host, if left unspecified. |
+| `--targetUsername`, `-u` | The user on the target host which will be used for SSH. Defaults to `$USER`, for example, the current user if left unspecified. |
+| `--verbose`, `-v` | Shows debug logs and Ansible Playbook outputs. |
+| `--version` | Shows the version for the *mirror registry for Red Hat OpenShift*. |
 
 1.  `--quayHostname` must be modified if the public DNS name of your system is different from the local hostname. Additionally, the `--quayHostname` flag does not support installation with an IP address. Installation with a hostname is required.
 
@@ -697,11 +832,25 @@ The following services are installed:
 
 - quay-pod.service
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed *mirror registry for Red Hat OpenShift*.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you installed *mirror registry for Red Hat OpenShift* with root privileges, you can get the status information of its systemd services by entering the following command:
 
@@ -714,6 +863,8 @@ The following services are installed:
   ``` terminal
   $ systemctl --user status <service>
   ```
+
+</div>
 
 # Additional resources
 

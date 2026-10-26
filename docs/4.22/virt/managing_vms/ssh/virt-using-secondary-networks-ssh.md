@@ -1,18 +1,12 @@
 You can configure a secondary network, attach a virtual machine (VM) to the secondary network interface, and connect to the DHCP-allocated IP address by using SSH.
 
-<div class="important">
-
-Secondary networks provide excellent performance because the traffic is not handled by the cluster network stack. However, the VMs are exposed directly to the secondary network and are not protected by firewalls. If a VM is compromised, an intruder could gain access to the secondary network. You must configure appropriate security within the operating system of the VM if you use this method.
-
-</div>
+> [!IMPORTANT]
+> Secondary networks provide excellent performance because the traffic is not handled by the cluster network stack. However, the VMs are exposed directly to the secondary network and are not protected by firewalls. If a VM is compromised, an intruder could gain access to the secondary network. You must configure appropriate security within the operating system of the VM if you use this method.
 
 For additional information about networking options, see the Multus and SR-IOV documentation in the "OpenShift Virtualization Tuning & Scaling Guide".
 
-<div class="note">
-
-You can also access a VM attached to a secondary network interface by using the cluster FQDN.
-
-</div>
+> [!NOTE]
+> You can also access a VM attached to a secondary network interface by using the cluster FQDN.
 
 # Prerequisites
 
@@ -20,11 +14,29 @@ You can also access a VM attached to a secondary network interface by using the 
 
 - You created a network attachment definition for a Linux bridge network or the SR-IOV Network Operator created a network attachment definition when you created an `SriovNetwork` object.
 
-# Configuring a VM network interface by using the web console
+# Add a VM network interface in the web console
 
-You can configure a network interface for a virtual machine (VM) by using the OpenShift Container Platform web console.
+You can add a network interface to a virtual machine (VM) from the OpenShift Container Platform web console and attach it to an existing network attachment definition. Restart or live migrate the VM to apply the change.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created a network attachment definition for the network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **VirtualMachines**.
 
@@ -40,15 +52,35 @@ You can configure a network interface for a virtual machine (VM) by using the Op
 
 7.  Restart or live migrate the VM to apply the changes.
 
-# Connecting to a VM attached to a secondary network by using SSH
+</div>
+
+# Connect to a VM on a secondary network by using SSH
 
 You can connect to a virtual machine (VM) attached to a secondary network by using SSH.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You attached a VM to a secondary network with a DHCP server.
 
 - You have an SSH client installed.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Obtain the IP address of the VM by running the following command:
 
@@ -82,3 +114,5 @@ You can connect to a virtual machine (VM) attached to a secondary network by usi
     ``` terminal
     $ ssh cloud-user@10.244.0.37 -i ~/.ssh/id_rsa_cloud-user
     ```
+
+</div>

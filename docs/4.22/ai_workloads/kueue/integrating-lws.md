@@ -6,6 +6,14 @@ The Leader Worker Set Operator allows you to manage multi-node AI/ML inference d
 
 You can configure Red Hat build of Kueue to work with the Leader Worker Set Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Red Hat build of Kueue using the Red Hat Build of Kueue Operator in the software catalog.
 
 - You have installed Leader Worker Set Operator and Operand in the software catalog.
@@ -16,7 +24,15 @@ You can configure Red Hat build of Kueue to work with the Leader Worker Set Ope
 
 - You have installed the cert-manager Operator for Red Hat OpenShift for your cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add `LeaderWorkerSet` to the `config.integrations.framework` section of the Red Hat build of Kueue cluster object, as shown in the following example:
 
@@ -38,7 +54,15 @@ You can configure Red Hat build of Kueue to work with the Leader Worker Set Ope
         - LeaderWorkerSet
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the Leader Worker Set Operator](../../ai_workloads/leader_worker_set/index.xml#lws-about_lws-about)
 
@@ -46,9 +70,19 @@ You can configure Red Hat build of Kueue to work with the Leader Worker Set Ope
 
 - [Installing the cert-manager Operator for Red Hat OpenShift by using the web console](../../security/cert_manager_operator/cert-manager-operator-install.xml#installing-the-cert-manager-operator-for-red-hat-openshift)
 
+</div>
+
 # Running Leader Worker Set Operator with Red Hat build of Kueue
 
 You can add and run the Leader Worker Set Operator to your existing frameworks.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Red Hat build of Kueue using the Red Hat Build of Kueue Operator is installed.
 
@@ -68,11 +102,23 @@ You can add and run the Leader Worker Set Operator to your existing frameworks.
 
   - `Namespace`
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a file named `leaderworkerset.yaml`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of a `LeaderWorkerSet`**
+    <div class="title">
+
+    Example of a `LeaderWorkerSet`
 
     </div>
 
@@ -115,6 +161,8 @@ You can add and run the Leader Worker Set Operator to your existing frameworks.
       startupPolicy: LeaderCreated
     ```
 
+    </div>
+
 2.  Specify the target local queue in the `metadata.labels` section of the `LeaderWorkerSet` configuration.
 
     ``` yaml
@@ -129,8 +177,20 @@ You can add and run the Leader Worker Set Operator to your existing frameworks.
     $ oc apply -f leaderworkerset.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring a cluster queue](../../ai_workloads/kueue/configuring-quotas.xml#configuring-clusterqueues_configuring-quotas)
 
 - [Configuring a resource flavor](../../ai_workloads/kueue/configuring-quotas.xml#configuring-resourceflavors_configuring-quotas)
 
 - [Configuring a local queue](../../ai_workloads/kueue/configuring-quotas.xml#configuring-localqueues_configuring-quotas)
+
+</div>

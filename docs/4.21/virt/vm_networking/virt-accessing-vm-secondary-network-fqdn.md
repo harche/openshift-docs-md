@@ -1,22 +1,37 @@
 You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). You must configure the DNS server, retrieve the cluster FQDN, then connect to the VM by using the `ssh` command.
 
-<div class="important">
+> [!IMPORTANT]
+> Accessing a VM from outside the cluster by using its FQDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Accessing a VM from outside the cluster by using its FQDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-# Configuring a DNS server for secondary networks
+# Configure a DNS server for secondary networks
 
 The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) server and monitoring components when you enable the `deployKubeSecondaryDNS` feature gate in the `HyperConverged` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
 - You configured a load balancer for the cluster.
 
 - You logged in to the cluster with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
@@ -109,9 +124,19 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
     ns.vm.<FQDN>. IN A <kubeSecondaryDNSNameServerIP>
     ```
 
-# Connecting to a VM on a secondary network by using the cluster FQDN
+</div>
+
+# Connect to a secondary network VM by using the FQDN
 
 You can access a running virtual machine (VM) attached to a secondary network interface by using the fully qualified domain name (FQDN) of the cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -128,6 +153,16 @@ You can access a running virtual machine (VM) attached to a secondary network in
   ``` terminal
   $ oc get dnses.config.openshift.io cluster -o json | jq .spec.baseDomain
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve the network interface name from the VM configuration by running the following command:
 
@@ -166,6 +201,8 @@ You can access a running virtual machine (VM) attached to a secondary network in
     ``` terminal
     $ ssh <user_name>@<interface_name>.<vm_name>.<namespace>.vm.<cluster_fqdn>
     ```
+
+</div>
 
 # Additional resources
 

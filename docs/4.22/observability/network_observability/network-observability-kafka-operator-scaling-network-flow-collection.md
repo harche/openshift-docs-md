@@ -20,11 +20,8 @@ For smaller deployments with moderate flow volumes, the default configuration wi
 
 You can install the Kafka Operator as Red Hat AMQ Streams from the Operator Hub. See "Red Hat AMQ Streams".
 
-<div class="note">
-
-To uninstall Kafka, refer to the uninstallation process that corresponds with the method you used to install.
-
-</div>
+> [!NOTE]
+> To uninstall Kafka, refer to the uninstallation process that corresponds with the method you used to install.
 
 # Kafka compression benefits for network flow telemetry
 
@@ -58,11 +55,29 @@ Flow records contain many repeated fields (IP addresses, namespaces, node names)
 
 Configure the compression algorithm for network flow records exported to Kafka to optimize bandwidth and storage. This helps manage the data footprint of high-volume network telemetry.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Network Observability Operator is installed.
 
 - The `FlowCollector` custom resource (CR) is configured to export data to a Kafka topic.
 
 - You have `cluster-admin` permissions to edit the `FlowCollector` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `FlowCollector` custom resource for editing by running the following command:
 
@@ -92,7 +107,15 @@ Configure the compression algorithm for network flow records exported to Kafka t
 
 3.  Save and apply the changes.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Confirm that the eBPF agent pods are running in the cluster by running the following command:
 
@@ -108,27 +131,26 @@ Configure the compression algorithm for network flow records exported to Kafka t
 
     The output shows the compression configuration attribute in the eBPF agent pod logs.
 
+</div>
+
 # Kafka compression codec reference
 
 Compare Kafka compression codecs to choose the optimal algorithm for your environment.
 
 This reference applies to compression configured in both `spec.kafka.compression` for flow collection and `spec.exporters` for flow export.
 
-| Codec    | Compression ratio | CPU cost (producer) | Decompression cost | Notes                                                                 |
-|----------|-------------------|---------------------|--------------------|-----------------------------------------------------------------------|
-| `none`   | 1x                | N/A                 | N/A                | No overhead. Use when CPU is the bottleneck.                          |
-| `lz4`    | 2:1 to 3:1        | Very low            | Very low           | **Recommended default.** Best latency-to-compression ratio trade-off. |
-| `snappy` | 2:1 to 3:1        | Very low            | Very low           | Similar to `lz4`, with a slightly lower compression ratio.            |
-| `zstd`   | 3:1 to 5:1        | Moderate            | Low                | Higher compression ratio. Good for high-throughput clusters.          |
-| `gzip`   | 3:1 to 5:1        | High                | Moderate           | Maximum compression ratio but incurs a significant CPU cost.          |
+| Codec | Compression ratio | CPU cost (producer) | Decompression cost | Notes |
+|----|----|----|----|----|
+| `none` | 1x | N/A | N/A | No overhead. Use when CPU is the bottleneck. |
+| `lz4` | 2:1 to 3:1 | Very low | Very low | **Recommended default.** Best latency-to-compression ratio trade-off. |
+| `snappy` | 2:1 to 3:1 | Very low | Very low | Similar to `lz4`, with a slightly lower compression ratio. |
+| `zstd` | 3:1 to 5:1 | Moderate | Low | Higher compression ratio. Good for high-throughput clusters. |
+| `gzip` | 3:1 to 5:1 | High | Moderate | Maximum compression ratio but incurs a significant CPU cost. |
 
 Kafka compression codec comparison
 
-<div class="note">
-
-The compression ratios and CPU cost estimates are approximate values derived from upstream benchmarks, not from Network Observability-specific measurements. Actual results vary depending on flow record characteristics and batch sizes.
-
-</div>
+> [!NOTE]
+> The compression ratios and CPU cost estimates are approximate values derived from upstream benchmarks, not from Network Observability-specific measurements. Actual results vary depending on flow record characteristics and batch sizes.
 
 # Additional resources
 

@@ -6,11 +6,8 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
 
 With boot source image support, you can deploy persistent VMs with specific architectures and define custom boot images that support heterogeneous clusters.
 
-<div class="important">
-
-If you do not enable boot source image support in a heterogeneous cluster, images might not match the node architecture. As a result, virtual machines might fail to start or might not run as expected. OpenShift Virtualization raises the `HCOMultiArchGoldenImagesDisabled` alert when this feature is not enabled.
-
-</div>
+> [!IMPORTANT]
+> If you do not enable boot source image support in a heterogeneous cluster, images might not match the node architecture. As a result, virtual machines might fail to start or might not run as expected. OpenShift Virtualization raises the `HCOMultiArchGoldenImagesDisabled` alert when this feature is not enabled.
 
 The same image can be used with nodes of different architectures if the boot image supports the required architectures. For example, a boot image that supports both ARM and AMD architectures can be used with both types of nodes.
 
@@ -22,11 +19,8 @@ In a heterogeneous cluster, worker nodes run different CPU architectures, such a
 
 To prevent architecture mismatches, OpenShift Virtualization creates a separate boot source for each supported architecture, each represented by a `DataSource` object.
 
-<div class="important">
-
-If you have a heterogeneous cluster and do not enable the `enableMultiArchBootImageImport` field, VMs might fail to start on nodes with a different architecture than the boot source image.
-
-</div>
+> [!IMPORTANT]
+> If you have a heterogeneous cluster and do not enable the `enableMultiArchBootImageImport` field, VMs might fail to start on nodes with a different architecture than the boot source image.
 
 ## How data sources for boot source images work in heterogeneous clusters
 
@@ -54,11 +48,27 @@ A `DataVolume` created directly from a registry source does not have a default a
 
 You can enable boot source image support for heterogeneous clusters by setting the `enableMultiArchBootImageImport` field to `true` in the `HyperConverged` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enable the `enableMultiArchBootImageImport` field by running the following command:
 
@@ -67,7 +77,15 @@ You can enable boot source image support for heterogeneous clusters by setting t
     -p '{"spec":{"workloadSources":{"enableMultiArchBootImageImport":true}}}'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the field is enabled by running the following command:
 
@@ -78,15 +96,35 @@ You can enable boot source image support for heterogeneous clusters by setting t
 
   The output must be `true`.
 
+</div>
+
 # Modifying a common boot source image in a heterogeneous cluster
 
 You can modify the source of a common boot source image in a heterogeneous cluster by specifying the supported architectures in the `ssp.kubevirt.io/dict.architectures` annotation in the `HyperConverged` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have enabled the `enableMultiArchBootImageImport` field in the `HyperConverged` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -123,6 +161,16 @@ You can modify the source of a common boot source image in a heterogeneous clust
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that architecture-suffixed data sources are created by running the following command:
 
   ``` terminal
@@ -131,15 +179,35 @@ You can modify the source of a common boot source image in a heterogeneous clust
 
   Architecture-suffixed data sources, such as `centos-stream8-amd64` and `centos-stream8-arm64`, should appear in the output.
 
+</div>
+
 # Adding a custom boot source image in a heterogeneous cluster
 
 Add a custom boot source image in a heterogeneous cluster by editing the `HyperConverged` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have enabled the `enableMultiArchBootImageImport` field in the `HyperConverged` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -178,15 +246,22 @@ Add a custom boot source image in a heterogeneous cluster by editing the `HyperC
     `<architecture_list>`
     Specifies a comma-separated list of supported architectures for this image. For example, if the image supports `amd64` and `arm64` architectures, the value would be `"amd64,arm64"`.
 
-    <div class="important">
-
-    Only include architectures that are present on your worker nodes and supported by your registry image. You do not need to list every architecture an image supports. OpenShift Virtualization does not validate the declared architectures.
-
-    The annotation is optional but strongly recommended. Without it, only one boot source is created, and missing annotations trigger `HCOGoldenImageWithNoArchitectureAnnotation`.
-
-    </div>
+    > [!IMPORTANT]
+    > Only include architectures that are present on your worker nodes and supported by your registry image. You do not need to list every architecture an image supports. OpenShift Virtualization does not validate the declared architectures.
+    >
+    > The annotation is optional but strongly recommended. Without it, only one boot source is created, and missing annotations trigger `HCOGoldenImageWithNoArchitectureAnnotation`.
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that architecture-suffixed data sources are created for the custom image by running the following command:
 
@@ -196,17 +271,34 @@ Add a custom boot source image in a heterogeneous cluster by editing the `HyperC
 
   Architecture-suffixed data sources for the custom image should appear in the output.
 
+</div>
+
 # Creating a data volume from a registry source in a heterogeneous cluster
 
 To pull the correct architecture-specific image in a heterogeneous cluster, specify the architecture in the `DataVolume` manifest. This step is only required for data volumes that you create outside the boot source image pipeline.
 
-<div class="note">
+> [!NOTE]
+> Boot source images managed through the `HyperConverged` custom resource (CR) select the correct architecture automatically. You do not need to specify the architecture for those images.
 
-Boot source images managed through the `HyperConverged` custom resource (CR) select the correct architecture automatically. You do not need to specify the architecture for those images.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `DataVolume` manifest and save it as a YAML file:
 
@@ -247,6 +339,16 @@ Boot source images managed through the `HyperConverged` custom resource (CR) sel
     $ oc create -f <datavolume_manifest>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the data volume was created and is importing by running the following command:
 
   ``` terminal
@@ -255,15 +357,19 @@ Boot source images managed through the `HyperConverged` custom resource (CR) sel
 
   The `PHASE` column should show `ImportScheduled`, `ImportInProgress`, or `Succeeded`.
 
+</div>
+
 # Architecture field for standalone virtual machines
 
 To run a standalone VM on a specific architecture in a heterogeneous cluster, set the `spec.template.spec.architecture` field in the `VirtualMachine` manifest. If you do not set this field, the VM defaults to the control-plane architecture.
 
 This field applies to VMs created from container disks, HTTP sources, uploads, or clones. For VMs based on boot source images, the `DataSource` object resolves the architecture automatically.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `VirtualMachine` manifest with the `architecture` field**
+<div class="title">
+
+Example `VirtualMachine` manifest with the `architecture` field
 
 </div>
 
@@ -288,6 +394,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `<architecture>`
@@ -300,9 +408,27 @@ Specifies the container disk image to use for the VM.
 
 If you have a heterogeneous cluster but do not want to enable multiple architecture support, you can modify the workloads node placement in the `HyperConverged` custom resource (CR) to include only nodes with a specific architecture.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -340,6 +466,16 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the node affinity is applied by running the following command:
 
   ``` terminal
@@ -348,3 +484,5 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
   ```
 
   The output should show the node affinity configuration with the architecture you specified.
+
+</div>

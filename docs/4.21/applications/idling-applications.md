@@ -14,17 +14,35 @@ You can use the `oc idle` command to idle a single service, or use the `--resour
 
 Scale down the scalable resources of a specific service to zero replicas to reduce cluster consumption.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To idle a single service, run:
 
     ``` terminal
     $ oc idle <service>
     ```
 
+</div>
+
 ## Idling multiple services
 
 Scale multiple inactive services down to zero replicas to optimize cluster capacity.
 
 Idling multiple services is helpful if an application spans across a set of services within a project, or when idling multiple services in conjunction with a script to idle multiple applications in bulk within the same project.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file containing a list of the services, each on their own line.
 
@@ -34,11 +52,10 @@ Idling multiple services is helpful if an application spans across a set of serv
     $ oc idle --resource-names-file <filename>
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The `idle` command is limited to a single project. For idling applications across a cluster, run the `idle` command for each project individually.
 
-    The `idle` command is limited to a single project. For idling applications across a cluster, run the `idle` command for each project individually.
-
-    </div>
+</div>
 
 # Unidling applications
 
@@ -46,14 +63,21 @@ Restore normal application operations by scaling up the replicas when network tr
 
 Application services become active again when they receive network traffic and are scaled back up to their previous state. This includes both traffic to the services and traffic passing through routes. Applications can also be manually unidled by scaling up the resources.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To scale up a DeploymentConfig, run:
 
   ``` terminal
   $ oc scale --replicas=1 dc <dc_name>
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > Automatic unidling by a router is currently only supported by the default HAProxy router.
 
-  Automatic unidling by a router is currently only supported by the default HAProxy router.
-
-  </div>
+</div>

@@ -69,7 +69,25 @@ test-ns     0s          Warning   IncompatibleVolumeModes   persistentvolumeclai
 
 You can create a virtual machine (VM) by cloning a persistent volume claim (PVC) by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have access to the namespace that contains the source PVC.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to **Virtualization** → **Catalog** in the web console.
 
@@ -86,6 +104,8 @@ You can create a virtual machine (VM) by cloning a persistent volume claim (PVC)
 7.  Click **Next**.
 
 8.  Click **Create VirtualMachine**.
+
+</div>
 
 # Creating a VM from a PVC by using the CLI
 
@@ -108,6 +128,14 @@ When you use OpenShift Data Foundation, the storage profile configures the defau
 After a certain number of clones are created from a persistent volume claim (PVC), a background flattening process begins, which can significantly reduce clone creation performance at scale.
 
 To improve performance when creating hundreds of clones from a single source PVC, use the `VolumeSnapshot` cloning method instead of the default `csi-clone` strategy.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VolumeSnapshot` custom resource (CR) of the source image by using the following content:
 
@@ -133,6 +161,8 @@ To improve performance when creating hundreds of clones from a single source PVC
           name: golden-volumesnapshot
     ```
 
+</div>
+
 ## Cloning a PVC to a data volume
 
 You can clone the persistent volume claim (PVC) of an existing virtual machine (VM) disk to a data volume by using the command line.
@@ -141,11 +171,16 @@ You create a data volume that references the original source PVC. The lifecycle 
 
 Cloning between different volume modes is supported for host-assisted cloning, such as cloning from a block persistent volume (PV) to a file system PV, as long as the source and target PVs belong to the `kubevirt` content type.
 
-<div class="note">
+> [!NOTE]
+> Smart-cloning is faster and more efficient than host-assisted cloning because it uses snapshots to clone PVCs. Smart-cloning is supported by storage providers that support snapshots, such as Red Hat OpenShift Data Foundation.
+>
+> Cloning between different volume modes is not supported for smart-cloning.
 
-Smart-cloning is faster and more efficient than host-assisted cloning because it uses snapshots to clone PVCs. Smart-cloning is supported by storage providers that support snapshots, such as Red Hat OpenShift Data Foundation.
+<div>
 
-Cloning between different volume modes is not supported for smart-cloning.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -181,6 +216,16 @@ Cloning between different volume modes is not supported for smart-cloning.
     provisioner: openshift-storage.rbd.csi.ceph.com
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `DataVolume` manifest as shown in the following example:
 
     ``` yaml
@@ -213,21 +258,38 @@ Cloning between different volume modes is not supported for smart-cloning.
     $ oc create -f <datavolume>.yaml
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > Data volumes prevent a VM from starting before the PVC is prepared. You can create a VM that references the new data volume while the PVC is being cloned.
 
-    Data volumes prevent a VM from starting before the PVC is prepared. You can create a VM that references the new data volume while the PVC is being cloned.
-
-    </div>
+</div>
 
 ## Creating a VM from a cloned PVC by using a data volume template
 
 You can create a virtual machine (VM) that clones the persistent volume claim (PVC) of an existing VM by using a data volume template. This method creates a data volume whose lifecycle is independent on the original VM.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The VM with the source PVC must be powered down.
 
 - You have installed the `virtctl` CLI.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `VirtualMachine` manifest for your VM and save it as a YAML file, for example:
 
@@ -289,6 +351,8 @@ You can create a virtual machine (VM) that clones the persistent volume claim (P
     ``` terminal
     $ oc create -f <vm_manifest_file>.yaml
     ```
+
+</div>
 
 # Additional resources
 

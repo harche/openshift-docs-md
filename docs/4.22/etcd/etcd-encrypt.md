@@ -20,13 +20,10 @@ When you enable etcd encryption, the following OpenShift API server and Kubernet
 
 When you enable etcd encryption, encryption keys are created. You must have these keys to restore from an etcd backup.
 
-<div class="note">
-
-etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
-
-If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
-
-</div>
+> [!NOTE]
+> etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
+>
+> If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
 
 # Supported encryption types
 
@@ -46,29 +43,41 @@ The etcd encryption keys are rotated every 7 days. Up to 10 historical encryptio
 
 Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
-<div class="warning">
-
-Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
-
-After you enable etcd encryption, several changes can occur:
-
-- The etcd encryption might affect the memory consumption of a few resources.
-
-- You might notice a transient effect on backup performance because the leader must serve the backup.
-
-- A disk I/O can affect the node that receives the backup state.
-
-</div>
+> [!WARNING]
+> Do not back up etcd resources until the initial encryption process is completed. If the encryption process is not completed, the backup might be only partially encrypted.
+>
+> After you enable etcd encryption, several changes can occur:
+>
+> - The etcd encryption might affect the memory consumption of a few resources.
+>
+> - You might notice a transient effect on backup performance because the leader must serve the backup.
+>
+> - A disk I/O can affect the node that receives the backup state.
 
 You can encrypt the etcd database in either AES-GCM or AES-CBC encryption.
 
-<div class="note">
+> [!NOTE]
+> To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
 
-To migrate your etcd database from one encryption type to the other, you can modify the API server’s `spec.encryption.type` field. Migration of the etcd data to the new encryption type occurs automatically.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the `APIServer` object:
 
@@ -89,6 +98,16 @@ To migrate your etcd database from one encryption type to the other, you can mod
 3.  Save the file to apply the changes.
 
     The encryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of the etcd database.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
 
@@ -135,11 +154,31 @@ To migrate your etcd database from one encryption type to the other, you can mod
 
   If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
+</div>
+
 # Disable etcd encryption
 
 Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the `APIServer` object:
 
@@ -160,6 +199,16 @@ Disable etcd encryption when you no longer need to encrypt sensitive cluster res
 3.  Save the file to apply the changes.
 
     The decryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
 
@@ -205,3 +254,5 @@ Disable etcd encryption when you no longer need to encrypt sensitive cluster res
   ```
 
   If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+
+</div>

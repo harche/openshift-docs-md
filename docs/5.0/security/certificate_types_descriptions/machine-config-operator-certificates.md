@@ -20,13 +20,10 @@ OpenShift Container Platform installations that use Red Hat Enterprise Linux Co
 
 - For user-provisioned infrastructure installation methods, the Ignition config manifests as a `worker.ign` file created by the `openshift-install` command. For installer-provisioned infrastructure installation methods that use the Machine API Operator, this configuration appears as the `worker-user-data` secret.
 
-<div class="important">
-
-Currently, there is no supported way to block or restrict the machine config server endpoint. The machine config server must be exposed to the network so that newly-provisioned machines, which have no existing configuration or state, are able to fetch their configuration. In this model, the root of trust is the certificate signing requests (CSR) endpoint, which is where the kubelet sends its certificate signing request for approval to join the cluster. Because of this, machine configs should not be used to distribute sensitive information, such as secrets and certificates.
-
-To ensure that the machine config server endpoints, ports 22623 and 22624, are secured in bare metal scenarios, customers must configure proper network policies.
-
-</div>
+> [!IMPORTANT]
+> Currently, there is no supported way to block or restrict the machine config server endpoint. The machine config server must be exposed to the network so that newly-provisioned machines, which have no existing configuration or state, are able to fetch their configuration. In this model, the root of trust is the certificate signing requests (CSR) endpoint, which is where the kubelet sends its certificate signing request for approval to join the cluster. Because of this, machine configs should not be used to distribute sensitive information, such as secrets and certificates.
+>
+> To ensure that the machine config server endpoints, ports 22623 and 22624, are secured in bare metal scenarios, customers must configure proper network policies.
 
 ## Provisioning chain of trust
 
@@ -64,18 +61,25 @@ The MCS CA and MCS certificate are valid for 10 years and are automatically rota
 
 The issued serving certificates are valid for 10 years.
 
-<div class="note">
-
-This automatic certificate rotation applies only to clusters that use machine sets. For clusters that do not use machine sets, such as vSphere user-provisioned infrastructure clusters, you are required to manually rotate these certificates. For more information on manual certificate rotation, see the Red Hat Knowledgebase article *Regenerating CA certificates for the Machine Config Server*.
-
-</div>
+> [!NOTE]
+> This automatic certificate rotation applies only to clusters that use machine sets. For clusters that do not use machine sets, such as vSphere user-provisioned infrastructure clusters, you are required to manually rotate these certificates. For more information on manual certificate rotation, see the Red Hat Knowledgebase article *Regenerating CA certificates for the Machine Config Server*.
 
 ## Customization
 
 You cannot customize the MCO certificates.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the Machine Config Operator](../../machine_configuration/index.xml#about-machine-config-operator_machine-config-overview)
 
 - [About the OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
 
 - [Regenerating CA certificates for the Machine Config Server](https://access.redhat.com/articles/regenerating_cluster_certificates#regenerating-ca-certificates-for-the-machine-config-server-5)
+
+</div>

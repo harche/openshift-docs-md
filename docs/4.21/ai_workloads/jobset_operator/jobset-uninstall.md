@@ -4,11 +4,29 @@ Uninstall the JobSet Operator by using the OpenShift Container Platform web cons
 
 Uninstall the JobSet Operator by using the OpenShift Container Platform web console to remove the Operator instance.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have installed the JobSet Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -32,15 +50,35 @@ Uninstall the JobSet Operator by using the OpenShift Container Platform web cons
 
     3.  In the confirmation dialog, click **Uninstall**.
 
+</div>
+
 # Uninstall JobSet Operator resources
 
 Optionally, after uninstalling the JobSet Operator, you can remove its related resources from your cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - You have uninstalled the JobSet Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -63,3 +101,5 @@ Optionally, after uninstalling the JobSet Operator, you can remove its related r
     3.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) next to the **openshift-jobset-operator** entry and select **Delete Namespace**.
 
     4.  In the confirmation dialog, enter `openshift-jobset-operator` and click **Delete**.
+
+</div>

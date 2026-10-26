@@ -21,7 +21,17 @@ data:
     -----END CERTIFICATE-----
 ```
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
+
+</div>
 
 # Manage proxy certificates during installation
 
@@ -29,15 +39,25 @@ Configure proxy-trusted CA certificates during OpenShift Container Platform inst
 
 The `additionalTrustBundle` value of the installation program configuration is used to specify any proxy-trusted CA certificates during installation.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  View the installation program configuration file by running the following command:
 
     ``` terminal
     $ cat install-config.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -54,11 +74,12 @@ The `additionalTrustBundle` value of the installation program configuration is u
     ...
     ```
 
-    <div class="note">
-
-    Proxy certificates are managed by the system and not by users.
-
     </div>
+
+    > [!NOTE]
+    > Proxy certificates are managed by the system and not by users.
+
+</div>
 
 # Proxy certificate location
 
@@ -70,7 +91,17 @@ Complete proxy support means connecting to the specified proxy and trusting any 
 
 If you use the RHCOS trust bundle, place CA certificates in `/etc/pki/ca-trust/source/anchors`.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using shared system certificates](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/securing_networks/using-shared-system-certificates)
+
+</div>
 
 # Proxy certificate expiration
 
@@ -80,11 +111,8 @@ The user sets the expiration term of the user-provided trust bundle.
 
 The default expiration term is defined by the CA certificate itsself. The CA administrator must configure the default expiration term for the certificate before the certificate can be used by OpenShift Container Platform or RHCOS.
 
-<div class="note">
-
-Red Hat does not monitor when CAs expire. Due to the long life of the CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
-
-</div>
+> [!NOTE]
+> Red Hat does not monitor when CAs expire. Due to the long life of the CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
 
 # Services using proxy certificates
 
@@ -134,8 +162,5 @@ No Operators can auto-renew proxy certificates on RHCOS nodes. You might need to
 
 There are no Operators that can auto-renew certificates on the RHCOS nodes.
 
-<div class="note">
-
-Red Hat does not monitor when CAs expire. Due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.
-
-</div>
+> [!NOTE]
+> Red Hat does not monitor when CAs expire. Due to the long life of CAs, this is generally not an issue. However, you might need to periodically update the trust bundle.

@@ -18,9 +18,14 @@ You can use the `must-gather` tool to collect data about the Custom Metrics Auto
 
 When troubleshooting issues with the Custom Metrics Autoscaler Operator, you can use the `must-gather` tool to collect diagnostic information. The tool gathers resource definitions, pod logs, and configuration details that help identify problems or can be shared with Red Hat Support for assistance.
 
-<div class="note">
+> [!NOTE]
+> The standard OpenShift Container Platform `must-gather` command, `oc adm must-gather`, does not collect Custom Metrics Autoscaler Operator data. You must use the custom command in this procedure.
 
-The standard OpenShift Container Platform `must-gather` command, `oc adm must-gather`, does not collect Custom Metrics Autoscaler Operator data. You must use the custom command in this procedure.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -28,17 +33,24 @@ The standard OpenShift Container Platform `must-gather` command, `oc adm must-ga
 
 - The OpenShift Container Platform CLI (`oc`) installed.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Navigate to the directory where you want to store the `must-gather` data.
 
-    <div class="note">
-
-    If your cluster is using a restricted network, you must take additional steps. If your mirror registry has a trusted CA, you must first add the trusted CA to the cluster. For all clusters on restricted networks, you must import the default `must-gather` image as an image stream by running the following command.
-
-    ``` terminal
-    $ oc import-image is/must-gather -n openshift
-    ```
-
-    </div>
+    > [!NOTE]
+    > If your cluster is using a restricted network, you must take additional steps. If your mirror registry has a trusted CA, you must first add the trusted CA to the cluster. For all clusters on restricted networks, you must import the default `must-gather` image as an image stream by running the following command.
+    >
+    > ``` terminal
+    > $ oc import-image is/must-gather -n openshift
+    > ```
 
 2.  Perform one of the following:
 
@@ -68,9 +80,11 @@ The standard OpenShift Container Platform `must-gather` command, `oc adm must-ga
           $ oc adm must-gather --image-stream=openshift/must-gather --image=${IMAGE}
           ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example must-gather output for the Custom Metric Autoscaler**
+    <div class="title">
+
+    Example must-gather output for the Custom Metric Autoscaler
 
     </div>
 
@@ -154,6 +168,8 @@ The standard OpenShift Container Platform `must-gather` command, `oc adm must-ga
             └── routes.yaml
     ```
 
+    </div>
+
 3.  Create a compressed file from the `must-gather` directory that was created in your working directory. For example, on a computer that uses a Linux operating system, run the following command:
 
     ``` terminal
@@ -163,3 +179,5 @@ The standard OpenShift Container Platform `must-gather` command, `oc adm must-ga
     Replace `must-gather-local.5421342344627712289/` with the actual directory name.
 
 4.  Attach the compressed file to your support case on the [Red Hat Customer Portal](https://access.redhat.com).
+
+</div>

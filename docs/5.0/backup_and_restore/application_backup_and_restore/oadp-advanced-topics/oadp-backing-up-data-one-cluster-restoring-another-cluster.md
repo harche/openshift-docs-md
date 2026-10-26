@@ -22,11 +22,8 @@ You must exclude Operators from the backup of an application for backup and rest
 
 Velero, which OADP is built upon, does not natively support migrating persistent volume snapshots across cloud providers. To migrate volume snapshot data between cloud platforms, you must *either* enable the Velero Restic file system backup option, which backs up volume contents at the file system level, *or* use the OADP Data Mover for CSI snapshots.
 
-<div class="note">
-
-In OADP 1.1 and earlier, the Velero Restic file system backup option is called `restic`. In OADP 1.2 and later, the Velero Restic file system backup option is called `file-system-backup`.
-
-</div>
+> [!NOTE]
+> In OADP 1.1 and earlier, the Velero Restic file system backup option is called `restic`. In OADP 1.2 and later, the Velero Restic file system backup option is called `file-system-backup`.
 
 - You must also use Velero’s File System Backup to migrate data between AWS regions or between Microsoft Azure regions.
 
@@ -34,9 +31,17 @@ In OADP 1.1 and earlier, the Velero Restic file system backup option is called `
 
 - It is theoretically possible to migrate workloads to a destination with a *later* Kubernetes version than the source, but you must consider the compatibility of API groups between clusters for each custom resource. If a Kubernetes version upgrade breaks the compatibility of core or native API groups, you must first update the impacted custom resources.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [File System Backup](https://velero.io/docs/main/file-system-backup/)
+
+</div>
 
 # About determining which pod volumes to back up
 
@@ -66,6 +71,14 @@ Before starting a File System Backup (FSB), you must specify which pod volumes t
 
 Use the opt-in method to specify the exact pod volumes you want to back up using File System Backup (FSB). By applying specific annotations, you can selectively include only the volumes you need, which helps you to manage storage and backup efficiency.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - On each pod that contains one or more volumes that you want to back up, enter the following command:
 
   ``` terminal
@@ -77,6 +90,8 @@ Use the opt-in method to specify the exact pod volumes you want to back up using
 
   `<your_volume_name_x>`
   specifies the name of the xth volume in the pod specification.
+
+</div>
 
 ## Back up pod volumes by using the opt-out method
 
@@ -90,6 +105,14 @@ When using the opt-out approach, all pod volumes are backed up by using File Sys
 
 You can use the opt-out method to specify which volumes **not** to back up. You can do this by using the `backup.velero.io/backup-volumes-excludes` command.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - On each pod that contains one or more volumes that you do not want to back up, run the following command:
 
   ``` terminal
@@ -102,11 +125,10 @@ You can use the opt-out method to specify which volumes **not** to back up. You 
   `<your_volume_name_x>`
   specifies the name of the xth volume in the pod specification.
 
-  <div class="note">
+  > [!NOTE]
+  > You can enable this behavior for all Velero backups by running the `velero install` command with the `--default-volumes-to-fs-backup` flag.
 
-  You can enable this behavior for all Velero backups by running the `velero install` command with the `--default-volumes-to-fs-backup` flag.
-
-  </div>
+</div>
 
 # UID and GID ranges
 
@@ -151,15 +173,43 @@ When you use OADP to restore the namespace, it automatically uses the informatio
 
 For an in-depth discussion of UID and GID ranges in OpenShift Container Platform with an emphasis on overcoming issues in backing up data on one cluster and restoring it on another, see *A Guide to OpenShift and UIDs*.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [A Guide to OpenShift and UIDs](https://cloud.redhat.com/blog/a-guide-to-openshift-and-uids)
 
 - [Resolving overlapping UID ranges in OpenShift namespaces after migration](https://access.redhat.com/articles/6844071)
+
+</div>
 
 # Back up data from one cluster and restore it to another cluster
 
 Review the specific prerequisites and procedure differences to successfully back up data on one cluster and restore it to another. This helps you adapt standard OADP tasks for cross-cluster data recovery.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - All relevant prerequisites for backing up and restoring on your platform (for example, AWS, Microsoft Azure, Google Cloud, and so on), especially the prerequisites for the Data Protection Application (DPA), are described in the relevant sections of this guide.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Make the following additions to the procedures given for your platform:
 
@@ -175,14 +225,10 @@ Review the specific prerequisites and procedure differences to successfully back
       $ velero backup create <backup_name> --default-volumes-to-fs-backup <any_other_options>
       ```
 
-      <div class="note">
+      > [!NOTE]
+      > In OADP 1.2 and later, the Velero Restic option is called `file-system-backup`.
 
-      In OADP 1.2 and later, the Velero Restic option is called `file-system-backup`.
+      > [!IMPORTANT]
+      > Before restoring a CSI back up, edit the `VolumeSnapshotClass` custom resource (CR), and set the `snapshot.storage.kubernetes.io/is-default-class parameter` to false. Otherwise, the restore will partially fail due to the same value in the `VolumeSnapshotClass` in the target cluster for the same drive.
 
-      </div>
-
-      <div class="important">
-
-      Before restoring a CSI back up, edit the `VolumeSnapshotClass` custom resource (CR), and set the `snapshot.storage.kubernetes.io/is-default-class parameter` to false. Otherwise, the restore will partially fail due to the same value in the `VolumeSnapshotClass` in the target cluster for the same drive.
-
-      </div>
+</div>

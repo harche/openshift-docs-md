@@ -6,15 +6,25 @@ You can check the DNS Operator deployment and Cluster Operator status. The DNS O
 
 The DNS Operator implements the `dns` API from the `operator.openshift.io` API group. The Operator deploys CoreDNS using a daemon set, creates a service for the daemon set, and configures the kubelet to instruct pods to use the CoreDNS service IP address for name resolution.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Use the `oc get` command to view the deployment status:
 
     ``` terminal
     $ oc get -n openshift-dns-operator deployment/dns-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -23,15 +33,19 @@ The DNS Operator implements the `dns` API from the `operator.openshift.io` API g
     dns-operator   1/1       1            1           23h
     ```
 
+    </div>
+
 2.  Use the `oc get` command to view the state of the DNS Operator:
 
     ``` terminal
     $ oc get clusteroperator/dns
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -40,7 +54,11 @@ The DNS Operator implements the `dns` API from the `operator.openshift.io` API g
     dns       4.1.15-0.11  True        False         False      92m
     ```
 
+    </div>
+
     `AVAILABLE`, `PROGRESSING`, and `DEGRADED` provide information about the status of the Operator. `AVAILABLE` is `True` when at least 1 pod from the CoreDNS daemon set reports an `Available` status condition, and the DNS service has a cluster IP address.
+
+</div>
 
 # View the default DNS
 
@@ -48,15 +66,25 @@ View the default DNS resource and cluster DNS settings to verify the DNS configu
 
 Every new OpenShift Container Platform installation has a `dns.operator` named `default`.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Use the `oc describe` command to view the default `dns`:
 
     ``` terminal
     $ oc describe dns.operator/default
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -74,6 +102,8 @@ Every new OpenShift Container Platform installation has a `dns.operator` named `
     ...
     ```
 
+    </div>
+
     where:
 
     `Status.Cluster Domain`
@@ -87,6 +117,8 @@ Every new OpenShift Container Platform installation has a `dns.operator` named `
     ``` terminal
     $ oc get networks.config/cluster -o jsonpath='{$.status.serviceNetwork}'
     ```
+
+</div>
 
 # Use DNS forwarding
 
@@ -102,9 +134,14 @@ You can use DNS forwarding to override the default forwarding configuration in t
 
 A DNS forwarding configuration for the default domain can have both the default servers specified in the `/etc/resolv.conf` file and the upstream DNS servers.
 
-<div class="important">
+> [!IMPORTANT]
+> During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on a node. If you modify the `/etc/resolv.conf` file on a host node, the changes do not propagate to the `/etc/resolv.conf` file that exists in a container. You must re-create the container for changes to take effect.
 
-During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on a node. If you modify the `/etc/resolv.conf` file on a host node, the changes do not propagate to the `/etc/resolv.conf` file that exists in a container. You must re-create the container for changes to take effect.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -116,9 +153,11 @@ During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on 
 
   After you issue the previous command, the Operator creates and updates the config map named `dns-default` with additional server configuration blocks based on `spec.servers`. If none of the servers have a zone that matches the query, then name resolution falls back to the upstream DNS servers.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Configuring DNS forwarding**
+  <div class="title">
+
+  Configuring DNS forwarding
 
   </div>
 
@@ -159,6 +198,8 @@ During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on 
   ...
   ```
 
+  </div>
+
   where:
 
   `spec.servers.name`
@@ -194,13 +235,31 @@ During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on 
   `spec.upstreamResolvers.upstreams.port`
   Specifies an optional field to provide a port number. Valid values are between `1` and `65535`; defaults to 853 when omitted.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [CoreDNS forward documentation](https://coredns.io/plugins/forward/)
+
+</div>
 
 # Check DNS Operator status
 
 You can inspect the status and view the details of the DNS Operator by using the `oc describe` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the status of the DNS Operator:
 
@@ -234,9 +293,19 @@ You can inspect the status and view the details of the DNS Operator by using the
       Type:                  Upgradeable
   ```
 
+</div>
+
 # View DNS Operator logs
 
 You can view DNS Operator logs to troubleshoot DNS issues, verify configuration changes, and monitor activity by using the by using the `oc logs` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the logs of the DNS Operator by running the following command:
 
@@ -244,21 +313,28 @@ You can view DNS Operator logs to troubleshoot DNS issues, verify configuration 
   $ oc logs -n openshift-dns-operator deployment/dns-operator -c dns-operator
   ```
 
+</div>
+
 # Setting the CoreDNS log level
 
 Set CoreDNS log levels to control the detail of DNS error logging.
 
 Log levels for CoreDNS and the CoreDNS Operator are set by using different methods. You can configure the CoreDNS log level to determine the amount of detail in logged error messages. The valid values for CoreDNS log level are `Normal`, `Debug`, and `Trace`. The default `logLevel` is `Normal`.
 
-<div class="note">
+> [!NOTE]
+> The CoreDNS error log level is always enabled. The following log level settings report different error responses:
+>
+> - `logLevel`: `Normal` enables the "errors" class: `log . { class error }`.
+>
+> - `logLevel`: `Debug` enables the "denial" class: `log . { class denial error }`.
+>
+> - `logLevel`: `Trace` enables the "all" class: `log . { class all }`.
 
-The CoreDNS error log level is always enabled. The following log level settings report different error responses:
+<div>
 
-- `logLevel`: `Normal` enables the "errors" class: `log . { class error }`.
+<div class="title">
 
-- `logLevel`: `Debug` enables the "denial" class: `log . { class denial error }`.
-
-- `logLevel`: `Trace` enables the "all" class: `log . { class all }`.
+Procedure
 
 </div>
 
@@ -274,7 +350,15 @@ The CoreDNS error log level is always enabled. The following log level settings 
   $ oc patch dnses.operator.openshift.io/default -p '{"spec":{"logLevel":"Trace"}}' --type=merge
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To ensure the desired log level was set, check the config map:
 
@@ -291,9 +375,19 @@ The CoreDNS error log level is always enabled. The following log level settings 
   }
   ```
 
+</div>
+
 # Viewing the CoreDNS logs
 
 You can view CoreDNS pod logs to troubleshoot DNS issues by using the `oc logs` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the logs of a specific CoreDNS pod by entering the following command:
 
@@ -309,6 +403,8 @@ You can view CoreDNS pod logs to troubleshoot DNS issues by using the `oc logs` 
 
   - `<number>`: Specifies the number of DNS pods to stream logs from. The maximum is 6.
 
+</div>
+
 # Setting the CoreDNS Operator log level
 
 You can configure the Operator log level to quickly track down OpenShift DNS issues.
@@ -321,7 +417,13 @@ The valid values for `operatorLogLevel` are `Normal`, `Debug`, and `Trace`. `Tra
 
 - `operatorLogLevel: "Trace"` sets `logrus.SetLogLevel("Trace")`.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To set `operatorLogLevel` to `Debug`, enter the following command:
 
@@ -334,6 +436,16 @@ The valid values for `operatorLogLevel` are `Normal`, `Debug`, and `Trace`. `Tra
   ``` terminal
   $ oc patch dnses.operator.openshift.io/default -p '{"spec":{"operatorLogLevel":"Trace"}}' --type=merge
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To review the resulting change, enter the following command:
 
@@ -354,13 +466,20 @@ The valid values for `operatorLogLevel` are `Normal`, `Debug`, and `Trace`. `Tra
     $ oc logs -n openshift-dns ds/dns-default
     ```
 
+</div>
+
 # Tune the CoreDNS cache
 
 For CoreDNS, you can configure the maximum duration of both successful or unsuccessful caching, also known respectively as positive or negative caching. Tuning the cache duration of DNS query responses can reduce the load for any upstream DNS resolvers.
 
-<div class="warning">
+> [!WARNING]
+> Setting TTL fields to low values could lead to an increased load on the cluster, any upstream resolvers, or both.
 
-Setting TTL fields to low values could lead to an increased load on the cluster, any upstream resolvers, or both.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -372,9 +491,11 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
 
 2.  Modify the time-to-live (TTL) caching values:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Configuring DNS caching**
+    <div class="title">
+
+    Configuring DNS caching
 
     </div>
 
@@ -389,6 +510,8 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
         negativeTTL: 0.5h10m
     ```
 
+    </div>
+
     where:
 
     `spec.cache.positiveTTL`
@@ -397,7 +520,15 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
     `spec.cache.negativeTTL`
     Specifies a string value that is converted to its respective number of seconds by CoreDNS. If this field is omitted, the value is assumed to be `0s` and the cluster uses the internal default value of `30s` as a fallback.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To review the change, look at the config map again by running the following command:
 
@@ -413,7 +544,19 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
             }
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CoreDNS cache](https://coredns.io/plugins/cache/)
+
+</div>
 
 ## Changing the DNS Operator managementState
 
@@ -427,9 +570,14 @@ The following are use cases for changing the DNS Operator `managementState`:
 
 - You are a cluster administrator and have reported an issue with CoreDNS, but need to apply a workaround until the issue is fixed. You can set the `managementState` field of the DNS Operator to `Unmanaged` to apply the workaround.
 
-<div class="note">
+> [!NOTE]
+> You cannot upgrade while the `managementState` is set to `Unmanaged`.
 
-You cannot upgrade while the `managementState` is set to `Unmanaged`.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -444,6 +592,8 @@ You cannot upgrade while the `managementState` is set to `Unmanaged`.
     ``` terminal
     $ oc get dns.operator.openshift.io default -ojsonpath='{.spec.managementState}'
     ```
+
+</div>
 
 ## Control DNS pod placement
 
@@ -463,13 +613,29 @@ The `node-resolver` daemon set must run on every node host because it adds an en
 
 As a cluster administrator, you can use a custom node selector to configure the daemon set for CoreDNS to run or not run on certain nodes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the `oc` CLI.
 
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - Your DNS Operator `managementState` is set to `Managed`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To allow the daemon set for CoreDNS to run on certain nodes, configure a taint and toleration:
 
@@ -525,6 +691,8 @@ As a cluster administrator, you can use a custom node selector to configure the 
 
           - The `spec.nodePlacement.nodeSelector` field in the example ensures that the CoreDNS pods run only on control plane nodes.
 
+</div>
+
 ## Configure DNS forwarding with TLS
 
 Configure DNS forwarding with TLS to secure queries to upstream resolvers.
@@ -533,9 +701,14 @@ When working in a highly regulated environment, you might need the ability to se
 
 Be aware that CoreDNS caches forwarded connections for 10 seconds. CoreDNS will hold a TCP connection open for those 10 seconds if no request is issued.
 
-<div class="note">
+> [!NOTE]
+> With large clusters, ensure that your DNS server is aware that it might get many new connections to hold open because you can initiate a connection per node. Set up your DNS hierarchy accordingly to avoid performance issues.
 
-With large clusters, ensure that your DNS server is aware that it might get many new connections to hold open because you can initiate a connection per node. Set up your DNS hierarchy accordingly to avoid performance issues.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -547,9 +720,11 @@ With large clusters, ensure that your DNS server is aware that it might get many
 
     Cluster administrators can configure transport layer security (TLS) for forwarded DNS queries.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Configuring DNS forwarding with TLS**
+    <div class="title">
+
+    Configuring DNS forwarding with TLS
 
     </div>
 
@@ -587,6 +762,8 @@ With large clusters, ensure that your DNS server is aware that it might get many
           port: 53
     ```
 
+    </div>
+
     where:
 
     `spec.servers.name`
@@ -616,13 +793,18 @@ With large clusters, ensure that your DNS server is aware that it might get many
     `spec.upstreamResolvers.upstreams.port`
     Specifies an optional field to provide a port number. Valid values are between `1` and `65535`; defaults to 853 when omitted.
 
-    <div class="note">
+    > [!NOTE]
+    > If `servers` is undefined or invalid, the config map only contains the default server.
 
-    If `servers` is undefined or invalid, the config map only contains the default server.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the config map:
 
@@ -630,9 +812,11 @@ With large clusters, ensure that your DNS server is aware that it might get many
     $ oc get configmap/dns-default -n openshift-dns -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample DNS ConfigMap based on TLS forwarding example**
+    <div class="title">
+
+    Sample DNS ConfigMap based on TLS forwarding example
 
     </div>
 
@@ -669,6 +853,20 @@ With large clusters, ensure that your DNS server is aware that it might get many
       namespace: openshift-dns
     ```
 
+    </div>
+
     - The `data.Corefile` key contains the Corefile configuration for the DNS server. Changes to the `forwardPlugin` triggers a rolling update of the CoreDNS daemon set.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CoreDNS forward documentation](https://coredns.io/plugins/forward/)
+
+</div>

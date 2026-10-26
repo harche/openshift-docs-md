@@ -1,24 +1,36 @@
 You can disable KMS encryption and migrate to local etcd encryption to simplify operations or resolve external KMS connectivity issues.
 
-<div class="important">
-
-Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kubernetes KMS v2 is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Disable KMS encryption
 
-You can disable external KMS encryption and migrate to local encryption to simplify operations or resolve KMS connectivity issues.
+You can disable KMS encryption and migrate to local encryption or disable encryption entirely to simplify operations or resolve connectivity issues.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have created an etcd backup.
 
-<div class="warning">
+</div>
 
-Re-encryption of all etcd data will occur.
+> [!WARNING]
+> Re-encryption of all etcd data occurs when you change the encryption type.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -28,7 +40,7 @@ Re-encryption of all etcd data will occur.
     $ oc edit apiserver cluster
     ```
 
-2.  Change the encryption configuration:
+2.  Change the encryption type and remove the `kms` section by using the following example:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -40,49 +52,51 @@ Re-encryption of all etcd data will occur.
         type: <encryption>
     ```
 
-    Replace `<encryption>` with `aescbc`, `aesgcm`, or `identity`.
+    Replace `<encryption>` with `aescbc`, `aesgcm`, or `identity`. The `aescbc` and `aesgcm` types use locally managed encryption keys. The `identity` type disables all encryption and stores data as plain text. You must remove the entire `kms` section because the API rejects it when the encryption type is not `KMS`.
 
 3.  Save and exit.
 
-    OpenShift Container Platform automatically migrates etcd data. Migration time depends on etcd size and secret count.
+    OpenShift Container Platform migrates etcd data. The KMS plugin remains as a read-only provider until migration completes.
 
 4.  Monitor the migration progress by entering the following command:
 
     ``` terminal
-    $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}{end}'
+    $ oc get kubeapiserver cluster -o jsonpath='{.status.conditions[?(@.type=="Encrypted")]}' | jq .
     ```
 
-    Wait until the output shows `EncryptionCompleted`.
+    Wait for `reason` to show `EncryptionCompleted`. The `kube-apiserver` is typically the last to complete.
 
-5.  Verify kube-apiserver pods rolled out by entering the following command:
+5.  Verify that the `kube-apiserver` pods have rolled out by entering the following command:
 
     ``` terminal
     $ oc get pods -n openshift-kube-apiserver -l app=openshift-kube-apiserver
     ```
 
-6.  Remove the static pod manifest from each control plane node by running the following command:
+6.  After migration completes, clean up the KMS provider resources by using the following steps:
 
-    ``` terminal
-    $ for node in $(oc get nodes --selector=node-role.kubernetes.io/master -o name | cut -d/ -f2); do
-        echo "Removing static pod from $node..."
-        oc debug node/$node -- chroot /host \
-          rm -f /etc/kubernetes/manifests/vault-kms-plugin.yaml
-      done
-    ```
+    1.  Delete the credential secret by entering the following command:
 
-    The kubelet automatically stops static pods when their manifest is removed from `/etc/kubernetes/manifests/`.
+        ``` terminal
+        $ oc delete secret vault-approle-secret -n openshift-config
+        ```
 
-7.  Clean up the socket directory by running the following command:
+    2.  Optional: Delete the CA bundle config map by entering the following command:
 
-    ``` terminal
-    $ for node in $(oc get nodes --selector=node-role.kubernetes.io/master -o name | cut -d/ -f2); do
-        oc debug node/$node -- chroot /host rm -rf /var/run/kmsplugin
-      done
-    ```
+        ``` terminal
+        $ oc delete configmap vault-ca-bundle -n openshift-config
+        ```
 
-8.  After backup retention period passes, decommission the KMS key.
+    3.  After your backup retention period passes, decommission the KMS key.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the encryption type by entering the following command:
 
@@ -110,7 +124,7 @@ Re-encryption of all etcd data will occur.
         $ oc exec -n openshift-etcd <etcd_pod_name> -- etcdctl get /kubernetes.io/secrets/default/encryption-test --print-value-only | hexdump -C | head -1
         ```
 
-        Output should begin with `k8s:enc:aescbc:v1:`, `k8s:enc:aesgcm:v1:`, or show readable JSON for `identity`.
+        The output begins with `k8s:enc:aescbc:v1:`, `k8s:enc:aesgcm:v1:`, or shows readable JSON for `identity`.
 
     4.  Delete the test secret by entering the following command:
 
@@ -118,11 +132,10 @@ Re-encryption of all etcd data will occur.
         $ oc delete secret encryption-test -n default
         ```
 
-<div class="note">
-
-Do not delete the KMS key until migration completes successfully.
-
 </div>
+
+> [!NOTE]
+> Do not delete the KMS key until migration completes.
 
 # Additional resources
 

@@ -52,10 +52,10 @@ While image tags are primarily used for referencing images in configurations, Op
 
 Image tags are appended to the image name or image stream name by using a colon (`:`) as a separator.
 
-| Context                | Syntax Format               | Example                                                            |
-|------------------------|-----------------------------|--------------------------------------------------------------------|
-| **External Registry**  | `<registry_path>:<tag>`     | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
-| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest`                                                   |
+| Context | Syntax Format | Example |
+|----|----|----|
+| **External Registry** | `<registry_path>:<tag>` | `registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11.59-2` |
+| **Local Image Stream** | `<image_stream_name>:<tag>` | `jenkins:latest` |
 
 # Image IDs
 

@@ -2,23 +2,30 @@ Manage and control virtual machine resource consumption to prevent overcommitmen
 
 Create and manage resource quotas for virtual machines.
 
-# Setting resource quota limits for virtual machines
+# Set resource quota limits for VMs by using the CLI
 
-By default, OpenShift Virtualization automatically manages CPU and memory limits for virtual machines (VMs) if a namespace enforces resource quotas that require limits to be set. The memory limit is automatically set to twice the requested memory and the CPU limit is set to one per vCPU.
+OpenShift Virtualization manages CPU and memory limits for virtual machines (VMs) automatically. If a namespace enforces a resource quota that requires limits, you can customize the memory limit ratio or set limits manually so that your VMs comply with the quota.
+
+By default, the memory limit is set to twice the requested memory and the CPU limit is set to one per vCPU.
 
 You can customize the memory limit ratio for a specific namespace by adding the `alpha.kubevirt.io/auto-memory-limits-ratio` label to the namespace. For example, the following command sets the memory limit ratio to 1.2:
 
 ``` terminal
-$ oc label ns/my-virtualization-project  alpha.kubevirt.io/auto-memory-limits-ratio=1.2
+$ oc label ns/my-virtualization-project alpha.kubevirt.io/auto-memory-limits-ratio=1.2
 ```
 
-<div class="warning">
-
-Avoid managing resource quota limits manually. To prevent misconfigurations or scheduling issues, rely on the automatic resource limit management provided by OpenShift Virtualization unless you have a specific need to override the defaults.
-
-</div>
+> [!WARNING]
+> Avoid managing resource quota limits manually. To prevent misconfigurations or scheduling issues, rely on the automatic resource limit management provided by OpenShift Virtualization unless you have a specific need to override the defaults.
 
 Resource quotas that only use requests automatically work with VMs. If your resource quota uses limits, you must manually set resource limits on VMs. Memory resource limits, defined by the `spec.template.spec.domain.resources.limits.memory` value, must be at least 500 MiB, or 2% larger than the `spec.template.spec.domain.memory.guest` value.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set limits for a VM by editing the `VirtualMachine` manifest. For example:
 
@@ -50,6 +57,8 @@ Resource quotas that only use requests automatically work with VMs. If your reso
     This example configuration is supported because the `spec.template.spec.domain.resources.limits.memory` value is at least `100Mi` larger than the `spec.template.spec.domain.memory.guest` value.
 
 2.  Save the `VirtualMachine` manifest.
+
+</div>
 
 # Additional resources
 

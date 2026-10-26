@@ -85,6 +85,14 @@ To connect primary `ClusterUserDefinedNetwork` (CUDN) custom resource (CR) traff
 
 Use these resources to establish BGP EVPN toward peers on your provider network and to advertise labeled CUDNs that use EVPN transport.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have enabled route advertisements in the Cluster Network Operator configuration. For more information, see "Enabling route advertisements".
 
 - You have set `gatewayConfig.routingViaHost` to `true` and `gatewayConfig.ipForwarding` to `Global` in the Cluster Network Operator configuration. BGP EVPN for primary CUDNs is only supported with this gateway configuration. For more information, see "Configuring a gateway".
@@ -95,11 +103,19 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
 
   - VNIs must be unique and unused across multiple IP-VRF or MAC-VRF instances.
 
-<!-- -->
+</div>
 
 - For Unmanaged `VTEP`:
 
   - The Kubernetes NMState Operator is available if you choose the NNCP option for Unmanaged VTEP addresses.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `FRRConfiguration` object that establishes BGP peering toward your provider network. The manifest must define at least one BGP router in the default VRF that will act as the EVPN underlay. Multiple routers can be defined for redundancy. OVN-Kubernetes reads neighbors from that router to enable EVPN toward the fabric.
 
@@ -175,19 +191,16 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
         `<vtep_cidr>`
         Specifies an IPv4 prefix that includes the VTEP primary address on each participating node. On every such node, configure one IPv4 address from this range as the primary address on an interface. OVN-Kubernetes discovers that address and uses it as the VTEP IP for that node. For how the address is used and how to configure the interface, see the following note.
 
-        <div class="note">
-
-        In `Unmanaged` mode, OVN-Kubernetes does not allocate a VTEP address. Consider the following when configuring the VTEP IP:
-
-        - Each node needs one IPv4 address from `<vtep_cidr>` configured as the primary address of an interface on that node.
-
-        - OVN-Kubernetes discovers the IPv4 address configured on the interface and uses it as the VTEP IP for that node. OVN-Kubernetes then advertises the VTEP IP on the BGP EVPN underlay so that it is reachable from other nodes.
-
-        - Avoid using an interface associated with a physical link carrier when using redundant BGP peering. Instead, use a dummy interface where the IP is configured as the primary address.
-
-        See the following optional step to configure a dummy interface and assign a primary IPv4 address from `<vtep_cidr>` by using the Kubernetes NMState Operator.
-
-        </div>
+        > [!NOTE]
+        > In `Unmanaged` mode, OVN-Kubernetes does not allocate a VTEP address. Consider the following when configuring the VTEP IP:
+        >
+        > - Each node needs one IPv4 address from `<vtep_cidr>` configured as the primary address of an interface on that node.
+        >
+        > - OVN-Kubernetes discovers the IPv4 address configured on the interface and uses it as the VTEP IP for that node. OVN-Kubernetes then advertises the VTEP IP on the BGP EVPN underlay so that it is reachable from other nodes.
+        >
+        > - Avoid using an interface associated with a physical link carrier when using redundant BGP peering. Instead, use a dummy interface where the IP is configured as the primary address.
+        >
+        > See the following optional step to configure a dummy interface and assign a primary IPv4 address from `<vtep_cidr>` by using the Kubernetes NMState Operator.
 
         1.  Optional. Configure a dummy interface with a `NodeNetworkConfigurationPolicy` (NNCP) object from the Kubernetes NMState Operator. Assign a primary IPv4 address on it that falls within the VTEP CIDR. Use the following manifest as a template.
 
@@ -241,9 +254,11 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
         $ oc get vtep
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -251,6 +266,8 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
         NAME                ACCEPTED   REASON
         <evpn_vtep_name>    True       Allocated
         ```
+
+        </div>
 
         If `Accepted` is `False`, check node annotations.
 
@@ -314,9 +331,11 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
             custom-columns='NAME:.metadata.name,ACCEPTED:.status.conditions[?(@.type=="Accepted")].status,REASON:.status.conditions[?(@.type=="Accepted")].reason'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -325,15 +344,14 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
         <routeadvertisements_evpn_name>    True       Accepted
         ```
 
+        </div>
+
         If `Accepted` is `False`, check that the `networkSelectors` field matches an existing `ClusterUserDefinedNetwork` resource, that the `frrConfigurationSelector` object matches an existing `FRRConfiguration` resource, and that the `FRRConfiguration` contains at least a default VRF router with neighbors.
 
 4.  Create a Layer 2 or Layer 3 primary `ClusterUserDefinedNetwork` object.
 
-    <div class="important">
-
-    You cannot retroactively enable EVPN on an existing `ClusterUserDefinedNetwork` object whose specification is immutable. You must create a new `ClusterUserDefinedNetwork` object for EVPN workloads instead.
-
-    </div>
+    > [!IMPORTANT]
+    > You cannot retroactively enable EVPN on an existing `ClusterUserDefinedNetwork` object whose specification is immutable. You must create a new `ClusterUserDefinedNetwork` object for EVPN workloads instead.
 
     1.  Create a Layer 2 primary CUDN object across the EVPN network as a MAC-VRF. Use the following example as a template:
 
@@ -474,9 +492,11 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
             custom-columns='NAME:.metadata.name,ACCEPTED:.status.conditions[?(@.type=="clusteruserdefinednetwork")].status,REASON:.status.conditions[?(@.type=="clusteruserdefinednetwork")].reason'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -485,9 +505,23 @@ Use these resources to establish BGP EVPN toward peers on your provider network 
         <clusteruserdefinednetwork_name>    True       EVPNTransportAccepted
         ```
 
+        </div>
+
         If `Accepted` is `False`, check that the referenced `VTEP` CR exists and is itself accepted.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Ensure that pods in a selected namespace can reach peers on the same CUDN and, where your design allows, endpoints on the external EVPN fabric.
+
+</div>
 
 # Additional resources
 

@@ -4,6 +4,14 @@ You can back up and restore etcd on the management cluster to fix failures.
 
 To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, you can restore etcd by using the snapshot.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Stop all etcd-writer deployments by entering the following command:
 
     ``` terminal
@@ -33,15 +41,14 @@ To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, y
 
 4.  Copy the snapshot data to a location where you can retrieve it later, such as an S3 bucket. See the following example.
 
-    <div class="note">
+    > [!NOTE]
+    > The following example uses signature version 2. If you are in a region that supports signature version 4, such as the `us-east-2` region, use signature version 4. Otherwise, when copying the snapshot to an S3 bucket, the upload fails.
 
-    The following example uses signature version 2. If you are in a region that supports signature version 4, such as the `us-east-2` region, use signature version 4. Otherwise, when copying the snapshot to an S3 bucket, the upload fails.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example**
+    Example
 
     </div>
 
@@ -65,6 +72,8 @@ To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, y
       https://${BUCKET_NAME}.s3.amazonaws.com/${CLUSTER_NAME}-snapshot.db
     ```
 
+    </div>
+
 5.  To restore the snapshot on a new cluster later, save the encryption secret that the hosted cluster references.
 
     1.  Get the secret encryption key by entering the following command:
@@ -74,15 +83,19 @@ To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, y
           -o=jsonpath='{.spec.secretEncryption.aescbc}'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         {"activeKey":{"name":"<hosted_cluster_name>-etcd-encryption-key"}}
         ```
+
+        </div>
 
     2.  Save the secret encryption key by entering the following command:
 
@@ -100,13 +113,19 @@ To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, y
       kube-apiserver openshift-apiserver openshift-oauth-apiserver
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Restore the etcd snapshot.
+
+</div>
 
 # Restoring an etcd snapshot on a hosted cluster
 
@@ -114,13 +133,28 @@ If you have a snapshot of etcd from your hosted cluster, you can restore it. Cur
 
 To restore an etcd snapshot, you change the output from the `create cluster --render` command and define a `restoreSnapshotURL` value in the etcd section of the `HostedCluster` specification.
 
-<div class="important">
+> [!IMPORTANT]
+> If the snapshot that you are restoring is from a hosted cluster with `LoadBalancer` services, the load balancer IPs might no longer be valid. In that case, you must delete and re-create the `LoadBalancer` services.
 
-If the snapshot that you are restoring is from a hosted cluster with `LoadBalancer` services, the load balancer IPs might no longer be valid. In that case, you must delete and re-create the `LoadBalancer` services.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You took an etcd snapshot on a hosted cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the hosted cluster that you backed up in "Taking a snapshot of etcd for a hosted cluster" by entering the following command:
 
@@ -177,15 +211,14 @@ If the snapshot that you are restoring is from a hosted cluster with `LoadBalanc
 
     - `<release_image_reference>` specifies the OpenShift Container Platform release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`. You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
 
-      <div class="note">
+      > [!NOTE]
+      > The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
 
-      The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
+      <div class="formalpara">
 
-      </div>
+      <div class="title">
 
-      <div class="formalpara-title">
-
-      **Example output**
+      Example output
 
       </div>
 
@@ -296,6 +329,8 @@ If the snapshot that you are restoring is from a hosted cluster with `LoadBalanc
         replicas: 0
       ```
 
+      </div>
+
     - `<hosted_cluster_namespace>` specifies the name of the hosted cluster namespace.
 
     - `<path_to_pull_secret>` specifies the path to the pull secret.
@@ -347,6 +382,16 @@ If the snapshot that you are restoring is from a hosted cluster with `LoadBalanc
 
     - `<new_hc_etcd_encryption_key>` specifies the etcd encryption key of the new hosted cluster. Ensure that the secret that you referenced from the `spec.secretEncryption.aescbc` value has the same Advanced Encryption Standard (AES) key that you saved earlier.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the snapshot was restored, enter the following command:
 
   ``` terminal
@@ -354,3 +399,5 @@ If the snapshot that you are restoring is from a hosted cluster with `LoadBalanc
   ```
 
   If you use a high availability deployment, you can also check the `etcd-1` and `etcd-2` containers.
+
+</div>

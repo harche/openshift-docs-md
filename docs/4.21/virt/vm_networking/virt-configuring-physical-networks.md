@@ -1,16 +1,31 @@
 As an OpenShift Container Platform administrator, you can create or configure a physical network in the OpenShift Container Platform web console without using the node network configuration policy (NNCP) page.
 
-<div class="note">
+> [!NOTE]
+> The **Physical networks** page is available when the NMState console plugin is installed. When you use the **Physical networks** page in the web console, the NNCP is generated automatically. If you need more flexibility or require complex settings, use the NNCP page.
 
-The **Physical networks** page is available when the NMState console plugin is installed. When you use the **Physical networks** page in the web console, the NNCP is generated automatically. If you need more flexibility or require complex settings, use the NNCP page.
+# Create a physical network in the web console
+
+You can create physical networks for OpenShift Virtualization using the OpenShift Container Platform web console for direct layer 2 connectivity to your data center.
+
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
-# Creating a physical network by using the OpenShift Container Platform web console
-
-You can create physical networks for OpenShift Virtualization using the OpenShift Container Platform web console to create a network with direct layer 2 connectivity to your data center.
-
 - You are logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Networking** → **Physical networks**.
 
@@ -20,11 +35,8 @@ You can create physical networks for OpenShift Virtualization using the OpenShif
 
 4.  On the **Nodes configuration** page, select either **Apply to all nodes on the cluster** or **Apply to specific subsets of nodes using the nodes selector**.
 
-    <div class="note">
-
-    If you select specific nodes to apply the network to, you can view the matching nodes list to ensure the selection is correct. A validation error is displayed if the selected nodes overlap with another configuration associated with the same network.
-
-    </div>
+    > [!NOTE]
+    > If you select specific nodes to apply the network to, you can view the matching nodes list to ensure the selection is correct. A validation error is displayed if the selected nodes overlap with another configuration associated with the same network.
 
 5.  On the **Uplink connection** page, select the network interface that you want to connect to the physical network:
 
@@ -34,11 +46,8 @@ You can create physical networks for OpenShift Virtualization using the OpenShif
     A single interface
     Select a specific physical network interface from the list.
 
-    <div class="warning">
-
-    If the selected secondary interface has an IP address on some of the nodes, using it removes the IP address and might disrupt network services.
-
-    </div>
+    > [!WARNING]
+    > If the selected secondary interface has an IP address on some of the nodes, using it removes the IP address and might disrupt network services.
 
     Bonding interface
     Configures bonded network interfaces to achieve resilience and higher throughput.
@@ -55,7 +64,15 @@ You can create physical networks for OpenShift Virtualization using the OpenShif
 
 8.  Click **Create**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Networking** → **Physical networks**.
 
@@ -63,11 +80,31 @@ You can create physical networks for OpenShift Virtualization using the OpenShif
 
 3.  Expand the network row to view the associated configurations. Verify that the **Enactment state** is **Available** and that the **Nodes** count matches your expectation.
 
-# Expanding a OpenShift Container Platform physical network to include new nodes
+</div>
+
+# Expand a physical network to include new nodes
 
 You can add one or more OpenShift Container Platform worker nodes to an existing physical network if you want to expand access to that network. Expanding a physical network creates a new configuration under the same logical physical network.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the **Virtualization** perspective, go to **Networking** → **Physical networks**.
 
@@ -75,21 +112,15 @@ You can add one or more OpenShift Container Platform worker nodes to an existing
 
 3.  Click **Configure nodes**. The **Network configuration wizard** is displayed.
 
-    <div class="note">
-
-    The **Physical network name** is predefined. You cannot edit it during this process.
-
-    </div>
+    > [!NOTE]
+    > The **Physical network name** is predefined. You cannot edit it during this process.
 
 4.  Click **Next**.
 
 5.  On the **Nodes configuration** page, select either **Apply to all nodes on the cluster** or **Apply to specific subsets of nodes using the nodes selector**.
 
-    <div class="note">
-
-    If you select specific nodes, you can view the matching nodes list to ensure the selection is correct. A validation error is displayed if the selected nodes overlap with another configuration associated with the same network.
-
-    </div>
+    > [!NOTE]
+    > If you select specific nodes, you can view the matching nodes list to ensure the selection is correct. A validation error is displayed if the selected nodes overlap with another configuration associated with the same network.
 
 6.  On the **Uplink connection** page, select the network interface to connect to the physical network:
 
@@ -99,11 +130,8 @@ You can add one or more OpenShift Container Platform worker nodes to an existing
     A single interface
     Select a specific physical network interface from the list.
 
-    <div class="warning">
-
-    If the selected secondary interface has an IP address on some of the nodes, using removes the IP address and might disrupt network services.
-
-    </div>
+    > [!WARNING]
+    > If the selected secondary interface has an IP address on some of the nodes, using removes the IP address and might disrupt network services.
 
     Bonding interface
     Configures bonded network interfaces to achieve resilience and higher throughput.
@@ -112,11 +140,8 @@ You can add one or more OpenShift Container Platform worker nodes to an existing
 
     2.  Select the **Network interfaces** to bond.
 
-        <div class="note">
-
-        The system displays only the interfaces that all nodes have in common.
-
-        </div>
+        > [!NOTE]
+        > The system displays only the interfaces that all nodes have in common.
 
     3.  Select the **Aggregation mode** from the drop down options.
 
@@ -126,11 +151,31 @@ You can add one or more OpenShift Container Platform worker nodes to an existing
 
 9.  Click **Create**.
 
-# Creating a virtual machine network from a physical network
+</div>
+
+# Create a VM network from a physical network
 
 If your use case does not permit the use of network address translation (NAT), you can give VMs direct layer 2 access by creating a VM network that uses a physical network.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Networking** → **Physical networks**.
 
@@ -145,3 +190,5 @@ If your use case does not permit the use of network address translation (NAT), y
 6.  On the **Project mapping** page, define which projects can access this network.
 
 7.  Click **Create**.
+
+</div>

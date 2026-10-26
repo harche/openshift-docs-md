@@ -1,16 +1,26 @@
 Configure the Network Observability Operator by updating the cluster-wide `FlowCollector` API resource (cluster) to manage component configurations and flow collection settings.
 
-The `FlowCollector` is explicitly created during installation. Since this resource operates cluster-wide, only a single `FlowCollector` is allowed, and it must be named `cluster`. For more information, see the "FlowCollector API reference".
+The `FlowCollector` is explicitly created during installation. Since this resource operates cluster-wide, only a single `FlowCollector` is allowed, and it must be named `cluster`. For more information, see the "\`FlowCollector\` API reference".
 
 # View the FlowCollector resource
 
 View and modify the `FlowCollector` resource in the OpenShift Container Platform web console through the integrated setup, advanced form, or by editing the YAML directly to configure the Network Observability Operator.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Under the **Provided APIs** heading for the **NetObserv Operator**, select **Flow Collector**.
 
 3.  Select **cluster** then select the **YAML** tab. There, you can modify the `FlowCollector` resource to configure the Network Observability Operator.
+
+</div>
 
 ## Example of a FlowCollector resource
 
@@ -77,9 +87,47 @@ Specifies how to configure the connection to Loki, depending on its installation
 `spec.loki.lokistack.namespace`
 Specifies the namespace for the `LokiStack` resource. This value must match the `metadata.namespace` defined in the `LokiStack` custom resource. While this example uses `netobserv-loki`, you can use a different namespace for different components.
 
-- [FlowCollector API reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [`FlowCollector` API reference](../../observability/network_observability/network-observability-api-reference.xml#flowcollector-api_network_observability)
 
 - [Working with conversation tracking](../../observability/network_observability/observing-network-traffic.xml#network-observability-working-with-conversations_nw-observe-network-traffic)
+
+</div>
+
+# OpenShift TLS security profile support
+
+The Network Observability Operator automatically inherits the cluster-wide TLS security profile configuration from OpenShift Container Platform, applying consistent encryption standards to managed components when TLS is enabled.
+
+The Network Observability Operator reads the TLS security profile from the `APIServer` configuration and applies the profile’s minimum TLS version, cipher suites, and cryptographic curve preferences to its internal servers and managed components when TLS is enabled for those components.
+
+This feature does not enable TLS. This feature ensures that components with TLS enabled use the cluster’s security profile. No manual configuration is required. The Network Observability Operator manages this automatically.
+
+## Affected components
+
+The TLS security profile applies to the following network observability components:
+
+- Operator metrics and webhook servers
+
+- eBPF agent
+
+- `flowlogs-pipeline`
+
+- Console plugin
+
+When the TLS security profile changes, the Network Observability Operator automatically restarts to load the updated settings and reconciles the affected managed workloads. These workloads might undergo a rolling update to apply the new TLS configuration.
+
+## Expected behavior during TLS profile changes
+
+When the cluster TLS security profile changes, the API server rolls out the new configuration across the control plane. During this rollout, network observability components might temporarily report a degraded status, and flow collection or access to flows might be interrupted.
+
+This occurs because the Network Observability Operator and its managed components restart to apply the updated TLS settings while the cluster reconciles the new security profile. Normal operation resumes after the rollout completes and all components have restarted with the new TLS configuration.
 
 # Grant permissions for custom namespace and secret access
 
@@ -99,9 +147,14 @@ Complete only the procedures that apply to your configuration. If you do not mee
 
 Create cluster role bindings for the Network Observability Operator service accounts when you deploy in a namespace other than the default `netobserv` namespace.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not modify the existing default bindings. They are overwritten during Operator upgrades. Create new bindings as shown.
 
-Do not modify the existing default bindings. They are overwritten during Operator upgrades. Create new bindings as shown.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -110,6 +163,16 @@ Do not modify the existing default bindings. They are overwritten during Operato
 - You have `cluster-admin` privileges.
 
 - You configured `spec.namespace` in the `FlowCollector` resource to a namespace other than `netobserv`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Replace `<namespace>` with the namespace you configured in `spec.namespace` of the `FlowCollector` resource.
 
@@ -147,7 +210,15 @@ Do not modify the existing default bindings. They are overwritten during Operato
           --serviceaccount=<namespace>:netobserv-plugin
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the `FlowCollector` status for errors by running the following command:
 
@@ -157,25 +228,42 @@ Do not modify the existing default bindings. They are overwritten during Operato
 
 2.  Verify that no conditions report permission-related errors.
 
-    <div class="note">
+    > [!NOTE]
+    > If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
+    >
+    > ``` terminal
+    > $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
+    > ```
 
-    If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
-
-    ``` terminal
-    $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
-    ```
-
-    </div>
+</div>
 
 ## Grant access to Kafka secrets
 
 Grant the Network Observability Operator permission to access Kafka secrets when you use the Kafka deployment model with TLS or mTLS enabled.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The Network Observability Operator is installed.
 
 - You have `cluster-admin` privileges.
 
 - You configured the `FlowCollector` resource with `spec.deploymentModel: Kafka` and TLS or mTLS enabled.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Replace `<namespace>` with the namespace configured in `spec.namespace` of the `FlowCollector` resource. The default value is `netobserv`.
 
@@ -226,7 +314,15 @@ Grant the Network Observability Operator permission to access Kafka secrets when
           --serviceaccount=openshift-netobserv-operator:netobserv-controller-manager
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the `FlowCollector` status for errors by running the following command:
 
@@ -236,25 +332,42 @@ Grant the Network Observability Operator permission to access Kafka secrets when
 
 2.  Verify that no conditions report permission-related errors.
 
-    <div class="note">
+    > [!NOTE]
+    > If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
+    >
+    > ``` terminal
+    > $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
+    > ```
 
-    If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
-
-    ``` terminal
-    $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
-    ```
-
-    </div>
+</div>
 
 ## Grant access to LokiStack secrets
 
 Grant the Network Observability Operator permission to access the `LokiStack` secret when `LokiStack` is installed in a namespace other than `netobserv`.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The Network Observability Operator is installed.
 
 - You have `cluster-admin` privileges.
 
 - You use the Loki Operator with `LokiStack` installed in a namespace other than `netobserv`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Replace `<lokistack_namespace>` with the namespace where `LokiStack` is installed and `<namespace>` with the namespace configured in `spec.namespace` of the `FlowCollector` resource.
 
@@ -276,7 +389,15 @@ Grant the Network Observability Operator permission to access the `LokiStack` se
           --serviceaccount=openshift-netobserv-operator:netobserv-controller-manager
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the `FlowCollector` status for errors by running the following command:
 
@@ -286,15 +407,14 @@ Grant the Network Observability Operator permission to access the `LokiStack` se
 
 2.  Verify that no conditions report permission-related errors.
 
-    <div class="note">
+    > [!NOTE]
+    > If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
+    >
+    > ``` terminal
+    > $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
+    > ```
 
-    If the `FlowCollector` status continues to show permission errors after you grant the required permissions, restart the Network Observability Operator pod for faster reconciliation:
-
-    ``` terminal
-    $ oc delete pods -n openshift-netobserv-operator -l app=netobserv-operator
-    ```
-
-    </div>
+</div>
 
 # Configure the FlowCollector resource with Kafka
 
@@ -302,7 +422,25 @@ Configure the `FlowCollector` resource to use Kafka for high-throughput and low-
 
 You must have a running Kafka instance and create a Kafka topic in that instance dedicated to OpenShift Container Platform Network Observability. For more information, see [Kafka documentation with AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html/using_amq_streams_on_openshift/using-the-topic-operator-str).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Kafka. Red Hat supports Kafka with AMQ Streams Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -312,9 +450,11 @@ You must have a running Kafka instance and create a Kafka topic in that instance
 
 4.  Change the `FlowCollector` resource for OpenShift Container Platform Network Observability Operator to use Kafka, as shown in the following sample YAML:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample Kafka configuration in `FlowCollector` resource**
+    <div class="title">
+
+    Sample Kafka configuration in `FlowCollector` resource
 
     </div>
 
@@ -332,6 +472,8 @@ You must have a running Kafka instance and create a Kafka topic in that instance
           enable: false
     ```
 
+    </div>
+
     where:
 
     `spec.deploymentModel`
@@ -346,6 +488,8 @@ You must have a running Kafka instance and create a Kafka topic in that instance
     `spec.kafka.tls`
     Specifies communication encryption. Use this setting to encrypt all communications to and from Kafka with TLS or mTLS. When enabled, the Kafka CA certificate must be available as a ConfigMap or a Secret in both namespaces: the namespace where you deploy the `flowlogs-pipeline` processor component (default: `netobserv`) and the namespace where you deploy the eBPF agents (default: `netobserv-privileged`). Reference the certificate by using `spec.kafka.tls.caCert`. When you use mTLS, make the client secrets available in these namespaces as well. You can generate the secrets by using the Red Hat AMQ Streams User Operator. Reference the secrets by using `spec.kafka.tls.userCert`.
 
+</div>
+
 # Export enriched network flow data
 
 Configure the `FlowCollector` resource to export enriched network flow data simultaneously to Kafka, IPFIX, or an OpenTelemetry endpoint for external consumption by tools like Splunk or Prometheus.
@@ -356,7 +500,25 @@ For OpenTelemetry, network flow data and metrics can be exported to a compatible
 
 After configuration, network flows data can be sent to an available output. For more information, see "Network flows format reference".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your Kafka, IPFIX, or OpenTelemetry collector endpoints are available from Network Observability `flowlogs-pipeline` pods.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -430,17 +592,39 @@ After configuration, network flows data can be sent to an available output. For 
     `spec.exporters.openTelemetry.fieldsMapping`
     Specifies an optional mapping to customize the OpenTelemetry format output. Network Observability flow formats are automatically renamed to an OpenTelemetry-compliant format, but this parameter allows for custom overrides. For example in the YAML sample, `SrcAddr` is the Network Observability input field, and it is being renamed to `source.address` in OpenTelemetry output. You can see both Network Observability and OpenTelemetry formats in the "Network flows format reference".
 
-- [Network flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Network flows format reference](../../observability/network_observability/network-observability-api-reference.xml#network-flows-format_network_observability)
+
+</div>
 
 # Update the FlowCollector resource
 
 As an alternative to using the web console, use the `oc patch` command with the `flowcollector` custom resource to quickly update specific specifications, such as eBPF sampling
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to patch the `flowcollector` CR and update the `spec.agent.ebpf.sampling` value:
 
     ``` terminal
     $ oc patch flowcollector cluster --type=json -p "[{"op": "replace", "path": "/spec/agent/ebpf/sampling", "value": <new value>}] -n netobserv"
     ```
+
+</div>
 
 # Filter network flows at ingestion
 
@@ -470,20 +654,22 @@ Flowlogs-pipeline filters use a simple query language to filter network flow, as
 
 The query language uses the following syntax:
 
-| Category                                       | Operators                                                                                                                                                    |
-|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Logical boolean operators (not case-sensitive) | `and`, `or`                                                                                                                                                  |
-| Comparison operators                           | `=` (equals), `!=` (not equals), `=~` (matches regexp), `!~` (not matches regexp), `<` / `<=` (less than or equal to), `>` / `>=` (greater than or equal to) |
-| Unary operations                               | `with(field)` (field is present), `without(field)` (field is absent)                                                                                         |
-| Parenthesis-based priority                     | N/A                                                                                                                                                          |
+| Category | Operators |
+|----|----|
+| Logical boolean operators (not case-sensitive) | `and`, `or` |
+| Comparison operators | `=` (equals), `!=` (not equals), `=~` (matches regexp), `!~` (not matches regexp), `<` / `<=` (less than or equal to), `>` / `>=` (greater than or equal to) |
+| Unary operations | `with(field)` (field is present), `without(field)` (field is absent) |
+| Parenthesis-based priority | N/A |
 
 Query language syntax
 
 You can configure flowlogs-pipeline filters in the `spec.processor.filters` section of the `FlowCollector` resource. For example:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example YAML Flowlogs-pipeline filter**
+<div class="title">
+
+Example YAML Flowlogs-pipeline filter
 
 </div>
 
@@ -503,6 +689,8 @@ spec:
         sampling: 10
 ```
 
+</div>
+
 where:
 
 `spec.processor.filters.outputTarget`
@@ -511,7 +699,17 @@ Specifies the output destination for matching flows, such as `Loki`, `Prometheus
 `spec.processor.filters.sampling`
 Specifies an optional sampling interval to limit the number of matching flows stored or exported. For example, a value of `10` means there is a 1 in 10 chance that a flow is kept.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Filtering eBPF flow data using multiple rules](../network_observability/observing-network-traffic.xml#network-observability-filtering-ebpf-rule_nw-observe-network-traffic)
+
+</div>
 
 # Configure quick filters
 
@@ -519,26 +717,23 @@ Use the list of available source, destination, and universal filter keys to modi
 
 Exact matches are possible using double-quotes around values. Otherwise, partial matches are used for textual values. The bang (!) character, placed at the end of a key, means negation. See the sample `FlowCollector` resource for more context about modifying the YAML.
 
-<div class="note">
-
-The filter matching types "all of" or "any of" is a UI setting that the users can modify from the query options. It is not part of this resource configuration.
-
-</div>
+> [!NOTE]
+> The filter matching types "all of" or "any of" is a UI setting that the users can modify from the query options. It is not part of this resource configuration.
 
 Here is a list of all available filter keys:
 
-| Universal\*  | Source             | Destination        | Description                                                                                                                                                                                                                                                             |
-|--------------|--------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| namespace    | `src_namespace`    | `dst_namespace`    | Filter traffic related to a specific namespace.                                                                                                                                                                                                                         |
-| name         | `src_name`         | `dst_name`         | Filter traffic related to a given leaf resource name, such as a specific pod, service, or node (for host-network traffic).                                                                                                                                              |
-| kind         | `src_kind`         | `dst_kind`         | Filter traffic related to a given resource kind. The resource kinds include the leaf resource (Pod, Service or Node), or the owner resource (Deployment and StatefulSet).                                                                                               |
-| owner_name   | `src_owner_name`   | `dst_owner_name`   | Filter traffic related to a given resource owner; that is, a workload or a set of pods. For example, it can be a Deployment name, a StatefulSet name, etc.                                                                                                              |
-| resource     | `src_resource`     | `dst_resource`     | Filter traffic related to a specific resource that is denoted by its canonical name, that identifies it uniquely. The canonical notation is `kind.namespace.name` for namespaced kinds, or `node.name` for nodes. For example, `Deployment.my-namespace.my-web-server`. |
-| address      | `src_address`      | `dst_address`      | Filter traffic related to an IP address. IPv4 and IPv6 are supported. CIDR ranges are also supported.                                                                                                                                                                   |
-| mac          | `src_mac`          | `dst_mac`          | Filter traffic related to a MAC address.                                                                                                                                                                                                                                |
-| port         | `src_port`         | `dst_port`         | Filter traffic related to a specific port.                                                                                                                                                                                                                              |
-| host_address | `src_host_address` | `dst_host_address` | Filter traffic related to the host IP address where the pods are running.                                                                                                                                                                                               |
-| protocol     | N/A                | N/A                | Filter traffic related to a protocol, such as TCP or UDP.                                                                                                                                                                                                               |
+| Universal\* | Source | Destination | Description |
+|----|----|----|----|
+| namespace | `src_namespace` | `dst_namespace` | Filter traffic related to a specific namespace. |
+| name | `src_name` | `dst_name` | Filter traffic related to a given leaf resource name, such as a specific pod, service, or node (for host-network traffic). |
+| kind | `src_kind` | `dst_kind` | Filter traffic related to a given resource kind. The resource kinds include the leaf resource (Pod, Service or Node), or the owner resource (Deployment and StatefulSet). |
+| owner_name | `src_owner_name` | `dst_owner_name` | Filter traffic related to a given resource owner; that is, a workload or a set of pods. For example, it can be a Deployment name, a StatefulSet name, etc. |
+| resource | `src_resource` | `dst_resource` | Filter traffic related to a specific resource that is denoted by its canonical name, that identifies it uniquely. The canonical notation is `kind.namespace.name` for namespaced kinds, or `node.name` for nodes. For example, `Deployment.my-namespace.my-web-server`. |
+| address | `src_address` | `dst_address` | Filter traffic related to an IP address. IPv4 and IPv6 are supported. CIDR ranges are also supported. |
+| mac | `src_mac` | `dst_mac` | Filter traffic related to a MAC address. |
+| port | `src_port` | `dst_port` | Filter traffic related to a specific port. |
+| host_address | `src_host_address` | `dst_host_address` | Filter traffic related to the host IP address where the pods are running. |
+| protocol | N/A | N/A | Filter traffic related to a protocol, such as TCP or UDP. |
 
 Filter keys
 
@@ -585,19 +780,19 @@ The test beds used for these recommendations are:
 
 - Large: 250-node cluster, 16 vCPUs and 64 GiB memory per worker, `LokiStack` size `1x.medium`, tested on AWS M6i instances. In addition to the worker and controller nodes, three infrastructure nodes (size `M6i.12xlarge`) and one workload node (size `M6i.8xlarge`) were tested.
 
-| Criterion                                                                    | Extra small (10 nodes) | Small (25 nodes)    | Large (250 nodes)   |
-|------------------------------------------------------------------------------|------------------------|---------------------|---------------------|
-| **Operator memory limit: `Subscription` `spec.config.resources`**            | `400Mi` (default)      | `400Mi` (default)   | `400Mi` (default)   |
-| **eBPF agent sampling interval: `FlowCollector` `spec.agent.ebpf.sampling`** | `50` (default)         | `50` (default)      | `50` (default)      |
-| **eBPF agent memory limit: `FlowCollector` `spec.agent.ebpf.resources`**     | `800Mi` (default)      | `800Mi` (default)   | `1600Mi`            |
-| **eBPF agent cache size: `FlowCollector` `spec.agent.ebpf.cacheMaxSize`**    | `50,000`               | `120,000` (default) | `120,000` (default) |
-| **Processor memory limit: `FlowCollector` `spec.processor.resources`**       | `800Mi` (default)      | `800Mi` (default)   | `800Mi` (default)   |
-| **Processor replicas: `FlowCollector` `spec.processor.consumerReplicas`**    | `3` (default)          | `6`                 | `18`                |
-| **Deployment model: `FlowCollector` `spec.deploymentModel`**                 | `Service` (default)    | `Kafka`             | `Kafka`             |
-| **Kafka partitions: Kafka installation**                                     | N/A                    | `48`                | `48`                |
-| **Kafka brokers: Kafka installation**                                        | N/A                    | `3` (default)       | `3` (default)       |
+| Criterion | Extra small (10 nodes) | Small (25 nodes) | Large (250 nodes) |
+|----|----|----|----|
+| **Operator memory limit: `Subscription` `spec.config.resources`** | `400Mi` (default) | `400Mi` (default) | `400Mi` (default) |
+| **eBPF agent sampling interval: `FlowCollector` `spec.agent.ebpf.sampling`** | `50` (default) | `50` (default) | `50` (default) |
+| **eBPF agent memory limit: `FlowCollector` `spec.agent.ebpf.resources`** | `800Mi` (default) | `800Mi` (default) | `1600Mi` |
+| **eBPF agent cache size: `FlowCollector` `spec.agent.ebpf.cacheMaxSize`** | `50,000` | `120,000` (default) | `120,000` (default) |
+| **Processor memory limit: `FlowCollector` `spec.processor.resources`** | `800Mi` (default) | `800Mi` (default) | `800Mi` (default) |
+| **Processor replicas: `FlowCollector` `spec.processor.consumerReplicas`** | `3` (default) | `6` | `18` |
+| **Deployment model: `FlowCollector` `spec.deploymentModel`** | `Service` (default) | `Kafka` | `Kafka` |
+| **Kafka partitions: Kafka installation** | N/A | `48` | `48` |
+| **Kafka brokers: Kafka installation** | N/A | `3` (default) | `3` (default) |
 
-Resource recommendations for cluster sizes
+Resource recommendations for cluster sizes {#network-observability-resource-recommendations-table_network_observability}
 
 ## Total average memory and CPU usage
 
@@ -611,25 +806,32 @@ The following table outlines averages of total resource usage for clusters with 
 
 Since different types of cluster use cases are exemplified in the different tests, the numbers in this table do not scale linearly when compared side-by-side. Instead, they are intended to be used as a benchmark for evaluating your personal cluster usage. The examples outlined in the table demonstrate scenarios that are tailored to specific workloads. Consider each example only as a baseline from which adjustments can be made to accommodate your workload needs.
 
-<div class="note">
+> [!NOTE]
+> Metrics exported to Prometheus can impact the resource usage. Cardinality values for the metrics can help determine how much resources are impacted. For more information, see "Network Flows format" in the Additional resources section.
 
-Metrics exported to Prometheus can impact the resource usage. Cardinality values for the metrics can help determine how much resources are impacted. For more information, see "Network Flows format" in the Additional resources section.
-
-</div>
-
-| Sampling value                     | Resources used            | Test 1 (25 nodes) | Test 2 (250 nodes) |
-|------------------------------------|---------------------------|-------------------|--------------------|
-| **Sampling = 50**                  | Total NetObserv CPU Usage | 1.35              | 5.39               |
-| Total NetObserv RSS (Memory) Usage | 16 GB                     | 63 GB             |                    |
-| **Sampling = 1**                   | Total NetObserv CPU Usage | 1.82              | 11.99              |
-| Total NetObserv RSS (Memory) Usage | 22 GB                     | 87 GB             |                    |
+| Sampling value | Resources used | Test 1 (25 nodes) | Test 2 (250 nodes) |
+|----|----|----|----|
+| **Sampling = 50** | Total NetObserv CPU Usage | 1.35 | 5.39 |
+| Total NetObserv RSS (Memory) Usage | 16 GB | 63 GB |  |
+| **Sampling = 1** | Total NetObserv CPU Usage | 1.82 | 11.99 |
+| Total NetObserv RSS (Memory) Usage | 22 GB | 87 GB |  |
 
 Total average resource usage
 
 Summary: This table shows average total resource usage of Network Observability, which includes Agents, FLP, Kafka, and Loki with all features enabled. For details about what features are enabled, see the features covered in "Observing the network traffic", which comprises all the features that are enabled for this testing.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Observing the network traffic from the traffic flows view](../network_observability/observing-network-traffic.xml#network-observability-trafficflow_nw-observe-network-traffic)
 
 - [Network observability without Loki](../network_observability/installing-operators.xml#network-observability-without-loki_network_observability)
 
-- [Network Flows format reference](../network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
+- [Network Flows format reference](../network_observability/network-observability-api-reference.xml#network-flows-format_network_observability)
+
+</div>

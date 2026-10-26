@@ -1,18 +1,38 @@
 You can delete Operators that were previously installed with Operator Lifecycle Manager (OLM) on your OpenShift Container Platform cluster.
 
-<div class="important">
-
-You must successfully and completely uninstall an Operator prior to attempting to reinstall the same Operator. Failure to fully uninstall the Operator properly can leave resources, such as a project or namespace, stuck in a "Terminating" state and cause "error resolving resource" messages to be observed when trying to reinstall the Operator.
-
-For more information, see "Reinstalling Operators after failed uninstallation".
-
-</div>
+> [!IMPORTANT]
+> You must successfully and completely uninstall an Operator prior to attempting to reinstall the same Operator. Failure to fully uninstall the Operator properly can leave resources, such as a project or namespace, stuck in a "Terminating" state and cause "error resolving resource" messages to be observed when trying to reinstall the Operator.
+>
+> For more information, see "Reinstalling Operators after failed uninstallation".
 
 # Deleting Operators from a cluster using the web console
 
 Cluster administrators can delete installed Operators from a selected namespace by using the web console.
 
+> [!WARNING]
+> Failed Operator installations do not automatically remove created permissions. Audit and remove remaining permissions to secure the namespace.
+>
+> For more information, see [Audit and secure delegated Operator installations (Red Hat Knowledgebase)](https://access.redhat.com/articles/7149230).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster web console using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
@@ -24,19 +44,41 @@ Cluster administrators can delete installed Operators from a selected namespace 
 
 4.  Select **Uninstall** to remove the Operator, Operator deployments, and pods. Following this action, the Operator stops running and no longer receives updates.
 
-    <div class="note">
+    > [!NOTE]
+    > This action does not remove resources managed by the Operator, including custom resource definitions (CRDs) and custom resources (CRs). Dashboards and navigation items enabled by the web console and off-cluster resources that continue to run might need manual clean up. To remove these after uninstalling the Operator, you might need to manually delete the Operator CRDs.
 
-    This action does not remove resources managed by the Operator, including custom resource definitions (CRDs) and custom resources (CRs). Dashboards and navigation items enabled by the web console and off-cluster resources that continue to run might need manual clean up. To remove these after uninstalling the Operator, you might need to manually delete the Operator CRDs.
-
-    </div>
+</div>
 
 # Deleting Operators from a cluster using the CLI
 
 To remove an installed Operator from a namespace, cluster administrators can delete its subscription and cluster service version (CSV) by using the CLI.
 
+> [!WARNING]
+> Failed Operator installations do not automatically remove created permissions. Audit and remove remaining permissions to secure the namespace.
+>
+> For more information, see [Audit and secure delegated Operator installations (Red Hat Knowledgebase)](https://access.redhat.com/articles/7149230).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - The OpenShift CLI (`oc`) is installed on your workstation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure the latest version of the subscribed operator (for example, `serverless-operator`) is identified in the `currentCSV` field.
 
@@ -44,9 +86,11 @@ To remove an installed Operator from a namespace, cluster administrators can del
     $ oc get subscription.operators.coreos.com serverless-operator -n openshift-serverless -o yaml | grep currentCSV
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -54,15 +98,19 @@ To remove an installed Operator from a namespace, cluster administrators can del
       currentCSV: serverless-operator.v1.28.0
     ```
 
+    </div>
+
 2.  Delete the subscription (for example, `serverless-operator`):
 
     ``` terminal
     $ oc delete subscription.operators.coreos.com serverless-operator -n openshift-serverless
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -70,21 +118,29 @@ To remove an installed Operator from a namespace, cluster administrators can del
     subscription.operators.coreos.com "serverless-operator" deleted
     ```
 
+    </div>
+
 3.  Delete the CSV for the Operator in the target namespace using the `currentCSV` value from the previous step:
 
     ``` terminal
     $ oc delete clusterserviceversion serverless-operator.v1.28.0 -n openshift-serverless
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     clusterserviceversion.operators.coreos.com "serverless-operator.v1.28.0" deleted
     ```
+
+    </div>
+
+</div>
 
 # Refreshing failing subscriptions
 
@@ -103,9 +159,27 @@ As a result, the subscription is stuck in this failing state and the Operator is
 
 You can refresh a failing subscription by deleting the subscription, cluster service version (CSV), and other related objects. After recreating the subscription, OLM then reinstalls the correct version of the Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a failing subscription that is unable to pull an inaccessible bundle image.
 
 - You have confirmed that the correct bundle image is accessible.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the names of the `Subscription` and `ClusterServiceVersion` objects from the namespace where the Operator is installed:
 
@@ -113,9 +187,11 @@ You can refresh a failing subscription by deleting the subscription, cluster ser
     $ oc get sub,csv -n <namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -126,6 +202,8 @@ You can refresh a failing subscription by deleting the subscription, cluster ser
     NAME                                                                         DISPLAY                            VERSION    REPLACES   PHASE
     clusterserviceversion.operators.coreos.com/elasticsearch-operator.5.0.0-65   OpenShift Elasticsearch Operator   5.0.0-65              Succeeded
     ```
+
+    </div>
 
 2.  Delete the subscription:
 
@@ -145,9 +223,11 @@ You can refresh a failing subscription by deleting the subscription, cluster ser
     $ oc get job,configmap -n openshift-marketplace
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -158,6 +238,8 @@ You can refresh a failing subscription by deleting the subscription, cluster ser
     NAME                                                                        DATA   AGE
     configmap/1de9443b6324e629ddf31fed0a853a121275806170e34c926d69e53a7fcbccb   3      9m30s
     ```
+
+    </div>
 
 5.  Delete the job:
 
@@ -175,12 +257,32 @@ You can refresh a failing subscription by deleting the subscription, cluster ser
 
 7.  Reinstall the Operator using the software catalog in the web console.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check that the Operator has been reinstalled successfully:
 
   ``` terminal
   $ oc get sub,csv,installplan -n <namespace>
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Reinstalling Operators after failed uninstallation](../../operators/admin/olm-troubleshooting-operator-issues.xml#olm-reinstall_olm-troubleshooting-operator-issues)
+
+</div>

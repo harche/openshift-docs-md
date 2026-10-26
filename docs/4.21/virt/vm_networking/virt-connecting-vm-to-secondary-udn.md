@@ -2,11 +2,8 @@ You can connect a virtual machine (VM) to an OVN-Kubernetes localnet secondary n
 
 An OVN-Kubernetes secondary network is compatible with the multi-network policy API which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. For more information, see "Additional resources".
 
-<div class="important">
-
-You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. Using pod or namespace selector policy peers is not supported.
-
-</div>
+> [!IMPORTANT]
+> You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. Using pod or namespace selector policy peers is not supported.
 
 A localnet topology connects the secondary network to the physical underlay. This enables both east-west cluster traffic and access to services running outside the cluster, but it requires additional configuration of the underlying Open vSwitch (OVS) system on cluster nodes.
 
@@ -14,11 +11,29 @@ A localnet topology connects the secondary network to the physical underlay. Thi
 
 You can create a secondary cluster-scoped user-defined-network (CUDN) for the localnet network topology by using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster as a user with `cluster-admin` privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You installed the Kubernetes NMState Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `NodeNetworkConfigurationPolicy` object to map the OVN-Kubernetes secondary network to an Open vSwitch (OVS) bridge.
 
@@ -50,11 +65,8 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
 
     - `spec.desiredState.ovn.bridge-mappings.state` specifies the state of the mapping. Must be either `present` to add the mapping or `absent` to remove the mapping. The default value is `present`.
 
-      <div class="important">
-
-      OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546).
-
-      </div>
+      > [!IMPORTANT]
+      > OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546).
 
 2.  Apply the `NodeNetworkConfigurationPolicy` manifest by running the following command:
 
@@ -119,13 +131,33 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
     `<filename>`
     Specifies the name of your `ClusterUserDefinedNetwork` manifest YAML file.
 
+</div>
+
 # Creating a namespace for secondary user-defined networks by using the CLI
 
 You can create a namespace to be used with an existing secondary cluster-scoped user-defined network (CUDN) by using the CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Namespace` object similar to the following example:
 
@@ -148,11 +180,31 @@ You can create a namespace to be used with an existing secondary cluster-scoped 
     `<filename>`
     Specifies the name of your `Namespace` manifest YAML file.
 
+</div>
+
 # Attaching a virtual machine to secondary user-defined networks by using the CLI
 
 You can connect a virtual machine (VM) to multiple secondary cluster-scoped user-defined networks (CUDNs) by configuring the interface binding.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to add the CUDN interface details, as in the following example:
 
@@ -200,6 +252,8 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
     `<filename>`
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
+</div>
+
 # Considerations when running OpenShift Virtualization on IBM Z®
 
 When running OpenShift Virtualization on IBM Z®, the required network configuration depends on the hardware generation and the network adapter in use. Network interfaces on IBM Z® behave differently from standard Ethernet devices, which affects how the bridge forwards virtual machine traffic.
@@ -212,9 +266,27 @@ On IBM Z® z17, RoCE adapters support promiscuous mode at the hardware level, wh
 
 Use the following procedure to enable promiscuous mode on IBM Z® z17.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the LPAR configuration for the IBM Z® z17 system.
 
 - You have the name of the RoCE network interface, for example `ens329`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable promiscuous mode on the RoCE adapter at the hardware level in the LPAR. See [Configuring FIDPARM to support promiscuous mode on a VF](https://www.ibm.com/docs/en/linux-on-systems?topic=mode-configuring-fidparm-support-promiscuous-vf)
 
@@ -226,7 +298,15 @@ Use the following procedure to enable promiscuous mode on IBM Z® z17.
 
     where `<interface>` is the name of the RoCE network interface, for example `ens329`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that promiscuous mode is active by running the following command:
 
@@ -244,13 +324,33 @@ Use the following procedure to enable promiscuous mode on IBM Z® z17.
 
     The presence of the `PROMISC` flag confirms that promiscuous mode is active.
 
+</div>
+
 # Configuring OSA and HiperSockets adapters for virtual machine networking on IBM Z®
 
 You can configure OSA and HiperSockets interfaces on IBM Z® for virtual machine networking by enabling Virtual NIC Characteristics (VNICC) attributes on the qeth driver. Without them, the qeth driver silently drops packets destined for virtual machine MAC addresses.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have the bus ID of the qeth network device, for example `0.0.1100`.
 
 - The `chzdev` command-line tool is available on the host node.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable flooding on the qeth device by running the following command:
 
@@ -286,6 +386,8 @@ You can configure OSA and HiperSockets interfaces on IBM Z® for virtual machine
 
     `vnicc/learning=1`
     Enables MAC address learning.
+
+</div>
 
 # Additional resources
 

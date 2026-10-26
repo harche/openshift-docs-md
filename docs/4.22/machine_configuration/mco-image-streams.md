@@ -4,13 +4,10 @@ By default, RHCOS 9.x is installed on OpenShift Container Platform clusters star
 
 At any time, you can revert the cluster back to RHCOS 9.x, if needed.
 
-<div class="important">
-
-Using RHCOS 10.x in an OpenShift Container Platform cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Using RHCOS 10.x in an OpenShift Container Platform cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 RHCOS is a purpose-designed operating system for use with containers that is deployed by default on all OpenShift Container Platform nodes. Each version of RHCOS is based on a specific version of Red Hat Enterprise Linux (RHEL). For OpenShift Container Platform 4.13 and greater, the RHCOS version is based on RHEL 9.x.
 
@@ -28,9 +25,14 @@ For an existing OpenShift Container Platform 4.21.2 or later cluster, you can mo
 
 Use the following procedure for an OpenShift Container Platform 4.22.x cluster. For an OpenShift Container Platform 4.21.x cluster that is 4.21.2 or later, see the [How to deploy a RHCOS 10 OpenShift Container Platform cluster knowledgebase article](https://access.redhat.com/articles/7138399).
 
-<div class="important">
+> [!IMPORTANT]
+> Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
 
-Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -38,21 +40,35 @@ Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. Y
 
 - You have enabled the `TechPreviewNoUpgrade` feature set in your cluster’s `FeatureGate` custom resource (CR). For more information, see "Enabling features using feature gates".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Confirm that your cluster has the RHCOS 10.x stream available by running the following command:
 
     ``` terminal
     $ oc get osImageStreams/cluster -o yaml | grep rhel-10
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
       - name: rhel-10
     ```
+
+    </div>
 
     It can take several minutes for the `osImageStream` object to become available after you enable the `TechPreviewNoUpgrade` feature set.
 
@@ -116,15 +132,20 @@ Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. Y
 
           Replace `<mcp_name>` with the names of the custom machine config pools to update.
 
-      <div class="important">
-
-      Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
-
-      </div>
+      > [!IMPORTANT]
+      > Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. You must move all of your nodes to RHCOS 10.x.
 
       Wait for the pools to finish rolling out the update.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After the nodes have returned to the READY state, examine the `/etc/redhat-release` file to see the current RHCOS version on the nodes:
 
@@ -150,15 +171,21 @@ Running a cluster with a mixture of RHCOS 9.x and 10.x nodes is not supported. Y
 
         The output should appear similar to the following example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         Red Hat Enterprise Linux release 10.2 (Coughlan)
         ```
+
+        </div>
+
+</div>
 
 # Additional resources
 

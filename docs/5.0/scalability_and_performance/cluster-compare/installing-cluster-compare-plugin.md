@@ -4,13 +4,29 @@ You can extract the `cluster-compare` plugin from a container image in the Red H
 
 Install the `cluster-compare` plugin to compare a reference configuration with a cluster configuration from a live cluster or `must-gather` data.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 1.  You have installed the OpenShift CLI (`oc`).
 
 2.  You installed `podman`.
 
 3.  You have access to the Red Hat container catalog.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the Red Hat container catalog by running the following command:
 
@@ -44,6 +60,16 @@ Install the `cluster-compare` plugin to compare a reference configuration with a
 
     - `<directory_on_path>` is the path to a directory included in your `PATH` environment variable.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - View the help for the plugin by running the following command:
 
   ``` terminal
@@ -66,6 +92,8 @@ Install the `cluster-compare` plugin to compare a reference configuration with a
 
    ...
   ```
+
+</div>
 
 # Additional resources
 

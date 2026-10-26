@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
-| `spec`       | `object`                                                                             | spec holds user settable values for configuration                                                                                                                                                                                                                                                    |
-| `status`     | `object`                                                                             | status holds observed values from the cluster. They may not be overridden.                                                                                                                                                                                                                           |
+| Property | Type | Description |
+|----|----|----|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
+| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
+| `spec` | `object` | spec holds user settable values for configuration |
+| `status` | `object` | status holds observed values from the cluster. They may not be overridden. |
 
 ## .spec
 
@@ -34,39 +34,39 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>additionalCORSAllowedOrigins</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>additionalCORSAllowedOrigins lists additional, user-defined regular expressions describing hosts for which the API server allows access using the CORS headers. This may be needed to access the API and the integrated OAuth server from JavaScript applications. The values are regular expressions that correspond to the Golang regular expression language.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>audit</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>audit specifies the settings for audit configuration to be applied to all OpenShift-provided API servers in the cluster.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>clientCA</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>clientCA references a ConfigMap containing a certificate bundle for the signers that will be recognized for incoming client certificates in addition to the operator managed signers. If this is empty, then only operator managed signers are valid. You usually only have to set this if you have your own PKI you wish to honor client certificates from. The ConfigMap must exist in the openshift-config namespace and contain the following required fields: - ConfigMap.Data["ca-bundle.crt"] - CA bundle.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>encryption</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>encryption allows the configuration of encryption of resources at the datastore layer.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>servingCerts</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>servingCert is the TLS cert info for serving secure traffic. If not specified, operator managed certificates will be used for serving secure traffic.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tlsSecurityProfile</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>tlsSecurityProfile specifies settings for TLS connections for externally exposed servers.</p>
@@ -90,24 +90,24 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>customRules</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>customRules specify profiles per group. These profile take precedence over the top-level profile field if they apply. They are evaluation from top to bottom and the first one that matches, applies.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>customRules[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AuditCustomRule describes a custom rule for an audit profile that takes precedence over the top-level profile.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>profile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>profile specifies the name of the desired top-level audit profile to be applied to all requests sent to any of the OpenShift-provided API servers in the cluster (kube-apiserver, openshift-apiserver and oauth-apiserver), with the exception of those requests that match one or more of the customRules.</p>
@@ -146,19 +146,19 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>group</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>group is a name of group a request user must be member of in order to this profile to apply.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>profile</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>profile specifies the name of the desired audit policy configuration to be deployed to all OpenShift-provided API servers in the cluster.</p>
@@ -198,14 +198,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type defines what encryption type should be used to encrypt resources at the datastore layer. When this field is unset (i.e. when it is set to the empty string), identity is implied. The behavior of unset can and will change over time. Even if encryption is enabled by default, the meaning of unset may change to a different encryption type based on changes in best practices.</p>
@@ -223,10 +223,10 @@ servingCert is the TLS cert info for serving secure traffic. If not specified, o
 Type
 `object`
 
-| Property              | Type     | Description                                                                                                                                                                                                                                                                      |
-|-----------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `namedCertificates`   | `array`  | namedCertificates references secrets containing the TLS cert info for serving secure traffic to specific hostnames. If no named certificates are provided, or no named certificates match the server name as understood by a client, the defaultServingCertificate will be used. |
-| `namedCertificates[]` | `object` | APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate.                                                                                                                                                                                   |
+| Property | Type | Description |
+|----|----|----|
+| `namedCertificates` | `array` | namedCertificates references secrets containing the TLS cert info for serving secure traffic to specific hostnames. If no named certificates are provided, or no named certificates match the server name as understood by a client, the defaultServingCertificate will be used. |
+| `namedCertificates[]` | `object` | APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate. |
 
 ## .spec.servingCerts.namedCertificates
 
@@ -244,10 +244,10 @@ APIServerNamedServingCert maps a server DNS name, as understood by a client, to 
 Type
 `object`
 
-| Property             | Type             | Description                                                                                                                                                                                                                                                                                                                        |
-|----------------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `names`              | `array (string)` | names is a optional list of explicit DNS names (leading wildcards allowed) that should use this certificate to serve secure traffic. If no names are provided, the implicit names will be extracted from the certificates. Exact names trump over wildcard names. Explicit names defined here trump over extracted implicit names. |
-| `servingCertificate` | `object`         | servingCertificate references a kubernetes.io/tls type secret containing the TLS cert info for serving secure traffic. The secret must exist in the openshift-config namespace and contain the following required fields: - Secret.Data\["tls.key"\] - TLS private key. - Secret.Data\["tls.crt"\] - TLS certificate.              |
+| Property | Type | Description |
+|----|----|----|
+| `names` | `array (string)` | names is a optional list of explicit DNS names (leading wildcards allowed) that should use this certificate to serve secure traffic. If no names are provided, the implicit names will be extracted from the certificates. Exact names trump over wildcard names. Explicit names defined here trump over extracted implicit names. |
+| `servingCertificate` | `object` | servingCertificate references a kubernetes.io/tls type secret containing the TLS cert info for serving secure traffic. The secret must exist in the openshift-config namespace and contain the following required fields: - Secret.Data\["tls.key"\] - TLS private key. - Secret.Data\["tls.crt"\] - TLS certificate. |
 
 ## .spec.servingCerts.namedCertificates\[\].servingCertificate
 
@@ -281,14 +281,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>custom</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic.</p>
@@ -296,26 +296,26 @@ Type
 <p>An example custom profile looks like this:</p>
 <p>minTLSVersion: VersionTLS11 ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>intermediate</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>intermediate is a TLS profile for use when you do not need compatibility with legacy clients and want to remain highly secure while being compatible with most clients currently in use.</p>
 <p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
 <p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS12 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>modern</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients. The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1. This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>old</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>old is a TLS profile for use when services need to be accessed by very old clients or libraries and should be used only as a last resort.</p>
 <p>The supported groups list includes by default the following groups in suggested preference order (ordering may not be honored by all implementations): X25519MLKEM768, X25519, secp256r1, secp384r1.</p>
 <p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA384 - ECDHE-RSA-AES256-SHA384 - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES256-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.</p>
@@ -372,10 +372,10 @@ HTTP method
 Description
 delete collection of APIServer
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -385,10 +385,10 @@ HTTP method
 Description
 list objects of kind APIServer
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServerList`](../objects/index.xml#io-openshift-config-v1-APIServerList) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServerList`](../objects/index.xml#io-openshift-config-v1-APIServerList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -398,25 +398,25 @@ HTTP method
 Description
 create an APIServer
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                       | Description |
-|-----------|------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 201 - Created      | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 202 - Accepted     | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 201 - Created | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 202 - Accepted | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -434,17 +434,17 @@ HTTP method
 Description
 delete an APIServer
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -454,10 +454,10 @@ HTTP method
 Description
 read the specified APIServer
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -467,17 +467,17 @@ HTTP method
 Description
 partially update the specified APIServer
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -487,24 +487,24 @@ HTTP method
 Description
 replace the specified APIServer
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                       | Description |
-|-----------|------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 201 - Created      | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 201 - Created | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -522,10 +522,10 @@ HTTP method
 Description
 read status of the specified APIServer
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -535,17 +535,17 @@ HTTP method
 Description
 partially update status of the specified APIServer
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -555,23 +555,23 @@ HTTP method
 Description
 replace status of the specified APIServer
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                       | Description |
-|-----------|------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                               |
-|--------------------|------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 201 - Created      | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                      |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 201 - Created | [`APIServer`](../config_apis/apiserver-config-openshift-io-v1.xml#apiserver-config-openshift-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses

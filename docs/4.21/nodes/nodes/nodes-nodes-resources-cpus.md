@@ -10,9 +10,25 @@ This list supersedes the CPUs that might be reserved by using the `systemReserve
 
 For more information on the `systemReserved` parameter, see "Allocating resources for nodes in an OpenShift Container Platform cluster".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 1.  You have the label associated with the machine config pool (MCP) for the type of node you want to configure:
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for the `KubeletConfig` CR:
 
@@ -47,6 +63,18 @@ For more information on the `systemReserved` parameter, see "Allocating resource
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Setting up CPU Manager](../../scalability_and_performance/using-cpu-manager.xml#setting_up_cpu_manager_using-cpu-manager-and-topology-manager)
 
 - [Allocating resources for nodes in an OpenShift Container Platform cluster](../../nodes/nodes/nodes-nodes-resources-configuring.xml#nodes-nodes-resources-configuring-about_nodes-nodes-resources-configuring)
+
+</div>

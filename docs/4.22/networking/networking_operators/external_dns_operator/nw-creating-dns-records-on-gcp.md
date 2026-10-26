@@ -1,16 +1,31 @@
 To create DNS records on Google Cloud, use the External DNS Operator. The DNS Operator manages external name resolution for your cluster services.
 
-<div class="important">
-
-Using the External DNS Operator on a cluster with Google Cloud Workload Identity enabled is not supported. For more information about the Google Cloud Workload Identity, see [Google Cloud Workload Identity](../../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds-gcp_cco-short-term-creds).
-
-</div>
+> [!IMPORTANT]
+> Using the External DNS Operator on a cluster with Google Cloud Workload Identity enabled is not supported. For more information about the Google Cloud Workload Identity, see [Google Cloud Workload Identity](../../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds-gcp_cco-short-term-creds).
 
 # Create DNS records on a public managed zone for Google Cloud
 
 To create DNS records on Google Cloud, use the External DNS Operator. The DNS Operator manages external name resolution for your cluster services.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Copy the `gcp-credentials` secret in the `encoded-gcloud.json` file by running the following command:
 
@@ -42,9 +57,11 @@ To create DNS records on Google Cloud, use the External DNS Operator. The DNS Op
     $ oc get routes --all-namespaces | grep console
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -52,6 +69,8 @@ To create DNS records on Google Cloud, use the External DNS Operator. The DNS Op
     openshift-console          console             console-openshift-console.apps.test.gcp.example.com                       console             https   reencrypt/Redirect     None
     openshift-console          downloads           downloads-openshift-console.apps.test.gcp.example.com                     downloads           http    edge/Redirect          None
     ```
+
+    </div>
 
 6.  Get a list of managed zones, such as `qe-cvs4g-private-zone test.gcp.example.com`, by running the following command:
 
@@ -61,9 +80,11 @@ To create DNS records on Google Cloud, use the External DNS Operator. The DNS Op
 
 7.  Create a YAML file, for example, `external-dns-sample-gcp.yaml`, that defines the `ExternalDNS` object:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `external-dns-sample-gcp.yaml` file**
+    <div class="title">
+
+    Example `external-dns-sample-gcp.yaml` file
 
     </div>
 
@@ -85,6 +106,8 @@ To create DNS records on Google Cloud, use the External DNS Operator. The DNS Op
         type: OpenShiftRoute
     # ...
     ```
+
+    </div>
 
     where:
 
@@ -117,3 +140,5 @@ To create DNS records on Google Cloud, use the External DNS Operator. The DNS Op
     ``` terminal
     $ gcloud dns record-sets list --zone=qe-cvs4g-private-zone | grep console
     ```
+
+</div>

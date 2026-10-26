@@ -10,16 +10,16 @@ SPIRE provides cryptographic workload identities based on the Secure Production 
 
 The following table summarizes the main components in a single-cluster SPIFFE and Red Hat OpenShift Service Mesh integration and what each one does.
 
-| Component                                   | Purpose                                                  |
-|---------------------------------------------|----------------------------------------------------------|
-| **Zero Trust Workload Identity Manager**    | Manages SPIRE deployment on OpenShift Container Platform |
-| **SPIRE Server**                            | Certificate Authority; issues SVIDs                      |
-| **SPIRE Agent**                             | Runs on each node; provides SDS API to workloads         |
-| **SPIFFE CSI Driver**                       | Mounts SPIRE socket into pods                            |
-| **ClusterSPIFFEID**                         | Registers which pods get which identities                |
-| **Red Hat OpenShift Service Mesh Operator** | Manages Istio deployment                                 |
-| **Istiod**                                  | Istio control plane                                      |
-| **Envoy Sidecar**                           | Proxy in each pod; uses SPIRE for certificates           |
+| Component | Purpose |
+|----|----|
+| **Zero Trust Workload Identity Manager** | Manages SPIRE deployment on OpenShift Container Platform |
+| **SPIRE Server** | Certificate Authority; issues SVIDs |
+| **SPIRE Agent** | Runs on each node; provides SDS API to workloads |
+| **SPIFFE CSI Driver** | Mounts SPIRE socket into pods |
+| **ClusterSPIFFEID** | Registers which pods get which identities |
+| **Red Hat OpenShift Service Mesh Operator** | Manages Istio deployment |
+| **Istiod** | Istio control plane |
+| **Envoy Sidecar** | Proxy in each pod; uses SPIRE for certificates |
 
 # SPIRE integration architecture components
 
@@ -50,11 +50,29 @@ The proxy injected into each workload pod that uses SPIRE-issued certificates fo
 
 Deploy SPIRE operands by creating the `ZeroTrustWorkloadIdentityManager` custom resource (CR) and related SPIRE operand CRs together. A running SPIRE deployment is required before you configure Red Hat OpenShift Service Mesh to use SPIRE-issued certificates for workload mTLS.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Zero Trust Workload Identity Manager.
 
 - The OpenShift CLI (`oc`) is configured with access to the cluster.
 
 - You have permissions to create custom resources in the `zero-trust-workload-identity-manager` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the environment variables by running the following commands:
 
@@ -221,7 +239,15 @@ Deploy SPIRE operands by creating the `ZeroTrustWorkloadIdentityManager` custom 
         $ oc wait --for=condition=Available deployment/spire-spiffe-oidc-discovery-provider -n "${ZTWIM_NS}" --timeout=300s
         ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that Zero Trust Workload Identity Manager is installed:
 
@@ -338,9 +364,19 @@ Deploy SPIRE operands by creating the `ZeroTrustWorkloadIdentityManager` custom 
     $ oc delete deployment ztwim-client -n default
     ```
 
+</div>
+
 # Deploying Red Hat OpenShift Service Mesh for SPIRE integration
 
 Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CRs with SPIRE integration settings so Envoy sidecars obtain SPIRE-issued certificates for workload mTLS after the SPIRE stack is running.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed Zero Trust Workload Identity Manager.
 
@@ -349,6 +385,16 @@ Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CR
 - You have permissions to create namespaces and custom resources in the `istio-cni` and `istio-system` namespaces.
 
 - You have permissions to read secrets in the `zero-trust-workload-identity-manager` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the Istio environment variables by running the following commands:
 
@@ -469,7 +515,15 @@ Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CR
     $ oc wait --for=condition=Available deployment/istiod -n "${OSSM_NS}" --timeout=300s
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that Istio is integrated with SPIRE:
 
@@ -541,9 +595,11 @@ Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CR
         openssl x509 -in chain.pem -text | grep SPIRE
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -552,6 +608,8 @@ Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CR
                 Subject: C=US, O=SPIRE
         ```
 
+        </div>
+
         If you see `SPIRE` in both `Issuer` and `Subject`, the integration is working. Envoy is getting its certificates from SPIRE, not from Istio’s built-in CA.
 
     6.  Remove the namespace by running the following command:
@@ -559,6 +617,8 @@ Deploy Red Hat OpenShift Service Mesh by creating the `IstioCNI` and `Istio` CR
         ``` terminal
         $ oc delete namespace "${VERIFY_NS}"
         ```
+
+</div>
 
 # Additional resources
 

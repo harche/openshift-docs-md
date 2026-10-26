@@ -1,10 +1,7 @@
 Placing a node into maintenance mode marks the node as unschedulable, and removes all the VMs and pods from it. Nodes can be placed into maintenance mode by using the `oc adm` utility or `NodeMaintenance` custom resources (CRs).
 
-<div class="important">
-
-Virtual machines (VMs) must have a persistent volume claim (PVC) with a shared `ReadWriteMany` (RWX) access mode to be live migrated.
-
-</div>
+> [!IMPORTANT]
+> Virtual machines (VMs) must have a persistent volume claim (PVC) with a shared `ReadWriteMany` (RWX) access mode to be live migrated.
 
 # Maintaining bare-metal nodes
 
@@ -20,11 +17,8 @@ The Node Maintenance Operator watches for new or deleted `NodeMaintenance` custo
 
 Using a `NodeMaintenance` CR for node maintenance tasks achieves the same results as the `oc adm cordon` and `oc adm drain` commands using standard OpenShift Container Platform custom resource processing.
 
-<div class="note">
-
-The `node-maintenance-operator` (NMO) is no longer shipped with OpenShift Virtualization. It is deployed as a standalone Operator from the software catalog in the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).
-
-</div>
+> [!NOTE]
+> The `node-maintenance-operator` (NMO) is no longer shipped with OpenShift Virtualization. It is deployed as a standalone Operator from the software catalog in the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).
 
 # Additional resources
 

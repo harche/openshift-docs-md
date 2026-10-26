@@ -6,11 +6,11 @@ MetalLB provides a scalable framework for monitoring the health of network traff
 
 MetalLB exposes status information for several key components, providing a comprehensive view of its configuration and operation.
 
-| Resource                           | Description                                                                                                                                                                                                                                                          | Troubleshooting command                                               |
-|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| **`IPAddressPool` (status field)** | Shows the cluster-wide allocation and availability of IP addresses within a defined pool, including the number of assigned and available addresses for both IPv4 and IPv6.                                                                                           | `oc get ipaddresspool <IPAddressPool-name> -n metallb-system -o yaml` |
-| **`ServiceBGPStatus`**             | Shows which service IP addresses the system announces to specific BGP peers across the network infrastructure.                                                                                                                                                       | `oc get servicebgpstatus -n metallb-system`                           |
-| **`BGPSessionStatus`**             | Shows the real-time operational state of the border gateway protocol (BGP) and bidirectional forwarding detection (BFD) sessions between a specific cluster node and a BGP peer, indicating if the channel is `Established` or `Up` based on routing stack feedback. | `oc get bgpsessionstatus -o wide`                                     |
+| Resource | Description | Troubleshooting command |
+|----|----|----|
+| **`IPAddressPool` (status field)** | Shows the cluster-wide allocation and availability of IP addresses within a defined pool, including the number of assigned and available addresses for both IPv4 and IPv6. | `oc get ipaddresspool <IPAddressPool-name> -n metallb-system -o yaml` |
+| **`ServiceBGPStatus`** | Shows which service IP addresses the system announces to specific BGP peers across the network infrastructure. | `oc get servicebgpstatus -n metallb-system` |
+| **`BGPSessionStatus`** | Shows the real-time operational state of the border gateway protocol (BGP) and bidirectional forwarding detection (BFD) sessions between a specific cluster node and a BGP peer, indicating if the channel is `Established` or `Up` based on routing stack feedback. | `oc get bgpsessionstatus -o wide` |
 
 MetalLB status resources
 
@@ -22,9 +22,27 @@ Check IP address allocation from your MetalLB pools by viewing the `IPAddressPoo
 
 As a cluster administrator, you can add address pools to your cluster to control the IP addresses that MetalLB can assign to load-balancer services. This example shows how to create an `IPAddressPool` custom resource (CR) and view its status. The configuration sets the advertisement mode to Layer 2 (L2).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an OpenShift Container Platform cluster with the MetalLB Operator installed.
 
 - You have deployed a MetalLB instance.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an IP address pool.
 
@@ -163,11 +181,8 @@ As a cluster administrator, you can add address pools to your cluster to control
           type: LoadBalancer
         ```
 
-        <div class="important">
-
-        The service must be in the same namespace as your application deployment. The `metallb.universe.tf/address-pool` annotation tells MetalLB which `IPAddressPool` to use for IP allocation.
-
-        </div>
+        > [!IMPORTANT]
+        > The service must be in the same namespace as your application deployment. The `metallb.universe.tf/address-pool` annotation tells MetalLB which `IPAddressPool` to use for IP allocation.
 
     4.  Apply the service configuration by running the following command:
 
@@ -210,15 +225,22 @@ As a cluster administrator, you can add address pools to your cluster to control
 
     The `assignedIPv4` value of `1` indicates that one IPv4 address from this pool has been successfully assigned by MetalLB to your `nginx-service` `LoadBalancer`.
 
+</div>
+
 # View the ServiceBGPStatus custom resource
 
 You can verify border gateway protocol (BGP) advertisement status for your services by viewing the `ServiceBGPStatus` custom resource, which shows which BGP peers receive advertisements from each node. This is essential for debugging connectivity in telco environments.
 
 The `ServiceBGPStatus` CR reports the BGP peering status for a service, detailing which neighbors are receiving updates from a specific node.
 
-<div class="note">
+> [!NOTE]
+> `ServiceBGPStatus` resources are created in the `metallb-system` namespace, not in the namespace where your `LoadBalancer` service is deployed. Always query these resources with `-n metallb-system`.
 
-`ServiceBGPStatus` resources are created in the `metallb-system` namespace, not in the namespace where your `LoadBalancer` service is deployed. Always query these resources with `-n metallb-system`.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -226,7 +248,17 @@ The `ServiceBGPStatus` CR reports the BGP peering status for a service, detailin
 
 - You have deployed a MetalLB instance.
 
+</div>
+
 This example shows how to configure MetalLB for BGP mode, deploy a service, and view the `ServiceBGPStatus` to verify BGP advertisements.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `IPAddressPool` CR for BGP, like the following example, and save it as `ipaddresspool.yaml`:
 
@@ -338,11 +370,8 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
       type: LoadBalancer
     ```
 
-    <div class="important">
-
-    The system creates `ServiceBGPStatus` resources automatically only when the service has at least one ready endpoint (running pod). Ensure your application pods are running before checking for `ServiceBGPStatus` resources.
-
-    </div>
+    > [!IMPORTANT]
+    > The system creates `ServiceBGPStatus` resources automatically only when the service has at least one ready endpoint (running pod). Ensure your application pods are running before checking for `ServiceBGPStatus` resources.
 
 10. Apply the service configuration by running the following command:
 
@@ -376,15 +405,12 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
     bgp-xxxxx             worker0    test-service   default
     ```
 
-    <div class="note">
-
-    `ServiceBGPStatus` resources are created with generated names. Use labels to find the status for your service:
-
-    ``` terminal
-    $ oc get servicebgpstatus -n metallb-system -l metallb.io/service-name=test-service
-    ```
-
-    </div>
+    > [!NOTE]
+    > `ServiceBGPStatus` resources are created with generated names. Use labels to find the status for your service:
+    >
+    > ``` terminal
+    > $ oc get servicebgpstatus -n metallb-system -l metallb.io/service-name=test-service
+    > ```
 
 13. View the details of the `ServiceBGPStatus` CR for your service:
 
@@ -426,13 +452,20 @@ This example shows how to configure MetalLB for BGP mode, deploy a service, and 
 
     - `status.serviceNamespace` indicates the namespace of the service being advertised.
 
+</div>
+
 # Verify BGP session state
 
 After you configure MetalLB for BGP mode, you can examine the `BGPSessionState` and `FRRNodeState` custom resources (CRs) to verify that BGP sessions are established and routes are advertised.
 
-<div class="note">
+> [!NOTE]
+> The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It can take up to 2 minutes for the CR to reflect the actual BGP state.
 
-The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It can take up to 2 minutes for the CR to reflect the actual BGP state.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -447,6 +480,16 @@ The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It 
   - A `BGPAdvertisement`
 
 - You have deployed at least one `LoadBalancer` service.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check BGP session status by running the following command:
 
@@ -499,6 +542,8 @@ The `BGPSessionState` CR is updated at a regular poll interval of 2 minutes. It 
     ```
 
     This confirms that BGP is advertising the service IP.
+
+</div>
 
 # Additional resources
 

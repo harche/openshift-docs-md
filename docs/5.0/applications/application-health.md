@@ -10,11 +10,8 @@ A health check periodically performs diagnostics on a running container using an
 
 You can include one or more probes in the specification for the pod that contains the container which you want to perform the health checks.
 
-<div class="note">
-
-If you want to add or edit health checks in an existing pod, you must edit the pod `DeploymentConfig` object or use the web console. You cannot use the CLI to add or edit health checks for an existing pod.
-
-</div>
+> [!NOTE]
+> If you want to add or edit health checks in an existing pod, you must edit the pod `DeploymentConfig` object or use the web console. You cannot use the CLI to add or edit health checks for an existing pod.
 
 Readiness probe
 A *readiness probe* determines if a container is ready to accept service requests. If the readiness probe fails for a container, the kubelet removes the pod from the list of available service endpoints.
@@ -65,9 +62,11 @@ You can configure several fields to control the behavior of a probe:
 
 The following are samples of different probes as they appear in an object specification.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample readiness probe with a container command readiness probe in a pod spec**
+<div class="title">
+
+Sample readiness probe with a container command readiness probe in a pod spec
 
 </div>
 
@@ -92,6 +91,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.containers.name`
@@ -109,9 +110,11 @@ Specifies a container command test.
 `spec.containers.readinessProbe.exec.command`
 Specifies the commands to execute on the container.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample container command startup probe and liveness probe with container command tests in a pod spec**
+<div class="title">
+
+Sample container command startup probe and liveness probe with container command tests in a pod spec
 
 </div>
 
@@ -144,6 +147,8 @@ spec:
       periodSeconds: 10
 # ...
 ```
+
+</div>
 
 where:
 
@@ -180,9 +185,11 @@ Specifies the number of times to try the probe after a failure.
 `spec.containers.startupProbe.periodSeconds`
 Specifies the number of seconds to perform the probe.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample liveness probe with a container command test that uses a timeout in a pod spec**
+<div class="title">
+
+Sample liveness probe with a container command test that uses a timeout in a pod spec
 
 </div>
 
@@ -211,6 +218,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.containers.name`
@@ -237,9 +246,11 @@ Specifies the number of consecutive successes needed to show success after a fai
 `spec.containers.livenessProbe.failureThreshold`
 Specifies the number of times to try the probe after a failure.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample readiness probe and liveness probe with a TCP socket test in a deployment**
+<div class="title">
+
+Sample readiness probe and liveness probe with a TCP socket test in a deployment
 
 </div>
 
@@ -276,6 +287,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.template.spec.containers.readinessProbe`
@@ -288,9 +301,14 @@ Specifies the liveness probe.
 
 To configure readiness, liveness, and startup probes, add one or more probes to the specification for the pod that contains the container on which you want to perform the health checks. Probes let the cluster detect unhealthy containers and respond before failures affect application availability.
 
-<div class="note">
+> [!NOTE]
+> If you want to add or edit health checks in an existing pod, you must edit the pod `DeploymentConfig` object or use the web console. You cannot use the CLI to add or edit health checks for an existing pod.
 
-If you want to add or edit health checks in an existing pod, you must edit the pod `DeploymentConfig` object or use the web console. You cannot use the CLI to add or edit health checks for an existing pod.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -330,11 +348,8 @@ If you want to add or edit health checks in an existing pod, you must edit the p
           timeoutSeconds: 10
     ```
 
-    <div class="note">
-
-    Include only the probe types your application needs. The example shows liveness, readiness, and startup probes together for reference.
-
-    </div>
+    > [!NOTE]
+    > Include only the probe types your application needs. The example shows liveness, readiness, and startup probes together for reference.
 
     where:
 
@@ -395,13 +410,10 @@ If you want to add or edit health checks in an existing pod, you must edit the p
     `spec.containers.startupProbe.timeoutSeconds`
     Specifies the number of seconds of inactivity after which the probe is assumed to have failed. The default is `1`. This value must be lower than `periodSeconds`.
 
-    <div class="note">
-
-    If the `initialDelaySeconds` value is lower than the `periodSeconds` value, the first readiness probe occurs at some point between the two periods due to an issue with timers.
-
-    The `timeoutSeconds` value must be lower than the `periodSeconds` value.
-
-    </div>
+    > [!NOTE]
+    > If the `initialDelaySeconds` value is lower than the `periodSeconds` value, the first readiness probe occurs at some point between the two periods due to an issue with timers.
+    >
+    > The `timeoutSeconds` value must be lower than the `periodSeconds` value.
 
 2.  Apply the YAML file by running the following command:
 
@@ -415,9 +427,11 @@ If you want to add or edit health checks in an existing pod, you must edit the p
     $ oc describe pod my-application
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -431,6 +445,8 @@ If you want to add or edit health checks in an existing pod, you must edit the p
       Normal  Created    1s    kubelet, ip-10-0-143-40.ec2.internal  Created container
       Normal  Started    1s    kubelet, ip-10-0-143-40.ec2.internal  Started container
     ```
+
+    </div>
 
     The following example shows output when a liveness probe fails and the container is restarted:
 
@@ -452,6 +468,8 @@ If you want to add or edit health checks in an existing pod, you must edit the p
       Normal   Pulled          10s                kubelet, ci-ln-37hz77b-f76d1-wdpjv-worker-b-snzrj  Successfully pulled image "registry.k8s.io/liveness" in 244.116568ms
     ```
 
+</div>
+
 # Application health monitoring by using the Developer perspective
 
 You can monitor application health by adding readiness, liveness, and startup probes from the **Developer** perspective, either when you deploy an application or on a deployed application. Probes detect unhealthy containers and keep applications available before failures affect users.
@@ -470,11 +488,29 @@ You can add health checks either while creating and deploying an application, or
 
 You can edit, remove, or add readiness, liveness, and startup probes on a deployed application from the **Topology** view in the **Developer** perspective. Use the **Edit Health Checks** page to update probe parameters, remove probes, or add new probe types.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have switched to the **Developer** perspective in the web console.
 
 - You have created and deployed an application on OpenShift Container Platform using the **Developer** perspective.
 
 - You have added health checks to your application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Topology** view, right-click your application and select **Edit Health Checks**. Alternatively, in the side panel, click the **Actions** drop-down list and select **Edit Health Checks**.
 
@@ -492,17 +528,22 @@ You can edit, remove, or add readiness, liveness, and startup probes on a deploy
 
     2.  Edit the probe parameters as required.
 
-        <div class="note">
-
-        The `Timeout` value must be lower than the `Period` value. The `Timeout` default value is `1`. The `Period` default value is `10`.
-
-        </div>
+        > [!NOTE]
+        > The `Timeout` value must be lower than the `Period` value. The `Timeout` default value is `1`. The `Period` default value is `10`.
 
     3.  Click the check mark at the bottom of the form. The **Liveness Probe Added** message is displayed.
 
 5.  Click **Save** to save your modifications and add the additional probes to your container. You are redirected to the **Topology** view.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  In the side panel, verify that the probes have been added by clicking on the deployed pod under the **Pods** section.
 
@@ -510,9 +551,19 @@ You can edit, remove, or add readiness, liveness, and startup probes on a deploy
 
 3.  In the **Container Details** page, verify that the Liveness probe - `HTTP Get 10.129.4.65:8080/` has been added to the container, in addition to the earlier existing probes.
 
+</div>
+
 # Monitoring health check failures using the Developer perspective
 
 You can monitor health check failures for a deployed application from the **Topology** view in the **Developer** perspective. Use the **Observe** tab to view events that report probe failures and show when containers need attention before users are affected.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have switched to the **Developer** perspective in the web console.
 
@@ -520,12 +571,34 @@ You can monitor health check failures for a deployed application from the **Topo
 
 - You have added health checks to your application.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the **Topology** view, click the application node to see the side panel.
 
 2.  Click the **Observe** tab to see health check failure events in the **Events (Warning)** section.
 
 3.  Click the down arrow adjoining **Events (Warning)** to see the details of the health check failure.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling the Developer perspective in the web console](../web_console/web-console-overview.xml#enabling-developer-perspective_web-console_web-console-overview)
 
 - [Creating applications using the Developer perspective](../applications/creating_applications/odc-creating-applications-using-developer-perspective.xml#odc-creating-applications-using-developer-perspective)
+
+</div>

@@ -10,7 +10,17 @@ Red Hat build of Kueue uses Kubernetes API Priority and Fairness (APF) To help 
 
 APF is a flow control mechanism that allows you to define API-level policies to regulate inbound requests to the API server. It protects the API server from being overwhelmed by unexpectedly high request volume, while protecting critical traffic from the throttling effect on best-effort workloads.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [API Priority and Fairness](https://kubernetes.io/docs/concepts/cluster-administration/flow-control/)
+
+</div>
 
 # Providing user permissions
 
@@ -22,15 +32,31 @@ You need to provide permissions to the users that require access to the specific
 
 - If the user needs access to the pending workloads from the `LocalQueue` resource, a `RoleBinding` schema needs to be created referencing the ClusterRole `kueue-batch-user-role`.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring role-based permissions](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ai_workloads/red-hat-build-of-kueue#rbac-permissions)
+
+</div>
 
 # Monitoring pending workloads on demand
 
 To test the monitoring of pending workloads, you must correctly configure both the `ClusterQueue` and the `LocalQueue` resources. After that, you can create jobs on that `LocalQueue`.
 
 Kueue manages the workload object created from the job so, when a job is submitted and saturates the `ClusterQueue`, its corresponding workloads can be seen in the list of pending workloads.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have cluster administrator permissions.
 
@@ -40,7 +66,17 @@ Kueue manages the workload object created from the job so, when a job is submitt
 
 - The OpenShift CLI (`oc`) has communication with your cluster.
 
+</div>
+
 The following procedure tells you how to install and test workload monitoring.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the assets by running the following command:
 
@@ -123,9 +159,19 @@ The following procedure tells you how to install and test workload monitoring.
 
     In this example, three of the jobs saturate the `ClusterQueue` resource and the other three jobs should be pending.
 
+</div>
+
 ## Viewing pending workloads in ClusterQueue
 
 To view all pending workloads at the cluster level, administrators can use the `ClusterQueue` object visibility endpoint of Kueue’s visibility API. This endpoint returns a list of all workloads currently waiting for admission by that `ClusterQueue` resource.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To view pending workloads in `ClusterQueue` run the following command:
 
@@ -133,9 +179,11 @@ To view all pending workloads at the cluster level, administrators can use the `
     $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/clusterqueues/cluster-queue/pendingworkloads"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -207,6 +255,8 @@ To view all pending workloads at the cluster level, administrators can use the `
       ]
     }
     ```
+
+    </div>
 
     You can pass the following optional query parameters:
 
@@ -222,9 +272,19 @@ To view all pending workloads at the cluster level, administrators can use the `
     $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/clusterqueues/cluster-queue/pendingworkloads?limit=1&offset=0"
     ```
 
+</div>
+
 ## Viewing pending workloads in LocalQueue
 
 To view the pending workloads submitted by a specific tenant within their namespace, users can query the `LocalQueue` resource visibility endpoint of Kueue’s visibility API. This provides an ordered list of their jobs waiting in that queue.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To view pending workloads in `LocalQueue` run the following command:
 
@@ -232,9 +292,11 @@ To view the pending workloads submitted by a specific tenant within their namesp
     $ oc get --raw /apis/visibility.kueue.x-k8s.io/v1beta2/namespaces/default/localqueues/user-queue/pendingworkloads
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -307,6 +369,8 @@ To view the pending workloads submitted by a specific tenant within their namesp
     }
     ```
 
+    </div>
+
     You can pass the following optional query parameters:
 
     `limit <integer>`
@@ -321,11 +385,21 @@ To view the pending workloads submitted by a specific tenant within their namesp
     $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/namespaces/default/localqueues/user-queue/pendingworkloads?limit=1&offset=0"
     ```
 
+</div>
+
 # Modifying monitoring settings
 
 Modify the monitoring settings according to your organization’s requirements to ensure users can access and view the pending workloads in a timely and reliable manner.
 
 This procedure tells you how to modify the resource flow control for the Red Hat build of Kueue `VisibilityOnDemand` feature. Modifications directly impact the system’s ability to handle concurrent requests for job visibility information.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `PriorityLevelConfiguration` asset for `VisibilityOnDemand` on `Kueue` by running the following command:
 
@@ -367,3 +441,5 @@ This procedure tells you how to modify the resource flow control for the Red Ha
     ``` terminal
     $ oc get prioritylevelconfiguration kueue-visibility
     ```
+
+</div>

@@ -1,20 +1,14 @@
 To maintain infrastructure flexibility while using existing virtualization layers, you can deploy hosted control planes on non-bare-metal Agent machines. You can use the management benefits of the Agent platform when running on virtualized environments or other cloud-based virtual machines.
 
-<div class="important">
-
-Hosted control planes on non-bare-metal agent machines is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Hosted control planes on non-bare-metal agent machines is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. The hosting cluster is an OpenShift Container Platform cluster where the control planes are hosted. The hosting cluster is also known as the management cluster.
 
-<div class="note">
-
-The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
-
-</div>
+> [!NOTE]
+> The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
 
 The hosted control planes feature is enabled by default.
 
@@ -24,7 +18,17 @@ A *hosted cluster* is an OpenShift Container Platform cluster with its API endpo
 
 The hosted cluster is automatically imported as a managed cluster. If you want to disable this automatic import feature, see "Disabling the automatic import of hosted clusters into multicluster engine Operator".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
+
+</div>
 
 # Preparing to deploy hosted control planes on non-bare-metal agent machines
 
@@ -40,13 +44,21 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 - When you configure storage for hosted control planes, consider the recommended etcd practices. To ensure that you meet the latency requirements, dedicate a fast storage device to all hosted control planes etcd instances that run on each control-plane node. You can use LVM storage to configure a local storage class for hosted etcd pods. For more information, see "Recommended etcd practices" and "Persistent storage using logical volume manager storage" in the OpenShift Container Platform documentation.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Enabling the central infrastructure management service (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim)
 
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
 - [Persistent storage using logical volume manager storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#persistent-storage-using-lvms_logical-volume-manager-storage)
+
+</div>
 
 ## Prerequisites for deploying hosted control planes on non-bare-metal agent machines
 
@@ -68,21 +80,26 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 - You are running the management cluster and workers on the same infrastructure.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Advanced configuration (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine)
 
 - [Enabling the central infrastructure management service (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim)
 
+</div>
+
 ## Firewall, port, and service requirements for non-bare-metal agent machines
 
 You must meet the firewall and port requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters.
 
-<div class="note">
-
-Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
-
-</div>
+> [!NOTE]
+> Services run on their default ports. However, if you use the `NodePort` publishing strategy, services run on the port that is assigned by the `NodePort` service.
 
 Use firewall rules, security groups, or other access controls to restrict access to only required sources. Avoid exposing ports publicly unless necessary. For production deployments, use a load balancer to simplify access through a single IP address.
 
@@ -130,7 +147,13 @@ The Agent platform does not create any infrastructure, but it has several requir
 
 - DNS: The API and ingress endpoints must be routable.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
 
@@ -142,6 +165,8 @@ The Agent platform does not create any infrastructure, but it has several requir
 
 - [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable-feature_hcp-enable-disable)
 
+</div>
+
 # DNS configuration on non-bare-metal agent machines
 
 The API Server for the hosted cluster is exposed as a `NodePort` service. A DNS entry must exist for `api.<hosted_cluster_name>.<basedomain>` that points to destination where the API Server can be reached.
@@ -150,9 +175,11 @@ The DNS entry can be as simple as a record that points to one of the nodes in th
 
 The following examples show how to configure DNS for specific environments.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example DNS configuration for a connected environment on an IPv4 network**
+<div class="title">
+
+Example DNS configuration for a connected environment on an IPv4 network
 
 </div>
 
@@ -166,9 +193,13 @@ api-int.example.krnl.es.    IN A 192.168.122.22
 `*`.apps.example.krnl.es.   IN A 192.168.122.23
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example DNS configuration for a disconnected environment on an IPv6 network**
+<div class="formalpara">
+
+<div class="title">
+
+Example DNS configuration for a disconnected environment on an IPv6 network
 
 </div>
 
@@ -182,9 +213,13 @@ api-int.example.krnl.es.    IN A 2620:52:0:1306::7
 `*`.apps.example.krnl.es.   IN A 2620:52:0:1306::10
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example DNS configuration for a disconnected environment on a dual stack network**
+<div class="formalpara">
+
+<div class="title">
+
+Example DNS configuration for a disconnected environment on a dual stack network
 
 </div>
 
@@ -208,6 +243,8 @@ dhcp-host=aa:aa:aa:aa:10:06,ocp-installer,[2620:52:0:1306::8]
 dhcp-host=aa:aa:aa:aa:10:07,ocp-bootstrap,[2620:52:0:1306::9]
 ```
 
+</div>
+
 For this configuration, be sure to include DNS entries for both IPv4 and IPv6.
 
 # Defining a custom DNS name
@@ -224,11 +261,27 @@ You might want to define a different DNS name for the following reasons:
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a valid TLS certificate that covers the DNS name that you set in the `kubeAPIServerDNSName` parameter.
 
 - You have a resolvable DNS name URI that can reach and point to the correct address.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the specification for the `HostedCluster` object, add the `kubeAPIServerDNSName` parameter and the address for the domain and specify which certificate to use, as shown in the following example:
 
@@ -255,13 +308,12 @@ You can define a DNS name either during your initial setup or during postinstall
 
   A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-  <div class="note">
-
-  Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
-
-  </div>
+  > [!NOTE]
+  > Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
 
   If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
+
+</div>
 
 # Creating a hosted cluster on non-bare-metal agent machines by using the CLI
 
@@ -269,11 +321,23 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
 
 <div class="note">
 
+<div class="title">
+
+</div>
+
 - Each hosted cluster must have a cluster-wide unique name. A hosted cluster name cannot be the same as any existing managed cluster in order for multicluster engine Operator to manage it.
 
 - Do not use `clusters` as a hosted cluster name.
 
 - A hosted cluster cannot be created in the namespace of a multicluster engine Operator managed cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -324,15 +388,27 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
 
     - `--node-pool-replicas` specifies the node pool replica count. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After a few moments, verify that your hosted control plane pods are up and running by entering the following command:
 
   ``` terminal
   $ oc -n <hosted_cluster_namespace>-<hosted_cluster_name> get pods
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -342,7 +418,17 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
   control-plane-operator-f6b4c8465-4k5dh           1/1     Running   0          4m32s
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import-manual_hcp-import)
 
@@ -352,13 +438,33 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
+</div>
+
 # Creating a hosted cluster on non-bare-metal agent machines by using the web console
 
 You can create a hosted cluster on non-bare-metal agent machines by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the OpenShift Container Platform web console and log in by entering your administrator credentials.
 
@@ -390,15 +496,35 @@ You can create a hosted cluster on non-bare-metal agent machines by using the Op
 
 8.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating a credential for an on-premises environment (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
 
 - [Accessing the web console](../../web_console/web-console.xml#web-console-overview)
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
+</div>
+
 # Creating a hosted cluster on non-bare-metal agent machines by using a mirror registry
 
 You can use a mirror registry to create a hosted cluster on non-bare-metal agent machines by specifying the `--image-content-sources` flag in the `hcp create cluster` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file to define Image Content Source Policies (ICSP). See the following example:
 
@@ -449,15 +575,35 @@ You can use a mirror registry to create a hosted cluster on non-bare-metal agent
 
     - `--release-image` specifies the supported OpenShift Container Platform version that you want to use. If you are using a disconnected environment, replace the version with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm)
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
+</div>
 
 # Verifying hosted cluster creation on non-bare-metal agent machines
 
 After the deployment process is complete, you can verify that the hosted cluster was created successfully.
 
 Follow these steps a few minutes after you create the hosted cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Obtain the `kubeconfig` file for your new hosted cluster by entering the following command:
 
@@ -473,9 +619,11 @@ Follow these steps a few minutes after you create the hosted cluster.
     $ oc get co --kubeconfig=kubeconfig-<hosted_cluster_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -486,15 +634,19 @@ Follow these steps a few minutes after you create the hosted cluster.
     dns                                        4.10.26   True        False         False      2m52s
     ```
 
+    </div>
+
 3.  View the running pods on your hosted cluster by entering the following command:
 
     ``` terminal
     $ oc get pods -A --kubeconfig=kubeconfig-<hosted_cluster_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -505,3 +657,7 @@ Follow these steps a few minutes after you create the hosted cluster.
     openshift-monitoring                               alertmanager-main-0                                       6/6     Running            0               100s
     openshift-monitoring                               openshift-state-metrics-677b9fb74f-qqp6g                  3/3     Running            0               104s
     ```
+
+    </div>
+
+</div>

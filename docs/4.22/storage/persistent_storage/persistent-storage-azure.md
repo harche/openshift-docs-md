@@ -2,17 +2,19 @@ OpenShift Container Platform supports Microsoft Azure Disk volumes. You can prov
 
 The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. Azure Disk volumes can be provisioned dynamically. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
-<div class="important">
+> [!IMPORTANT]
+> OpenShift Container Platform 4.11 and later provides automatic migration for the Azure Disk in-tree volume plugin to its equivalent CSI driver.
+>
+> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see CSI automatic migration.
 
-OpenShift Container Platform 4.11 and later provides automatic migration for the Azure Disk in-tree volume plugin to its equivalent CSI driver.
+> [!IMPORTANT]
+> High availability of storage in the infrastructure is left to the underlying storage provider.
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see CSI automatic migration.
+<div>
 
-</div>
+<div class="title">
 
-<div class="important">
-
-High availability of storage in the infrastructure is left to the underlying storage provider.
+Additional resources
 
 </div>
 
@@ -20,9 +22,19 @@ High availability of storage in the infrastructure is left to the underlying sto
 
 - [Microsoft Azure Disk](https://azure.microsoft.com/en-us/services/storage/disks)
 
+</div>
+
 # Creating the Azure storage class
 
 You can use storage classes to differentiate and delineate storage levels and usages. By defining a storage class, you can obtain dynamically provisioned persistent volumes.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Storage Classes**.
 
@@ -40,33 +52,57 @@ You can use storage classes to differentiate and delineate storage levels and us
 
         1.  Enter the storage account type. This corresponds to your Azure storage account SKU tier. Valid options are `Premium_LRS`, `PremiumV2_LRS`, `Standard_LRS`, `StandardSSD_LRS`, and `UltraSSD_LRS`.
 
-            <div class="important">
-
-            The skuname `PremiumV2_LRS` is not supported in all regions, and in some supported regions, not all of the availability zones are supported. For more information, see [Azure doc](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-deploy-premium-v2).
-
-            </div>
+            > [!IMPORTANT]
+            > The skuname `PremiumV2_LRS` is not supported in all regions, and in some supported regions, not all of the availability zones are supported. For more information, see [Azure doc](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-deploy-premium-v2).
 
         2.  Enter the kind of account. Valid options are `shared`, `dedicated,` and `managed`.
 
-            <div class="important">
-
-            Red Hat only supports the use of `kind: Managed` in the storage class.
-
-            With `Shared` and `Dedicated`, Azure creates unmanaged disks, while OpenShift Container Platform creates a managed disk for machine OS (root) disks. But because Azure Disk does not allow the use of both managed and unmanaged disks on a node, unmanaged disks created with `Shared` or `Dedicated` cannot be attached to OpenShift Container Platform nodes.
-
-            </div>
+            > [!IMPORTANT]
+            > Red Hat only supports the use of `kind: Managed` in the storage class.
+            >
+            > With `Shared` and `Dedicated`, Azure creates unmanaged disks, while OpenShift Container Platform creates a managed disk for machine OS (root) disks. But because Azure Disk does not allow the use of both managed and unmanaged disks on a node, unmanaged disks created with `Shared` or `Dedicated` cannot be attached to OpenShift Container Platform nodes.
 
     5.  Enter additional parameters for the storage class as desired.
 
 4.  Click **Create** to create the storage class.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Azure Disk Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/#new-azure-disk-storage-class-starting-from-v1-7-2)
+
+</div>
 
 # Creating the persistent volume claim
 
 You can create a persistent volume claim to dynamically provision and bind storage from a pre-configured storage class, so that your applications can consume persistent storage in OpenShift Container Platform.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
@@ -84,6 +120,8 @@ You can create a persistent volume claim to dynamically provision and bind stora
 
 4.  Click **Create** to create the persistent volume claim and generate a persistent volume.
 
+</div>
+
 # Volume format
 
 You can use unformatted Azure volumes as persistent volumes, because OpenShift Container Platform automatically formats the device before mounting it to a container.
@@ -96,17 +134,45 @@ You can create a machine set running on Microsoft Azure that deploys machines wi
 
 Both the in-tree plugin and CSI driver support using PVCs to enable ultra disks. You can also deploy machines with ultra disks as data disks without creating a PVC.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Microsoft Azure ultra disks documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#ultra-disks)
 
 - [Machine sets that deploy machines on ultra disks using CSI PVCs](../../storage/container_storage_interface/persistent-storage-csi-azure.xml#machineset-azure-ultra-disk_persistent-storage-csi-azure)
 
 - [Machine sets that deploy machines on ultra disks as data disks](../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-ultra-disk_creating-machineset-azure)
 
+</div>
+
 ## Creating machines with ultra disks by using machine sets
 
 You can deploy machines with ultra disks on Microsoft Azure by editing your machine set YAML file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Have an existing Microsoft Azure cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Copy an existing Azure `MachineSet` custom resource (CR) and edit it by running the following command:
 
@@ -244,7 +310,15 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     `spec.volumes.persistentVolumeClaim.claimName`
     Specifies the name of the PVC to attach. This pod references the `ultra-disk` PVC.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Validate that the machines are created by running the following command:
 
@@ -261,6 +335,16 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     ```
 
     In this command, `oc debug node/<node_name>` starts a debugging shell on the node `<node_name>` and passes a command with `--`. The passed command `chroot /host` provides access to the underlying host OS binaries, and `lsblk` shows the block devices that are attached to the host OS machine.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - To use an ultra disk from within a pod, create a workload that uses the mount point. Create a YAML file similar to the following example:
 
@@ -287,6 +371,8 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     nodeSelector:
       disktype: ultrassd
   ```
+
+</div>
 
 ## Troubleshooting resources for machine sets that enable ultra disks
 

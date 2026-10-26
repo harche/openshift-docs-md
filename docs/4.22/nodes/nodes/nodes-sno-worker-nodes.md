@@ -2,25 +2,16 @@ You can add worker nodes to single-node OpenShift clusters in case you need addi
 
 Single-node clusters reduce the host prerequisites for deployment to a single host. This is useful for deployments in constrained environments or at the network edge. However, sometimes you need to add additional capacity to your cluster, for example, in telecommunications and network edge scenarios. In these scenarios, you can add worker nodes to the single-node cluster.
 
-<div class="note">
-
-Unlike multi-node clusters, by default all ingress traffic is routed to the single control-plane node, even after adding additional worker nodes.
-
-</div>
+> [!NOTE]
+> Unlike multi-node clusters, by default all ingress traffic is routed to the single control-plane node, even after adding additional worker nodes.
 
 There are several ways that you can add worker nodes to a single-node cluster. You can add worker nodes to a cluster manually, using [Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/assisted-installer/clusters), or by using the Assisted Installer REST API directly.
 
-<div class="important">
+> [!IMPORTANT]
+> Adding worker nodes does not expand the cluster control plane, and it does not provide high availability to your cluster. For single-node OpenShift clusters, high availability is handled by failing over to another site. When adding worker nodes to single-node OpenShift clusters, a tested maximum of two worker nodes is recommended. Exceeding the recommended number of worker nodes might result in lower overall performance, including cluster failure.
 
-Adding worker nodes does not expand the cluster control plane, and it does not provide high availability to your cluster. For single-node OpenShift clusters, high availability is handled by failing over to another site. When adding worker nodes to single-node OpenShift clusters, a tested maximum of two worker nodes is recommended. Exceeding the recommended number of worker nodes might result in lower overall performance, including cluster failure.
-
-</div>
-
-<div class="note">
-
-To add worker nodes, you must have access to the OpenShift Cluster Manager. This method is not supported when using the Agent-based installer to install a cluster in a disconnected environment.
-
-</div>
+> [!NOTE]
+> To add worker nodes, you must have access to the OpenShift Cluster Manager. This method is not supported when using the Agent-based installer to install a cluster in a disconnected environment.
 
 # Requirements for installing single-node OpenShift worker nodes
 
@@ -38,23 +29,20 @@ To install a single-node OpenShift worker node, you must address the following r
 
   Minimum resource requirements
 
-  <div class="note">
-
-  One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or hyperthreading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio:
-
-  (threads per core × cores) × sockets = vCPUs
-
-  </div>
+  > [!NOTE]
+  > One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or hyperthreading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio:
+  >
+  > (threads per core × cores) × sockets = vCPUs
 
   The server must have a Baseboard Management Controller (BMC) when booting with virtual media.
 
 - **Networking:** The worker node server must have access to the internet or access to a local registry if it is not connected to a routable network. The worker node server must have a DHCP reservation or a static IP address and be able to access the single-node OpenShift cluster Kubernetes API, ingress route, and cluster node domain names. You must configure the DNS to resolve the IP address to each of the following fully qualified domain names (FQDN) for the single-node OpenShift cluster:
 
-  | Usage          | FQDN                                   | Description                                                                                                                         |
-  |----------------|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-  | Kubernetes API | `api.<cluster_name>.<base_domain>`     | Add a DNS A/AAAA or CNAME record. This record must be resolvable by clients external to the cluster.                                |
-  | Internal API   | `api-int.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record when creating the ISO manually. This record must be resolvable by nodes within the cluster.        |
-  | Ingress route  | `*.apps.<cluster_name>.<base_domain>`  | Add a wildcard DNS A/AAAA or CNAME record that targets the node. This record must be resolvable by clients external to the cluster. |
+  | Usage | FQDN | Description |
+  |----|----|----|
+  | Kubernetes API | `api.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record. This record must be resolvable by clients external to the cluster. |
+  | Internal API | `api-int.<cluster_name>.<base_domain>` | Add a DNS A/AAAA or CNAME record when creating the ISO manually. This record must be resolvable by nodes within the cluster. |
+  | Ingress route | `*.apps.<cluster_name>.<base_domain>` | Add a wildcard DNS A/AAAA or CNAME record that targets the node. This record must be resolvable by clients external to the cluster. |
 
   Required DNS records
 
@@ -64,9 +52,14 @@ To install a single-node OpenShift worker node, you must address the following r
 
 You can add worker nodes to single-node OpenShift clusters that were created on the [OpenShift Cluster Manager](https://console.redhat.com/openshift) by using the [Assisted Installer](https://console.redhat.com/openshift/assisted-installer/clusters/~new). This method provides and alternative to using command-line commands.
 
-<div class="important">
+> [!IMPORTANT]
+> Adding worker nodes to single-node OpenShift clusters is only supported for clusters running OpenShift Container Platform version 4.11 and up.
 
-Adding worker nodes to single-node OpenShift clusters is only supported for clusters running OpenShift Container Platform version 4.11 and up.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -78,6 +71,16 @@ Adding worker nodes to single-node OpenShift clusters is only supported for clus
 
 - Ensure that all the required DNS records exist for the cluster that you are adding the worker node to.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the [OpenShift Cluster Manager](https://console.redhat.com/openshift) and click the single-node cluster that you want to add a worker node to.
 
 2.  Click **Add hosts**, and download the discovery ISO for the new worker node, adding SSH public key and configuring cluster-wide proxy settings as required.
@@ -88,11 +91,10 @@ Adding worker nodes to single-node OpenShift clusters is only supported for clus
 
     When the worker node is sucessfully installed, it is listed as a worker node in the cluster web console.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > New worker nodes are encrypted using the same method as the original cluster.
 
-    New worker nodes are encrypted using the same method as the original cluster.
-
-    </div>
+</div>
 
 # Adding worker nodes using the Assisted Installer API
 
@@ -104,9 +106,27 @@ Before you add worker nodes, you must log in to [OpenShift Cluster Manager](http
 
 Before you can use the Assisted Installer REST API, you must authenticate against the API using a JSON web token (JWT) that you generate.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift/assisted-installer/clusters) as a user with cluster creation privileges.
 
 - Install `jq`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift/token/show) and copy your API token.
 
@@ -132,11 +152,18 @@ Before you can use the Assisted Installer REST API, you must authenticate agains
     )
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The JWT token is valid for 15 minutes only.
 
-    The JWT token is valid for 15 minutes only.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Optional: Check that you can access the API by running the following command:
 
@@ -144,9 +171,11 @@ Before you can use the Assisted Installer REST API, you must authenticate agains
   $ curl -s https://api.openshift.com/api/assisted-install/v2/component-versions -H "Authorization: Bearer ${JWT_TOKEN}" | jq
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -163,9 +192,21 @@ Before you can use the Assisted Installer REST API, you must authenticate agains
   }
   ```
 
+  </div>
+
+</div>
+
 ## Adding worker nodes using the Assisted Installer REST API
 
 You can add worker nodes to clusters by writing command-line commands against the Assisted Installer REST API. This method provides an alternative to using the web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the OpenShift Cluster Manager CLI (`ocm`).
 
@@ -174,6 +215,16 @@ You can add worker nodes to clusters by writing command-line commands against th
 - Install `jq`.
 
 - Ensure that all the required DNS records exist for the cluster that you are adding the worker node to.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Authenticate against the Assisted Installer REST API and generate a JSON web token (JWT) for your session. The generated JWT token is valid for 15 minutes only.
 
@@ -263,15 +314,19 @@ You can add worker nodes to clusters by writing command-line commands against th
     $ curl -s "$API_URL/api/assisted-install/v2/infra-envs/$INFRA_ENV_ID" -H "Authorization: Bearer ${JWT_TOKEN}" | jq -r '.download_url'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     https://api.openshift.com/api/assisted-images/images/41b91e72-c33e-42ee-b80f-b5c5bbf6431a?arch=x86_64&image_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTYwMjYzNzEsInN1YiI6IjQxYjkxZTcyLWMzM2UtNDJlZS1iODBmLWI1YzViYmY2NDMxYSJ9.1EX_VGaMNejMhrAvVRBS7PDPIQtbOOc8LtG8OukE1a4&type=minimal-iso&version=$VERSION
     ```
+
+    </div>
 
 6.  Download the ISO:
 
@@ -289,15 +344,19 @@ You can add worker nodes to clusters by writing command-line commands against th
     $ curl -s "$API_URL/api/assisted-install/v2/clusters/$CLUSTER_ID" -H "Authorization: Bearer ${JWT_TOKEN}" | jq -r '.hosts[] | select(.status != "installed").id'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     2294ba03-c264-4f11-ac08-2f1bb2f8c296
     ```
+
+    </div>
 
 9.  Set the `$HOST_ID` variable for the new worker node, for example:
 
@@ -309,11 +368,8 @@ You can add worker nodes to clusters by writing command-line commands against th
 
 10. Check that the host is ready to install by running the following command:
 
-    <div class="note">
-
-    Ensure that you copy the entire command including the complete `jq` expression.
-
-    </div>
+    > [!NOTE]
+    > Ensure that you copy the entire command including the complete `jq` expression.
 
     ``` terminal
     $ curl -s $API_URL/api/assisted-install/v2/clusters/$CLUSTER_ID -H "Authorization: Bearer ${JWT_TOKEN}" | jq '
@@ -359,9 +415,11 @@ You can add worker nodes to clusters by writing command-line commands against th
     ' -r
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -404,6 +462,8 @@ You can add worker nodes to clusters by writing command-line commands against th
     }
     ```
 
+    </div>
+
 11. When the previous command shows that the host is ready, start the installation using the [/v2/infra-envs/{infra_env_id}/hosts/{host_id}/actions/install](https://api.openshift.com/?urls.primaryName=assisted-service%20service#/installer/v2InstallHost) API by running the following command:
 
     ``` terminal
@@ -412,11 +472,8 @@ You can add worker nodes to clusters by writing command-line commands against th
 
 12. As the installation proceeds, the installation generates pending certificate signing requests (CSRs) for the worker node.
 
-    <div class="important">
-
-    You must approve the CSRs to complete the installation.
-
-    </div>
+    > [!IMPORTANT]
+    > You must approve the CSRs to complete the installation.
 
     Keep running the following API call to monitor the cluster installation:
 
@@ -431,9 +488,11 @@ You can add worker nodes to clusters by writing command-line commands against th
     }'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -461,15 +520,19 @@ You can add worker nodes to clusters by writing command-line commands against th
     }
     ```
 
+    </div>
+
 13. Optional: Run the following command to see all the events for the cluster:
 
     ``` terminal
     $ curl -s "$API_URL/api/assisted-install/v2/events?cluster_id=$CLUSTER_ID" -H "Authorization: Bearer ${JWT_TOKEN}" | jq -c '.[] | {severity, message, event_time, host_id}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -482,7 +545,19 @@ You can add worker nodes to clusters by writing command-line commands against th
     {"severity":"info","message":"Host: compute-0, reached installation stage Rebooting","event_time":"2022-07-08T11:29:48.261Z","host_id":"9d7b3b44-1125-4ad0-9b14-76550087b445"}
     ```
 
+    </div>
+
 14. Log in to the cluster and approve the pending CSRs to complete the installation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check that the new worker node was successfully added to the cluster with a status of `Ready`:
 
@@ -490,9 +565,11 @@ You can add worker nodes to clusters by writing command-line commands against th
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -502,9 +579,21 @@ You can add worker nodes to clusters by writing command-line commands against th
   compute-1.example.com          Ready    worker          11m   v1.35.4
   ```
 
+  </div>
+
+</div>
+
 # Adding worker nodes to single-node OpenShift clusters manually
 
 You can add a worker node to a single-node OpenShift cluster manually by booting the worker node from Red Hat Enterprise Linux CoreOS (RHCOS) ISO and by using the cluster `worker.ign` file to join the new worker node to the cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install a single-node OpenShift cluster on bare metal.
 
@@ -513,6 +602,16 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 - Log in as a user with `cluster-admin` privileges.
 
 - Ensure that all the required DNS records exist for the cluster that you are adding the worker node to.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the OpenShift Container Platform version:
 
@@ -681,15 +780,22 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
               macAddress: "AA:BB:CC:DD:EE:11"
         ```
 
-        <div class="important">
-
-        The `NMStateConfig` CR is required for successful deployment of worker nodes with static IP addresses and for adding a worker node with a dynamic IP address if the single-node OpenShift was deployed with a static IP address. The cluster network DHCP does not automatically set these network settings for the new worker node.
-
-        </div>
+        > [!IMPORTANT]
+        > The `NMStateConfig` CR is required for successful deployment of worker nodes with static IP addresses and for adding a worker node with a dynamic IP address if the single-node OpenShift was deployed with a static IP address. The cluster network DHCP does not automatically set these network settings for the new worker node.
 
 9.  As the installation proceeds, the installation generates pending certificate signing requests (CSRs) for the worker node. When prompted, approve the pending CSRs to complete the installation.
 
 10. When the installation is complete, reboot the host. The host joins the cluster as a new worker node.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check that the new worker node was successfully added to the cluster with a status of `Ready`:
 
@@ -697,9 +803,11 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
   $ oc get nodes
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -709,11 +817,33 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
   compute-1.example.com          Ready    worker          11m   v1.35.4
   ```
 
+  </div>
+
+</div>
+
 # Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You added machines to your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -721,9 +851,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -734,13 +866,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     master-2  Ready     master  64m  v1.35.4
     ```
 
+    </div>
+
     The output lists all of the machines that you created.
 
-    <div class="note">
-
-    The preceding output might not include the compute nodes until you approve some CSRs.
-
-    </div>
+    > [!NOTE]
+    > The preceding output might not include the compute nodes until you approve some CSRs.
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -748,9 +879,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -761,21 +894,17 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     ...
     ```
 
+    </div>
+
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    <div class="note">
+    > [!NOTE]
+    > You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
-
-    </div>
-
-    <div class="note">
-
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
-
-    </div>
+    > [!NOTE]
+    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -794,11 +923,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      <div class="note">
-
-      Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
-
-      </div>
+      > [!NOTE]
+      > Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
 
 4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
@@ -806,9 +932,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -818,6 +946,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
+
+    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -844,9 +974,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -859,11 +991,20 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     worker-1  Ready     worker  11m  v1.35.4
     ```
 
-    <div class="note">
-
-    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
-
     </div>
+
+    > [!NOTE]
+    > You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
+
+</div>
+
+<div id="additional-resources_add-workers">
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Minimum resource requirements for cluster installation](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-minimum-resource-requirements_installing-restricted-networks-bare-metal)
 
@@ -878,3 +1019,5 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 - [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
 
 - [Approving the certificate signing requests for your machines](../../nodes/nodes/nodes-sno-worker-nodes.xml#installation-approve-csrs_add-workers)
+
+</div>

@@ -18,19 +18,18 @@ The `ClusterImagePolicy` and `ImagePolicy` objects contain a policy that specifi
 
 - Cluster image policy. A cluster image policy object enables a cluster administrator to configure a sigstore signature verification policy for the entire cluster. When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy` object and updates the `/etc/containers/policy.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all nodes in the cluster.
 
-  <div class="note">
-
-  The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` repository.
-
-  </div>
+  > [!NOTE]
+  > The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` repository.
 
 - Image policy. An image policy enables a cluster administrator or application developer to configure a sigstore signature verification policy for a specific namespace. The MCO watches an `ImagePolicy` instance in different namespaces and creates or updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all nodes in the cluster.
 
   If the image or repository in an image policy is nested under one of the images or repositories in a cluster image policy, only the policy from cluster image policy is applied. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace uses the policy from the cluster image policy. The image policy object is created and shows an error similar to the following message:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example image policy with a conflicting image identity**
+  <div class="title">
+
+  Example image policy with a conflicting image identity
 
   </div>
 
@@ -46,6 +45,8 @@ The `ClusterImagePolicy` and `ImagePolicy` objects contain a policy that specifi
       Reason: ConflictScopes
   # ...
   ```
+
+  </div>
 
 ## About cluster and image policy parameters
 
@@ -109,11 +110,8 @@ You can modify or remove a cluster image policy or an image policy by using the 
 
 You can modify an existing policy by editing the policy YAML and running an `oc apply` command on the file or directly editing the `ClusterImagePolicy` or `ImagePolicy` object. Both methods apply the changes in the same manner.
 
-<div class="note">
-
-The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
-
-</div>
+> [!NOTE]
+> The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
 
 You can create multiple policies for a cluster or namespace. This allows you to create different policies for different images or repositories.
 
@@ -127,9 +125,14 @@ When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy`
 
 The following example shows general guidelines on how to configure a `ClusterImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters."
 
-<div class="note">
+> [!NOTE]
+> The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images, which are stored in the `quay.io/openshift-release-dev/ocp-release` repository. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
 
-The default `ClusterImagePolicy` object, named `openshift`, provides sigstore support for the required OpenShift Container Platform images, which are stored in the `quay.io/openshift-release-dev/ocp-release` repository. You must not remove or modify this cluster image policy object. Cluster image policy names beginning with `openshift` are reserved for future system use.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -147,6 +150,16 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
   $ oc image mirror quay.io/openshift-release-dev/ocp-release:sha256-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef.sig \
   mirror.com/image/repo:sha256-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef.sig
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a cluster image policy object similar to the following examples. See "About image policy parameters" for specific details on these parameters.
 
@@ -334,6 +347,16 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
 
     The Machine Config Operator (MCO) updates the machine config pools (MCP) in your cluster. Scheduling on each node is disabled as the change is being applied.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After the nodes in your cluster are updated, you can verify that the cluster image policy has been configured:
 
   1.  Start a debug pod for the node by running the following command:
@@ -354,9 +377,11 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
       sh-5.1# cat /etc/containers/policy.json
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output for the cluster image policy object with a public key showing the new cluster image policy**
+      <div class="title">
+
+      Example output for the cluster image policy object with a public key showing the new cluster image policy
 
       </div>
 
@@ -378,9 +403,13 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
       # ...
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the cluster image policy object for a BYOPKI certificate showing the new cluster image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the cluster image policy object for a BYOPKI certificate showing the new cluster image policy
 
       </div>
 
@@ -405,9 +434,13 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
             ],
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the cluster image policy object with a Fulcio certificate showing the new cluster image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the cluster image policy object with a Fulcio certificate showing the new cluster image policy
 
       </div>
 
@@ -435,15 +468,19 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
       # ...
       ```
 
+      </div>
+
   4.  Examine the `sigstore-registries.yaml` file by running the following command:
 
       ``` terminal
       sh-5.1# cat /etc/containers/registries.d/sigstore-registries.yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output showing that the scoped registry was added**
+      <div class="title">
+
+      Example output showing that the scoped registry was added
 
       </div>
 
@@ -455,10 +492,14 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
           use-sigstore-attachments: true
       ```
 
+      </div>
+
       where:
 
       `docker.example.com.use-sigstore-attachments`
       When `true`, specifies that sigstore signatures are going to be read along with the image.
+
+</div>
 
 # Create an image policy CR
 
@@ -466,19 +507,34 @@ A cluster administrator or application developer can use an `ImagePolicy` custom
 
 The MCO watches `ImagePolicy` instances in different namespaces and updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
 
-<div class="note">
-
-If a scoped image or repository in an image policy is nested under one of the scoped images or repositories in a cluster image policy, only the policy from cluster image policy is applied. However, the image policy object is created with an error message. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace inherits the policy from the cluster image policy.
-
-</div>
+> [!NOTE]
+> If a scoped image or repository in an image policy is nested under one of the scoped images or repositories in a cluster image policy, only the policy from cluster image policy is applied. However, the image policy object is created with an error message. For example, if an image policy specifies `example.com/global/image`, and the cluster image policy specifies `example.com/global`, the namespace inherits the policy from the cluster image policy.
 
 The following example shows general guidelines on how to configure an `ImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters".
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a sigstore-supported public key infrastructure (PKI) key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or provide a Cosign public and private key pair for signing operations.
 
 - You have a signing process in place to sign your images.
 
 - You have access to a registry that supports Cosign signatures, if you are using Cosign signatures.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an image policy object similar to the following examples. See "About cluster and image policy parameters" for specific details on these parameters.
 
@@ -674,6 +730,16 @@ The following example shows general guidelines on how to configure an `ImagePoli
 
     The Machine Config Operator (MCO) updates the machine config pools (MCP) in your cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After the nodes in your cluster are updated, you can verify that the image policy has been configured:
 
   1.  Start a debug pod for the node by running the following command:
@@ -694,9 +760,11 @@ The following example shows general guidelines on how to configure an `ImagePoli
       sh-5.1# cat /etc/crio/policies/<namespace>.json
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output for the image policy object with a public key showing the new image policy**
+      <div class="title">
+
+      Example output for the image policy object with a public key showing the new image policy
 
       </div>
 
@@ -717,9 +785,13 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the image policy object for a BYOPKI certificate showing the new image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the image policy object for a BYOPKI certificate showing the new image policy
 
       </div>
 
@@ -744,9 +816,13 @@ The following example shows general guidelines on how to configure an `ImagePoli
             ],
       ```
 
-      <div class="formalpara-title">
+      </div>
 
-      **Example output for the image policy object with a Fulcio certificate showing the new image policy**
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example output for the image policy object with a Fulcio certificate showing the new image policy
 
       </div>
 
@@ -773,15 +849,19 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
+      </div>
+
   4.  Examine the `sigstore-registries.yaml` file by running the following command:
 
       ``` terminal
       sh-5.1# cat /etc/containers/registries.d/sigstore-registries.yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output showing that the scoped registry was added**
+      <div class="title">
+
+      Example output showing that the scoped registry was added
 
       </div>
 
@@ -792,6 +872,8 @@ The following example shows general guidelines on how to configure an `ImagePoli
         quay.io/openshift-release-dev/ocp-release:
           use-sigstore-attachments: true
       ```
+
+      </div>
 
       where:
 
@@ -804,9 +886,11 @@ The following example shows general guidelines on how to configure an `ImagePoli
       sh-5.1#  journalctl -u crio | grep -A 100 "Pulling image: example.io/crio"
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output with timestamp removed**
+      <div class="title">
+
+      Example output with timestamp removed
 
       </div>
 
@@ -823,9 +907,13 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
+      </div>
+
       The `IsRunningImageAllowed` line confirms that image is allowed by the configured sigstore verification policy.
 
       The `Using transport \"docker\" specific policy section \"example.io/crio/signed\"" file="signature/policy_eval.go:150` line confirms that the image policy has been applied.
+
+</div>
 
 # Additional resources
 

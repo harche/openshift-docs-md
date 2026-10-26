@@ -1,20 +1,35 @@
 As an administrator, you can expose a set of host and virtual machine (VM) metrics to a guest VM by enabling the `downwardMetrics` feature gate and configuring a downward metrics device. You can view these metrics by using the command line or the `vm-dump-metrics` tool.
 
-<div class="note">
+> [!NOTE]
+> On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics.
+>
+> The `vm-dump-metrics` tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
 
-On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics.
-
-The `vm-dump-metrics` tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
-
-</div>
-
-# Enabling or disabling the downward metrics feature gate in a YAML file
+# Enable or disable downward metrics by editing the HyperConverged CR
 
 To expose downward metrics for a host virtual machine, you can enable the `downwardMetrics` feature gate by editing a YAML file.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have administrator privileges to enable the feature gate.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the HyperConverged custom resource (CR) in your default editor by running the following command:
 
@@ -53,15 +68,33 @@ To expose downward metrics for a host virtual machine, you can enable the `downw
       # ...
       ```
 
-# Enabling or disabling the downward metrics feature gate from the CLI
+</div>
+
+# Enable or disable downward metrics by running an `oc patch` command
 
 To expose downward metrics for a host virtual machine, you can enable the `downwardMetrics` feature gate by using the command line.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have administrator privileges to enable the feature gate.
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Choose to enable or disable the `downwardMetrics` feature gate as follows:
 
@@ -81,13 +114,31 @@ To expose downward metrics for a host virtual machine, you can enable the `downw
       "value": {"name": "downwardMetrics", "state": "Disabled"}}]'
     ```
 
-# Configuring a downward metrics device
+</div>
+
+# Configure a downward metrics device
 
 You can enable the capturing of downward metrics for a host VM by creating a configuration file that includes a `downwardMetrics` device. Adding this device establishes that the metrics are exposed through a `virtio-serial` port.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must first enable the `downwardMetrics` feature gate.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Edit or create a YAML file that includes a `downwardMetrics` device, as shown in the following example:
 
@@ -138,9 +189,19 @@ You can enable the capturing of downward metrics for a host VM by creating a con
 
 - `spec.volumes.cloudInitNoCloud.userdata.password` defines the password for the `fedora` user.
 
-# Viewing downward metrics by using the CLI
+</div>
+
+# View downward metrics by using the CLI
 
 You can view downward metrics by entering a command from inside a guest virtual machine (VM).
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following commands:
 
@@ -152,13 +213,20 @@ You can view downward metrics by entering a command from inside a guest virtual 
   $ sudo cat /dev/virtio-ports/org.github.vhostmd.1
   ```
 
-# Viewing downward metrics by using the vm-dump-metrics tool
+</div>
+
+# View downward metrics by using the vm-dump-metrics tool
 
 To view downward metrics, install the `vm-dump-metrics` tool and then use the tool to expose the metrics results.
 
-<div class="note">
+> [!NOTE]
+> On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics. The vm-dump-metrics tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
 
-On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics. The vm-dump-metrics tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -193,6 +261,8 @@ On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metr
     </metrics>
     ```
 
+</div>
+
 # Additional resources
 
-- [Viewing downward metrics by using the command line](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-viewing-downward-metrics-cli_virt-exposing-downward-metrics)
+- [View downward metrics by using the CLI](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-viewing-downward-metrics-cli_virt-exposing-downward-metrics)

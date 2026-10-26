@@ -24,9 +24,14 @@ The pinned image set defines the list of images to pre-load and the machine conf
 
 The images are stored in the `/etc/crio/crio.conf.d/50-pinned-images` file on the nodes.
 
-<div class="note">
+> [!NOTE]
+> Only images that you can successfully inspect with the `podman manifest inspect <IMAGE_URL>` command can be used with a pinned image set. Image inspections could fail due to unsupported manifest formats, registry authorization issues, invalid schemas, network connectivity issues, or other issues.
 
-Only images that you can successfully inspect with the `podman manifest inspect <IMAGE_URL>` command can be used with a pinned image set. Image inspections could fail due to unsupported manifest formats, registry authorization issues, invalid schemas, network connectivity issues, or other issues.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -59,15 +64,27 @@ Only images that you can successfully inspect with the `podman manifest inspect 
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check that the pinned image set is reported in the machine config node object for the affected machine config pool by running the following command:
 
   ``` terminal
   $ oc describe machineconfignode <machine_config_node_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example command**
+  <div class="title">
+
+  Example command
 
   </div>
 
@@ -75,9 +92,13 @@ Only images that you can successfully inspect with the `podman manifest inspect 
   $ oc describe machineconfignode ci-ln-25hlkvt-72292-jrs48-worker-a-2bdj
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example output for a successful image pull and pin**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example output for a successful image pull and pin
 
   </div>
 
@@ -96,6 +117,8 @@ Only images that you can successfully inspect with the `podman manifest inspect 
       name: worker-pinned-images
   ```
 
+  </div>
+
   where:
 
   `status.pinnedImageSets`
@@ -103,9 +126,11 @@ Only images that you can successfully inspect with the `podman manifest inspect 
 
   Any failures or error messages would appear in the `MachineConfigNode` object status fields, as shown in the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output for a failed image pull and pin**
+  <div class="title">
+
+  Example output for a failed image pull and pin
 
   </div>
 
@@ -135,6 +160,8 @@ Only images that you can successfully inspect with the `podman manifest inspect 
       name: worker-pinned-images
   ```
 
+  </div>
+
 - Check that the pinned image file is created and contains the correct images.
 
   1.  Start a debug session for a node by running the following command:
@@ -155,9 +182,11 @@ Only images that you can successfully inspect with the `podman manifest inspect 
       $ cat /etc/crio/crio.conf.d/50-pinned-images
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -167,11 +196,23 @@ Only images that you can successfully inspect with the `podman manifest inspect 
           pinned_images = ["quay.io/openshift-release-dev/ocp-release@sha256:4198606580b69c8335ad7ae531c3a74e51aee25db5faaf368234e8c8dae5cbea", "quay.io/openshift-release-dev/ocp-release@sha256:513cf1028aa1a021fa73d0601427a0fbcf6d212b88aaf9d76d4e4841a061e44e", "quay.io/openshift-release-dev/ocp-release@sha256:61eae2d261e54d1b8a0e05f6b5326228b00468364563745eed88460af04f909b"]
       ```
 
+      </div>
+
       where:
 
       `pinnedImages`
       Specifies the images that have been pulled and pinned for the affected machine config pool.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About checking machine config node status](../machine_configuration/index.xml#checking-mco-node-status_machine-config-overview)
+
+</div>

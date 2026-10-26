@@ -22,6 +22,10 @@ Visualizes encrypted network traffic with lock icons in the topology view and id
 Remediation prioritization
 Targets workloads using deprecated protocols for updates by filtering and analyzing TLS fields to isolate problematic connections requiring immediate attention.
 
+## TLS Tracking feature view
+
+When TLS tracking is enabled, you can select the **TLS Tracking** preconfigured feature view from the view selector in the **Network Traffic** page. This view automatically displays TLS-specific panels and columns, providing faster access to TLS monitoring metrics without manual configuration.
+
 ## TLS traffic monitoring workflow phases
 
 To monitor TLS traffic effectively, complete the following phases:
@@ -36,9 +40,14 @@ To monitor TLS traffic effectively, complete the following phases:
 
 Enable Transport Layer Security (TLS) tracking to monitor encryption protocols and identify security risks in the cluster.
 
-<div class="note">
+> [!NOTE]
+> TLS fields only appear in flows for connections that perform a TLS handshake after the feature is enabled.
 
-TLS fields only appear in flows for connections that perform a TLS handshake after the feature is enabled.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -47,6 +56,16 @@ TLS fields only appear in flows for connections that perform a TLS handshake aft
 - The `FlowCollector` custom resource (CR) is configured with `spec.agent.type: eBPF`.
 
 - Access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `FlowCollector` CR by running the following command:
 
@@ -77,7 +96,15 @@ TLS fields only appear in flows for connections that perform a TLS handshake aft
 
 3.  Save and exit your editor.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Confirm that the eBPF agent pods have restarted by running the following command:
 
@@ -85,9 +112,11 @@ TLS fields only appear in flows for connections that perform a TLS handshake aft
     $ oc get pods -n netobserv-privileged
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -96,15 +125,19 @@ TLS fields only appear in flows for connections that perform a TLS handshake aft
     netobserv-ebpf-agent-abc12              1/1     Running   0          2m
     ```
 
+    </div>
+
 2.  Verify the TLS tracking feature is active by running the following command:
 
     ``` terminal
     $ oc logs -n netobserv-privileged ds/netobserv-ebpf-agent | grep "EnableTLSTracking"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -112,11 +145,23 @@ TLS fields only appear in flows for connections that perform a TLS handshake aft
     EnableTLSTracking:true
     ```
 
+    </div>
+
     The output confirms that the TLS tracking feature has been initialized in the eBPF agent.
+
+</div>
 
 # Analyze Transport Layer Security traffic data
 
 View and filter Transport Layer Security (TLS) metadata to identify deprecated configurations and verify encryption compliance in the cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The Network Observability Operator is installed.
 
@@ -124,13 +169,20 @@ View and filter Transport Layer Security (TLS) metadata to identify deprecated c
 
 - Access to the OpenShift Container Platform web console.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Navigate to **Observe** → **Network Traffic** in the OpenShift Container Platform web console and click the **Traffic flows** tab.
 
-    <div class="note">
-
-    The **TLS Version** column is enabled by default. If the default TLS version column is not visible after enabling TLS tracking, click **Restore default columns** in **Manage columns** to refresh the table.
-
-    </div>
+    > [!NOTE]
+    > The **TLS Version** column is enabled by default. If the default TLS version column is not visible after enabling TLS tracking, click **Restore default columns** in **Manage columns** to refresh the table.
 
 2.  Add TLS-specific columns to the traffic table:
 
@@ -142,7 +194,7 @@ View and filter Transport Layer Security (TLS) metadata to identify deprecated c
 
 3.  Filter traffic by message type to view complete TLS metadata:
 
-    1.  In the filter bar, select **TLS Types** and choose **ServerHello** from the dropdown menu.
+    1.  In the filter bar, select **TLS Types** and select **ServerHello** from the dropdown menu.
 
         `ServerHello` messages contain negotiated TLS metadata such as cipher suite and cryptographic group information.
 
@@ -166,7 +218,7 @@ View and filter Transport Layer Security (TLS) metadata to identify deprecated c
 
     1.  Click the **Overview** tab.
 
-    2.  Review the default TLS panels, which include **TLS usage (network flows per second)** and **TLS per version (network flows per second)**.
+    2.  Select the **TLS Tracking** feature view from the view selector to display preconfigured TLS panels and columns, or review the default TLS panels, which include **TLS usage (network flows per second)** and **TLS per version (network flows per second)**.
 
     3.  Optional: To view additional TLS metrics, click **Manage panels** to select and display additional panels, such as **TLS per group (network flows per second)** or **TLS per cipher suite (network flows per second)**.
 
@@ -198,6 +250,145 @@ View and filter Transport Layer Security (TLS) metadata to identify deprecated c
 
         - **Flows rate per TLS group**: Displays traffic by TLS group over time.
 
+</div>
+
+# Configure TLS security alerts
+
+The Network Observability Operator `TLSInsecureVersion` health rule alerts when network traffic uses deprecated or insecure TLS versions.
+
+When TLS tracking is enabled, this rule alerts when traffic uses deprecated TLS protocols (TLS 1.0, TLS 1.1, or SSL variants).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- Network Observability Operator is installed and running.
+
+- TLS tracking is enabled in the `FlowCollector` resource.
+
+- You have `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the `FlowCollector` custom resource by running the following command:
+
+    ``` terminal
+    $ oc edit flowcollector cluster
+    ```
+
+2.  Configure the `TLSInsecureVersion` health rule in the `spec.processor.metrics.healthRules` field:
+
+    ``` yaml
+    apiVersion: flows.netobserv.io/v1beta2
+    kind: FlowCollector
+    metadata:
+      name: cluster
+    spec:
+      processor:
+        metrics:
+          healthRules:
+          - template: TLSInsecureVersion
+            mode: Alert
+            variants:
+            - thresholds:
+                warning: "5"
+              groupBy: Namespace
+    # ...
+    ```
+
+    where:
+
+    `mode`
+    Set to `Alert` to generate Prometheus alerts, or `Recording` to display violations in the **Network Health** dashboard without triggering alerts.
+
+    `thresholds.warning`
+    Threshold percentage. Alert fires when more than 5% of TLS traffic uses insecure versions (TLS 1.0, TLS 1.1, or SSL).
+
+    `groupBy`
+    Group alerts by `Namespace`, `Node`, or `Workload`. Omit `groupBy` for cluster-wide aggregation.
+
+    > [!NOTE]
+    > Customizing a health rule replaces the default configuration. To retain default settings, manually include them in the custom resource.
+
+3.  Optional: To disable the `TLSInsecureVersion` alert entirely, add it to the `disableAlerts` list:
+
+    ``` yaml
+    apiVersion: flows.netobserv.io/v1beta2
+    kind: FlowCollector
+    metadata:
+      name: cluster
+    spec:
+      processor:
+        metrics:
+          disableAlerts:
+          - TLSInsecureVersion
+    ```
+
+4.  Save and exit your editor.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify the Network Observability Operator created the alerting rule by running the following command:
+
+    ``` terminal
+    $ oc get prometheusrule -n netobserv
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    NAME                               AGE
+    netobserv-health-alerts            5m
+    ```
+
+    </div>
+
+2.  In the OpenShift Container Platform web console, go to **Observe** → **Alerting**.
+
+3.  Select the **Alerting Rules** tab.
+
+4.  Filter on `TLSInsecureVersion` to view the generated alert variants (for example, `TLSInsecureVersion_PerNamespaceWarning`).
+
+5.  When network observability detects insecure TLS traffic exceeding the configured threshold, alerts are triggered and are displayed in the **Alerts** view.
+
+6.  Verify that TLS security violations are displayed in the **Network Health** dashboard:
+
+    1.  Go to **Observe** → **Network Traffic**.
+
+    2.  Click the **Health** tab.
+
+    3.  Select the **Namespaces**, **Nodes**, or **Workloads** tab based on your `groupBy` configuration.
+
+    4.  TLS security violations appear in the health dashboard with links to investigate the affected traffic.
+
+</div>
+
 # Transport Layer Security tracking fields reference
 
 Transport Layer Security (TLS) metadata fields track and define encryption protocols, protocol versions, and cipher suite data to help you analyze secure network flows.
@@ -211,7 +402,7 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 <col style="width: 28%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: left;">Possible values</th>
@@ -219,7 +410,7 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><strong>TLS Version</strong></p></td>
 <td style="text-align: left;"><p>Negotiated TLS protocol version.</p></td>
 <td style="text-align: left;"><ul>
@@ -231,7 +422,7 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 <td style="text-align: left;"><p><code>ClientHello</code>, <code>ServerHello</code></p>
 <p><code>ClientHello</code> displays the version requested by the client. <code>ServerHello</code> displays the negotiated version selected by the server.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><strong>TLS Cipher Suite</strong></p></td>
 <td style="text-align: left;"><p>Cryptographic algorithm suite negotiated between the client and server.</p></td>
 <td style="text-align: left;"><p>Examples:</p>
@@ -242,7 +433,7 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 <td style="text-align: left;"><p><code>ServerHello</code> only</p>
 <p>Displays as <code>n/a</code> in <code>ClientHello</code> messages.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><strong>TLS Group</strong></p></td>
 <td style="text-align: left;"><p>Elliptic curve used for key exchange.</p></td>
 <td style="text-align: left;"><p>Examples:</p>
@@ -253,7 +444,7 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 <td style="text-align: left;"><p><code>ServerHello</code> (TLS 1.3 only)</p>
 <p>Displays as <code>n/a</code> in <code>ClientHello</code> messages and TLS 1.2 connections.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><strong>TLS Types</strong></p></td>
 <td style="text-align: left;"><p>Type of TLS handshake message captured.</p></td>
 <td style="text-align: left;"><ul>
@@ -264,5 +455,3 @@ Transport Layer Security (TLS) metadata fields track and define encryption proto
 </tr>
 </tbody>
 </table>
-
-TLS tracking fields

@@ -20,9 +20,17 @@ However, if you have a strong reason to update to that version, for example, if 
 
 - Follow the links provided in the conditional update description, investigate the bug, and determine if it is likely to cause issues for your cluster. If you need help understanding the risk, contact Red Hat Support.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Evaluation of update availability](../../updating/understanding_updates/how-updates-work.xml#update-evaluate-availability_how-updates-work)
+
+</div>
 
 # etcd backups before cluster updates
 
@@ -34,17 +42,24 @@ In the context of updates, you can attempt an etcd restoration of the cluster if
 
 etcd restorations might be destructive and destabilizing to a running cluster, use them only as a last resort.
 
-<div class="warning">
-
-Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
-
-</div>
+> [!WARNING]
+> Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
 
 There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to an earlier cluster state".
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
 - [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+</div>
 
 # Best practices for cluster updates
 
@@ -82,11 +97,8 @@ OpenShift SDN network plugin was deprecated in versions 4.15 and 4.16. With this
 
 If your OpenShift Container Platform cluster is still using the OpenShift SDN CNI, see [Migrating from the OpenShift SDN network plugin](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/networking/ovn-kubernetes-network-plugin#migrate-from-openshift-sdn).
 
-<div class="important">
-
-It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
-
-</div>
+> [!IMPORTANT]
+> It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
 
 ## Ensure that enough spare nodes are available
 
@@ -96,11 +108,8 @@ Depending on the configured value of the cluster’s `maxUnavailable` spec, the 
 
 Make sure that you have enough available nodes in each worker pool, as well as enough spare capacity on your compute nodes, to increase the chance of successful node updates.
 
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 ## Ensure that the cluster’s PodDisruptionBudget is properly configured
 
@@ -114,13 +123,29 @@ When planning a cluster update, check the configuration of the `PodDisruptionBud
 
 - For workloads that are not highly available, make sure they are either not protected by a `PodDisruptionBudget` or have some alternative mechanism for draining these workloads eventually, such as periodic restart or guaranteed eventual termination.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding cluster Operator condition types](../../updating/understanding_updates/intro-to-updates.xml#understanding_clusteroperator_conditiontypes_understanding-openshift-updates)
+
+</div>
 
 # Minimizing worker node deployment time
 
 You can minimize deployment time during cluster worker node installation by applying configuration changes across nodes simultaneously.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the configuration file for your required installation method (`install-config.yaml` or similar).
 
@@ -131,6 +156,16 @@ You can minimize deployment time during cluster worker node installation by appl
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You create more than one worker Machine Configuration Pool (MCP) in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a MCP YAML file for each custom worker MCP that you intend to use, as in the following example:
 
@@ -162,19 +197,13 @@ You can minimize deployment time during cluster worker node installation by appl
 
     - **paused**: Set this value to `true` if you plan to apply additional Day 2 configurations, such as `PerformanceProfile`, after installation. All Day 2 configurations can be applied while the MCP is paused. They will be queued and applied when you unpause the node. Set this value to `false` if no further configurations are required.
 
-      <div class="note">
-
-      For bare-metal servers, the reboot time can take up to a couple of minutes.
-
-      </div>
+      > [!NOTE]
+      > For bare-metal servers, the reboot time can take up to a couple of minutes.
 
 2.  Place the YAML files in the directory generated by the installation program. Ensure that your worker nodes get assigned the correct labels, such as `node-role.kubernetes.io/worker-0`, during the provisioning phase or immediately upon joining.
 
-    <div class="note">
-
-    Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
-
-    </div>
+    > [!NOTE]
+    > Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
 
 3.  Optional: If you set the `paused` parameter to `true` to apply additional configurations, complete the following steps:
 
@@ -186,9 +215,11 @@ You can minimize deployment time during cluster worker node installation by appl
         $ oc patch mcp/worker-0 --patch '{"spec":{"paused":false}}' --type=merge
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -196,11 +227,10 @@ You can minimize deployment time during cluster worker node installation by appl
         machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
         ```
 
-        <div class="note">
-
-        If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
-
         </div>
+
+        > [!NOTE]
+        > If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
 
 4.  Verify that the MCPs updated successfully:
 
@@ -208,9 +238,11 @@ You can minimize deployment time during cluster worker node installation by appl
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -220,18 +252,26 @@ You can minimize deployment time during cluster worker node installation by appl
     worker-0   rendered-worker-config-new                       False     True       False      10             0                   0                     0                      5m
     ```
 
+    </div>
+
 5.  When all MCPs are set to `UPDATED=true`, update the MCPs with the appropriate `maxUnavailable` based on workload requirements. This ensures cluster stability and high availability when users deploy workloads onto the cluster. For example, set `maxUnavailable` to 1 by running the following command:
 
     ``` terminal
     $ oc patch mcp/worker-0 --patch '{"spec":{"maxUnavailable":1}}' --type=merge
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
     ```
+
+    </div>
+
+</div>

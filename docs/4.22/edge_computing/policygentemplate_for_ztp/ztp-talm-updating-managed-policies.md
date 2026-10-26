@@ -1,10 +1,15 @@
 You can use the Topology Aware Lifecycle Manager (TALM) to manage the software lifecycle of managed clusters that you have deployed by using GitOps Zero Touch Provisioning (ZTP) and Topology Aware Lifecycle Manager (TALM). TALM uses Red Hat Advanced Cluster Management (RHACM) PolicyGenTemplate policies to manage and control changes applied to target clusters.
 
-<div class="important">
+> [!IMPORTANT]
+> Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+>
+> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
 
-Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+<div>
 
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -14,11 +19,21 @@ For more information about `PolicyGenerator` resources, see the RHACM [Integrati
 
 - [About the Topology Aware Lifecycle Manager](../../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-about-topology-aware-lifecycle-manager-config_cnf-topology-aware-lifecycle-manager)
 
+</div>
+
 # Setting up the disconnected environment
 
 TALM can perform both platform and Operator updates.
 
 You must mirror both the platform image and Operator images that you want to update to in your mirror registry before you can use TALM to update your disconnected clusters.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - For platform updates, you must perform the following steps:
 
@@ -103,7 +118,15 @@ You must mirror both the platform image and Operator images that you want to upd
 
   - Mirror the Operator catalogs. Ensure that the required Operator images are mirrored by following the procedure in the "Mirroring Operator catalogs for use with disconnected clusters" section.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Upgrading GitOps ZTP](../../edge_computing/ztp-updating-gitops.xml#ztp-updating-gitops)
 
@@ -115,9 +138,19 @@ You must mirror both the platform image and Operator images that you want to upd
 
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
 
+</div>
+
 # Performing a platform update with PolicyGenTemplate CRs
 
 You can perform a platform update with the TALM.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the Topology Aware Lifecycle Manager (TALM).
 
@@ -130,6 +163,16 @@ You can perform a platform update with the TALM.
 - Log in as a user with `cluster-admin` privileges.
 
 - Create RHACM policies in the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `PolicyGenTemplate` CR for the platform update:
 
@@ -262,11 +305,31 @@ You can perform a platform update with the TALM.
         $ oc get policies --all-namespaces
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Preparing the disconnected environment](../../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-acm-adding-images-to-mirror-registry_ztp-preparing-the-hub-cluster)
+
+</div>
 
 # Performing an Operator update with PolicyGenTemplate CRs
 
 You can perform an Operator update with the TALM.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the Topology Aware Lifecycle Manager (TALM).
 
@@ -279,6 +342,16 @@ You can perform an Operator update with the TALM.
 - Log in as a user with `cluster-admin` privileges.
 
 - Create RHACM policies in the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `PolicyGenTemplate` CR for the Operator update.
 
@@ -320,15 +393,12 @@ You can perform an Operator update with the TALM.
 
     2.  This update generates one policy, `du-upgrade-operator-catsrc-policy`, to update the `redhat-operators-disconnected` catalog source with the new index images that contain the required Operators images.
 
-        <div class="note">
-
-        If you want to use the image precaching for Operators and there are Operators from a different catalog source other than `redhat-operators-disconnected`, you must perform the following tasks:
-
-        - Prepare a separate catalog source policy with the new index image or registry poll interval update for the different catalog source.
-
-        - Prepare a separate subscription policy for the required Operators that are from the different catalog source.
-
-        </div>
+        > [!NOTE]
+        > If you want to use the image precaching for Operators and there are Operators from a different catalog source other than `redhat-operators-disconnected`, you must perform the following tasks:
+        >
+        > - Prepare a separate catalog source policy with the new index image or registry poll interval update for the different catalog source.
+        >
+        > - Prepare a separate subscription policy for the required Operators that are from the different catalog source.
 
         For example, the required SRIOV-FEC Operator is available in the `certified-operators` catalog source. To update the catalog source and the Operator subscription, add the following contents to generate two policies, `du-upgrade-fec-catsrc-policy` and `du-upgrade-subscriptions-fec-policy`:
 
@@ -365,11 +435,8 @@ You can perform an Operator update with the TALM.
 
     3.  Remove the specified subscriptions channels in the common `PolicyGenTemplate` CR, if they exist. The default subscriptions channels from the GitOps ZTP image are used for the update.
 
-        <div class="note">
-
-        The default channel for the Operators applied through GitOps ZTP 4.17 is `stable`, except for the `performance-addon-operator`. As of OpenShift Container Platform 4.11, the `performance-addon-operator` functionality was moved to the `node-tuning-operator`. For the 4.10 release, the default channel for PAO is `v4.10`. You can also specify the default channels in the common `PolicyGenTemplate` CR.
-
-        </div>
+        > [!NOTE]
+        > The default channel for the Operators applied through GitOps ZTP 4.17 is `stable`, except for the `performance-addon-operator`. As of OpenShift Container Platform 4.11, the `performance-addon-operator` functionality was moved to the `node-tuning-operator`. For the 4.10 release, the default channel for PAO is `v4.10`. You can also specify the default channels in the common `PolicyGenTemplate` CR.
 
     4.  Push the `PolicyGenTemplate` CRs updates to the GitOps ZTP Git repository.
 
@@ -439,11 +506,8 @@ You can perform an Operator update with the TALM.
 
         - `common-subscriptions-policy` contains Operator subscriptions. If you have followed the structure and content of the reference `PolicyGenTemplates`, all Operator subscriptions are grouped into the `common-subscriptions-policy` policy.
 
-        <div class="note">
-
-        One `ClusterGroupUpgrade` CR can only precache the images of the required Operators defined in the subscription policy from one catalog source included in the `ClusterGroupUpgrade` CR. If the required Operators are from different catalog sources, such as in the example of the SRIOV-FEC Operator, another `ClusterGroupUpgrade` CR must be created with `du-upgrade-fec-catsrc-policy` and `du-upgrade-subscriptions-fec-policy` policies for the SRIOV-FEC Operator images precaching and update.
-
-        </div>
+        > [!NOTE]
+        > One `ClusterGroupUpgrade` CR can only precache the images of the required Operators defined in the subscription policy from one catalog source included in the `ClusterGroupUpgrade` CR. If the required Operators are from different catalog sources, such as in the example of the SRIOV-FEC Operator, another `ClusterGroupUpgrade` CR must be created with `du-upgrade-fec-catsrc-policy` and `du-upgrade-subscriptions-fec-policy` policies for the SRIOV-FEC Operator images precaching and update.
 
     2.  Apply the `ClusterGroupUpgrade` CR to the hub cluster by running the following command:
 
@@ -521,7 +585,19 @@ You can perform an Operator update with the TALM.
         $ oc get policies --all-namespaces
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Upgrading GitOps ZTP](../../edge_computing/ztp-updating-gitops.xml#ztp-updating-gitops)
+
+</div>
 
 # Troubleshooting missed Operator updates with PolicyGenTemplate CRs
 
@@ -530,6 +606,14 @@ In some scenarios, Topology Aware Lifecycle Manager (TALM) might miss Operator u
 After a catalog source update, it takes time for the Operator Lifecycle Manager (OLM) to update the subscription status. The status of the subscription policy might continue to show as compliant while TALM decides whether remediation is needed. As a result, the Operator specified in the subscription policy does not get upgraded.
 
 To avoid this scenario, add another catalog source configuration to the `PolicyGenTemplate` and specify this configuration in the subscription for any Operators that require an update.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add a catalog source configuration in the `PolicyGenTemplate` resource:
 
@@ -586,9 +670,19 @@ To avoid this scenario, add another catalog source configuration to the `PolicyG
 
     - `redhat-operators-disconnected-v2` specifies the name of the additional catalog source configuration that you defined in the `PolicyGenTemplate` resource.
 
+</div>
+
 # Performing a platform and an Operator update together
 
 You can perform a platform and an Operator update at the same time.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Install the Topology Aware Lifecycle Manager (TALM).
 
@@ -599,6 +693,16 @@ You can perform a platform and an Operator update at the same time.
 - Log in as a user with `cluster-admin` privileges.
 
 - Create RHACM policies in the hub cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `PolicyGenTemplate` CR for the updates by following the steps described in the "Performing a platform update" and "Performing an Operator update" sections.
 
@@ -706,13 +810,12 @@ You can perform a platform and an Operator update at the same time.
         $ oc get policies --all-namespaces
         ```
 
-        <div class="note">
+        > [!NOTE]
+        > The CRs for the platform and Operator updates can be created from the beginning by configuring the setting to `spec.enable: true`. In this case, the update starts immediately after precaching completes and there is no need to manually enable the CR.
+        >
+        > Both precaching and the update create extra resources, such as policies, placement bindings, placement rules, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
 
-        The CRs for the platform and Operator updates can be created from the beginning by configuring the setting to `spec.enable: true`. In this case, the update starts immediately after precaching completes and there is no need to manually enable the CR.
-
-        Both precaching and the update create extra resources, such as policies, placement bindings, placement rules, managed cluster actions, and managed cluster view, to help complete the procedures. Setting the `afterCompletion.deleteObjects` field to `true` deletes all these resources after the updates complete.
-
-        </div>
+</div>
 
 # Removing Performance Addon Operator subscriptions from deployed clusters with PolicyGenTemplate CRs
 
@@ -720,17 +823,19 @@ In earlier versions of OpenShift Container Platform, the Performance Addon Opera
 
 Do not install the Performance Addon Operator on clusters running OpenShift Container Platform 4.11 or later. If you upgrade to OpenShift Container Platform 4.11 or later, the Node Tuning Operator automatically removes the Performance Addon Operator.
 
-<div class="note">
-
-You need to remove any policies that create Performance Addon Operator subscriptions to prevent a re-installation of the Operator.
-
-</div>
+> [!NOTE]
+> You need to remove any policies that create Performance Addon Operator subscriptions to prevent a re-installation of the Operator.
 
 The reference DU profile includes the Performance Addon Operator in the `PolicyGenTemplate` CR `common-ranGen.yaml`. To remove the subscription from deployed managed clusters, you must update `common-ranGen.yaml`.
 
-<div class="note">
+> [!NOTE]
+> If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Container Platform 4.11 or later, the Performance Addon Operator detects the cluster version and automatically hibernates to avoid interfering with the Node Tuning Operator functions. However, to ensure best performance, remove the Performance Addon Operator from your OpenShift Container Platform 4.11 clusters.
 
-If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Container Platform 4.11 or later, the Performance Addon Operator detects the cluster version and automatically hibernates to avoid interfering with the Node Tuning Operator functions. However, to ensure best performance, remove the Performance Addon Operator from your OpenShift Container Platform 4.11 clusters.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -739,6 +844,16 @@ If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Contain
 - Update to OpenShift Container Platform 4.11 or later.
 
 - Log in as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Change the `complianceType` to `mustnothave` for the Performance Addon Operator namespace, Operator group, and subscription in the `common-ranGen.yaml` file.
 
@@ -768,6 +883,8 @@ If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Contain
 
 6.  Merge the changes with your custom site repository and wait for the ArgoCD application to synchronize the change to the hub cluster. The policy remains compliant.
 
+</div>
+
 # Precaching user-specified images with TALM on single-node OpenShift clusters
 
 You can precache application-specific workload images on single-node OpenShift clusters before updating your applications.
@@ -780,11 +897,8 @@ You can specify the configuration options for the precaching jobs by using the f
 
 TALM derives the platform image from the `ClusterVersion` object in the managed policies. TALM derives Operator index images from `CatalogSource` objects that the managed policies reference.
 
-<div class="note">
-
-All fields in the `PreCachingConfig` CR are optional.
-
-</div>
+> [!NOTE]
+> All fields in the `PreCachingConfig` CR are optional.
 
 The following example shows a `PreCachingConfig` CR:
 
@@ -842,6 +956,14 @@ spec:
 
 You must create the `PreCachingConfig` CR before or concurrently with the `ClusterGroupUpgrade` CR.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the `PreCachingConfig` CR with the list of additional images you want to precache.
 
     ``` yaml
@@ -887,11 +1009,8 @@ You must create the `PreCachingConfig` CR before or concurrently with the `Clust
         timeout: 240
     ```
 
-    <div class="warning">
-
-    Once you install the images on the cluster, you cannot change or delete them.
-
-    </div>
+    > [!WARNING]
+    > Once you install the images on the cluster, you cannot change or delete them.
 
 3.  When you want to start precaching the images, apply the `ClusterGroupUpgrade` CR by running the following command:
 
@@ -901,13 +1020,18 @@ You must create the `PreCachingConfig` CR before or concurrently with the `Clust
 
     TALM verifies the `ClusterGroupUpgrade` CR. From this point, you can continue with the TALM precaching workflow.
 
-    <div class="note">
+    > [!NOTE]
+    > All sites are precached concurrently.
 
-    All sites are precached concurrently.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check the precaching status on the hub cluster where the `ClusterGroupUpgrade` CR is applied by running the following command:
 
@@ -1042,7 +1166,19 @@ You must create the `PreCachingConfig` CR before or concurrently with the `Clust
         $ sudo podman images | grep <operator_name>
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Using the container image precache feature](../../edge_computing/cnf-talm-for-cluster-upgrades.xml#talo-precache-feature-concept_cnf-topology-aware-lifecycle-manager)
+
+</div>
 
 # About the auto-created ClusterGroupUpgrade CR for GitOps ZTP
 
@@ -1051,6 +1187,14 @@ TALM has a controller called `ManagedClusterForCGU` that monitors the `Ready` st
 For any managed cluster in the `Ready` state without a `ztp-done` label applied, the `ManagedClusterForCGU` controller automatically creates a `ClusterGroupUpgrade` CR in the `ztp-install` namespace with its associated RHACM policies that are created during the GitOps ZTP process. TALM then remediates the set of configuration policies that are listed in the auto-created `ClusterGroupUpgrade` CR to push the configuration CRs to the managed cluster.
 
 If there are no policies for the managed cluster at the time when the cluster becomes `Ready`, a `ClusterGroupUpgrade` CR with no policies is created. Upon completion of the `ClusterGroupUpgrade` the managed cluster is labeled as `ztp-done`. If there are policies that you want to apply for that managed cluster, manually create a `ClusterGroupUpgrade` as a Day 2 operation.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - View the auto-created `ClusterGroupUpgrade` CR for GitOps ZTP:
 
@@ -1101,3 +1245,5 @@ If there are no policies for the managed cluster at the time when the cluster be
   - `ztp-done: ""` is applied to the managed cluster when TALM completes the cluster configuration.
 
   - `ztp-running: ""` is applied to the managed cluster when TALM starts deploying the configuration policies.
+
+</div>

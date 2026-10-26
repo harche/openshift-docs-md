@@ -4,19 +4,26 @@ After successfully deploying a bare-metal cluster, you can perform post installa
 
 OpenShift Container Platform 4.19 and later releases can manage machines by using the Cluster API.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 You can use the Cluster API to perform compute node provisioning management actions after the cluster installation finishes. The Cluster API allows dynamic management of compute node machine sets and machines. However, there is no support for control plane machines.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About the Cluster API](../../machine_management/cluster_api_machine_management/cluster-api-about.xml#luster-api-about)
 
 - [Getting started with the Cluster API](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#cluster-api-getting-started)
+
+</div>
 
 # Configuring NTP for disconnected clusters
 
@@ -31,6 +38,14 @@ OpenShift Container Platform installs the `chrony` Network Time Protocol (NTP) s
 
 OpenShift Container Platform nodes must agree on a date and time to run properly. When compute nodes retrieve the date and time from the NTP servers on the control plane nodes, it enables the installation and operation of clusters that are not connected to a routable network and thereby do not have access to a higher stratum NTP server.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install Butane on your installation host by using the following command:
 
     ``` terminal
@@ -39,11 +54,8 @@ OpenShift Container Platform nodes must agree on a date and time to run properly
 
 2.  Create a Butane config, `99-master-chrony-conf-override.bu`, including the contents of the `chrony.conf` file for the control plane nodes.
 
-    <div class="note">
-
-    See "Creating machine configs with Butane" for information about Butane.
-
-    </div>
+    > [!NOTE]
+    > See "Creating machine configs with Butane" for information about Butane.
 
     ``` yaml
     variant: openshift
@@ -159,9 +171,11 @@ OpenShift Container Platform nodes must agree on a date and time to run properly
     $ oc apply -f 99-master-chrony-conf-override.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -169,15 +183,19 @@ OpenShift Container Platform nodes must agree on a date and time to run properly
     machineconfig.machineconfiguration.openshift.io/99-master-chrony-conf-override created
     ```
 
+    </div>
+
 7.  Apply the `99-worker-chrony-conf-override.yaml` policy to the compute nodes.
 
     ``` terminal
     $ oc apply -f 99-worker-chrony-conf-override.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -185,11 +203,15 @@ OpenShift Container Platform nodes must agree on a date and time to run properly
     machineconfig.machineconfiguration.openshift.io/99-worker-chrony-conf-override created
     ```
 
+    </div>
+
 8.  Check the status of the applied NTP settings.
 
     ``` terminal
     $ oc describe machineconfigpool
     ```
+
+</div>
 
 # Configuring a local or self-signed Baseboard Management Controller CA certificate
 
@@ -201,11 +223,29 @@ Providing a local or self-signed CA certificate gives you more control over secu
 
 You can replace the BMC CA certificate with your own local or self-signed CA certificate by editing the `bmc-verify-ca` ConfigMap in the `openshift-machine-api` namespace. Providing your own CA certificate gives you control over the secure communications between your cluster and BMC’s.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed a cluster on bare metal.
 
 - You configured a CA certificate for BMC communication when you installed the cluster.
 
 - You have a local or self-signed CA certificate.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `bmc-verify-ca` ConfigMap by running the following command:
 
@@ -230,13 +270,33 @@ You can replace the BMC CA certificate with your own local or self-signed CA cer
     `<self_signed_certificate_contents>`
     Specifies the contents of your local or self-signed CA certificate.
 
+</div>
+
 ## Installing a new BMC CA certificate
 
 You can install a local or self-signed BMC CA certificate on a cluster which was installed without a BMC CA certificate. Providing your own BMC CA certificate secures the communication between your cluster and BMC’s.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed a cluster on bare metal without a BMC CA certificate.
 
 - You have a local or self-signed CA certificate.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file called `bmc-verify-ca.yaml` using a text editor, with the following contents:
 
@@ -276,13 +336,33 @@ You can install a local or self-signed BMC CA certificate on a cluster which was
 
 4.  For each bare metal host in your cluster that you want to secure BMC communications with, follow the procedure titled *Editing a BareMetalHost resource* and ensure that the `disableCertificateVerification` parameter is set to `false`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Editing a `BareMetalHost` resource](../../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-editing-a-baremetalhost-resource_bare-metal-postinstallation-configuration)
+
+</div>
 
 # Enabling a provisioning network after installation
 
 You can enable a `provisioning` network after installation by using the Cluster Baremetal Operator (CBO) for bare-metal clusters that were deployed without one.
 
 This is useful for clusters that were initially deployed as proof-of-concept or exclusively with Redfish virtual media when each node’s baseboard management controller is routable via the `bare-metal` network.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - A dedicated physical network must exist, connected to all worker and control plane nodes.
 
@@ -291,6 +371,16 @@ This is useful for clusters that were initially deployed as proof-of-concept or 
 - The network cannot have a DHCP server when the `provisioningNetwork` configuration setting is set to `Managed`.
 
 - You can omit the `provisioningInterface` setting in OpenShift Container Platform 4.10 to use the `bootMACAddress` configuration setting.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  When setting the `provisioningInterface` setting, first identify the provisioning interface name for the cluster nodes. For example, `eth0` or `eno1`.
 
@@ -354,6 +444,8 @@ This is useful for clusters that were initially deployed as proof-of-concept or 
     $ oc apply -f enable-provisioning-nw.yaml
     ```
 
+</div>
+
 # Creating a manifest object that includes a customized br-ex bridge
 
 Use the default OVS br-ex bridge configuration for standard environments. This configuration applies when you have a single network interface controller (NIC) and standard OVS settings.
@@ -362,11 +454,8 @@ By default, OpenShift Container Platform automatically configures the Open vSwit
 
 The Kubernetes NMState Operator uses the NMState configuration file to create a customized `br-ex` bridge network configuration. This configuration applies to each node in your cluster.
 
-<div class="important">
-
-After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the installation NMState configuration file into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
-
-</div>
+> [!IMPORTANT]
+> After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the installation NMState configuration file into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
 
 Consider using the customized `br-ex` bridge configuration for any of the following tasks:
 
@@ -380,37 +469,42 @@ Consider using the customized `br-ex` bridge configuration for any of the follow
 
 - You need to enable Link Layer Discovery Protocol (LLDP) to discover and troubleshoot switch connectivity.
 
-<div class="warning">
+> [!WARNING]
+> The following list of interface names are reserved and you cannot use the names with NMstate configurations:
+>
+> - `br-ext`
+>
+> - `br-int`
+>
+> - `br-local`
+>
+> - `br-nexthop`
+>
+> - `br0`
+>
+> - `ext-vxlan`
+>
+> - `ext`
+>
+> - `genev_sys_*`
+>
+> - `int`
+>
+> - `k8s-*`
+>
+> - `ovn-k8s-*`
+>
+> - `patch-br-*`
+>
+> - `tun0`
+>
+> - `vxlan_sys_*`
 
-The following list of interface names are reserved and you cannot use the names with NMstate configurations:
+<div>
 
-- `br-ext`
+<div class="title">
 
-- `br-int`
-
-- `br-local`
-
-- `br-nexthop`
-
-- `br0`
-
-- `ext-vxlan`
-
-- `ext`
-
-- `genev_sys_*`
-
-- `int`
-
-- `k8s-*`
-
-- `ovn-k8s-*`
-
-- `patch-br-*`
-
-- `tun0`
-
-- `vxlan_sys_*`
+Prerequisites
 
 </div>
 
@@ -418,15 +512,20 @@ The following list of interface names are reserved and you cannot use the names 
 
 - You have identified the specific nodes where you want to apply the policy.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a `NodeNetworkConfigurationPolicy` (NNCP) CR and define a customized `br-ex` bridge network configuration. The `br-ex` NNCP CR must include the OVN-Kubernetes masquerade IP address and subnet of your network. The example NNCP CR includes default values in the `ipv4.address.ip` and `ipv6.address.ip` parameters. You can set the masquerade IP address in the `ipv4.address.ip`, `ipv6.address.ip`, or both parameters.
 
-  <div class="important">
-
-  As a post-installation task, you cannot change the primary IP address of the customized `br-ex` bridge. If you want to convert your single-stack cluster network to a dual-stack cluster network, you can add or change a secondary IPv6 address in the NNCP CR, but the existing primary IP address cannot be changed.
-
-  </div>
+  > [!IMPORTANT]
+  > As a post-installation task, you cannot change the primary IP address of the customized `br-ex` bridge. If you want to convert your single-stack cluster network to a dual-stack cluster network, you can add or change a secondary IPv6 address in the NNCP CR, but the existing primary IP address cannot be changed.
 
   ``` yaml
   apiVersion: nmstate.io/v1
@@ -512,15 +611,33 @@ The following list of interface names are reserved and you cannot use the names 
   `auto-route-metric`
   Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces automatically configured by the `NetworkManager` service.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster" in the *Additional resources* section.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Converting to IPv4/IPv6 dual-stack networking](../../networking/ovn_kubernetes_network_provider/converting-to-dual-stack.xml#nw-dual-stack-convert_converting-to-dual-stack)
 
 - [Expanding the cluster](../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#bare-metal-expanding-the-cluster)
+
+</div>
 
 # Making disruptive changes to a customized br-ex bridge
 
@@ -532,9 +649,14 @@ The following procedure shows how to make disruptive changes to a `br-ex` bridge
 
 For all the nodes in your cluster to receive the `br-ex` bridge changes, you must reboot your cluster. Editing the existing `MachineConfig` object does not force a reboot operation. You must create an additional `MachineConfig` object to force a cluster reboot.
 
-<div class="important">
+> [!IMPORTANT]
+> Red Hat does not support changing IP addresses for nodes as a postinstallation task.
 
-Red Hat does not support changing IP addresses for nodes as a postinstallation task.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -542,15 +664,22 @@ Red Hat does not support changing IP addresses for nodes as a postinstallation t
 
 - You deployed your cluster that has the configured `br-ex` bridge.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Make changes to the NMState configuration file you created during cluster installation to customize your br-ex bridge network interface.
 
-    <div class="important">
-
-    Before you save the `MachineConfig` object, check the changed parameter values. If you enter wrong values and save the file, you cannot recover the file to its original state and this impacts networking functionality for your cluster.
-
-    To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
-
-    </div>
+    > [!IMPORTANT]
+    > Before you save the `MachineConfig` object, check the changed parameter values. If you enter wrong values and save the file, you cannot recover the file to its original state and this impacts networking functionality for your cluster.
+    >
+    > To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
 2.  Use the `base64` command to re-encode the contents of the NMState configuration by entering the following command:
 
@@ -627,31 +756,55 @@ Red Hat does not support changing IP addresses for nodes as a postinstallation t
     $ oc delete machineconfig <machine_config_name>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Use the `nmstatectl` tool to check the `br-ex` bridge interface configuration by running the following command. The tool checks a node that runs the `br-ex` bridge interface. The tool does not check the location where you deployed the `MachineConfig` objects.
 
   ``` terminal
   $ sudo nmstatectl show br-ex
   ```
 
+</div>
+
 # Migrating a configured br-ex bridge to NMState
 
 If you used the `configure-ovs.sh` shell script to set a `br-ex` bridge during cluster installation, you can migrate the `br-ex` bridge to NMState as a postinstallation task. NMState provides a declarative and idempotent way to handle configuring the `br-ex` bridge.
 
-<div class="note">
-
-The initial steps in the procedure do not show example configurations. For detailed example configurations that would represent objects to create during cluster installation, see the "Creating a manifest object that includes a customized br-ex bridge" link in the *Additional resources* section.
-
-</div>
+> [!NOTE]
+> The initial steps in the procedure do not show example configurations. For detailed example configurations that would represent objects to create during cluster installation, see the "Creating a manifest object that includes a customized br-ex bridge" link in the *Additional resources* section.
 
 After you migrate your configured `br-ex` bridge to NMState, you cannot reverse the operation. This means that you cannot migrate back to the shell script version of the `br-ex` bridge.
 
-<div class="important">
+> [!IMPORTANT]
+> Misconfiguring any files that form part of the migration operation can cause disruptive changes to your cluster. Reverting these changes might not always be possible.
 
-Misconfiguring any files that form part of the migration operation can cause disruptive changes to your cluster. Reverting these changes might not always be possible.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You used the `configure-ovs.sh` shell script to set a `br-ex` bridge for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an NMState configuration file for your customized `br-ex` bridge network. In a later step, the `MachineConfig` object saves the NMState configuration file in the `/etc/nmstate/openshift` directory path.
 
@@ -665,17 +818,16 @@ Misconfiguring any files that form part of the migration operation can cause dis
 
 3.  Create a `MachineConfig` manifest file and define a customized `br-ex` bridge network configuration in the file. Specify the path to the `base64-encoded` NMState configuration file. This embeds the file contents in the `MachineConfig` manifest file.
 
-    <div class="important">
-
-    To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
-
-    </div>
+    > [!IMPORTANT]
+    > To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
     You can use NMState to apply various network settings across cluster nodes. As an example, the following configuration sets the MTU to `9000` for both a physical device and a bridge interface. You must encode the file in base64 format and then embed the output in a `MachineConfig` manifest file. The `MachineConfig` manifest file writes to `/etc/nmstate/openshift/cluster.yml` or a per-node path under `/etc/nmstate/openshift/`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **NMState file before encoding**
+    <div class="title">
+
+    NMState file before encoding
 
     </div>
 
@@ -696,9 +848,13 @@ Misconfiguring any files that form part of the migration operation can cause dis
     # ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **MachineConfig embeds the encoded file**
+    <div class="formalpara">
+
+    <div class="title">
+
+    MachineConfig embeds the encoded file
 
     </div>
 
@@ -718,6 +874,8 @@ Misconfiguring any files that form part of the migration operation can cause dis
             path: /etc/nmstate/openshift/cluster.yml
     # ...
     ```
+
+    </div>
 
 4.  Apply the updates from the `MachineConfig` object to your cluster by entering the following command:
 
@@ -778,29 +936,46 @@ Misconfiguring any files that form part of the migration operation can cause dis
     $ oc delete machineconfig <machine_config_name>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Use the `nmstatectl` tool to check the configuration for the `br-ex` bridge interface by running the following command. The tool checks a node that runs the `br-ex` bridge interface. The tool does not check the location where you deployed the `MachineConfig` objects.
 
   ``` terminal
   $ sudo nmstatectl show br-ex
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installer-provisioned infrastructure: Creating a manifest object that includes a customized `br-ex` bridge](../installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 
 - [User-provisioned infrastructure: Creating a manifest object that includes a customized `br-ex` bridge](../../installing/installing_bare_metal/upi/installing-bare-metal.xml#creating-manifest-file-customized-br-ex-bridge_installing-bare-metal)
 
+</div>
+
 # Services for a user-managed load balancer
 
 You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Configuring a user-managed load balancer depends on your vendor’s load balancer.
-
-The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
-
-</div>
+> [!IMPORTANT]
+> Configuring a user-managed load balancer depends on your vendor’s load balancer.
+>
+> The information and examples in this section are for guideline purposes only. Consult the vendor documentation for more specific information about the vendor’s load balancer.
 
 Red Hat supports the following services for a user-managed load balancer:
 
@@ -833,11 +1008,8 @@ The following configuration options are supported for user-managed load balancer
 
 - Target all IP addresses on a subnet. This configuration can reduce the effort required to maintain the load balancer, because you can create and destroy nodes within those networks without reconfiguring the load balancer targets. If you deploy your ingress pods by using a machine set on a smaller network, such as a `/27` or `/28`, you can simplify your load balancer targets.
 
-  <div class="tip">
-
-  You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
-
-  </div>
+  > [!TIP]
+  > You can list all IP addresses that exist in a network by checking the machine config pool’s resources.
 
 Before you configure a user-managed load balancer for your OpenShift Container Platform cluster, consider the following information:
 
@@ -855,27 +1027,25 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
-<div class="important">
-
-Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
-
-</div>
+> [!IMPORTANT]
+> Before you configure a user-managed load balancer, ensure that you read the "Services for a user-managed load balancer" section.
 
 Read the following prerequisites that apply to the service that you want to configure for your user-managed load balancer.
 
-<div class="note">
+> [!NOTE]
+> MetalLB, which runs on a cluster, functions as a user-managed load balancer.
 
-MetalLB, which runs on a cluster, functions as a user-managed load balancer.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Prerequisites**
+Prerequisites
 
 </div>
 
 The following list details OpenShift API prerequisites:
+
+</div>
 
 - You defined a front-end IP address.
 
@@ -937,11 +1107,21 @@ Timeout: 5
 Interval: 10
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure the HAProxy Ingress Controller, so that you can enable access to the cluster from your load balancer on ports 6443, 22623, 443, and 80. Depending on your needs, you can specify the IP address of a single subnet or IP addresses from multiple subnets in your HAProxy configuration.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example HAProxy configuration with one listed subnet**
+    <div class="title">
+
+    Example HAProxy configuration with one listed subnet
 
     </div>
 
@@ -997,9 +1177,13 @@ Interval: 10
     # ...
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example HAProxy configuration with multiple listed subnets**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example HAProxy configuration with multiple listed subnets
 
     </div>
 
@@ -1054,6 +1238,8 @@ Interval: 10
           server bootstrap 192.168.80.89:5050 check inter 1s
     # ...
     ```
+
+    </div>
 
 2.  Use the `curl` CLI command to verify that the user-managed load balancer and its resources are operational:
 
@@ -1141,11 +1327,8 @@ Interval: 10
     A record pointing to Load Balancer Front End
     ```
 
-    <div class="important">
-
-    DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
-
-    </div>
+    > [!IMPORTANT]
+    > DNS propagation might take some time for each DNS record to become available. Ensure that each DNS record propagates before validating each record.
 
 4.  For your OpenShift Container Platform cluster to use the user-managed load balancer, you must specify the following configuration in your cluster’s `install-config.yaml` file:
 
@@ -1172,7 +1355,15 @@ Interval: 10
     `<ingress_ip>`
     Specifies the user-managed load balancer’s public IP address for ingress traffic. Mandatory parameter.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Use the `curl` CLI command to verify that the user-managed load balancer and DNS record configuration are operational:
 
@@ -1258,35 +1449,49 @@ Interval: 10
         cache-control: private
         ```
 
+</div>
+
 # Hardware metrics in the Monitoring stack
 
 Hardware metrics can be exported to the cluster by enabling the Ironic Prometheus Exporter (IPE).
 
 IPE is a tool that exposes the hardware sensor data of cluster nodes in the Prometheus format. When you enable IPE in your cluster, the tool collects data from the baseboard management controller (BMC) of each node and exports the data to the cluster’s monitoring stack.
 
-<div class="note">
-
-This method of collecting hardware metrics works only on Redfish-compatible BMCs.
-
-</div>
+> [!NOTE]
+> This method of collecting hardware metrics works only on Redfish-compatible BMCs.
 
 You can then view these hardware metrics alongside other metrics in the **Observe** tab of the web console.
 
-<div class="important">
-
-Monitoring bare metal hardware metrics is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Monitoring bare metal hardware metrics is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Adding node hardware metrics to the Monitoring stack
 
 To access hardware metrics for your bare-metal nodes in the web console, enable the Ironic Prometheus Exporter in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have enabled the `TechPreviewNoUpgrade` feature set in your cluster’s `FeatureGate` custom resource (CR). For more information, see "Enabling features using feature gates".
 
 - You bare-metal nodes use Redfish-compatible baseboard management controllers (BMCs).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable the Ironic Prometheus Exporter by running the following command:
 
@@ -1324,7 +1529,15 @@ To access hardware metrics for your bare-metal nodes in the web console, enable 
         -p '{"spec":{"prometheusExporter":{"enabled":false}}}'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  From the web console, click **Observe** → **Metrics** and enter "baremetal" into the **Expression** field. Several autocomplete suggestions should appear, such as the following examples:
 
@@ -1346,7 +1559,19 @@ To access hardware metrics for your bare-metal nodes in the web console, enable 
     $ oc -n openshift-machine-api get promrule metal3-defaults -oyaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+
+</div>
 
 # Configuration using the Bare Metal Operator
 
@@ -1424,11 +1649,8 @@ The `BareMetalHost` resource features hardware information such as the following
 
 You can use the `HostFirmwareSettings` resource to inspect the firmware specifications for a host or to update a host’s firmware specifications.
 
-<div class="note">
-
-You must adhere to the schema specific to the vendor firmware when you edit the `spec` field of the `HostFirmwareSettings` resource. This schema is defined in the read-only `FirmwareSchema` resource.
-
-</div>
+> [!NOTE]
+> You must adhere to the schema specific to the vendor firmware when you edit the `spec` field of the `HostFirmwareSettings` resource. This schema is defined in the read-only `FirmwareSchema` resource.
 
 FirmwareSchema
 Firmware settings vary among hardware vendors and host models. A `FirmwareSchema` resource is a read-only resource that contains the types and limits for each firmware setting on each host model. The data comes directly from the BMC by using the Ironic service. You can use the `FirmwareSchema` resource to identify valid values that you can specify in the `spec` field of the `HostFirmwareSettings` resource.
@@ -1441,9 +1663,19 @@ Metal<sup>3</sup> provides the `HostFirmwareComponents` resource, which describe
 HostUpdatePolicy
 The `HostUpdatePolicy` resource can enable or disable live updates to the firmware settings, BMC settings, or BIOS settings of bare-metal hosts. By default, the `HostUpdatePolicy` resource for each bare-metal host restricts updates to hosts during provisioning. You must modify the `HostUpdatePolicy` resource for a host when you want to update the firmware settings, BMC settings, or BIOS settings after provisioning the host.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Metal<sup>3</sup> API service for provisioning bare-metal hosts](https://metal3.io/)
 
 - [Ironic API service for managing bare-metal infrastructure](https://ironicbaremetal.org/)
+
+</div>
 
 ## About the `BareMetalHost` resource
 
@@ -1466,17 +1698,17 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>automatedCleaningMode</code></p></td>
 <td style="text-align: left;"><p>An interface to enable or disable automated cleaning during provisioning and de-provisioning. When set to <code>disabled</code>, it skips automated cleaning. When set to <code>metadata</code>, automated cleaning is enabled. The default setting is <code>metadata</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>bmc:
   address:
   credentialsName:
@@ -1488,23 +1720,23 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>disableCertificateVerification</code>: A boolean to skip certificate validation when set to <code>true</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>bootMACAddress</code></p></td>
 <td style="text-align: left;"><p>The MAC address of the NIC used for provisioning the host.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>bootMode</code></p></td>
 <td style="text-align: left;"><p>The boot mode of the host. It defaults to <code>UEFI</code>, but it can also be set to <code>legacy</code> for BIOS boot, or <code>UEFISecureBoot</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>consumerRef</code></p></td>
 <td style="text-align: left;"><p>A reference to another resource that is using the host. It could be empty if another resource is not currently using the host. For example, a <code>Machine</code> resource might use the host when the <code>machine-api</code> is using the host.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>description</code></p></td>
 <td style="text-align: left;"><p>A human-provided string to help identify the host.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>externallyProvisioned</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the host provisioning and deprovisioning are managed externally. When set:</p>
 <ul>
@@ -1512,7 +1744,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p>Hardware inventory will be monitored, but no provisioning or deprovisioning operations are performed on the host.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>firmware</code></p></td>
 <td style="text-align: left;"><p>Contains information about the BIOS configuration of bare-metal hosts. Currently, <code>firmware</code> is only supported by iRMC, iDRAC, iLO4 and iLO5 BMCs. The sub fields are:</p>
 <ul>
@@ -1521,7 +1753,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>virtualizationEnabled</code>: Supports the virtualization of platform hardware. Valid settings are <code>true</code> or <code>false</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>image:
   url:
   checksum:
@@ -1535,20 +1767,22 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>format</code>: This is the disk format of the image. It can be one of <code>raw</code>, <code>qcow2</code>, <code>vdi</code>, <code>vmdk</code>, <code>live-iso</code> or be left unset. Setting it to <code>raw</code> enables raw image streaming in the Ironic agent for that image. Setting it to <code>live-iso</code> enables ISO images to live boot without deploying to disk, and it ignores the <code>checksum</code> fields.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>networkData</code></p></td>
 <td style="text-align: left;"><p>A reference to the secret containing the network configuration data and its namespace, so that it can be attached to the host before the host boots to set up the network.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>online</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the host should be powered on (<code>true</code>) or off (<code>false</code>). Changing this value will trigger a change in the power state of the physical host.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>raid:
   hardwareRAIDVolumes:
   softwareRAIDVolumes:</code></pre></td>
 <td style="text-align: left;"><p>(Optional) Contains the information about the RAID configuration for bare-metal hosts. If not specified, it retains the current configuration.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>OpenShift Container Platform 4.17 supports hardware RAID on the installation drive for BMCs, including:</p>
 <ul>
 <li><p>Fujitsu iRMC with support for RAID levels 0, 1, 5, 6, and 10</p></li>
@@ -1581,7 +1815,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
      hardwareRAIDVolume: []</code></pre>
 <p>If you receive an error message indicating that the driver does not support RAID, set the <code>raid</code>, <code>hardwareRAIDVolumes</code> or <code>softwareRAIDVolumes</code> to nil. You might need to ensure the host has a RAID controller.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>rootDeviceHints:
   deviceName:
   hctl:
@@ -1610,8 +1844,6 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 </tbody>
 </table>
 
-BareMetalHost spec
-
 ### The `BareMetalHost` status
 
 The `BareMetalHost` status represents the host’s current state, and includes tested credentials, current hardware details, and other information.
@@ -1623,21 +1855,21 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>goodCredentials</code></p></td>
 <td style="text-align: left;"><p>A reference to the secret and its namespace holding the last set of baseboard management controller (BMC) credentials the system was able to validate as working.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>errorMessage</code></p></td>
 <td style="text-align: left;"><p>Details of the last error reported by the provisioning backend, if any.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>errorType</code></p></td>
 <td style="text-align: left;"><p>Indicates the class of problem that has caused the host to enter an error state. The error types are:</p>
 <ul>
@@ -1650,7 +1882,7 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>detach error</code>: Occurs when the controller is unable to detach the host from the provisioner.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   cpu
     arch:
@@ -1667,12 +1899,12 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>count</code>: The number of CPUs available in the system.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   firmware:</code></pre></td>
 <td style="text-align: left;"><p>Contains BIOS firmware information. For example, the hardware vendor and version.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   nics:
   - ip:
@@ -1693,12 +1925,12 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>pxe</code>: Whether the NIC is able to boot using PXE.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   ramMebibytes:</code></pre></td>
 <td style="text-align: left;"><p>The host’s amount of memory in Mebibytes (MiB).</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   storage:
   - name:
@@ -1713,7 +1945,7 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>serialNumber</code>: The device’s serial number.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>hardware:
   systemVendor:
     manufacturer:
@@ -1721,11 +1953,11 @@ The `BareMetalHost` status represents the host’s current state, and includes t
     serialNumber:</code></pre></td>
 <td style="text-align: left;"><p>Contains information about the host’s <code>manufacturer</code>, the <code>productName</code>, and the <code>serialNumber</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>lastUpdated</code></p></td>
 <td style="text-align: left;"><p>The timestamp of the last time the status of the host was updated.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>operationalStatus</code></p></td>
 <td style="text-align: left;"><p>The status of the server. The status is one of the following:</p>
 <ul>
@@ -1736,11 +1968,11 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>detached</code>: Indicates the host is marked <code>unmanaged</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>poweredOn</code></p></td>
 <td style="text-align: left;"><p>Boolean indicating whether the host is powered on.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>provisioning:
   state:
   id:
@@ -1772,20 +2004,36 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 <li><p><code>rootDeviceHints</code>: The root device selection instructions used for the most recent provisioning operation.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>triedCredentials</code></p></td>
 <td style="text-align: left;"><p>A reference to the secret and its namespace holding the last set of BMC credentials that were sent to the provisioning backend.</p></td>
 </tr>
 </tbody>
 </table>
 
-BareMetalHost status
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [NICs](../../rest_api/provisioning_apis/hardwaredata-metal3-io-v1alpha1.xml#spec-hardware-nics-2)
+
+</div>
 
 ## Getting the BareMetalHost resource
 
 You can retrieve the `BareMetalHost` resource to review hardware details, provisioning state, BMC configuration, and power status for a physical host.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the list of `BareMetalHost` resources:
 
@@ -1793,11 +2041,8 @@ You can retrieve the `BareMetalHost` resource to review hardware details, provis
     $ oc get bmh -n openshift-machine-api -o yaml
     ```
 
-    <div class="note">
-
-    You can use `baremetalhost` as the long form of `bmh` with `oc get` command.
-
-    </div>
+    > [!NOTE]
+    > You can use `baremetalhost` as the long form of `bmh` with `oc get` command.
 
 2.  Get the list of hosts:
 
@@ -1813,9 +2058,11 @@ You can retrieve the `BareMetalHost` resource to review hardware details, provis
 
     Where `<host_name>` is the name of the host.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -1917,6 +2164,10 @@ You can retrieve the `BareMetalHost` resource to review hardware details, provis
         credentialsVersion: "16120"
     ```
 
+    </div>
+
+</div>
+
 ## Editing a BareMetalHost resource
 
 You can edit a node’s `BareMetalHost` resource to update BMC information, move nodes between clusters, or modify provisioning configuration.
@@ -1927,9 +2178,25 @@ Consider the following examples:
 
 - You want to move a node from one cluster to another without deprovisioning it.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Ensure the node is in the `Provisioned`, `ExternallyProvisioned`, or `Available` state.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the list of nodes:
 
@@ -1957,15 +2224,22 @@ Consider the following examples:
     $ oc annotate baremetalhost <node_name> -n openshift-machine-api 'baremetalhost.metal3.io/detached'-
     ```
 
+</div>
+
 ## Troubleshooting latency when deleting a BareMetalHost resource
 
 You can disable the cleaning process to resolve latency when deleting a `BareMetalHost` resource if Ironic’s cleanup retries cause the provisioning status to remain in the deleting state.
 
 When the Bare Metal Operator (BMO) deletes a `BareMetalHost` resource, Ironic deprovisions the bare-metal host with a process called cleaning. When cleaning fails, Ironic retries the cleaning process three times, which is the source of the latency. The cleaning process might not succeed, causing the provisioning status of the bare-metal host to remain in the **deleting** state indefinitely. When this occurs, use the following procedure to disable the cleaning process.
 
-<div class="warning">
+> [!WARNING]
+> Do not remove finalizers from the `BareMetalHost` resource.
 
-Do not remove finalizers from the `BareMetalHost` resource.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -1973,11 +2247,21 @@ Do not remove finalizers from the `BareMetalHost` resource.
 
 2.  If the provisioning status remains in the **deleting** state, disable the cleaning process by modifying the `BareMetalHost` resource and setting the `automatedCleaningMode` field to `disabled`. See "Editing a `BareMetalHost` resource" for additional details.
 
+</div>
+
 ## Attaching a non-bootable ISO to a bare-metal node
 
 You can attach a generic, non-bootable ISO virtual media image to a provisioned node by using the `DataImage` resource. After you apply the resource, the ISO image becomes accessible to the operating system after it has booted.
 
 This is useful for configuring a node after provisioning the operating system and before the node boots for the first time.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The node must use Redfish or drivers derived from it to support this feature.
 
@@ -1986,6 +2270,16 @@ This is useful for configuring a node after provisioning the operating system an
 - The `name` must be the same as the name of the node defined in its `BareMetalHost` resource.
 
 - You have a valid `url` to the ISO image.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `DataImage` resource:
 
@@ -2022,11 +2316,8 @@ This is useful for configuring a node after provisioning the operating system an
 
 4.  Reboot the node.
 
-    <div class="note">
-
-    To reboot the node, attach the `reboot.metal3.io` annotation, or reset set the `online` status in the `BareMetalHost` resource. A forced reboot of the bare-metal node will change the state of the node to `NotReady` for awhile. For example, 5 minutes or more.
-
-    </div>
+    > [!NOTE]
+    > To reboot the node, attach the `reboot.metal3.io` annotation, or reset set the `online` status in the `BareMetalHost` resource. A forced reboot of the bare-metal node will change the state of the node to `NotReady` for awhile. For example, 5 minutes or more.
 
 5.  View the `DataImage` resource by running the following command:
 
@@ -2034,9 +2325,11 @@ This is useful for configuring a node after provisioning the operating system an
     $ oc get dataimage <node_name> -n openshift-machine-api -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2075,11 +2368,23 @@ This is useful for configuring a node after provisioning the operating system an
         lastReconciled: "2024-06-10T12:05:00Z"
     ```
 
+    </div>
+
+</div>
+
 ## Configuring NC-SI and DisablePowerOff for shared NICs
 
 The Network Controller Sideband Interface (NC-SI) enables the Baseboard Management Controller (BMC) to share a system network interface card (NIC) with the host for management traffic, using protocols like Redfish, IPMI, or vendor-specific interfaces.
 
 The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to maintain BMC connectivity.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - NC-SI-capable hardware and NICs.
 
@@ -2088,6 +2393,16 @@ The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to
 - Administrative access to the BMC.
 
 - Access to the OpenShift cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure the BMC to enable NC-SI for a shared NIC.
 
@@ -2125,6 +2440,16 @@ The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the `BareMetalHost` status by running the following command:
 
   ``` terminal
@@ -2136,6 +2461,8 @@ The `DisablePowerOff` feature prevents hard power-offs, ensuring soft reboots to
 - Test a reboot by restarting a node pod and verify that BMC connectivity remains active.
 
 - Attempt to set `BareMetalHost.spec.online=false`. It should fail with an error indicating power-off is disabled.
+
+</div>
 
 ## About the `HostFirmwareSettings` resource
 
@@ -2149,19 +2476,18 @@ The `HostFirmwareSettings` resource contains two sections:
 
 2.  The `HostFirmwareSettings` status.
 
-<div class="note">
-
-Reading and modifying firmware settings is only supported for drivers based on the vendor-independent Redfish protocol, Fujitsu iRMC or HP iLO.
-
-</div>
+> [!NOTE]
+> Reading and modifying firmware settings is only supported for drivers based on the vendor-independent Redfish protocol, Fujitsu iRMC or HP iLO.
 
 ### The `HostFirmwareSettings` spec
 
 The `spec` section of the `HostFirmwareSettings` resource defines the desired state of the host’s BIOS, and it is empty by default. Ironic uses the settings in the `spec.settings` section to update the baseboard management controller (BMC) when the host is in the `Preparing` state. Use the `FirmwareSchema` resource to ensure that you do not send invalid name/value pairs to hosts. See "About the `FirmwareSchema` resource" for additional details.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example**
+<div class="title">
+
+Example
 
 </div>
 
@@ -2171,16 +2497,15 @@ spec:
     ProcTurboMode: Disabled
 ```
 
+</div>
+
 where:
 
 `spec.settings.ProcTurboMode: Disabled`
 Specifies a name/value pair that sets the `ProcTurboMode` BIOS setting to `Disabled`.
 
-<div class="note">
-
-Integer parameters listed in the `status` section appear as strings. For example, `"1"`. When setting integers in the `spec.settings` section, the values should be set as integers without quotes. For example, `1`.
-
-</div>
+> [!NOTE]
+> Integer parameters listed in the `status` section appear as strings. For example, `"1"`. When setting integers in the `spec.settings` section, the values should be set as integers without quotes. For example, `1`.
 
 ### The `HostFirmwareSettings` status
 
@@ -2193,13 +2518,13 @@ The `status` represents the current state of the host’s BIOS.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>status:
   conditions:
   - lastTransitionTime:
@@ -2218,7 +2543,7 @@ The `status` represents the current state of the host’s BIOS.
 <li><p><code>type</code>: The type of state change. The types are <code>Valid</code> and <code>ChangeDetected</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>status:
   schema:
     name:
@@ -2231,7 +2556,7 @@ The `status` represents the current state of the host’s BIOS.
 <li><p><code>lastUpdated</code>: The last time the resource was updated.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>status:
   settings:</code></pre></td>
 <td style="text-align: left;"><p>The <code>settings</code> field contains a list of name/value pairs of a host’s current BIOS settings.</p></td>
@@ -2239,11 +2564,17 @@ The `status` represents the current state of the host’s BIOS.
 </tbody>
 </table>
 
-HostFirmwareSettings
-
 ## Getting the HostFirmwareSettings resource
 
 The `HostFirmwareSettings` resource contains the vendor-specific BIOS properties of a physical host. You must get the `HostFirmwareSettings` resource for a physical host to review its BIOS properties.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the detailed list of `HostFirmwareSettings` resources by running the following command:
 
@@ -2251,11 +2582,8 @@ The `HostFirmwareSettings` resource contains the vendor-specific BIOS properties
     $ oc get hfs -n openshift-machine-api -o yaml
     ```
 
-    <div class="note">
-
-    You can use `hostfirmwaresettings` as the long form of `hfs` with the `oc get` command.
-
-    </div>
+    > [!NOTE]
+    > You can use `hostfirmwaresettings` as the long form of `hfs` with the `oc get` command.
 
 2.  Get the list of `HostFirmwareSettings` resources by running the following command:
 
@@ -2271,13 +2599,20 @@ The `HostFirmwareSettings` resource contains the vendor-specific BIOS properties
 
     Where `<host_name>` is the name of the host.
 
+</div>
+
 ## Editing the HostFirmwareSettings resource of a provisioned host
 
 You can modify BIOS settings on a provisioned host by editing the `HostFirmwareSettings` resource, then scaling the machine set down and up to apply the changes.
 
-<div class="important">
+> [!IMPORTANT]
+> You can only edit hosts when they are in the `provisioned` state, excluding read-only values. You cannot edit hosts in the `externally provisioned` state.
 
-You can only edit hosts when they are in the `provisioned` state, excluding read-only values. You cannot edit hosts in the `externally provisioned` state.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -2297,9 +2632,11 @@ You can only edit hosts when they are in the `provisioned` state, excluding read
 
 3.  Add name and value pairs to the `spec.settings` section by running the following command:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -2308,6 +2645,8 @@ You can only edit hosts when they are in the `provisioned` state, excluding read
       settings:
         name: value
     ```
+
+    </div>
 
     where:
 
@@ -2360,23 +2699,40 @@ You can only edit hosts when they are in the `provisioned` state, excluding read
 
     Where `<machineset_name>` is the name of the machine set and `<n>` is the number of worker nodes.
 
+</div>
+
 ## Performing a live update to the HostFirmwareSettings resource
 
 You can perform a live update to the `HostFirmwareSettings` resource after it has begun running workloads. Live updates do not trigger deprovisioning and reprovisioning the host.
 
-<div class="warning">
+> [!WARNING]
+> Performing a live update to the `HostFirmwareSettings` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+>
+> Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+>
+> If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
+>
+> Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
 
-Performing a live update to the `HostFirmwareSettings` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+<div>
 
-Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+<div class="title">
 
-If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
-
-Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
+Prerequisites
 
 </div>
 
 - The `HostUpdatePolicy` resource must have the `firmwareSettings` parameter set to `onReboot`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `HostFirmwareSettings` resource by running the following command:
 
@@ -2396,11 +2752,8 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
     `<value>`
     Specifies the value of the setting. You can set multiple name-value pairs.
 
-    <div class="note">
-
-    Get the `FirmwareSchema` resource to determine which settings the hardware supports and what settings and values you can update. You cannot update read-only values and you cannot update the `FirmwareSchema` resource. You can also use the `oc edit <hostname> hostfirmwaresettings -n openshift-machine-api` command to update the `HostFirmwareSettings` resource.
-
-    </div>
+    > [!NOTE]
+    > Get the `FirmwareSchema` resource to determine which settings the hardware supports and what settings and values you can update. You cannot update read-only values and you cannot update the `FirmwareSchema` resource. You can also use the `oc edit <hostname> hostfirmwaresettings -n openshift-machine-api` command to update the `HostFirmwareSettings` resource.
 
 2.  Cordon and drain the node by running the following command:
 
@@ -2432,9 +2785,19 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
     $ oc uncordon <node_name>
     ```
 
+</div>
+
 ## Verifying the HostFirmware Settings resource is valid
 
 You can verify that changes to the `HostFirmwareSettings` resource are valid by checking the status conditions, ensuring that BIOS setting values comply with the `FirmwareSchema` constraints.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get a list of `HostFirmwareSetting` resources:
 
@@ -2450,9 +2813,11 @@ You can verify that changes to the `HostFirmwareSettings` resource are valid by 
 
     Where `<host_name>` is the name of the host.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output:**
+    <div class="title">
+
+    Example output:
 
     </div>
 
@@ -2463,11 +2828,12 @@ You can verify that changes to the `HostFirmwareSettings` resource are valid by 
       Normal  ValidationFailed  2m49s  metal3-hostfirmwaresettings-controller  Invalid BIOS setting: Setting ProcTurboMode is invalid, unknown enumeration value - Foo
     ```
 
-    <div class="important">
-
-    If the response returns `ValidationFailed`, there is an error in the resource configuration and you must update the values to conform to the `FirmwareSchema` resource.
-
     </div>
+
+    > [!IMPORTANT]
+    > If the response returns `ValidationFailed`, there is an error in the resource configuration and you must update the values to conform to the `FirmwareSchema` resource.
+
+</div>
 
 ## About the `FirmwareSchema` resource
 
@@ -2480,13 +2846,13 @@ The `FirmwareSchema` resource contains valid types and limits for BIOS settings 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>&lt;BIOS_setting_name&gt;
   attribute_type:
   allowable_values:
@@ -2517,11 +2883,17 @@ The `FirmwareSchema` resource contains valid types and limits for BIOS settings 
 </tbody>
 </table>
 
-FirmwareSchema specification
-
 ## Getting the FirmwareSchema resource
 
 Each host model from each vendor has different BIOS settings. When editing the `HostFirmwareSettings` resource’s `spec` section, the name/value pairs you set must conform to that host’s firmware schema. To ensure you are setting valid name/value pairs, get the `FirmwareSchema` for the host and review it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the list of `FirmwareSchema` resource instances by running the following command:
 
@@ -2536,6 +2908,8 @@ Each host model from each vendor has different BIOS settings. When editing the `
     ```
 
     Where `<instance_name>` is the name of the schema instance stated in the `HostFirmwareSettings` resource (see Table 3).
+
+</div>
 
 ## About the `HostFirmwareComponents` resource
 
@@ -2564,13 +2938,13 @@ The `spec` section of the `HostFirmwareComponents` resource defines the desired 
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>updates:
   component:
   url:</code></pre></td>
@@ -2583,8 +2957,6 @@ The `spec` section of the `HostFirmwareComponents` resource defines the desired 
 </tbody>
 </table>
 
-HostFirmwareComponents spec
-
 ### `HostFirmwareComponents` status
 
 The `status` section of the `HostFirmwareComponents` resource returns the current status of the BIOS and BMC versions of the host, and the NIC firmware components of the host if the information is available by using Redfish.
@@ -2596,13 +2968,13 @@ The `status` section of the `HostFirmwareComponents` resource returns the curren
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Parameters</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><pre><code>components:
   component:
   initialVersion:
@@ -2618,7 +2990,7 @@ The `status` section of the `HostFirmwareComponents` resource returns the curren
 <li><p><code>updatedAt</code>: The timestamp when Ironic updated the bare-metal host’s firmware.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><pre><code>updates:
   component:
   url:</code></pre></td>
@@ -2631,11 +3003,17 @@ The `status` section of the `HostFirmwareComponents` resource returns the curren
 </tbody>
 </table>
 
-HostFirmwareComponents status
-
 ## Getting the HostFirmwareComponents resource
 
 The `HostFirmwareComponents` resource contains the specific firmware version of the BIOS and baseboard management controller (BMC) of a physical host. You must get the `HostFirmwareComponents` resource for a physical host to review the firmware version and status.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the detailed list of `HostFirmwareComponents` resources by running the following command:
 
@@ -2657,9 +3035,11 @@ The `HostFirmwareComponents` resource contains the specific firmware version of 
 
     Where `<host_name>` is the name of the host.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
@@ -2714,9 +3094,21 @@ The `HostFirmwareComponents` resource contains the specific firmware version of 
       updates: []
     ```
 
+    </div>
+
+</div>
+
 ## Editing the HostFirmwareComponents resource of a provisioned host
 
 You can edit the `HostFirmwareComponents` resource to upgrade or downgrade BIOS and BMC firmware versions on a provisioned host without deprovisioning it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the detailed list of `HostFirmwareComponents` resources by running the following command:
 
@@ -2734,9 +3126,11 @@ You can edit the `HostFirmwareComponents` resource to upgrade or downgrade BIOS 
 
 3.  Make the appropriate edits.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2787,6 +3181,8 @@ You can edit the `HostFirmwareComponents` resource to upgrade or downgrade BIOS 
         type: ChangeDetected
       lastUpdated: "2024-04-25T20:32:06Z"
     ```
+
+    </div>
 
     where:
 
@@ -2842,23 +3238,40 @@ You can edit the `HostFirmwareComponents` resource to upgrade or downgrade BIOS 
 
     Where `<machineset_name>` is the name of the machine set and `<n>` is the number of worker nodes.
 
+</div>
+
 ## Performing a live update to the HostFirmwareComponents resource
 
 You can perform a live update to the `HostFirmwareComponents` resource on an already provisioned host. Live updates do not trigger deprovisioning and reprovisioning the host.
 
-<div class="warning">
+> [!WARNING]
+> Performing a live update to the `HostFirmwareComponents` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+>
+> Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+>
+> If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
+>
+> Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
 
-Performing a live update to the `HostFirmwareComponents` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+<div>
 
-Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+<div class="title">
 
-If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
-
-Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
+Prerequisites
 
 </div>
 
 - The `HostUpdatePolicy` resource must have the `firmwareUpdates` parameter set to `onReboot`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the `HostFirmwareComponents` resource by running the following command:
 
@@ -2879,11 +3292,8 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
     `<url>`
     Specifies the URL for the component.
 
-    <div class="note">
-
-    You can also use the `oc edit <hostname> hostfirmwarecomponents -n openshift-machine-api` command to update the resource.
-
-    </div>
+    > [!NOTE]
+    > You can also use the `oc edit <hostname> hostfirmwarecomponents -n openshift-machine-api` command to update the resource.
 
 2.  Cordon and drain the node by running the following command:
 
@@ -2915,9 +3325,19 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
     $ oc uncordon <node_name>
     ```
 
+</div>
+
 ## Identifying the NICs HostFirmwareComponents resources you can update
 
 You can use the Redfish `NetworkAdapters` resource to identify network interface controllers (NICs) that were added to the `HostFirmwareComponents` custom resource (CR). The NIC is displayed in the CR with the prefix `nic:` followed by the network adapter ID of the resource. For example, `nic:AD007`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the detailed list of `HostFirmwareComponents` NIC resources by running the following command:
 
@@ -2927,9 +3347,11 @@ You can use the Redfish `NetworkAdapters` resource to identify network interface
 
     The `<SystemID>` is based on the value that you set for `bmh` in the `spec.bmc.address`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -2952,15 +3374,19 @@ You can use the Redfish `NetworkAdapters` resource to identify network interface
     }
     ```
 
+    </div>
+
 2.  Identify the corresponding network adapter in the firmware inventory resource, as the network adapter does not indicate if you can update firmware with Redfish, by running the following command:
 
     ``` terminal
     $ curl -ksu “$USER:$PASS” https://<BMC>/redfish/v1/UpdateService/FirmwareInventory | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -3031,15 +3457,19 @@ You can use the Redfish `NetworkAdapters` resource to identify network interface
     }
     ```
 
+    </div>
+
 3.  Check if the parameter is set to `true` by running the following command:
 
     ``` terminal
     $ curl -ksu "$USER:$PASS" https://<BMC>/redfish/v1/UpdateService/FirmwareInventory/Current-102303-22.0.9__NIC.Integrated.1-2-1 | jq .
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -3107,9 +3537,13 @@ You can use the Redfish `NetworkAdapters` resource to identify network interface
     }
     ```
 
+    </div>
+
     - `Updateable`: Indicates the value the parameter is set to.
 
 4.  Where the `Updateable` parameter is set to `true`, you can use Redfish to update the network adapter.
+
+</div>
 
 ## About the `HostUpdatePolicy` resource
 
@@ -3126,9 +3560,11 @@ This setting corresponds to the `HostFirmwareComponents` resource.
 
 When you set the value to `onPreparing`, you can only update the host during provisioning, which is the default setting. When you set the value to `onReboot`, you can update a provisioned host by applying the resource and rebooting the bare-metal host. Then, follow the procedure for editing the `HostFirmwareSettings` or `HostFirmwareComponents` resource.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `HostUpdatePolicy` resource**
+<div class="title">
+
+Example `HostUpdatePolicy` resource
 
 </div>
 
@@ -3143,6 +3579,8 @@ spec:
   firmwareUpdates: <setting>
 ```
 
+</div>
+
 where:
 
 `<hostname>`
@@ -3155,15 +3593,20 @@ Specifies the update policy setting. Specify `onPreparing` to disable live updat
 
 By default, the `HostUpdatePolicy` disables live updates. To enable live updates, create the `HostUpdatePolicy` resource.
 
-<div class="warning">
+> [!WARNING]
+> Performing a live update to the `HostUpdatePolicy` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+>
+> Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+>
+> If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
+>
+> Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
 
-Performing a live update to the `HostUpdatePolicy` resource can be a destructive and destabilizing action. Perform these updates only after careful consideration.
+<div>
 
-Before you apply a live update in a production cluster, validate the update in a development or test cluster. Ensure that these updates comply with your organization’s test policies before you apply them to a production cluster.
+<div class="title">
 
-If a cluster has fewer than three compute nodes, use caution. Firmware updates in such clusters can result in the cluster entering a degraded state.
-
-Do not interrupt firmware updates. If the update stops responding, engage the support of your hardware vendor.
+Procedure
 
 </div>
 
@@ -3175,9 +3618,11 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
 
     You can use any text editor you prefer.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `HostUpdatePolicy` resource:**
+    <div class="title">
+
+    Example `HostUpdatePolicy` resource:
 
     </div>
 
@@ -3192,6 +3637,8 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
       firmwareUpdates: onReboot
     ```
 
+    </div>
+
     Replace `<hostname>` with the name of the host.
 
 2.  Save the changes to the `hup.yaml` file.
@@ -3201,3 +3648,5 @@ Do not interrupt firmware updates. If the update stops responding, engage the su
     ``` terminal
     $ oc apply -f hup.yaml
     ```
+
+</div>

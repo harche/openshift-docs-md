@@ -4,9 +4,27 @@ Use the JobSet Operator on OpenShift Container Platform to manage and run large-
 
 You can use the JobSet Operator to deploy a JobSet to manage and run large-scale, coordinated workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the JobSet Operator.
 
 - You have a cluster with available NVIDIA GPUs.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new project by running the following command:
 
@@ -89,15 +107,27 @@ You can use the JobSet Operator to deploy a JobSet to manage and run large-scale
     $ oc apply -f jobset.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that pods were started by running the following command:
 
   ``` terminal
   $ oc get pods -n <my_namespace>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -108,11 +138,33 @@ You can use the JobSet Operator to deploy a JobSet to manage and run large-scale
   pytorch-workers-0-2-dpljq   1/1     Running   0          2m17s
   ```
 
+  </div>
+
+</div>
+
 # Specify a JobSet coordinator
 
 To manage communication between JobSet pods, you can assign a specific JobSet coordinator pod. This ensures that your distributed workloads can reference a stable network endpoint as a central point of coordination for task synchronization and data exchange.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the JobSet Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new namespace by running the following command.
 
@@ -122,9 +174,11 @@ To manage communication between JobSet pods, you can assign a specific JobSet co
 
 2.  Create a YAML file called `jobset-coordinator.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file**
+    <div class="title">
+
+    Example YAML file
 
     </div>
 
@@ -178,6 +232,8 @@ To manage communication between JobSet pods, you can assign a specific JobSet co
                     protocol: TCP
     ```
 
+    </div>
+
     where:
 
     `<pods_running_number>`
@@ -192,15 +248,27 @@ To manage communication between JobSet pods, you can assign a specific JobSet co
     $ oc apply -f jobset-coordinator.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that pods were created by running the following command:
 
   ``` terminal
   $ oc get pods -n <new_namespace>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -212,6 +280,10 @@ To manage communication between JobSet pods, you can assign a specific JobSet co
   coordinator-workers-0-2-7cnvv   1/1     Running             0          67s
   ```
 
+  </div>
+
+</div>
+
 # Failure policy configuration for JobSet Operator
 
 To control workload behavior in response to child job failures, you can configure a JobSet failure policy. This enables you to define specific actions, such as restarting or failing the entire JobSet, based on the failure reason or the specific replicated job affected.
@@ -220,28 +292,30 @@ To control workload behavior in response to child job failures, you can configur
 
 These actions are available when a job failure matches a defined rule.
 
-| Action                              | Description                                                                                                                                        |
-|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `FailJobSet`                        | Marks the entire JobSet as failed immediately.                                                                                                     |
-| `RestartJobSet`                     | Restarts the JobSet by recreating all child jobs. This action counts toward the `maxRestarts` limit. This is the default action if no rules match. |
-| `RestartJobSetAndIgnoreMaxRestarts` | Restarts the JobSet without counting toward the `maxRestarts` limit.                                                                               |
+| Action | Description |
+|----|----|
+| `FailJobSet` | Marks the entire JobSet as failed immediately. |
+| `RestartJobSet` | Restarts the JobSet by recreating all child jobs. This action counts toward the `maxRestarts` limit. This is the default action if no rules match. |
+| `RestartJobSetAndIgnoreMaxRestarts` | Restarts the JobSet without counting toward the `maxRestarts` limit. |
 
 ## Rule-targeting attributes
 
 Use the following attributes to define failure rules.
 
-| Attribute              | Description                                                                                                                                          |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `targetReplicatedJobs` | Specifies which replicated jobs trigger the rule.                                                                                                    |
-| `onJobFailureReasons`  | Triggers the rule based on the specific job failure reason. Valid values include `BackoffLimitExceeded`, `DeadlineExceeded`, and `PodFailurePolicy`. |
+| Attribute | Description |
+|----|----|
+| `targetReplicatedJobs` | Specifies which replicated jobs trigger the rule. |
+| `onJobFailureReasons` | Triggers the rule based on the specific job failure reason. Valid values include `BackoffLimitExceeded`, `DeadlineExceeded`, and `PodFailurePolicy`. |
 
 ## Configuration example
 
 This configuration marks the JobSet as failed if the `leader` job fails.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of a YAML file to mark the job set failed if the leader fails**
+<div class="title">
+
+Example of a YAML file to mark the job set failed if the leader fails
 
 </div>
 
@@ -307,19 +381,36 @@ spec:
                 sleep 1000
 ```
 
-<div class="note">
-
-The `InPlaceRestart` alpha feature is not currently supported on the JobSet Operator.
-
 </div>
+
+> [!NOTE]
+> The `InPlaceRestart` alpha feature is not currently supported on the JobSet Operator.
 
 # Configure volume claim policies for JobSet Operator
 
 You can configure a JobSet to automatically create and manage shared persistent volume claims (PVCs) across multiple replicated jobs. This is useful for workloads that require shared access to datasets, models, or checkpoints.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have the JobSet Operator installed in your cluster.
 
 - You have set a default storage class or chosen a storage class for your workload.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define the volume templates in the `spec.volumeClaimPolicies` section of your JobSet YAML file.
 
@@ -389,15 +480,27 @@ You can configure a JobSet to automatically create and manage shared persistent 
     $ oc apply -f <jobset_yaml>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the PVCs were created using the naming convention `<claim_name>-<jobset_name>`:
 
   ``` terminal
   $ oc get pvc
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -407,6 +510,10 @@ You can configure a JobSet to automatically create and manage shared persistent 
   pvc-2       Bound    pvc-8aeddd4d-aad5-4039-8d04-640a71c9a72d   12Gi       RWO            file-storage   3d
   pvc-3       Bound    pvc-0050144d-940c-4c4e-a23a-2a660a5490eb   12Gi       RWO            file-storage   3d
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

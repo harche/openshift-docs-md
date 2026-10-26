@@ -8,6 +8,14 @@ You can evacuate only pods that are backed by a replication controller. The repl
 
 Bare pods, meaning those not backed by a replication controller, are unaffected by default. You can evacuate a subset of pods by specifying a pod selector. Because pod selectors are based on labels, all of the pods with the specified label are evacuated.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Mark the nodes as unschedulable before performing the pod evacuation.
 
     1.  Mark the node as unschedulable by running the following command:
@@ -16,9 +24,11 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
         $ oc adm cordon <node1>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -26,15 +36,19 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
         node/<node1> cordoned
         ```
 
+        </div>
+
     2.  Check that the node status is `Ready,SchedulingDisabled` by running the following command:
 
         ``` terminal
         $ oc get node <node1>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -42,6 +56,8 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
         NAME        STATUS                     ROLES     AGE       VERSION
         <node1>     Ready,SchedulingDisabled   worker    1d        v1.35.4
         ```
+
+        </div>
 
 2.  Evacuate the pods by using one of the following methods:
 
@@ -95,17 +111,16 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
     $ oc adm uncordon <node1>
     ```
 
+</div>
+
 # Understanding how to update labels on nodes
 
 You can update any label on a node in order to adapt your cluster to evolving needs.
 
 Node labels are not persisted after a node is deleted even if the node is backed up by a Machine.
 
-<div class="note">
-
-Any change to a `MachineSet` object is not applied to existing machines owned by the compute machine set. For example, labels edited or added to an existing `MachineSet` object are not propagated to existing machines and nodes associated with the compute machine set.
-
-</div>
+> [!NOTE]
+> Any change to a `MachineSet` object is not applied to existing machines owned by the compute machine set. For example, labels edited or added to an existing `MachineSet` object are not propagated to existing machines and nodes associated with the compute machine set.
 
 - The following command adds or updates labels on a node:
 
@@ -119,21 +134,18 @@ Any change to a `MachineSet` object is not applied to existing machines owned by
   $ oc label nodes webconsole-7f7f6 unhealthy=true
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to apply the label:
-
-  ``` yaml
-  kind: Node
-  apiVersion: v1
-  metadata:
-    name: webconsole-7f7f6
-    labels:
-      unhealthy: 'true'
-  #...
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to apply the label:
+  >
+  > ``` yaml
+  > kind: Node
+  > apiVersion: v1
+  > metadata:
+  >   name: webconsole-7f7f6
+  >   labels:
+  >     unhealthy: 'true'
+  > #...
+  > ```
 
 - The following command updates all pods in the namespace:
 
@@ -147,13 +159,10 @@ Any change to a `MachineSet` object is not applied to existing machines owned by
   $ oc label pods --all status=unhealthy
   ```
 
-<div class="important">
-
-In OpenShift Container Platform 4.12 and later, newly installed clusters include both the `node-role.kubernetes.io/control-plane` and `node-role.kubernetes.io/master` labels on control plane nodes by default.
-
-In OpenShift Container Platform versions earlier than 4.12, the `node-role.kubernetes.io/control-plane` label is not added by default. Therefore, you must manually add the `node-role.kubernetes.io/control-plane` label to control plane nodes in clusters upgraded from earlier versions.
-
-</div>
+> [!IMPORTANT]
+> In OpenShift Container Platform 4.12 and later, newly installed clusters include both the `node-role.kubernetes.io/control-plane` and `node-role.kubernetes.io/master` labels on control plane nodes by default.
+>
+> In OpenShift Container Platform versions earlier than 4.12, the `node-role.kubernetes.io/control-plane` label is not added by default. Therefore, you must manually add the `node-role.kubernetes.io/control-plane` label to control plane nodes in clusters upgraded from earlier versions.
 
 # Understanding how to mark nodes as unschedulable or schedulable
 
@@ -165,9 +174,11 @@ By default, healthy nodes with a `Ready` status are marked as schedulable, which
 
 - The following command marks a node or nodes as unschedulable:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -175,15 +186,19 @@ By default, healthy nodes with a `Ready` status are marked as schedulable, which
   $ oc adm cordon <node>
   ```
 
+  </div>
+
   For example:
 
   ``` terminal
   $ oc adm cordon node1.example.com
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -193,6 +208,8 @@ By default, healthy nodes with a `Ready` status are marked as schedulable, which
   NAME                 LABELS                                        STATUS
   node1.example.com    kubernetes.io/hostname=node1.example.com      Ready,SchedulingDisabled
   ```
+
+  </div>
 
 - The following command marks a currently unschedulable node or nodes as schedulable:
 
@@ -216,27 +233,26 @@ There is ongoing work upstream to ensure that such pods are gracefully terminate
 $ oc delete pods --field-selector status.phase=Failed -n <POD_NAMESPACE>
 ```
 
-<div class="note">
-
-The option to drain the node is unavailable for single-node OpenShift clusters.
-
-</div>
+> [!NOTE]
+> The option to drain the node is unavailable for single-node OpenShift clusters.
 
 # Deleting nodes from a cluster
 
 You can delete a node from a OpenShift Container Platform cluster by scaling down the appropriate `MachineSet` object.
 
-<div class="important">
-
-When a cluster is integrated with a cloud provider, you must delete the corresponding machine to delete a node. Do not try to use the `oc delete node` command for this task.
-
-</div>
+> [!IMPORTANT]
+> When a cluster is integrated with a cloud provider, you must delete the corresponding machine to delete a node. Do not try to use the `oc delete node` command for this task.
 
 When you delete a node by using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods that are not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
 
-<div class="note">
+> [!NOTE]
+> If you are running cluster on bare metal, you cannot delete a node by editing `MachineSet` objects. Compute machine sets are only available when a cluster is integrated with a cloud provider. Instead you must unschedule and drain the node before manually deleting it.
 
-If you are running cluster on bare metal, you cannot delete a node by editing `MachineSet` objects. Compute machine sets are only available when a cluster is integrated with a cloud provider. Instead you must unschedule and drain the node before manually deleting it.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -262,9 +278,11 @@ If you are running cluster on bare metal, you cannot delete a node by editing `M
       $ oc edit machineset <machine-set-name> -n openshift-machine-api
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -281,10 +299,14 @@ If you are running cluster on bare metal, you cannot delete a node by editing `M
         # ...
       ```
 
+      </div>
+
       where:
 
       `spec.replicas`
       Specifies the number of replicas to scale down to.
+
+</div>
 
 ## Deleting nodes from a bare metal cluster
 
@@ -293,6 +315,14 @@ You can delete a node from a OpenShift Container Platform cluster that does not 
 When you delete a node using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
 
 The following procedure deletes a node from an OpenShift Container Platform cluster running on bare metal.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Mark the node as unschedulable:
 
@@ -317,6 +347,8 @@ The following procedure deletes a node from an OpenShift Container Platform clus
     Although the node object is now deleted from the cluster, it can still rejoin the cluster after reboot or if the kubelet service is restarted. To permanently delete the node and all its data, you must [decommission the node](https://access.redhat.com/solutions/84663).
 
 4.  If you powered down the physical hardware, turn it back on so that the node can rejoin the cluster.
+
+</div>
 
 # Additional resources
 

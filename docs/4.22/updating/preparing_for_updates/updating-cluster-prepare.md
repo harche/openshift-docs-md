@@ -16,11 +16,25 @@ To allow the update, you must perform one of the following tasks:
 
 - If you do not want the updated boot image feature enabled, you must explicitly disable the feature for compute nodes and then update your cluster. For more information, see "Disabling boot image management".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
 
 - You must have access to the cluster as a user with the `cluster-admin` role.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Acknowledge that you are aware of the change in the default behavior by running the following command:
 
@@ -28,19 +42,26 @@ To allow the update, you must perform one of the following tasks:
   $ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.21-boot-image-opt-out-in-4.22":"true"}}' --type=merge
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Disabling boot image management](../../nodes/nodes/nodes-update-boot-images.xml#mco-update-boot-images-disable_nodes-update-boot-images)
+
+</div>
 
 # Self-service Technical Supportability Review
 
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
 
-<div class="note">
-
-The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
-
-</div>
+> [!NOTE]
+> The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
 
 The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
 
@@ -65,6 +86,8 @@ To run a self-service review, upload your cluster’s `must-gather` data to the 
 
 The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
 
+## Additional resources
+
 - [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
 
 - [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255)
@@ -85,9 +108,17 @@ However, if you have a strong reason to update to that version, for example, if 
 
 - Follow the links provided in the conditional update description, investigate the bug, and determine if it is likely to cause issues for your cluster. If you need help understanding the risk, contact Red Hat Support.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Evaluation of update availability](../../updating/understanding_updates/how-updates-work.xml#update-evaluate-availability_how-updates-work)
+
+</div>
 
 # etcd backups before cluster updates
 
@@ -99,17 +130,24 @@ In the context of updates, you can attempt an etcd restoration of the cluster if
 
 etcd restorations might be destructive and destabilizing to a running cluster, use them only as a last resort.
 
-<div class="warning">
-
-Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
-
-</div>
+> [!WARNING]
+> Due to their high consequences, etcd restorations are not intended to be used as a rollback solution. Rolling your cluster back to a previous version is not supported. If your update is failing to complete, contact Red Hat support.
 
 There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to an earlier cluster state".
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
 - [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+</div>
 
 # Using the oc adm upgrade recommend command to identify update risks
 
@@ -127,9 +165,14 @@ When you run the `oc adm upgrade recommend` command, the output displays the fol
 
 You can use the information provided by the output to make informed decisions about the state of your cluster. Examples include whether any critical cluster issues should be addressed before attempting an update, or which specific target version would have less risk for your cluster.
 
-<div class="note">
+> [!NOTE]
+> The `oc adm upgrade recommend` command is read-only and does not affect the state of the cluster. To request an update, use the `oc adm upgrade` command.
 
-The `oc adm upgrade recommend` command is read-only and does not affect the state of the cluster. To request an update, use the `oc adm upgrade` command.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -137,17 +180,22 @@ The `oc adm upgrade recommend` command is read-only and does not affect the stat
 
 - You are logged in with a token-based identity, such as `kubeadmin`, by using the `oc login` command.
 
-  <div class="note">
+  > [!NOTE]
+  > The `oc adm upgrade recommend` command requires a bearer token to query the cluster’s Thanos monitoring service for firing alerts. Certificate-based authentication, such as the `system:admin` identity provided in the default `kubeconfig` file from the installation program, does not satisfy this requirement. If you use certificate-based authentication, the command output displays the following message and skips all alert-based precondition checks:
+  >
+  > ``` terminal
+  > Failed to check for at least some preconditions: no token is currently in use for this session
+  > ```
 
-  The `oc adm upgrade recommend` command requires a bearer token to query the cluster’s Thanos monitoring service for firing alerts. Certificate-based authentication, such as the `system:admin` identity provided in the default `kubeconfig` file from the installation program, does not satisfy this requirement. If you use certificate-based authentication, the command output displays the following message and skips all alert-based precondition checks:
+</div>
 
-  ``` terminal
-  Failed to check for at least some preconditions: no token is currently in use for this session
-  ```
+<div>
 
-  </div>
+<div class="title">
 
-<!-- -->
+Procedure
+
+</div>
 
 - Identify potential update risks and view recommended update versions by running the following command:
 
@@ -155,9 +203,11 @@ The `oc adm upgrade recommend` command is read-only and does not affect the stat
   $ oc adm upgrade recommend
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -178,9 +228,21 @@ The `oc adm upgrade recommend` command is read-only and does not affect the stat
     4.20.20     no known issues relevant to this cluster
   ```
 
+  </div>
+
+</div>
+
 ## Adding custom alerts to oc adm upgrade recommend command output
 
 You can configure specific alerts to be checked by the `oc adm upgrade recommend` command, so that if they are firing they appear in the output of the command. To do this, add the `openShiftUpdatePrecheck` label to an alert and set it to true.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit a `PrometheusRule` custom resource (CR) by running the following command:
 
@@ -205,9 +267,11 @@ You can configure specific alerts to be checked by the `oc adm upgrade recommend
     # ...
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `PrometheusRule` CR with precheck label**
+    <div class="title">
+
+    Example `PrometheusRule` CR with precheck label
 
     </div>
 
@@ -232,9 +296,21 @@ You can configure specific alerts to be checked by the `oc adm upgrade recommend
             description: "The volume {{ $labels.persistentvolumeclaim }} in namespace {{ $labels.namespace }} is currently {{ $value | humanizePercentage }} full. This may cause issues during pod restarts or cluster updates."
     ```
 
+    </div>
+
+</div>
+
 ## Accepting risks with the oc adm upgrade recommend command
 
 You can use a command flag to explicitly accept update risks that are shown in the output of the `oc adm upgrade recommend` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check for update risks by running the following command:
 
@@ -242,9 +318,11 @@ You can use a command flag to explicitly accept update risks that are shown in t
     $ oc adm upgrade recommend
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -272,6 +350,8 @@ You can use a command flag to explicitly accept update risks that are shown in t
       4.20.20     no known issues relevant to this cluster
     ```
 
+    </div>
+
     In this example, `TestAlert` is the name of the alert that is firing on the cluster and is considered a risk to a cluster update. Alerts that are identified as update risks might be changed over time.
 
 2.  Accept update risks by running the following command:
@@ -282,9 +362,11 @@ You can use a command flag to explicitly accept update risks that are shown in t
 
     Replace `<risk_name>` with the name of the risk you want to accept. You can accept multiple risks at once by separating each risk by a comma, for example `risk1,risk2,risk3`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -292,9 +374,13 @@ You can use a command flag to explicitly accept update risks that are shown in t
     $ oc adm upgrade recommend --accept TestAlert
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -316,6 +402,10 @@ You can use a command flag to explicitly accept update risks that are shown in t
       VERSION     ISSUES
       4.20.20     no known issues relevant to this cluster
     ```
+
+    </div>
+
+</div>
 
 # Best practices for cluster updates
 
@@ -353,11 +443,8 @@ OpenShift SDN network plugin was deprecated in versions 4.15 and 4.16. With this
 
 If your OpenShift Container Platform cluster is still using the OpenShift SDN CNI, see [Migrating from the OpenShift SDN network plugin](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/networking/ovn-kubernetes-network-plugin#migrate-from-openshift-sdn).
 
-<div class="important">
-
-It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
-
-</div>
+> [!IMPORTANT]
+> It is not possible to update a cluster to OpenShift Container Platform 4.17 if it is using the OpenShift SDN network plugin. You must migrate to the OVN-Kubernetes plugin before upgrading to OpenShift Container Platform 4.17.
 
 ## Ensure that enough spare nodes are available
 
@@ -367,11 +454,8 @@ Depending on the configured value of the cluster’s `maxUnavailable` spec, the 
 
 Make sure that you have enough available nodes in each worker pool, as well as enough spare capacity on your compute nodes, to increase the chance of successful node updates.
 
-<div class="warning">
-
-The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
-
-</div>
+> [!WARNING]
+> The default setting for `maxUnavailable` is `1` for all the machine config pools in OpenShift Container Platform. It is recommended to not change this value and update one control plane node at a time. Do not change this value to `3` for the control plane pool.
 
 ## Ensure that the cluster’s PodDisruptionBudget is properly configured
 
@@ -385,13 +469,29 @@ When planning a cluster update, check the configuration of the `PodDisruptionBud
 
 - For workloads that are not highly available, make sure they are either not protected by a `PodDisruptionBudget` or have some alternative mechanism for draining these workloads eventually, such as periodic restart or guaranteed eventual termination.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding cluster Operator condition types](../../updating/understanding_updates/intro-to-updates.xml#understanding_clusteroperator_conditiontypes_understanding-openshift-updates)
+
+</div>
 
 # Minimizing worker node deployment time
 
 You can minimize deployment time during cluster worker node installation by applying configuration changes across nodes simultaneously.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the configuration file for your required installation method (`install-config.yaml` or similar).
 
@@ -402,6 +502,16 @@ You can minimize deployment time during cluster worker node installation by appl
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You create more than one worker Machine Configuration Pool (MCP) in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a MCP YAML file for each custom worker MCP that you intend to use, as in the following example:
 
@@ -433,19 +543,13 @@ You can minimize deployment time during cluster worker node installation by appl
 
     - **paused**: Set this value to `true` if you plan to apply additional Day 2 configurations, such as `PerformanceProfile`, after installation. All Day 2 configurations can be applied while the MCP is paused. They will be queued and applied when you unpause the node. Set this value to `false` if no further configurations are required.
 
-      <div class="note">
-
-      For bare-metal servers, the reboot time can take up to a couple of minutes.
-
-      </div>
+      > [!NOTE]
+      > For bare-metal servers, the reboot time can take up to a couple of minutes.
 
 2.  Place the YAML files in the directory generated by the installation program. Ensure that your worker nodes get assigned the correct labels, such as `node-role.kubernetes.io/worker-0`, during the provisioning phase or immediately upon joining.
 
-    <div class="note">
-
-    Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
-
-    </div>
+    > [!NOTE]
+    > Proper labeling ensures that the nodes get assigned to the correct custom MCP rather than the default worker pool.
 
 3.  Optional: If you set the `paused` parameter to `true` to apply additional configurations, complete the following steps:
 
@@ -457,9 +561,11 @@ You can minimize deployment time during cluster worker node installation by appl
         $ oc patch mcp/worker-0 --patch '{"spec":{"paused":false}}' --type=merge
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -467,11 +573,10 @@ You can minimize deployment time during cluster worker node installation by appl
         machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
         ```
 
-        <div class="note">
-
-        If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
-
         </div>
+
+        > [!NOTE]
+        > If you did not set the `paused` parameter to `true`, the configuration will apply sequentially and reboot if needed.
 
 4.  Verify that the MCPs updated successfully:
 
@@ -479,9 +584,11 @@ You can minimize deployment time during cluster worker node installation by appl
     $ oc get machineconfigpools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -491,18 +598,26 @@ You can minimize deployment time during cluster worker node installation by appl
     worker-0   rendered-worker-config-new                       False     True       False      10             0                   0                     0                      5m
     ```
 
+    </div>
+
 5.  When all MCPs are set to `UPDATED=true`, update the MCPs with the appropriate `maxUnavailable` based on workload requirements. This ensures cluster stability and high availability when users deploy workloads onto the cluster. For example, set `maxUnavailable` to 1 by running the following command:
 
     ``` terminal
     $ oc patch mcp/worker-0 --patch '{"spec":{"maxUnavailable":1}}' --type=merge
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     machineconfigpool.machineconfiguration.openshift.io/worker-0 patched
     ```
+
+    </div>
+
+</div>

@@ -17,6 +17,14 @@ Complement static quotas with dynamic, usage-based admission ordering that adapt
 
 Configure Red Hat build of Kueue admission fair sharing using either the `Default` or `Custom` configuration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Choose the `configuration` type you want to use:
 
     - `Default`: Uses predefined values.
@@ -31,9 +39,11 @@ Configure Red Hat build of Kueue admission fair sharing using either the `Defau
       $ oc patch kueue.kueue.openshift.io/cluster --type=merge -p \ '{"spec":{"config":{"admissionFairSharing":{"configuration":"Default","custom":null}}}}'
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example of Kueue instance output**
+      <div class="title">
+
+      Example of Kueue instance output
 
       </div>
 
@@ -43,15 +53,19 @@ Configure Red Hat build of Kueue admission fair sharing using either the `Defau
             configuration: Default
       ```
 
+      </div>
+
     - Use the following command to create a `Custom` configuration that applies values that you specify:
 
       ``` terminal
       $ oc patch kueue.kueue.openshift.io/cluster --type=merge -p \ '{"spec":{"config":{"admissionFairSharing":{"configuration":"Custom","custom":{"usageHalfLifeTimeSeconds":10,"usageSamplingIntervalSeconds":10,"resourceWeights":[{"name":"cpu","weight":"2.0"}]}}}}}'
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example of Kueue instance output**
+      <div class="title">
+
+      Example of Kueue instance output
 
       </div>
 
@@ -67,6 +81,8 @@ Configure Red Hat build of Kueue admission fair sharing using either the `Defau
               usageSamplingIntervalSeconds: 10
       ```
 
+      </div>
+
       `resourceWeights`
       Assigns weights to resources. The higher the weight, the higher the penalty.
 
@@ -75,6 +91,8 @@ Configure Red Hat build of Kueue admission fair sharing using either the `Defau
 
       `usageSamplingIntervalSeconds`
       The frequency in seconds that Red Hat build of Kueue updates the `consumedResources` component in the `FairSharingStatus` component.
+
+</div>
 
 ## Set resource weights
 
@@ -87,6 +105,14 @@ For example, if you want to achieve an effective memory weight of `1.0`, you wou
 # Configuring a cluster queue for admission fair sharing
 
 Configure the `admissionScope` section in your `ClusterQueue` object to be `UsageBasedAdmissionFairSharing`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Specify `UsageBasedAdmissionFairSharing` as shown in the following example:
 
@@ -110,9 +136,19 @@ Configure the `admissionScope` section in your `ClusterQueue` object to be `Usag
                 nominalQuota: 2Gi
   ```
 
+</div>
+
 # Configuring a local queue for admission fair sharing (optional)
 
 Optionally, you can configure `fairSharing` section in your `LocalQueue` object to adjust its weight in the fair sharing calculation. The higher the weight, the lower the penalty. For example, specifying a weight of `2` treats the queue as if it is used by half as many resources.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Specify a `weight` value as shown in the following example:
 
@@ -128,9 +164,19 @@ Optionally, you can configure `fairSharing` section in your `LocalQueue` object 
       weight: "2"  # This queue will be treated as if it used half as many resources
   ```
 
+</div>
+
 # Verifying the admission fair sharing status
 
 Check the `admissionFairSharingStatus` status in the local queue.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Use the following command to verify the status of admission fair sharing:
 
@@ -138,12 +184,18 @@ Check the `admissionFairSharingStatus` status in the local queue.
   $ oc get lq <local-queue-name> -n <local-queue-namespace> -o jsonpath={.status.fairSharing}
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` terminal
   {"admissionFairSharingStatus":{"consumedResources":{"cpu":"31999m"},"lastUpdate":"2025-06-03T14:25:15Z"},"weightedShare":0}
   ```
+
+  </div>
+
+</div>

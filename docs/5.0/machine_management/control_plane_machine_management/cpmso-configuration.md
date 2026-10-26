@@ -4,9 +4,11 @@ Use a control plane machine set to automate management and recovery of control p
 
 Use this sample YAML as a starting point for creating or modifying control plane machine set configurations on any supported platform.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample `ControlPlaneMachineSet` CR YAML file**
+<div class="title">
+
+Sample `ControlPlaneMachineSet` CR YAML file
 
 </div>
 
@@ -43,6 +45,8 @@ spec:
             <platform_provider_spec>
 ```
 
+</div>
+
 where:
 
 `name: cluster`
@@ -61,11 +65,8 @@ $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 `state: Active`
 Specifies the state of the Operator. When the state is `Inactive`, the Operator is not operational. You can activate the Operator by setting the value to `Active`.
 
-<div class="important">
-
-Before you activate the Operator, you must ensure that the `ControlPlaneMachineSet` CR configuration is correct for your cluster requirements. For more information about activating the Control Plane Machine Set Operator, see "Getting started with control plane machine sets".
-
-</div>
+> [!IMPORTANT]
+> Before you activate the Operator, you must ensure that the `ControlPlaneMachineSet` CR configuration is correct for your cluster requirements. For more information about activating the Control Plane Machine Set Operator, see "Getting started with control plane machine sets".
 
 `type: RollingUpdate`
 Specifies the update strategy for the cluster. The allowed values are `OnDelete` and `RollingUpdate`. The default value is `RollingUpdate`. For more information about update strategies, see "Updating the control plane configuration".
@@ -79,9 +80,19 @@ Specifies the failure domains configuration for the cluster. The format and valu
 `<platform_provider_spec>`
 Specifies the provider spec configuration for the cluster. The format and values of this section are provider-specific. For more information, see the sample provider specification for your cloud provider.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Getting started with control plane machine sets](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-getting-started)
 
 - [Updating the control plane configuration](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines)
+
+</div>
 
 # Control plane machine set configuration options
 
@@ -90,6 +101,14 @@ Customize your control plane machine set to meet specific cluster requirements o
 ## Adding a custom prefix to control plane machine names
 
 Customize the prefix of control plane machine names to distinguish machines across environments or match your naming conventions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `ControlPlaneMachineSet` CR by running the following command:
 
@@ -113,25 +132,50 @@ Customize the prefix of control plane machine names to distinguish machines acro
 
     where `<machine_prefix>` specifies a prefix name that follows the requirements for a lowercase RFC 1123 subdomain.
 
-    <div class="important">
-
-    A lowercase RFC 1123 subdomain must consist of only lowercase alphanumeric characters, hyphens ('-'), and periods ('.'). Each block, separated by periods, must start and end with an alphanumeric character. Hyphens are not allowed at the start or end of a block, and consecutive periods are not permitted.
-
-    </div>
+    > [!IMPORTANT]
+    > A lowercase RFC 1123 subdomain must consist of only lowercase alphanumeric characters, hyphens ('-'), and periods ('.'). Each block, separated by periods, must start and end with an alphanumeric character. Hyphens are not allowed at the start or end of a block, and consecutive periods are not permitted.
 
 3.  Save your changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - If you changed only the value of the `machineNamePrefix` parameter, clusters that use the default `RollingUpdate` update strategy are not automatically updated. To propagate this change, you must replace your control plane machines manually, regardless of the update strategy for the cluster. For more information, see "Replacing a control plane machine".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Replacing a control plane machine](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-replace_cpmso-managing-machines)
+
+</div>
 
 # Provider-specific configuration options
 
 Configure the provider-specific sections of your control plane machine set manifest for your cloud platform.
 
 The `<platform_provider_spec>` and `<platform_failure_domains>` sections of the control plane machine set manifests are provider specific. For provider-specific configuration options for your cluster, see the documentation for your cloud provider.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Control plane configuration options for Amazon Web Services](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-aws.xml#cpmso-config-options-aws)
 
@@ -144,3 +188,5 @@ The `<platform_provider_spec>` and `<platform_failure_domains>` sections of the 
 - [Control plane configuration options for Red Hat OpenStack Platform (RHOSP)](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-openstack.xml#cpmso-config-options-openstack)
 
 - [Control plane configuration options for VMware vSphere](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-vsphere.xml#cpmso-config-options-vsphere)
+
+</div>

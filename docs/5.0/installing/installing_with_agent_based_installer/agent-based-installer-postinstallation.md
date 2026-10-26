@@ -8,11 +8,8 @@ By default, OpenShift Container Platform automatically configures the Open vSwit
 
 The Kubernetes NMState Operator uses the NMState configuration file to create a customized `br-ex` bridge network configuration. This configuration applies to each node in your cluster.
 
-<div class="important">
-
-After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the installation NMState configuration file into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
-
-</div>
+> [!IMPORTANT]
+> After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the installation NMState configuration file into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
 
 Consider using the customized `br-ex` bridge configuration for any of the following tasks:
 
@@ -26,37 +23,42 @@ Consider using the customized `br-ex` bridge configuration for any of the follow
 
 - You need to enable Link Layer Discovery Protocol (LLDP) to discover and troubleshoot switch connectivity.
 
-<div class="warning">
+> [!WARNING]
+> The following list of interface names are reserved and you cannot use the names with NMstate configurations:
+>
+> - `br-ext`
+>
+> - `br-int`
+>
+> - `br-local`
+>
+> - `br-nexthop`
+>
+> - `br0`
+>
+> - `ext-vxlan`
+>
+> - `ext`
+>
+> - `genev_sys_*`
+>
+> - `int`
+>
+> - `k8s-*`
+>
+> - `ovn-k8s-*`
+>
+> - `patch-br-*`
+>
+> - `tun0`
+>
+> - `vxlan_sys_*`
 
-The following list of interface names are reserved and you cannot use the names with NMstate configurations:
+<div>
 
-- `br-ext`
+<div class="title">
 
-- `br-int`
-
-- `br-local`
-
-- `br-nexthop`
-
-- `br0`
-
-- `ext-vxlan`
-
-- `ext`
-
-- `genev_sys_*`
-
-- `int`
-
-- `k8s-*`
-
-- `ovn-k8s-*`
-
-- `patch-br-*`
-
-- `tun0`
-
-- `vxlan_sys_*`
+Prerequisites
 
 </div>
 
@@ -64,15 +66,20 @@ The following list of interface names are reserved and you cannot use the names 
 
 - You have identified the specific nodes where you want to apply the policy.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a `NodeNetworkConfigurationPolicy` (NNCP) CR and define a customized `br-ex` bridge network configuration. The `br-ex` NNCP CR must include the OVN-Kubernetes masquerade IP address and subnet of your network. The example NNCP CR includes default values in the `ipv4.address.ip` and `ipv6.address.ip` parameters. You can set the masquerade IP address in the `ipv4.address.ip`, `ipv6.address.ip`, or both parameters.
 
-  <div class="important">
-
-  As a post-installation task, you cannot change the primary IP address of the customized `br-ex` bridge. If you want to convert your single-stack cluster network to a dual-stack cluster network, you can add or change a secondary IPv6 address in the NNCP CR, but the existing primary IP address cannot be changed.
-
-  </div>
+  > [!IMPORTANT]
+  > As a post-installation task, you cannot change the primary IP address of the customized `br-ex` bridge. If you want to convert your single-stack cluster network to a dual-stack cluster network, you can add or change a secondary IPv6 address in the NNCP CR, but the existing primary IP address cannot be changed.
 
   ``` yaml
   apiVersion: nmstate.io/v1
@@ -158,12 +165,30 @@ The following list of interface names are reserved and you cannot use the names 
   `auto-route-metric`
   Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces automatically configured by the `NetworkManager` service.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster" in the *Additional resources* section.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Converting to a dual-stack cluster network](../../networking/ovn_kubernetes_network_provider/converting-to-dual-stack.xml#nw-dual-stack-convert_converting-to-dual-stack)
 
 - [Expanding the cluster](../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#bare-metal-expanding-the-cluster)
+
+</div>

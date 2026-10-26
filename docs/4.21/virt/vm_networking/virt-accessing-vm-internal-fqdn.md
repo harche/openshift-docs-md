@@ -1,16 +1,31 @@
 You can access a virtual machine on a stable, fully qualified domain name (FQDN) by using headless services. A headless service creates DNS records for each pod instead of a virtual IP, enabling FQDN access without exposing specific ports.
 
-<div class="important">
+> [!IMPORTANT]
+> If you created a VM by using the OpenShift Container Platform web console, you can find its internal FQDN listed in the **Network** tile on the **Overview** tab of the **VirtualMachine details** page.
 
-If you created a VM by using the OpenShift Container Platform web console, you can find its internal FQDN listed in the **Network** tile on the **Overview** tab of the **VirtualMachine details** page.
-
-</div>
-
-# Creating a headless service in a project by using the CLI
+# Create a headless service by using the CLI
 
 To create a headless service in a namespace, add the `clusterIP: None` parameter to the service YAML definition.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `Service` manifest to expose the VM, such as the following example:
 
@@ -45,13 +60,33 @@ To create a headless service in a namespace, add the `clusterIP: None` parameter
     $ oc create -f headless_service.yaml
     ```
 
-# Mapping a virtual machine to a headless service by using the CLI
+</div>
+
+# Map a VM to a headless service by using the CLI
 
 To connect to a virtual machine (VM) from within the cluster by using its internal fully qualified domain name (FQDN), you must first map the VM to a headless service. Set the `spec.hostname` and `spec.subdomain` parameters in the VM configuration file.
 
 If a headless service exists with a name that matches the subdomain, a unique DNS A record is created for the VM in the form of `<vm.spec.hostname>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to add the service selector label and subdomain by running the following command:
 
@@ -87,13 +122,33 @@ If a headless service exists with a name that matches the subdomain, a unique DN
 
 3.  Restart the VM to apply the changes.
 
-# Connecting to a virtual machine by using its internal FQDN
+</div>
+
+# Connect to a VM by using its internal FQDN
 
 You can connect to a virtual machine (VM) by using its internal fully qualified domain name (FQDN).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the `virtctl` tool.
 
 - You have identified the internal FQDN of the VM from the web console or by mapping the VM to a headless service. The internal FQDN has the format `<vm.spec.hostname>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Connect to the VM console by entering the following command:
 
@@ -115,6 +170,8 @@ You can connect to a virtual machine (VM) by using its internal fully qualified 
     ```
 
     In the preceding example, the DNS entry for `myvm.mysubdomain.default.svc.cluster.local` points to `10.244.0.57`, which is the cluster IP address that is currently assigned to the VM.
+
+</div>
 
 # Additional resources
 

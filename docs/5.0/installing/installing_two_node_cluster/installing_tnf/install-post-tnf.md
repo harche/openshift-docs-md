@@ -16,11 +16,29 @@ You can identify fencing credentials by using MAC address or hostname in the `in
 
 You can use the credential update script to simplify updating Baseboard Management Controller (BMC) credentials for fencing in a two-node OpenShift Container Platform cluster. The script handles credential updates automatically, eliminating error-prone manual configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have administrative access to the control plane nodes.
 
 - You have necessary permissions to run the credential update script.
 
 - You have the new BMC credentials for the fencing devices, including the Redfish API endpoint, username, and password.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to a control plane node with SSH by running the following command:
 
@@ -44,7 +62,15 @@ You can use the credential update script to simplify updating Baseboard Manageme
 
     The script displays a completion message and reports any errors that occurred during the update process.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check that the credential update script completed without errors in its output.
 
@@ -60,7 +86,15 @@ You can use the credential update script to simplify updating Baseboard Manageme
     $ oc get secret -n openshift-etcd
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
 
 1.  Check the script output for specific error messages related to credential format or BMC connectivity.
 
@@ -74,9 +108,21 @@ You can use the credential update script to simplify updating Baseboard Manageme
     $ sudo journalctl -u pacemaker
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - Monitor the cluster for several hours to confirm that Pacemaker can successfully authenticate with the BMC using the new credentials.
 
 - If a node becomes unresponsive and requires fencing, verify that Pacemaker can power off or isolate the node without credential-related errors.
+
+</div>
 
 # Troubleshooting fencing credential updates
 
@@ -86,14 +132,14 @@ This reference describes common error messages, diagnostic procedures, and recov
 
 The following table describes common error messages and their causes when updating fencing credentials:
 
-| Error Message                                              | Cause                                                                                                                                                   | Solution                                                                                                                                                                                                      |
-|------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Authentication failed connecting to BMC`                  | Wrong Redfish API endpoint, username, or password. The BMC credentials do not match the actual BMC configuration.                                       | Check that credentials are correct. Verify BMC connection settings and that the Redfish endpoint is reachable.                                                                                                |
-| `Connection timeout to BMC at <endpoint>`                  | The Redfish API endpoint is not reachable or the network is down. The BMC is not responding within the expected timeout.                                | Check the endpoint is correct and reachable. Verify network connectivity from the control plane nodes. Confirm the BMC is on and responding.                                                                  |
-| `Script execution failed with code <exit_code>`            | The credential update script hit an error or stopped before completion. This can occur if you interrupted the script or the Kubernetes cluster is down. | Check script output for specific error messages. Ensure the cluster is running and healthy. Check Pacemaker logs with `journalctl -u pacemaker`.                                                              |
-| `Secret update failed: openshift-etcd secret not found`    | The Kubernetes secret for credentials does not exist. You deleted it, or the cluster API is down.                                                       | Verify the `openshift-etcd` namespace exists with `oc get ns openshift-etcd`. Check cluster connectivity and API availability. Check Pacemaker credentials with `sudo pcs resource status`.                   |
-| `Invalid credential format: expected Redfish endpoint URL` | The Redfish API endpoint is not a valid URL. Common issues: missing protocol (`http://` or `https://`), wrong IP or hostname, or port issues.           | Check the Redfish endpoint follows this format: `https://<bmc_ip_or_hostname>/redfish/v1/`. Verify the endpoint has the correct protocol, hostname or IP, and port.                                           |
-| `BMC username or password contains unsupported characters` | Special characters in credentials are not properly escaped or encoded. Quotes, backslashes, or pipes can break script processing.                       | Check credentials for special characters. Escape special characters or create new credentials without these characters. Contact your BMC administrator or Red Hat support if you must use special characters. |
+| Error Message | Cause | Solution |
+|----|----|----|
+| `Authentication failed connecting to BMC` | Wrong Redfish API endpoint, username, or password. The BMC credentials do not match the actual BMC configuration. | Check that credentials are correct. Verify BMC connection settings and that the Redfish endpoint is reachable. |
+| `Connection timeout to BMC at <endpoint>` | The Redfish API endpoint is not reachable or the network is down. The BMC is not responding within the expected timeout. | Check the endpoint is correct and reachable. Verify network connectivity from the control plane nodes. Confirm the BMC is on and responding. |
+| `Script execution failed with code <exit_code>` | The credential update script hit an error or stopped before completion. This can occur if you interrupted the script or the Kubernetes cluster is down. | Check script output for specific error messages. Ensure the cluster is running and healthy. Check Pacemaker logs with `journalctl -u pacemaker`. |
+| `Secret update failed: openshift-etcd secret not found` | The Kubernetes secret for credentials does not exist. You deleted it, or the cluster API is down. | Verify the `openshift-etcd` namespace exists with `oc get ns openshift-etcd`. Check cluster connectivity and API availability. Check Pacemaker credentials with `sudo pcs resource status`. |
+| `Invalid credential format: expected Redfish endpoint URL` | The Redfish API endpoint is not a valid URL. Common issues: missing protocol (`http://` or `https://`), wrong IP or hostname, or port issues. | Check the Redfish endpoint follows this format: `https://<bmc_ip_or_hostname>/redfish/v1/`. Verify the endpoint has the correct protocol, hostname or IP, and port. |
+| `BMC username or password contains unsupported characters` | Special characters in credentials are not properly escaped or encoded. Quotes, backslashes, or pipes can break script processing. | Check credentials for special characters. Escape special characters or create new credentials without these characters. Contact your BMC administrator or Red Hat support if you must use special characters. |
 
 common error messages
 
@@ -111,9 +157,27 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
 5.  Replace a control plane node that cannot be recovered: Replace the node to restore cluster functionality.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have administrative access to the control plane nodes.
 
 - You can connect to the nodes by using SSH.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update the fencing secrets:
 
@@ -138,20 +202,17 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
         The secret contains the following data keys:
 
-        | Key                       | Description                                                                             | Changes during credential rotation? |
-        |---------------------------|-----------------------------------------------------------------------------------------|-------------------------------------|
-        | `username`                | BMC username                                                                            | Yes                                 |
-        | `password`                | BMC password                                                                            | Yes                                 |
-        | `address`                 | Full Redfish URL (for example, `redfish+https://192.168.1.10:443/redfish/v1/Systems/1`) | Only if BMC address changed         |
-        | `certificateVerification` | `Disabled` or `Enabled`                                                                 | Only if TLS settings changed        |
+        | Key | Description | Changes during credential rotation? |
+        |----|----|----|
+        | `username` | BMC username | Yes |
+        | `password` | BMC password | Yes |
+        | `address` | Full Redfish URL (for example, `redfish+https://192.168.1.10:443/redfish/v1/Systems/1`) | Only if BMC address changed |
+        | `certificateVerification` | `Disabled` or `Enabled` | Only if TLS settings changed |
 
         Data keys
 
-        <div class="note">
-
-        The `oc edit secret` command displays base64-encoded values. If you modify any of the values, the new values must also be base64-encoded.
-
-        </div>
+        > [!NOTE]
+        > The `oc edit secret` command displays base64-encoded values. If you modify any of the values, the new values must also be base64-encoded.
 
         Alternatively, you can use the following command to create or update the secret with literal strings:
 
@@ -238,11 +299,8 @@ You might need to perform manual recovery steps if a disruption event prevents f
         $ sudo pcs stonith confirm <failed_node_name>
         ```
 
-        <div class="warning">
-
-        If the failed node is accessible or can access shared resources, confirming fencing can cause data corruption and cluster failure.
-
-        </div>
+        > [!WARNING]
+        > If the failed node is accessible or can access shared resources, confirming fencing can cause data corruption and cluster failure.
 
     7.  If etcd is not starting despite fencing being operational, restore etcd from a backup by running the following commands:
 
@@ -300,15 +358,12 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
     This procedure applies when both control plane nodes lost power and only one node can be restarted. In this scenario, the cluster has lost corosync quorum because the last known state showed both nodes were online before the power loss.
 
-    <div class="important">
-
-    Perform this procedure only when both of the following conditions are met:
-
-    - Both control plane nodes lost power
-
-    - Only one control plane node can be restarted
-
-    </div>
+    > [!IMPORTANT]
+    > Perform this procedure only when both of the following conditions are met:
+    >
+    > - Both control plane nodes lost power
+    >
+    > - Only one control plane node can be restarted
 
     This scenario typically occurs when you need to replace a control plane node (one node is not recoverable) and the surviving node lost power before the replacement procedure.
 
@@ -432,9 +487,11 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
         The command shows the following sample output:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -456,6 +513,8 @@ You might need to perform manual recovery steps if a disruption event prevents f
         Quorum:           1
         Flags:            2Node Quorate
         ```
+
+        </div>
 
     5.  Wait 30 seconds for Pacemaker to process the fencing confirmation and begin recovery.
 
@@ -503,21 +562,45 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
     If manual recovery is still required and it fails, collect a must-gather and sosreport, and file a bug.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd)
 
 - [Verifying etcd health in a two-node OpenShift cluster with fencing](../installing_tnf/install-post-tnf.xml#installation-verifying-etcd-health_install-post-tnf)
 
+</div>
+
 # Replacing control plane nodes in a two-node OpenShift Container Platform cluster with fencing
 
 You can replace a failed control plane node in a two-node OpenShift Container Platform cluster. The replacement node must use the same host name and IP address as the failed node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a functioning survivor control plane node.
 
@@ -527,9 +610,16 @@ You can replace a failed control plane node in a two-node OpenShift Container Pl
 
 - You know the host name and IP address of the failed node.
 
-<div class="note">
+</div>
 
-Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
+> [!NOTE]
+> Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -539,9 +629,11 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
     $ sudo pcs quorum status
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -570,6 +662,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
              2          1         NR master-1
     ```
 
+    </div>
+
     1.  If quorum is lost and one control plane node is still running, restore quorum manually on the survivor node by running the following command:
 
         ``` terminal
@@ -590,11 +684,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         If etcd still does not start, force it manually on the survivor node, skipping fencing:
 
-        <div class="important">
-
-        Before running this commands, ensure that the node being replaced is inaccessible. Otherwise, you risk etcd corruption.
-
-        </div>
+        > [!IMPORTANT]
+        > Before running this commands, ensure that the node being replaced is inaccessible. Otherwise, you risk etcd corruption.
 
         ``` terminal
         $ sudo pcs resource debug-stop etcd
@@ -624,11 +715,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
     $ oc delete secret etcd-serving-metrics-<node_name>
     ```
 
-    <div class="note">
-
-    To replace the failed node, you must delete its etcd secrets first. When etcd is running, it might take some time for the API server to respond to these commands.
-
-    </div>
+    > [!NOTE]
+    > To replace the failed node, you must delete its etcd secrets first. When etcd is running, it might take some time for the API server to respond to these commands.
 
 3.  Delete resources for the failed node:
 
@@ -667,27 +755,23 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
         $ oc delete machines.machine.openshift.io/<machine_name>-<failed nodename> -n openshift-machine-api
         ```
 
-        <div class="note">
-
-        The node object is deleted automatically after deleting the `Machine` object.
-
-        </div>
+        > [!NOTE]
+        > The node object is deleted automatically after deleting the `Machine` object.
 
 4.  Recreate the failed host by using the same name and IP address:
 
-    <div class="important">
-
-    You must perform this step only if you are using installer-provisioned infrastructure or the Machine API to create the original node. For information about replacing a failed bare-metal control plane node, see "Replacing an unhealthy etcd member on bare metal".
-
-    </div>
+    > [!IMPORTANT]
+    > You must perform this step only if you are using installer-provisioned infrastructure or the Machine API to create the original node. For information about replacing a failed bare-metal control plane node, see "Replacing an unhealthy etcd member on bare metal".
 
     1.  Remove the BMH and `Machine` objects. The machine controller automatically deletes the node object.
 
     2.  Provision a new machine by using the following sample configuration:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `Machine` object configuration**
+        <div class="title">
+
+        Example `Machine` object configuration
 
         </div>
 
@@ -723,6 +807,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
               userData:
                 name: master-user-data-managed
         ```
+
+        </div>
 
         - `metadata.annotations.metal3.io/BareMetalHost`: Replace `{bmh_name}` with the name of the BMH object that is associated with the host that you are replacing.
 
@@ -785,11 +871,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
     The value of the `STATUS` column in the output of this command must be `Provisioned`.
 
-    <div class="note">
-
-    The provisioning process can take 10 to 20 minutes to complete.
-
-    </div>
+    > [!NOTE]
+    > The provisioning process can take 10 to 20 minutes to complete.
 
 6.  Verify that both control plane nodes are in the `Ready` state by running the following command:
 
@@ -807,11 +890,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
 8.  Rejoin the replacement node to the pacemaker cluster by running the following commands:
 
-    <div class="note">
-
-    Run the following commands on the survivor control plane node and not on the node being replaced.
-
-    </div>
+    > [!NOTE]
+    > Run the following commands on the survivor control plane node and not on the node being replaced.
 
     ``` terminal
     $ sudo pcs cluster node remove <node_name>
@@ -824,6 +904,10 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 9.  Update the fencing secret so that STONITH can fence the new node. You must update the secret if the replacement node has a different BMC system UUID than the failed node.
 
     <div class="note">
+
+    <div class="title">
+
+    </div>
 
     - Do not update the STONITH resource directly with the command `pcs stonith update`. The cluster etcd Operator manages STONITH configuration and overwrites manual changes.
 
@@ -839,9 +923,11 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
         $ curl -k https://<bmc_address>/redfish/v1/Systems/ -u <username>:<password>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -852,6 +938,8 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
           ]
         }
         ```
+
+        </div>
 
         The UUID is the last path segment of the `@odata.id` value under `Members`.
 
@@ -888,13 +976,10 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         Confirm the output contains the new BMC system UUID.
 
-        <div class="note">
-
-        All four keys must be present because the cluster etcd Operator rejects secrets with missing keys.
-
-        Do not use the `update-fencing-credentials.sh` script in this step. The script requires a healthy STONITH device, which is unavailable until the fencing setup completes. Only use this script for subsequent rotations after the cluster is fully operational.
-
-        </div>
+        > [!NOTE]
+        > All four keys must be present because the cluster etcd Operator rejects secrets with missing keys.
+        >
+        > Do not use the `update-fencing-credentials.sh` script in this step. The script requires a healthy STONITH device, which is unavailable until the fencing setup completes. Only use this script for subsequent rotations after the cluster is fully operational.
 
 10. Delete stale jobs for the failed node by running the following commands:
 
@@ -910,21 +995,45 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
     $ oc delete job tnf-after-setup-job-<node_name>
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
+</div>
+
 # Verifying etcd health in a two-node OpenShift cluster with fencing
 
 After completing node recovery or maintenance procedures, verify that both control plane nodes and etcd are operating correctly.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
 - You can access at least one control plane node through SSH.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the overall node status by running the following command:
 
@@ -964,6 +1073,8 @@ After completing node recovery or maintenance procedures, verify that both contr
 
     - Fencing is correctly configured for both nodes.
 
+</div>
+
 # Fencing validator script overview
 
 A two-node OpenShift Container Platform cluster with fencing (TNF) relies on the Shoot The Other Node In The Head (STONITH) mechanism to ensure data integrity during node failures. If the fencing subsystem is misconfigured, the cluster might fail to recover safely, resulting in data corruption or a split-brain scenario.
@@ -988,11 +1099,8 @@ The script is located at `/usr/local/bin/fencing_validator` on both control-plan
 
 When you deploy a TNF cluster, the MCO renders a set of `MachineConfig` manifests specific to that topology. One of these manifests is `fencing-validator.yaml`, located in the MCO source at `templates/master/00-master/two-node-with-fencing/files/fencing-validator.yaml`. This `MachineConfig` writes the script to `/usr/local/bin/fencing_validator` with executable mode `0755` on every control-plane node. The script is available as soon as the node has finished applying its `MachineConfig`, that is, after initial deployment or after any MCO-driven reboot.
 
-<div class="important">
-
-The script is deployed on TNF clusters only. It does not appear on standard HA clusters, Single-node OpenShift, or Two-Node with Arbiter clusters.
-
-</div>
+> [!IMPORTANT]
+> The script is deployed on TNF clusters only. It does not appear on standard HA clusters, Single-node OpenShift, or Two-Node with Arbiter clusters.
 
 You can use the script for the following:
 
@@ -1026,19 +1134,19 @@ $ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator --he
 
 The following table details command-line options for the `oc debug node` command:
 
-| Flag           | Description                                                                                                                                                                                                                                                                           |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--user`       | SSH username for remote node access. The default value is `core`. Optionally, you can use `SSH_USER` environment variable to set the value.                                                                                                                                           |
-| `--ssh-key`    | Path to SSH private key. Optionally, you can use the `SSH_KEY` environment variable to set the value.                                                                                                                                                                                 |
-| `--kubeconfig` | Path to kubeconfig file. Optionally, you can use the `KUBECONFIG` environment variable to set the value.                                                                                                                                                                              |
-| `--transport`  | How the script connects to the other node. The possible values are `auto`, `ssh`, and `ocdebug`. The default value is `auto`. Optionally, you can use the `TRANSPORT` environment variable to set the value. For more information, see "Transport mode for fencing validator script". |
-| `--timeout`    | Maximum wait time for recovery loops. Optionally, you can use the `TIMEOUT` environment variable to set the value. By default, it is 1200 seconds or 20 minutes.                                                                                                                      |
-| `--hosts`      | Comma-separated pair of node hostnames or IP addresses.                                                                                                                                                                                                                               |
-| `--host-a`     | Explicitly set the first node.                                                                                                                                                                                                                                                        |
-| `--host-b`     | Explicitly set the second node.                                                                                                                                                                                                                                                       |
-| `--disruptive` | Enable destructive fencing tests (reboots nodes). Optionally, you can use the `DISRUPTIVE` environment variable to set the value.                                                                                                                                                     |
-| `--dry-run`    | Show what could be the result of the `fencing_validator` script without doing actual validations. Optionally, you can use the `DRY_RUN` environment variable to set the value.                                                                                                        |
-| `-h`, `--help` | Show usage information.                                                                                                                                                                                                                                                               |
+| Flag | Description |
+|----|----|
+| `--user` | SSH username for remote node access. The default value is `core`. Optionally, you can use `SSH_USER` environment variable to set the value. |
+| `--ssh-key` | Path to SSH private key. Optionally, you can use the `SSH_KEY` environment variable to set the value. |
+| `--kubeconfig` | Path to kubeconfig file. Optionally, you can use the `KUBECONFIG` environment variable to set the value. |
+| `--transport` | How the script connects to the other node. The possible values are `auto`, `ssh`, and `ocdebug`. The default value is `auto`. Optionally, you can use the `TRANSPORT` environment variable to set the value. For more information, see "Transport mode for fencing validator script". |
+| `--timeout` | Maximum wait time for recovery loops. Optionally, you can use the `TIMEOUT` environment variable to set the value. By default, it is 1200 seconds or 20 minutes. |
+| `--hosts` | Comma-separated pair of node hostnames or IP addresses. |
+| `--host-a` | Explicitly set the first node. |
+| `--host-b` | Explicitly set the second node. |
+| `--disruptive` | Enable destructive fencing tests (reboots nodes). Optionally, you can use the `DISRUPTIVE` environment variable to set the value. |
+| `--dry-run` | Show what could be the result of the `fencing_validator` script without doing actual validations. Optionally, you can use the `DRY_RUN` environment variable to set the value. |
+| `-h`, `--help` | Show usage information. |
 
 You can set all the flags by using the following environment variables:
 
@@ -1112,11 +1220,8 @@ You can check whether a two-node OpenShift Container Platform cluster with fenci
 $ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator --disruptive
 ```
 
-<div class="warning">
-
-The `--disruptive` flag fences each control plane node one at a time and verifies recovery. The `--disruptive` flag performs the STONITH fence operations such as power cycle or VM reset. It does not perform graceful shutdown, and causes temporary workload disruption.
-
-</div>
+> [!WARNING]
+> The `--disruptive` flag fences each control plane node one at a time and verifies recovery. The `--disruptive` flag performs the STONITH fence operations such as power cycle or VM reset. It does not perform graceful shutdown, and causes temporary workload disruption.
 
 The fencing validator script with `--disruptive` flag runs the following checks:
 
@@ -1142,15 +1247,15 @@ The `fencing_validator` script uses specific exit codes so automation and suppor
 
 The following table lists the specific exit codes that the `fencing_validator` script returns, mapping each numerical value to its corresponding diagnostic state to assist with automated troubleshooting.
 
-| Exit code | Description                                                              |
-|-----------|--------------------------------------------------------------------------|
-| 0         | All checks passed                                                        |
-| 1         | Generic or unexpected failure                                            |
-| 20        | STONITH devices are missing or not enabled                               |
-| 21        | One or both nodes are not ONLINE in Pacemaker                            |
-| 22        | One or more required daemons (corosync, pacemaker, pcsd) are not running |
-| 23        | etcd does not have quorum or not all members are healthy                 |
-| 26        | Fencing secrets are missing or do not match the expected nodes           |
+| Exit code | Description |
+|----|----|
+| 0 | All checks passed |
+| 1 | Generic or unexpected failure |
+| 20 | STONITH devices are missing or not enabled |
+| 21 | One or both nodes are not ONLINE in Pacemaker |
+| 22 | One or more required daemons (corosync, pacemaker, pcsd) are not running |
+| 23 | etcd does not have quorum or not all members are healthy |
+| 26 | Fencing secrets are missing or do not match the expected nodes |
 
 ## Transport mode for fencing validator script
 

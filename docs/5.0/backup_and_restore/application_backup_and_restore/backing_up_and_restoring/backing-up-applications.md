@@ -24,19 +24,13 @@ Review the following information regarding backing up applications by using OADP
 
   For more information, see *Restic restore partially failing on Red Hat OpenShift Container Platform 4.15 due to changed PSA policy*.
 
-<div class="important">
+> [!IMPORTANT]
+> The OpenShift API for Data Protection (OADP) does not support backing up volume snapshots that were created by other software.
 
-The OpenShift API for Data Protection (OADP) does not support backing up volume snapshots that were created by other software.
-
-</div>
-
-<div class="important">
-
-The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
-
-Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
-
-</div>
+> [!IMPORTANT]
+> The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
+>
+> Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
 
 # Preview resources before running backup and restore
 
@@ -44,7 +38,25 @@ Preview the backup and restore resources in advance by doing a dry run of the ba
 
 OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OADP Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To preview the resources included in the backup before running the actual backup, run the following command:
 
@@ -70,11 +82,8 @@ OADP backs up application resources based on the type, namespace, or label. This
 
     Replace `<backup_name>` with the name of the backup.
 
-    <div class="important">
-
-    The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
-
-    </div>
+    > [!IMPORTANT]
+    > The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
 
 4.  To know more details about the restore resources, run the following command:
 
@@ -84,6 +93,16 @@ OADP backs up application resources based on the type, namespace, or label. This
 
     Replace `<restore_name>` with the name of the restore.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating a Backup CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.xml#oadp-creating-backup-cr-doc)
 
 - [Creating backup hooks](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-hooks-doc.xml#oadp-creating-backup-hooks-doc)
@@ -92,7 +111,7 @@ OADP backs up application resources based on the type, namespace, or label. This
 
 - [Installing Operators on clusters for administrators](../../../operators/admin/olm-adding-operators-to-cluster.xml#olm-installing-operators-from-software-catalog_olm-adding-operators-to-a-cluster)
 
-<!-- -->
+</div>
 
 - [Backing up persistent volumes with CSI snapshots](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-pvs-csi-doc.xml#oadp-backing-up-pvs-csi-doc)
 

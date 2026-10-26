@@ -1,8 +1,26 @@
 By default, OpenShift API for Data Protection processes only one backup in the `InProgress` phase at a time. Configure the `DataProtectionApplication` (DPA) custom resource (CR) to run several backups simultaneously to prevent smaller backups from being queued behind larger operations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must be logged in as a user with `cluster-admin` privileges.
 
 - You must have a DPA CR configured and deployed in your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your DPA CR:
 
@@ -24,15 +42,27 @@ By default, OpenShift API for Data Protection processes only one backup in the `
 
     Replace `<integer_limit>` with the maximum number of backups you want OADP to process simultaneously. The default value is `1`. Backups that target overlapping namespaces are automatically serialized.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that all backups are in the `InProgress` phase simultaneously:
 
   ``` terminal
   $ oc get backups.velero.io -n openshift-adp
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -41,3 +71,7 @@ By default, OpenShift API for Data Protection processes only one backup in the `
   backup-namespace1   InProgress   2026-04-28 10:00:00 +0000 UTC  29d
   backup-namespace2   InProgress   2026-04-28 10:00:05 +0000 UTC  29d
   ```
+
+  </div>
+
+</div>

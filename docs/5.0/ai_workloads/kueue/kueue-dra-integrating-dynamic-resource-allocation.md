@@ -1,12 +1,9 @@
 You can configure Red Hat build of Kueue to manage quota for workloads that use Dynamic Resource Allocation (DRA) to request GPUs. When DRA quota management is configured, Red Hat build of Kueue counts DRA device requests toward quota in the same way that it counts traditional resources such as CPU and memory.
 
-<div class="important">
-
-Kueue integration with Dynamic Resource Allocation (DRA) is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Kueue integration with Dynamic Resource Allocation (DRA) is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 If DRA device quota is not configured, Red Hat build of Kueue does not account for GPU requests when admitting workloads, which can result in teams exceeding their GPU allocation.
 
@@ -24,17 +21,22 @@ The default approach. Workloads explicitly reference a `ResourceClaimTemplate` o
 `Extended resources`
 A simplified alternative that allows workloads to use standard Kubernetes `resources.requests` syntax, for example, `nvidia.com/gpu: "1"`, instead of explicitly creating DRA objects. When a `DeviceClass` object includes the `spec.extendedResourceName` field, the Kubernetes scheduler automatically generates `ResourceClaim` objects. Use this approach when you want the simplest possible user experience and backward compatibility with existing workload YAML.
 
-<div class="note">
-
-If a `DeviceClass` object with the `extendedResourceName` field also appears in a `deviceClassMappings` entry, Red Hat build of Kueue uses the mapped logical name from the `deviceClassMappings` entry for quota instead of the extended resource name, unifying quota accounting across both paths.
-
-</div>
+> [!NOTE]
+> If a `DeviceClass` object with the `extendedResourceName` field also appears in a `deviceClassMappings` entry, Red Hat build of Kueue uses the mapped logical name from the `deviceClassMappings` entry for quota instead of the extended resource name, unifying quota accounting across both paths.
 
 For clusters with partitionable devices, such as NVIDIA Multi-Instance GPU (MIG), Red Hat build of Kueue can also charge quota in capacity units, such as GPU memory, rather than device count. Partitionable devices use `ResourceClaimTemplates` objects with CEL selectors to target specific partition profiles, and require administrators to configure counter-based `sources` in `deviceClassMappings`. This capability requires OpenShift Container Platform 4.22 or later.
 
 ## Configuring the resource claim template path
 
 You can configure Red Hat build of Kueue to manage quota for workloads that explicitly reference `ResourceClaimTemplate` objects. This requires configuring the `deviceClassMappings` entry in the Red Hat build of Kueue custom resource (CR) and adding the DRA resource to your `ClusterQueue` object.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed Red Hat build of Kueue by using the Red Hat Build of Kueue Operator.
 
@@ -55,6 +57,16 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
   ``` terminal
   $ oc get deviceclass
   ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use the following command to add a `deviceClassMappings` entry to the Red Hat build of Kueue configuration that maps each `DeviceClass` to a logical resource name for quota:
 
@@ -90,9 +102,11 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
 
 2.  Create a file called `rct-queues.yaml` that contains the following content:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example quota configuration for a `ResourceClaimTemplate` object**
+    <div class="title">
+
+    Example quota configuration for a `ResourceClaimTemplate` object
 
     </div>
 
@@ -129,6 +143,8 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
       clusterQueue: "cluster-queue"
     ```
 
+    </div>
+
 3.  Apply the `rct-queues.yaml` file:
 
     ``` terminal
@@ -141,9 +157,11 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
     $ oc create -f rct-job.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ResourceClaimTemplate` workload**
+    <div class="title">
+
+    Example `ResourceClaimTemplate` workload
 
     </div>
 
@@ -187,6 +205,8 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
                 memory: "200Mi"
     ```
 
+    </div>
+
     where:
 
     `spec.spec.drivers.requests.exactly.deviceClassName:`
@@ -201,7 +221,15 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
     `spec.template.spec.containers.resources.claims.name:`
     Attaches the resource claim to this container.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the workload has been created and admitted:
 
@@ -229,17 +257,24 @@ You can configure Red Hat build of Kueue to manage quota for workloads that exp
 
     - The `ResourceClaimTemplate` object exists in the same namespace as the job.
 
+</div>
+
 ## Configuring the extended resources path
 
 You can configure Red Hat build of Kueue to manage quota for workloads that request GPUs by using the standard `resources.requests` syntax, for example, `nvidia.com/gpu: "1"`.
 
 When a `DeviceClass` object includes the `spec.extendedResourceName` field, the Kubernetes scheduler automatically generates `ResourceClaim` objects. This path does not require `deviceClassMappings` configuration because Red Hat build of Kueue auto-discovers the mapping by indexing `DeviceClass` objects.
 
-<div class="note">
+> [!NOTE]
+> The Red Hat build of Kueue Operator automatically enables the required Red Hat build of Kueue feature gates when it detects the `DRAExtendedResource` Kubernetes feature gate on the cluster. No manual Red Hat build of Kueue feature gate configuration is required.
+>
+> To use the extended resources path, you must enable the `DRAExtendedResource` Kubernetes feature gate. This feature is expected to be generally available in a future OpenShift Container Platform release.
 
-The Red Hat build of Kueue Operator automatically enables the required Red Hat build of Kueue feature gates when it detects the `DRAExtendedResource` Kubernetes feature gate on the cluster. No manual Red Hat build of Kueue feature gate configuration is required.
+<div>
 
-To use the extended resources path, you must enable the `DRAExtendedResource` Kubernetes feature gate. This feature is expected to be generally available in a future OpenShift Container Platform release.
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -279,11 +314,18 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
       - DRAExtendedResource
   ```
 
-  <div class="warning">
+  > [!WARNING]
+  > Enabling the `CustomNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set is not supported on production clusters.
 
-  Enabling the `CustomNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set is not supported on production clusters.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the `DeviceClass` object has `spec.extendedResourceName` set by running the following command:
 
@@ -291,15 +333,19 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
     $ oc get deviceclass gpu.nvidia.com -o jsonpath='{.spec.extendedResourceName}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     nvidia.com/gpu
     ```
+
+    </div>
 
     If the command does not return a value, add the `extendedResourceName` field by running the following command:
 
@@ -309,9 +355,11 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
 
 2.  Create a `ClusterQueue` object that includes the GPU resource in the `coveredResources` parameter by creating a file called `er-queues.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example quota configuration for extended resources**
+    <div class="title">
+
+    Example quota configuration for extended resources
 
     </div>
 
@@ -355,6 +403,8 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
       clusterQueue: "cluster-queue"
     ```
 
+    </div>
+
 3.  Apply the quota configuration by running the following command:
 
     ``` terminal
@@ -363,9 +413,11 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
 
 4.  Create a workload that uses the standard resource request syntax by creating a file called `er-job.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example workload using extended resources**
+    <div class="title">
+
+    Example workload using extended resources
 
     </div>
 
@@ -394,6 +446,8 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
           restartPolicy: Never
     ```
 
+    </div>
+
     where:
 
     `metadata.labels.kueue.x-k8s.io/queue-name`
@@ -411,7 +465,15 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
     $ oc apply -f er-job.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that a workload has been created and admitted by running the following command:
 
@@ -419,9 +481,11 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
     $ oc -n team-a get workloads
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -430,15 +494,19 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
     job-er-test-job-4m2x-d3f4g   user-queue   cluster-queue   True       10s
     ```
 
+    </div>
+
 2.  Verify that a `ResourceClaim` was automatically created by running the following command:
 
     ``` terminal
     $ oc -n team-a get resourceclaims
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -446,6 +514,8 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
     NAME                                         STATE                AGE
     er-test-job-jj7vz-extended-resources-bggzk   allocated,reserved   24s
     ```
+
+    </div>
 
     The Kubernetes scheduler creates a `ResourceClaim` for each pod that requests an extended resource backed by a `DeviceClass`.
 
@@ -459,15 +529,22 @@ To use the extended resources path, you must enable the `DRAExtendedResource` Ku
 
     - The `ClusterQueue` has sufficient quota available.
 
+</div>
+
 ## Configuring the partitionable devices
 
 You can configure Red Hat build of Kueue to manage quota for partitionable devices based on actual device capacity rather than device count. Partitionable devices, such as NVIDIA Multi-Instance GPU (MIG) capable GPUs, allow a single GPU to be dynamically subdivided into smaller partitions.
 
 When counter-based quota is configured, Red Hat build of Kueue charges quota in capacity units such as GPU memory rather than counting whole devices. For example, a `1g.5gb` MIG partition on an A100-40GB charges `4864Mi` of GPU memory quota, while a whole GPU charges `40320Mi`.
 
-<div class="note">
+> [!NOTE]
+> To use partitionable devices, your cluster must be running OpenShift Container Platform 4.22 or later and must have the `CustomNoUpgrade` feature set enabled with explicit `DRAPartitionableDevices` gate enablement.
 
-To use partitionable devices, your cluster must be running OpenShift Container Platform 4.22 or later and must have the `CustomNoUpgrade` feature set enabled with explicit `DRAPartitionableDevices` gate enablement.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -509,11 +586,18 @@ To use partitionable devices, your cluster must be running OpenShift Container P
       - DRAPartitionableDevices
   ```
 
-  <div class="warning">
+  > [!WARNING]
+  > Enabling the `CustomNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set is not supported on production clusters. For information about enabling feature gates, see "Enabling features using feature gates".
 
-  Enabling the `CustomNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set is not supported on production clusters. For information about enabling feature gates, see "Enabling features using feature gates".
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that your DRA driver publishes counter data by running the following command:
 
@@ -521,15 +605,19 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     $ oc get resourceslices -o jsonpath='{range .items[*]}{.spec.driver}{"\t"}{range .spec.devices[*]}: {"\n"}{end}{end}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     gpu.nvidia.com   gpu-0: [{"counterSet":"shared","counters":{"memory":{"value":"40Gi"}}}]
     ```
+
+    </div>
 
     If the output does not show `consumesCounters` data, verify that your DRA driver version supports partitionable devices and that MIG is enabled on the GPU hardware.
 
@@ -578,17 +666,16 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     `spec.config.resources.deviceClassMappings.sources.counter.deviceSelector`
     Scopes which devices are eligible for counter-based quota accounting.
 
-    <div class="note">
-
-    The Red Hat build of Kueue Operator automatically enables the required Red Hat build of Kueue feature gates when it detects the `DRAPartitionableDevices` Kubernetes feature gate and `sources` are configured in `deviceClassMappings`. No manual Red Hat build of Kueue feature gate configuration is required.
-
-    </div>
+    > [!NOTE]
+    > The Red Hat build of Kueue Operator automatically enables the required Red Hat build of Kueue feature gates when it detects the `DRAPartitionableDevices` Kubernetes feature gate and `sources` are configured in `deviceClassMappings`. No manual Red Hat build of Kueue feature gate configuration is required.
 
 3.  Create a `ClusterQueue` object with counter-based quota. Set the quota in capacity units rather than device count. Create a file called `pd-queues.yaml` with the following content:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example quota configuration for partitionable devices**
+    <div class="title">
+
+    Example quota configuration for partitionable devices
 
     </div>
 
@@ -632,6 +719,8 @@ To use partitionable devices, your cluster must be running OpenShift Container P
       clusterQueue: "cluster-queue"
     ```
 
+    </div>
+
     where:
 
     `spec.resourceGroups.coveredResources`
@@ -640,11 +729,8 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     `spec.resourceGroups.flavors.resources.name`
     Specify `"gpu.memory"` to set the total GPU memory quota. For example, `800Gi` accommodates twenty A100-40GB GPUs or equivalent MIG partitions.
 
-    <div class="note">
-
-    When `ClusterQueue` objects share a cohort, ensure all queues use the same unit scale for counter resources. Red Hat build of Kueue does not validate unit consistency across `ClusterQueue` objects.
-
-    </div>
+    > [!NOTE]
+    > When `ClusterQueue` objects share a cohort, ensure all queues use the same unit scale for counter resources. Red Hat build of Kueue does not validate unit consistency across `ClusterQueue` objects.
 
 4.  Apply the quota configuration by running the following command:
 
@@ -654,9 +740,11 @@ To use partitionable devices, your cluster must be running OpenShift Container P
 
 5.  Create a workload that requests a MIG partition by creating a file called `pd-job.yaml`, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example workload requesting a MIG partition**
+    <div class="title">
+
+    Example workload requesting a MIG partition
 
     </div>
 
@@ -704,6 +792,8 @@ To use partitionable devices, your cluster must be running OpenShift Container P
           restartPolicy: Never
     ```
 
+    </div>
+
     where:
 
     `spec.spec.devices.requests.exactly.deviceClassName`
@@ -724,7 +814,15 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     $ oc create -f pd-job.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the workload is admitted and that quota was charged in capacity units by running the following command:
 
@@ -732,15 +830,19 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     $ oc -n team-a get workloads -o jsonpath='{range .items[*]}{.metadata.name}: {.status.admission.podSetAssignments[0].resourceUsage}{"\n"}{end}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     job-pd-test-job-xxxxx: {"cpu":"1","gpu.memory":"5100273664","memory":"200Mi"}
     ```
+
+    </div>
 
     The `gpu.memory` value reflects the actual memory capacity of the requested MIG partition rather than a device count of `1`.
 
@@ -755,6 +857,8 @@ To use partitionable devices, your cluster must be running OpenShift Container P
     - The `ClusterQueue` has sufficient GPU memory quota for the requested partition size.
 
     - MIG is enabled on the GPU hardware.
+
+</div>
 
 # Additional resources
 

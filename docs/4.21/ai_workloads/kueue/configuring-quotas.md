@@ -16,9 +16,14 @@ A cluster queue is a cluster-scoped resource, represented by a `ClusterQueue` ob
 
 Cluster queues can be used to define usage limits, quotas for resource flavors, order of consumption, and fair sharing rules.
 
-<div class="note">
+> [!NOTE]
+> The cluster queue is not ready for use until a `ResourceFlavor` object has also been configured.
 
-The cluster queue is not ready for use until a `ResourceFlavor` object has also been configured.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -28,11 +33,23 @@ The cluster queue is not ready for use until a `ResourceFlavor` object has also 
 
 - You have installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `ClusterQueue` object as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of a basic `ClusterQueue` object using a single resource flavor**
+    <div class="title">
+
+    Example of a basic `ClusterQueue` object using a single resource flavor
 
     </div>
 
@@ -57,6 +74,8 @@ The cluster queue is not ready for use until a `ResourceFlavor` object has also 
           - name: "foo.com/gpu"
             nominalQuota: 100
     ```
+
+    </div>
 
     where:
 
@@ -86,13 +105,19 @@ The cluster queue is not ready for use until a `ResourceFlavor` object has also 
     $ oc apply -f <filename>.yaml
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div id="clusterqueues-next-steps_configuring-quotas" class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 The cluster queue is not ready for use until a [`ResourceFlavor` object](../../ai_workloads/kueue/configuring-quotas.xml#configuring-resourceflavors_configuring-quotas) has also been configured.
+
+</div>
 
 # Configuring a resource flavor
 
@@ -102,17 +127,37 @@ Resources in a cluster are typically not homogeneous. If the resources in your c
 
 You can use a custom `ResourceFlavor` object to represent different resource variations that are associated with cluster nodes through labels, taints, and tolerations. You can then associate workloads with specific node types to enable fine-grained resource management.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Red Hat build of Kueue Operator is installed on your cluster.
 
 - You have cluster administrator permissions or the `kueue-batch-admin-role` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `ResourceFlavor` object as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of an empty `ResourceFlavor` object**
+    <div class="title">
+
+    Example of an empty `ResourceFlavor` object
 
     </div>
 
@@ -123,9 +168,13 @@ You can use a custom `ResourceFlavor` object to represent different resource var
       name: default-flavor
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example of a custom `ResourceFlavor` object**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example of a custom `ResourceFlavor` object
 
     </div>
 
@@ -139,17 +188,29 @@ You can use a custom `ResourceFlavor` object to represent different resource var
         cpu-arch: x86
     ```
 
+    </div>
+
 2.  Apply the `ResourceFlavor` object by running the following command:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 # Configuring a local queue
 
 A local queue is a namespaced object, represented by a `LocalQueue` object, that groups closely related workloads that belong to a single namespace.
 
 As an administrator, you can configure a `LocalQueue` object to point to a cluster queue. This allocates resources from the cluster queue to workloads in the namespace specified in the `LocalQueue` object.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The Red Hat build of Kueue Operator is installed on your cluster.
 
@@ -159,11 +220,23 @@ As an administrator, you can configure a `LocalQueue` object to point to a clust
 
 - You have created a `ClusterQueue` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `LocalQueue` object as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of a basic `LocalQueue` object**
+    <div class="title">
+
+    Example of a basic `LocalQueue` object
 
     </div>
 
@@ -177,11 +250,15 @@ As an administrator, you can configure a `LocalQueue` object to point to a clust
       clusterQueue: cluster-queue
     ```
 
+    </div>
+
 2.  Apply the `LocalQueue` object by running the following command:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
+
+</div>
 
 # Configuring a default local queue
 
@@ -189,9 +266,14 @@ As a cluster administrator, you can improve quota enforcement in your cluster by
 
 A default local queue serves as the local queue for newly created jobs that do not have the `kueue.x-k8s.io/queue-name` label. After you create a default local queue, any new jobs created in the namespace without a `kueue.x-k8s.io/queue-name` label automatically update to have the `kueue.x-k8s.io/queue-name: default` label.
 
-<div class="important">
+> [!IMPORTANT]
+> Preexisting jobs in a namespace are not affected when you create a default local queue. If jobs already exist in the namespace before you create the default local queue, you must label those jobs explicitly to assign them to a queue.
 
-Preexisting jobs in a namespace are not affected when you create a default local queue. If jobs already exist in the namespace before you create the default local queue, you must label those jobs explicitly to assign them to a queue.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -203,11 +285,23 @@ Preexisting jobs in a namespace are not affected when you create a default local
 
 - You have created a `ClusterQueue` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `LocalQueue` object named `default` as a YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of a default `LocalQueue` object**
+    <div class="title">
+
+    Example of a default `LocalQueue` object
 
     </div>
 
@@ -221,17 +315,29 @@ Preexisting jobs in a namespace are not affected when you create a default local
       clusterQueue: cluster-queue
     ```
 
+    </div>
+
 2.  Apply the `LocalQueue` object by running the following command:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Create a job in the same namespace as the default local queue.
 
 2.  Observe that the job updates with the `kueue.x-k8s.io/queue-name: default` label.
+
+</div>
 
 # Additional resources
 

@@ -8,23 +8,20 @@ Globally, the `privileged` profile is enforced, and the `restricted` profile is 
 
 You can also configure the pod security admission settings at the namespace level.
 
-<div class="important">
-
-Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
-
-The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
-
-</div>
+> [!IMPORTANT]
+> Do not run workloads in or share access to default projects. Default projects are reserved for running core cluster components.
+>
+> The following default projects are considered highly privileged: `default`, `kube-public`, `kube-system`, `openshift`, `openshift-infra`, `openshift-node`, and other system-created projects that have the `openshift.io/run-level` label set to `0` or `1`. Functionality that relies on admission plugins, such as pod security admission, security context constraints, cluster resource quotas, and image reference resolution, does not work in highly privileged projects.
 
 ## Pod security admission modes
 
 You can configure the following pod security admission modes for a namespace:
 
-| Mode      | Label                                | Description                                                             |
-|-----------|--------------------------------------|-------------------------------------------------------------------------|
+| Mode | Label | Description |
+|----|----|----|
 | `enforce` | `pod-security.kubernetes.io/enforce` | Rejects a pod from admission if it does not comply with the set profile |
-| `audit`   | `pod-security.kubernetes.io/audit`   | Logs audit events if a pod does not comply with the set profile         |
-| `warn`    | `pod-security.kubernetes.io/warn`    | Displays warnings if a pod does not comply with the set profile         |
+| `audit` | `pod-security.kubernetes.io/audit` | Logs audit events if a pod does not comply with the set profile |
+| `warn` | `pod-security.kubernetes.io/warn` | Displays warnings if a pod does not comply with the set profile |
 
 Pod security admission modes
 
@@ -32,10 +29,10 @@ Pod security admission modes
 
 You can set each of the pod security admission modes to one of the following profiles:
 
-| Profile      | Description                                                           |
-|--------------|-----------------------------------------------------------------------|
-| `privileged` | Least restrictive policy; allows for known privilege escalation       |
-| `baseline`   | Minimally restrictive policy; prevents known privilege escalations    |
+| Profile | Description |
+|----|----|
+| `privileged` | Least restrictive policy; allows for known privilege escalation |
+| `baseline` | Minimally restrictive policy; prevents known privilege escalations |
 | `restricted` | Most restrictive policy; follows current pod hardening best practices |
 
 Pod security admission profiles
@@ -52,9 +49,11 @@ The following system namespaces are always set to the `privileged` pod security 
 
 You cannot change the pod security profile for these privileged namespaces.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example privileged namespace configuration**
+<div class="title">
+
+Example privileged namespace configuration
 
 </div>
 
@@ -70,6 +69,8 @@ metadata:
   name: "<mig_namespace>"
 # ...
 ```
+
+</div>
 
 ## Pod security admission and security context constraints
 
@@ -99,19 +100,16 @@ If you use pod security admission synchronization, the system-created namespaces
 
 User-created `openshift-*` prefixed namespaces are also initially disabled, but you can enable synchronization on them later.
 
-<div class="important">
-
-If a pod security admission label (`pod-security.kubernetes.io/<mode>`) is manually modified from the automatically labeled value on a label-synchronized namespace, synchronization is disabled for that label.
-
-If necessary, you can enable synchronization again by using one of the following methods:
-
-- By removing the modified pod security admission label from the namespace
-
-- By setting the `security.openshift.io/scc.podSecurityLabelSync` label to `true`
-
-  If you force synchronization by adding this label, then any modified pod security admission labels will be overwritten.
-
-</div>
+> [!IMPORTANT]
+> If a pod security admission label (`pod-security.kubernetes.io/<mode>`) is manually modified from the automatically labeled value on a label-synchronized namespace, synchronization is disabled for that label.
+>
+> If necessary, you can enable synchronization again by using one of the following methods:
+>
+> - By removing the modified pod security admission label from the namespace
+>
+> - By setting the `security.openshift.io/scc.podSecurityLabelSync` label to `true`
+>
+>   If you force synchronization by adding this label, then any modified pod security admission labels will be overwritten.
 
 ### Permanently disabled namespaces
 
@@ -133,11 +131,8 @@ Namespaces that are defined as part of the cluster payload have pod security adm
 
 By default, all namespaces that have an `openshift-` prefix have pod security admission synchronization disabled initially. You can enable synchronization for user-created `openshift-*` namespaces and for the `openshift-operators` namespace.
 
-<div class="note">
-
-You cannot enable synchronization for any system-created `openshift-*` namespaces, except for `openshift-operators`.
-
-</div>
+> [!NOTE]
+> You cannot enable synchronization for any system-created `openshift-*` namespaces, except for `openshift-operators`.
 
 If an Operator is installed in a user-created `openshift-*` namespace, synchronization is enabled automatically after a cluster service version (CSV) is created in the namespace. The synchronized label is derived from the permissions of the service accounts in the namespace.
 
@@ -145,9 +140,14 @@ If an Operator is installed in a user-created `openshift-*` namespace, synchroni
 
 To customize which namespaces have their pod security admission labels automatically updated, you can enable or disable synchronization for most namespaces.
 
-<div class="important">
+> [!IMPORTANT]
+> You cannot enable pod security admission synchronization on some system-created namespaces. For more information, see *Pod security admission synchronization namespace exclusions*.
 
-You cannot enable pod security admission synchronization on some system-created namespaces. For more information, see *Pod security admission synchronization namespace exclusions*.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -169,19 +169,34 @@ You cannot enable pod security admission synchronization on some system-created 
     $ oc label namespace <namespace> security.openshift.io/scc.podSecurityLabelSync=true
     ```
 
-  <div class="note">
+  > [!NOTE]
+  > Use the `--overwrite` flag to overwrite the value if this label is already set on the namespace.
 
-  Use the `--overwrite` flag to overwrite the value if this label is already set on the namespace.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Pod security admission synchronization namespace exclusions](../authentication/understanding-and-managing-pod-security-admission.xml#security-context-constraints-psa-sync-exclusions_understanding-and-managing-pod-security-admission)
+
+</div>
 
 # Configure pod security admission for a namespace
 
 You can configure pod security admission modes and profiles at the namespace level to control the security standards that pods must meet in a specific namespace.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - For each pod security admission mode that you want to set on a namespace, run the following command:
 
@@ -202,6 +217,8 @@ You can configure pod security admission modes and profiles at the namespace lev
   `<profile>`
   Specifies the pod security profile. Valid values are `restricted`, `baseline`, or `privileged`.
 
+</div>
+
 # About pod security admission alerts
 
 If your pods violate the configured pod security standards, you receive a `PodSecurityViolation` alert. This alert persists for one day so that you can investigate and resolve compliance issues.
@@ -216,9 +233,27 @@ To identify which workloads are causing pod security violations, you can review 
 
 The `PodSecurityViolation` alert does not provide details on which workloads are causing pod security violations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed `jq`.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To gather the audit logs, enter the following command:
 
@@ -236,15 +271,21 @@ The `PodSecurityViolation` alert does not provide details on which workloads are
 
     Replace `<archive_id>` and `<image_digest_id>` with the actual path names.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     1 test-namespace my-pod
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

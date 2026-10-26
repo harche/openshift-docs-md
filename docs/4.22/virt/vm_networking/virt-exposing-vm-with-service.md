@@ -1,8 +1,8 @@
 You can expose a virtual machine (VM) within or outside the cluster by exposing a VM as a Kubernetes service. You can leverage native load balancing and observability tools that provide unified traffic management, consistent SSL termination, and centralized security policies across hybrid workloads.
 
-# About services
+# Service types for VM network access
 
-A Kubernetes service exposes network access for clients to an application running on a set of pods. Services offer abstraction, load balancing, and, in the case of the `NodePort` and `LoadBalancer` types, exposure to the outside world.
+A Kubernetes service exposes an application running on a set of pods to network clients. Services provide abstraction and load balancing, and the `NodePort` and `LoadBalancer` types also expose the application outside the cluster.
 
 `ClusterIP`
 Exposes the service on an internal IP address and as a DNS name to other applications within the cluster. A single service can map to multiple virtual machines. When a client tries to connect to the service, the client’s request is load balanced among available backends. `ClusterIP` is the default service type.
@@ -13,13 +13,10 @@ Exposes the service on the same port of each selected node in the cluster. `Node
 `LoadBalancer`
 Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP address to the service.
 
-<div class="note">
+> [!NOTE]
+> For on-premise clusters, you can configure a load balancing service by deploying the MetalLB Operator.
 
-For on-premise clusters, you can configure a load balancing service by deploying the MetalLB Operator.
-
-</div>
-
-# Dual-stack support
+# Dual-stack support for services
 
 If IPv4 and IPv6 dual-stack networking is enabled for your cluster, you can create a service that uses IPv4, IPv6, or both, by defining the `spec.ipFamilyPolicy` and the `spec.ipFamilies` fields in the `Service` object.
 
@@ -44,19 +41,34 @@ You can define which IP family to use for single-stack or define the order of IP
 
 - `[IPv6, IPv4]`
 
-<div class="note">
+> [!NOTE]
+> IPv6 single stack and the `[IPv6, IPv4]` array are not supported in IBM Z® and IBM® LinuxONE.
 
-IPv6 single stack and the `[IPv6, IPv4]` array are not supported in IBM Z® and IBM® LinuxONE.
+# Expose a VM as a service by using the CLI
+
+You can use the command line to create a service and associate it with a virtual machine (VM). You must create a label on the VM that matches the selector in the `Service` manifest.
+
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
-
-# Creating a service by using the CLI
-
-You can create a service and associate it with a virtual machine (VM) by using the command line.
 
 - You configured the cluster network to support the service.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `VirtualMachine` manifest to add the label for service creation. Add `special: key` to the `spec.template.metadata.labels` stanza:
 
@@ -75,11 +87,8 @@ You can create a service and associate it with a virtual machine (VM) by using t
     # ...
     ```
 
-    <div class="note">
-
-    Labels on a virtual machine pass through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
-
-    </div>
+    > [!NOTE]
+    > Labels on a virtual machine pass through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -119,11 +128,23 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
 6.  Restart the VM to apply the changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Query the `Service` object to verify that it is available:
 
   ``` terminal
   $ oc get service -n example-namespace
   ```
+
+</div>
 
 # Additional resources
 

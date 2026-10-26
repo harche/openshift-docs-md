@@ -4,11 +4,8 @@ Securing a containerized application relies on multiple levels of security:
 
 - Container security begins with a trusted base container image and continues through the container build process as it moves through your CI/CD pipeline.
 
-  <div class="important">
-
-  Image streams by default do not automatically update. This default behavior might create a security issue because security updates to images referenced by an image stream do not automatically occur. You can configure periodic importing to ensure your image streams receive security updates.
-
-  </div>
+  > [!IMPORTANT]
+  > Image streams by default do not automatically update. This default behavior might create a security issue because security updates to images referenced by an image stream do not automatically occur. You can configure periodic importing to ensure your image streams receive security updates.
 
 - When a container is deployed, its security depends on it running on secure operating systems and networks, and establishing firm boundaries between the container itself and the users and hosts that interact with it.
 
@@ -48,15 +45,25 @@ Containers provide consistency across environments and multiple deployment targe
 
 Some of the benefits of using containers include:
 
-| Infrastructure                                                            | Applications                                          |
-|---------------------------------------------------------------------------|-------------------------------------------------------|
-| Sandboxed application processes on a shared Linux operating system kernel | Package my application and all of its dependencies    |
-| Simpler, lighter, and denser than virtual machines                        | Deploy to any environment in seconds and enable CI/CD |
-| Portable across different environments                                    | Easily access and share containerized components      |
+| Infrastructure | Applications |
+|----|----|
+| Sandboxed application processes on a shared Linux operating system kernel | Package my application and all of its dependencies |
+| Simpler, lighter, and denser than virtual machines | Deploy to any environment in seconds and enable CI/CD |
+| Portable across different environments | Easily access and share containerized components |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding Linux containers](https://www.redhat.com/en/topics/containers)
 
 - [Building, running, and managing containers](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index)
+
+</div>
 
 # What is OpenShift Container Platform?
 
@@ -70,8 +77,18 @@ OpenShift Container Platform is designed to lock down Kubernetes security and in
 
 OpenShift Container Platform can use Red Hat’s experience in uncovering and rapidly deploying fixes for vulnerabilities in the platform itself and the containerized applications running on the platform. Red Hat’s experience also extends to efficiently integrating new components with OpenShift Container Platform as they become available and adapting technologies to individual customer needs.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring periodic importing of imagestreamtags](../../openshift_images/image-streams-manage.xml#images-imagestreams-import_image-streams-managing)
 
 - [OpenShift Container Platform architecture](../../architecture/architecture.xml#architecture)
 
 - [OpenShift Security Guide](https://www.redhat.com/en/resources/openshift-security-guide-ebook)
+
+</div>

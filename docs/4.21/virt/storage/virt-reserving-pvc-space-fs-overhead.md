@@ -5,23 +5,38 @@ If you specify the storage type by using the `spec.pvc` attribute in the `DataVo
 The default file system overhead value is 6%. For example, if you request a 10 GiB disk and the `spec.storage.volumeMode` attribute is set to `FileSystem`, Kubernetes provisions a PVC of approximately 10.6 GiB so that the VM has the full 10 GiB of space available.
 
 | Requested virtual disk size | Calculated overhead (6%) | Total PVC space provisioned |
-|-----------------------------|--------------------------|-----------------------------|
-| 10 GiB                      | 0.6 GiB                  | 10.6 GiB                    |
-| 100 GiB                     | 6 GiB                    | 106 GiB                     |
+|----|----|----|
+| 10 GiB | 0.6 GiB | 10.6 GiB |
+| 100 GiB | 6 GiB | 106 GiB |
 
 Example file system overhead for data volumes
 
-<div class="note">
-
-You can change the default file system overhead value by editing the `HyperConverged` CR.
-
-</div>
+> [!NOTE]
+> You can change the default file system overhead value by editing the `HyperConverged` CR.
 
 # Overriding the default file system overhead value
 
 Change the amount of persistent volume claim (PVC) space that the OpenShift Virtualization reserves for file system overhead by editing the `spec.filesystemOverhead` attribute of the `HCO` object.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HCO` object for editing by running the following command:
 
@@ -46,6 +61,16 @@ Change the amount of persistent volume claim (PVC) space that the OpenShift Virt
 
 3.  Save and exit the editor to update the `HCO` object.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - View the `CDIConfig` status and verify your changes by running one of the following commands:
 
   To generally verify changes to `CDIConfig`:
@@ -59,3 +84,5 @@ Change the amount of persistent volume claim (PVC) space that the OpenShift Virt
   ``` terminal
   $ oc get cdiconfig -o jsonpath='{.items..status.filesystemOverhead}'
   ```
+
+</div>

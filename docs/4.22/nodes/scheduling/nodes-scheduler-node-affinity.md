@@ -10,19 +10,18 @@ There are two types of node affinity rules: *required* and *preferred*.
 
 Required rules **must** be met before a pod can be scheduled on a node. Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
 
-<div class="note">
-
-If labels on a node change at runtime that results in an node affinity rule on a pod no longer being met, the pod continues to run on the node.
-
-</div>
+> [!NOTE]
+> If labels on a node change at runtime that results in an node affinity rule on a pod no longer being met, the pod continues to run on the node.
 
 You configure node affinity through the `Pod` spec file. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
 The following example is a `Pod` spec with a rule that requires the pod be placed on a node with a label whose key is `e2e-az-NorthSouth` and whose value is either `e2e-az-North` or `e2e-az-South`:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example pod configuration file with a node affinity required rule**
+<div class="title">
+
+Example pod configuration file with a node affinity required rule
 
 </div>
 
@@ -56,6 +55,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.affinity.nodeAffinity`
@@ -75,9 +76,11 @@ Specifies the value of the key/value pair (label) that must be matched to apply 
 
 The following example is a node specification with a preferred rule that a node with a label whose key is `e2e-az-EastWest` and whose value is either `e2e-az-East` or `e2e-az-West` is preferred for the pod:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example pod configuration file with a node affinity preferred rule**
+<div class="title">
+
+Example pod configuration file with a node affinity preferred rule
 
 </div>
 
@@ -112,6 +115,8 @@ spec:
 # ...
 ```
 
+</div>
+
 where:
 
 `spec.affinity.nodeAffinity`
@@ -132,17 +137,14 @@ Specifies the relationship between the label on the node and the set of values i
 `values`
 Specifies the value of the key/value pair (label) that must be matched to apply the rule.
 
-<div class="note">
-
-If you are using node affinity and node selectors in the same pod configuration, note the following:
-
-- If you configure both `nodeSelector` and `nodeAffinity`, both conditions must be satisfied for the pod to be scheduled onto a candidate node.
-
-- If you specify multiple `nodeSelectorTerms` associated with `nodeAffinity` types, then the pod can be scheduled onto a node if one of the `nodeSelectorTerms` is satisfied.
-
-- If you specify multiple `matchExpressions` associated with `nodeSelectorTerms`, then the pod can be scheduled onto a node only if all `matchExpressions` are satisfied.
-
-</div>
+> [!NOTE]
+> If you are using node affinity and node selectors in the same pod configuration, note the following:
+>
+> - If you configure both `nodeSelector` and `nodeAffinity`, both conditions must be satisfied for the pod to be scheduled onto a candidate node.
+>
+> - If you specify multiple `nodeSelectorTerms` associated with `nodeAffinity` types, then the pod can be scheduled onto a node if one of the `nodeSelectorTerms` is satisfied.
+>
+> - If you specify multiple `matchExpressions` associated with `nodeSelectorTerms`, then the pod can be scheduled onto a node only if all `matchExpressions` are satisfied.
 
 # Configure a required node affinity rule
 
@@ -150,41 +152,45 @@ You can use a *required* rule to instruct the scheduler that the rules **must** 
 
 The following steps demonstrate a simple configuration that creates a node and a pod that the scheduler is required to place on the node.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add a label to a node using the `oc label node` command:
 
     ``` terminal
     $ oc label node node1 e2e-az-name=e2e-az1
     ```
 
-    <div class="tip">
-
-    You can alternatively apply the following YAML to add the label:
-
-    ``` yaml
-    kind: Node
-    apiVersion: v1
-    metadata:
-      name: <node_name>
-      labels:
-        e2e-az-name: e2e-az1
-    #...
-    ```
-
-    </div>
+    > [!TIP]
+    > You can alternatively apply the following YAML to add the label:
+    >
+    > ``` yaml
+    > kind: Node
+    > apiVersion: v1
+    > metadata:
+    >   name: <node_name>
+    >   labels:
+    >     e2e-az-name: e2e-az1
+    > #...
+    > ```
 
 2.  Create a pod with a specific label in the pod spec:
 
     1.  Create a YAML file with the following content:
 
-        <div class="note">
+        > [!NOTE]
+        > You cannot add an affinity directly to a scheduled pod.
 
-        You cannot add an affinity directly to a scheduled pod.
+        <div class="formalpara">
 
-        </div>
+        <div class="title">
 
-        <div class="formalpara-title">
-
-        **Example output**
+        Example output
 
         </div>
 
@@ -206,6 +212,8 @@ The following steps demonstrate a simple configuration that creates a node and a
                     operator: In
         #...
         ```
+
+        </div>
 
         where:
 
@@ -230,6 +238,8 @@ The following steps demonstrate a simple configuration that creates a node and a
         $ oc create -f <file-name>.yaml
         ```
 
+</div>
+
 # Configure a preferred node affinity rule
 
 You can use a *preferred* rule to instruct the scheduler that if a matching node is not available, schedule the pod on a different node to ensure the workload application runs.
@@ -237,6 +247,14 @@ You can use a *preferred* rule to instruct the scheduler that if a matching node
 For a preferred rule, the scheduler tries to enforce the rule, but does not guarantee enforcement.
 
 The following procedure demonstrates a simple configuration that creates a node and a pod that the scheduler tries to place on the node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add a label to a node using the `oc label node` command:
 
@@ -248,11 +266,8 @@ The following procedure demonstrates a simple configuration that creates a node 
 
     1.  Create a YAML file with the following content:
 
-        <div class="note">
-
-        You cannot add an affinity directly to a scheduled pod.
-
-        </div>
+        > [!NOTE]
+        > You cannot add an affinity directly to a scheduled pod.
 
         ``` yaml
         apiVersion: v1
@@ -299,6 +314,8 @@ The following procedure demonstrates a simple configuration that creates a node 
         $ oc create -f <file-name>.yaml
         ```
 
+</div>
+
 # Sample node affinity rules
 
 To use node affinity, the pod spec that you want to schedule on a node must have a node selector that matches a label on the node.
@@ -315,21 +332,18 @@ The following example demonstrates node affinity for a node and pod with matchin
   $ oc label node node1 zone=us
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to add the label:
-
-  ``` yaml
-  kind: Node
-  apiVersion: v1
-  metadata:
-    name: <node_name>
-    labels:
-      zone: us
-  #...
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to add the label:
+  >
+  > ``` yaml
+  > kind: Node
+  > apiVersion: v1
+  > metadata:
+  >   name: <node_name>
+  >   labels:
+  >     zone: us
+  > #...
+  > ```
 
 - The pod-s1 pod has the `zone` and `us` key/value pair under a required node affinity rule:
 
@@ -337,9 +351,11 @@ The following example demonstrates node affinity for a node and pod with matchin
   $ cat pod-s1.yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -372,15 +388,19 @@ The following example demonstrates node affinity for a node and pod with matchin
   #...
   ```
 
+  </div>
+
 - The pod-s1 pod can be scheduled on Node1:
 
   ``` terminal
   $ oc get pod -o wide
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -388,6 +408,8 @@ The following example demonstrates node affinity for a node and pod with matchin
   NAME     READY     STATUS       RESTARTS   AGE      IP      NODE
   pod-s1   1/1       Running      0          4m       IP1     node1
   ```
+
+  </div>
 
 ## Node affinity with no matching labels
 
@@ -399,21 +421,18 @@ The following example demonstrates node affinity for a node and pod without matc
   $ oc label node node1 zone=emea
   ```
 
-  <div class="tip">
-
-  You can alternatively apply the following YAML to add the label:
-
-  ``` yaml
-  kind: Node
-  apiVersion: v1
-  metadata:
-    name: <node_name>
-    labels:
-      zone: emea
-  #...
-  ```
-
-  </div>
+  > [!TIP]
+  > You can alternatively apply the following YAML to add the label:
+  >
+  > ``` yaml
+  > kind: Node
+  > apiVersion: v1
+  > metadata:
+  >   name: <node_name>
+  >   labels:
+  >     zone: emea
+  > #...
+  > ```
 
 - The pod-s1 pod has the `zone` and `us` key/value pair under a required node affinity rule:
 
@@ -421,9 +440,11 @@ The following example demonstrates node affinity for a node and pod without matc
   $ cat pod-s1.yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -456,15 +477,19 @@ The following example demonstrates node affinity for a node and pod without matc
   #...
   ```
 
+  </div>
+
 - The pod-s1 pod cannot be scheduled on Node1:
 
   ``` terminal
   $ oc describe pod pod-s1
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -476,6 +501,8 @@ The following example demonstrates node affinity for a node and pod without matc
    --------- -------- ----- ----              -------------  --------            ------
    1m        33s      8     default-scheduler Warning        FailedScheduling    No nodes are available that match all of the following predicates:: MatchNodeSelector (1).
   ```
+
+  </div>
 
 # Using node affinity to control where an Operator is installed
 
@@ -555,6 +582,14 @@ This node affinity requires the Operator’s pod be scheduled on a node with the
 
 To control the placement of an Operator pod, complete the following steps.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the Operator as usual.
 
 2.  If needed, ensure that your nodes are labeled to properly respond to the affinity.
@@ -589,15 +624,27 @@ To control the placement of an Operator pod, complete the following steps.
     `spec.config.affinity`
     Specifies a `nodeAffinity`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To ensure that the pod is deployed on the specific node, run the following command:
 
   ``` yaml
   $ oc get pods -o wide
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -605,6 +652,10 @@ To control the placement of an Operator pod, complete the following steps.
   NAME                                                  READY   STATUS    RESTARTS   AGE   IP            NODE                           NOMINATED NODE   READINESS GATES
   custom-metrics-autoscaler-operator-5dcc45d656-bhshg   1/1     Running   0          50s   10.131.0.20   ip-10-0-185-229.ec2.internal   <none>           <none>
   ```
+
+  </div>
+
+</div>
 
 # Additional resources
 

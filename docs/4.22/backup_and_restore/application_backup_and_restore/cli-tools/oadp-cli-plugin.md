@@ -6,7 +6,25 @@ The plugin is available as `oc oadp` and supports both cluster administrator and
 
 The OADP command-line interface (CLI) plugin is available from the **Command-line tools** page in the OpenShift Container Platform web console when the OADP Operator is installed.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to an OpenShift Container Platform cluster with the OADP Operator installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with access to the cluster.
 
@@ -22,6 +40,8 @@ The OADP command-line interface (CLI) plugin is available from the **Command-lin
     $ oc oadp version
     ```
 
+</div>
+
 # Set up the OADP CLI plugin
 
 After you install the OADP command-line interface (CLI) plugin, you must run the setup command to configure it for your user permissions.
@@ -32,11 +52,27 @@ The setup command automatically detects whether you have cluster-wide administra
 
 - **Non-administrator mode**: Provides access to namespace-scoped self-service backup and restore commands.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OADP CLI plugin is installed.
 
 - You are logged in to the OpenShift Container Platform cluster by using the `oc login` command.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the setup command to auto-detect your permissions and configure the CLI:
 
@@ -52,23 +88,42 @@ The setup command automatically detects whether you have cluster-wide administra
     $ oc oadp setup --force
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Run the following command to confirm that the available commands match your configured mode:
 
   ``` terminal
   $ oc oadp --help
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > OADP CLI commands support both noun-verb and verb-noun ordering. For example, `oc oadp backup create` and `oc oadp create backup` are equivalent.
 
-  OADP CLI commands support both noun-verb and verb-noun ordering. For example, `oc oadp backup create` and `oc oadp create backup` are equivalent.
-
-  </div>
+</div>
 
 # OADP CLI client configuration commands
 
 You can use the OADP command-line interface (CLI) to view and modify client configuration settings. Configuration is stored in `~/.config/velero/config.json`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed.
+
+</div>
 
 ## Current configuration viewing command
 
@@ -94,9 +149,11 @@ Specifies the configuration key to set.
 `<value>`
 Specifies the value for the configuration key.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of setting the default namespace**
+<div class="title">
+
+Example of setting the default namespace
 
 </div>
 
@@ -104,13 +161,31 @@ Specifies the value for the configuration key.
 $ oc oadp client config set namespace=openshift-adp
 ```
 
+</div>
+
 # Enable shell completion for the OADP CLI
 
 You can use the OADP command-line interface (CLI) to generate and install shell completion scripts for command auto-completion.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Choose one of the following methods to enable shell completion:
 
@@ -120,21 +195,25 @@ You can use the OADP command-line interface (CLI) to generate and install shell 
     $ oc oadp completion install [flags]
     ```
 
-    | Flag      | Description                                                                                                                                                   |
-    |-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Flag | Description |
+    |----|----|
     | `--shell` | The shell type to install completions for. Supported values are `bash`, `zsh`, and `fish`. If this flag is not specified, the current shell is auto-detected. |
 
     Flags for the `oc oadp completion install` command
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of installing completions for zsh**
+    <div class="title">
+
+    Example of installing completions for zsh
 
     </div>
 
     ``` terminal
     $ oc oadp completion install --shell zsh
     ```
+
+    </div>
 
   - To generate a completion script for your shell without installing it, use the following command:
 
@@ -149,9 +228,11 @@ You can use the OADP command-line interface (CLI) to generate and install shell 
 
     You can redirect the output to a file or source it directly.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example of writing a bash completion script**
+    <div class="title">
+
+    Example of writing a bash completion script
 
     </div>
 
@@ -159,13 +240,27 @@ You can use the OADP command-line interface (CLI) to generate and install shell 
     $ oc oadp completion bash > /etc/bash_completion.d/oc-oadp
     ```
 
+    </div>
+
+</div>
+
 # Backup management commands
 
 You can use the OADP command-line interface (CLI) to create, view, describe, download, and delete backups.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
+
+</div>
 
 ## Backup creation command
 
@@ -175,30 +270,32 @@ To create a backup of cluster resources, use the following command:
 $ oc oadp backup create <backup_name> [flags]
 ```
 
-| Flag                             | Description                                                                                                                                                                                                                                               |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--include-namespaces`           | The namespaces to include in the backup. The default value is `*` (all namespaces).                                                                                                                                                                       |
-| `--exclude-namespaces`           | The namespaces to exclude from the backup.                                                                                                                                                                                                                |
-| `--include-resources`            | The resources to include in the backup. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
-| `--exclude-resources`            | The resources to exclude from the backup. This flag uses the same format as the `--include-resources` flag.                                                                                                                                               |
-| `--storage-location`             | The name of the backup storage location to use.                                                                                                                                                                                                           |
-| `--volume-snapshot-locations`    | The volume snapshot location or locations to use.                                                                                                                                                                                                         |
-| `--selector`, `-l`               | A label selector to filter resources.                                                                                                                                                                                                                     |
-| `--or-selector`                  | An OR combination of label selectors.                                                                                                                                                                                                                     |
-| `--snapshot-volumes`             | Specifies whether to take persistent volume (PV) snapshots. The default value is `true`.                                                                                                                                                                  |
-| `--snapshot-move-data`           | Specifies whether to move snapshot data to the backup storage location.                                                                                                                                                                                   |
-| `--default-volumes-to-fs-backup` | Specifies whether to use a file system backup for all volumes.                                                                                                                                                                                            |
-| `--include-cluster-resources`    | Specifies whether to include cluster-scoped resources.                                                                                                                                                                                                    |
-| `--ttl`                          | The backup retention period. The default value is `720h`.                                                                                                                                                                                                 |
-| `--csi-snapshot-timeout`         | The timeout for Container Storage Interface (CSI) snapshot creation.                                                                                                                                                                                      |
-| `--item-operation-timeout`       | The timeout for asynchronous plugin operations.                                                                                                                                                                                                           |
-| `--request-timeout`              | The timeout for the request to the Kubernetes API server.                                                                                                                                                                                                 |
+| Flag | Description |
+|----|----|
+| `--include-namespaces` | The namespaces to include in the backup. The default value is `*` (all namespaces). |
+| `--exclude-namespaces` | The namespaces to exclude from the backup. |
+| `--include-resources` | The resources to include in the backup. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
+| `--exclude-resources` | The resources to exclude from the backup. This flag uses the same format as the `--include-resources` flag. |
+| `--storage-location` | The name of the backup storage location to use. |
+| `--volume-snapshot-locations` | The volume snapshot location or locations to use. |
+| `--selector`, `-l` | A label selector to filter resources. |
+| `--or-selector` | An OR combination of label selectors. |
+| `--snapshot-volumes` | Specifies whether to take persistent volume (PV) snapshots. The default value is `true`. |
+| `--snapshot-move-data` | Specifies whether to move snapshot data to the backup storage location. |
+| `--default-volumes-to-fs-backup` | Specifies whether to use a file system backup for all volumes. |
+| `--include-cluster-resources` | Specifies whether to include cluster-scoped resources. |
+| `--ttl` | The backup retention period. The default value is `720h`. |
+| `--csi-snapshot-timeout` | The timeout for Container Storage Interface (CSI) snapshot creation. |
+| `--item-operation-timeout` | The timeout for asynchronous plugin operations. |
+| `--request-timeout` | The timeout for the request to the Kubernetes API server. |
 
 Flags for the `oc oadp backup create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the backup creation command**
+<div class="title">
+
+Example of the backup creation command
 
 </div>
 
@@ -208,6 +305,8 @@ $ oc oadp backup create my-backup \
     --snapshot-volumes \
     --ttl 720h
 ```
+
+</div>
 
 ## Backup listing command
 
@@ -231,8 +330,8 @@ To view the details of a backup, use the following command:
 $ oc oadp backup describe <backup_name> [flags]
 ```
 
-| Flag        | Description                                                    |
-|-------------|----------------------------------------------------------------|
+| Flag | Description |
+|----|----|
 | `--details` | Specifies whether to display additional details in the output. |
 
 Flags for the `oc oadp backup describe` command
@@ -271,11 +370,21 @@ Flags for the `oc oadp backup delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete restores.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
 
 - A completed backup exists to restore from.
+
+</div>
 
 ## Restore creation command
 
@@ -285,27 +394,29 @@ To create a restore from an existing backup, use the following command:
 $ oc oadp restore create <restore_name> [flags]
 ```
 
-| Flag                          | Description                                                                                                                                                                                                                                                |
-|-------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--from-backup`               | The name of the backup to restore from.                                                                                                                                                                                                                    |
-| `--from-schedule`             | The name of the schedule to restore from. This flag uses the most recent backup.                                                                                                                                                                           |
-| `--include-namespaces`        | The namespaces to include in the restore. The default value is `*` (all namespaces).                                                                                                                                                                       |
-| `--exclude-namespaces`        | The namespaces to exclude from the restore.                                                                                                                                                                                                                |
-| `--include-resources`         | The resources to include in the restore. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
-| `--exclude-resources`         | The resources to exclude from the restore. This flag uses the same format as the `--include-resources` flag.                                                                                                                                               |
-| `--selector`, `-l`            | A label selector to filter resources.                                                                                                                                                                                                                      |
-| `--or-selector`               | An OR combination of label selectors.                                                                                                                                                                                                                      |
-| `--include-cluster-resources` | Specifies whether to include cluster-scoped resources.                                                                                                                                                                                                     |
-| `--restore-volumes`           | Specifies whether to restore persistent volume (PV) data from snapshots.                                                                                                                                                                                   |
-| `--preserve-nodeports`        | Specifies whether to preserve NodePort service port assignments.                                                                                                                                                                                           |
-| `--item-operation-timeout`    | The timeout for asynchronous plugin operations.                                                                                                                                                                                                            |
-| `--request-timeout`           | The timeout for the request to the Kubernetes API server.                                                                                                                                                                                                  |
+| Flag | Description |
+|----|----|
+| `--from-backup` | The name of the backup to restore from. |
+| `--from-schedule` | The name of the schedule to restore from. This flag uses the most recent backup. |
+| `--include-namespaces` | The namespaces to include in the restore. The default value is `*` (all namespaces). |
+| `--exclude-namespaces` | The namespaces to exclude from the restore. |
+| `--include-resources` | The resources to include in the restore. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
+| `--exclude-resources` | The resources to exclude from the restore. This flag uses the same format as the `--include-resources` flag. |
+| `--selector`, `-l` | A label selector to filter resources. |
+| `--or-selector` | An OR combination of label selectors. |
+| `--include-cluster-resources` | Specifies whether to include cluster-scoped resources. |
+| `--restore-volumes` | Specifies whether to restore persistent volume (PV) data from snapshots. |
+| `--preserve-nodeports` | Specifies whether to preserve NodePort service port assignments. |
+| `--item-operation-timeout` | The timeout for asynchronous plugin operations. |
+| `--request-timeout` | The timeout for the request to the Kubernetes API server. |
 
 Flags for the `oc oadp restore create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the restore creation command**
+<div class="title">
+
+Example of the restore creation command
 
 </div>
 
@@ -314,6 +425,8 @@ $ oc oadp restore create my-restore \
     --from-backup my-backup \
     --include-namespaces my-namespace
 ```
+
+</div>
 
 ## Restore listing command
 
@@ -337,8 +450,8 @@ To view the details of a restore, use the following command:
 $ oc oadp restore describe <restore_name> [flags]
 ```
 
-| Flag        | Description                                                    |
-|-------------|----------------------------------------------------------------|
+| Flag | Description |
+|----|----|
 | `--details` | Specifies whether to display additional details in the output. |
 
 Flags for the `oc oadp restore describe` command
@@ -369,9 +482,19 @@ Flags for the `oc oadp restore delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete backup schedules. Schedules automate the creation of backups at specified intervals by using a cron expression.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
+
+</div>
 
 ## Schedule creation command
 
@@ -381,28 +504,30 @@ To create a backup schedule, use the following command:
 $ oc oadp schedule create <schedule_name> [flags]
 ```
 
-| Flag                             | Description                                                                                                                                                                                                                                                      |
-|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--schedule`                     | The cron expression for the schedule, for example, `0 1 * * *` for daily at 1 AM.                                                                                                                                                                                |
-| `--include-namespaces`           | The namespaces to include in scheduled backups. The default value is `*` (all namespaces).                                                                                                                                                                       |
-| `--exclude-namespaces`           | The namespaces to exclude from scheduled backups.                                                                                                                                                                                                                |
-| `--include-resources`            | The resources to include in scheduled backups. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
-| `--exclude-resources`            | The resources to exclude from scheduled backups. This flag uses the same format as the `--include-resources` flag.                                                                                                                                               |
-| `--storage-location`             | The name of the backup storage location to use.                                                                                                                                                                                                                  |
-| `--volume-snapshot-locations`    | The volume snapshot location or locations to use.                                                                                                                                                                                                                |
-| `--selector`, `-l`               | A label selector to filter resources.                                                                                                                                                                                                                            |
-| `--snapshot-volumes`             | Specifies whether to take persistent volume (PV) snapshots. The default value is `true`.                                                                                                                                                                         |
-| `--snapshot-move-data`           | Specifies whether to move snapshot data to the backup storage location.                                                                                                                                                                                          |
-| `--default-volumes-to-fs-backup` | Specifies whether to use a file system backup for all volumes.                                                                                                                                                                                                   |
-| `--include-cluster-resources`    | Specifies whether to include cluster-scoped resources.                                                                                                                                                                                                           |
-| `--ttl`                          | The backup retention period. The default value is `720h`.                                                                                                                                                                                                        |
-| `--request-timeout`              | The timeout for the request to the Kubernetes API server.                                                                                                                                                                                                        |
+| Flag | Description |
+|----|----|
+| `--schedule` | The cron expression for the schedule, for example, `0 1 * * *` for daily at 1 AM. |
+| `--include-namespaces` | The namespaces to include in scheduled backups. The default value is `*` (all namespaces). |
+| `--exclude-namespaces` | The namespaces to exclude from scheduled backups. |
+| `--include-resources` | The resources to include in scheduled backups. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
+| `--exclude-resources` | The resources to exclude from scheduled backups. This flag uses the same format as the `--include-resources` flag. |
+| `--storage-location` | The name of the backup storage location to use. |
+| `--volume-snapshot-locations` | The volume snapshot location or locations to use. |
+| `--selector`, `-l` | A label selector to filter resources. |
+| `--snapshot-volumes` | Specifies whether to take persistent volume (PV) snapshots. The default value is `true`. |
+| `--snapshot-move-data` | Specifies whether to move snapshot data to the backup storage location. |
+| `--default-volumes-to-fs-backup` | Specifies whether to use a file system backup for all volumes. |
+| `--include-cluster-resources` | Specifies whether to include cluster-scoped resources. |
+| `--ttl` | The backup retention period. The default value is `720h`. |
+| `--request-timeout` | The timeout for the request to the Kubernetes API server. |
 
 Flags for the `oc oadp schedule create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the schedule creation command**
+<div class="title">
+
+Example of the schedule creation command
 
 </div>
 
@@ -412,6 +537,8 @@ $ oc oadp schedule create daily-backup \
     --include-namespaces my-namespace \
     --ttl 720h
 ```
+
+</div>
 
 ## Schedule listing command
 
@@ -453,9 +580,19 @@ Flags for the `oc oadp schedule delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, set, and delete backup storage locations (BSLs). Backup storage locations define where backup data is stored, such as an object storage bucket.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
+
+</div>
 
 ## Backup storage location creation command
 
@@ -465,21 +602,23 @@ To create a backup storage location, use the following command:
 $ oc oadp backup-location create <bsl_name> [flags]
 ```
 
-| Flag                   | Description                                                                      |
-|------------------------|----------------------------------------------------------------------------------|
-| `--provider`           | The name of the cloud provider, for example, `aws`, `gcp`, or `azure`.           |
-| `--bucket`             | The name of the object storage bucket.                                           |
-| `--prefix`             | The path prefix within the bucket.                                               |
-| `--credential`         | The secret and key for the provider credentials in the format `SECRET_NAME=KEY`. |
-| `--config`             | The provider-specific configuration as `key=value` pairs.                        |
-| `--backup-sync-period` | The frequency at which to synchronize the backup contents from object storage.   |
-| `--request-timeout`    | The timeout for the request to the Kubernetes API server.                        |
+| Flag | Description |
+|----|----|
+| `--provider` | The name of the cloud provider, for example, `aws`, `gcp`, or `azure`. |
+| `--bucket` | The name of the object storage bucket. |
+| `--prefix` | The path prefix within the bucket. |
+| `--credential` | The secret and key for the provider credentials in the format `SECRET_NAME=KEY`. |
+| `--config` | The provider-specific configuration as `key=value` pairs. |
+| `--backup-sync-period` | The frequency at which to synchronize the backup contents from object storage. |
+| `--request-timeout` | The timeout for the request to the Kubernetes API server. |
 
 Flags for the `oc oadp backup-location create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the backup storage location creation command**
+<div class="title">
+
+Example of the backup storage location creation command
 
 </div>
 
@@ -490,6 +629,8 @@ $ oc oadp backup-location create my-bsl \
     --prefix velero \
     --credential cloud-credentials=cloud
 ```
+
+</div>
 
 ## Backup storage location listing command
 
@@ -531,9 +672,19 @@ Flags for the `oc oadp backup-location delete` command
 
 You can use the OADP command-line interface (CLI) to create, view, set, and delete volume snapshot locations (VSLs). Volume snapshot locations define where persistent volume (PV) snapshots are stored.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
+
+</div>
 
 ## Volume snapshot location creation command
 
@@ -543,17 +694,19 @@ To create a volume snapshot location, use the following command:
 $ oc oadp snapshot-location create <vsl_name> [flags]
 ```
 
-| Flag                | Description                                                            |
-|---------------------|------------------------------------------------------------------------|
-| `--provider`        | The name of the cloud provider, for example, `aws`, `gcp`, or `azure`. |
-| `--config`          | The provider-specific configuration as `key=value` pairs.              |
-| `--request-timeout` | The timeout for the request to the Kubernetes API server.              |
+| Flag | Description |
+|----|----|
+| `--provider` | The name of the cloud provider, for example, `aws`, `gcp`, or `azure`. |
+| `--config` | The provider-specific configuration as `key=value` pairs. |
+| `--request-timeout` | The timeout for the request to the Kubernetes API server. |
 
 Flags for the `oc oadp snapshot-location create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the volume snapshot location creation command**
+<div class="title">
+
+Example of the volume snapshot location creation command
 
 </div>
 
@@ -562,6 +715,8 @@ $ oc oadp snapshot-location create my-vsl \
     --provider aws \
     --config region=us-east-1
 ```
+
+</div>
 
 ## Volume snapshot location listing command
 
@@ -603,11 +758,21 @@ Flags for the `oc oadp snapshot-location delete` command
 
 When the OADP Operator is configured with `nonAdmin.requireApprovalForBSL: true`, non-admin users who create a `NonAdminBackupStorageLocation` (NABSL) object trigger an approval request. You can use the OADP command-line interface (CLI) to view, describe, approve, and reject these requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster as a user with `cluster-admin` privileges.
 
 - The `DataProtectionApplication` custom resource (CR) is configured with `nonAdmin.enable: true` and `nonAdmin.requireApprovalForBSL: true`.
+
+</div>
 
 ## NABSL approval request listing command
 
@@ -651,15 +816,19 @@ Flags for the `oc oadp nabsl-request approve` command
 
 You can specify the request by using either the NABSL name or the full UUID.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the NABSL approval request approval command**
+<div class="title">
+
+Example of the NABSL approval request approval command
 
 </div>
 
 ``` terminal
 $ oc oadp nabsl-request approve user-test-bsl --reason "Approved for production use"
 ```
+
+</div>
 
 ## NABSL approval request rejection command
 
@@ -677,9 +846,11 @@ Flags for the `oc oadp nabsl-request reject` command
 
 You can specify the request by using either the NABSL name or the full UUID.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the NABSL approval request rejection command**
+<div class="title">
+
+Example of the NABSL approval request rejection command
 
 </div>
 
@@ -687,9 +858,19 @@ You can specify the request by using either the NABSL name or the full UUID.
 $ oc oadp nabsl-request reject user-test-bsl --reason "Invalid configuration"
 ```
 
+</div>
+
 # Collect diagnostic data
 
 You can use the OADP command-line interface (CLI) to collect diagnostic information for OADP installations. The `must-gather` command runs the OADP must-gather tool to collect logs and cluster state information needed for troubleshooting and support cases.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OADP CLI plugin is installed and configured in admin mode.
 
@@ -697,7 +878,15 @@ You can use the OADP command-line interface (CLI) to collect diagnostic informat
 
 - The `oc` CLI is installed and available on your `PATH`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Collect OADP diagnostic information:
 
@@ -705,23 +894,29 @@ You can use the OADP command-line interface (CLI) to collect diagnostic informat
   $ oc oadp must-gather [flags]
   ```
 
-  | Flag                | Description                                                                                 |
-  |---------------------|---------------------------------------------------------------------------------------------|
-  | `--dest-dir`        | The directory where the must-gather output is stored. The default value is `./must-gather`. |
-  | `--request-timeout` | The timeout for the gather script, for example, `30s` or `1m`.                              |
-  | `--skip-tls`        | Specifies whether to skip Transport Layer Security (TLS) verification.                      |
+  | Flag | Description |
+  |----|----|
+  | `--dest-dir` | The directory where the must-gather output is stored. The default value is `./must-gather`. |
+  | `--request-timeout` | The timeout for the gather script, for example, `30s` or `1m`. |
+  | `--skip-tls` | Specifies whether to skip Transport Layer Security (TLS) verification. |
 
   Flags for the `oc oadp must-gather` command
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example of the must-gather command**
+  <div class="title">
+
+  Example of the must-gather command
 
   </div>
 
   ``` terminal
   $ oc oadp must-gather --dest-dir=/tmp/oadp-diagnostics --request-timeout=1m
   ```
+
+  </div>
+
+</div>
 
 # OADP self-service
 
@@ -751,13 +946,17 @@ You can use OADP self-service to complete the following tasks:
 
 - Backup and restore logs by using a `NonAdminDownloadRequest` object are not supported for default backup storage locations (BSLs). To access logs, you must create a `NonAdminBackupStorageLocation` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 Before you use OADP self-service, a cluster administrator must complete the following tasks:
+
+</div>
 
 - Install and configure the OADP Operator with `nonAdmin.enable: true` in the `DataProtectionApplication` CR specification.
 
@@ -779,6 +978,14 @@ Before you use OADP self-service, a cluster administrator must complete the foll
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete non-admin backups in your namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The OADP CLI plugin is installed and configured in non-admin mode.
 
 - You are logged in to the OpenShift Container Platform cluster and your current namespace context is set to the namespace you want to back up.
@@ -786,6 +993,8 @@ You can use the OADP command-line interface (CLI) to create, view, describe, and
 - You have editor roles for `nonadminbackups.oadp.openshift.io` in your namespace.
 
 - A `NonAdminBackupStorageLocation` object exists in your namespace, or a default has been configured by running the `oc oadp client config set default-nabsl=<name>` command.
+
+</div>
 
 ## Non-admin backup creation command
 
@@ -795,25 +1004,27 @@ To create a backup of resources in your current namespace, use the following com
 $ oc oadp nonadmin backup create <backup_name> [flags]
 ```
 
-| Flag                             | Description                                                                                                                                                                                                                                               |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--storage-location`             | The name of the `NonAdminBackupStorageLocation` object to use. This flag is required unless a default is configured.                                                                                                                                      |
-| `--include-resources`            | The resources to include in the backup. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
-| `--exclude-resources`            | The resources to exclude from the backup. This flag uses the same format as the `--include-resources` flag.                                                                                                                                               |
-| `--selector`, `-l`               | Specifies to back up only the resources that match this label selector.                                                                                                                                                                                   |
-| `--or-selector`                  | Specifies to back up resources that match at least one of the label selectors, separated by `or`.                                                                                                                                                         |
-| `--ttl`                          | The amount of time before the backup can be garbage collected. The default value is `720h`.                                                                                                                                                               |
-| `--csi-snapshot-timeout`         | The timeout for Container Storage Interface (CSI) snapshot creation.                                                                                                                                                                                      |
-| `--item-operation-timeout`       | The timeout for asynchronous plugin operations.                                                                                                                                                                                                           |
-| `--snapshot-volumes`             | Specifies whether to take snapshots of persistent volumes (PVs) as part of the backup.                                                                                                                                                                    |
-| `--snapshot-move-data`           | Specifies whether to move snapshot data to the backup storage location.                                                                                                                                                                                   |
-| `--default-volumes-to-fs-backup` | Specifies whether to use pod volume file system backups by default for all volumes.                                                                                                                                                                       |
+| Flag | Description |
+|----|----|
+| `--storage-location` | The name of the `NonAdminBackupStorageLocation` object to use. This flag is required unless a default is configured. |
+| `--include-resources` | The resources to include in the backup. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
+| `--exclude-resources` | The resources to exclude from the backup. This flag uses the same format as the `--include-resources` flag. |
+| `--selector`, `-l` | Specifies to back up only the resources that match this label selector. |
+| `--or-selector` | Specifies to back up resources that match at least one of the label selectors, separated by `or`. |
+| `--ttl` | The amount of time before the backup can be garbage collected. The default value is `720h`. |
+| `--csi-snapshot-timeout` | The timeout for Container Storage Interface (CSI) snapshot creation. |
+| `--item-operation-timeout` | The timeout for asynchronous plugin operations. |
+| `--snapshot-volumes` | Specifies whether to take snapshots of persistent volumes (PVs) as part of the backup. |
+| `--snapshot-move-data` | Specifies whether to move snapshot data to the backup storage location. |
+| `--default-volumes-to-fs-backup` | Specifies whether to use pod volume file system backups by default for all volumes. |
 
 Flags for the `oc oadp nonadmin backup create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the non-admin backup creation command**
+<div class="title">
+
+Example of the non-admin backup creation command
 
 </div>
 
@@ -826,15 +1037,14 @@ $ oc oadp nonadmin backup create my-backup \
     --ttl 720h
 ```
 
-<div class="tip">
-
-To avoid specifying the storage location on each backup, run the following command to set a default:
-
-``` terminal
-$ oc oadp client config set default-nabsl=<nabsl_name>
-```
-
 </div>
+
+> [!TIP]
+> To avoid specifying the storage location on each backup, run the following command to set a default:
+>
+> ``` terminal
+> $ oc oadp client config set default-nabsl=<nabsl_name>
+> ```
 
 ## Non-admin backup listing command
 
@@ -858,10 +1068,10 @@ To view the details of a backup, use the following command:
 $ oc oadp nonadmin backup describe <backup_name> [flags]
 ```
 
-| Flag                | Description                                                                                                              |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------|
-| `--details`         | Specifies whether to display additional backup details, including volume snapshots, resource lists, and item operations. |
-| `--request-timeout` | The timeout for fetching backup details from the server.                                                                 |
+| Flag | Description |
+|----|----|
+| `--details` | Specifies whether to display additional backup details, including volume snapshots, resource lists, and item operations. |
+| `--request-timeout` | The timeout for fetching backup details from the server. |
 
 Flags for the `oc oadp nonadmin backup describe` command
 
@@ -879,11 +1089,8 @@ $ oc oadp nonadmin backup logs <backup_name> [flags]
 
 Flags for the `oc oadp nonadmin backup logs` command
 
-<div class="note">
-
-Backup logs are available only when you use a `NonAdminBackupStorageLocation` object. Logs are not available for backups that use the default cluster backup storage location.
-
-</div>
+> [!NOTE]
+> Backup logs are available only when you use a `NonAdminBackupStorageLocation` object. Logs are not available for backups that use the default cluster backup storage location.
 
 ## Non-admin backup deletion command
 
@@ -893,18 +1100,20 @@ To delete one or more backups, use the following command:
 $ oc oadp nonadmin backup delete [<backup_name>...] [flags]
 ```
 
-| Flag        | Description                                                               |
-|-------------|---------------------------------------------------------------------------|
+| Flag | Description |
+|----|----|
 | `--confirm` | Specifies whether to skip the confirmation prompt and delete immediately. |
-| `--all`     | Specifies whether to delete all backups in the current namespace.         |
+| `--all` | Specifies whether to delete all backups in the current namespace. |
 
 Flags for the `oc oadp nonadmin backup delete` command
 
 Backup deletion is performed asynchronously by the OADP non-admin controller.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the non-admin backup deletion command**
+<div class="title">
+
+Example of the non-admin backup deletion command
 
 </div>
 
@@ -912,9 +1121,19 @@ Backup deletion is performed asynchronously by the OADP non-admin controller.
 $ oc oadp nonadmin backup delete my-backup --confirm
 ```
 
+</div>
+
 # Non-administrator restore management commands
 
 You can use the OADP command-line interface (CLI) to create, view, describe, and delete non-administrator restores in your namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OADP CLI plugin is installed and configured in non-administrator mode.
 
@@ -923,6 +1142,8 @@ You can use the OADP command-line interface (CLI) to create, view, describe, and
 - You have editor roles for `nonadminrestores.oadp.openshift.io` in your namespace.
 
 - A completed non-administrator backup exists to restore from.
+
+</div>
 
 ## Non-administrator restore creation command
 
@@ -937,20 +1158,22 @@ where:
 `<restore_name>`
 Specifies the name of the restore. This value is optional. If you do not provide a name, a name is automatically generated.
 
-| Flag                       | Description                                                                                                                                                                                                                                                |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--backup-name`            | The name of the non-administrator backup to restore from. This flag is required.                                                                                                                                                                           |
-| `--include-resources`      | The resources to include in the restore. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
-| `--exclude-resources`      | The resources to exclude from the restore. This flag uses the same format as the `--include-resources` flag.                                                                                                                                               |
-| `--selector`, `-l`         | Specifies that only the resources that match this label selector are restored.                                                                                                                                                                             |
-| `--or-selector`            | Specifies that resources that match at least one of the label selectors, separated by `or`, are restored.                                                                                                                                                  |
-| `--item-operation-timeout` | The timeout for asynchronous plugin operations.                                                                                                                                                                                                            |
+| Flag | Description |
+|----|----|
+| `--backup-name` | The name of the non-administrator backup to restore from. This flag is required. |
+| `--include-resources` | The resources to include in the restore. You can specify simple kind names, for example, `deployments,services`, or you can use the `resource.group` format for disambiguation, for example, `deployments.apps`. The default value is `*` (all resources). |
+| `--exclude-resources` | The resources to exclude from the restore. This flag uses the same format as the `--include-resources` flag. |
+| `--selector`, `-l` | Specifies that only the resources that match this label selector are restored. |
+| `--or-selector` | Specifies that resources that match at least one of the label selectors, separated by `or`, are restored. |
+| `--item-operation-timeout` | The timeout for asynchronous plugin operations. |
 
 Flags for the `oc oadp nonadmin restore create` command
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the non-administrator restore creation command**
+<div class="title">
+
+Example of the non-administrator restore creation command
 
 </div>
 
@@ -960,6 +1183,8 @@ $ oc oadp nonadmin restore create my-restore \
     --include-resources deployments,services \
     --selector app=myapp
 ```
+
+</div>
 
 ## Non-administrator restore listing command
 
@@ -993,9 +1218,9 @@ where:
 `<restore_name>`
 Specifies the name of the restore.
 
-| Flag                | Description                                               |
-|---------------------|-----------------------------------------------------------|
-| `--details`         | Specifies whether to display additional restore details.  |
+| Flag | Description |
+|----|----|
+| `--details` | Specifies whether to display additional restore details. |
 | `--request-timeout` | The timeout for fetching restore details from the server. |
 
 Flags for the `oc oadp nonadmin restore describe` command
@@ -1019,11 +1244,8 @@ Specifies the name of the restore.
 
 Flags for the `oc oadp nonadmin restore logs` command
 
-<div class="note">
-
-Restore logs are available only when you use a `NonAdminBackupStorageLocation` object. Logs are not available for restores associated with backups that use the default cluster backup storage location.
-
-</div>
+> [!NOTE]
+> Restore logs are available only when you use a `NonAdminBackupStorageLocation` object. Logs are not available for restores associated with backups that use the default cluster backup storage location.
 
 ## Non-administrator restore deletion command
 
@@ -1038,18 +1260,20 @@ where:
 `<restore_name>`
 Specifies the name of the restore. You can specify multiple restores.
 
-| Flag        | Description                                                               |
-|-------------|---------------------------------------------------------------------------|
+| Flag | Description |
+|----|----|
 | `--confirm` | Specifies whether to skip the confirmation prompt and delete immediately. |
-| `--all`     | Specifies whether to delete all restores in the current namespace.        |
+| `--all` | Specifies whether to delete all restores in the current namespace. |
 
 Flags for the `oc oadp nonadmin restore delete` command
 
 Restore deletion is performed asynchronously by the OADP non-administrator controller.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the non-administrator restore deletion command**
+<div class="title">
+
+Example of the non-administrator restore deletion command
 
 </div>
 
@@ -1057,13 +1281,20 @@ Restore deletion is performed asynchronously by the OADP non-administrator contr
 $ oc oadp nonadmin restore delete my-restore --confirm
 ```
 
+</div>
+
 # NonAdminBackupStorageLocation management commands
 
 You can use the OADP command-line interface (CLI) to create and view `NonAdminBackupStorageLocation` (NABSL) objects in your namespace. NABSLs define where your backup data is stored by using object storage that you own and manage.
 
-<div class="note">
+> [!NOTE]
+> Updating or deleting NABSLs after creation is not supported for non-administrator users.
 
-Updating or deleting NABSLs after creation is not supported for non-administrator users.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -1074,6 +1305,8 @@ Updating or deleting NABSLs after creation is not supported for non-administrato
 - You have editor roles for `nonadminbackupstoragelocations.oadp.openshift.io` in your namespace.
 
 - You have a Kubernetes `Secret` object in your namespace that contains the credentials for your object storage provider.
+
+</div>
 
 ## NonAdminBackupStorageLocation creation command
 
@@ -1088,22 +1321,24 @@ where:
 `<bsl_name>`
 Specifies the name of the backup storage location.
 
-| Flag           | Description                                                                                                                                                                                             |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--provider`   | The storage provider, for example, `aws`, `azure`, or `gcp`. This flag is required.                                                                                                                     |
-| `--bucket`     | The name of the object storage bucket. This flag is required.                                                                                                                                           |
+| Flag | Description |
+|----|----|
+| `--provider` | The storage provider, for example, `aws`, `azure`, or `gcp`. This flag is required. |
+| `--bucket` | The name of the object storage bucket. This flag is required. |
 | `--credential` | The credential for this location in the format `SECRET_NAME=KEY`, where `SECRET_NAME` is the name of the Kubernetes `Secret` object and `KEY` is the data key within the secret. This flag is required. |
-| `--prefix`     | The prefix for backup objects in the bucket.                                                                                                                                                            |
-| `--region`     | The storage region. This flag is required for some providers, such as AWS.                                                                                                                              |
-| `--config`     | Additional provider-specific configuration as `key=value` pairs.                                                                                                                                        |
+| `--prefix` | The prefix for backup objects in the bucket. |
+| `--region` | The storage region. This flag is required for some providers, such as AWS. |
+| `--config` | Additional provider-specific configuration as `key=value` pairs. |
 
 Flags for the `oc oadp nonadmin bsl create` command
 
 If the cluster administrator has enabled the `requireApprovalForBSL` parameter, the NABSL remains in a pending state until an administrator approves the request.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example of the NABSL creation command**
+<div class="title">
+
+Example of the NABSL creation command
 
 </div>
 
@@ -1116,20 +1351,19 @@ $ oc oadp nonadmin bsl create my-storage \
     --region us-east-1
 ```
 
-<div class="tip">
-
-After you create a backup storage location (BSL), run the following command to set it as the default and avoid specifying the storage location on each backup:
-
-``` terminal
-$ oc oadp client config set default-nabsl=<bsl_name>
-```
-
-where:
-
-`<bsl_name>`
-Specifies the name of the backup storage location.
-
 </div>
+
+> [!TIP]
+> After you create a backup storage location (BSL), run the following command to set it as the default and avoid specifying the storage location on each backup:
+>
+> ``` terminal
+> $ oc oadp client config set default-nabsl=<bsl_name>
+> ```
+>
+> where:
+>
+> `<bsl_name>`
+> Specifies the name of the backup storage location.
 
 ## NonAdminBackupStorageLocation listing command
 

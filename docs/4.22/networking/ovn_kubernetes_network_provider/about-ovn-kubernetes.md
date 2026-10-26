@@ -2,11 +2,8 @@ The OpenShift Container Platform cluster uses a virtualized network for pod and 
 
 Part of Red Hat OpenShift Networking, the OVN-Kubernetes network plugin is the default network provider for OpenShift Container Platform. OVN-Kubernetes is based on Open Virtual Network (OVN) and provides an overlay-based networking implementation. A cluster that uses the OVN-Kubernetes plugin also runs Open vSwitch (OVS) on each node. OVN configures OVS on each node to implement the declared network configuration.
 
-<div class="note">
-
-OVN-Kubernetes is the default networking solution for OpenShift Container Platform and single-node OpenShift deployments.
-
-</div>
+> [!NOTE]
+> OVN-Kubernetes is the default networking solution for OpenShift Container Platform and single-node OpenShift deployments.
 
 OVN-Kubernetes, which arose from the OVS project, uses many of the same constructs. For example, the plugin applies OpenFlow rules to direct packet routing through the network infrastructure. For more information, see the "Open Virtual Network website".
 
@@ -127,11 +124,27 @@ For example, if you run a `curl` command 10 times, the sticky session timer star
 
 As a result, if the client is continuously contacting the service, then the session never times out. The timeout starts when the service has not received a packet for the amount of time set by the `timeoutSeconds` parameter. For more information about `timeoutSeconds`, see "Session stickiness timeout in Kubernetes".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Session affinity in Kubernetes](https://kubernetes.io/docs/reference/networking/virtual-ips/#session-affinity)
 
 - [Session stickiness timeout in Kubernetes](https://kubernetes.io/docs/reference/networking/virtual-ips/#session-stickiness-timeout)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Open Virtual Network website](https://www.ovn.org/en/)
 
@@ -146,3 +159,5 @@ As a result, if the client is continuously contacting the service, then the sess
 - [Configuring IPsec encryption](../../networking/network_security/configuring-ipsec-ovn.xml#configuring-ipsec-ovn)
 
 - [Network \[operator.openshift.io/v1\]](../../rest_api/operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1)
+
+</div>

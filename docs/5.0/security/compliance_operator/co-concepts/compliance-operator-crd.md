@@ -34,9 +34,11 @@ The CRD workflow includes the following steps:
 
 When you install the Compliance Operator, it includes ready-to-run `ProfileBundle` objects. The Compliance Operator parses the `ProfileBundle` object and creates a `Profile` object for each profile in the bundle. It also parses `Rule` and `Variable` objects, which are used by the `Profile` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ProfileBundle` object**
+<div class="title">
+
+Example `ProfileBundle` object
 
 </div>
 
@@ -49,22 +51,18 @@ status:
   dataStreamStatus: VALID
 ```
 
+</div>
+
 where:
 
 `status.dataStreamStatus`
 Specifies whether the Compliance Operator was able to parse the content files. Value is `VALID` when parsing succeeds.
 
-<div class="note">
+> [!NOTE]
+> When the `contentFile` fails, an `errorMessage` attribute is displayed, which provides details of the error that occurred.
 
-When the `contentFile` fails, an `errorMessage` attribute is displayed, which provides details of the error that occurred.
-
-</div>
-
-<div class="note">
-
-When you roll back to a known content image from an invalid image, the `ProfileBundle` object stops responding and displays `PENDING` state. As a workaround, you can move to a different image than the earlier one or you can delete and re-create the `ProfileBundle` object to return to the working state.
-
-</div>
+> [!NOTE]
+> When you roll back to a known content image from an invalid image, the `ProfileBundle` object stops responding and displays `PENDING` state. As a workaround, you can move to a different image than the earlier one or you can delete and re-create the `ProfileBundle` object to return to the working state.
 
 # Profile object
 
@@ -72,15 +70,14 @@ You can use the `Profile` object to review parsed out details about an OpenSCAP 
 
 The `Profile` object defines the rules and variables that can be evaluated for a certain compliance standard. You can either directly use the `Profile` object or further customize it using a `TailorProfile` object.
 
-<div class="note">
+> [!NOTE]
+> You cannot create or modify the `Profile` object manually because it is derived from a single `ProfileBundle` object. Typically, a single `ProfileBundle` object can include several `Profile` objects.
 
-You cannot create or modify the `Profile` object manually because it is derived from a single `ProfileBundle` object. Typically, a single `ProfileBundle` object can include several `Profile` objects.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example `Profile` object**
+Example `Profile` object
 
 </div>
 
@@ -117,6 +114,8 @@ rules:
 title: <title of the profile>
 ```
 
+</div>
+
 where:
 
 `id`
@@ -134,9 +133,11 @@ You can use the `Rule` object, which represents an individual compliance check, 
 
 The `Rule` objects, which form the profiles, are also exposed as objects. You can use the `Rule` object to define your compliance check requirements and specify how a failed compliance check can be remediated.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `Rule` object**
+<div class="title">
+
+Example `Rule` object
 
 </div>
 
@@ -164,6 +165,8 @@ The `Rule` objects, which form the profiles, are also exposed as objects. You ca
     title: <summary of the rule>
 ```
 
+</div>
+
 where:
 
 `checkType`
@@ -175,11 +178,8 @@ Specifies the XCCDF name of the rule, which is parsed directly from the datastre
 `severity`
 Specifies the severity of the rule when it fails.
 
-<div class="note">
-
-The `Rule` object gets an appropriate label for an easy identification of the associated `ProfileBundle` object. The `ProfileBundle` also gets specified in the `OwnerReferences` of this object.
-
-</div>
+> [!NOTE]
+> The `Rule` object gets an appropriate label for an easy identification of the associated `ProfileBundle` object. The `ProfileBundle` also gets specified in the `OwnerReferences` of this object.
 
 # TailoredProfile object
 
@@ -187,15 +187,14 @@ You can use the `TailoredProfile` object to modify the default `Profile` object 
 
 After validation, the `TailoredProfile` object creates a `ConfigMap`, which can be referenced by a `ComplianceScan` object.
 
-<div class="tip">
+> [!TIP]
+> You can use the `TailoredProfile` object by referencing it in a `ScanSettingBinding` object. For more information about `ScanSettingBinding`, see ScanSettingBinding object.
 
-You can use the `TailoredProfile` object by referencing it in a `ScanSettingBinding` object. For more information about `ScanSettingBinding`, see ScanSettingBinding object.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example `TailoredProfile` object**
+Example `TailoredProfile` object
 
 </div>
 
@@ -217,6 +216,8 @@ status:
     namespace: openshift-compliance
   state: READY
 ```
+
+</div>
 
 where:
 
@@ -244,11 +245,8 @@ With the `TailoredProfile` object, you can create a new `Profile` object by usin
   compliance.openshift.io/product-type: Platform/Node
   ```
 
-  <div class="note">
-
-  If you have not set the `product-type` annotation, the Compliance Operator defaults to `Platform` scan type. Adding the `-node` suffix to the name of the `TailoredProfile` object results in `node` scan type.
-
-  </div>
+  > [!NOTE]
+  > If you have not set the `product-type` annotation, the Compliance Operator defaults to `Platform` scan type. Adding the `-node` suffix to the name of the `TailoredProfile` object results in `node` scan type.
 
 # ScanSetting object
 
@@ -260,9 +258,11 @@ By default, the Compliance Operator creates the following `ScanSetting` objects:
 
 - **default-auto-apply** - Runs a scan every day at 1 AM on both control plane and worker nodes by using a 1Gi Persistent Volume (PV) and keeps the last three results. Both `autoApplyRemediations` and `autoUpdateRemediations` are set to `true`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ScanSetting` object**
+<div class="title">
+
+Example `ScanSetting` object
 
 </div>
 
@@ -312,6 +312,8 @@ strictNodeScan: true
 timeout: 30m
 ```
 
+</div>
+
 where:
 
 `autoApplyRemediations`
@@ -329,11 +331,8 @@ Specifies the storage size that must be created for the scan to store the raw re
 `schedule`
 Specifies how often the scan must be run in cron format.
 
-<div class="note">
-
-To disable the rotation policy, set the value to `0`.
-
-</div>
+> [!NOTE]
+> To disable the rotation policy, set the value to `0`.
 
 `roles`
 Specifies the `node-role.kubernetes.io` label value to schedule the scan for `Node` type. This value must match the name of a `MachineConfigPool`.
@@ -344,9 +343,11 @@ You can use the `ScanSettingBinding` object to specify your compliance requireme
 
 The `ScanSettingBinding` object is linked to a `ScanSetting` object, which provides the operational constraints for the scan. Then the Compliance Operator generates the `ComplianceSuite` object based on the `ScanSetting` and `ScanSettingBinding` objects.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ScanSettingBinding` object**
+<div class="title">
+
+Example `ScanSettingBinding` object
 
 </div>
 
@@ -370,6 +371,8 @@ settingsRef:
   apiGroup: compliance.openshift.io/v1alpha1
 ```
 
+</div>
+
 where:
 
 `profiles`
@@ -384,11 +387,8 @@ The creation of `ScanSetting` and `ScanSettingBinding` objects results in the co
 $ oc get compliancesuites
 ```
 
-<div class="important">
-
-If you delete `ScanSettingBinding`, then compliance suite also is deleted.
-
-</div>
+> [!IMPORTANT]
+> If you delete `ScanSettingBinding`, then compliance suite also is deleted.
 
 ## ComplianceSuite object
 
@@ -396,9 +396,11 @@ You can review a `ComplianceSuite` object to keep track of the state of the scan
 
 For `Node` type scans, map the scan to the `MachineConfigPool`, because the scan has the remediation for any issues. If you specify a label, ensure the label directly applies to a pool.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ComplianceSuite` object**
+<div class="title">
+
+Example `ComplianceSuite` object
 
 </div>
 
@@ -428,6 +430,8 @@ status:
     result: NON-COMPLIANT
 ```
 
+</div>
+
 where:
 
 `spec.autoApplyRemediations`
@@ -451,11 +455,8 @@ The suite in the background creates the `ComplianceScan` object based on the `sc
 $ oc get events --field-selector involvedObject.kind=ComplianceSuite,involvedObject.name=<name of the suite>
 ```
 
-<div class="important">
-
-You might create errors when you manually define the `ComplianceSuite`, since it contains the XCCDF attributes.
-
-</div>
+> [!IMPORTANT]
+> You might create errors when you manually define the `ComplianceSuite`, since it contains the XCCDF attributes.
 
 ## Advanced ComplianceScan Object
 
@@ -463,9 +464,11 @@ You can use the `ComplianceScan` object to configure advanced options such as cu
 
 The Compliance Operator includes options for advanced users for debugging or integrating with existing tool. While Red Hat recommends that you should not create a `ComplianceScan` object directly, you can instead manage the object by using a `ComplianceSuite` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example Advanced `ComplianceScan` object**
+<div class="title">
+
+Example Advanced `ComplianceScan` object
 
 </div>
 
@@ -487,6 +490,8 @@ status:
   result: NON-COMPLIANT
 ```
 
+</div>
+
 where:
 
 `spec.scanType`
@@ -501,20 +506,14 @@ Specifies the container image that encapsulates the profile files.
 `spec.rule`
 Specifies the scan to run a single rule. This rule must be identified with the XCCDF ID, and must belong to the specified profile.
 
-<div class="note">
-
-If you skip the `rule` parameter, then scan runs for all the available rules of the specified profile.
-
-</div>
+> [!NOTE]
+> If you skip the `rule` parameter, then scan runs for all the available rules of the specified profile.
 
 `spec.nodeSelector`
 If you are on the OpenShift Container Platform and wants to generate a remediation, the `nodeSelector` label must match the `MachineConfigPool` label.
 
-<div class="note">
-
-If you do not specify `nodeSelector` parameter or match the `MachineConfig` label, scan will still run, but it will not create remediation.
-
-</div>
+> [!NOTE]
+> If you do not specify `nodeSelector` parameter or match the `MachineConfig` label, scan will still run, but it will not create remediation.
 
 `status.phase`
 Specifies the current phase of the scan.
@@ -522,11 +521,8 @@ Specifies the current phase of the scan.
 `status.result`
 Specifies the verdict of the scan.
 
-<div class="important">
-
-If you delete a `ComplianceSuite` object, then all the associated scans get deleted.
-
-</div>
+> [!IMPORTANT]
+> If you delete a `ComplianceSuite` object, then all the associated scans get deleted.
 
 When the scan is complete, it generates the result as Custom Resources of the `ComplianceCheckResult` object. However, the raw results are available in ARF format. These results are stored in a Persistent Volume (PV), which has a Persistent Volume Claim (PVC) associated with the name of the scan. You can programmatically fetch the `ComplianceScans` events. To generate events for the suite, run the following command:
 
@@ -538,9 +534,11 @@ $ oc get events --field-selector involvedObject.kind=ComplianceScan,involvedObje
 
 When you run a scan with a specific profile, several rules in the profiles are verified. For each of these rules, a `ComplianceCheckResult` object is created, which provides the state of the cluster for a specific rule.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ComplianceCheckResult` object**
+<div class="title">
+
+Example `ComplianceCheckResult` object
 
 </div>
 
@@ -567,6 +565,8 @@ id: xccdf_org.ssgproject.content_rule_no_direct_root_logins
 severity: medium
 status: FAIL
 ```
+
+</div>
 
 where:
 
@@ -603,9 +603,11 @@ If a Kubernetes fix is available, the Compliance Operator creates a `ComplianceR
 
 For a specific check you can have a datastream specified fix. However, if a Kubernetes fix is available, then the Compliance Operator creates a `ComplianceRemediation` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `ComplianceRemediation` object**
+<div class="title">
+
+Example `ComplianceRemediation` object
 
 </div>
 
@@ -645,6 +647,8 @@ spec:
                path: /etc/security/limits.d/75-disable_users_coredumps.conf
     outdated: {}
 ```
+
+</div>
 
 where:
 

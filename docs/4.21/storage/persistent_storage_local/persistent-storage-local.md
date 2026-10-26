@@ -4,11 +4,8 @@ OpenShift Container Platform can be provisioned with persistent storage by using
 
 Local volumes can be used without manually scheduling pods to nodes because the system is aware of the volume node constraints. However, local volumes are still subject to the availability of the underlying node and are not suitable for all applications.
 
-<div class="note">
-
-Local volumes can only be used as a statically created persistent volume.
-
-</div>
+> [!NOTE]
+> Local volumes can only be used as a statically created persistent volume.
 
 # Installing the Local Storage Operator
 
@@ -22,7 +19,25 @@ You can install the Local Storage Operator (LSO) to provision and manage local p
 
 To install the Local Storage Operator (LSO) to provision and manage local persistent storage volumes in your cluster, first create the `openshift-local-storage` project.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the OpenShift Container Platform web console or command-line interface (CLI).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `openshift-local-storage` project by running the following command:
 
@@ -52,13 +67,19 @@ To install the Local Storage Operator (LSO) to provision and manage local persis
     $ oc annotate namespace openshift-local-storage workload.openshift.io/allowed='management'
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Next steps**
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Install the LSO Operator.
+
+</div>
 
 ## Installing the Local Storage Operator by using the CLI
 
@@ -66,15 +87,35 @@ Install the Local Storage Operator (LSO) to provision and manage local persisten
 
 The LSO is not installed in OpenShift Container Platform by default. Use the following procedure to install and configure this Operator to enable local volumes in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an `openshift-local-storage` project.
 
 - Access to the OpenShift Container Platform command-line interface (CLI).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create an object YAML file to define an Operator group and subscription for the LSO, such as `openshift-local-storage.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example openshift-local-storage.yaml**
+    <div class="title">
+
+    Example openshift-local-storage.yaml
 
     </div>
 
@@ -101,6 +142,8 @@ The LSO is not installed in OpenShift Container Platform by default. Use the fol
       sourceNamespace: openshift-marketplace
     ```
 
+    </div>
+
     `spec.installPlanApproval` is the user approval policy for an install plan.
 
 2.  Create the LSO object by running the following command:
@@ -119,9 +162,11 @@ The LSO is not installed in OpenShift Container Platform by default. Use the fol
         $ oc -n openshift-local-storage get pods
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -130,15 +175,19 @@ The LSO is not installed in OpenShift Container Platform by default. Use the fol
         local-storage-operator-746bf599c9-vlt5t   1/1     Running   0          19m
         ```
 
+        </div>
+
     2.  Check the ClusterServiceVersion (CSV) YAML manifest to see that the LSO is available in the `openshift-local-storage` project:
 
         ``` terminal
         $ oc get csvs -n openshift-local-storage
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -147,13 +196,21 @@ The LSO is not installed in OpenShift Container Platform by default. Use the fol
         local-storage-operator.4.2.26-202003230335   Local Storage   4.2.26-202003230335              Succeeded
         ```
 
-<div class="formalpara-title">
+        </div>
 
-**Result**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 After all checks have passed, the LSO is installed successfully.
+
+</div>
 
 ## Installing the Local Storage Operator by using the OpenShift Container Platform web console
 
@@ -161,9 +218,27 @@ Install the Local Storage Operator (LSO) to provision and manage local persisten
 
 The LSO is not installed in OpenShift Container Platform by default. Use the following procedure to install and configure this Operator to enable local volumes in your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an `openshift-local-storage` project.
 
 - Access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -179,17 +254,31 @@ The LSO is not installed in OpenShift Container Platform by default. Use the fol
 
 7.  Click **Install**.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 After finishing, the LSO is listed in the **Installed Operators** section of the OpenShift Container Platform web console.
 
+</div>
+
 # Provisioning local volumes by using the Local Storage Operator
 
 Provision local volumes for persistent storage by creating a `LocalVolume` resource that defines nodes and device paths, because local volumes cannot be created by dynamic provisioning and must be statically provisioned by the Local Storage Operator (LSO).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The LSO is installed.
 
@@ -201,9 +290,23 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
 
   - It does not contain partitions.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the local volume resource. This resource must define the nodes and paths to the local volumes.
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - Editing the `LocalVolume` object does not change the `fsType` or `volumeMode` of existing persistent volumes because doing so might result in a destructive operation.
 
@@ -211,9 +314,11 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
 
     </div>
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example: Filesystem**
+    <div class="title">
+
+    Example: Filesystem
 
     </div>
 
@@ -242,6 +347,8 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
             - /path/to/device
     ```
 
+    </div>
+
     - `metadata.namespace`: Specifies the namespace where the LSO is installed.
 
     - `spec.nodeSelector`: (Optional) A node selector containing a list of nodes where the local storage volumes are attached. This example uses the node hostnames, obtained from `oc get node`. If a value is not defined, then the LSO will attempt to find matching disks on all available nodes.
@@ -252,25 +359,21 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
 
     - `spec.storageClassDevices.volumeMode`: Specifies the volume mode, either `Filesystem` or `Block`, that defines the type of local volumes.
 
-      <div class="note">
-
-      A raw block volume (`volumeMode: Block`) is not formatted with a file system. Use this mode only if any application running on the pod can use raw block devices.
-
-      </div>
+      > [!NOTE]
+      > A raw block volume (`volumeMode: Block`) is not formatted with a file system. Use this mode only if any application running on the pod can use raw block devices.
 
     - `spec.storageClassDevices.fsType`: The file system that is created when the local volume is mounted for the first time.
 
     - `spec.storageClassDevices.devicePaths`: The path containing a list of local storage devices to choose from. Replace this value with your actual local disks filepath to the `LocalVolume` resource `by-id`, such as `/dev/disk/by-id/wwn`. PVs are created for these local disks when the provisioner is deployed successfully.
 
-      <div class="note">
+      > [!NOTE]
+      > If you are running OpenShift Container Platform with RHEL KVM, you must assign a serial number to your VM disk. Otherwise, the VM disk can not be identified after reboot. You can use the `virsh edit <VM>` command to add the `<serial>mydisk</serial>` definition.
 
-      If you are running OpenShift Container Platform with RHEL KVM, you must assign a serial number to your VM disk. Otherwise, the VM disk can not be identified after reboot. You can use the `virsh edit <VM>` command to add the `<serial>mydisk</serial>` definition.
+      <div class="formalpara">
 
-      </div>
+      <div class="title">
 
-      <div class="formalpara-title">
-
-      **Example: Block**
+      Example: Block
 
       </div>
 
@@ -298,6 +401,8 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
               - /path/to/device
       ```
 
+      </div>
+
     - `metadata.namespace`: Specifies the namespace where the LSO is installed.
 
     - `spec.nodeSelector`: (Optional) A node selector containing a list of nodes where the local storage volumes are attached. This example uses the node hostnames, obtained from `oc get node`. If a value is not defined, then the LSO will attempt to find matching disks on all available nodes.
@@ -310,11 +415,8 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
 
     - `spec.storageClassDevices.devicePaths`: Specifies the path containing a list of local storage devices to choose from. Replace this value with your actual local disks filepath to the `LocalVolume` resource `by-id`, such as `dev/disk/by-id/wwn`. PVs are created for these local disks when the provisioner is deployed successfully.
 
-      <div class="note">
-
-      If you are running OpenShift Container Platform with RHEL KVM, you must assign a serial number to your VM disk. Otherwise, the VM disk can not be identified after reboot. You can use the `virsh edit <VM>` command to add the `<serial>mydisk</serial>` definition.
-
-      </div>
+      > [!NOTE]
+      > If you are running OpenShift Container Platform with RHEL KVM, you must assign a serial number to your VM disk. Otherwise, the VM disk can not be identified after reboot. You can use the `virsh edit <VM>` command to add the `<serial>mydisk</serial>` definition.
 
 2.  Create the local volume resource in your OpenShift Container Platform cluster. Specify the file you just created:
 
@@ -328,9 +430,11 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
     $ oc get all -n openshift-local-storage
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -354,6 +458,8 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
     replicaset.apps/local-storage-operator-7db4bd9f79   1         1         1       14m
     ```
 
+    </div>
+
     Note the desired and current number of daemon set processes. A desired count of `0` indicates that the label selectors were invalid.
 
 4.  Verify that the persistent volumes were created by running the following command:
@@ -362,9 +468,11 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
     $ oc get pv
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -375,29 +483,47 @@ Provision local volumes for persistent storage by creating a `LocalVolume` resou
     local-pv-3fa1c73    100Gi      RWO            Delete           Available           local-sc                48m
     ```
 
+    </div>
+
+</div>
+
 # Provisioning local volumes without the Local Storage Operator
 
 Provision local volumes manually by defining `PersistentVolume` objects without using the Local Storage Operator (LSO), though this approach includes risk of potential data leaks and the operator is recommended for automating device lifecycle.
 
-<div class="important">
+> [!IMPORTANT]
+> Manual provisioning of persistent volumes (PVs) includes the risk of potential data leaks across PV reuse when persistent volume claims (PVCs) are deleted. The Local Storage Operator is recommended for automating the life cycle of devices when provisioning local PVs.
 
-Manual provisioning of persistent volumes (PVs) includes the risk of potential data leaks across PV reuse when persistent volume claims (PVCs) are deleted. The Local Storage Operator is recommended for automating the life cycle of devices when provisioning local PVs.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Local disks are attached to the OpenShift Container Platform nodes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Define the PV. Create a file, such as `example-pv-filesystem.yaml` or `example-pv-block.yaml`, with the `PersistentVolume` object definition. This resource must define the nodes and paths to the local volumes.
 
-    <div class="note">
+    > [!NOTE]
+    > Do not use different storage class names for the same device. Doing so creates multiple PVs.
 
-    Do not use different storage class names for the same device. Doing so creates multiple PVs.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example-pv-filesystem.yaml**
+    Example-pv-filesystem.yaml
 
     </div>
 
@@ -426,21 +552,22 @@ Manual provisioning of persistent volumes (PVs) includes the risk of potential d
               - example-node
     ```
 
+    </div>
+
     - `spec.volumeMode`: Specifies the volume mode, either `Filesystem` or `Block`, that defines the type of PVs.
 
     - `spec.storageClassName`: Specifies the name of the storage class to use when creating PV resources. Use a storage class that uniquely identifies this set of PVs.
 
     - `spec.local.path`: Specifies the path containing a list of local storage devices to choose from, or a directory. You can only specify a directory with `Filesystem` `volumeMode`.
 
-      <div class="note">
+      > [!NOTE]
+      > A raw block volume (`volumeMode: block`) is not formatted with a file system. Use this mode only if any application running on the pod can use raw block devices.
 
-      A raw block volume (`volumeMode: block`) is not formatted with a file system. Use this mode only if any application running on the pod can use raw block devices.
+      <div class="formalpara">
 
-      </div>
+      <div class="title">
 
-      <div class="formalpara-title">
-
-      **Example-pv-block.yaml**
+      Example-pv-block.yaml
 
       </div>
 
@@ -469,6 +596,8 @@ Manual provisioning of persistent volumes (PVs) includes the risk of potential d
                 - example-node
       ```
 
+      </div>
+
     - spe\`c.volumeMode\`: Specifies the volume mode, either `Filesystem` or `Block`, that defines the type of PVs.
 
     - `spec.storageClassName`: Specifies the name of the storage class to use when creating PV resources. Be sure to use a storage class that uniquely identifies this set of PVs.
@@ -487,9 +616,11 @@ Manual provisioning of persistent volumes (PVs) includes the risk of potential d
     $ oc get pv
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -501,11 +632,33 @@ Manual provisioning of persistent volumes (PVs) includes the risk of potential d
     example-pv3             1Gi        RWO            Delete           Bound       local-storage/pvc3   local-sc            12h
     ```
 
+    </div>
+
+</div>
+
 # Creating the local volume persistent volume claim
 
 Create a persistent volume claim (PVC) to access local volumes in your pod, because local volumes must be statically created and cannot use dynamic provisioning.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Persistent volumes have been created using the local volume provisioner.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the PVC using the corresponding storage class:
 
@@ -538,11 +691,31 @@ Create a persistent volume claim (PVC) to access local volumes in your pod, beca
     $ oc create -f <local-pvc>.yaml
     ```
 
+</div>
+
 # Attach the local claim
 
 After a local volume has been mapped to a persistent volume claim (PVC), attach the claim to a pod by specifying it in the pod specification to make the local storage available to the application.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A persistent volume claim exists in the same namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Include the defined claim in the resource spec. The following example declares the persistent volume claim inside a pod:
 
@@ -574,29 +747,30 @@ After a local volume has been mapped to a persistent volume claim (PVC), attach 
     $ oc create -f <local-pod>.yaml
     ```
 
+</div>
+
 # Automating discovery and provisioning for local storage devices
 
 Automate local storage discovery and provisioning using the Local Storage Operator (LSO) to simplify installation when dynamic provisioning is not available, such as with bare metal, VMware vSphere, or Amazon Web Services (AWS) instances with attached devices.
 
-<div class="important">
+> [!IMPORTANT]
+> Automatic discovery and provisioning is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Automatic discovery and provisioning is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-<div class="important">
-
-Automatic discovery and provisioning is fully supported when used to deploy Red Hat OpenShift Data Foundation on-premise or with platform-agnostic deployment.
-
-</div>
+> [!IMPORTANT]
+> Automatic discovery and provisioning is fully supported when used to deploy Red Hat OpenShift Data Foundation on-premise or with platform-agnostic deployment.
 
 Use the following procedure to automatically discover local devices, and to automatically provision local volumes for selected devices.
 
-<div class="warning">
+> [!WARNING]
+> Use the `LocalVolumeSet` object with caution. When you automatically provision persistent volumes (PVs) from local disks, the local PVs might claim all devices that match. If you are using a `LocalVolumeSet` object, make sure the LSO is the only entity managing local devices on the node. Creating multiple instances of a `LocalVolumeSet` that target a node more than once is not supported.
 
-Use the `LocalVolumeSet` object with caution. When you automatically provision persistent volumes (PVs) from local disks, the local PVs might claim all devices that match. If you are using a `LocalVolumeSet` object, make sure the LSO is the only entity managing local devices on the node. Creating multiple instances of a `LocalVolumeSet` that target a node more than once is not supported.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -607,6 +781,16 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
 - You have attached local disks to OpenShift Container Platform nodes.
 
 - You have access to the OpenShift Container Platform web console and the `oc` command-line interface (CLI).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable automatic discovery of local devices from the OpenShift Container Platform web console:
 
@@ -646,11 +830,8 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
 
     4.  Click **All nodes** or **Select nodes** to apply filters accordingly.
 
-        <div class="note">
-
-        Only worker nodes are available, regardless of whether you filter using **All nodes** or **Select nodes**.
-
-        </div>
+        > [!NOTE]
+        > Only worker nodes are available, regardless of whether you filter using **All nodes** or **Select nodes**.
 
     5.  Select the disk type, mode, size, and limit that you want to apply to the local volume set, and then click **Create**.
 
@@ -660,9 +841,11 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
 
     1.  Create an object YAML file to define the local volume set, such as `local-volume-set.yaml`, as shown in the following example:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example local volume set YAML file**
+        <div class="title">
+
+        Example local volume set YAML file
 
         </div>
 
@@ -700,6 +883,8 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
               - ST2000LM
         ```
 
+        </div>
+
         - `spec.storageClassName`: Determines the storage class that is created for persistent volumes that are provisioned from discovered devices. The LSO automatically creates the storage class if it does not exist. Be sure to use a storage class that uniquely identifies this set of local volumes.
 
         - `spec.deviceInclusionSpec.deviceTypes`: When using the local volume set feature, the LSO does not support the use of logical volume management (LVM) devices.
@@ -716,9 +901,11 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
         $ oc get pv
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -729,13 +916,21 @@ Use the `LocalVolumeSet` object with caution. When you automatically provision p
         local-pv-3fa1c73    100Gi      RWO            Delete           Available           local-sc                48m
         ```
 
-<div class="formalpara-title">
+        </div>
 
-**Next steps**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Next steps
 
 </div>
 
 Results are deleted after they are removed from the node. Symlinks must be manually removed.
+
+</div>
 
 # Using tolerations with Local Storage Operator pods
 
@@ -745,9 +940,14 @@ Taints can be applied to nodes to prevent them from running general workloads. T
 
 You apply tolerations to the LSO pod through the `LocalVolume` resource and apply taints to a node through the node specification. A taint on a node instructs the node to repel all pods that do not tolerate the taint. Using a specific taint that is not on other pods ensures that the LSO pod can also run on that node.
 
-<div class="important">
+> [!IMPORTANT]
+> Taints and tolerations consist of a key, value, and effect. As an argument, it is expressed as `key=value:effect`. An operator allows you to leave one of these parameters empty.
 
-Taints and tolerations consist of a key, value, and effect. As an argument, it is expressed as `key=value:effect`. An operator allows you to leave one of these parameters empty.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -756,6 +956,16 @@ Taints and tolerations consist of a key, value, and effect. As an argument, it i
 - Local disks are attached to OpenShift Container Platform nodes with a taint.
 
 - Tainted nodes are expected to provision local storage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the YAML file that defines the `Pod` and add the `LocalVolume` spec, as shown in the following example:
 
@@ -796,13 +1006,19 @@ Taints and tolerations consist of a key, value, and effect. As an argument, it i
           operator: Exists
     ```
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 The defined tolerations is passed to the resulting daemon sets, allowing the diskmaker and provisioner pods to be created for nodes that contain the specified taints.
+
+</div>
 
 # Local Storage Operator Metrics
 
@@ -830,6 +1046,14 @@ For more information about metrics, see "Accessing metrics as an administrator".
 
 To monitor Local Storage Operator (LSO) disk discovery, volume provisioning, and storage utilization, enable LSO metrics by configuring cluster monitoring on the Operator namespace.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Enable local metrics by doing one of the following:
 
     - When installing the LSO from the software catalog in the web console, select the **Enable Operator recommended cluster monitoring on this Namespace** checkbox.
@@ -840,6 +1064,8 @@ To monitor Local Storage Operator (LSO) disk discovery, volume provisioning, and
       $ oc label ns/openshift-local-storage openshift.io/cluster-monitoring=true
       ```
 
+</div>
+
 # Deleting the Local Storage Operator resources
 
 Occasionally you need to delete local volumes (LVs) and local volume sets (LVSs) when no longer needed or uninstall the Local Storage Operator, ensuring persistent volumes are properly released and backed up before removal to prevent data loss.
@@ -848,13 +1074,28 @@ Occasionally you need to delete local volumes (LVs) and local volume sets (LVSs)
 
 Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by releasing bound persistent volumes (PV), deleting the LV or LVS, and cleaning up any PVs with `Retain` reclaim policy.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The PV must be in a `Released` or `Available` state.
 
-  <div class="warning">
+  > [!WARNING]
+  > Deleting a PV that is still in use can result in data loss or corruption.
 
-  Deleting a PV that is still in use can result in data loss or corruption.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If there are any bound PVs owned by the LV or LVS that is being deleted, delete the corresponding persistent volume claims (PVCs) to release the PVs:
 
@@ -866,9 +1107,11 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
 
         `<LV_LVS_name>` is the name of the LV or LVS.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -877,6 +1120,8 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
         local-pv-3fa1c73    5Gi        RWO            Delete           Available                         slow           <unset>                          28s
         local-pv-1cec77cf   30Gi       RWX            Retain           Bound       openshift/storage     my-sc          <unset>                          168d
         ```
+
+        </div>
 
         Bound PVs have a status of `Bound` and their corresponding PVCs appear in the `CLAIM` column. In the preceding example, PV `local-pv-1cec77cf` is bound, and its PVC is `openshift/storage`.
 
@@ -906,11 +1151,8 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
 
 3.  If any PV owned by the LV or LVS has a `Retain` reclaim policy, back up any important data, and then delete the PV:
 
-    <div class="note">
-
-    PVs with a `Delete` policy are automatically deleted when you delete the LVs or LVS.
-
-    </div>
+    > [!NOTE]
+    > PVs with a `Delete` policy are automatically deleted when you delete the LVs or LVS.
 
     1.  To find PVs with `Retain` reclaim policy, run the following command:
 
@@ -918,9 +1160,11 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
         $ oc get pv
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -928,6 +1172,8 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
         NAME                CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                STORAGECLASS   REASON   AGE
         local-pv-1cec77cf   30Gi       RWX            Retain           Available                        my-sc                   168d
         ```
+
+        </div>
 
         In this example, PV `local-pv-1cec77cf` has a `Retain` reclaim policy and needs to be manually deleted.
 
@@ -941,17 +1187,34 @@ Remove local volumes (LVs) and local volume sets (LVSs) when no longer needed by
 
         In this example, delete PV `local-pv-1cec77cf`.
 
+</div>
+
 ## Uninstalling the Local Storage Operator
 
 Safely uninstall the Local Storage Operator (LSO) when local storage persistent volumes (PVs) are no longer in use by removing all local volume resources, uninstalling the operator, deleting remaining PVs, and removing the project.
 
-<div class="warning">
+> [!WARNING]
+> Uninstalling the LSO while local storage PVs are still in use is not recommended. Although the PVs remain after removing the Operator, there might be indeterminate behavior if the Operator is uninstalled and reinstalled without removing the PVs and local storage resources.
 
-Uninstalling the LSO while local storage PVs are still in use is not recommended. Although the PVs remain after removing the Operator, there might be indeterminate behavior if the Operator is uninstalled and reinstalled without removing the PVs and local storage resources.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete any local volume resources installed in the project, such as `localvolume`, `localvolumeset`, and `localvolumediscovery` by running the following commands:
 
@@ -992,6 +1255,8 @@ Uninstalling the LSO while local storage PVs are still in use is not recommended
     ``` terminal
     $ oc delete project openshift-local-storage
     ```
+
+</div>
 
 # Additional resources
 

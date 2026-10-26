@@ -14,13 +14,29 @@ To prevent a `certificate signed by unknown authority` error, you must include a
 
 - Back up an application.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OADP Operator.
 
 - You installed the ODF Operator.
 
 - You have an application with a database running in a separate namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an OBC manifest to request a NooBaa bucket as shown in the following example:
 
@@ -57,9 +73,11 @@ To prevent a `certificate signed by unknown authority` error, you must include a
 
     `test-obc` is the name of the OBC.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -76,15 +94,19 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     s3.openshift-storage.svc
     ```
 
+    </div>
+
 4.  To get the bucket credentials from the `secret` object, run the following command:
 
     ``` terminal
     $ oc extract --to=- secret/test-obc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -94,6 +116,8 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     # AWS_SECRET_ACCESS_KEY
     YXf...+NaCkdyC3QPym
     ```
+
+    </div>
 
 5.  Create a `cloud-credentials` file with the object bucket credentials by using the following example configuration:
 
@@ -119,9 +143,11 @@ To prevent a `certificate signed by unknown authority` error, you must include a
       -o jsonpath='{.data.service-ca\.crt}' | base64 -w0; echo
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -129,6 +155,8 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0...
     ....gpwOHMwaG9CRmk5a3....FLS0tLS0K
     ```
+
+    </div>
 
 8.  Configure the `DataProtectionApplication` CR manifest file with the bucket name and CA certificate as shown in the following example:
 
@@ -191,9 +219,11 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     $ oc get dpa -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -222,15 +252,19 @@ To prevent a `certificate signed by unknown authority` error, you must include a
       resourceVersion: ""
     ```
 
+    </div>
+
 11. Verify that the backup storage location (BSL) is available by running the following command:
 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -238,6 +272,8 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     NAME           PHASE       LAST VALIDATED   AGE   DEFAULT
     dpa-sample-1   Available   3s               15s   true
     ```
+
+    </div>
 
 12. Configure the `Backup` CR by using the following example:
 
@@ -263,15 +299,27 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     $ oc apply -f <backup_cr_filename>
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `Backup` object is in the `Completed` phase by running the following command:
 
   ``` terminal
   $ oc describe backup test-backup -n openshift-adp
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -294,3 +342,7 @@ To prevent a `certificate signed by unknown authority` error, you must include a
     Version:            1
   Events:               <none>
   ```
+
+  </div>
+
+</div>

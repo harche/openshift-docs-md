@@ -6,13 +6,28 @@ Update the control plane machine set specification to modify control plane machi
 
 The Control Plane Machine Set Operator monitors the control plane machines and compares their configuration with the specification in the control plane machine set CR. When there is a discrepancy between the specification in the CR and the configuration of a control plane machine, the Operator marks that control plane machine for replacement.
 
-<div class="note">
+> [!NOTE]
+> For more information about the parameters in the CR, see "Control plane machine set configuration".
 
-For more information about the parameters in the CR, see "Control plane machine set configuration".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Your cluster has an activated and functioning Control Plane Machine Set Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit your control plane machine set CR by running the following command:
 
@@ -25,9 +40,21 @@ For more information about the parameters in the CR, see "Control plane machine 
 
 3.  Save your changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
+
 - For clusters that use the default `RollingUpdate` update strategy, the control plane machine set propagates changes to your control plane configuration automatically.
 
 - For clusters that are configured to use the `OnDelete` update strategy, you must replace your control plane machines manually.
+
+</div>
 
 ## Automatic updates to the control plane configuration
 
@@ -51,6 +78,14 @@ If multiple control plane machines are deleted, the Operator creates all of the 
 
 Replace a control plane machine to apply updated configurations or recover from hardware issues while maintaining cluster stability. The control plane machine set replaces the deleted machine with one using the specification in the control plane machine set custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - If your cluster runs on Red Hat OpenStack Platform (RHOSP) and you need to evacuate a compute server, such as for an upgrade, you must disable the RHOSP compute node that the machine runs on by running the following command:
 
   ``` terminal
@@ -58,6 +93,16 @@ Replace a control plane machine to apply updated configurations or recover from 
   ```
 
   For more information, see [Preparing to migrate](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_the_compute_service_for_instance_creation/assembly_migrating-virtual-machine-instances-between-compute-nodes_migrating-instances#proc_preparing-to-migrate_migrating-instances) in the RHOSP documentation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List the control plane machines in your cluster by running the following command:
 
@@ -77,17 +122,16 @@ Replace a control plane machine to apply updated configurations or recover from 
 
     where `<control_plane_machine_name>` specifies the name of the control plane machine to delete.
 
-    <div class="note">
+    > [!NOTE]
+    > If you delete multiple control plane machines, the control plane machine set replaces them according to the configured update strategy:
+    >
+    > - For clusters that use the default `RollingUpdate` update strategy, the Operator replaces one machine at a time until each machine is replaced.
+    >
+    > - For clusters that are configured to use the `OnDelete` update strategy, the Operator creates all of the required replacement machines simultaneously.
+    >
+    > Both strategies maintain etcd health during control plane machine replacement.
 
-    If you delete multiple control plane machines, the control plane machine set replaces them according to the configured update strategy:
-
-    - For clusters that use the default `RollingUpdate` update strategy, the Operator replaces one machine at a time until each machine is replaced.
-
-    - For clusters that are configured to use the `OnDelete` update strategy, the Operator creates all of the required replacement machines simultaneously.
-
-    Both strategies maintain etcd health during control plane machine replacement.
-
-    </div>
+</div>
 
 # Additional resources
 

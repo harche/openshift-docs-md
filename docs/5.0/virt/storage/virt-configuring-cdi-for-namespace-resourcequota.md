@@ -10,7 +10,25 @@ The `HyperConverged` custom resource (CR) defines the user configuration for the
 
 Modify the default settings for CPU and memory requests and limits for your use case by adding the `spec.storage.workloadResourceRequirements` stanza to the `HyperConverged` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `HyperConverged` CR by running the following command:
 
@@ -37,6 +55,8 @@ Modify the default settings for CPU and memory requests and limits for your use 
     ```
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
+
+</div>
 
 # Additional resources
 

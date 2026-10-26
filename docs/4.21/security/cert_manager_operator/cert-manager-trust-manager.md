@@ -1,12 +1,9 @@
 The trust-manager operand simplifies the distribution of certificate authority (CA) certificates across OpenShift Container Platform clusters. As an administrator, you can configure the operand according to the cluster requirements and manage trust bundles efficiently.
 
-<div class="important">
-
-Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The trust-manager operand provides the following benefits:
 
@@ -24,17 +21,32 @@ The trust-manager operand provides the following benefits:
 
 You can install the trust-manager operand to enable the automated distribution of trust bundles across your cluster namespaces. The trust-manager operand is not installed by default.
 
-<div class="important">
+> [!IMPORTANT]
+> Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed cert-manager Operator for Red Hat OpenShift.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable the trust manager add-on feature in the Operator subscription by running the following command:
 
@@ -46,9 +58,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 2.  Create a YAML file, for example, `trust-manager.yaml`, that defines the `TrustManager` custom resource (CR) as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example trust-manager.yaml**
+    <div class="title">
+
+    Example trust-manager.yaml
 
     </div>
 
@@ -82,11 +96,10 @@ For more information about the support scope of Red Hat Technology Preview featu
           example.com/managed-by: "cert-manager-operator"
     ```
 
-    <div class="note">
-
-    Because you can create only one instance of `TrustManager` CR per cluster, the `metadata.name` field must be set to `cluster`.
-
     </div>
+
+    > [!NOTE]
+    > Because you can create only one instance of `TrustManager` CR per cluster, the `metadata.name` field must be set to `cluster`.
 
 3.  Create the `TrustManager` CR by running the following command:
 
@@ -94,15 +107,27 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc create -f trust-manager.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `trust-manager` operand is running successfully by running the following command:
 
   ``` terminal
   $ oc get TrustManager cluster -o jsonpath='{.status.conditions}' | jq
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -125,6 +150,8 @@ For more information about the support scope of Red Hat Technology Preview featu
   ]
   ```
 
+  </div>
+
   The `message` field in the output must have the value `reconciliation successful`.
 
 - Verify that the `trust-manager` deployment is running successfully in the `cert-manager` namespace:
@@ -133,9 +160,11 @@ For more information about the support scope of Red Hat Technology Preview featu
   $ oc get Deployments -l "app.kubernetes.io/name=cert-manager-trust-manager" -n cert-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -144,15 +173,19 @@ For more information about the support scope of Red Hat Technology Preview featu
   trust-manager   1/1     1            1           109s
   ```
 
+  </div>
+
 - Verify that the status of the pod is `Running` by running the following command:
 
   ``` terminal
   $ oc get pods -l "app.kubernetes.io/name=cert-manager-trust-manager" -n cert-manager
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -161,9 +194,21 @@ For more information about the support scope of Red Hat Technology Preview featu
   trust-manager-547bb59b4b-hd6mv    1/1     Running   0          24s
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next step
+
+</div>
 
 - Configuring trust bundle
+
+</div>
 
 # Configure trust bundle
 
@@ -171,17 +216,32 @@ After installing the trust-manager operand, you must use the Bundle custom resou
 
 If you configure your trust bundle to use the default CAs, you do not need to manually provision the source certificates. The controller reads them from the `cert-manager-operator-trusted-ca-bundle` ConfigMap, which is injected by the Cluster Network Operator (CNO) during the Operator installation.
 
-<div class="important">
+> [!IMPORTANT]
+> Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed `trust-manager` operand.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To inject the trust bundle into a specific namespace, apply the required label by running the following command:
 
@@ -213,17 +273,24 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     For more information on bundle configurations, see [trust-manager usage](https://cert-manager.io/docs/trust/trust-manager/#usage).
 
-    <div class="note">
-
-    If your Bundle CR targets a `Secret` object, you must set the `spec.trustManagerConfig.secretTargets.policy` field in your TrustManager CR to `Custom` and add the name of target secret to the `spec.trustManagerConfig.secretTargets.authorizedSecrets` list. If the `spec.trustManagerConfig.secretTargets.policy` field is set to `Disabled`, the Bundle CR fails to create the target secret.
-
-    </div>
+    > [!NOTE]
+    > If your Bundle CR targets a `Secret` object, you must set the `spec.trustManagerConfig.secretTargets.policy` field in your TrustManager CR to `Custom` and add the name of target secret to the `spec.trustManagerConfig.secretTargets.authorizedSecrets` list. If the `spec.trustManagerConfig.secretTargets.policy` field is set to `Disabled`, the Bundle CR fails to create the target secret.
 
 3.  Create the `Bundle` custom resource by running the following command:
 
     ``` terminal
     $ oc create -f bundle.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the status of Bundle CR by running the following command:
 
@@ -252,9 +319,11 @@ For more information about the support scope of Red Hat Technology Preview featu
   $ oc describe secret example-bundle -n trust-bundle-target
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -271,15 +340,19 @@ For more information about the support scope of Red Hat Technology Preview featu
   ca-certificates.crt:  219257 bytes
   ```
 
+  </div>
+
 - Verify the target ConfigMap by running the following command:
 
   ``` terminal
   $ oc get cm example-bundle -n trust-bundle-target
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -288,17 +361,39 @@ For more information about the support scope of Red Hat Technology Preview featu
   example-bundle   1      4m25s
   ```
 
+  </div>
+
+</div>
+
 # Uninstall the trust-manager operand
 
 You can uninstall the trust-manager operand by deleting the TrustManager custom resource (CR). Deleting the TrustManager CR stops the operator from reconciling trust-manager resources, but does not automatically remove the trust-manager deployment or its associated resources.
 
 You must manually delete these resources after deleting the CR if you need a complete cleanup.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have enabled the trust manager feature.
 
 - You have created the `TrustManager` custom resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete any Bundle CRs that you created. Deleting a Bundle CR causes trust-manager to remove the corresponding target ConfigMap and Secret objects from the target namespaces.
 
@@ -340,17 +435,16 @@ You must manually delete these resources after deleting the CR if you need a com
         $ oc delete roles,rolebindings -l "app.kubernetes.io/name=cert-manager-trust-manager" -n <trust_namespace>
         ```
 
+</div>
+
 # Trust manager custom resource fields
 
 You can configure the behavior of the trust-manager operand by modifying the `TrustManager` custom resource (CR).
 
-<div class="important">
-
-Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Distributing certificates by using trust manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The following table lists the parameters for configuring trust-manager settings.
 
@@ -361,94 +455,100 @@ The following table lists the parameters for configuring trust-manager settings.
 <col style="width: 55%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Field</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.controllerConfig.labels</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies a list of key-value pairs to apply as labels to all resources created for the trust manager deployment.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.controllerConfig.annotations</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies a list of key-value pairs to apply as annotations to all resources created for the trust manager deployment.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.affinity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the scheduling constraints for the trust manager pod. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">Assigning Pods to Nodes</a>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.defaultCAPackage</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Configures the default CA package for trust manager. When enabled, the Operator uses the OpenShift Container Platform trusted CA bundle injection mechanism.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.defaultCAPackage.policy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies whether the default CA package feature is enabled. When set to <code>Enabled</code>, the Operator configures the trusted CA bundle to trust manager. When set to <code>Disabled</code>, no default CA package is configured. The default value is <code>Disabled</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>To enable the <code>useDefaultCAs: true</code> setting in your Bundle CR, you must set the value to <code>Enabled</code>.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.filterExpiredCertificates</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies whether trust manager filters out expired certificates from trust bundles before distributing them. When set to <code>Enabled</code>, the expired certificates are removed from bundles. When set to <code>Disabled</code>, the expired certificates are included in bundles. The default value is <code>Disabled</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.logLevel</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the verbosity of trust manager logging. The minimum value is <code>1</code> and the maximum value is <code>5</code>. The default value is <code>1</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.logFormat</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the output format for trust manager logging. The supported formats are <code>text</code> and <code>json</code>. The default value is <code>text</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.nodeSelector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the key-value pairs that limit which nodes can host the trust manager pod. You can specify a maximum of 50 node selectors. For more information, see <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">Assigning Pods to Nodes</a>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.resources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Defines the compute resource requirements for the trust manager pod.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.secretTargets</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Optional. Defines the configuration for writing trust bundles to <code>Secrets</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.secretTargets.authorizedSecrets</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Optional. A list of specific secret names that trust manager is authorized to create and update.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>If <code>spec.trustManagerConfig.secretTargets.policy</code> is set to <code>Custom</code>, you must specify a value. If <code>spec.trustManagerConfig.secretTargets.policy</code> is set to <code>Disabled</code>, you must not specify a value.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.secretTargets.policy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies whether trust manager can write trust bundles to <code>Secrets</code>. When set to <code>Disabled</code>, trust manager cannot write trust bundles to <code>Secrets</code>. When set to <code>Custom</code>, trust manager is granted permission to create and update only the secrets listed in the <code>authorizedSecrets</code> parameter. The default value is <code>Disabled</code>.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.tolerations</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Optional. Allows the trust manager pod to be scheduled on nodes with specific taints. You can specify a maximum of 50 tolerations.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>spec.trustManagerConfig.trustNamespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional. Specifies the namespace where trust manager locates CA certificate sources, such as ConfigMaps and Secrets. This namespace must exist before you create the TrustManager custom resource. The default value is <code>cert-manager</code>.</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>You cannot change the value once set.</p>
 </div></td>
 </tr>

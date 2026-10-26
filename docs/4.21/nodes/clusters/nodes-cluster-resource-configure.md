@@ -81,15 +81,19 @@ For example, the Red Hat build of OpenJDK containers have a default value of 80
 
 For other OpenJDK deployements, the default value of 25% can be changed using the following command:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example**
+<div class="title">
+
+Example
 
 </div>
 
 ``` terminal
 $ java -XX:MaxRAMPercentage=80.0
 ```
+
+</div>
 
 Encouraging the JVM to release unused memory to the operating system, if appropriate
 By default, the OpenJDK does not aggressively return unused memory to the operating system. This could be appropriate for many containerized Java workloads, but notable exceptions include workloads where additional active processes co-exist with a JVM within a container, whether those additional processes are native, additional JVMs, or a combination of the two.
@@ -120,6 +124,14 @@ This does not guarantee that additional options are not required, but is intende
 # Find the memory request and limit from within a pod
 
 You can configure your container to use the Downward API to dynamically discover its memory request and limit from within a pod. This allows your applications to better manage these resources without needing to use the API server.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Configure the pod to add the `MEMORY_REQUEST` and `MEMORY_LIMIT` stanzas:
 
@@ -177,6 +189,16 @@ You can configure your container to use the Downward API to dynamically discover
       $ oc create -f <file_name>.yaml
       ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Access the pod using a remote shell:
 
     ``` terminal
@@ -189,9 +211,11 @@ You can configure your container to use the Downward API to dynamically discover
     $ env | grep MEMORY | sort
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -200,11 +224,12 @@ You can configure your container to use the Downward API to dynamically discover
     MEMORY_REQUEST=402653184
     ```
 
-<div class="note">
-
-The memory limit value can also be read from inside the container by the `/sys/fs/cgroup/memory/memory.limit_in_bytes` file.
+    </div>
 
 </div>
+
+> [!NOTE]
+> The memory limit value can also be read from inside the container by the `/sys/fs/cgroup/memory/memory.limit_in_bytes` file.
 
 # Understanding OOM kill policy
 
@@ -215,6 +240,14 @@ If a process is Out of Memory (OOM) killed, the container could exit immediately
 For example, a container process exited with code 137, indicating it received a SIGKILL signal.
 
 If the container does not exit immediately, use the following stepts to detect if an OOM kill occurred.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Access the pod using a remote shell:
 
@@ -228,9 +261,11 @@ If the container does not exit immediately, use the following stepts to detect i
     $ grep '^oom_kill ' /sys/fs/cgroup/memory/memory.oom_control
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -238,15 +273,19 @@ If the container does not exit immediately, use the following stepts to detect i
     oom_kill 0
     ```
 
+    </div>
+
 3.  Run the following command to provoke an OOM kill:
 
     ``` terminal
     $ sed -e '' </dev/zero
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -254,21 +293,27 @@ If the container does not exit immediately, use the following stepts to detect i
     Killed
     ```
 
+    </div>
+
 4.  Run the following command to see that the OOM kill counter in `/sys/fs/cgroup/memory/memory.oom_control` incremented:
 
     ``` terminal
     $ grep '^oom_kill ' /sys/fs/cgroup/memory/memory.oom_control
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     oom_kill 1
     ```
+
+    </div>
 
     If one or more processes in a pod are OOM killed, when the pod subsequently exits, whether immediately or not, it will have phase **Failed** and reason **OOMKilled**. An OOM-killed pod might be restarted depending on the value of `restartPolicy`. If not restarted, controllers such as the replication controller will notice the pod’s failed status and create a new pod to replace the old one.
 
@@ -278,9 +323,11 @@ If the container does not exit immediately, use the following stepts to detect i
     $ oc get pod test
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -289,15 +336,19 @@ If the container does not exit immediately, use the following stepts to detect i
     test      0/1       OOMKilled   0          1m
     ```
 
+    </div>
+
     - If the pod has not restarted, run the following command to view the pod:
 
       ``` terminal
       $ oc get pod test -o yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -319,15 +370,19 @@ If the container does not exit immediately, use the following stepts to detect i
         phase: Failed
       ```
 
+      </div>
+
     - If restarted, run the following command to view the pod:
 
       ``` terminal
       $ oc get pod test -o yaml
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -351,6 +406,10 @@ If the container does not exit immediately, use the following stepts to detect i
         phase: Running
       ```
 
+      </div>
+
+</div>
+
 # Understanding pod eviction
 
 You can review the following concepts to learn the OpenShift Container Platform pod eviction policy.
@@ -363,9 +422,11 @@ An evicted pod has phase **Failed** and reason **Evicted**. It is not restarted,
 $ oc get pod test
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -374,13 +435,17 @@ NAME      READY     STATUS    RESTARTS   AGE
 test      0/1       Evicted   0          1m
 ```
 
+</div>
+
 ``` terminal
 $ oc get pod test -o yaml
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -396,4 +461,16 @@ status:
   reason: Evicted
 ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding compute resources and containers](../../nodes/clusters/nodes-cluster-overcommit.xml#nodes-cluster-overcommit-reserving-memory_nodes-cluster-overcommit)
+
+</div>

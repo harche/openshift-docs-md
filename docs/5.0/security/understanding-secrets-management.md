@@ -25,14 +25,32 @@ You can integrate the External Secrets Operator with other OpenShift Container P
 Securing Red Hat OpenShift GitOps by using External Secrets Operator short-lived tokens
 To reduce the security risk of compromised credentials, you can configure the External Secrets Operator to generate short-lived tokens. Red Hat OpenShift GitOps can then use these temporary tokens to securely authenticate when accessing GitHub repositories. You can refer to an example of the integration in the External Secrets Operator and GitOps demonstration.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [External Secrets Operator and GitOps demonstration](https://interact.redhat.com/share/tcwyXElfYLWTvHl5dJ5n)
 
 - [Zero trust GitOps: Build a secure, secretless GitOps pipeline](https://developers.redhat.com/articles/2026/03/13/zero-trust-gitops-build-secure-secretless-gitops-pipeline)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Secrets Store Container Storage Interface Driver Operator](../storage/container_storage_interface/persistent-storage-csi-secrets-store.xml#persistent-storage-csi-secrets-store)
 
 - [External Secrets Operator for Red Hat OpenShift](../security/external_secrets_operator/index.xml#external-secrets-operator-about)
 
 - [cert-manager Operator for Red Hat OpenShift](../security/cert_manager_operator/index.xml#cert-manager-operator-about)
+
+</div>

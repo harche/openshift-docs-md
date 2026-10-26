@@ -28,9 +28,17 @@ Submit a support case to resolve a cluster issue that is affecting the ability o
 
 You can submit a support case to Red Hat Support by using the Customer Support page. Include data that you collected about your issue with your support request.
 
-# Creating a Jira issue
+# Report a bug in OpenShift Virtualization
 
 To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Access the [RHIR](https://access.redhat.com/labs/rhir/?product=cnv).
 
@@ -52,15 +60,14 @@ To report a bug, use the Red Hat Issue Router (RHIR), which is available in the
 
 6.  Review the details of the bug you created.
 
+</div>
+
 # Self-service Technical Supportability Review
 
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
 
-<div class="note">
-
-The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
-
-</div>
+> [!NOTE]
+> The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
 
 The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
 
@@ -85,13 +92,23 @@ To run a self-service review, upload your cluster’s `must-gather` data to the 
 
 The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
 
+## Additional resources
+
 - [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
 
 - [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255)
 
-# Provide feedback on OpenShift Virtualization documentation
+# Report a OpenShift Virtualization documentation issue
 
 To report an error or request an enhancement in the documentation, log in to your Red Hat Jira account and submit an issue. If you do not have a Red Hat Jira account, you are prompted to create an account.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?priority=1003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563) and in the **Component** field, select **CNV Documentation**.
 
@@ -101,21 +118,23 @@ To report an error or request an enhancement in the documentation, log in to you
 
 4.  Click **Create**.
 
+</div>
+
 # Web console monitoring
 
 Monitor cluster and virtual machine (VM) health with the OpenShift Container Platform web console.
 
 The OpenShift Container Platform web console displays resource usage, alerts, events, and trends for your cluster and for OpenShift Virtualization components and resources.
 
-| Page                                                                                                               | Description                                                    |
-|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| **Virtualization** → **VirtualMachines** → **Overview** page                                                       | Cluster details, status, alerts, inventory, and resource usage |
-| **Virtualization** → **VirtualMachines** → **Overview** → **Overview** tab                                         | OpenShift Virtualization resources, usage, alerts, and status  |
-| **Virtualization** → **Migrations** page                                                                           | Progress of live migrations                                    |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** tab                                                | CPU, memory, and storage usage summary                         |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
-| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
+| Page | Description |
+|----|----|
+| **Virtualization** → **VirtualMachines** → **Overview** page | Cluster details, status, alerts, inventory, and resource usage |
+| **Virtualization** → **VirtualMachines** → **Overview** → **Overview** tab | OpenShift Virtualization resources, usage, alerts, and status |
+| **Virtualization** → **Migrations** page | Progress of live migrations |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** tab | CPU, memory, and storage usage summary |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Metrics** tab | VM resource usage, storage, network, and migration |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Events** tab | List of VM events |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status |
 
 Web console pages for monitoring and troubleshooting
 
@@ -125,6 +144,6 @@ Web console pages for monitoring and troubleshooting
 
 - [Collecting data about your environment](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-data-about-your-environment_virt-collecting-virt-data)
 
-- [Using the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
+- [Use the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
 
 - [Red Hat Jira account](https://redhat.atlassian.net/jira)

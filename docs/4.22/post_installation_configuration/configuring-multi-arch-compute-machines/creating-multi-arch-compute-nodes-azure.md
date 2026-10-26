@@ -8,9 +8,27 @@ You can generate a 64-bit x86 boot image or a 64-bit ARM boot image by using the
 
 The procedure example describes how to manually generate a 64-bit ARM boot image. If you want to generate a 64-bit x86 boot image, replace `aarch64` with `x86_64`; Additionally, replace any instances of `rhcos-arm64` with `rhcos-x86_64`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the Azure CLI (`az`).
 
 - You created a single-architecture Azure installer-provisioned cluster with the multi-architecture installer binary.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to your Azure account by running the following command:
 
@@ -74,9 +92,11 @@ The procedure example describes how to manually generate a 64-bit ARM boot image
     $ az storage blob show -c ${CONTAINER_NAME} -n ${BLOB_NAME} --account-name ${STORAGE_ACCOUNT_NAME} | jq .properties.copy
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -92,6 +112,8 @@ The procedure example describes how to manually generate a 64-bit ARM boot image
      "statusDescription": null
     }
     ```
+
+    </div>
 
     If the status parameter displays the `success` object, the copying process is complete.
 
@@ -129,15 +151,21 @@ The procedure example describes how to manually generate a 64-bit ARM boot image
 
     The following example image ID is used in the `recourseID` parameter of the compute machine set:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `resourceID`**
+    <div class="title">
+
+    Example `resourceID`
 
     </div>
 
     ``` terminal
     /resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Compute/galleries/${GALLERY_NAME}/images/rhcos-arm64/versions/1.0.0
     ```
+
+    </div>
+
+</div>
 
 # Adding a multi-architecture compute machine set to your Azure cluster
 
@@ -151,9 +179,14 @@ You can add multi-architecture compute machines to a multi-architecture cluster 
 
 To create a custom compute machine set on Azure, see "Creating a compute machine set on Azure".
 
-<div class="note">
+> [!NOTE]
+> Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
-Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` custom resource. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -163,13 +196,25 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 - You used the installation program to create a 64-bit ARM or 64-bit x86 single-architecture cluster with the multi-architecture installer binary.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the OpenShift CLI (`oc`).
 
 2.  Create a YAML file and add the configuration to create a compute machine set to control the 64-bit ARM or 64-bit x86 compute nodes in your cluster.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `MachineSet` object for an Azure 64-bit ARM or x86 compute node**
+    <div class="title">
+
+    Example `MachineSet` object for an Azure 64-bit ARM or x86 compute node
 
     </div>
 
@@ -233,6 +278,8 @@ Before adding a secondary architecture node to your cluster, it is recommended t
               zone: "<zone>"
     ```
 
+    </div>
+
     where:
 
     `image.resourceID`
@@ -249,7 +296,15 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
     - Replace `<file_name>` with the name of the YAML file with compute machine set configuration. For example: `arm64-machine-set-0.yaml`, or `amd64-machine-set-0.yaml`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the new machines are running by running the following command:
 
@@ -259,9 +314,11 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
     The output must include the machine set that you created.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -270,11 +327,15 @@ Before adding a secondary architecture node to your cluster, it is recommended t
     <infrastructure_id>-machine-set-0                   2        2      2          2  10m
     ```
 
+    </div>
+
 2.  You can check if the nodes are ready and schedulable by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
+
+</div>
 
 # Additional resources
 

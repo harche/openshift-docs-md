@@ -9,20 +9,14 @@ You can use OADP to back up all applications on the OpenShift Platform, or you c
 
 OADP backs up Kubernetes objects and internal images by saving them as an archive file on object storage. OADP backs up persistent volumes (PVs) by creating snapshots with the native cloud snapshot API or with the Container Storage Interface (CSI). For cloud providers that do not support snapshots, OADP backs up resources and PV data with Restic.
 
-<div class="note">
-
-You must exclude Operators from the backup of an application for backup and restore to succeed.
-
-</div>
+> [!NOTE]
+> You must exclude Operators from the backup of an application for backup and restore to succeed.
 
 Restore
 You can restore resources and PVs from a backup. You can restore all objects in a backup or filter the objects by namespace, PV, or label.
 
-<div class="note">
-
-You must exclude Operators from the backup of an application for backup and restore to succeed.
-
-</div>
+> [!NOTE]
+> You must exclude Operators from the backup of an application for backup and restore to succeed.
 
 Schedule
 You can schedule backups at specified intervals.
@@ -36,18 +30,18 @@ Review the default Velero plugins provided by OpenShift API for Data Protection 
 
 OADP also provides plugins for OpenShift Container Platform resource backups, OpenShift Virtualization resource backups, and Container Storage Interface (CSI) snapshots.
 
-| OADP plugin                                   | Function                                                                       | Storage location                          |
-|-----------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------|
-| `aws`                                         | Backs up and restores Kubernetes objects.                                      | AWS S3                                    |
-| Backs up and restores volumes with snapshots. | AWS EBS                                                                        |                                           |
-| `azure`                                       | Backs up and restores Kubernetes objects.                                      | Microsoft Azure Blob storage              |
-| Backs up and restores volumes with snapshots. | Microsoft Azure Managed Disks                                                  |                                           |
-| `gcp`                                         | Backs up and restores Kubernetes objects.                                      | Google Cloud Storage                      |
-| Backs up and restores volumes with snapshots. | Google Compute Engine Disks                                                    |                                           |
-| `openshift`                                   | Backs up and restores OpenShift Container Platform resources. <sup>\[1\]</sup> | Object store                              |
-| `kubevirt`                                    | Backs up and restores OpenShift Virtualization resources. <sup>\[2\]</sup>     | Object store                              |
-| `csi`                                         | Backs up and restores volumes with CSI snapshots. <sup>\[3\]</sup>             | Cloud storage that supports CSI snapshots |
-| `hypershift`                                  | Backs up and restores HyperShift hosted cluster resources. <sup>\[4\]</sup>    | Object store                              |
+| OADP plugin | Function | Storage location |
+|----|----|----|
+| `aws` | Backs up and restores Kubernetes objects. | AWS S3 |
+| Backs up and restores volumes with snapshots. | AWS EBS |  |
+| `azure` | Backs up and restores Kubernetes objects. | Microsoft Azure Blob storage |
+| Backs up and restores volumes with snapshots. | Microsoft Azure Managed Disks |  |
+| `gcp` | Backs up and restores Kubernetes objects. | Google Cloud Storage |
+| Backs up and restores volumes with snapshots. | Google Compute Engine Disks |  |
+| `openshift` | Backs up and restores OpenShift Container Platform resources. <sup>\[1\]</sup> | Object store |
+| `kubevirt` | Backs up and restores OpenShift Virtualization resources. <sup>\[2\]</sup> | Object store |
+| `csi` | Backs up and restores volumes with CSI snapshots. <sup>\[3\]</sup> | Cloud storage that supports CSI snapshots |
+| `hypershift` | Backs up and restores HyperShift hosted cluster resources. <sup>\[4\]</sup> | Object store |
 
 OADP plugins
 
@@ -63,7 +57,17 @@ OADP plugins
 
 4.  Do not add the `hypershift` plugin in the `DataProtectionApplication` custom resource if the cluster is not a HyperShift hosted cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Custom plugins](https://velero.io/docs/v1.16/custom-plugins/)
+
+</div>
 
 # About OADP Velero plugins
 
@@ -141,11 +145,8 @@ Review the architectures supported by OpenShift API for Data Protection (OADP). 
 
 - s390x
 
-<div class="note">
-
-OADP 1.2.0 and later versions support the ARM64 architecture.
-
-</div>
+> [!NOTE]
+> OADP 1.2.0 and later versions support the ARM64 architecture.
 
 # OADP support for IBM Power and IBM Z
 
@@ -204,6 +205,14 @@ namespace=<BSL Name>, name=postgres): rpc error: code = Aborted desc = plugin pa
 runtime error: index out of range with length 1, stack trace: goroutine 94…
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Label the custom BSL with the relevant label by using the following command:
 
     ``` terminal
@@ -212,17 +221,26 @@ runtime error: index out of range with length 1, stack trace: goroutine 94…
 
 2.  After the BSL is labeled, wait until the DPA reconciles.
 
-    <div class="note">
+    > [!NOTE]
+    > You can force the reconciliation by making any minor change to the DPA itself.
 
-    You can force the reconciliation by making any minor change to the DPA itself.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - After the DPA is reconciled, confirm that the parameter has been created and that the correct registry data has been populated into it by entering the following command:
 
   ``` terminal
   $ oc -n openshift-adp get secret/oadp-<bsl_name>-<bsl_provider>-registry-secret -o json | jq -r '.data'
   ```
+
+</div>
 
 # Workaround for OpenShift ADP Controller segmentation fault
 
@@ -236,4 +254,14 @@ The `openshift-adp-controller-manager` pod fails with a crash loop segmentation 
 
 See *OADP-1054* for more information.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OADP-1054](https://issues.redhat.com/browse/OADP-1054)
+
+</div>

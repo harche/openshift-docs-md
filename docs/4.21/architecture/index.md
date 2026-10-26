@@ -188,6 +188,14 @@ A user interface (UI) to manage OpenShift Container Platform.
 worker node
 Nodes that are responsible for executing workloads for cluster users. Worker nodes are also known as compute nodes.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Product architecture](../architecture/architecture.xml#architecture)
 
 - [OpenShift Container Platform networking](../networking/networking_overview/understanding-networking.xml#understanding-networking)
@@ -199,6 +207,8 @@ Nodes that are responsible for executing workloads for cluster users. Worker nod
 - [OLM](../operators/understanding/olm/olm-understanding-olm.xml#olm-understanding-olm)
 
 - [Introduction to OpenShift updates](../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
+
+</div>
 
 # About installation and updates
 
@@ -273,6 +283,10 @@ OpenShift Container Platform uses Linux control group version 2 (cgroup v2) to d
 cgroup v2 offers several improvements over cgroup v1, including a unified hierarchy, safer sub-tree delegation, features such as Pressure Stall Information, and enhanced resource management and isolation. However, cgroup v2 has different CPU, memory, and I/O management characteristics than cgroup v1. Therefore, some workloads might experience slight differences in memory or CPU usage on clusters that run cgroup v2.
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - If you run third-party monitoring and security agents that depend on the cgroup file system, update the agents to a version that supports cgroup v2.
 

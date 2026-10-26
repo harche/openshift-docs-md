@@ -8,11 +8,8 @@ Before you begin the procedure, ensure that you meet the following prerequisite:
 
 - You configured your cluster with ExternalIPs enabled. For more information, see "Configuring ExternalIPs for services" in the *Additional resources* section.
 
-<div class="note">
-
-Do not use the same ExternalIP for the egress IP.
-
-</div>
+> [!NOTE]
+> Do not use the same ExternalIP for the egress IP.
 
 # Attaching an ExternalIP to a service
 
@@ -20,25 +17,32 @@ You can attach an ExternalIP resource to a service. If you configured your clust
 
 The examples in the procedure use a scenario that manually attaches an ExternalIP resource to a service in a cluster with an IP failover configuration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Confirm compatible IP address ranges for the ExternalIP resource by entering the following command in your CLI:
 
     ``` terminal
     $ oc get networks.config cluster -o jsonpath='{.spec.externalIP}{"\n"}'
     ```
 
-    <div class="note">
-
-    If `autoAssignCIDRs` is set and you did not specify a value for `spec.externalIPs` in the ExternalIP resource, OpenShift Container Platform automatically assigns ExternalIP to a new `Service` object.
-
-    </div>
+    > [!NOTE]
+    > If `autoAssignCIDRs` is set and you did not specify a value for `spec.externalIPs` in the ExternalIP resource, OpenShift Container Platform automatically assigns ExternalIP to a new `Service` object.
 
 2.  Choose one of the following options to attach an ExternalIP resource to the service:
 
     1.  If you are creating a new service, specify a value in the `spec.externalIPs` parameter and array of one or more valid IP addresses in the `allowedCIDRs` parameter.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example of service YAML configuration file that supports an ExternalIP resource**
+        <div class="title">
+
+        Example of service YAML configuration file that supports an ExternalIP resource
 
         </div>
 
@@ -54,6 +58,8 @@ The examples in the procedure use a scenario that manually attaches an ExternalI
               - 192.168.123.0/28
         # ...
         ```
+
+        </div>
 
     2.  If you are attaching an ExternalIP to an existing service, enter the following command. Replace `<name>` with the service name. Replace `<ip_address>` with a valid ExternalIP address. You can provide multiple IP addresses separated by commas.
 
@@ -72,9 +78,11 @@ The examples in the procedure use a scenario that manually attaches an ExternalI
         $ oc patch svc mysql-55-rhel7 -p '{"spec":{"externalIPs":["192.174.120.10"]}}'
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -82,15 +90,19 @@ The examples in the procedure use a scenario that manually attaches an ExternalI
         "mysql-55-rhel7" patched
         ```
 
+        </div>
+
 3.  To confirm that an ExternalIP address is attached to the service, enter the following command. If you specified an ExternalIP for a new service, you must create the service first.
 
     ``` terminal
     $ oc get svc
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -98,6 +110,10 @@ The examples in the procedure use a scenario that manually attaches an ExternalI
     NAME               CLUSTER-IP      EXTERNAL-IP     PORT(S)    AGE
     mysql-55-rhel7     172.30.131.89   192.174.120.10  3306/TCP   13m
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

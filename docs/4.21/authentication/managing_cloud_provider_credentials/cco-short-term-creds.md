@@ -1,14 +1,11 @@
 During installation, you can configure the Cloud Credential Operator (CCO) to operate in manual mode and use the CCO utility (`ccoctl`) to implement short-term security credentials for individual components that are created and managed outside the OpenShift Container Platform cluster.
 
-<div class="note">
-
-This credentials strategy is supported for Amazon Web Services (AWS), Google Cloud, and global Microsoft Azure only.
-
-For AWS and Google Cloud clusters, you must configure your cluster to use this strategy during installation of a new OpenShift Container Platform cluster. You cannot configure an existing AWS or Google Cloud cluster that uses a different credentials strategy to use this feature.
-
-If you did not configure your Azure cluster to use Microsoft Entra Workload ID during installation, you can enable this authentication method on an existing cluster. For information, see "Enabling token-based authentication".
-
-</div>
+> [!NOTE]
+> This credentials strategy is supported for Amazon Web Services (AWS), Google Cloud, and global Microsoft Azure only.
+>
+> For AWS and Google Cloud clusters, you must configure your cluster to use this strategy during installation of a new OpenShift Container Platform cluster. You cannot configure an existing AWS or Google Cloud cluster that uses a different credentials strategy to use this feature.
+>
+> If you did not configure your Azure cluster to use Microsoft Entra Workload ID during installation, you can enable this authentication method on an existing cluster. For information, see "Enabling token-based authentication".
 
 Cloud providers use different terms for their implementation of this authentication method.
 
@@ -26,7 +23,17 @@ To assign IAM roles that provide short-term, limited-privilege security credenti
 
 These credentials are associated with IAM roles that are specific to each component that makes AWS API calls.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring an AWS cluster to use short-term credentials](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations)
+
+</div>
 
 ## AWS Security Token Service authentication process
 
@@ -83,9 +90,11 @@ To change the content of the AWS credentials that are provided to individual Ope
 
 Compare the following secret formats:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**AWS secret format using long-term credentials**
+<div class="title">
+
+AWS secret format using long-term credentials
 
 </div>
 
@@ -100,6 +109,8 @@ data:
   aws_secret_access_key: <base64_encoded_secret_access_key>
 ```
 
+</div>
+
 where:
 
 `metadata.namespace`
@@ -108,9 +119,11 @@ Specifies the namespace for the component.
 `metadata.name`
 Specifies the name of the component secret.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**AWS secret format using AWS STS**
+<div class="title">
+
+AWS secret format using AWS STS
 
 </div>
 
@@ -127,6 +140,8 @@ stringData:
     role_name: <operator_role_name>
     web_identity_token_file: <path_to_token>
 ```
+
+</div>
 
 where:
 
@@ -148,11 +163,8 @@ You should familiarize yourself with the permissions required by the OpenShift C
 
 OpenShift Container Platform components require the following permissions:
 
-<div class="note">
-
-These permissions apply to all resources. Unless specified, there are no request conditions on these permissions.
-
-</div>
+> [!NOTE]
+> These permissions apply to all resources. Unless specified, there are no request conditions on these permissions.
 
 <table>
 <colgroup>
@@ -161,14 +173,14 @@ These permissions apply to all resources. Unless specified, there are no request
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Custom resource</th>
 <th style="text-align: left;">Required permissions for services</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cluster CAPI Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-cluster-api-aws</code></p></td>
 <td style="text-align: left;"><p><strong>EC2</strong></p>
@@ -214,7 +226,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>kms:ListGrants</code> <sup>[1]</sup></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Machine API Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-machine-api-aws</code></p></td>
 <td style="text-align: left;"><p><strong>EC2</strong></p>
@@ -259,7 +271,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>kms:ListGrants</code> <sup>[1]</sup></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cloud Credential Operator</p></td>
 <td style="text-align: left;"><p><code>cloud-credential-operator-iam-ro</code></p></td>
 <td style="text-align: left;"><p><strong>Identity and Access Management (IAM)</strong></p>
@@ -269,7 +281,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>iam:ListAccessKeys</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Image Registry Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-image-registry</code></p></td>
 <td style="text-align: left;"><p><strong>S3</strong></p>
@@ -294,7 +306,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>s3:ListMultipartUploadParts</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Ingress Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-ingress</code></p></td>
 <td style="text-align: left;"><p><strong>Elastic load balancing</strong></p>
@@ -316,7 +328,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>sts:AssumeRole</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Network Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-cloud-network-config-controller-aws</code></p></td>
 <td style="text-align: left;"><p><strong>EC2</strong></p>
@@ -332,7 +344,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>ec2:DescribeNetworkInterfaces</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>AWS Elastic Block Store CSI Driver Operator</p></td>
 <td style="text-align: left;"><p><code>aws-ebs-csi-driver-operator</code></p></td>
 <td style="text-align: left;"><p><strong>EC2</strong></p>
@@ -378,13 +390,33 @@ To allow certain Operators that are managed by the Operator Lifecycle Manager (O
 
 To determine if an Operator supports authentication with AWS STS, see the Operator description in the software catalog.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CCO-based workflow for OLM-managed Operators with AWS STS](../../operators/operator_sdk/token_auth/osdk-cco-aws-sts.xml#osdk-cco-aws-sts)
+
+</div>
 
 # About GCP Workload Identity
 
 To allow components to use the Google Cloud Platform Workload Identity to impersonate Google Cloud service accounts using short-term, limited-privilege credentials, you can configure your cluster to use manual mode with GCP Workload Identity.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring a Google Cloud cluster to use short-term credentials](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-with-short-term-creds_installing-gcp-customizations)
+
+</div>
 
 ## Google Cloud Workload Identity authentication process
 
@@ -405,9 +437,11 @@ To change the content of the Google Cloud credentials that are provided to indiv
 
 Compare the following secret content:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Google Cloud secret format**
+<div class="title">
+
+Google Cloud secret format
 
 </div>
 
@@ -421,6 +455,8 @@ data:
   service_account.json: <service_account>
 ```
 
+</div>
+
 where:
 
 `metadata.namespace`
@@ -432,9 +468,11 @@ Specifies the name of the component secret.
 `data.service_account.json`
 Specifies the Base64 encoded service account.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Content of the Base64 encoded `service_account.json` file using long-term credentials**
+<div class="title">
+
+Content of the Base64 encoded `service_account.json` file using long-term credentials
 
 </div>
 
@@ -453,6 +491,8 @@ Specifies the Base64 encoded service account.
 }
 ```
 
+</div>
+
 where:
 
 `type`
@@ -461,9 +501,11 @@ Specifies the credential type, in this example the type is `service_account`.
 `private_key`
 Specifies the private RSA key that is used to authenticate to Google Cloud. This key must be kept secure and is not rotated.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Content of the Base64 encoded `service_account.json` file using Google Cloud Workload Identity**
+<div class="title">
+
+Content of the Base64 encoded `service_account.json` file using Google Cloud Workload Identity
 
 </div>
 
@@ -483,6 +525,8 @@ Specifies the private RSA key that is used to authenticate to Google Cloud. This
 }
 ```
 
+</div>
+
 where:
 
 `type`
@@ -501,11 +545,8 @@ Specifies the path to the service account token inside the pod. By convention, t
 
 OpenShift Container Platform components require the following permissions. These values are in the `CredentialsRequest` custom resource (CR) for each component.
 
-<div class="note">
-
-These permissions apply to all resources. Unless specified, there are no request conditions on these permissions.
-
-</div>
+> [!NOTE]
+> These permissions apply to all resources. Unless specified, there are no request conditions on these permissions.
 
 <table>
 <colgroup>
@@ -514,14 +555,14 @@ These permissions apply to all resources. Unless specified, there are no request
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Custom resource</th>
 <th style="text-align: left;">Required permissions for services</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cloud Controller Manager Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-gcp-ccm</code></p></td>
 <td style="text-align: left;"><p>Compute Engine</p>
@@ -563,7 +604,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>compute.zones.list</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cloud Credential Operator</p></td>
 <td style="text-align: left;"><p><code>cloud-credential-operator-gcp-ro-creds</code></p></td>
 <td style="text-align: left;"><p>Identity and Access Management (IAM)</p>
@@ -582,7 +623,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>serviceusage.services.list</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cluster Image Registry Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-image-registry-gcs</code></p></td>
 <td style="text-align: left;"><p>Cloud Storage</p>
@@ -605,7 +646,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>resourcemanager.tagValues.list</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Ingress Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-ingress-gcp</code></p></td>
 <td style="text-align: left;"><p>Cloud DNS</p>
@@ -617,7 +658,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>dns.resourceRecordSets.update</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cluster Network Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-cloud-network-config-controller-gcp</code></p></td>
 <td style="text-align: left;"><p>Compute Engine</p>
@@ -629,7 +670,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>compute.zoneOperations.get</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Storage Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-gcp-pd-csi-driver-operator</code></p></td>
 <td style="text-align: left;"><p>Compute Engine</p>
@@ -645,7 +686,7 @@ These permissions apply to all resources. Unless specified, there are no request
 <li><p><code>roles/resourcemanager.tagUser</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Machine API Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-machine-api-gcp</code></p></td>
 <td style="text-align: left;"><p>Compute Engine</p>
@@ -723,7 +764,17 @@ To allow certain Operators that are managed by the Operator Lifecycle Manager (O
 
 To determine if an Operator supports authentication with GCP Workload Identity, see the Operator description in the software catalog.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CCO-based workflow for OLM-managed Operators with Google Cloud Platform Workload Identity](../../operators/operator_sdk/token_auth/osdk-cco-gcp.xml#osdk-cco-gcp)
+
+</div>
 
 ## Application support for GCP Workload Identity service account tokens
 
@@ -731,13 +782,33 @@ You can use GCP Workload Identity authentication with applications in customer w
 
 To use this authentication method with your applications, you must complete configuration steps on the cloud provider console and your OpenShift Container Platform cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring GCP Workload Identity authentication for applications on Google Cloud](../../nodes/pods/nodes-pods-short-term-auth.xml#nodes-pods-short-term-auth-configuring-gcp_nodes-pods-short-term-auth)
+
+</div>
 
 # About Microsoft Entra Workload ID
 
 When you configure your cluster to use manual mode with Microsoft Entra Workload ID, the individual OpenShift Container Platform cluster components use the Workload ID provider to assign to components short-term security credentials.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring a global Microsoft Azure cluster to use short-term credentials](../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-with-short-term-creds_installing-azure-customizations)
+
+</div>
 
 ## Microsoft Entra Workload ID authentication process
 
@@ -756,9 +827,11 @@ To change the content of the Azure credentials that are provided to individual O
 
 Compare the following secret formats:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Azure secret format using long-term credentials**
+<div class="title">
+
+Azure secret format using long-term credentials
 
 </div>
 
@@ -778,6 +851,8 @@ data:
   azure_tenant_id: <tenant_id>
 type: Opaque
 ```
+
+</div>
 
 where:
 
@@ -799,9 +874,11 @@ Specifies the resource group prefix.
 `data.azure_resourcegroup`
 Specifies the resource group. This value is formed by the `<resource_group_prefix>` and the suffix `-rg`.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Azure secret format using Microsoft Entra Workload ID**
+<div class="title">
+
+Azure secret format using Microsoft Entra Workload ID
 
 </div>
 
@@ -819,6 +896,8 @@ data:
   azure_tenant_id: <tenant_id>
 type: Opaque
 ```
+
+</div>
 
 where:
 
@@ -845,14 +924,14 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Custom resource</th>
 <th style="text-align: left;">Required permissions for services</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Cloud Controller Manager Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-azure-cloud-controller-manager</code></p></td>
 <td style="text-align: left;"><ul>
@@ -867,12 +946,12 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Network/publicIPAddresses/write</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster CAPI Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-cluster-api-azure</code></p></td>
 <td style="text-align: left;"><p>role: <code>Contributor</code> <sup>[1]</sup></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Machine API Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-machine-api-azure</code></p></td>
 <td style="text-align: left;"><ul>
@@ -913,7 +992,7 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Resources/subscriptions/resourceGroups/read</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Image Registry Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-image-registry-azure</code></p></td>
 <td style="text-align: left;"><p><strong>Data permissions</strong></p>
@@ -937,7 +1016,7 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Resources/tags/write</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Ingress Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-ingress-azure</code></p></td>
 <td style="text-align: left;"><ul>
@@ -947,7 +1026,7 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Network/privateDnsZones/A/write</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Cluster Network Operator</p></td>
 <td style="text-align: left;"><p><code>openshift-cloud-network-config-controller-azure</code></p></td>
 <td style="text-align: left;"><ul>
@@ -959,7 +1038,7 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Network/loadBalancers/backendAddressPools/join/action</code></p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Azure File CSI Driver Operator</p></td>
 <td style="text-align: left;"><p><code>azure-file-csi-driver-operator</code></p></td>
 <td style="text-align: left;"><ul>
@@ -976,7 +1055,7 @@ You should familiarize yourself with the permissions required by the OpenShift C
 <li><p><code>Microsoft.Storage/storageAccounts/write</code></p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Azure Disk CSI Driver Operator</p></td>
 <td style="text-align: left;"><p><code>azure-disk-csi-driver-operator</code></p></td>
 <td style="text-align: left;"><ul>
@@ -1001,7 +1080,17 @@ To allow certain Operators that are managed by the Operator Lifecycle Manager (O
 
 To determine if an Operator supports authentication with Workload ID, see the Operator description in the software catalog.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CCO-based workflow for OLM-managed Operators with Microsoft Entra Workload ID](../../operators/operator_sdk/token_auth/osdk-cco-azure.xml#osdk-cco-azure)
+
+</div>
 
 # Additional resources
 

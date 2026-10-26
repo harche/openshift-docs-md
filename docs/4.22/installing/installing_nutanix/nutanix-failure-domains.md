@@ -32,9 +32,14 @@ When planning to use failure domains, you must meet several Nutanix Prism Centra
 
 You add failure domains to an existing Nutanix cluster by modifying its Infrastructure custom resource (CR) (`infrastructures.config.openshift.io`).
 
-<div class="tip">
+> [!TIP]
+> To ensure high-availability, configure three failure domains.
 
-To ensure high-availability, configure three failure domains.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -46,9 +51,11 @@ To ensure high-availability, configure three failure domains.
 
 2.  Configure the failure domains.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Infrastructure CR with Nutanix failure domains**
+    <div class="title">
+
+    Example Infrastructure CR with Nutanix failure domains
 
     </div>
 
@@ -85,6 +92,8 @@ To ensure high-availability, configure three failure domains.
     # ...
     ```
 
+    </div>
+
     where:
 
     `<uuid>`
@@ -96,27 +105,44 @@ To ensure high-availability, configure three failure domains.
     `<network_uuid>`
     Specifies one or more UUID for the Prism Element subnet object. The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses.
 
-    <div class="important">
-
-    Configuring multiple subnets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-    For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-    </div>
+    > [!IMPORTANT]
+    > Configuring multiple subnets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+    >
+    > For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
     To configure multiple subnets in the Infrastructure CR, you must enable the `NutanixMultiSubnets` feature gate. A maximum of 32 subnets for each failure domain (Prism Element) in an OpenShift Container Platform cluster is supported. All subnet UUID values must be unique.
 
 3.  Save the CR to apply the changes.
 
+</div>
+
 ## Distributing control planes across failure domains
 
 You distribute control planes across Nutanix failure domains by modifying the control plane machine set custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured the failure domains in the cluster’s Infrastructure custom resource (CR).
 
 - The control plane machine set custom resource (CR) is in an active state.
 
+</div>
+
 For more information on checking the control plane machine set custom resource state, see "Additional resources".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the control plane machine set CR by running the following command:
 
@@ -126,9 +152,11 @@ For more information on checking the control plane machine set custom resource s
 
 2.  Configure the control plane machine set to use failure domains by adding a `spec.template.machines_v1beta1_machine_openshift_io.failureDomains` stanza.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example control plane machine set with Nutanix failure domains**
+    <div class="title">
+
+    Example control plane machine set with Nutanix failure domains
 
     </div>
 
@@ -155,19 +183,37 @@ For more information on checking the control plane machine set custom resource s
     # ...
     ```
 
+    </div>
+
 3.  Save your changes.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 By default, the control plane machine set propagates changes to your control plane configuration automatically. If the cluster is configured to use the `OnDelete` update strategy, you must replace your control planes manually.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Checking the control plane machine set custom resource state](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-checking-status_cpmso-getting-started)
 
 - [Replacing a control plane machine](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-replace_cpmso-managing-machines)
+
+</div>
 
 ## Distributing compute machines across failure domains
 
@@ -177,17 +223,43 @@ You can distribute compute machines across Nutanix failure domains by editing or
 
 - Replacing existing compute machine sets ensures that the specification is immutable and all your machines are the same.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Editing existing compute machine sets to implement failure domains](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-edit_nutanix-failure-domains)
 
 - [Replacing existing compute machine sets to implement failure domains](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-replace_nutanix-failure-domains)
 
+</div>
+
 ### Editing compute machine sets to implement failure domains
 
 To distribute compute machines across Nutanix failure domains by using an existing compute machine set, you update the compute machine set with your configuration and then use scaling to replace the existing compute machines.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the failure domains in the cluster’s Infrastructure custom resource (CR).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to view the cluster’s Infrastructure CR.
 
@@ -203,9 +275,11 @@ To distribute compute machines across Nutanix failure domains by using an existi
     $ oc get machinesets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -215,6 +289,8 @@ To distribute compute machines across Nutanix failure domains by using an existi
     <machine_set_name_2>   1         1         1       1           55m
     ```
 
+    </div>
+
 4.  Edit the first compute machine set by running the following command:
 
     ``` terminal
@@ -223,15 +299,14 @@ To distribute compute machines across Nutanix failure domains by using an existi
 
 5.  Configure the compute machine set to use the first failure domain by updating the following to the `spec.template.spec.providerSpec.value` stanza.
 
-    <div class="note">
+    > [!NOTE]
+    > Be sure that the values you specify for the `cluster` and `subnets` fields match the values that were configured in the `failureDomains` stanza in the cluster’s Infrastructure CR.
 
-    Be sure that the values you specify for the `cluster` and `subnets` fields match the values that were configured in the `failureDomains` stanza in the cluster’s Infrastructure CR.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example compute machine set with Nutanix failure domains**
+    Example compute machine set with Nutanix failure domains
 
     </div>
 
@@ -264,6 +339,8 @@ To distribute compute machines across Nutanix failure domains by using an existi
     # ...
     ```
 
+    </div>
+
 6.  Note the value of `spec.replicas`, because you need it when scaling the compute machine set to apply the changes.
 
 7.  Save your changes.
@@ -275,9 +352,11 @@ To distribute compute machines across Nutanix failure domains by using an existi
       -l machine.openshift.io/cluster-api-machineset=<machine_set_name_1>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -286,6 +365,8 @@ To distribute compute machines across Nutanix failure domains by using an existi
     <machine_name_original_1>   Running   AHV    Unnamed   Development-STS   4h
     <machine_name_original_2>   Running   AHV    Unnamed   Development-STS   4h
     ```
+
+    </div>
 
 9.  For each machine that is managed by the updated compute machine set, set the `delete` annotation by running the following command:
 
@@ -325,13 +406,43 @@ To distribute compute machines across Nutanix failure domains by using an existi
 
 13. As required, continue to modify machine sets to reference the additional failure domains that are available to the deployment.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Modifying a compute machine set](../../machine_management/modifying-machineset.xml#modifying-machineset)
+
+</div>
 
 ### Replacing compute machine sets to implement failure domains
 
 To distribute compute machines across Nutanix failure domains by replacing a compute machine set, you create a new compute machine set with your configuration, wait for the machines that it creates to start, and then delete the old compute machine set.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the failure domains in the cluster’s Infrastructure custom resource (CR).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to view the cluster’s Infrastructure CR.
 
@@ -347,9 +458,11 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     $ oc get machinesets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -358,6 +471,8 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     <original_machine_set_name_1>   1         1         1       1           55m
     <original_machine_set_name_2>   1         1         1       1           55m
     ```
+
+    </div>
 
 4.  Note the names of the existing compute machine sets.
 
@@ -420,23 +535,19 @@ To distribute compute machines across Nutanix failure domains by replacing a com
       `providerSpec`
       Specifies the values in the `providerSpec` section of the compute machine set CR are platform-specific. For more information about `providerSpec` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
-      <div class="note">
-
-      For clusters that have user-provisioned infrastructure, a compute machine set can only create machines with a `worker` or `infra` role.
-
-      </div>
+      > [!NOTE]
+      > For clusters that have user-provisioned infrastructure, a compute machine set can only create machines with a `worker` or `infra` role.
 
 6.  Configure the new compute machine set to use the first failure domain by updating or adding the following to the `spec.template.spec.providerSpec.value` stanza in the `<new_machine_set_name_1>.yaml` file.
 
-    <div class="note">
+    > [!NOTE]
+    > Be sure that the values you specify for the `cluster` and `subnets` fields match the values that were configured in the `failureDomains` stanza in the cluster’s Infrastructure CR.
 
-    Be sure that the values you specify for the `cluster` and `subnets` fields match the values that were configured in the `failureDomains` stanza in the cluster’s Infrastructure CR.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example compute machine set with Nutanix failure domains**
+    Example compute machine set with Nutanix failure domains
 
     </div>
 
@@ -469,6 +580,8 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     # ...
     ```
 
+    </div>
+
 7.  Save your changes.
 
 8.  Create a compute machine set CR by running the following command:
@@ -485,9 +598,11 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     $ oc get -n openshift-machine-api machines -l machine.openshift.io/cluster-api-machineset=<new_machine_set_name_1>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -497,6 +612,8 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     <machine_from_new_2>             Provisioning   AHV    Unnamed   Development-STS   25s
     ```
 
+    </div>
+
     When the new machines are in the `Running` phase, you can delete the old compute machine sets that do not include the failure domain configuration.
 
 11. When you have verified that the new machines are in the `Running` phase, delete the old compute machine sets by running the following command for each:
@@ -505,15 +622,27 @@ To distribute compute machines across Nutanix failure domains by replacing a com
     $ oc delete machineset <original_machine_set_name_1> -n openshift-machine-api
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the compute machine sets without the updated configuration are deleted, list the compute machine sets in your cluster by running the following command:
 
   ``` terminal
   $ oc get machinesets -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -523,15 +652,19 @@ To distribute compute machines across Nutanix failure domains by replacing a com
   <new_machine_set_name_2>   1         1         1       1           4m12s
   ```
 
+  </div>
+
 - To verify that the compute machines without the updated configuration are deleted, list the machines in your cluster by running the following command:
 
   ``` terminal
   $ oc get -n openshift-machine-api machines
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output while deletion is in progress**
+  <div class="title">
+
+  Example output while deletion is in progress
 
   </div>
 
@@ -543,9 +676,13 @@ To distribute compute machines across Nutanix failure domains by replacing a com
   <machine_from_original_2>   Deleting        AHV      Unnamed     Development-STS   4h
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example output when deletion is complete**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example output when deletion is complete
 
   </div>
 
@@ -555,15 +692,27 @@ To distribute compute machines across Nutanix failure domains by replacing a com
   <machine_from_new_2>        Running         AHV      Unnamed     Development-STS   6m30s
   ```
 
+  </div>
+
 - To verify that a machine created by the new compute machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 
   ``` terminal
   $ oc describe machine <machine_from_new_1> -n openshift-machine-api
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating a compute machine set on Nutanix](../../machine_management/creating_machinesets/creating-machineset-nutanix.xml#creating-machineset-nutanix)
+
+</div>
 
 # Improving reliability for multiple subnet configurations on Nutanix
 

@@ -99,14 +99,14 @@ You can define an `RouteAdvertisements` object, which is cluster scoped, with th
 
 The fields for the `RouteAdvertisements` custom resource (CR) are described in the following table:
 
-| Field                      | Type     | Description                                                                                                                                                                                                                                                                                                                                                       |
-|----------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `metadata.name`            | `string` | Specifies the name of the `RouteAdvertisements` object.                                                                                                                                                                                                                                                                                                           |
-| `advertisements`           | `array`  | Specifies an array that can contain a list of different types of networks to advertise. Supports only the `"PodNetwork"` and `"EgressIP"` values.                                                                                                                                                                                                                 |
-| `frrConfigurationSelector` | `object` | Determines which `FRRConfiguration` CR the OVN-Kubernetes driven `FRRConfiguration` CR is based on.                                                                                                                                                                                                                                                               |
-| `networkSelector`          | `object` | Specifies which networks to advertise among default cluster network and cluster user defined networks (CUDNs).                                                                                                                                                                                                                                                    |
-| `nodeSelector`             | `object` | Limits the advertisements to selected nodes. When `advertisements="PodNetwork"` is selected, all nodes must be selected. When `advertisements="EgressIP"` is selected, only the egress IP addresses assigned to the selected nodes are advertised.                                                                                                                |
-| `targetVRF`                | `string` | Determines which router to advertise the routes in. Routes are advertised on the routers associated with this virtual routing and forwarding (VRF) target, as specified on the selected `FRRConfiguration` CR. When omitted, the default VRF is used as the target. When specified as `auto`, a VRF with the same name as the network name is used as the target. |
+| Field | Type | Description |
+|----|----|----|
+| `metadata.name` | `string` | Specifies the name of the `RouteAdvertisements` object. |
+| `advertisements` | `array` | Specifies an array that can contain a list of different types of networks to advertise. Supports only the `"PodNetwork"` and `"EgressIP"` values. |
+| `frrConfigurationSelector` | `object` | Determines which `FRRConfiguration` CR the OVN-Kubernetes driven `FRRConfiguration` CR is based on. |
+| `networkSelector` | `object` | Specifies which networks to advertise among default cluster network and cluster user defined networks (CUDNs). |
+| `nodeSelector` | `object` | Limits the advertisements to selected nodes. When `advertisements="PodNetwork"` is selected, all nodes must be selected. When `advertisements="EgressIP"` is selected, only the egress IP addresses assigned to the selected nodes are advertised. |
+| `targetVRF` | `string` | Determines which router to advertise the routes in. Routes are advertised on the routers associated with this virtual routing and forwarding (VRF) target, as specified on the selected `FRRConfiguration` CR. When omitted, the default VRF is used as the target. When specified as `auto`, a VRF with the same name as the network name is used as the target. |
 
 `RouteAdvertisements` object
 
@@ -122,9 +122,11 @@ In this scenario, the default cluster network is exposed to the external network
 
 This scenario relies upon the following `FRRConfiguration` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`FRRConfiguration` CR**
+<div class="title">
+
+`FRRConfiguration` CR
 
 </div>
 
@@ -145,11 +147,15 @@ spec:
   nodeSelector: {}
 ```
 
+</div>
+
 When the OVN-Kubernetes controller sees this `RouteAdvertisements` CR, it generates further `FRRConfiguration` objects based on the selected ones that configure the FRR daemon to advertise the routes for the default cluster network.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**An example of a `FRRConfiguration` CR generated by OVN-Kubernetes**
+<div class="title">
+
+An example of a `FRRConfiguration` CR generated by OVN-Kubernetes
 
 </div>
 
@@ -180,6 +186,8 @@ spec:
       kubernetes.io/hostname: ovn-worker
 ```
 
+</div>
+
 In the example generated `FRRConfiguration` object, `<default_network_host_subnet>` is the subnet of the default cluster network that is advertised to the provider network.
 
 ## Advertising pod IPs from a cluster user-defined network over BGP
@@ -188,9 +196,11 @@ In this scenario, the blue cluster user-defined network (CUDN) is exposed to the
 
 This scenario relies upon the following `FRRConfiguration` object:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`FRRConfiguration` CR**
+<div class="title">
+
+`FRRConfiguration` CR
 
 </div>
 
@@ -215,6 +225,8 @@ spec:
             mode: all
 ```
 
+</div>
+
 With this `FRRConfiguration` object, routes will be imported from neighbor `172.18.0.5` into the default VRF and are available to the default cluster network.
 
 The CUDNs are advertised over the default VRF as illustrated in the following diagram:
@@ -237,9 +249,11 @@ In this configuration, two separate CUDNs are defined. The red network covers th
 
 The following `RouteAdvertisements` CR describes the configuration for the red and blue tenants:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`RouteAdvertisements` CR for the red and blue tenants**
+<div class="title">
+
+`RouteAdvertisements` CR for the red and blue tenants
 
 </div>
 
@@ -264,11 +278,15 @@ spec:
   nodeSelector: {}
 ```
 
+</div>
+
 When the OVN-Kubernetes controller sees this `RouteAdvertisements` CR, it generates further `FRRConfiguration` objects based on the selected ones that configure the FRR daemon to advertise the routes. The following example is of one such configuration object, with the number of `FRRConfiguration` objects created depending on the node and networks selected.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**An example of a `FRRConfiguration` CR generated by OVN-Kubernetes**
+<div class="title">
+
+An example of a `FRRConfiguration` CR generated by OVN-Kubernetes
 
 </div>
 
@@ -305,6 +323,8 @@ spec:
       kubernetes.io/hostname: ovn-worker
 ```
 
+</div>
+
 The generated `FRRConfiguration` object configures the subnet `10.0.1.0/24`, which belongs to network blue, to be imported into the default VRF and advertised to the `172.18.0.5` neighbor. An `FRRConfiguration` object is generated for each network and nodes selected by a `RouteAdvertisements` CR with the appropriate prefixes that apply to each node.
 
 When the `targetVRF` field is omitted, the routes are leaked and advertised over the default VRF. Additionally, routes that were imported to the default VRF after the definition of the initial FRRConfiguration object are also imported into the blue VRF.
@@ -313,11 +333,8 @@ When the `targetVRF` field is omitted, the routes are leaked and advertised over
 
 In this scenario, a VLAN interface is attached to the VRF device associated with the blue network. This setup provides a *VRF lite* design, where FRR-K8S is used to advertise the blue network only over the corresponding BGP session on the blue network VRF/VLAN link to the next hop Provide Edge (PE) router. The red tenant uses the same configuration. The blue and red networks are labeled as `export: true`.
 
-<div class="important">
-
-This scenario does not support the use of EgressIPs.
-
-</div>
+> [!IMPORTANT]
+> This scenario does not support the use of EgressIPs.
 
 The following diagram illustrates this configuration:
 
@@ -339,17 +356,16 @@ Blue CUDN
 
 - An assigned subnet of `10.0.1.0/24`
 
-<div class="note">
-
-This approach is available only when you set `routingViaHost=true` in the `ovnKubernetesConfig.gatewayConfig` specification of the OVN-Kubernetes network plugin.
-
-</div>
+> [!NOTE]
+> This approach is available only when you set `routingViaHost=true` in the `ovnKubernetesConfig.gatewayConfig` specification of the OVN-Kubernetes network plugin.
 
 In the following configuration, an additional `FRRConfiguration` CR configures peering with the PE router on the blue and red VLANs:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`FRRConfiguration` CR manually configured for BGP VPN setup**
+<div class="title">
+
+`FRRConfiguration` CR manually configured for BGP VPN setup
 
 </div>
 
@@ -382,11 +398,15 @@ spec:
             mode: filtered
 ```
 
+</div>
+
 The following `RouteAdvertisements` CR describes the configuration for the blue and red tenants:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`RouteAdvertisements` CR for the blue and red tenants**
+<div class="title">
+
+`RouteAdvertisements` CR for the blue and red tenants
 
 </div>
 
@@ -411,13 +431,17 @@ spec:
           export: "true"
 ```
 
+</div>
+
 In the `RouteAdvertisements` CR, the `targetVRF` is set to `auto` so that advertisements occur within the VRF device that corresponds to the individual networks that are selected. In this scenario, the pod subnet for blue is advertised over the blue VRF device, and the pod subnet for red is advertised over the red VRF device. Additionally, each BGP session imports routes to only the corresponding CUDN VRF as defined by the initial `FRRConfiguration` object.
 
 When the OVN-Kubernetes controller sees this `RouteAdvertisements` CR, it generates further `FRRConfiguration` objects based on the selected ones that configure the FRR daemon to advertise the routes for the blue and red tenants.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`FRRConfiguration` CR generated by OVN-Kubernetes for blue and red tenants**
+<div class="title">
+
+`FRRConfiguration` CR generated by OVN-Kubernetes for blue and red tenants
 
 </div>
 
@@ -462,6 +486,8 @@ spec:
      matchLabels:
         kubernetes.io/hostname: ovn-worker
 ```
+
+</div>
 
 In this scenario, any filtering or selection of routes to receive must be done in the `FRRConfiguration` CR that defines peering relationships.
 

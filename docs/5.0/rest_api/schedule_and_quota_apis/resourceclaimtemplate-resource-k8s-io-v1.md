@@ -9,12 +9,12 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object metadata                                                                                                                                                                                                                                                                             |
-| `spec`       | `object`                                                                             | ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.                                                                                                                                                                                                                      |
+| Property | Type | Description |
+|----|----|----|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
+| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object metadata |
+| `spec` | `object` | ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim. |
 
 ## .spec
 
@@ -27,10 +27,10 @@ Type
 Required
 - `spec`
 
-| Property   | Type                                                                                 | Description                                                                                                                                                                    |
-|------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Property | Type | Description |
+|----|----|----|
 | `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | ObjectMeta may contain labels and annotations that will be copied into the ResourceClaim when creating it. No other fields are allowed and will be rejected during validation. |
-| `spec`     | `object`                                                                             | ResourceClaimSpec defines what is being requested in a ResourceClaim and how to configure it.                                                                                  |
+| `spec` | `object` | ResourceClaimSpec defines what is being requested in a ResourceClaim and how to configure it. |
 
 ## .spec.spec
 
@@ -40,8 +40,8 @@ ResourceClaimSpec defines what is being requested in a ResourceClaim and how to 
 Type
 `object`
 
-| Property  | Type     | Description                                                      |
-|-----------|----------|------------------------------------------------------------------|
+| Property | Type | Description |
+|----|----|----|
 | `devices` | `object` | DeviceClaim defines how to request devices with a ResourceClaim. |
 
 ## .spec.spec.devices
@@ -52,14 +52,14 @@ DeviceClaim defines how to request devices with a ResourceClaim.
 Type
 `object`
 
-| Property        | Type     | Description                                                                                                                                                                                                                                                      |
-|-----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `config`        | `array`  | This field holds configuration for multiple potential drivers which could satisfy requests in this claim. It is ignored while allocating the claim.                                                                                                              |
-| `config[]`      | `object` | DeviceClaimConfiguration is used for configuration parameters in DeviceClaim.                                                                                                                                                                                    |
-| `constraints`   | `array`  | These constraints must be satisfied by the set of devices that get allocated for the claim.                                                                                                                                                                      |
-| `constraints[]` | `object` | DeviceConstraint must have exactly one field set besides Requests.                                                                                                                                                                                               |
-| `requests`      | `array`  | Requests represent individual requests for distinct devices which must all be satisfied. If empty, nothing needs to be allocated.                                                                                                                                |
-| `requests[]`    | `object` | DeviceRequest is a request for devices required for a claim. This is typically a request for a single resource like a device, but can also ask for several identical devices. With FirstAvailable it is also possible to provide a prioritized list of requests. |
+| Property | Type | Description |
+|----|----|----|
+| `config` | `array` | This field holds configuration for multiple potential drivers which could satisfy requests in this claim. It is ignored while allocating the claim. |
+| `config[]` | `object` | DeviceClaimConfiguration is used for configuration parameters in DeviceClaim. |
+| `constraints` | `array` | These constraints must be satisfied by the set of devices that get allocated for the claim. |
+| `constraints[]` | `object` | DeviceConstraint must have exactly one field set besides Requests. |
+| `requests` | `array` | Requests represent individual requests for distinct devices which must all be satisfied. If empty, nothing needs to be allocated. |
+| `requests[]` | `object` | DeviceRequest is a request for devices required for a claim. This is typically a request for a single resource like a device, but can also ask for several identical devices. With FirstAvailable it is also possible to provide a prioritized list of requests. |
 
 ## .spec.spec.devices.config
 
@@ -84,19 +84,19 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>opaque</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Requests lists the names of requests where the configuration applies. If empty, it applies to all requests.</p>
@@ -125,21 +125,21 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>driver</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.</p>
 <p>An admission policy provided by the driver developer could use this to decide whether it needs to validate them.</p>
 <p>Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>parameters</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-runtime-RawExtension"><code>RawExtension</code></a></p></td>
 <td style="text-align: left;"><p>Parameters can contain arbitrary data. It is the responsibility of the driver developer to handle validation and versioning. Typically this includes self-identification and a version ("kind" + "apiVersion" for Kubernetes types), with conversion between different versions.</p>
@@ -171,14 +171,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>distinctAttribute</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>DistinctAttribute requires that all devices in question have this attribute and that its type and value are unique across those devices.</p>
@@ -187,7 +187,7 @@ Type
 <p>This constraint is used to avoid allocating multiple requests to the same device by ensuring attribute-level differentiation.</p>
 <p>This is useful for scenarios where resource requests must be fulfilled by separate physical devices. For example, a container requests two network interfaces that must be allocated from two different physical NICs.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>matchAttribute</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>MatchAttribute requires that all devices in question have this attribute and that its type and value are the same across those devices.</p>
@@ -195,7 +195,7 @@ Type
 <p>When the DRAListTypeAttributes feature gate is enabled, comparison uses set semantics(i.e., element order and duplicates are ignored): list-valued attributes match when the intersection across all devices is non-empty. Scalar values are treated as single-element lists for backward compatibility.</p>
 <p>Must include the domain qualifier.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>Requests is a list of the one or more requests in this claim which must co-satisfy this constraint. If a request is fulfilled by multiple devices, then all of the devices must satisfy the constraint. If this is not specified, this constraint applies to all requests in this claim.</p>
@@ -230,31 +230,31 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>exactly</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ExactDeviceRequest is a request for one or more identical devices.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>firstAvailable</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>FirstAvailable contains subrequests, of which exactly one will be selected by the scheduler. It tries to satisfy them in the order in which they are listed here. So if there are two entries in the list, the scheduler will only check the second one if it determines that the first one can not be used.</p>
 <p>DRA does not yet implement scoring, so the scheduler will select the first set of devices that satisfies all the requests in the claim. And if the requirements can be satisfied on more than one node, other scheduling features will determine which node is chosen. This means that the set of devices allocated to a claim might not be the optimal set available to the cluster. Scoring will be implemented later.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>firstAvailable[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DeviceSubRequest describes a request for device provided in the claim.spec.devices.requests[].firstAvailable array. Each is typically a request for a single resource like a device, but can also ask for several identical devices.</p>
 <p>DeviceSubRequest is similar to ExactDeviceRequest, but doesn’t expose the AdminAccess field as that one is only supported when requesting a specific device.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name can be used to reference this request in a pod.spec.containers[].resources.claims entry and in a constraint of the claim.</p>
@@ -282,20 +282,20 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>adminAccess</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>AdminAccess indicates that this is a claim for administrative access to the device(s). Claims with AdminAccess are expected to be used for monitoring or other management services for a device. They ignore all ordinary claims to the device with respect to access modes and any resource allocations.</p>
 <p>Admin access is disabled if this field is unset or set to false, otherwise it is enabled.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>allocationMode</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>AllocationMode and its related fields define how devices are allocated to satisfy this request. Supported values are:</p>
@@ -305,34 +305,34 @@ Required
 <p>More modes may get added in the future. Clients must refuse to handle requests with unknown modes.</p>
 <p>Possible enum values: - <code>"All"</code> - <code>"ExactCount"</code></p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>capacity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>CapacityRequirements defines the capacity requirements for a specific device request.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>count</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Count is used only when the count mode is "ExactCount". Must be greater than zero. If AllocationMode is ExactCount and this field is not specified, the default is one.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>deviceClassName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>DeviceClassName references a specific DeviceClass, which can define additional configuration and selectors to be inherited by this request.</p>
 <p>A DeviceClassName is required.</p>
 <p>Administrators may use this to restrict which devices may get requested by only installing classes with selectors for permitted devices. If users are free to request anything without restrictions, then administrators can create an empty DeviceClass for users to reference.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>selectors</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Selectors define criteria which must be satisfied by a specific device in order for that device to be considered for this request. All selectors must be satisfied for a device to be considered.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>selectors[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DeviceSelector must have exactly one field set.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>If specified, the request’s tolerations.</p>
@@ -341,7 +341,7 @@ Required
 <p>The maximum number of tolerations is 16.</p>
 <p>This is a beta field and requires enabling the DRADeviceTaints feature gate.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The ResourceClaim this DeviceToleration is attached to tolerates any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;.</p></td>
@@ -364,14 +364,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
 <td style="text-align: left;"><p>Requests represent individual device resource requests for distinct resources, all of which must be provided by the device.</p>
@@ -399,9 +399,9 @@ DeviceSelector must have exactly one field set.
 Type
 `object`
 
-| Property | Type     | Description                                                         |
-|----------|----------|---------------------------------------------------------------------|
-| `cel`    | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
+| Property | Type | Description |
+|----|----|----|
+| `cel` | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
 
 ## .spec.spec.devices.requests\[\].exactly.selectors\[\].cel
 
@@ -421,14 +421,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>expression</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expression is a CEL expression which evaluates a single device. It must evaluate to true when the device under consideration satisfies the desired criteria, and false when it does not. Any other result is an error and causes allocation of devices to abort.</p>
@@ -479,36 +479,36 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>effect</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule and NoExecute.</p>
 <p>Possible enum values: - <code>"NoExecute"</code> Evict any already-running pods that do not tolerate the device taint. - <code>"NoSchedule"</code> Do not allow new pods to schedule which use a tainted device unless they tolerate the taint, but allow all pods submitted to Kubelet without going through the scheduler to start, and allow all already-running pods to continue running. - <code>"None"</code> No effect, the taint is purely informational.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys. Must be a label name.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>operator</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a ResourceClaim can tolerate all taints of a particular category.</p>
 <p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tolerationSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. If larger than zero, the time when the pod needs to be evicted is calculated as &lt;time when taint was adedd&gt; + &lt;toleration seconds&gt;.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the taint value the toleration matches to. If the operator is Exists, the value must be empty, otherwise just a regular string. Must be a label value.</p></td>
@@ -548,14 +548,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>allocationMode</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>AllocationMode and its related fields define how devices are allocated to satisfy this subrequest. Supported values are:</p>
@@ -565,40 +565,40 @@ Required
 <p>More modes may get added in the future. Clients must refuse to handle requests with unknown modes.</p>
 <p>Possible enum values: - <code>"All"</code> - <code>"ExactCount"</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>capacity</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>CapacityRequirements defines the capacity requirements for a specific device request.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>count</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Count is used only when the count mode is "ExactCount". Must be greater than zero. If AllocationMode is ExactCount and this field is not specified, the default is one.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>deviceClassName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>DeviceClassName references a specific DeviceClass, which can define additional configuration and selectors to be inherited by this subrequest.</p>
 <p>A class is required. Which classes are available depends on the cluster.</p>
 <p>Administrators may use this to restrict which devices may get requested by only installing classes with selectors for permitted devices. If users are free to request anything without restrictions, then administrators can create an empty DeviceClass for users to reference.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Name can be used to reference this subrequest in the list of constraints or the list of configurations for the claim. References must use the format &lt;main request&gt;/&lt;subrequest&gt;.</p>
 <p>Must be a DNS label.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>selectors</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Selectors define criteria which must be satisfied by a specific device in order for that device to be considered for this subrequest. All selectors must be satisfied for a device to be considered.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>selectors[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DeviceSelector must have exactly one field set.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tolerations</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>If specified, the request’s tolerations.</p>
@@ -607,7 +607,7 @@ Required
 <p>The maximum number of tolerations is 16.</p>
 <p>This is a beta field and requires enabling the DRADeviceTaints feature gate.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>tolerations[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>The ResourceClaim this DeviceToleration is attached to tolerates any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;.</p></td>
@@ -630,14 +630,14 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>requests</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
 <td style="text-align: left;"><p>Requests represent individual device resource requests for distinct resources, all of which must be provided by the device.</p>
@@ -665,9 +665,9 @@ DeviceSelector must have exactly one field set.
 Type
 `object`
 
-| Property | Type     | Description                                                         |
-|----------|----------|---------------------------------------------------------------------|
-| `cel`    | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
+| Property | Type | Description |
+|----|----|----|
+| `cel` | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
 
 ## .spec.spec.devices.requests\[\].firstAvailable\[\].selectors\[\].cel
 
@@ -687,14 +687,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>expression</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expression is a CEL expression which evaluates a single device. It must evaluate to true when the device under consideration satisfies the desired criteria, and false when it does not. Any other result is an error and causes allocation of devices to abort.</p>
@@ -745,36 +745,36 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>effect</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule and NoExecute.</p>
 <p>Possible enum values: - <code>"NoExecute"</code> Evict any already-running pods that do not tolerate the device taint. - <code>"NoSchedule"</code> Do not allow new pods to schedule which use a tainted device unless they tolerate the taint, but allow all pods submitted to Kubelet without going through the scheduler to start, and allow all already-running pods to continue running. - <code>"None"</code> No effect, the taint is purely informational.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>key</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys. Must be a label name.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>operator</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a ResourceClaim can tolerate all taints of a particular category.</p>
 <p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code></p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>tolerationSeconds</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. If larger than zero, the time when the pod needs to be evicted is calculated as &lt;time when taint was adedd&gt; + &lt;toleration seconds&gt;.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Value is the taint value the toleration matches to. If the operator is Exists, the value must be empty, otherwise just a regular string. Must be a label value.</p></td>
@@ -828,10 +828,10 @@ HTTP method
 Description
 list or watch objects of kind ResourceClaimTemplate
 
-| HTTP code          | Reponse body                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplateList`](../objects/index.xml#io-k8s-api-resource-v1-ResourceClaimTemplateList) schema |
-| 401 - Unauthorized | Empty                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplateList`](../objects/index.xml#io-k8s-api-resource-v1-ResourceClaimTemplateList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -843,10 +843,10 @@ HTTP method
 Description
 watch individual changes to a list of ResourceClaimTemplate. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code          | Reponse body                                                                                |
-|--------------------|---------------------------------------------------------------------------------------------|
-| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -858,16 +858,16 @@ HTTP method
 Description
 delete collection of ResourceClaimTemplate
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -877,10 +877,10 @@ HTTP method
 Description
 list or watch objects of kind ResourceClaimTemplate
 
-| HTTP code          | Reponse body                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplateList`](../objects/index.xml#io-k8s-api-resource-v1-ResourceClaimTemplateList) schema |
-| 401 - Unauthorized | Empty                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplateList`](../objects/index.xml#io-k8s-api-resource-v1-ResourceClaimTemplateList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -890,25 +890,25 @@ HTTP method
 Description
 create a ResourceClaimTemplate
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                                               | Description |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 201 - Created      | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 202 - Accepted     | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                              |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 201 - Created | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 202 - Accepted | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -920,10 +920,10 @@ HTTP method
 Description
 watch individual changes to a list of ResourceClaimTemplate. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code          | Reponse body                                                                                |
-|--------------------|---------------------------------------------------------------------------------------------|
-| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -941,17 +941,17 @@ HTTP method
 Description
 delete a ResourceClaimTemplate
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 202 - Accepted     | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                              |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 202 - Accepted | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -961,10 +961,10 @@ HTTP method
 Description
 read the specified ResourceClaimTemplate
 
-| HTTP code          | Reponse body                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                              |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -974,18 +974,18 @@ HTTP method
 Description
 partially update the specified ResourceClaimTemplate
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 201 - Created      | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                              |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 201 - Created | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -995,24 +995,24 @@ HTTP method
 Description
 replace the specified ResourceClaimTemplate
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                                               | Description |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 201 - Created      | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                              |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 201 - Created | [`ResourceClaimTemplate`](../schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.xml#resourceclaimtemplate-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -1030,9 +1030,9 @@ HTTP method
 Description
 watch changes to an object of kind ResourceClaimTemplate. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code          | Reponse body                                                                                |
-|--------------------|---------------------------------------------------------------------------------------------|
-| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses

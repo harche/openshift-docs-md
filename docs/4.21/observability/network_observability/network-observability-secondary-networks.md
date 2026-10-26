@@ -10,9 +10,27 @@ Configure the `FlowCollector` resource to monitor traffic on Single Root I/O Vir
 
 The eBPF agent monitors other network namespaces in addition to the host network namespaces, which are monitored by default. When a pod with a virtual functions (VF) interface is created, a new network namespace is created. With `SRIOVNetwork` policy `IPAM` configurations specified, the VF interface is migrated from the host network namespace to the pod network namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster with a SR-IOV device.
 
 - The `SRIOVNetwork` custom resource (CR) `spec.ipam` configuration must be set with an IP address from the range that the interface lists or from other plugins.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -22,9 +40,11 @@ The eBPF agent monitors other network namespaces in addition to the host network
 
 4.  Configure the `FlowCollector` custom resource. A sample configuration is as follows:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Configure `FlowCollector` for SR-IOV monitoring**
+    <div class="title">
+
+    Configure `FlowCollector` for SR-IOV monitoring
 
     </div>
 
@@ -42,15 +62,37 @@ The eBPF agent monitors other network namespaces in addition to the host network
           privileged: true
     ```
 
+    </div>
+
     - The `spec.agent.ebpf.privileged` field value must be set to `true` to enable SR-IOV monitoring.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring an SR-IOV network device](../../networking/hardware_networks/configuring-sriov-device.xml#cnf-creating-an-additional-sriov-network-with-vrf-plug-in_configuring-sriov-device)
+
+</div>
 
 # Configure virtual machine (VM) secondary network interfaces for Network Observability
 
 Configure the `FlowCollector` to monitor VM secondary network traffic by setting the eBPF agent to `privileged` mode and defining the indexing for secondary networks, enabling the capture and enrichment of flows from OpenShift Virtualization.
 
 Network flows coming from VMs that are connected to the default internal pod network are automatically captured by network observability.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get information about the virtual machine launcher pod by running the following command. This information is used in Step 5:
 
@@ -145,7 +187,15 @@ Network flows coming from VMs that are connected to the default internal pod net
     `spec.processor.advanced.secondaryNetworks.name`
     Specifies the name of the secondary network as found in the `k8s.v1.cni.cncf.io/network-status` annotation of the virtual machine launcher pod. The format is typically `<namespace>/<network_attachment_definition_name>`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Observe VM traffic:
 
@@ -154,3 +204,5 @@ Network flows coming from VMs that are connected to the default internal pod net
     2.  Filter by **Source** IP using your virtual machine IP found in `k8s.v1.cni.cncf.io/network-status` annotation.
 
     3.  View both **Source** and **Destination** fields, which should be enriched, and identify the VM launcher pods and the VM instance as owners.
+
+</div>

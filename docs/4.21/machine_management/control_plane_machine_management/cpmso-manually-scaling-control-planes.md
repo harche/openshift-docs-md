@@ -1,18 +1,33 @@
 Manually scale to 4 or 5 control plane nodes on bare-metal infrastructure to recover from a degraded state, perform deep-level debugging, or ensure control plane stability in complex scenarios.
 
-<div class="important">
-
-Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
-
-</div>
+> [!IMPORTANT]
+> Red Hat supports a cluster that has 4 or 5 control plane nodes only on bare-metal infrastructure.
 
 # Adding a control plane node to your cluster
 
 Add a control plane node to recover from a degraded state, perform deep-level debugging, or ensure stability and security of the control plane in complex bare metal scenarios.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed a healthy cluster with at least three control plane nodes.
 
 - You have created a single control plane node that you intend to add to your cluster as a postinstalltion task.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Retrieve pending Certificate Signing Requests (CSRs) for the new control plane node by entering the following command:
 
@@ -26,11 +41,8 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
     ```
 
-    <div class="important">
-
-    You must approve the CSRs to complete the installation.
-
-    </div>
+    > [!IMPORTANT]
+    > You must approve the CSRs to complete the installation.
 
 3.  Confirm that the control plane node is in the `Ready` status by entering the following command:
 
@@ -38,11 +50,8 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get nodes
     ```
 
-    <div class="note">
-
-    On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
-
-    </div>
+    > [!NOTE]
+    > On installer-provisioned infrastructure, the etcd Operator relies on the Machine API to manage the control plane and ensure etcd quorum. The Machine API then uses `Machine` CRs to represent and manage the underlying control plane nodes.
 
 4.  Create the `BareMetalHost` and `Machine` CRs and link them to the `Node` CR of the control plane node.
 
@@ -298,13 +307,18 @@ Add a control plane node to recover from a degraded state, perform deep-level de
             $ bash link-machine-and-node.sh node-5 node-5
             ```
 
-            <div class="note">
+            > [!NOTE]
+            > The first `node-5` instance represents the machine, and the second instance represents the node.
 
-            The first `node-5` instance represents the machine, and the second instance represents the node.
+</div>
 
-            </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Confirm members of etcd by executing into one of the pre-existing control plane nodes:
 
@@ -358,9 +372,11 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     $ oc get ClusterVersion
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -368,3 +384,7 @@ Add a control plane node to recover from a degraded state, perform deep-level de
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   OpenShift Container Platform.5    True        False         5h57m   Cluster version is OpenShift Container Platform.5
     ```
+
+    </div>
+
+</div>

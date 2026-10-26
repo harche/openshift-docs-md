@@ -4,9 +4,27 @@ You can configure worker node batching to control how many worker nodes update s
 
 You can configure the `MachineConfigPool` resource to control how many worker nodes update simultaneously during a cluster update. Adjusting the `maxUnavailable` setting balances update speed against workload availability.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the target cluster with cluster-admin privileges.
 
 - The `oc` CLI tool is installed and configured.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the current `maxUnavailable` setting for the worker `MachineConfigPool` resource by running the following command:
 
@@ -26,11 +44,8 @@ You can configure the `MachineConfigPool` resource to control how many worker no
 
     - A percentage, for example `"50%"`, to specify the proportion of nodes that can be unavailable.
 
-    <div class="note">
-
-    The default `maxUnavailable` value is 1 worker node or 33% of worker nodes, whichever is smaller. Setting a higher value accelerates updates but increases the number of nodes unavailable at any given time. Consult your application teams to find the appropriate value for your workloads.
-
-    </div>
+    > [!NOTE]
+    > The default `maxUnavailable` value is 1 worker node or 33% of worker nodes, whichever is smaller. Setting a higher value accelerates updates but increases the number of nodes unavailable at any given time. Consult your application teams to find the appropriate value for your workloads.
 
 3.  Verify the updated setting by running the following command:
 
@@ -38,21 +53,51 @@ You can configure the `MachineConfigPool` resource to control how many worker no
     $ oc get mcp worker -o yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify the `MachineConfigPool` resource reflects the updated `maxUnavailable` value by running the following command:
 
   ``` terminal
   $ oc get mcp worker -o jsonpath='{.spec.maxUnavailable}'
   ```
 
+</div>
+
 # Configuring worker node batching by using pod disruption budgets
 
 You can configure `PodDisruptionBudget` resources to control how your workloads tolerate node draining during cluster updates. Pod disruption budgets ensure that a minimum number of pod replicas remain available during worker node updates.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the target cluster with cluster-admin privileges.
 
 - The `oc` CLI tool is installed and configured.
 
 - You have identified critical workloads that run with replicas.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `PodDisruptionBudget` resource for each critical workload:
 
@@ -98,11 +143,8 @@ You can configure `PodDisruptionBudget` resources to control how your workloads 
     cnf-workload-pdb   N/A             1                 1                     30s
     ```
 
-    <div class="important">
-
-    Ensure the `ALLOWED DISRUPTIONS` column shows a value greater than 0. If this value is 0, the pod disruption budget blocks node draining and updates stall. Do not set `minAvailable` to 100% of replicas, as this prevents any disruption.
-
-    </div>
+    > [!IMPORTANT]
+    > Ensure the `ALLOWED DISRUPTIONS` column shows a value greater than 0. If this value is 0, the pod disruption budget blocks node draining and updates stall. Do not set `minAvailable` to 100% of replicas, as this prevents any disruption.
 
 4.  Repeat steps 1-3 for all critical workloads in your cluster.
 
@@ -112,6 +154,16 @@ You can configure `PodDisruptionBudget` resources to control how your workloads 
     $ oc get pdb -A
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that no pod disruption budgets are blocking disruptions by running the following command:
 
   ``` terminal
@@ -119,6 +171,8 @@ You can configure `PodDisruptionBudget` resources to control how your workloads 
   ```
 
   This command must produce no output. If the output lists any pod disruption budgets, adjust their configuration before updating.
+
+</div>
 
 # Additional resources
 

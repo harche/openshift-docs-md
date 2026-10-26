@@ -10,6 +10,14 @@ If your NFS data volumes have the `root_squash` parameter enabled, `Restic` maps
 controller=pod-volume-backup error="fork/exec/usr/bin/restic: permission denied".
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a supplemental group for `Restic` on the NFS data volume.
 
 2.  Set the `setgid` bit on the NFS directories so that group ownership is inherited.
@@ -37,6 +45,8 @@ controller=pod-volume-backup error="fork/exec/usr/bin/restic: permission denied"
 
 4.  Wait for the `Restic` pods to restart so that the changes are applied.
 
+</div>
+
 # Troubleshoot Restic Backup CR issue that cannot be re-created after bucket is emptied
 
 Resolve the `Backup` custom resource (CR) re-creation failure that occurs after you empty the object storage bucket. This failure occurs because Velero does not automatically re-create the Restic repository from the `ResticRepository` manifest.
@@ -48,6 +58,14 @@ The `velero` pod log displays the following error message:
 ``` text
 stderr=Fatal: unable to open config file: Stat: The specified key does not exist.\nIs there a repository at the following location?
 ```
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Remove the related Restic repository from the namespace by running the following command:
 
@@ -73,6 +91,8 @@ stderr=Fatal: unable to open config file: Stat: The specified key does not exist
    pkg/restic.(*backupper).BackupPodVolumes"
    logSource="pkg/backup/backup.go:435" name=mysql-7d99fc949-qbkds
   ```
+
+</div>
 
 # Troubleshoot restic restore partially failed issue on OpenShift Container Platform 4.14 onward due to changed PSA policy
 
@@ -107,6 +127,14 @@ logSource=\"/remote-source/velero/app/pkg/controller/restore_controller.go:510\"
 restore=openshift-adp/todolist-backup-0780518c-08ed-11ee-805c-0a580a80e92c\n]",
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In your DPA custom resource (CR), check or set the `restore-resource-priorities` field on the Velero server to ensure that `securitycontextconstraints` is listed in order before `pods` in the list of resources:
 
     ``` terminal
@@ -133,10 +161,19 @@ restore=openshift-adp/todolist-backup-0780518c-08ed-11ee-805c-0a580a80e92c\n]",
 
 2.  Ensure that the security standards for the application pods are aligned, as provided in [Fixing PodSecurity Admission warnings for deployments](https://access.redhat.com/solutions/7002730), to prevent deployment warnings. If the application is not aligned with security standards, an error can occur regardless of the SCC.
 
-    <div class="note">
+    > [!NOTE]
+    > This solution is temporary, and ongoing discussions are in progress to address it.
 
-    This solution is temporary, and ongoing discussions are in progress to address it.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Fixing PodSecurity Admission warnings for deployments](https://access.redhat.com/solutions/7002730)
+
+</div>

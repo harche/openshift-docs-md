@@ -2,13 +2,10 @@ To reduce application startup time, make your applications run more efficiently,
 
 Fields in the `ContainerRuntimeConfig` custom resource (CR) let you specify where CRI-O stores and resolves container image layers, complete container images, and OCI artifacts.
 
-<div class="important">
-
-Using additional CRI-O storage locations is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Using additional CRI-O storage locations is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # About additional storage locations for CRI-O
 
@@ -105,19 +102,21 @@ To reduce application startup time and make your applications run more efficient
 
 Use the `additionalArtifactStores`, `additionalImageStores`, and `additionalLayerStores` fields in a `ContainerRuntimeConfig` to specify read-only locations where CRI-O stores and resolves OCI artifacts, container images, or container image layers. CRI-O checks these locations in order before falling back to the default storage location.
 
-<div class="important">
+> [!IMPORTANT]
+> When using multiple `ContainerRuntimeConfig` resources, merge all additional storage configurations into a single `ContainerRuntimeConfig` for each machine config pool. Multiple `ContainerRuntimeConfig` resources affecting the same configuration file might result in only a subset of the changes taking effect.
 
-When using multiple `ContainerRuntimeConfig` resources, merge all additional storage configurations into a single `ContainerRuntimeConfig` for each machine config pool. Multiple `ContainerRuntimeConfig` resources affecting the same configuration file might result in only a subset of the changes taking effect.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You enabled the required Technology Preview features for your cluster by adding the `TechPreviewNoUpgrade` feature set to the `FeatureGate` CR named `cluster`. For information about enabling Feature Gates, see "Enabling features using feature gates".
 
-  <div class="warning">
-
-  Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-  </div>
+  > [!WARNING]
+  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
 - If you are configuring the `additionalImageStores` or `additionalLayerStores` field, the target storage paths must exist and be accessible on the nodes and the container image or layers must be present in the directory. For network storage, ensure the paths are mounted before applying the configuration.
 
@@ -134,6 +133,16 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
   - You converted the container images to a lazy-pull-compatible format, such as eStargz or Nydus. See "eStargz format" or "Nydus format" for more information.
 
   - Your container registry must support HTTP range requests.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a YAML file for the `ContainerRuntimeConfig` CR similar to the following example:
 
@@ -185,11 +194,8 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
 
     For a layer store, the MCO automatically appends the `:ref` suffix to the path when writing to the `storage.conf` file. This suffix switches the container storage library from storing actual image layers (blobs) to storing references (pointers) to where those layers can be found, which is required for the lazy-pulling plugins. You do not need to include the suffix in the `ContainerRuntimeConfig` path.
 
-    <div class="note">
-
-    If a path does not exist or is inaccessible at runtime, CRI-O generates a warning and continues with the remaining stores. The default storage location is always used as a fallback.
-
-    </div>
+    > [!NOTE]
+    > If a path does not exist or is inaccessible at runtime, CRI-O generates a warning and continues with the remaining stores. The default storage location is always used as a fallback.
 
 2.  Create the `ContainerRuntimeConfig` CR by running the following command:
 
@@ -201,7 +207,15 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
 
     After you configure any of these new storage locations, the Machine Config Operator (MCO) reboots the affected nodes with the new configuration.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After the nodes have returned to the `Ready` status, check that the new stores have been added to the node configuration:
 
@@ -225,9 +239,11 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
           sh-5.1# cat /etc/crio/crio.conf.d/01-ctrcfg-additionalArtifactStores
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -237,15 +253,19 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
               additional_artifact_stores = ["/mnt/ssd-artifacts", "/mnt/nfs-shared-artifacts"]
           ```
 
+          </div>
+
         - For an image store, review the contents of the `/etc/containers/storage.conf` file by running the following command:
 
           ``` terminal
           sh-5.1# cat /etc/containers/storage.conf
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -255,15 +275,19 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
              additionalimagestores = ["/mnt/nfs-image-cache", "/mnt/ssd-images"]
           ```
 
+          </div>
+
         - For a layer store, review the contents of the `/etc/containers/storage.conf` file by running the following command:
 
           ``` terminal
           sh-5.1# cat /etc/containers/storage.conf
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -272,6 +296,10 @@ When using multiple `ContainerRuntimeConfig` resources, merge all additional sto
             [storage.options]
              additionallayerstores = ["/var/lib/stargz-store:ref"]
           ```
+
+          </div>
+
+</div>
 
 # Additional resources
 

@@ -6,17 +6,35 @@ For more information, see *CSI volume snapshots* and *Creating a Backup CR*.
 
 Configure the `VolumeSnapshotClass` custom resource (CR) to back up persistent volumes with Container Storage Interface (CSI) snapshots. This helps you to prepare your cloud storage for CSI-based backup operations.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The cloud provider must support CSI snapshots.
 
 - You must enable CSI in the `DataProtectionApplication` CR.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add the `metadata.labels.velero.io/csi-volumesnapshot-class: "true"` key-value pair to the `VolumeSnapshotClass` CR:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example configuration file**
+  <div class="title">
+
+  Example configuration file
 
   </div>
 
@@ -33,6 +51,8 @@ Configure the `VolumeSnapshotClass` custom resource (CR) to back up persistent v
   deletionPolicy: <deletion_policy_type>
   ```
 
+  </div>
+
   where:
 
   `velero.io/csi-volumesnapshot-class: "true"`
@@ -44,12 +64,30 @@ Configure the `VolumeSnapshotClass` custom resource (CR) to back up persistent v
   `<deletion_policy_type>`
   Specifies the deletion policy type. OADP supports the `Retain` and `Delete` deletion policy types for CSI and Data Mover backup and restore.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - You can now create a `Backup` CR.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [CSI volume snapshots](../../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots-overview_persistent-storage-csi-snapshots)
 
 - [Creating a Backup CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.xml#oadp-creating-backup-cr-doc)
+
+</div>

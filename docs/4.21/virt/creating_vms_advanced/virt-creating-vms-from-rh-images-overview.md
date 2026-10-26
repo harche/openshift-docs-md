@@ -12,11 +12,8 @@ You can create virtual machines (VMs) from operating system images provided by R
 
 - Create a VM from a `VirtualMachine` manifest by using the command line.
 
-<div class="important">
-
-Do not create VMs in the default `openshift-*` namespaces. Instead, create a new namespace or use an existing namespace without the `openshift` prefix.
-
-</div>
+> [!IMPORTANT]
+> Do not create VMs in the default `openshift-*` namespaces. Instead, create a new namespace or use an existing namespace without the `openshift` prefix.
 
 # About golden images
 
@@ -44,6 +41,14 @@ Provided boot sources are updated automatically to the latest version of the ope
 
 You can configure a custom namespace for golden images in your cluster by using the OpenShift Container Platform web console.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the web console, select **Virtualization** → **Overview**.
 
 2.  Select the **Settings** tab.
@@ -60,13 +65,33 @@ You can configure a custom namespace for golden images in your cluster by using 
 
         2.  Click **Create**.
 
+</div>
+
 # Configuring a custom namespace for golden images by using the CLI
 
 You can configure a custom namespace for golden images in your cluster by setting the `spec.commonBootImageNamespace` field in the `HyperConverged` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You created a namespace to use for golden images.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -95,6 +120,8 @@ You can configure a custom namespace for golden images in your cluster by settin
     Specifies the namespace to use for golden images.
 
 3.  Save your changes and exit the editor.
+
+</div>
 
 # Additional resources
 

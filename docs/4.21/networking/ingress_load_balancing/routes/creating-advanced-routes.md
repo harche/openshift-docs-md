@@ -8,19 +8,34 @@ The route specifies the TLS certificate and key that the Ingress Controller uses
 
 The procedure creates a `Route` resource with a custom certificate and edge TLS termination. The procedure assumes that the certificate/key pair are in the `tls.crt` and `tls.key` files in the current working directory. You may also specify a CA certificate if needed to complete the certificate chain. Substitute the actual path names for `tls.crt`, `tls.key`, and (optionally) `ca.crt`. Substitute the name of the service that you want to expose for `frontend`. Substitute the appropriate hostname for `www.example.com`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
 - You might have a separate CA certificate in a PEM-encoded file that completes the certificate chain.
 
 - You must have a service that you want to expose.
 
-<div class="note">
+</div>
 
-Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+> [!NOTE]
+> Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+>
+> ``` terminal
+> $ openssl rsa -in password_protected_tls.key -out tls.key
+> ```
 
-``` terminal
-$ openssl rsa -in password_protected_tls.key -out tls.key
-```
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -32,9 +47,11 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
 
   If you examine the resulting `Route` resource, the resource should have a configuration similar to the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **YAML Definition of the Secure Route**
+  <div class="title">
+
+  YAML Definition of the Secure Route
 
   </div>
 
@@ -65,13 +82,25 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
   # ...
   ```
 
+  </div>
+
   See `oc create route edge --help` for more options.
+
+</div>
 
 # Create a re-encrypt route with a custom certificate
 
 To secure traffic by using a custom certificate, configure a route with re-encrypt TLS termination by running the `oc create route` command. This configuration enables the Ingress Controller to decrypt traffic, and then re-encrypt traffic before forwarding the traffic to the destination pod.
 
 The procedure creates a `Route` resource with a custom certificate and reencrypt TLS termination. The procedure assumes that the certificate/key pair are in the `tls.crt` and `tls.key` files in the current working directory. You must also specify a destination CA certificate to enable the Ingress Controller to trust the service’s certificate. You may also specify a CA certificate if needed to complete the certificate chain. Substitute the actual path names for `tls.crt`, `tls.key`, `cacert.crt`, and (optionally) `ca.crt`. Substitute the name of the `Service` resource that you want to expose for `frontend`. Substitute the appropriate hostname for `www.example.com`.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
@@ -81,13 +110,20 @@ The procedure creates a `Route` resource with a custom certificate and reencrypt
 
 - You must have a service that you want to expose.
 
-<div class="note">
+</div>
 
-Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+> [!NOTE]
+> Password protected key files are not supported. To remove a passphrase from a key file, use the following command:
+>
+> ``` terminal
+> $ openssl rsa -in password_protected_tls.key -out tls.key
+> ```
 
-``` terminal
-$ openssl rsa -in password_protected_tls.key -out tls.key
-```
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -99,9 +135,11 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
 
   If you examine the resulting `Route` resource, the resource should have a configuration similar to the following example:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **YAML Definition of the Secure Route**
+  <div class="title">
+
+  YAML Definition of the Secure Route
 
   </div>
 
@@ -136,15 +174,35 @@ $ openssl rsa -in password_protected_tls.key -out tls.key
   # ...
   ```
 
+  </div>
+
   See `oc create route reencrypt --help` for more options.
+
+</div>
 
 # Create a passthrough route
 
 To send encrypted traffic directly to the destination without decryption at the router, configure a route with passthrough termination by running the `oc create route` command. This configuration requires no key or certificate on the route, as the destination pod handles TLS termination.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a service that you want to expose.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a `Route` resource:
 
@@ -154,9 +212,11 @@ To send encrypted traffic directly to the destination without decryption at the 
 
   If you examine the resulting `Route` resource, it should look similar to the following:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **A Secured Route Using Passthrough Termination**
+  <div class="title">
+
+  A Secured Route Using Passthrough Termination
 
   </div>
 
@@ -177,6 +237,8 @@ To send encrypted traffic directly to the destination without decryption at the 
       name: frontend
   ```
 
+  </div>
+
   where:
 
   `metadata.name`
@@ -190,9 +252,19 @@ To send encrypted traffic directly to the destination without decryption at the 
 
   The destination pod is responsible for serving certificates for the traffic at the endpoint. This is currently the only method that can support requiring client certificates, also known as two-way authentication.
 
+</div>
+
 # Create a route using the destination CA certificate in the Ingress annotation
 
 To define a route with a custom destination CA certificate, apply the `route.openshift.io/destination-ca-certificate-secret` annotation to an Ingress object. This configuration ensures the Ingress Controller uses the specified secret to verify the identity of the destination service.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a certificate/key pair in PEM-encoded files, where the certificate is valid for the route host.
 
@@ -201,6 +273,16 @@ To define a route with a custom destination CA certificate, apply the `route.ope
 - You have a separate destination CA certificate in a PEM-encoded file.
 
 - You have a service that you want to expose.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a secret for the destination CA certificate by entering the following command:
 
@@ -214,15 +296,19 @@ To define a route with a custom destination CA certificate, apply the `route.ope
     $ oc -n test-ns create secret generic dest-ca-cert --from-file=tls.crt=tls.crt
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     secret/dest-ca-cert created
     ```
+
+    </div>
 
 2.  Add the `route.openshift.io/destination-ca-certificate-secret` to the Ingress annotations:
 
@@ -244,9 +330,11 @@ To define a route with a custom destination CA certificate, apply the `route.ope
 
     The Ingress Controller inserts a secret that is referenced in the annotation into the generated route.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -270,13 +358,35 @@ To define a route with a custom destination CA certificate, apply the `route.ope
     ...
     ```
 
+    </div>
+
+</div>
+
 # Create a route with externally managed certificates
 
 You can configure OpenShift Container Platform routes with third-party certificate management solutions by using the `.spec.tls.externalCertificate` field of the route API. You can reference externally managed TLS certificates via secrets, eliminating the need for manual certificate management.
 
 By using the externally managed certificate, you can reduce errors to ensure a smoother rollout of certificate updates and enable the OpenShift router to serve renewed certificates promptly. You can use externally managed certificates with both edge routes and re-encrypt routes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have a secret containing a valid certificate or key pair in PEM-encoded format of type `kubernetes.io/tls`, which includes both `tls.key` and `tls.crt` keys. Example command: `$ oc create secret tls myapp-tls --cert=server.crt --key=server.key`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `role` object in the same namespace as the secret to allow the router service account read access by running the following command:
 
@@ -299,9 +409,11 @@ By using the externally managed certificate, you can reduce errors to ensure a s
 
 3.  Create a YAML file that defines the `route` and specifies the secret containing your certificate using the following example.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition of the secure route**
+    <div class="title">
+
+    YAML definition of the secure route
 
     </div>
 
@@ -321,6 +433,8 @@ By using the externally managed certificate, you can reduce errors to ensure a s
     [...]
     ```
 
+    </div>
+
     - `<secret-name>`: Specify the actual name of your secret.
 
 4.  Create a `route` resource by running the following command:
@@ -333,27 +447,46 @@ By using the externally managed certificate, you can reduce errors to ensure a s
 
       If the secret exists and has a certificate/key pair, the router will serve the generated certificate if all prerequisites are met.
 
-      <div class="note">
+      > [!NOTE]
+      > If `.spec.tls.externalCertificate` is not provided, the router uses default generated certificates.
+      >
+      > You cannot provide the `.spec.tls.certificate` field or the `.spec.tls.key` field when using the `.spec.tls.externalCertificate` field.
 
-      If `.spec.tls.externalCertificate` is not provided, the router uses default generated certificates.
-
-      You cannot provide the `.spec.tls.certificate` field or the `.spec.tls.key` field when using the `.spec.tls.externalCertificate` field.
-
-      </div>
+</div>
 
 # Create a route using the default certificate through an Ingress object
 
 To generate a secure, edge-terminated route that uses the default ingress certificate, specify an empty TLS configuration in the Ingress object. This configuration overrides the default behavior, preventing the creation of an insecure route.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a service that you want to expose.
 
 - You have access to the OpenShift CLI (`oc`).
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file for the Ingress object. In the following example, the file is called `example-ingress.yaml`:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **YAML definition of an Ingress object**
+    <div class="title">
+
+    YAML definition of an Ingress object
 
     </div>
 
@@ -370,6 +503,8 @@ To generate a secure, edge-terminated route that uses the default ingress certif
       - {}
     ```
 
+    </div>
+
     where:
 
     `spec.tls`
@@ -381,15 +516,27 @@ To generate a secure, edge-terminated route that uses the default ingress certif
     $ oc create -f example-ingress.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that OpenShift Container Platform has created the expected route for the Ingress object by running the following command:
 
   ``` terminal
   $ oc get routes -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -409,6 +556,8 @@ To generate a secure, edge-terminated route that uses the default ingress certif
   # ...
   ```
 
+  </div>
+
   where:
 
   `metadata.name`
@@ -419,3 +568,5 @@ To generate a secure, edge-terminated route that uses the default ingress certif
 
   `tls.termination`
   Specifies the termination policy for the route. The route should specify the `edge` termination policy.
+
+</div>

@@ -1,10 +1,28 @@
 Configure certificate rotation parameters to replace existing certificates.
 
-# Configuring certificate rotation
+# Configure certificate rotation in `HyperConverged` CR
 
-You can do this during OpenShift Virtualization installation in the web console or after installation in the `HyperConverged` custom resource (CR).
+If you did not configure certificate rotation during OpenShift Virtualization installation in the web console, you can use the `HyperConverged` custom resource (CR) to apply the configuration after installation.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HyperConverged` CR by running the following command:
 
@@ -31,11 +49,11 @@ You can do this during OpenShift Virtualization installation in the web console 
             renewBefore: 12h0m0s
     ```
 
-    - The value of `ca.renewBefore` must be less than or equal to the value of `ca.duration`.
+    - `ca.renewBefore`: Set to a value less than or equal to the value of `ca.duration`.
 
-    - The value of `server.duration` must be less than or equal to the value of `ca.duration`.
+    - `server.duration`: Set to a value less than or equal to the value of `ca.duration`.
 
-    - The value of `server.renewBefore` must be less than or equal to the value of `server.duration`.
+    - `server.renewBefore`; Set to a value less than or equal to the value of `server.duration`.
 
 3.  Apply updates to the `HyperConverged` CR by running the following command:
 
@@ -49,7 +67,9 @@ You can do this during OpenShift Virtualization installation in the web console 
     $ oc apply -f kubevirt-hyperconverged.yaml
     ```
 
-# Troubleshooting certificate rotation parameters
+</div>
+
+# Troubleshoot certificate rotation parameters
 
 Deleting one or more `certConfig` values in the `HyperConverged` custom resource (CR) causes the `certConfig` values to revert to the default values.
 

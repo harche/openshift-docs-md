@@ -55,6 +55,14 @@ When you configure Service Mesh control plane profiles, which follow the same sy
 
 To add custom profiles, you must create a `ConfigMap` named `smcp-templates` in the `openshift-operators` project. The Operator container automatically mounts the `ConfigMap`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An installed, verified Service Mesh Operator.
 
 - An account with the `cluster-admin` role. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
@@ -62,6 +70,16 @@ To add custom profiles, you must create a `ConfigMap` named `smcp-templates` in 
 - Location of the Operator deployment.
 
 - Access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform CLI as a `cluster-admin`. If you use Red Hat OpenShift Dedicated, you must have an account with the `dedicated-admin` role.
 
@@ -82,6 +100,8 @@ To add custom profiles, you must create a `ConfigMap` named `smcp-templates` in 
         profiles:
         - default
     ```
+
+</div>
 
 ## Setting the correct network policy
 

@@ -1,10 +1,7 @@
 You can use boot image skew enforcement to help ensure that the boot images in a cluster are up-to-date with the OpenShift Container Platform and RHCOS version being used in the cluster. Using an older boot image could cause issues when scaling new nodes. If the images are older than a predetermined version, the MCO disables cluster upgrades until it deems the boot images to be compliant.
 
-<div class="note">
-
-Boot image skew enforcement is not supported for single-node OpenShift clusters.
-
-</div>
+> [!NOTE]
+> Boot image skew enforcement is not supported for single-node OpenShift clusters.
 
 # About boot image skew enforcement
 
@@ -25,11 +22,8 @@ Boot image skew enforcement operates in one of the following modes:
 Automatic
 When set to `Automatic`, with boot image management also enabled, if the cluster is updated from one OpenShift Container Platform version to the next, the MCO automatically updates the boot image version in the `MachineConfiguration` object and tests the boot image version for skew.
 
-<div class="note">
-
-In OpenShift Container Platform 4.22, the automatic mode is available only for AWS, Google Cloud, Azure, and vSphere clusters and is the default for these platforms.
-
-</div>
+> [!NOTE]
+> In OpenShift Container Platform 4.22, the automatic mode is available only for AWS, Google Cloud, Azure, and vSphere clusters and is the default for these platforms.
 
 The MCO automatically configures this mode when the following conditions are met:
 
@@ -41,9 +35,11 @@ The MCO automatically configures this mode when the following conditions are met
 
 For information on boot image management, see "Boot image management".
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `MachineConfiguration` object with automatic skew enforcement**
+<div class="title">
+
+Example `MachineConfiguration` object with automatic skew enforcement
 
 </div>
 
@@ -60,14 +56,18 @@ status:
     mode: Automatic
 ```
 
+</div>
+
 The MCO examines the boot image reported in the `ocpVersion` parameter to determine if the cluster is violating the boot image version skew limits.
 
 Manual
 When set to `Manual`, if the boot image version is updated, a cluster administrator is responsible for manually updating the `MachineConfiguration` object with the RHCOS version of the new boot image or the OpenShift Container Platform version associated with the new boot image. The MCO then tests the boot image version for skew.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `MachineConfiguration` object with skew enforcement based on an RHCOS version**
+<div class="title">
+
+Example `MachineConfiguration` object with skew enforcement based on an RHCOS version
 
 </div>
 
@@ -92,9 +92,13 @@ status:
     mode: Manual
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Example `MachineConfiguration` object with skew enforcement based on an OpenShift Container Platform version**
+<div class="formalpara">
+
+<div class="title">
+
+Example `MachineConfiguration` object with skew enforcement based on an OpenShift Container Platform version
 
 </div>
 
@@ -118,15 +122,19 @@ status:
       ocpVersion: 4.22.0
     mode: Manual
 ```
+
+</div>
 
 The MCO examines the boot image reported in the `rhcosVersion` or `ocpVersion` parameter to determine if the cluster is violating the boot image version skew limits.
 
 None
 When set to `None`, boot image skew enforcement is disabled. When disabled, the MCO does not monitor for boot image skew and does not report if new nodes are provisioned with older boot images, which could introduce issues when scaling new nodes.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `MachineConfiguration` object with skew enforcement disabled**
+<div class="title">
+
+Example `MachineConfiguration` object with skew enforcement disabled
 
 </div>
 
@@ -144,6 +152,8 @@ status:
   bootImageSkewEnforcementStatus:
     mode: None
 ```
+
+</div>
 
 When in the none mode, the MCO reports a Prometheus alert that skew enforcement is disabled and that scale-up might run into issues due to old boot images. The alert does not cause any functional issues for the cluster.
 
@@ -161,15 +171,25 @@ In OpenShift Container Platform 4.22, the automatic mode is available only for A
 
 All other platforms default to manual mode with the OpenShift Container Platform version set as the boot image version in the `MachineConfiguration` object. In manual mode, you are expected to manually update the `MachineConfiguration` object with new boot image version whenever you update the boot image.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  For manual mode, you can obtain the current boot image on a node by using the following command:
 
     ``` terminal
     $ oc debug node/<new-node> -- chroot /host cat /sysroot/.coreos-aleph-version.json
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -178,6 +198,8 @@ All other platforms default to manual mode with the OpenShift Container Platform
         "ref": "docker://ostree-image-signed:oci-archive:/rhcos-9.6.20251023-0-ostree.x86_64.ociarchive",
         "version": "9.6.20251023-0"
     ```
+
+    </div>
 
     You should use the newest node on the cluster, because the boot image might have been updated after the older nodes were created. Ideally, test the newest node from each machine set and use the oldest boot image among them.
 
@@ -214,9 +236,19 @@ All other platforms default to manual mode with the OpenShift Container Platform
 
     - For `OCPVersion`, use `spec.bootImageSkewEnforcement.manual.ocpVersion` to specify the OpenShift Container Platform version associated with the boot image that is being used in the `x.y.z` format. This field must be between 5 and 10 characters.
 
+</div>
+
 # Updating the boot image skew enforcement version
 
 If you are running boot image skew enforcement in the manual mode, you must manually update the boot image version in the `MachineConfiguration` object each time you update the boot image in your cluster. With the boot image updated in the `MachineConfiguration` object, the Machine Config Operator (MCO) can properly perform boot image skew enforcement to ensure that your nodes are up-to-date.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If necessary, obtain the RHCOS or OpenShift Container Platform version of the current boot image on an updated node by using one of the following commands:
 
@@ -226,9 +258,11 @@ If you are running boot image skew enforcement in the manual mode, you must manu
       $ oc debug node/<new-node> -- chroot /host cat /sysroot/.coreos-aleph-version.json
       ```
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -238,6 +272,8 @@ If you are running boot image skew enforcement in the manual mode, you must manu
           "version": "9.6.20251023-0"
       ```
 
+      </div>
+
     - Obtain the OpenShift Container Platform version by running the following command:
 
       ``` terminal
@@ -246,15 +282,19 @@ If you are running boot image skew enforcement in the manual mode, you must manu
 
       Ensure that you use the same `openshift-install` binary that you used when updating the boot image.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
       ``` terminal
       openshift-install 4.22.0
       ```
+
+      </div>
 
 2.  Specify the boot image version in the `MachineConfiguration` object with either the RHCOS or OpenShift Container Platform version:
 
@@ -295,6 +335,8 @@ If you are running boot image skew enforcement in the manual mode, you must manu
       ```
 
       If the `spec.bootImageSkewEnforcement.manual.mode` is `OCPVersion`, specify the OpenShift Container Platform version of the boot image with the `ocpVersion` parameter, as shown in the example.
+
+</div>
 
 # Additional resources
 

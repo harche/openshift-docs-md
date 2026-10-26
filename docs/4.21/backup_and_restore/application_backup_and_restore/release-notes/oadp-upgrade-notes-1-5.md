@@ -1,10 +1,7 @@
 Learn how to upgrade your existing OADP 1.4 installation to OADP 1.5.
 
-<div class="note">
-
-Always upgrade to the next minor version. Do not skip versions. To update to a later version, upgrade only one channel at a time. For example, to upgrade from OADP 1.1 to 1.3, upgrade first to 1.2, and then to 1.3.
-
-</div>
+> [!NOTE]
+> Always upgrade to the next minor version. Do not skip versions. To update to a later version, upgrade only one channel at a time. For example, to upgrade from OADP 1.1 to 1.3, upgrade first to 1.2, and then to 1.3.
 
 # Changes from OADP 1.4 to 1.5
 
@@ -31,11 +28,21 @@ You can configure `restorePVC` in the DPA by using the `ignoreDelayBinding` fiel
 
 You must back up your current `DataProtectionApplication` (DPA) configuration.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Save your current DPA configuration by running the following command:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example command**
+  <div class="title">
+
+  Example command
 
   </div>
 
@@ -43,13 +50,22 @@ You must back up your current `DataProtectionApplication` (DPA) configuration.
   $ oc get dpa -n openshift-adp -o yaml > dpa.orig.backup
   ```
 
+  </div>
+
+</div>
+
 # Upgrading the OADP Operator
 
 You can upgrade the OpenShift API for Data Protection (OADP) Operator using the following procedure.
 
-<div class="note">
+> [!NOTE]
+> Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
 
-Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -57,27 +73,46 @@ Do not install OADP 1.5.0 on a OpenShift 4.18 cluster.
 
 - You have backed up your data.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Upgrade OpenShift 4.18 to OpenShift 4.19.
 
-    <div class="note">
-
-    OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19.
-
-    </div>
+    > [!NOTE]
+    > OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19.
 
 2.  Change your subscription channel for the OADP Operator from `stable-1.4` to `stable`.
 
 3.  Wait for the Operator and containers to update and restart.
 
+</div>
+
 # Convert DPA to the new version for OADP 1.5.0
 
 The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4.19. You can convert Data Protection Application (DPA) to the new OADP 1.5 version by using the new `spec.configuration.nodeAgent` field and its sub-fields.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To configure `nodeAgent` daemon set, use the `spec.configuration.nodeAgent` parameter in DPA. See the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `DataProtectionApplication` configuration**
+    <div class="title">
+
+    Example `DataProtectionApplication` configuration
 
     </div>
 
@@ -91,11 +126,15 @@ The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4
     ...
     ```
 
+    </div>
+
 2.  To configure `nodeAgent` daemon set by using the `ConfigMap` resource named `node-agent-config`, see the following example configuration:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example config map**
+    <div class="title">
+
+    Example config map
 
     </div>
 
@@ -115,9 +154,21 @@ The OpenShift API for Data Protection (OADP) 1.4 is not supported on OpenShift 4
     ...
     ```
 
+    </div>
+
+</div>
+
 # Verify the upgrade
 
 You can verify the OpenShift API for Data Protection (OADP) upgrade by using the following procedure.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the `DataProtectionApplication` (DPA) has been reconciled successfully:
 
@@ -125,9 +176,11 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     $ oc get dpa dpa-sample -n openshift-adp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -136,11 +189,10 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     dpa-sample      True         2m51s
     ```
 
-    <div class="note">
-
-    The `RECONCILED` column must be `True`.
-
     </div>
+
+    > [!NOTE]
+    > The `RECONCILED` column must be `True`.
 
 2.  Verify that the installation finished by viewing the OADP resources by running the following command:
 
@@ -148,9 +200,11 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     $ oc get all -n openshift-adp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -181,11 +235,10 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     replicaset.apps/velero-f5c9ffb66                              0         0         0       3d17h
     ```
 
-    <div class="note">
-
-    The `node-agent` pods are created only while using `restic` or `kopia` in `DataProtectionApplication` (DPA). In OADP 1.4.0 and OADP 1.3.0 version, the `node-agent` pods are labeled as `restic`.
-
     </div>
+
+    > [!NOTE]
+    > The `node-agent` pods are created only while using `restic` or `kopia` in `DataProtectionApplication` (DPA). In OADP 1.4.0 and OADP 1.3.0 version, the `node-agent` pods are labeled as `restic`.
 
 3.  Verify the backup storage location and confirm that the `PHASE` is `Available` by running the following command:
 
@@ -193,9 +246,11 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -203,3 +258,7 @@ You can verify the OpenShift API for Data Protection (OADP) upgrade by using the
     NAME           PHASE       LAST VALIDATED   AGE     DEFAULT
     dpa-sample-1   Available   1s               3d16h   true
     ```
+
+    </div>
+
+</div>

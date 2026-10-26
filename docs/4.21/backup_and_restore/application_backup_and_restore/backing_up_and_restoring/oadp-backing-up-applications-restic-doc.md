@@ -8,33 +8,32 @@ You back up Kubernetes resources, internal images, and persistent volumes with K
 
 You do not need to specify a snapshot location in the `DataProtectionApplication` CR.
 
-<div class="note">
+> [!NOTE]
+> In OADP version 1.3 and later, you can use either Kopia or Restic for backing up applications.
+>
+> For the Built-in DataMover, you must use Kopia.
+>
+> In OADP version 1.2 and earlier, you can only use Restic for backing up applications.
 
-In OADP version 1.3 and later, you can use either Kopia or Restic for backing up applications.
+> [!IMPORTANT]
+> FSB does not support backing up `hostPath` volumes. For more information, see *FSB limitations*.
 
-For the Built-in DataMover, you must use Kopia.
-
-In OADP version 1.2 and earlier, you can only use Restic for backing up applications.
-
-</div>
-
-<div class="important">
-
-FSB does not support backing up `hostPath` volumes. For more information, see *FSB limitations*.
-
-</div>
-
-<div class="important">
-
-The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
-
-Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
-
-</div>
+> [!IMPORTANT]
+> The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
+>
+> Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
 
 # Back up applications with File System Backup
 
 Create a `Backup` custom resource (CR) to back up applications by using File System Backup (FSB) with Kopia as the uploader. This helps you to protect Kubernetes volumes attached to pods when snapshots are not available or when using NFS data volumes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
@@ -44,7 +43,15 @@ Create a `Backup` custom resource (CR) to back up applications by using File Sys
 
 - The `DataProtectionApplication` CR must be in a `Ready` state.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create the `Backup` CR, as in the following example:
 
@@ -66,6 +73,16 @@ Create a `Backup` custom resource (CR) to back up applications by using File Sys
   `defaultVolumesToFsBackup: true`
   Specifies the FSB setting within the `spec` block for OADP version 1.2 and later. In OADP version 1.1, add `defaultVolumesToRestic: true` instead.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [FSB limitations](https://velero.io/docs/v1.12/file-system-backup/#limitations)
+
+</div>

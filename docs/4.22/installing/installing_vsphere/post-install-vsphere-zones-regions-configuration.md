@@ -14,13 +14,10 @@ A failure domain configuration lists parameters that create a topology. The foll
 
 After you define multiple regions and zones for your OpenShift Container Platform cluster, you can create or migrate nodes to another failure domain.
 
-<div class="important">
-
-If you want to migrate pre-existing OpenShift Container Platform cluster compute nodes to a failure domain, you must define a new compute machine set for the compute node. This new machine set can scale up a compute node according to the topology of the failure domain, and scale down the pre-existing compute node.
-
-The cloud provider adds `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to any compute node provisioned by a machine set resource.
-
-</div>
+> [!IMPORTANT]
+> If you want to migrate pre-existing OpenShift Container Platform cluster compute nodes to a failure domain, you must define a new compute machine set for the compute node. This new machine set can scale up a compute node according to the topology of the failure domain, and scale down the pre-existing compute node.
+>
+> The cloud provider adds `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to any compute node provisioned by a machine set resource.
 
 # Specifying multiple regions and zones for your cluster on vSphere
 
@@ -30,9 +27,14 @@ Topology-aware features for the cloud controller manager and the vSphere Contain
 
 Before you specify regions and zones for your cluster, you must ensure that all data centers and compute clusters contain tags, so that the cloud provider can add labels to your node. For example, if `data-center-1` represents `region-a` and `compute-cluster-1` represents `zone-1`, the cloud provider adds an `openshift-region` category label with a value of `region-a` to `data-center-1`. Additionally, the cloud provider adds an `openshift-zone` category tag with a value of `zone-1` to `compute-cluster-1`.
 
-<div class="note">
+> [!NOTE]
+> You can migrate control plane nodes with vMotion capabilities to a failure domain. After you add these nodes to a failure domain, the cloud provider adds `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to these nodes.
 
-You can migrate control plane nodes with vMotion capabilities to a failure domain. After you add these nodes to a failure domain, the cloud provider adds `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to these nodes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -42,9 +44,16 @@ You can migrate control plane nodes with vMotion capabilities to a failure domai
 
 - Optional: If you defined **API** and **Ingress** static IP addresses to the installation program, you must ensure that all regions and zones share a common layer 2 network. This configuration ensures that API and Ingress Virtual IP (VIP) addresses can interact with your cluster.
 
-<div class="important">
+</div>
 
-If you do not supply tags to all data centers and compute clusters before you create a node or migrate a node, the cloud provider cannot add the `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to the node. This means that services cannot route traffic to your node.
+> [!IMPORTANT]
+> If you do not supply tags to all data centers and compute clusters before you create a node or migrate a node, the cloud provider cannot add the `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to the node. This means that services cannot route traffic to your node.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -107,23 +116,48 @@ If you do not supply tags to all data centers and compute clusters before you cr
             internal: {}
     ```
 
-    <div class="important">
-
-    After you create a failure domain and you define it in a CRD for a VMware vSphere cluster, you must not modify or delete the failure domain. Doing any of these actions with this configuration can impact the availability and fault tolerance of a control plane machine.
-
-    </div>
+    > [!IMPORTANT]
+    > After you create a failure domain and you define it in a CRD for a VMware vSphere cluster, you must not modify or delete the failure domain. Doing any of these actions with this configuration can impact the availability and fault tolerance of a control plane machine.
 
 2.  Save the resource file to apply the changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Parameters for the cluster-wide infrastructure CRD](../../installing/installing_vsphere/post-install-vsphere-zones-regions-configuration.xml#references-regions-zones-infrastructure-vsphere_post-install-vsphere-zones-regions-configuration)
+
+</div>
 
 # Enabling a multiple layer 2 network for your cluster
 
 You can configure your cluster to use a multiple layer 2 network configuration so that data transfer among nodes can span across multiple networks.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You configured network connectivity among machines so that cluster components can communicate with each other.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you installed your cluster with installer-provisioned infrastructure, you must ensure that all control plane nodes share a common layer 2 network. Additionally, ensure compute nodes that are configured for Ingress pod scheduling share a common layer 2 network.
 
@@ -137,11 +171,21 @@ You can configure your cluster to use a multiple layer 2 network configuration s
 
   - Configure your Ingress load balancer and network so that the load balancer can reach the Ingress pods on the compute or infrastructure nodes.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing a cluster on vSphere with network customizations](../../installing/installing_vsphere/upi/installing-vsphere-network-customizations.xml#installing-vsphere-network-customizations)
 
 - [Creating a compute machine set](../../machine_management/creating_machinesets/creating-machineset-vsphere.xml#machineset-creating_creating-machineset-vsphere)
+
+</div>
 
 # Parameters for the cluster-wide infrastructure CRD
 
@@ -149,30 +193,48 @@ You must set values for specific parameters in the cluster-wide infrastructure, 
 
 The following table lists mandatory parameters for defining multiple regions and zones for your OpenShift Container Platform cluster:
 
-| Parameter        | Description                                                                                                                      |
-|------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `vcenters`       | The vCenter servers for your OpenShift Container Platform cluster. You can specify either a single vCenter, or up to 3 vCenters. |
-| `datacenters`    | vCenter data centers where VMs associated with the OpenShift Container Platform cluster will be created or presently exist.      |
-| `port`           | The TCP port of the vCenter server.                                                                                              |
-| `server`         | The fully qualified domain name (FQDN) of the vCenter server.                                                                    |
-| `failureDomains` | The list of failure domains.                                                                                                     |
-| `name`           | The name of the failure domain.                                                                                                  |
-| `region`         | The value of the `openshift-region` tag assigned to the topology for the failure domain.                                         |
-| `zone`           | The value of the `openshift-zone` tag assigned to the topology for the failure domain.                                           |
-| `topology`       | The vCenter resources associated with the failure domain.                                                                        |
-| `datacenter`     | The data center associated with the failure domain.                                                                              |
-| `computeCluster` | The full path of the compute cluster associated with the failure domain.                                                         |
-| `resourcePool`   | The full path of the resource pool associated with the failure domain.                                                           |
-| `datastore`      | The full path of the datastore associated with the failure domain.                                                               |
-| `networks`       | A list of port groups associated with the failure domain. Only one portgroup can be defined.                                     |
+| Parameter | Description |
+|----|----|
+| `vcenters` | The vCenter servers for your OpenShift Container Platform cluster. You can specify either a single vCenter, or up to 3 vCenters. |
+| `datacenters` | vCenter data centers where VMs associated with the OpenShift Container Platform cluster will be created or presently exist. |
+| `port` | The TCP port of the vCenter server. |
+| `server` | The fully qualified domain name (FQDN) of the vCenter server. |
+| `failureDomains` | The list of failure domains. |
+| `name` | The name of the failure domain. |
+| `region` | The value of the `openshift-region` tag assigned to the topology for the failure domain. |
+| `zone` | The value of the `openshift-zone` tag assigned to the topology for the failure domain. |
+| `topology` | The vCenter resources associated with the failure domain. |
+| `datacenter` | The data center associated with the failure domain. |
+| `computeCluster` | The full path of the compute cluster associated with the failure domain. |
+| `resourcePool` | The full path of the resource pool associated with the failure domain. |
+| `datastore` | The full path of the datastore associated with the failure domain. |
+| `networks` | A list of port groups associated with the failure domain. Only one portgroup can be defined. |
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Specifying multiple regions and zones for your cluster on vSphere](../../installing/installing_vsphere/post-install-vsphere-zones-regions-configuration.xml#specifying-regions-zones-infrastructure-vsphere_post-install-vsphere-zones-regions-configuration)
+
+</div>
 
 # Specifying multiple host groups for your cluster on vSphere
 
 You can configure the `infrastructures.config.openshift.io` configuration resource to specify multiple host groups for your OpenShift Container Platform cluster that runs on a VMware vSphere instance.
 
 This is necessary if your vSphere instance is in a stretched cluster configuration, with your ESXi hosts and storage distributed across multiple physical data centers. Use this procedure if you did not already configure host groups for your OpenShift Container Platform cluster at installation, or if you need to update your OpenShift Container Platform cluster with additional host groups.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - ESXi hosts are grouped into host groups, which are linked via VM-host affinity rules to corresponding virtual machine (VM) groups. See the following example `govc` commands for details:
 
@@ -203,6 +265,16 @@ This is necessary if your vSphere instance is in a stretched cluster configurati
 - ESXi hosts within host groups have tags from the `openshift-zone` tag category.
 
 - `Host.Inventory.EditCluster` privilege is granted on the vSphere vCenter cluster object.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the infrastructure settings of your OpenShift Container Platform cluster.
 
@@ -384,3 +456,5 @@ This is necessary if your vSphere instance is in a stretched cluster configurati
         ``` terminal
         $ oc create -f <name_of_machine_set_file>.yaml
         ```
+
+</div>

@@ -14,15 +14,20 @@ Consider the following requirements before you start updating hosted control pla
 
 - You must use bare metal or OpenShift Virtualization as the cloud platform for the hosted cluster. You can find the platform type of your hosted cluster in the `spec.Platform.type` specification of the `HostedCluster` custom resource (CR).
 
-<div class="important">
+> [!IMPORTANT]
+> You must update hosted control planes in the following order:
+>
+> 1.  Upgrade an OpenShift Container Platform cluster to the latest version. For more information, see "Updating a cluster using the web console" or "Updating a cluster using the CLI".
+>
+> 2.  Upgrade the multicluster engine Operator to the latest version. For more information, see "Updating installed Operators".
+>
+> 3.  Upgrade the hosted cluster and node pools from the previous OpenShift Container Platform version to the latest version. For more information, see "Updating a control plane in a hosted cluster" and "Updating node pools in a hosted cluster".
 
-You must update hosted control planes in the following order:
+<div>
 
-1.  Upgrade an OpenShift Container Platform cluster to the latest version. For more information, see "Updating a cluster using the web console" or "Updating a cluster using the CLI".
+<div class="title">
 
-2.  Upgrade the multicluster engine Operator to the latest version. For more information, see "Updating installed Operators".
-
-3.  Upgrade the hosted cluster and node pools from the previous OpenShift Container Platform version to the latest version. For more information, see "Updating a control plane in a hosted cluster" and "Updating node pools in a hosted cluster".
+Additional resources
 
 </div>
 
@@ -36,6 +41,8 @@ You must update hosted control planes in the following order:
 
 - [Updating node pools in a hosted cluster](../hosted_control_planes/hcp-updating.xml#hcp-update-node-pools_hcp-updating)
 
+</div>
+
 # Hosted cluster and node pool version skew policy
 
 In hosted control planes, ensure that you use a node pool version that is supported with your hosted cluster version.
@@ -48,10 +55,10 @@ In hosted control planes, ensure that you use a node pool version that is suppor
 
   This includes patch versions within the same minor version. For example, a 4.20.3 node pool version is *not* supported on a 4.20.2 hosted cluster.
 
-| Hosted cluster version | Supported node pool versions                   | Example unsupported node pool versions |
-|------------------------|------------------------------------------------|----------------------------------------|
-| 4.21.0                 | 4.21.0, 4.20.z, 4.19.z, 4.18.z                 | 4.21.1+, 4.17.z, 4.16.z                |
-| 4.20.2                 | 4.20.0, 4.20.1, 4.20.2, 4.19.z, 4.18.z, 4.17.z | 4.21.z, 4.20.3+, 4.16.z                |
+| Hosted cluster version | Supported node pool versions | Example unsupported node pool versions |
+|----|----|----|
+| 4.21.0 | 4.21.0, 4.20.z, 4.19.z, 4.18.z | 4.21.1+, 4.17.z, 4.16.z |
+| 4.20.2 | 4.20.0, 4.20.1, 4.20.2, 4.19.z, 4.18.z, 4.17.z | 4.21.z, 4.20.3+, 4.16.z |
 
 Example supported node pool versions for your hosted cluster
 
@@ -81,6 +88,14 @@ The available updates are not fetched from the Cluster Version Operator (CVO) of
 
 The initial `HostedCluster` CR does not have any information in the `status.version.availableUpdates` and `status.version.conditionalUpdates` fields. After you set the `spec.channel` field to the stable OpenShift Container Platform release version, the HyperShift Operator reconciles the `HostedCluster` CR and updates the `status.version` field with the available and conditional updates.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the `HostedCluster` CR, add the channel configuration as shown in the following example:
 
     ``` yaml
@@ -104,9 +119,11 @@ The initial `HostedCluster` CR does not have any information in the `status.vers
     $ oc get -n <hosted_cluster_namespace> hostedcluster <hosted_cluster_name> -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -203,6 +220,10 @@ The initial `HostedCluster` CR does not have any information in the `status.vers
           url: https://issues.redhat.com/browse/NHE-1171
     ```
 
+    </div>
+
+</div>
+
 # Updates of the OpenShift Container Platform version in a hosted cluster
 
 Hosted control planes enables the decoupling of updates between the control plane and the data plane.
@@ -253,11 +274,8 @@ metadata:
     uid: f6336f91-33d3-472d-b747-94abae725f70
 ```
 
-<div class="important">
-
-To create a hosted cluster, you must use the OpenShift Container Platform version from the support version range. However, the multicluster engine Operator can manage only between `n+1` and `n-2` OpenShift Container Platform versions, where `n` defines the current minor version. You can check the multicluster engine Operator support matrix to ensure the hosted clusters managed by the multicluster engine Operator are within the supported OpenShift Container Platform range.
-
-</div>
+> [!IMPORTANT]
+> To create a hosted cluster, you must use the OpenShift Container Platform version from the support version range. However, the multicluster engine Operator can manage only between `n+1` and `n-2` OpenShift Container Platform versions, where `n` defines the current minor version. You can check the multicluster engine Operator support matrix to ensure the hosted clusters managed by the multicluster engine Operator are within the supported OpenShift Container Platform range.
 
 To deploy a higher version of a hosted cluster on OpenShift Container Platform, you must update the multicluster engine Operator to a new minor version release to deploy a new version of the Hypershift Operator. Upgrading the multicluster engine Operator to a new patch, or z-stream, release does not update the HyperShift Operator to the next version.
 
@@ -268,6 +286,14 @@ Client Version: openshift/hypershift: fe67b47fb60e483fe60e4755a02b3be393256343. 
 Server Version: 05864f61f24a8517731664f8091cedcfc5f9b60d
 Server Supports OCP Versions: 4.17, 4.16, 4.15, 4.14
 ```
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Hosted cluster and node pool version skew policy](../hosted_control_planes/hcp-updating.xml#hcp-np-version-skew_hcp-updating)
 
@@ -289,23 +315,32 @@ Server Supports OCP Versions: 4.17, 4.16, 4.15, 4.14
 
 - [multicluster engine Operator 2.4](https://access.redhat.com/articles/7027079)
 
+</div>
+
 # Updates for the hosted cluster
 
 The `spec.release.image` value dictates the version of the control plane. The `HostedCluster` object transmits the intended `spec.release.image` value to the `HostedControlPlane.spec.releaseImage` value and runs the appropriate Control Plane Operator version.
 
 The hosted control plane manages the rollout of the new version of the control plane components along with any OpenShift Container Platform components through the new version of the Cluster Version Operator (CVO).
 
-<div class="important">
+> [!IMPORTANT]
+> In hosted control planes, the `NodeHealthCheck` resource cannot detect the status of the CVO. A cluster administrator must manually pause the remediation triggered by `NodeHealthCheck`, before performing critical operations, such as updating the cluster, to prevent new remediation actions from interfering with cluster updates.
+>
+> To pause the remediation, enter the array of strings, for example, `pause-test-cluster`, as a value of the `pauseRequests` field in the `NodeHealthCheck` resource. For more information, see "About the Node Health Check Operator".
+>
+> After the cluster update is complete, you can edit or delete the remediation. Go to the **Compute** → **NodeHealthCheck** page, click your node health check, and then click **Actions**, which shows a drop-down list.
 
-In hosted control planes, the `NodeHealthCheck` resource cannot detect the status of the CVO. A cluster administrator must manually pause the remediation triggered by `NodeHealthCheck`, before performing critical operations, such as updating the cluster, to prevent new remediation actions from interfering with cluster updates.
+<div>
 
-To pause the remediation, enter the array of strings, for example, `pause-test-cluster`, as a value of the `pauseRequests` field in the `NodeHealthCheck` resource. For more information, see "About the Node Health Check Operator".
+<div class="title">
 
-After the cluster update is complete, you can edit or delete the remediation. Go to the **Compute** → **NodeHealthCheck** page, click your node health check, and then click **Actions**, which shows a drop-down list.
+Additional resources
 
 </div>
 
 - [About the Node Health Check Operator](https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/24.4/html/remediation_fencing_and_maintenance/node-health-check-operator#about-node-health-check-operator_node-health-check-operator)
+
+</div>
 
 # Updates for node pools
 
@@ -341,6 +376,14 @@ You can update your version of OpenShift Container Platform by updating the node
 
 The `.spec.release` field in the `NodePool` custom resource (CR) shows the version of a node pool.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Change the `spec.release.image` value in the node pool by entering the following command:
 
   ``` terminal
@@ -353,7 +396,15 @@ The `.spec.release` field in the `NodePool` custom resource (CR) shows the versi
 
 - The `<openshift_release_image>` variable specifies the new OpenShift Container Platform release image that you want to upgrade to, for example, `quay.io/openshift-release-dev/ocp-release:<4.y.z>-x86_64`. Replace `<4.y.z>` with the supported OpenShift Container Platform version.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the new version was rolled out, check the `.status.conditions` value in the node pool by running the following command:
 
@@ -361,9 +412,11 @@ The `.spec.release` field in the `NodePool` custom resource (CR) shows the versi
   $ oc get -n <hosted_cluster_namespace> nodepool <node_pool_name> -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -376,6 +429,10 @@ The `.spec.release` field in the `NodePool` custom resource (CR) shows the versi
          status: "True"
          type: ValidReleaseImage
   ```
+
+  </div>
+
+</div>
 
 # Updating a control plane in a hosted cluster
 
@@ -401,6 +458,14 @@ The `HostedControlPlane` resource orchestrates the rollout of the new version of
 
 You can set the `.spec.release` field in the `HostedCluster` CR to update the control plane by using the information from the `status.version.availableUpdates` and `status.version.conditionalUpdates` fields.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add the `hypershift.openshift.io/force-upgrade-to=<openshift_release_image>` annotation to the hosted cluster by entering the following command:
 
     ``` terminal
@@ -422,6 +487,16 @@ You can set the `.spec.release` field in the `HostedCluster` CR to update the co
       -p '{"spec":{"release":{"image":"<openshift_release_image>"}}}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that the new version was rolled out, check the `.status.conditions` and `.status.version` values in the hosted cluster by running the following command:
 
   ``` terminal
@@ -429,9 +504,11 @@ You can set the `.spec.release` field in the `HostedCluster` CR to update the co
     -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -450,13 +527,22 @@ You can set the `.spec.release` field in the `HostedCluster` CR to update the co
         version: 4.20.0
   ```
 
+  </div>
+
+</div>
+
 # Updating a hosted cluster by using the multicluster engine Operator console
 
 You can update your hosted cluster by using the multicluster engine Operator console.
 
-<div class="important">
+> [!IMPORTANT]
+> Before updating a hosted cluster, you must refer to the available and conditional updates of a hosted cluster. Choosing a wrong release version might break the hosted cluster.
 
-Before updating a hosted cluster, you must refer to the available and conditional updates of a hosted cluster. Choosing a wrong release version might break the hosted cluster.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -465,3 +551,5 @@ Before updating a hosted cluster, you must refer to the available and conditiona
 2.  Navigate to **Infrastructure** → **Clusters** to view managed hosted clusters.
 
 3.  Click the **Upgrade available** link to update the control plane and node pools.
+
+</div>

@@ -34,17 +34,37 @@ Create a new persistent volume claim (PVC) that specifies an existing PVC as its
 
 When you create a cloned persistent volume claim (PVC) API object, you trigger the provisioning of a CSI volume clone. The clone pre-populates with the contents of another PVC, adhering to the same rules as any other persistent volume. The one exception is that you must add a `dataSource` that references an existing PVC in the same namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to a running OpenShift Container Platform cluster.
 
 - Your PVC is created using a CSI driver that supports volume cloning.
 
 - Your storage back end is configured for dynamic provisioning. Cloning support is not available for static provisioners.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create and save a file with the `PersistentVolumeClaim` object described by the following YAML:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pvc-clone.yaml**
+    <div class="title">
+
+    Example pvc-clone.yaml
 
     </div>
 
@@ -65,6 +85,8 @@ When you create a cloned persistent volume claim (PVC) API object, you trigger t
         kind: PersistentVolumeClaim
         name: pvc-1
     ```
+
+    </div>
 
     Where `spec.storageClassName` is the name of the storage class that provisions the storage back end. The default storage class can be used and `storageClassName` can be omitted in the spec.
 
@@ -88,9 +110,11 @@ When you create a cloned persistent volume claim (PVC) API object, you trigger t
 
 4.  Create and save a file with the `Pod` object described by the YAML. For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod YAML file**
+    <div class="title">
+
+    Example pod YAML file
 
     </div>
 
@@ -112,14 +136,32 @@ When you create a cloned persistent volume claim (PVC) API object, you trigger t
             claimName: pvc-1-clone
     ```
 
+    </div>
+
     Where `spec.volumes.persistentVolumeClaim.claimName` is the cloned PVC created during the CSI volume cloning operation.
 
-<div class="formalpara-title">
+</div>
 
-**Result**
+<div class="formalpara">
+
+<div class="title">
+
+Result
 
 </div>
 
 The created `Pod` object is now ready to consume, clone, snapshot, or delete your cloned PVC independently of its original `dataSource` PVC.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent volumes](../../storage/understanding-persistent-storage.xml#persistent-volumes_understanding-persistent-storage)
+
+</div>

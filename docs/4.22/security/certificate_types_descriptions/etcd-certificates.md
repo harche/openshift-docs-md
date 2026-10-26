@@ -24,6 +24,14 @@ etcd certificates are used for encrypted communication between etcd member peers
 
 You can manually rotate the etcd certificate before its automatic, scheduled rotation by backing up and deleting the current signer certificate.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Make a backup copy of the current signer certificate by running the following command:
 
     ``` terminal
@@ -36,15 +44,35 @@ You can manually rotate the etcd certificate before its automatic, scheduled rot
     $ oc delete secret -n openshift-etcd etcd-signer
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Wait for the static pod roll out by running the following command. The static pod roll out can take a few minutes to complete.
 
   ``` terminal
   $ oc wait --for=condition=Progressing=False --timeout=15m clusteroperator/etcd
   ```
 
+</div>
+
 # Remove an unused certificate authority from the bundle
 
 After a manual etcd or metrics signer rotation, delete the `etcd-ca-bundle` or `etcd-metrics-ca-bundl` as appropriate. When the cluster reconciles, unused certificate authority (CA) keys are removed. This ensures that components only trust the current signer.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Delete the key by running the following command:
 
@@ -52,13 +80,23 @@ After a manual etcd or metrics signer rotation, delete the `etcd-ca-bundle` or `
   $ oc delete configmap -n openshift-etcd etcd-ca-bundle
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Wait for the static pod rollout by running the following command. The bundle regenerates with the current signer certificate and all unknown or unused keys are deleted.
 
   ``` terminal
   $ oc adm wait-for-stable-cluster --minimum-stable-period 2m
   ```
+
+</div>
 
 # etcd certificate rotation alerts and metrics signer certificates
 
@@ -78,11 +116,8 @@ You can rotate the certificate for the following reasons:
 
 - The private key is leaked.
 
-<div class="important">
-
-When a private key is leaked, you must rotate all of the certificates.
-
-</div>
+> [!IMPORTANT]
+> When a private key is leaked, you must rotate all of the certificates.
 
 There is a separate etcd signer for the OpenShift Container Platform metrics system. To rotate the separate etcd signer, follow the steps in "Rotating the etcd certificate" using the following parameters:
 

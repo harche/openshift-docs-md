@@ -2,7 +2,17 @@ The following section describes how to install Helm on different platforms using
 
 You can also find the URL to the latest binaries from the OpenShift Container Platform web console by clicking the **?** icon in the upper-right corner and selecting **Command Line Tools**.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed Go, version 1.13 or higher.
+
+</div>
 
 # On Linux
 
@@ -38,15 +48,19 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     $ helm version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     version.BuildInfo{Version:"v3.0", GitCommit:"b31719aab7963acf4887a1c1e6d5e53378e34d93", GitTreeState:"clean", GoVersion:"go1.13.4"}
     ```
+
+    </div>
 
 # On Windows 7/8
 
@@ -94,12 +108,16 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     $ helm version
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     version.BuildInfo{Version:"v3.0", GitCommit:"b31719aab7963acf4887a1c1e6d5e53378e34d93", GitTreeState:"clean", GoVersion:"go1.13.4"}
     ```
+
+    </div>

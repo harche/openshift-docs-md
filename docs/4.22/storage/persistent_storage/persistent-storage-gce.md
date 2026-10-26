@@ -6,25 +6,29 @@ GCE Persistent Disk volumes can be provisioned dynamically.
 
 Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
-<div class="important">
+> [!IMPORTANT]
+> OpenShift Container Platform 4.12 and later provides automatic migration for the GCE Persist Disk in-tree volume plugin to its equivalent CSI driver.
+>
+> CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
+>
+> For more information about migration, see CSI automatic migration.
 
-OpenShift Container Platform 4.12 and later provides automatic migration for the GCE Persist Disk in-tree volume plugin to its equivalent CSI driver.
+> [!IMPORTANT]
+> High availability of storage in the infrastructure is left to the underlying storage provider.
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
+<div>
 
-For more information about migration, see CSI automatic migration.
+<div class="title">
 
-</div>
-
-<div class="important">
-
-High availability of storage in the infrastructure is left to the underlying storage provider.
+Additional resources
 
 </div>
 
 - [GCE Persistent Disk](https://cloud.google.com/compute/docs/disks/)
 
 - [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+</div>
 
 # About the GCE storage class
 
@@ -34,7 +38,25 @@ To enable dynamic provisioning of persistent volumes, create a storage class tha
 
 You can create a persistent volume claim to dynamically provision and bind storage from a pre-configured storage class, so that your applications can consume persistent storage in OpenShift Container Platform.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
@@ -51,6 +73,8 @@ You can create a persistent volume claim to dynamically provision and bind stora
     4.  Define the size of the storage claim.
 
 4.  Click **Create** to create the persistent volume claim and generate a persistent volume.
+
+</div>
 
 # Volume format
 

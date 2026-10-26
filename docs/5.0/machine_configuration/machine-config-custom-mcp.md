@@ -2,11 +2,8 @@ You can create custom machine config pools (MCP) to manage compute nodes for cus
 
 Custom machine config pools inherit their configurations from the `worker` machine config pool. Changes made to the `worker` machine config pool apply to nodes in the custom pool. However, changes made to the custom machine config pool apply only to the nodes in the custom pool. For more information on custom machine config pools, see "Node configuration management with machine config pools".
 
-<div class="note">
-
-Custom machine config pools for the control plane nodes are not supported.
-
-</div>
+> [!NOTE]
+> Custom machine config pools for the control plane nodes are not supported.
 
 For example, you could use a custom machine config pool to create an *infrastructure* node. Components that you move to an infrastructure node do not need to be accounted for during sizing. For more information on infrastructure nodes, see "Creating infrastructure machine sets".
 
@@ -19,6 +16,14 @@ You can create a custom machine config pool (MCP) and launch a new node directly
 Use the `userDataSecret` parameter in the machine set to instruct the Machine Config Operator (MCO) to add the node to a specific machine config pool. The secret contains the endpoint of the custom machine config pool. You must prefix the name of this new secret with the name of the custom machine config pool.
 
 The following procedure shows you how to create a new custom machine config pool and launch a new node into that pool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a custom machine config pool:
 
@@ -95,11 +100,8 @@ The following procedure shows you how to create a new custom machine config pool
 
         These are the minimum changes required to create the new machine set. For more configuration options or to configure an all-new machine set, see "Creating infrastructure machine sets" for your platform.
 
-        <div class="note">
-
-        When creating a new machine set, you should specify the latest image to use for the boot image. For more information about configuring the boot image on your cluster, see "Manually updating the boot image" for your platform. The method to specify the image varies by provider.
-
-        </div>
+        > [!NOTE]
+        > When creating a new machine set, you should specify the latest image to use for the boot image. For more information about configuring the boot image on your cluster, see "Manually updating the boot image" for your platform. The method to specify the image varies by provider.
 
     2.  Create the machine set by running the following command:
 
@@ -109,7 +111,15 @@ The following procedure shows you how to create a new custom machine config pool
 
         The MCO creates a new node in the new custom machine config pool.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check to see that the MCO created the new machine config pool by running the following command:
 
@@ -117,9 +127,11 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -130,6 +142,8 @@ The following procedure shows you how to create a new custom machine config pool
     worker    rendered-worker-72be15c95699b6d39f70fce525f51bb2    True      False      False      2              2                   2                     0                      32m
     ```
 
+    </div>
+
     In this example, `custom` is the new machine config pool.
 
 2.  Check to see that the MCO created the new machine set by running the following command:
@@ -138,9 +152,11 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc get machineset -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -152,6 +168,8 @@ The following procedure shows you how to create a new custom machine config pool
     ci-ln-7x179fk-72292-tc5qz-worker-f    1         1         1       1           91m
     ```
 
+    </div>
+
     In this example, `ci-ln-7x179fk-72292-tc5qz-custom-a` is the new machine set.
 
 3.  Check that the MCO created the required secret by running the following command:
@@ -160,9 +178,11 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc get secrets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -173,15 +193,19 @@ The following procedure shows you how to create a new custom machine config pool
     # ...
     ```
 
+    </div>
+
 4.  Check to see that the node is in the new custom machine config pool by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -195,13 +219,25 @@ The following procedure shows you how to create a new custom machine config pool
     ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7    Ready    worker                   36m   v1.36.3
     ```
 
+    </div>
+
     In this example, the `ci-ln-i61xqwb-72292—​hz2mw-custom-9r496` is a new node that was added to the `custom` machine config pool.
+
+</div>
 
 # Create a custom machine config pool for an existing node
 
 You can create custom machine config pools (MCP) and manually add an existing node into that pool. With custom machine config pools, you can deploy changes targeted at the nodes in the custom pool.
 
 The following procedure shows you how to create a new custom machine config pool and add an existing node into that pool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a custom machine config pool:
 
@@ -246,9 +282,11 @@ The following procedure shows you how to create a new custom machine config pool
 
     Replace `<node_name>` with the name of the node that you want to move and replace `<node-selector>` with the node selector you added to the machine config pool.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -256,7 +294,17 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc label node ci-ln-g5tpp5k-72292-hz2mw-worker-b-ps8xh node-role.kubernetes.io/custom=""
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check to see that the MCO created the new machine config pool by running the following command:
 
@@ -264,9 +312,11 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -277,6 +327,8 @@ The following procedure shows you how to create a new custom machine config pool
     worker    rendered-worker-72be15c95699b6d39f70fce525f51bb2    True      False      False      2              2                   2                     0                      32m
     ```
 
+    </div>
+
     In this example, `custom` is the new machine config pool.
 
 2.  Check to see if the node is in that pool by running the following command:
@@ -285,9 +337,11 @@ The following procedure shows you how to create a new custom machine config pool
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -301,7 +355,11 @@ The following procedure shows you how to create a new custom machine config pool
     ci-ln-i61xqwb-72292-ftjn8-worker-f-qgdb7   Ready    worker                 36m   v1.36.3
     ```
 
+    </div>
+
     In this example, the `ci-ln-g5tpp5k-72292-hz2mw-worker-b-ps8xh` node is an existing node that was moved to the `custom` machine config pool.
+
+</div>
 
 # Additional resources
 

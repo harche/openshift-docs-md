@@ -2,21 +2,43 @@ Monitor the consumption of cluster infrastructure resources by using the metrics
 
 <div class="note">
 
+<div class="title">
+
+</div>
+
 - To use the vCPU metric, apply the `schedstats=enable` kernel argument to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
 
 - For guest memory swapping queries to return data, enable memory swapping on the virtual guests.
 
 </div>
 
-# Querying metrics for all projects with the OpenShift Container Platform web console
+# Query metrics for all projects by using the OpenShift Container Platform web console
 
 Monitor the state of a cluster and any user-defined workloads by using the OpenShift Container Platform metrics query browser. The query browser uses Prometheus Query Language (PromQL) queries to examine metrics visualized on a plot.
 
 As a cluster administrator or as a user with view permissions for all projects, you can access metrics for all default OpenShift Container Platform and user-defined projects in the Metrics UI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` cluster role or with view permissions for all projects.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Observe** → **Metrics**.
 
@@ -28,30 +50,30 @@ As a cluster administrator or as a user with view permissions for all projects, 
     <col style="width: 50%" />
     </colgroup>
     <thead>
-    <tr class="header">
+    <tr>
     <th style="text-align: left;">Option</th>
     <th style="text-align: left;">Description</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Select an existing query.</p></td>
     <td style="text-align: left;"><p>From the <strong>Select query</strong> drop-down list, select an existing query.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Create a custom query.</p></td>
     <td style="text-align: left;"><p>Add your Prometheus Query Language (PromQL) query to the <strong>Expression</strong> field.</p>
     <p>As you type a PromQL expression, autocomplete suggestions appear in a drop-down list. These suggestions include functions, metrics, labels, and time tokens. Use the keyboard arrows to select one of these suggested items and then press Enter to add the item to your expression. Move your mouse pointer over a suggested item to view a brief description of that item.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Add multiple queries.</p></td>
     <td style="text-align: left;"><p>Click <strong>Add query</strong>.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Duplicate an existing query.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> next to the query, then choose <strong>Duplicate query</strong>.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Disable a query from being run.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> next to the query and choose <strong>Disable query</strong>.</p></td>
     </tr>
@@ -61,6 +83,10 @@ As a cluster administrator or as a user with view permissions for all projects, 
 3.  To run queries that you created, click **Run queries**. The metrics from the queries are visualized on the plot. If a query is invalid, the UI shows an error message.
 
     <div class="note">
+
+    <div class="title">
+
+    </div>
 
     - When drawing time series graphs, queries that operate on large amounts of data might time out or overload the browser. To avoid this, click **Hide graph** and calibrate your query by using only the metrics table. Then, after finding a feasible query, enable the plot to draw the graphs.
 
@@ -78,21 +104,21 @@ As a cluster administrator or as a user with view permissions for all projects, 
     <col style="width: 50%" />
     </colgroup>
     <thead>
-    <tr class="header">
+    <tr>
     <th style="text-align: left;">Option</th>
     <th style="text-align: left;">Description</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Hide all metrics from a query.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> for the query and click <strong>Hide all series</strong>.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Hide a specific metric.</p></td>
     <td style="text-align: left;"><p>Go to the query table and click the colored square near the metric name.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Zoom into the plot and change the time range.</p></td>
     <td style="text-align: left;"><p>Perform one of the following actions:</p>
     <ul>
@@ -100,26 +126,36 @@ As a cluster administrator or as a user with view permissions for all projects, 
     <li><p>Use the menu to select the time range.</p></li>
     </ul></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Reset the time range.</p></td>
     <td style="text-align: left;"><p>Click <strong>Reset zoom</strong>.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Display outputs for all queries at a specific point in time.</p></td>
     <td style="text-align: left;"><p>Hover over the plot at the point you are interested in. The query outputs appear in a pop-up box.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Hide the plot.</p></td>
     <td style="text-align: left;"><p>Click <strong>Hide graph</strong>.</p></td>
     </tr>
     </tbody>
     </table>
 
-# Querying metrics for user-defined projects with the OpenShift Container Platform web console
+</div>
+
+# Query metrics for user-defined projects by using the OpenShift Container Platform web console
 
 Monitor user-defined workloads by using the OpenShift Container Platform metrics query browser. The query browser uses Prometheus Query Language (PromQL) queries to examine metrics visualized on a plot.
 
 To query metrics in the **Developer** perspective, you must specify a project name that represents the namespace. You must have the required privileges to view metrics for the selected project.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a developer or as a user with view permissions for the project that you are viewing metrics for.
 
@@ -129,6 +165,16 @@ To query metrics in the **Developer** perspective, you must specify a project na
 
 - You have created a `ServiceMonitor` custom resource definition (CRD) for the service to define how the service is monitored.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In the OpenShift Container Platform web console, click **Observe** → **Metrics**.
 
 2.  To add one or more queries, perform any of the following actions:
@@ -139,30 +185,30 @@ To query metrics in the **Developer** perspective, you must specify a project na
     <col style="width: 50%" />
     </colgroup>
     <thead>
-    <tr class="header">
+    <tr>
     <th style="text-align: left;">Option</th>
     <th style="text-align: left;">Description</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Select an existing query.</p></td>
     <td style="text-align: left;"><p>From the <strong>Select query</strong> drop-down list, select an existing query.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Create a custom query.</p></td>
     <td style="text-align: left;"><p>Add your Prometheus Query Language (PromQL) query to the <strong>Expression</strong> field.</p>
     <p>As you type a PromQL expression, autocomplete suggestions appear in a drop-down list. These suggestions include functions, metrics, labels, and time tokens. Use the keyboard arrows to select one of these suggested items and then press Enter to add the item to your expression. Move your mouse pointer over a suggested item to view a brief description of that item.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Add multiple queries.</p></td>
     <td style="text-align: left;"><p>Click <strong>Add query</strong>.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Duplicate an existing query.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> next to the query, then choose <strong>Duplicate query</strong>.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Disable a query from being run.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> next to the query and choose <strong>Disable query</strong>.</p></td>
     </tr>
@@ -172,6 +218,10 @@ To query metrics in the **Developer** perspective, you must specify a project na
 3.  To run queries that you created, click **Run queries**. The metrics from the queries are visualized on the plot. If a query is invalid, the UI shows an error message.
 
     <div class="note">
+
+    <div class="title">
+
+    </div>
 
     - When drawing time series graphs, queries that operate on large amounts of data might time out or overload the browser. To avoid this, click **Hide graph** and calibrate your query by using only the metrics table. Then, after finding a feasible query, enable the plot to draw the graphs.
 
@@ -189,21 +239,21 @@ To query metrics in the **Developer** perspective, you must specify a project na
     <col style="width: 50%" />
     </colgroup>
     <thead>
-    <tr class="header">
+    <tr>
     <th style="text-align: left;">Option</th>
     <th style="text-align: left;">Description</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Hide all metrics from a query.</p></td>
     <td style="text-align: left;"><p>Click the options menu <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=" alt="kebab" /> for the query and click <strong>Hide all series</strong>.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Hide a specific metric.</p></td>
     <td style="text-align: left;"><p>Go to the query table and click the colored square near the metric name.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Zoom into the plot and change the time range.</p></td>
     <td style="text-align: left;"><p>Perform one of the following actions:</p>
     <ul>
@@ -211,30 +261,29 @@ To query metrics in the **Developer** perspective, you must specify a project na
     <li><p>Use the menu to select the time range.</p></li>
     </ul></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Reset the time range.</p></td>
     <td style="text-align: left;"><p>Click <strong>Reset zoom</strong>.</p></td>
     </tr>
-    <tr class="odd">
+    <tr>
     <td style="text-align: left;"><p>Display outputs for all queries at a specific point in time.</p></td>
     <td style="text-align: left;"><p>Hover over the plot at the point you are interested in. The query outputs appear in a pop-up box.</p></td>
     </tr>
-    <tr class="even">
+    <tr>
     <td style="text-align: left;"><p>Hide the plot.</p></td>
     <td style="text-align: left;"><p>Click <strong>Hide graph</strong>.</p></td>
     </tr>
     </tbody>
     </table>
 
+</div>
+
 # Virtualization metrics
 
 Metric descriptions including example Prometheus Query Language (PromQL) queries. These metrics are not an API and might change between versions.
 
-<div class="note">
-
-The following examples use `topk` queries that specify a time period. If virtual machines (VMs) are deleted during that time period, they can still appear in the query output.
-
-</div>
+> [!NOTE]
+> The following examples use `topk` queries that specify a time period. If virtual machines (VMs) are deleted during that time period, they can still appear in the query output.
 
 ## vCPU metrics
 
@@ -245,11 +294,8 @@ Returns the wait time (in seconds) on I/O for vCPUs of a virtual machine. Type: 
 
 A value above '0' means that the vCPU wants to run, but the host scheduler cannot run it yet. This inability to run indicates that there is an issue with I/O.
 
-<div class="note">
-
-To query the vCPU metric, the `schedstats=enable` kernel argument must first be applied to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
-
-</div>
+> [!NOTE]
+> To query the vCPU metric, the `schedstats=enable` kernel argument must first be applied to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
 
 `kubevirt_vmi_vcpu_delay_seconds_total`
 Returns the cumulative time, in seconds, that a vCPU was enqueued by the host scheduler but could not run immediately. This delay appears to the virtual machine as *steal time*, which is CPU time lost when the host runs other workloads. Steal time can impact performance and often indicates CPU overcommitment or contention on the host. Type: Counter.
@@ -370,11 +416,8 @@ The following query returns the top 3 VMs where the guest is performing the most
 topk(3, sum by (name, namespace) (rate(kubevirt_vmi_memory_swap_in_traffic_bytes[6m])) + sum by (name, namespace) (rate(kubevirt_vmi_memory_swap_out_traffic_bytes[6m]))) > 0
 ```
 
-<div class="note">
-
-Memory swapping indicates that the virtual machine is under memory pressure. Increasing the memory allocation of the virtual machine can mitigate this issue.
-
-</div>
+> [!NOTE]
+> Memory swapping indicates that the virtual machine is under memory pressure. Increasing the memory allocation of the virtual machine can mitigate this issue.
 
 ## Monitoring AAQ operator metrics
 
@@ -460,9 +503,9 @@ You can access this dashboard from the web console in **Observe** → **Dashboar
 
 The dashboard provides two filter variables in the top toolbar:
 
-| Filter   | Description                                                                                                             | Default    |
-|----------|-------------------------------------------------------------------------------------------------------------------------|------------|
-| **Node** | Filters all panels to display information about one or more nodes in the cluster.                                       | **All**    |
+| Filter | Description | Default |
+|----|----|----|
+| **Node** | Filters all panels to display information about one or more nodes in the cluster. | **All** |
 | **role** | Filters all panels to display information about nodes with a specific Kubernetes role, populated from `kube_node_role`. | **worker** |
 
 You can also change the time range displayed in the different panels in the top toolbar of the dashboard.
@@ -471,59 +514,59 @@ You can also change the time range displayed in the different panels in the top 
 
 The **Summary** section provides a high-level overview of cluster memory health. The panels in this section provide general memory utilization data for the cluster and the nodes. Most of the panels in this section appear in other sections of the dashboard as well. However, the following panels are unique to the **Summary** section:
 
-| Panel                      | Type        | Description                                                                                                                                                                                                                                                   |
-|----------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Node Utilization - max** | Gauge       | Displays the highest node utilization in the cluster. Use this panel together with the **Node Utilization - min** panel to assess scheduling balance. A large gap between minimum and maximum node utilization indicates an imbalanced workload distribution. |
-| **Cluster Utilization**    | Time series | Displays the trend over time of several memory metrics. Use this panel to compare actual utilization and virtual memory plans against total capacity.                                                                                                         |
+| Panel | Type | Description |
+|----|----|----|
+| **Node Utilization - max** | Gauge | Displays the highest node utilization in the cluster. Use this panel together with the **Node Utilization - min** panel to assess scheduling balance. A large gap between minimum and maximum node utilization indicates an imbalanced workload distribution. |
+| **Cluster Utilization** | Time series | Displays the trend over time of several memory metrics. Use this panel to compare actual utilization and virtual memory plans against total capacity. |
 
 ## Cluster section
 
 The **Cluster** section provides a more detailed view of cluster-wide memory behavior over a range of time. This section includes the following panels:
 
-| Panel                                      | Type        | Description                                                                                                                                                                                                                                                                                                                                                                                     |
-|--------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Physical Memory Utilization & Requests** | Time series | Displays the total node memory capacity alongside actual memory utilization split into virtualization and non-virtualization workloads. This panel also shows the memory request plan (system-reserved requests and pod requests) so that you can compare actual usage to the scheduler expectations.                                                                                           |
-| **Cluster Utilization**                    | Gauge       | Displays the aggregated memory utilization of the nodes in the cluster. This panel also appears in the **Summary** section.                                                                                                                                                                                                                                                                     |
-| **Virtual Memory Assignment**              | Time series | This panel displays the worst-case scenario if all virtual memory is used at present. It shows total node capacity, utilization without virtualization, and non-virtualization utilization combined with the total assigned VM memory. If the **VM assigned virtual memory** line nears or exceeds **Node capacity**, the cluster risks out-of-memory conditions under full VM memory pressure. |
-| **Cluster Virtual Committed**              | Gauge       | Displays the percentage of committed virtual memory out of all of the allocatable physical memory. This panel also appears in the **Summary** section.                                                                                                                                                                                                                                          |
-| **Cluster - Memory Pressure**              | Time series | Shows cluster-level memory PSI rates for `Waiting` (processes delayed by memory) and `Stalled` (processes completely blocked).                                                                                                                                                                                                                                                                  |
-| **Cluster - Aggregated Swap**              | Time series | Shows total swap capacity and usage across all the nodes that you select. Rising swap usage indicates memory pressure that has not yet caused PSI stalls.                                                                                                                                                                                                                                       |
+| Panel | Type | Description |
+|----|----|----|
+| **Physical Memory Utilization & Requests** | Time series | Displays the total node memory capacity alongside actual memory utilization split into virtualization and non-virtualization workloads. This panel also shows the memory request plan (system-reserved requests and pod requests) so that you can compare actual usage to the scheduler expectations. |
+| **Cluster Utilization** | Gauge | Displays the aggregated memory utilization of the nodes in the cluster. This panel also appears in the **Summary** section. |
+| **Virtual Memory Assignment** | Time series | This panel displays the worst-case scenario if all virtual memory is used at present. It shows total node capacity, utilization without virtualization, and non-virtualization utilization combined with the total assigned VM memory. If the **VM assigned virtual memory** line nears or exceeds **Node capacity**, the cluster risks out-of-memory conditions under full VM memory pressure. |
+| **Cluster Virtual Committed** | Gauge | Displays the percentage of committed virtual memory out of all of the allocatable physical memory. This panel also appears in the **Summary** section. |
+| **Cluster - Memory Pressure** | Time series | Shows cluster-level memory PSI rates for `Waiting` (processes delayed by memory) and `Stalled` (processes completely blocked). |
+| **Cluster - Aggregated Swap** | Time series | Shows total swap capacity and usage across all the nodes that you select. Rising swap usage indicates memory pressure that has not yet caused PSI stalls. |
 
 ## Nodes section
 
 The **Nodes** section breaks down memory information per node to help identify imbalances. This section includes the following panels:
 
-| Panel                                     | Type        | Description                                                                                                                                                                                         |
-|-------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Utilization - Actual Overcommit Level** | Time series | Displays the per-node allocatable memory utilization minus the system-reserved memory.                                                                                                              |
-| **Node Utilization - min**                | Gauge       | Displays the lowest node utilization in the cluster. This panel also appears in the **Summary** section.                                                                                            |
-| **Plan - Pod Requests per Node**          | Time series | Shows the memory request fill level per node: the sum of all pod memory requests on a node divided by the node’s allocatable memory.                                                                |
-| **Node Requests - min/max**               | Stat        | Displays the minimum and maximum pod request ratios per node. Use this panel to quickly assess the cluster’s remaining capacity to host new workloads.                                              |
-| **Plan - Virtual Memory Commit Level**    | Time series | Displays the virtual memory commit ratio per node. The panel compares total active and assigned VM memory against the node’s available memory.                                                      |
-| **Node Virtual - min/max**                | Stat        | Displays the minimum and maximum virtual commit levels per node.                                                                                                                                    |
-| **Node - Pressure**                       | Time series | Displays the memory PSI waiting rate per node. Each line represents one node to help you identify which nodes experience memory contention.                                                         |
-| **Node PSI - max**                        | Gauge       | Displays the highest PSI value across all nodes. PSI shows the amount of time applications are stalled or delayed waiting for memory resources. This panel also appears in the **Summary** section. |
+| Panel | Type | Description |
+|----|----|----|
+| **Utilization - Actual Overcommit Level** | Time series | Displays the per-node allocatable memory utilization minus the system-reserved memory. |
+| **Node Utilization - min** | Gauge | Displays the lowest node utilization in the cluster. This panel also appears in the **Summary** section. |
+| **Plan - Pod Requests per Node** | Time series | Shows the memory request fill level per node: the sum of all pod memory requests on a node divided by the node’s allocatable memory. |
+| **Node Requests - min/max** | Stat | Displays the minimum and maximum pod request ratios per node. Use this panel to quickly assess the cluster’s remaining capacity to host new workloads. |
+| **Plan - Virtual Memory Commit Level** | Time series | Displays the virtual memory commit ratio per node. The panel compares total active and assigned VM memory against the node’s available memory. |
+| **Node Virtual - min/max** | Stat | Displays the minimum and maximum virtual commit levels per node. |
+| **Node - Pressure** | Time series | Displays the memory PSI waiting rate per node. Each line represents one node to help you identify which nodes experience memory contention. |
+| **Node PSI - max** | Gauge | Displays the highest PSI value across all nodes. PSI shows the amount of time applications are stalled or delayed waiting for memory resources. This panel also appears in the **Summary** section. |
 
 ## System Reserved section
 
 The **System Reserved** section monitors whether the system (hypervisor) processes stay within their reserved memory budget. This section includes the following panels:
 
-| Panel                                    | Type        | Description                                                                                                                                                                                         |
-|------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Utilization - Reserved System Memory** | Time series | Displays the top 5 nodes by system-reserved memory utilization. This metric compares active system process memory against the reserved memory budget.                                               |
-| **Utilization - min/max**                | Time series | Displays the minimum and maximum system-reserved memory utilization across all nodes over time.                                                                                                     |
-| **System Exceeding Reservation**         | Stat        | Displays the percentage or number of nodes out of all monitored nodes that are currently triggering the `SystemMemoryExceedsReservation` alert. This panel also appears in the **Summary** section. |
+| Panel | Type | Description |
+|----|----|----|
+| **Utilization - Reserved System Memory** | Time series | Displays the top 5 nodes by system-reserved memory utilization. This metric compares active system process memory against the reserved memory budget. |
+| **Utilization - min/max** | Time series | Displays the minimum and maximum system-reserved memory utilization across all nodes over time. |
+| **System Exceeding Reservation** | Stat | Displays the percentage or number of nodes out of all monitored nodes that are currently triggering the `SystemMemoryExceedsReservation` alert. This panel also appears in the **Summary** section. |
 
 ## Workloads section
 
 The **Workloads** section, which is collapsed by default, focuses on individual VM memory behavior.
 
-| Panel                                                    | Type        | Description                                                                                                                                                                                                                                                                                                                |
-|----------------------------------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **VM Overcommit Ratio**                                  | Time series | Displays the ratio of assigned virtual memory to pod memory requests for each VM.                                                                                                                                                                                                                                          |
-| **VM Virtual Committed**                                 | Gauge       | Displays the average VM overcommit ratio, which includes launcher overhead. This panel also appears in the **Summary** section.                                                                                                                                                                                            |
+| Panel | Type | Description |
+|----|----|----|
+| **VM Overcommit Ratio** | Time series | Displays the ratio of assigned virtual memory to pod memory requests for each VM. |
+| **VM Virtual Committed** | Gauge | Displays the average VM overcommit ratio, which includes launcher overhead. This panel also appears in the **Summary** section. |
 | **VM Virtual Memory Utilization vs Host VM Utilization** | Time series | Displays the 10 VMs with the highest ratio between guest-reported memory usage and host-side container memory usage. Use this panel to identify VMs where guest-reported usage differs significantly from host-side accounting. This difference indicates balloon driver effectiveness or memory accounting discrepancies. |
-| **Number of Running VMs**                                | Time series | Displays the total number of running virtual machine instances (VMIs) on the cluster to provide context for the other workload panels.                                                                                                                                                                                     |
+| **Number of Running VMs** | Time series | Displays the total number of running virtual machine instances (VMIs) on the cluster to provide context for the other workload panels. |
 
 ## Interpreting the dashboard
 

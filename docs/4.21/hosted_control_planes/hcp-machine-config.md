@@ -1,24 +1,26 @@
 In a standalone OpenShift Container Platform cluster, a machine config pool manages a set of nodes. You can handle a machine configuration by using the `MachineConfigPool` custom resource (CR).
 
-<div class="tip">
-
-You can reference any `machineconfiguration.openshift.io` resources in the `nodepool.spec.config` field of the `NodePool` CR.
-
-</div>
+> [!TIP]
+> You can reference any `machineconfiguration.openshift.io` resources in the `nodepool.spec.config` field of the `NodePool` CR.
 
 In hosted control planes, the `MachineConfigPool` CR does not exist. A node pool contains a set of compute nodes. You can handle a machine configuration by using node pools.
 
 You can manage your workloads in your hosted cluster by using the cluster autoscaler.
 
-<div class="note">
-
-In OpenShift Container Platform 4.18 or later, the default container runtime for worker nodes is changed from runC to crun.
-
-</div>
+> [!NOTE]
+> In OpenShift Container Platform 4.18 or later, the default container runtime for worker nodes is changed from runC to crun.
 
 # Configure node pools for hosted control planes
 
 In hosted control planes, you can configure node pools by creating a `MachineConfig` object inside of a config map in the management cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To create a `MachineConfig` object inside of a config map in the management cluster, enter the following information:
 
@@ -75,15 +77,27 @@ In hosted control planes, you can configure node pools by creating a `MachineCon
 
     Replace `<configmap_name>` with the name of your config map.
 
+</div>
+
 # Reference the kubelet configuration in node pools
 
 To reference your kubelet configuration in node pools, you add the kubelet configuration in a config map and then apply the config map in the `NodePool` resource.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add the kubelet configuration inside of a config map in the management cluster by entering the following information:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `ConfigMap` object with the kubelet configuration**
+    <div class="title">
+
+    Example `ConfigMap` object with the kubelet configuration
 
     </div>
 
@@ -107,6 +121,8 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
               effect: "NoExecute"
     ```
 
+    </div>
+
     - `<configmap_name>` specifies the name of your config map.
 
     - `<kubeletconfig_name>` specifies the name of the `KubeletConfig` resource.
@@ -119,9 +135,11 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
 
     Replace `<nodepool_name>` with the name of your node pool.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `NodePool` resource configuration**
+    <div class="title">
+
+    Example `NodePool` resource configuration
 
     </div>
 
@@ -139,9 +157,21 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
     # ...
     ```
 
+    </div>
+
+</div>
+
 # Configure node tuning in a hosted cluster
 
 To set node-level tuning on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure node tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a config map that contains a valid tuned manifest, and reference the manifest in a node pool. In the following example, a `Tuned` manifest defines a profile that sets `vm.dirty_ratio` to 55 on nodes that contain the `tuned-1-node-label` node label with any value. Save the following `ConfigMap` manifest in a file named `tuned-1.yaml`:
 
@@ -172,11 +202,8 @@ To set node-level tuning on the nodes in your hosted cluster, you can use the No
                 profile: tuned-1-profile
     ```
 
-    <div class="note">
-
-    If you do not add any labels to an entry in the `spec.recommend` section of the Tuned spec, node-pool-based matching is assumed, so the highest priority profile in the `spec.recommend` section is applied to nodes in the pool. Although you can achieve more fine-grained node-label-based matching by setting a label value in the Tuned `.spec.recommend.match` section, node labels will not persist during an upgrade unless you set the `.spec.management.upgradeType` value of the node pool to `InPlace`.
-
-    </div>
+    > [!NOTE]
+    > If you do not add any labels to an entry in the `spec.recommend` section of the Tuned spec, node-pool-based matching is assumed, so the highest priority profile in the `spec.recommend` section is applied to nodes in the pool. Although you can achieve more fine-grained node-label-based matching by setting a label value in the Tuned `.spec.recommend.match` section, node labels will not persist during an upgrade unless you set the `.spec.management.upgradeType` value of the node pool to `InPlace`.
 
 2.  Create the `ConfigMap` object in the management cluster:
 
@@ -202,19 +229,22 @@ To set node-level tuning on the nodes in your hosted cluster, you can use the No
         ...
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > You can reference the same config map in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the Tuned CRs to distinguish them. Outside of this case, do not create multiple TuneD profiles of the same name in different Tuned CRs for the same hosted cluster.
 
-    You can reference the same config map in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the Tuned CRs to distinguish them. Outside of this case, do not create multiple TuneD profiles of the same name in different Tuned CRs for the same hosted cluster.
+</div>
 
-    </div>
+<div class="formalpara">
 
-<div class="formalpara-title">
+<div class="title">
 
-**Verification**
+Verification
 
 </div>
 
 Now that you have created the `ConfigMap` object that contains a `Tuned` manifest and referenced it in a `NodePool`, the Node Tuning Operator syncs the `Tuned` objects into the hosted cluster. You can verify which `Tuned` objects are defined and which TuneD profiles are applied to each node.
+
+</div>
 
 1.  List the `Tuned` objects in the hosted cluster:
 
@@ -223,9 +253,11 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       -n openshift-cluster-node-tuning-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -236,6 +268,8 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     tuned-1    65s
     ```
 
+    </div>
+
 2.  List the `Profile` objects in the hosted cluster:
 
     ``` terminal
@@ -243,9 +277,11 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       -n openshift-cluster-node-tuning-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -255,11 +291,10 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     nodepool-1-worker-2            tuned-1-profile  True      False      7m14s
     ```
 
-    <div class="note">
-
-    If no custom profiles are created, the `openshift-node` profile is applied by default.
-
     </div>
+
+    > [!NOTE]
+    > If no custom profiles are created, the `openshift-node` profile is applied by default.
 
 3.  To confirm that the tuning was applied correctly, start a debug shell on a node and check the sysctl values:
 
@@ -268,9 +303,11 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
       debug node/nodepool-1-worker-1 -- chroot /host sysctl vm.dirty_ratio
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -278,17 +315,31 @@ Now that you have created the `ConfigMap` object that contains a `Tuned` manifes
     vm.dirty_ratio = 55
     ```
 
+    </div>
+
 # Deploy the SR-IOV Operator for hosted control planes
 
 After you configure and deploy your hosting service cluster, you can create a subscription to the SR-IOV Operator on a hosted cluster. The SR-IOV pod runs on worker machines rather than the control plane.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 You must configure and deploy the hosted cluster on AWS.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace and an Operator group:
 
@@ -326,7 +377,15 @@ You must configure and deploy the hosted cluster on AWS.
       sourceNamespace: openshift-marketplace
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  To verify that the SR-IOV Operator is ready, run the following command and view the resulting output:
 
@@ -334,9 +393,11 @@ You must configure and deploy the hosted cluster on AWS.
     $ oc get csv -n openshift-sriov-network-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -345,21 +406,35 @@ You must configure and deploy the hosted cluster on AWS.
     sriov-network-operator.4.17.0-202211021237   SR-IOV Network Operator   4.17.0-202211021237   sriov-network-operator.4.17.0-202210290517   Succeeded
     ```
 
+    </div>
+
 2.  To verify that the SR-IOV pods are deployed, run the following command:
 
     ``` terminal
     $ oc get pods -n openshift-sriov-network-operator
     ```
 
+</div>
+
 # Configure the NTP server for hosted clusters
 
 You can configure the Network Time Protocol (NTP) server for your hosted clusters by using Butane.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a Butane config file, `99-worker-chrony.bu`, that includes the contents of the `chrony.conf` file. For more information about Butane, see "Creating machine configs with Butane".
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `99-worker-chrony.bu` configuration**
+    <div class="title">
+
+    Example `99-worker-chrony.bu` configuration
 
     </div>
 
@@ -386,15 +461,14 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
+    </div>
+
     - `storage.files.mode` specifies an octal value mode for the `mode` field in the machine config file. After you create the file and apply the changes, the `mode` field is converted to a decimal value.
 
     - `storage.files.contents.inline` specifies any valid, reachable time source, such as the one provided by your Dynamic Host Configuration Protocol (DHCP) server.
 
-      <div class="note">
-
-      For machine-to-machine communication, the NTP on the User Datagram Protocol (UDP) port is `123`. If you configured an external NTP time server, you must open UDP port `123`.
-
-      </div>
+      > [!NOTE]
+      > For machine-to-machine communication, the NTP on the User Datagram Protocol (UDP) port is `123`. If you configured an external NTP time server, you must open UDP port `123`.
 
 2.  Use Butane to generate a `MachineConfig` object file, `99-worker-chrony.yaml`, that contains a configuration that Butane sends to the nodes. Run the following command:
 
@@ -402,9 +476,11 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     $ butane 99-worker-chrony.bu -o 99-worker-chrony.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `99-worker-chrony.yaml` configuration**
+    <div class="title">
+
+    Example `99-worker-chrony.yaml` configuration
 
     </div>
 
@@ -429,11 +505,15 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
               path: /example/path
     ```
 
+    </div>
+
 3.  Add the contents of the `99-worker-chrony.yaml` file inside of a config map in the management cluster:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example config map**
+    <div class="title">
+
+    Example config map
 
     </div>
 
@@ -465,6 +545,8 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
+    </div>
+
     Replace `<namespace>` with the name of your namespace where you created the node pool, such as `clusters`.
 
 4.  Apply the config map to your node pool by running the following command:
@@ -473,9 +555,11 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     $ oc edit nodepool <nodepool_name> --namespace <hosted_cluster_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `NodePool` configuration**
+    <div class="title">
+
+    Example `NodePool` configuration
 
     </div>
 
@@ -493,11 +577,15 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
+    </div>
+
 5.  Add the list of your NTP servers in the `infra-env.yaml` file, which defines the `InfraEnv` custom resource (CR):
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `infra-env.yaml` file**
+    <div class="title">
+
+    Example `infra-env.yaml` file
 
     </div>
 
@@ -513,6 +601,8 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
+    </div>
+
     Replace `<ntp_server>` with the name of your NTP server. For more details about creating a host inventory and the `InfraEnv` CR, see "Creating a host inventory".
 
 6.  Apply the `InfraEnv` CR by running the following command:
@@ -520,6 +610,16 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     ``` terminal
     $ oc apply -f infra-env.yaml
     ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Check the following fields to know the status of your host inventory:
 
@@ -535,25 +635,37 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     $ oc describe infraenv <infraenv_resource_name> -n <infraenv_namespace>
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > If you modify the `InfraEnv` CR, confirm that the `InfraEnv` CR has created a new Discovery Image by looking at the `createdTime` field. If you already booted hosts, boot them again with the latest Discovery Image.
 
-    If you modify the `InfraEnv` CR, confirm that the `InfraEnv` CR has created a new Discovery Image by looking at the `createdTime` field. If you already booted hosts, boot them again with the latest Discovery Image.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Creating machine configs with Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
 
 - [Creating a host inventory (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#create-host-inventory-cli-steps)
 
+</div>
+
 # Scale down the data plane to zero
 
 If you are not using the hosted control plane, to save the resources and cost you can scale down a data plane to zero.
 
-<div class="note">
+> [!NOTE]
+> Ensure you are prepared to scale down the data plane to zero. Because the workload from the worker nodes disappears after scaling down.
 
-Ensure you are prepared to scale down the data plane to zero. Because the workload from the worker nodes disappears after scaling down.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -575,9 +687,11 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
     $ oc edit nodepool <nodepool_name>  --namespace <hosted_cluster_namespace>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -605,6 +719,8 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
     # ...
     ```
 
+    </div>
+
     `spec.arch.clusterName`
     Defines the name of your hosted cluster.
 
@@ -614,11 +730,8 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
     `spec.nodeVolumeDetachTimeout`
     Specifies the total amount of time that the controller spends detaching volumes from a node. By default, the `0` setting blocks the volume detachment process.
 
-    <div class="note">
-
-    To prevent nodes from getting stuck when scaling down, set the `.spec.nodeDrainTimeout` and `.spec.nodeVolumeDetachTimeout` in the `NodePool` resource to a value greater than `0`. This setting forces nodes to be removed after the timeout specified in the field is reached, regardless of whether the node can be drained or the volumes can be detached.
-
-    </div>
+    > [!NOTE]
+    > To prevent nodes from getting stuck when scaling down, set the `.spec.nodeDrainTimeout` and `.spec.nodeVolumeDetachTimeout` in the `NodePool` resource to a value greater than `0`. This setting forces nodes to be removed after the timeout specified in the field is reached, regardless of whether the node can be drained or the volumes can be detached.
 
 4.  Scale down the `NodePool` resource associated to your hosted cluster by running the following command:
 
@@ -627,11 +740,8 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
       --replicas=0
     ```
 
-    <div class="note">
-
-    After scaling down the data plan to zero, some pods in the control plane stay in the `Pending` status and the hosted control plane stays up and running. If necessary, you can scale up the `NodePool` resource.
-
-    </div>
+    > [!NOTE]
+    > After scaling down the data plan to zero, some pods in the control plane stay in the `Pending` status and the hosted control plane stays up and running. If necessary, you can scale up the `NodePool` resource.
 
 5.  Optional: Scale up the `NodePool` resource associated to your hosted cluster by running the following command:
 
@@ -641,17 +751,47 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
 
     After rescaling the `NodePool` resource, wait for couple of minutes for the `NodePool` resource to become available in a `Ready` state.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the value for the `nodeDrainTimeout` field is greater than `0s` by running the following command:
 
   ``` terminal
   $ oc get nodepool -n <hosted_cluster_namespace> <nodepool_name> -ojsonpath='{.spec.nodeDrainTimeout}'
   ```
 
+</div>
+
 # Scale up and down workloads in a hosted cluster
 
 To scale up and down the workloads in your hosted cluster, you can use the `ScaleUpAndScaleDown` behavior. The compute nodes scale up when you add workloads and scale down when you delete workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created the `HostedCluster` and `NodePool` resources.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable cluster autoscaling for your hosted cluster by setting the scaling behavior to `ScaleUpAndScaleDown`. Run the following command:
 
@@ -679,13 +819,31 @@ To scale up and down the workloads in your hosted cluster, you can use the `Scal
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that all compute nodes are in the `Ready` status, run the following command:
 
   ``` terminal
   $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Scaling the NodePool object for a hosted cluster (bare-metal platforms)](../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-scale-np_hcp-manage-bm)
 
@@ -693,11 +851,31 @@ To scale up and down the workloads in your hosted cluster, you can use the `Scal
 
 - [Scaling a node pool (OpenShift Virtualization)](../hosted_control_planes/hcp-deploy/hcp-deploy-virt.xml#hcp-virt-scale-nodpool_hcp-deploy-virt)
 
+</div>
+
 # Scale up workloads in a hosted cluster
 
 To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` behavior.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created the `HostedCluster` and `NodePool` resources.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Enable cluster autoscaling for your hosted cluster by setting the scaling behavior to `ScaleUpOnly`. Run the following command:
 
@@ -716,7 +894,15 @@ To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` 
       ]'
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that all compute nodes are in the `Ready` status by running the following command:
 
@@ -730,17 +916,16 @@ To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` 
     $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
     ```
 
+</div>
+
 # Autoscaling to and from zero on hosted control planes node pools
 
 You can configure hosted control planes node pools to autoscale down to zero compute nodes when no schedulable workloads remain on the pool and to provision nodes on-demand when pending pods require capacity.
 
 This capability reduces idle compute costs for variable workloads while the hosted control plane stays available.
 
-<div class="note">
-
-Scale-from-zero autoscaling is available on OpenShift Container Platform 4.18 and later for eligible hosted control planes deployments on Amazon Web Services (AWS). Platform validation and HyperShift Operator configuration determine whether a node pool can use `spec.autoScaling.min: 0`.
-
-</div>
+> [!NOTE]
+> Scale-from-zero autoscaling is available on OpenShift Container Platform 4.18 and later for eligible hosted control planes deployments on Amazon Web Services (AWS). Platform validation and HyperShift Operator configuration determine whether a node pool can use `spec.autoScaling.min: 0`.
 
 When you enable autoscaling on a `NodePool` object, you set `spec.autoScaling.min` to `0` and omit `spec.replicas`. The cluster autoscaler then manages pool size instead of a fixed replica count.
 
@@ -828,6 +1013,14 @@ Tainted workload pools might use `spec.autoScaling.min: 0` because taints preven
 
 Configure a `NodePool` object to autoscale between zero and a maximum replica count on supported Amazon Web Services (AWS) hosted clusters. After configuration, verify the `AutoscalingEnabled` condition and validate scale-down and scale-up behavior.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A hosted cluster on AWS running OpenShift Container Platform 4.18 or later
 
 - Permission to edit `NodePool` objects in the hosted cluster namespace
@@ -835,6 +1028,16 @@ Configure a `NodePool` object to autoscale between zero and a maximum replica co
 - Understanding of scale-to-zero use cases, platform support, and Operator implications
 
 - For AWS, scale-from-zero provider credentials
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that your hosted cluster platform supports `spec.autoScaling.min: 0`.
 
@@ -856,11 +1059,8 @@ Configure a `NodePool` object to autoscale between zero and a maximum replica co
             "value": {"min": 0, "max": <max_replicas>}}]'
     ```
 
-    <div class="note">
-
-    `spec.replicas` and `spec.autoScaling` are mutually exclusive. When autoscaling is enabled, omit `spec.replicas` so the cluster autoscaler manages pool size.
-
-    </div>
+    > [!NOTE]
+    > `spec.replicas` and `spec.autoScaling` are mutually exclusive. When autoscaling is enabled, omit `spec.replicas` so the cluster autoscaler manages pool size.
 
 4.  Optional: Configure hosted cluster-level autoscaling behavior on the `HostedCluster` resource.
 
@@ -939,36 +1139,42 @@ Configure a `NodePool` object to autoscale between zero and a maximum replica co
     $ oc --kubeconfig ./hostedcluster-secrets/kubeconfig get nodes
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - The `AutoscalingEnabled` condition on the `NodePool` is `True`.
 
 - After workloads are removed, the pool scales down and `CURRENT NODES` can reach `0` when `min` is `0`.
 
 - After pending pods are created, new nodes appear and reach `Ready` status.
 
-<div class="note">
-
-When pools are at zero nodes, platform Operators on non-tainted baseline pools can report degraded status if minimum replica constraints are not satisfied.
-
 </div>
+
+> [!NOTE]
+> When pools are at zero nodes, platform Operators on non-tainted baseline pools can report degraded status if minimum replica constraints are not satisfied.
 
 ## NodePool autoscaling configuration reference
 
 Get familiar with the `NodePool` fields and status conditions for autoscaling to and from zero on hosted control planes.
 
-| Field or condition                                         | Description                                                                                                                                                              |
-|------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `spec.autoScaling.min`                                     | Minimum nodes the cluster autoscaler can scale the pool to. Valid values include `0` on Amazon Web Services (AWS). On other platforms, the minimum must be at least `1`. |
-| `spec.autoScaling.max`                                     | Maximum nodes the cluster autoscaler can scale the pool to. Must be greater than or equal to `spec.autoScaling.min`.                                                     |
-| `spec.replicas`                                            | Fixed replica count when autoscaling is disabled. Must be omitted when `spec.autoScaling` is configured.                                                                 |
-| `AutoscalingEnabled` condition                             | Reports whether autoscaling is active on the `NodePool`. Status `True` indicates the autoscaler manages pool size.                                                       |
-| `--scale-from-zero-provider` and `--scale-from-zero-creds` | On AWS, credentials and provider configuration for instance-type metadata used during scale-from-zero.                                                                   |
-| Non-tainted pool minimum sum                               | Sum of minimum replicas across non-tainted pools must be at least `2` cluster-wide for HA platform operators.                                                            |
+| Field or condition | Description |
+|----|----|
+| `spec.autoScaling.min` | Minimum nodes the cluster autoscaler can scale the pool to. Valid values include `0` on Amazon Web Services (AWS). On other platforms, the minimum must be at least `1`. |
+| `spec.autoScaling.max` | Maximum nodes the cluster autoscaler can scale the pool to. Must be greater than or equal to `spec.autoScaling.min`. |
+| `spec.replicas` | Fixed replica count when autoscaling is disabled. Must be omitted when `spec.autoScaling` is configured. |
+| `AutoscalingEnabled` condition | Reports whether autoscaling is active on the `NodePool`. Status `True` indicates the autoscaler manages pool size. |
+| `--scale-from-zero-provider` and `--scale-from-zero-creds` | On AWS, credentials and provider configuration for instance-type metadata used during scale-from-zero. |
+| Non-tainted pool minimum sum | Sum of minimum replicas across non-tainted pools must be at least `2` cluster-wide for HA platform operators. |
 
-<div class="note">
-
-`spec.replicas` and `spec.autoScaling` are mutually exclusive. Patch or edit the `NodePool` to remove `spec.replicas` before adding `spec.autoScaling`.
-
-</div>
+> [!NOTE]
+> `spec.replicas` and `spec.autoScaling` are mutually exclusive. Patch or edit the `NodePool` to remove `spec.replicas` before adding `spec.autoScaling`.
 
 ## NodePool API reference for autoscaling
 
@@ -976,42 +1182,60 @@ Get familiar with the `NodePool` specification fields related to autoscaling, in
 
 ### spec.autoScaling
 
-| Field | Type    | Description                                                                                                                                                    |
-|-------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Field | Type | Description |
+|----|----|----|
 | `min` | integer | Minimum number of nodes for the pool when autoscaling is enabled. `0` is valid on Amazon Web Services (AWS). Other platforms require `min` to be at least `1`. |
-| `max` | integer | Maximum number of nodes the cluster autoscaler can add to the pool.                                                                                            |
+| `max` | integer | Maximum number of nodes the cluster autoscaler can add to the pool. |
 
 ### spec.replicas
 
-| Field      | Type    | Description                                                                                         |
-|------------|---------|-----------------------------------------------------------------------------------------------------|
+| Field | Type | Description |
+|----|----|----|
 | `replicas` | integer | Fixed number of nodes when autoscaling is disabled. Omit this field when `spec.autoScaling` is set. |
 
 ### Drain and detach timeouts
 
-| Field                     | Type     | Description                                                                                                                                   |
-|---------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| `nodeDrainTimeout`        | duration | Time the controller spends draining a node during scale-down. A value of `0s` blocks draining until a positive timeout is set.                |
+| Field | Type | Description |
+|----|----|----|
+| `nodeDrainTimeout` | duration | Time the controller spends draining a node during scale-down. A value of `0s` blocks draining until a positive timeout is set. |
 | `nodeVolumeDetachTimeout` | duration | Time the controller spends detaching volumes from a node during scale-down. A value of `0` blocks detachment until a positive timeout is set. |
 
 ### status.conditions
 
-| Condition            | Description                                                                                  |
-|----------------------|----------------------------------------------------------------------------------------------|
+| Condition | Description |
+|----|----|
 | `AutoscalingEnabled` | Reports `True` when autoscaling is correctly configured and the autoscaler manages the pool. |
 
 ### HyperShift Operator flags
 
-| Flag                         | Description                                           |
-|------------------------------|-------------------------------------------------------|
+| Flag | Description |
+|----|----|
 | `--scale-from-zero-provider` | Provider used to fetch instance-type metadata on AWS. |
-| `--scale-from-zero-creds`    | Credentials for the scale-from-zero provider on AWS.  |
+| `--scale-from-zero-creds` | Credentials for the scale-from-zero provider on AWS. |
 
 # Set the priority expander in a hosted cluster
 
 You can define the priority for your node pools and create high priority machines before low priority machines by using the priority expander in your hosted cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created the `HostedCluster` and `NodePool` resources.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To define the priority for your node pools, create a config map named `priority-expander-configmap.yaml` in your hosted cluster. Node pools with low numbers receive high priority. See the following example configuration:
 
@@ -1069,17 +1293,47 @@ You can define the priority for your node pools and create high priority machine
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After you apply new workloads, verify that the compute nodes associated with the priority node pool are scaled up first. Run the following command to check the status of the compute node:
 
   ``` terminal
   $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
   ```
 
+</div>
+
 # Balance ignored labels in a hosted cluster
 
 After you scale up your node pools, you can use `balancingIgnoredLabels` to evenly distribute the machines across node pools.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have created the `HostedCluster` and `NodePool` resources.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `node.group.balancing.ignored` label to each of the relevant node pool by using the same label value. Run the following command:
 
@@ -1147,8 +1401,20 @@ After you scale up your node pools, you can use `balancingIgnoredLabels` to even
       --patch='{"spec": {"autoscaling": {"balancingIgnoredLabels": ["node.group.balancing.ignored"]}}}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the number of nodes provisioned by each node pool is evenly distributed. For example, if you created three node pools with the same label value, the node counts might be 3, 2, and 3. Run the following command:
 
   ``` terminal
   $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'
   ```
+
+</div>

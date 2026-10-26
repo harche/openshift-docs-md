@@ -12,7 +12,25 @@ The volume backup artifacts are deleted at different times depending on the back
 
 Delete a backup by creating a `DeleteBackupRequest` custom resource (CR). This helps you to remove specific backups and their associated volume artifacts from storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have run a backup of your application.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `DeleteBackupRequest` CR manifest file:
 
@@ -34,15 +52,33 @@ Delete a backup by creating a `DeleteBackupRequest` custom resource (CR). This h
     $ oc apply -f <deletebackuprequest_cr_filename>
     ```
 
+</div>
+
 # Delete a backup by using the OADP CLI
 
 Delete a backup by using the OADP CLI to run the `oc oadp backup delete` command. This helps you to quickly remove backups and their associated volume artifacts from storage.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have run a backup of your application.
 
 - You have downloaded the OADP CLI binary from your cluster and can access the `oc oadp` commands.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete the backup, run the following command:
 
@@ -51,6 +87,8 @@ Delete a backup by using the OADP CLI to run the `oc oadp backup delete` command
   ```
 
   Replace `<backup_name>` with the name of the backup.
+
+</div>
 
 # About Kopia repository maintenance
 
@@ -84,11 +122,8 @@ You can check the logs of the `repo-maintain-job` for more details about the cle
 not due for full maintenance cycle until 2024-00-00 18:29:4
 ```
 
-<div class="important">
-
-Three successful executions of a full maintenance cycle are required for the objects to be deleted from the backup object storage. This means you can expect up to 72 hours for all the artifacts in the backup object storage to be deleted.
-
-</div>
+> [!IMPORTANT]
+> Three successful executions of a full maintenance cycle are required for the objects to be deleted from the backup object storage. This means you can expect up to 72 hours for all the artifacts in the backup object storage to be deleted.
 
 # Delete a backup repository
 
@@ -96,9 +131,27 @@ Delete the `backuprepository` custom resource (CR) to complete the backup deleti
 
 After you delete the backup, and after the Kopia repository maintenance cycles to delete the related artifacts are complete, the backup is no longer referenced by any metadata or manifest objects.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have deleted the backup of your application.
 
 - You have waited up to 72 hours after the backup is deleted. This time frame allows Kopia to run the repository maintenance cycles.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To get the name of the backup repository CR for a backup, run the following command:
 
@@ -113,3 +166,5 @@ After you delete the backup, and after the Kopia repository maintenance cycles t
     ```
 
     Replace `<backup_repository_name>` with the name of the backup repository.
+
+</div>

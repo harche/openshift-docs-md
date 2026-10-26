@@ -1,12 +1,17 @@
 You can remove a Windows node by deleting its host Windows machine.
 
-# Deleting a specific machine
+# Delete a specific machine
 
 To remove a machine from your cluster, or restart a machine that is part of a machine set, you can use the OpenShift CLI (`oc`) to delete a specific machine.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not delete a control plane machine unless your cluster uses a control plane machine set. If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
 
-Do not delete a control plane machine unless your cluster uses a control plane machine set. If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ Do not delete a control plane machine unless your cluster uses a control plane m
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the machines that are in the cluster by running the following command:
 
@@ -34,10 +49,9 @@ Do not delete a control plane machine unless your cluster uses a control plane m
 
     Replace `<machine>` with the name of the machine.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
+    >
+    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
 
-    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
-
-    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
-
-    </div>
+</div>

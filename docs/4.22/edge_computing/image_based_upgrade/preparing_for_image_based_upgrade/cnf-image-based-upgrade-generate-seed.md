@@ -13,45 +13,45 @@ The following table lists the components, resources, and configurations that you
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Cluster configuration</th>
 <th style="text-align: left;">Include in seed image</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Performance profile</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>MachineConfig</code> resources for the target cluster</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>IP version configuration, either IPv4, IPv6, or dual-stack networking</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Set of Day 2 Operators, including the Lifecycle Agent and the OADP Operator</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Disconnected registry configuration <sup>[2]</sup></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Valid proxy configuration <sup>[3]</sup></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>FIPS configuration</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Dedicated partition on the primary disk for container storage that matches the size of the target clusters</p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Local volumes</p>
 <ul>
 <li><p><code>StorageClass</code> used in <code>LocalVolume</code> for LSO</p></li>
@@ -60,14 +60,12 @@ The following table lists the components, resources, and configurations that you
 </ul></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>OADP <code>DataProtectionApplication</code> CR</p></td>
 <td style="text-align: left;"><p>No</p></td>
 </tr>
 </tbody>
 </table>
-
-Seed image configuration
 
 1.  If the seed cluster is installed in a disconnected environment, the target clusters must also be installed in a disconnected environment.
 
@@ -77,20 +75,20 @@ Seed image configuration
 
 The following table lists the components, resources, and configurations that you must and must not include in the seed image when using the RAN DU profile:
 
-| Resource                                                           | Include in seed image                 |
-|--------------------------------------------------------------------|---------------------------------------|
-| All extra manifests that are applied as part of Day 0 installation | Yes                                   |
-| All Day 2 Operator subscriptions                                   | Yes                                   |
-| `DisableOLMPprof.yaml`                                             | Yes                                   |
-| `TunedPerformancePatch.yaml`                                       | Yes                                   |
-| `PerformanceProfile.yaml`                                          | Yes                                   |
-| `SriovOperatorConfig.yaml`                                         | Yes                                   |
-| `DisableSnoNetworkDiag.yaml`                                       | Yes                                   |
-| `StorageClass.yaml`                                                | No, if it is used in `StorageLV.yaml` |
-| `StorageLV.yaml`                                                   | No                                    |
-| `StorageLVMCluster.yaml`                                           | No                                    |
-| `SriovFecClusterConfig.yaml`                                       | No                                    |
-| `SriovVrbClusterConfig.yaml`                                       | No                                    |
+| Resource | Include in seed image |
+|----|----|
+| All extra manifests that are applied as part of Day 0 installation | Yes |
+| All Day 2 Operator subscriptions | Yes |
+| `DisableOLMPprof.yaml` | Yes |
+| `TunedPerformancePatch.yaml` | Yes |
+| `PerformanceProfile.yaml` | Yes |
+| `SriovOperatorConfig.yaml` | Yes |
+| `DisableSnoNetworkDiag.yaml` | Yes |
+| `StorageClass.yaml` | No, if it is used in `StorageLV.yaml` |
+| `StorageLV.yaml` | No |
+| `StorageLVMCluster.yaml` | No |
+| `SriovFecClusterConfig.yaml` | No |
+| `SriovVrbClusterConfig.yaml` | No |
 
 Seed image configuration with RAN DU profile
 
@@ -101,43 +99,43 @@ Seed image configuration with RAN DU profile
 <col style="width: 40%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Resource</th>
 <th style="text-align: left;">Apply as extra manifest</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>ClusterLogForwarder.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p>
 <div class="note">
+<div class="title">
+&#10;</div>
 <p>The DU profile includes the Cluster Logging Operator, but the profile does not configure or apply any Cluster Logging Operator CRs. To enable log forwarding, include the <code>ClusterLogForwarder.yaml</code> CR as an extra manifest. The extra manifest is applied to the target single-node OpenShift cluster during the image-based upgrade process.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>ReduceMonitoringFootprint.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>PtpOperatorConfigForEvent.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>DefaultCatsrc.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>PtpConfig.yaml</code></p></td>
 <td style="text-align: left;"><p>If the interfaces of the target cluster are common with the seed cluster, you can include them in the seed image. Otherwise, apply it as extra manifests.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>SriovNetwork.yaml</code> <code>SriovNetworkNodePolicy.yaml</code></p></td>
 <td style="text-align: left;"><p>If the configuration, including namespaces, is exactly the same on both the seed and target cluster, you can include them in the seed image. Otherwise, apply them as extra manifests.</p></td>
 </tr>
 </tbody>
 </table>
-
-Seed image configuration with RAN DU profile for extra manifests
 
 # Generating a seed image with the Lifecycle Agent
 
@@ -157,7 +155,13 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
 - Restoring and updating the `SeedGenerator` CR on the seed cluster
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - RHACM and multicluster engine for Kubernetes Operator are not installed on the seed cluster.
 
@@ -172,6 +176,16 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 - Ensure that the `LVMCluster` CR does not exist on the seed cluster if LVM Storage is used.
 
 - Ensure that the `DataProtectionApplication` CR does not exist on the seed cluster if OADP is used.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Detach the managed cluster from the hub to delete any RHACM-specific resources from the seed cluster that must not be in the seed image:
 
@@ -282,11 +296,18 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
     $ oc apply -f seedgenerator.yaml
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the `SeedGenerator` CR stops the `kubelet` and the CRI-O operations, then it starts the image generation.
 
-    The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the `SeedGenerator` CR stops the `kubelet` and the CRI-O operations, then it starts the image generation.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - After the cluster recovers and it is available, you can check the status of the `SeedGenerator` CR by running the following command:
 
@@ -316,16 +337,23 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
   The `SeedGenCompleted` type indicates that the seed image generation is complete.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > After the seed image generation completes, do not use the seed cluster. Do not continue to run `oc` commands against the seed cluster or use it to manage managed clusters.
+  >
+  > If you access the seed cluster after generating the seed image, you can meet TLS certificate validation errors because the seed cluster certificates expire during seed image generation. If you need to generate another seed image, provision a new seed cluster.
 
-  After the seed image generation completes, do not use the seed cluster. Do not continue to run `oc` commands against the seed cluster or use it to manage managed clusters.
+</div>
 
-  If you access the seed cluster after generating the seed image, you can meet TLS certificate validation errors because the seed cluster certificates expire during seed image generation. If you need to generate another seed image, provision a new seed cluster.
+<div>
 
-  </div>
+<div class="title">
 
-<!-- -->
+Additional resources
+
+</div>
 
 - [Configuring a shared container partition between ostree stateroots](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#cnf-image-based-upgrade-shared-container-partition_shared-container-partition)
 
 - [Configuring a shared container partition between ostree stateroots when using GitOps ZTP](../../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.xml#ztp-image-based-upgrade-shared-container-partition_shared-container-partition)
+
+</div>

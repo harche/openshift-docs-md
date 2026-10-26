@@ -9,12 +9,12 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object metadata                                                                                                                                                                                                                                                                             |
-| `spec`       | `object`                                                                             | DeviceClassSpec is used in a \[DeviceClass\] to define what can be allocated and how to configure it.                                                                                                                                                                                                |
+| Property | Type | Description |
+|----|----|----|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
+| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object metadata |
+| `spec` | `object` | DeviceClassSpec is used in a \[DeviceClass\] to define what can be allocated and how to configure it. |
 
 ## .spec
 
@@ -31,36 +31,36 @@ Type
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>config</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Config defines configuration parameters that apply to each device that is claimed via this class. Some classses may potentially be satisfied by multiple drivers, so each instance of a vendor configuration applies to exactly one driver.</p>
 <p>They are passed to the driver, but are not considered while allocating the claim.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>config[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DeviceClassConfiguration is used in DeviceClass.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>extendedResourceName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ExtendedResourceName is the extended resource name for the devices of this class. The devices of this class can be used to satisfy a pod’s extended resource requests. It has the same format as the name of a pod’s extended resource. It should be unique among all the device classes in a cluster. If two device classes have the same name, then the class created later is picked to satisfy a pod’s extended resource requests. If two classes are created at the same time, then the name of the class lexicographically sorted first is picked.</p>
 <p>This is a beta field.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>selectors</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Each selector must be satisfied by a device which is claimed via this class.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>selectors[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>DeviceSelector must have exactly one field set.</p></td>
@@ -86,8 +86,8 @@ DeviceClassConfiguration is used in DeviceClass.
 Type
 `object`
 
-| Property | Type     | Description                                                                                                        |
-|----------|----------|--------------------------------------------------------------------------------------------------------------------|
+| Property | Type | Description |
+|----|----|----|
 | `opaque` | `object` | OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor. |
 
 ## .spec.config\[\].opaque
@@ -110,21 +110,21 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>driver</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.</p>
 <p>An admission policy provided by the driver developer could use this to decide whether it needs to validate them.</p>
 <p>Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>parameters</code></p></td>
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-runtime-RawExtension"><code>RawExtension</code></a></p></td>
 <td style="text-align: left;"><p>Parameters can contain arbitrary data. It is the responsibility of the driver developer to handle validation and versioning. Typically this includes self-identification and a version ("kind" + "apiVersion" for Kubernetes types), with conversion between different versions.</p>
@@ -149,9 +149,9 @@ DeviceSelector must have exactly one field set.
 Type
 `object`
 
-| Property | Type     | Description                                                         |
-|----------|----------|---------------------------------------------------------------------|
-| `cel`    | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
+| Property | Type | Description |
+|----|----|----|
+| `cel` | `object` | CELDeviceSelector contains a CEL expression for selecting a device. |
 
 ## .spec.selectors\[\].cel
 
@@ -171,14 +171,14 @@ Required
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Property</th>
 <th style="text-align: left;">Type</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>expression</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Expression is a CEL expression which evaluates a single device. It must evaluate to true when the device under consideration satisfies the desired criteria, and false when it does not. Any other result is an error and causes allocation of devices to abort.</p>
@@ -236,16 +236,16 @@ HTTP method
 Description
 delete collection of DeviceClass
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -255,10 +255,10 @@ HTTP method
 Description
 list or watch objects of kind DeviceClass
 
-| HTTP code          | Reponse body                                                                            |
-|--------------------|-----------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClassList`](../objects/index.xml#io-k8s-api-resource-v1-DeviceClassList) schema |
-| 401 - Unauthorized | Empty                                                                                   |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClassList`](../objects/index.xml#io-k8s-api-resource-v1-DeviceClassList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -268,25 +268,25 @@ HTTP method
 Description
 create a DeviceClass
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                 | Description |
-|-----------|----------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                         |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 201 - Created      | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 202 - Accepted     | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 201 - Created | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 202 - Accepted | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -298,10 +298,10 @@ HTTP method
 Description
 watch individual changes to a list of DeviceClass. deprecated: use the 'watch' parameter with a list operation instead.
 
-| HTTP code          | Reponse body                                                                                |
-|--------------------|---------------------------------------------------------------------------------------------|
-| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -319,17 +319,17 @@ HTTP method
 Description
 delete a DeviceClass
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                         |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 202 - Accepted     | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 202 - Accepted | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -339,10 +339,10 @@ HTTP method
 Description
 read the specified DeviceClass
 
-| HTTP code          | Reponse body                                                                                                         |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -352,18 +352,18 @@ HTTP method
 Description
 partially update the specified DeviceClass
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                         |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 201 - Created      | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 201 - Created | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -373,24 +373,24 @@ HTTP method
 Description
 replace the specified DeviceClass
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                 | Description |
-|-----------|----------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                         |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 201 - Created      | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 201 - Created | [`DeviceClass`](../schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.xml#deviceclass-resource-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -408,9 +408,9 @@ HTTP method
 Description
 watch changes to an object of kind DeviceClass. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 
-| HTTP code          | Reponse body                                                                                |
-|--------------------|---------------------------------------------------------------------------------------------|
-| 200 - OK           | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
-| 401 - Unauthorized | Empty                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`WatchEvent`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-WatchEvent) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses

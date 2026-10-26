@@ -16,13 +16,13 @@ The following table lists the [Windows Server versions](https://docs.microsoft.c
 <col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Platform</th>
 <th style="text-align: left;">Supported Windows Server version</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Amazon Web Services (AWS)</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
@@ -30,7 +30,7 @@ The following table lists the [Windows Server versions](https://docs.microsoft.c
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Microsoft Azure</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
@@ -38,28 +38,28 @@ The following table lists the [Windows Server versions](https://docs.microsoft.c
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>VMware vSphere</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Google Cloud</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Nutanix</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Bare metal or provider agnostic</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
@@ -77,20 +77,24 @@ Hybrid networking with OVN-Kubernetes is the only supported networking configura
 
 <div class="note">
 
+<div class="title">
+
+</div>
+
 - The WMCO does not support OVN-Kubernetes without hybrid networking or OpenShift SDN.
 
 - Dual NIC is not supported on WMCO-managed Windows instances.
 
 </div>
 
-| Platform                        | Supported networking                                           |
-|---------------------------------|----------------------------------------------------------------|
-| Amazon Web Services (AWS)       | Hybrid networking with OVN-Kubernetes                          |
-| Microsoft Azure                 | Hybrid networking with OVN-Kubernetes                          |
-| VMware vSphere                  | Hybrid networking with OVN-Kubernetes with a custom VXLAN port |
-| Google Cloud                    | Hybrid networking with OVN-Kubernetes                          |
-| Nutanix                         | Hybrid networking with OVN-Kubernetes                          |
-| Bare metal or provider agnostic | Hybrid networking with OVN-Kubernetes                          |
+| Platform | Supported networking |
+|----|----|
+| Amazon Web Services (AWS) | Hybrid networking with OVN-Kubernetes |
+| Microsoft Azure | Hybrid networking with OVN-Kubernetes |
+| VMware vSphere | Hybrid networking with OVN-Kubernetes with a custom VXLAN port |
+| Google Cloud | Hybrid networking with OVN-Kubernetes |
+| Nutanix | Hybrid networking with OVN-Kubernetes |
+| Bare metal or provider agnostic | Hybrid networking with OVN-Kubernetes |
 
 Platform networking support
 
@@ -101,13 +105,13 @@ Platform networking support
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Hybrid networking with OVN-Kubernetes</th>
 <th style="text-align: left;">Supported Windows Server version</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Default VXLAN port</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
@@ -115,7 +119,7 @@ Platform networking support
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Custom VXLAN port</p></td>
 <td style="text-align: left;"><ul>
 <li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
@@ -125,6 +129,14 @@ Platform networking support
 </tbody>
 </table>
 
-Hybrid OVN-Kubernetes Windows Server support
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Hybrid networking](../../networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.xml#configuring-hybrid-networking)
+
+</div>

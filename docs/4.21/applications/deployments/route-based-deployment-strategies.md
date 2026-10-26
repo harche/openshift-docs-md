@@ -50,15 +50,20 @@ Consider the data used in testing the new version. If it is the production data,
 
 Blue-green deployments use two `Deployment` objects. Both are running, and the one in production depends on the service the route specifies, with each `Deployment` object exposed to a different service.
 
-<div class="note">
-
-Routes are intended for web (HTTP and HTTPS) traffic, so this technique is best suited for web applications.
-
-</div>
+> [!NOTE]
+> Routes are intended for web (HTTP and HTTPS) traffic, so this technique is best suited for web applications.
 
 You can create a new route to the new version and test it. When ready, change the service in the production route to point to the new service and the new (green) version is live.
 
 If necessary, you can roll back to the older (blue) version by switching the service back to the previous version.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create two independent application components.
 
@@ -90,6 +95,8 @@ If necessary, you can roll back to the older (blue) version by switching the ser
 
 5.  To verify that the route has changed, refresh the browser until you see the `v2` image.
 
+</div>
+
 # A/B deployments
 
 To test a new application version with a limited share of production traffic in OpenShift Container Platform, you can use an A/B deployment. You send most requests to the stable version, route a fraction to the new version, and increase that fraction as testing progresses.
@@ -111,6 +118,14 @@ You set up a route with multiple services. Each service handles a version of the
 Each service is assigned a `weight` and the portion of requests to each service is the `service_weight` divided by the `sum_of_weights`. The `weight` for each service is distributed to the service’s endpoints so that the sum of the endpoint `weights` is the service `weight`.
 
 The route can have up to four services. The `weight` for the service can be between `0` and `256`. When the `weight` is `0`, the service does not participate in load balancing but continues to serve existing persistent connections. When the service `weight` is not `0`, each endpoint has a minimum `weight` of `1`. Because of this, a service with a lot of endpoints can end up with higher `weight` than intended. In this case, reduce the number of pods to get the expected load balance `weight`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the two applications and give them different names. Each creates a `Deployment` object. The applications are versions of the same program; one is usually the current production version and the other the proposed new version.
 
@@ -138,19 +153,13 @@ The route can have up to four services. The `weight` for the service can be betw
 
 3.  When you deploy the route, the router balances the traffic according to the `weights` specified for the services. At this point, there is a single service with default `weight=1` so all requests go to it. Adding the other service as an `alternateBackends` and adjusting the `weights` brings the A/B setup to life. This can be done by the `oc set route-backends` command or by editing the route.
 
-    <div class="note">
-
-    When using `alternateBackends`, also use the `roundrobin` load balancing strategy to ensure requests are distributed as expected to the services based on weight. `roundrobin` can be set for a route by using a route annotation. See the *Additional resources* section for more information about route annotations.
-
-    </div>
+    > [!NOTE]
+    > When using `alternateBackends`, also use the `roundrobin` load balancing strategy to ensure requests are distributed as expected to the services based on weight. `roundrobin` can be set for a route by using a route annotation. See the *Additional resources* section for more information about route annotations.
 
     Setting the `oc set route-backend` to `0` means the service does not participate in load balancing, but continues to serve existing persistent connections.
 
-    <div class="note">
-
-    Changes to the route just change the portion of traffic to the various services. You might have to scale the deployment to adjust the number of pods to handle the anticipated loads.
-
-    </div>
+    > [!NOTE]
+    > Changes to the route just change the portion of traffic to the various services. You might have to scale the deployment to adjust the number of pods to handle the anticipated loads.
 
     To edit the route, run:
 
@@ -158,9 +167,11 @@ The route can have up to four services. The `weight` for the service can be betw
     $ oc edit route <route_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -185,9 +196,21 @@ The route can have up to four services. The `weight` for the service can be betw
     # ...
     ```
 
+    </div>
+
+</div>
+
 # Managing weights of an existing route by using the web console
 
 To split production traffic between application versions for A/B testing in OpenShift Container Platform, you can configure a route with weighted services. Use the `oc set route-backends` command or edit the route to assign weights so the router sends a proportional share of requests to each version.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Networking** → **Routes** page.
 
@@ -197,9 +220,19 @@ To split production traffic between application versions for A/B testing in Open
 
 4.  Click **Save**.
 
+</div>
+
 # Managing weights of a new route by using the web console
 
 To set traffic weights when you create a new route for A/B testing in OpenShift Container Platform, you can use the web console. Create the route, add an alternate service, and assign relative weights so the router distributes requests between application versions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Networking** → **Routes** page.
 
@@ -217,9 +250,19 @@ To set traffic weights when you create a new route for A/B testing in OpenShift 
 
 8.  Click **Create**.
 
+</div>
+
 # Managing weights using the CLI
 
 To manage service traffic weights for A/B testing in OpenShift Container Platform, you can use the `oc set route-backends` command. Set or adjust weights on a route so the router sends a proportional share of requests to each service.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To manage the services and corresponding weights load balanced by the route, use the `oc set route-backends` command:
 
@@ -244,9 +287,11 @@ To manage service traffic weights for A/B testing in OpenShift Container Platfor
     $ oc set route-backends ab-example
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -255,6 +300,8 @@ To manage service traffic weights for A/B testing in OpenShift Container Platfor
     routes/ab-example       Service  ab-example-a 198 (99%)
     routes/ab-example       Service  ab-example-b 2   (1%)
     ```
+
+    </div>
 
 3.  To override the default values for the load balancing algorithm, adjust the annotation on the route by setting the algorithm to `roundrobin`. For a route on OpenShift Container Platform, the default load balancing algorithm is set to `random` or `source` values.
 
@@ -294,17 +341,24 @@ To manage service traffic weights for A/B testing in OpenShift Container Platfor
 
     The `--zero` flag sets the `weight` of all services to `0`. All requests then return with a 503 error.
 
-    <div class="note">
+    > [!NOTE]
+    > Not all routers support multiple or weighted backends.
 
-    Not all routers support multiple or weighted backends.
-
-    </div>
+</div>
 
 # Create multiple Deployment objects that use one service
 
 To serve multiple application versions through a single service in OpenShift Container Platform, you can create multiple `Deployment` objects that share a common label selector.
 
 Expose one service for those pods so you can scale or update each shard independently while users reach them through the same route.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new application, adding a label `ab-example=true` that will be common to all shards:
 
@@ -373,6 +427,8 @@ Expose one service for those pods so you can scale or update each shard independ
     ``` terminal
     $ oc edit dc/ab-example-b
     ```
+
+</div>
 
 # Additional resources
 

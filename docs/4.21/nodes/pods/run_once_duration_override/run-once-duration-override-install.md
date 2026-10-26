@@ -2,19 +2,34 @@ You can use the Run Once Duration Override Operator to set a maximum active dead
 
 By enabling the run-once duration override on a namespace, all future run-once pods created or updated in that namespace have their `activeDeadlineSeconds` field set to the value specified by the Run Once Duration Override Operator.
 
-<div class="note">
-
-If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
-
-</div>
+> [!NOTE]
+> If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.
 
 # Install the Run Once Duration Override Operator
 
 Install the Run Once Duration Override Operator by using the web console to create the required namespace, install the Operator from the software catalog, and create a `RunOnceDurationOverride` instance.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -60,7 +75,15 @@ Install the Run Once Duration Override Operator by using the web console to crea
 
     4.  Click **Create**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -70,9 +93,11 @@ Install the Run Once Duration Override Operator by using the web console to crea
     $ oc get pods -n openshift-run-once-duration-override-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -84,11 +109,33 @@ Install the Run Once Duration Override Operator by using the web console to crea
     runoncedurationoverride-tdsqk                          1/1     Running   0          41s
     ```
 
+    </div>
+
+</div>
+
 # Enable the run-once duration override on a namespace
 
 Enable the run-once duration override on a namespace by adding the `runoncedurationoverrides.admission.runoncedurationoverride.openshift.io/enabled=true` label to the namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The Run Once Duration Override Operator is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -103,7 +150,15 @@ Enable the run-once duration override on a namespace by adding the `runoncedurat
 
     After you enable the run-once duration override on this namespace, future run-once pods that are created in this namespace will have their `activeDeadlineSeconds` field set to the override value from the Run Once Duration Override Operator. Existing pods in this namespace will also have their `activeDeadlineSeconds` value set when they are updated next.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Create a test run-once pod in the namespace that you enabled the run-once duration override on:
 
@@ -147,9 +202,11 @@ Enable the run-once duration override on a namespace by adding the `runoncedurat
     $ oc get pods -n <namespace> -o yaml | grep activeDeadlineSeconds
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -157,13 +214,35 @@ Enable the run-once duration override on a namespace by adding the `runoncedurat
         activeDeadlineSeconds: 3600
     ```
 
+    </div>
+
+</div>
+
 # Update the run-once active deadline override value
 
 Update the `activeDeadlineSeconds` field in the `RunOnceDurationOverride` resource to customize the override value that the operator applies to run-once pods.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed the Run Once Duration Override Operator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -195,3 +274,5 @@ Update the `activeDeadlineSeconds` field in the `RunOnceDurationOverride` resour
 4.  Save the file to apply the changes.
 
     Any future run-once pods created in namespaces where the run-once duration override is enabled will have their `activeDeadlineSeconds` field set to this new value. Existing run-once pods in these namespaces will receive this new value when they are updated.
+
+</div>

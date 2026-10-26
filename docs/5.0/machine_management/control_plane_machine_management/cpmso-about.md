@@ -1,10 +1,7 @@
 With control plane machine sets, you can automate management of the control plane machine resources within your OpenShift Container Platform cluster, simplifying upgrades and recovery from degraded control plane machines.
 
-<div class="important">
-
-Control plane machine sets cannot manage compute machines, and compute machine sets cannot manage control plane machines.
-
-</div>
+> [!IMPORTANT]
+> Control plane machine sets cannot manage compute machines, and compute machine sets cannot manage control plane machines.
 
 Control plane machine sets provide for control plane machines similar management capabilities as compute machine sets provide for compute machines. However, these two types of machine sets are separate custom resources defined within the Machine API and have several fundamental differences in their architecture and functionality.
 
@@ -32,9 +29,11 @@ Before using the Control Plane Machine Set Operator, review platform support, cl
     -l machine.openshift.io/cluster-api-machine-role=master
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output showing preexisting control plane machines**
+  <div class="title">
+
+  Example output showing preexisting control plane machines
 
   </div>
 
@@ -45,15 +44,21 @@ Before using the Control Plane Machine Set Operator, review platform support, cl
   <infrastructure_id>-master-2   Running   m6i.xlarge   us-west-1   us-west-1a   5h19m
   ```
 
-  <div class="formalpara-title">
+  </div>
 
-  **Example output missing preexisting control plane machines**
+  <div class="formalpara">
+
+  <div class="title">
+
+  Example output missing preexisting control plane machines
 
   </div>
 
   ``` text
   No resources found in openshift-machine-api namespace.
   ```
+
+  </div>
 
 - The Operator requires the Machine API Operator to be operational and is therefore not supported on clusters with manually provisioned machines. When installing a OpenShift Container Platform cluster with manually provisioned machines for a platform that creates an active generated `ControlPlaneMachineSet` custom resource (CR), you must remove the Kubernetes manifest files that define the control plane machine set as instructed in the installation process.
 
@@ -65,11 +70,8 @@ Before using the Control Plane Machine Set Operator, review platform support, cl
 
 - Deploying control plane machines as AWS Spot Instances, Google Cloud preemptible VMs, or Azure Spot VMs is not supported.
 
-  <div class="important">
-
-  Attempting to deploy control plane machines as AWS Spot Instances, Google Cloud preemptible VMs, or Azure Spot VMs might cause the cluster to lose etcd quorum. A cluster that loses all control plane machines simultaneously is unrecoverable.
-
-  </div>
+  > [!IMPORTANT]
+  > Attempting to deploy control plane machines as AWS Spot Instances, Google Cloud preemptible VMs, or Azure Spot VMs might cause the cluster to lose etcd quorum. A cluster that loses all control plane machines simultaneously is unrecoverable.
 
 - Making changes to the control plane machine set during or before installation is not supported. You must make any changes to the control plane machine set only after installation.
 

@@ -14,13 +14,29 @@ Cross-cluster live migration enables users to move a virtual machine (VM) worklo
 
 To enable cross-cluster live migration, you must set a feature gate for each of the two clusters in OpenShift Virtualization.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You must have cluster admin privileges.
 
 - The `virt-synchronization-controller` pods must be running.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the feature gate by running the following command for each cluster:
 
@@ -28,7 +44,15 @@ To enable cross-cluster live migration, you must set a feature gate for each of 
   $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p '[{"op":"replace", "path": "/spec/featureGates/decentralizedLiveMigration", "value": true}]'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - To verify that the feature gate enablement is successful for each cluster, run the following command in the OpenShift Virtualization namespace to locate the synchronization pods:
 
@@ -42,3 +66,5 @@ To enable cross-cluster live migration, you must set a feature gate for each of 
   virt-synchronization-controller-898789f8fc-nsbsm      1/1     Running   0               5d1h
   virt-synchronization-controller-898789f8fc-vmmfj      1/1     Running   0               5d1h
   ```
+
+</div>

@@ -40,9 +40,19 @@ To illustrate the age of containers, the Red Hat Ecosystem Catalog uses a gradin
 
 See the Red Hat Product Security Center for details on security updates and vulnerabilities related to Red Hat software. Check out Red Hat Security Advisories to search for specific advisories and CVEs.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Red Hat Product Security Center](https://access.redhat.com/security/)
 
 - [Red Hat Security Advisories](https://access.redhat.com/security/security-updates/#/security-advisories)
+
+</div>
 
 # OpenShift Container Registry
 
@@ -50,7 +60,17 @@ To manage your container images, you can use the *OpenShift Container Registry*,
 
 OpenShift Container Platform also supports integration with other private registries that you might already be using, such as Red Hat Quay.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Integrated OpenShift image registry](../../registry/index.xml#registry-overview)
+
+</div>
 
 # Store containers using Red Hat Quay
 

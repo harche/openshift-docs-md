@@ -6,9 +6,14 @@ To install a cluster with two control plane nodes and one local arbiter node, as
 
 After installation, you can add additional worker nodes to a cluster with two control plane nodes and one local arbiter node but it cannot be converted to a standard multi-node cluster.
 
-<div class="note">
+> [!NOTE]
+> Do not add more than two worker nodes to the OpenShift Container Platform cluster. For a cluster with an arbiter, the same networking requirements as a regular cluster for connectivity between machines apply.
 
-Do not add more than two worker nodes to the OpenShift Container Platform cluster. For a cluster with an arbiter, the same networking requirements as a regular cluster for connectivity between machines apply.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -19,3 +24,5 @@ Do not add more than two worker nodes to the OpenShift Container Platform cluste
 - [About a local arbiter node](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_preparing-to-install-with-agent-based-installer)
 
 - [Configuring a local arbiter node with user-provisioned infrastructure](../installing_bare_metal/upi/installing-bare-metal.xml#upi-install-config-local-arbiter-node_installing-bare-metal)
+
+</div>

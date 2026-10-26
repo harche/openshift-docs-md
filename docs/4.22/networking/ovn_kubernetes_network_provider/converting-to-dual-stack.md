@@ -1,12 +1,19 @@
 To enable IPv4 and IPv6 on your cluster network in OpenShift Container Platform, you can convert a single-stack cluster to dual-stack networking. After conversion, new and existing pods can use both address families when you re-create workloads as needed.
 
-<div class="important">
+> [!IMPORTANT]
+> When using dual-stack networking where IPv6 is required, you cannot use IPv4-mapped IPv6 addresses, such as `::FFFF:198.51.100.1`.
 
-When using dual-stack networking where IPv6 is required, you cannot use IPv4-mapped IPv6 addresses, such as `::FFFF:198.51.100.1`.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
+
+</div>
 
 # Convert to a dual-stack cluster network
 
@@ -14,39 +21,38 @@ To convert your cluster network from IPv4 single-stack to dual-stack in OpenShif
 
 As a cluster administrator, you can convert your single-stack cluster network to a dual-stack cluster network.
 
-<div class="important">
-
-After converting your cluster to use dual-stack networking, you must re-create any existing pods for them to receive IPv6 addresses, because only new pods are assigned IPv6 addresses.
-
-</div>
+> [!IMPORTANT]
+> After converting your cluster to use dual-stack networking, you must re-create any existing pods for them to receive IPv6 addresses, because only new pods are assigned IPv6 addresses.
 
 Converting a single-stack cluster network to a dual-stack cluster network consists of creating patches and applying them to the network and infrastructure of the cluster. You can convert to a dual-stack cluster network for a cluster that runs on either installer-provisioned infrastructure or user-provisioned infrastructure.
 
-<div class="note">
-
-Each patch operation that changes `clusterNetwork`, `serviceNetwork`, `apiServerInternalIPs`, and `ingressIP` objects triggers a restart of the cluster. Changing the `MachineNetworks` object does not cause a reboot of the cluster.
-
-</div>
+> [!NOTE]
+> Each patch operation that changes `clusterNetwork`, `serviceNetwork`, `apiServerInternalIPs`, and `ingressIP` objects triggers a restart of the cluster. Changing the `MachineNetworks` object does not cause a reboot of the cluster.
 
 On installer-provisioned infrastructure only, if you need to add IPv6 virtual IPs (VIPs) for API and Ingress services to an existing dual-stack-configured cluster, you need to patch only the infrastructure and not the network for the cluster.
 
-<div class="important">
+> [!IMPORTANT]
+> If you already upgraded your cluster to OpenShift Container Platform 4.16 or later and you need to convert the single-stack cluster network to a dual-stack cluster network, you must specify an existing IPv4 `machineNetwork` network configuration from the `install-config.yaml` file for API and Ingress services in the YAML configuration patch file. This configuration ensures that IPv4 traffic exists in the same network interface as the default gateway.
+>
+> The following example adds an IPv4 address block for the `machineNetwork` network:
+>
+> ``` yaml
+> - op: add
+>   path: /spec/platformSpec/baremetal/machineNetworks/-
+>   value: 192.168.1.0/24
+>   # ...
+> ```
+>
+> where:
+>
+> `/spec/platformSpec/baremetal/machineNetworks/-`
+> Specifies an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
 
-If you already upgraded your cluster to OpenShift Container Platform 4.16 or later and you need to convert the single-stack cluster network to a dual-stack cluster network, you must specify an existing IPv4 `machineNetwork` network configuration from the `install-config.yaml` file for API and Ingress services in the YAML configuration patch file. This configuration ensures that IPv4 traffic exists in the same network interface as the default gateway.
+<div>
 
-The following example adds an IPv4 address block for the `machineNetwork` network:
+<div class="title">
 
-``` yaml
-- op: add
-  path: /spec/platformSpec/baremetal/machineNetworks/-
-  value: 192.168.1.0/24
-  # ...
-```
-
-where:
-
-`/spec/platformSpec/baremetal/machineNetworks/-`
-Specifies an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
+Prerequisites
 
 </div>
 
@@ -59,6 +65,16 @@ Specifies an address block for the `machineNetwork` network where your machines 
 - The cluster nodes have IPv6 addresses.
 
 - You have configured an IPv6-enabled router based on your infrastructure.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To specify IPv6 address blocks for cluster and service networks, create a YAML configuration patch file that has a similar configuration to the following example:
 
@@ -90,15 +106,19 @@ Specifies an address block for the `machineNetwork` network where your machines 
 
     For `<file>`, specify the name of the YAML file you created.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` text
     network.config.openshift.io/cluster patched
     ```
+
+    </div>
 
 3.  On installer-provisioned infrastructure where you added IPv6 VIPs for API and Ingress services, complete the following steps:
 
@@ -133,9 +153,11 @@ Specifies an address block for the `machineNetwork` network where your machines 
 
         For `<file>`, specify the name of the YAML file you created.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -143,7 +165,17 @@ Specifies an address block for the `machineNetwork` network where your machines 
         infrastructure/cluster patched
         ```
 
-<!-- -->
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Show the cluster network configuration by entering the following command in your CLI:
 
@@ -153,9 +185,11 @@ Specifies an address block for the `machineNetwork` network where your machines 
 
 2.  Verify the successful installation of the patch on the network configuration by checking that the cluster network configuration recognizes the IPv6 address blocks that you specified in the YAML file.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -175,6 +209,8 @@ Specifies an address block for the `machineNetwork` network where your machines 
     # ...
     ```
 
+    </div>
+
 3.  Complete the following additional tasks for a cluster that runs on installer-provisioned infrastructure:
 
     1.  Show the cluster infrastructure configuration by entering the following command in your CLI:
@@ -185,9 +221,11 @@ Specifies an address block for the `machineNetwork` network where your machines 
 
     2.  Verify the successful installation of the patch on the cluster infrastructure by checking that the infrastructure recognizes the IPv6 address blocks that you specified in the YAML file.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -218,13 +256,22 @@ Specifies an address block for the `machineNetwork` network where your machines 
         # ...
         ```
 
+        </div>
+
+</div>
+
 # Convert to a single-stack cluster network
 
 To revert dual-stack networking in OpenShift Container Platform, you can edit the cluster network configuration and remove the IPv4 or IPv6 blocks you added during dual-stack conversion. You can convert back only to the same single-stack family you had before dual-stack (IPv4 or IPv6).
 
-<div class="important">
+> [!IMPORTANT]
+> If you originally converted your IPv4 single-stack cluster network to a dual-stack cluster, you can convert only back to the IPv4 single-stack cluster and not an IPv6 single-stack cluster network. The same restriction applies for converting back to an IPv6 single-stack cluster network.
 
-If you originally converted your IPv4 single-stack cluster network to a dual-stack cluster, you can convert only back to the IPv4 single-stack cluster and not an IPv6 single-stack cluster network. The same restriction applies for converting back to an IPv6 single-stack cluster network.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -238,6 +285,16 @@ If you originally converted your IPv4 single-stack cluster network to a dual-sta
 
 - You have enabled dual-stack networking.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Edit the `networks.config.openshift.io` custom resource (CR) by running the following command:
 
     ``` terminal
@@ -245,3 +302,5 @@ If you originally converted your IPv4 single-stack cluster network to a dual-sta
     ```
 
 2.  Remove the IPv4 or IPv6 configuration that you added to the `cidr` and the `hostPrefix` parameters from completing the "Converting to a dual-stack cluster network " procedure steps.
+
+</div>

@@ -4,11 +4,8 @@ Configure an LDAP identity provider so users can log in to OpenShift Container P
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
-<div class="note">
-
-OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 # About LDAP authentication
 
@@ -34,14 +31,14 @@ The configured `url` is an RFC 2255 URL, which specifies the LDAP host and searc
 
 For this URL:
 
-| URL component | Description                                                                                                                                                                                                                                                                                                                         |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ldap`        | For regular LDAP, use the string `ldap`. For secure LDAP (LDAPS), use `ldaps` instead.                                                                                                                                                                                                                                              |
-| `host:port`   | The name and port of the LDAP server. Defaults to `localhost:389` for LDAP and `localhost:636` for LDAPS.                                                                                                                                                                                                                           |
-| `basedn`      | The DN of the branch of the directory where all searches should start from. At the very least, this must be the top of your directory tree, but it could also specify a subtree in the directory.                                                                                                                                   |
-| `attribute`   | The attribute to search for. Although RFC 2255 allows a comma-separated list of attributes, only the first attribute is used, no matter how many are provided. If no attributes are provided, the default is to use `uid`. It is recommended to choose an attribute that is unique across all entries in the subtree you are using. |
-| `scope`       | The scope of the search. Can be either `one` or `sub`. If the scope is not provided, the default is to use a scope of `sub`.                                                                                                                                                                                                        |
-| `filter`      | A valid LDAP search filter. If not provided, defaults to `(objectClass=*)`                                                                                                                                                                                                                                                          |
+| URL component | Description |
+|----|----|
+| `ldap` | For regular LDAP, use the string `ldap`. For secure LDAP (LDAPS), use `ldaps` instead. |
+| `host:port` | The name and port of the LDAP server. Defaults to `localhost:389` for LDAP and `localhost:636` for LDAPS. |
+| `basedn` | The DN of the branch of the directory where all searches should start from. At the very least, this must be the top of your directory tree, but it could also specify a subtree in the directory. |
+| `attribute` | The attribute to search for. Although RFC 2255 allows a comma-separated list of attributes, only the first attribute is used, no matter how many are provided. If no attributes are provided, the default is to use `uid`. It is recommended to choose an attribute that is unique across all entries in the subtree you are using. |
+| `scope` | The scope of the search. Can be either `one` or `sub`. If the scope is not provided, the default is to use a scope of `sub`. |
+| `filter` | A valid LDAP search filter. If not provided, defaults to `(objectClass=*)` |
 
 During a search, the attribute and filter from the configured `url` are combined with the user-provided username to create a search filter in the following format:
 
@@ -58,6 +55,14 @@ If the LDAP directory requires authentication to search, specify a `bindDN` and 
 # Create the LDAP secret
 
 Create a secret that contains the LDAP bind password in the `openshift-config` namespace so the identity provider can authenticate to the directory.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a `Secret` object that contains the `bindPassword` field by running the following command:
 
@@ -83,9 +88,19 @@ Create a secret that contains the LDAP bind password in the `openshift-config` n
     bindPassword: <base64_encoded_bind_password>
   ```
 
+</div>
+
 # Create a ConfigMap
 
 Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Define an OpenShift Container Platform `ConfigMap` object containing the CA by running the following command:
 
@@ -107,6 +122,8 @@ Create a `ConfigMap` object in the `openshift-config` namespace that contains th
     ```
 
     The CA must be stored in the `ca.crt` key of the `ConfigMap` object.
+
+</div>
 
 # Sample LDAP custom resource
 
@@ -176,17 +193,32 @@ Specifies whether a TLS connection is made to the server. When `true`, no TLS co
 `spec.identityProviders.ldap.url`
 Specifies an RFC 2255 URL for the LDAP host and search parameters to use.
 
-<div class="note">
+> [!NOTE]
+> To allowlist users for an LDAP integration, use the `lookup` mapping method. Before a login from LDAP is allowed, a cluster administrator must create an `Identity` object and a `User` object for each LDAP user.
 
-To allowlist users for an LDAP integration, use the `lookup` mapping method. Before a login from LDAP is allowed, a cluster administrator must create an `Identity` object and a `User` object for each LDAP user.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
+</div>
+
 # Add an identity provider to your cluster
 
 Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to a OpenShift Container Platform cluster.
 
@@ -194,17 +226,24 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
 
 - You are logged in as an administrator.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
     ```
 
-    <div class="note">
-
-    If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
-
-    </div>
+    > [!NOTE]
+    > If a CR does not exist, `oc apply` creates a new CR and might trigger the following warning: `Warning: oc apply should be used on resources created by either oc create --save-config or oc apply`. In this case you can safely ignore this warning.
 
 2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
 
@@ -217,3 +256,5 @@ Apply the identity provider custom resource (CR) to your cluster after you defin
     ``` terminal
     $ oc whoami
     ```
+
+</div>

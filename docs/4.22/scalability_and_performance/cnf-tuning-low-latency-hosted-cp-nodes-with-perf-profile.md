@@ -16,9 +16,27 @@ The PPC combines information about your cluster with user-supplied configuration
 
 The Performance Profile Creator (PPC) tool requires `must-gather` data. As a cluster administrator, run the `must-gather` command to capture information about your cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have `cluster-admin` role access to the management cluster.
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the management cluster `kubeconfig` file by running the following command:
 
@@ -32,9 +50,11 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
     $ oc --kubeconfig="$MGMT_KUBECONFIG" get np -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -42,6 +62,8 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
     NAMESPACE   NAME                     CLUSTER       DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
     clusters    democluster-us-east-1a   democluster   1               1               False         False        4.17.0    False             True
     ```
+
+    </div>
 
     - The output shows the namespace `clusters` in the management cluster where the `NodePool` resource is defined.
 
@@ -55,9 +77,11 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
     $ oc get secrets -n clusters
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -72,21 +96,27 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
     deployer-dockercfg-8lfpd          kubernetes.io/dockercfg   1      128m
     ```
 
+    </div>
+
 4.  Extract the `kubeconfig` file for the hosted cluster by running the following command:
 
     ``` terminal
     $ oc get secret <secret_name> -n <cluster_namespace> -o jsonpath='{.data.kubeconfig}' | base64 -d > hosted-cluster-kubeconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
     ``` terminal
     $ oc get secret democluster-admin-kubeconfig -n clusters -o jsonpath='{.data.kubeconfig}' | base64 -d > hosted-cluster-kubeconfig
     ```
+
+    </div>
 
 5.  To create a `must-gather` bundle for the hosted cluster, open a separate terminal window and run the following commands:
 
@@ -96,15 +126,19 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
         $ export HC_KUBECONFIG=<path_to_hosted_cluster_kubeconfig>
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example**
+        <div class="title">
+
+        Example
 
         </div>
 
         ``` terminal
         $ export HC_KUBECONFIG=~/hostedcpkube/hosted-cluster-kubeconfig
         ```
+
+        </div>
 
     2.  Navigate to the directory where you want to store the `must-gather` data.
 
@@ -120,7 +154,19 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
         $ tar -czvf must-gather.tar.gz must-gather.local.1203869488012141147
         ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
+
+</div>
 
 ## Run the Performance Profile Creator on a hosted cluster using Podman
 
@@ -136,9 +182,14 @@ The PPC tool is designed to be hosted-cluster aware. When it detects a hosted cl
 
 - Does not require you to specify the `node-pool-name` value explicitly unless you want to target a specific pool.
 
-<div class="important">
+> [!IMPORTANT]
+> The PPC uses the `must-gather` data from your hosted cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
 
-The PPC uses the `must-gather` data from your hosted cluster to create the performance profile. If you make any changes to your cluster, such as relabeling a node targeted for performance configuration, you must re-create the `must-gather` data before running PPC again.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -151,6 +202,16 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
 - Access to the Node Tuning Operator image.
 
 - Access to the `must-gather` data for your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On the hosted cluster, use Podman to authenticate to `registry.redhat.io` by running the following command:
 
@@ -203,9 +264,11 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
     `offlined-cpu-count=1`
     Specifies one offlined CPU.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -219,13 +282,15 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
     level=info msg="Additional Kernel Args based on configuration: []
     ```
 
+    </div>
+
 3.  Review the created YAML file by running the following command:
 
     ``` terminal
     $ cat my-hosted-cp-performance-profile
     ```
 
-<!-- -->
+</div>
 
     ---
     apiVersion: v1
@@ -259,13 +324,31 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
       name: performance
       namespace: clusters
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Performance Profile Creator arguments](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#performance-profile-creator-arguments_cnf-tuning-low-latency-nodes-with-perf-profile)
+
+</div>
 
 ## Configure low-latency tuning in a hosted cluster
 
 To set low latency with the performance profile on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure low-latency tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
 
 The tuned object in this case is a `PerformanceProfile` object that defines the performance profile you want to apply to the nodes in a node pool.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Export the management cluster `kubeconfig` file by running the following command:
 
@@ -316,13 +399,18 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
       management:
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > You can reference the same profile in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the `Tuned` custom resources to distinguish them. After you make the changes, the system detects that a configuration change is required and starts a rolling update of the nodes in that pool to apply the new configuration.
 
-    You can reference the same profile in multiple node pools. In hosted control planes, the Node Tuning Operator appends a hash of the node pool name and namespace to the name of the `Tuned` custom resources to distinguish them. After you make the changes, the system detects that a configuration change is required and starts a rolling update of the nodes in that pool to apply the new configuration.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  List all node pools across all namespaces by running the following command:
 
@@ -330,9 +418,11 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     $ oc --kubeconfig="$MGMT_KUBECONFIG" get np -A
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -341,11 +431,10 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     clusters    democluster-us-east-1a   democluster   1               1               False         False        4.17.0    False             True
     ```
 
-    <div class="note">
-
-    The `UPDATINGCONFIG` field indicates whether the node pool is in the process of updating its configuration. During this update, the `UPDATINGCONFIG` field in the node pool’s status becomes `True`. The new configuration is considered fully applied only when the `UPDATINGCONFIG` field returns to `False`.
-
     </div>
+
+    > [!NOTE]
+    > The `UPDATINGCONFIG` field indicates whether the node pool is in the process of updating its configuration. During this update, the `UPDATINGCONFIG` field in the node pool’s status becomes `True`. The new configuration is considered fully applied only when the `UPDATINGCONFIG` field returns to `False`.
 
 2.  List all config maps in the `clusters-democluster` namespace by running the following command:
 
@@ -353,9 +442,11 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     $ oc --kubeconfig="$MGMT_KUBECONFIG" get cm -n clusters-democluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -375,6 +466,8 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     tuned-performance-democluster-us-east-1a             1      22m
     ```
 
+    </div>
+
     The output shows a kubeletconfig `kubeletconfig-performance-democluster-us-east-1a` and a performance profile `performance-democluster-us-east-1a` has been created. The Node Tuning Operator syncs the `Tuned` objects into the hosted cluster. You can verify which `Tuned` objects are defined and which profiles are applied to each node.
 
 3.  List available secrets on the management cluster by running the following command:
@@ -383,9 +476,11 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     $ oc get secrets -n clusters
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -400,21 +495,27 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     deployer-dockercfg-8lfpd          kubernetes.io/dockercfg   1      128m
     ```
 
+    </div>
+
 4.  Extract the `kubeconfig` file for the hosted cluster by running the following command:
 
     ``` terminal
     $ oc get secret <secret_name> -n clusters -o jsonpath='{.data.kubeconfig}' | base64 -d > hosted-cluster-kubeconfig
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example**
+    <div class="title">
+
+    Example
 
     </div>
 
     ``` terminal
     $ oc get secret democluster-admin-kubeconfig -n clusters -o jsonpath='{.data.kubeconfig}' | base64 -d > hosted-cluster-kubeconfig
     ```
+
+    </div>
 
 5.  Export the hosted cluster kubeconfig by running the following command:
 
@@ -428,9 +529,11 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     $ oc --kubeconfig="$HC_KUBECONFIG" get cm -n openshift-config-managed | grep kubelet
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -439,18 +542,26 @@ The tuned object in this case is a `PerformanceProfile` object that defines the 
     kubeletconfig-performance-democluster-us-east-1a        1   15m
     ```
 
+    </div>
+
 7.  Verify that the `single-numa-node` policy is set on the hosted cluster by running the following command:
 
     ``` terminal
     $ oc --kubeconfig="$HC_KUBECONFIG" get cm kubeletconfig-performance-democluster-us-east-1a -o yaml -n openshift-config-managed | grep single
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
         topologyManagerPolicy: single-numa-node
     ```
+
+    </div>
+
+</div>

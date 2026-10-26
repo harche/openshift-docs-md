@@ -1,24 +1,18 @@
 You can customize Operator installations to control namespace scope and manage deployment behavior including resource allocation, node placement, and pod scheduling.
 
-<div class="important">
-
-Configuring cluster extensions is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Configuring cluster extensions is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Extension configuration
 
 Configure the namespace an extension watches by using the `.spec.config` field in the `ClusterExtension` resource.
 
-<div class="important">
-
-OLM v1 configuration API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 configuration API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 Extensions watch all namespaces by default. Some Operators support only namespace-scoped watching based on OLM (Classic) install modes. Configure the `.spec.config.inline.watchNamespace` field to install these Operators.
 
@@ -30,9 +24,11 @@ The configuration API uses an opaque structure. The bundle validates the configu
 
 Currently, the `Inline` configuration type is the only supported type:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example inline configuration**
+<div class="title">
+
+Example inline configuration
 
 </div>
 
@@ -50,6 +46,8 @@ spec:
       watchNamespace: <watch_namespace>
 ```
 
+</div>
+
 where:
 
 `<installation_namespace>`
@@ -61,7 +59,17 @@ Specifies the configuration type. Currently, `Inline` is the only supported type
 `<watch_namespace>`
 Specifies the namespace where the extension watches for custom resources. The watch namespace can match or differ from the installation namespace, depending on the install modes supported by the bundle.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Operator groups](../../operators/understanding/olm/olm-understanding-operatorgroups.xml#olm-understanding-operatorgroups)
+
+</div>
 
 # Watch namespace configuration requirements
 
@@ -69,11 +77,8 @@ Avoid installation failures by using the correct `watchNamespace` value for the 
 
 OLM (Classic) `registry+v1` bundles declare the install modes they support. These install modes control whether `watchNamespace` configuration is required or optional, and what values are valid.
 
-<div class="note">
-
-OLM v1 does not support multi-tenancy. You cannot install the same extension more than once on a cluster. As a result, the `MultiNamespace` install mode is not supported.
-
-</div>
+> [!NOTE]
+> OLM v1 does not support multi-tenancy. You cannot install the same extension more than once on a cluster. As a result, the `MultiNamespace` install mode is not supported.
 
 `AllNamespaces`
 Watches resources across all namespaces in the cluster.
@@ -86,29 +91,44 @@ Watches resources in a single namespace that differs from the installation names
 
 Whether the `.spec.config.inline.watchNamespace` field is required depends on the install modes that the bundle supports.
 
-| Bundle install mode support                                                                             | watchNamespace field | Valid values                                                                      |
-|---------------------------------------------------------------------------------------------------------|----------------------|-----------------------------------------------------------------------------------|
-| `AllNamespaces` mode only                                                                               | Not applicable       | The `watchNamespace` field is not supported. Extensions watch all namespaces.     |
-| `OwnNamespace` mode only                                                                                | Required             | Must match `.spec.namespace` field                                                |
-| `SingleNamespace` mode only                                                                             | Required             | Must differ from `.spec.namespace` field                                          |
-| Both `OwnNamespace` and `SingleNamespace` install modes                                                 | Required             | Can match or differ from `.spec.namespace` field                                  |
-| `AllNamespaces` install mode with one or both of the `OwnNamespace` and `SingleNamespace` install modes | Optional             | Omit to watch all namespaces, or specify a namespace to watch only that namespace |
+| Bundle install mode support | watchNamespace field | Valid values |
+|----|----|----|
+| `AllNamespaces` mode only | Not applicable | The `watchNamespace` field is not supported. Extensions watch all namespaces. |
+| `OwnNamespace` mode only | Required | Must match `.spec.namespace` field |
+| `SingleNamespace` mode only | Required | Must differ from `.spec.namespace` field |
+| Both `OwnNamespace` and `SingleNamespace` install modes | Required | Can match or differ from `.spec.namespace` field |
+| `AllNamespaces` install mode with one or both of the `OwnNamespace` and `SingleNamespace` install modes | Optional | Omit to watch all namespaces, or specify a namespace to watch only that namespace |
 
 Watch namespace requirements by bundle capability
 
-<div class="important">
-
-OLM v1 validates the `watchNamespace` value based on the install mode support that is declared by the bundle. The installation fails with a validation error if you specify an invalid value or omit a required field.
-
-</div>
+> [!IMPORTANT]
+> OLM v1 validates the `watchNamespace` value based on the install mode support that is declared by the bundle. The installation fails with a validation error if you specify an invalid value or omit a required field.
 
 # Discovering bundle install modes
 
 You can render the bundle metadata to find which install modes a bundle supports.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed the `jq` CLI tool.
 
 - You have installed the `opm` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Render the bundle metadata by running the following command:
 
@@ -117,9 +137,11 @@ You can render the bundle metadata to find which install modes a bundle supports
       jq 'select(.schema == "olm.bundle") | .properties[] | select(.type == "olm.bundle.object")'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -133,15 +155,19 @@ You can render the bundle metadata to find which install modes a bundle supports
     }
     ```
 
+    </div>
+
 2.  Decode the base64-encoded CSV data to view install mode declarations:
 
     ``` terminal
     $ echo "<base64_data>" | base64 -d | jq '.spec.installModes'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -166,17 +192,26 @@ You can render the bundle metadata to find which install modes a bundle supports
     ]
     ```
 
+    </div>
+
     In this example, the bundle supports both `OwnNamespace` and `SingleNamespace` modes. The `.spec.config.inline.watchNamespace` field is required and can match or differ from the `.spec.namespace` field.
+
+</div>
 
 # Configure a watch namespace for a cluster extension (Technology Preview)
 
 You can configure the watch namespace for extensions that support namespace-scoped resource watching.
 
-<div class="important">
+> [!IMPORTANT]
+> Configuring watch namespace for a cluster extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Configuring watch namespace for a cluster extension is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -184,9 +219,19 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - You have enabled the `TechPreviewNoUpgrade` feature set on the cluster.
 
-- You have created a service account and assigned enough role-based access controls (RBAC) to install, update, and manage the extension. For more information, see "Cluster extension permissions".
+- You have created the installation namespace.
 
 - You have verified the supported install modes for the extension and determined the required `watchNamespace` configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a custom resource (CR) based on where you want the extension to watch for resources:
 
@@ -203,8 +248,6 @@ For more information about the support scope of Red Hat Technology Preview featu
           configType: Inline
           inline:
             watchNamespace: <installation_namespace>
-        serviceAccount:
-          name: <service_account>
         source:
           sourceType: Catalog
           catalog:
@@ -231,8 +274,6 @@ For more information about the support scope of Red Hat Technology Preview featu
           configType: Inline
           inline:
             watchNamespace: <watched_namespace>
-        serviceAccount:
-          name: <service_account>
         source:
           sourceType: Catalog
           catalog:
@@ -247,15 +288,27 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc apply -f <cluster_extension_cr>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the extension installed successfully by running the following command:
 
   ``` terminal
   $ oc get clusterextension <extension_name> -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -277,13 +330,19 @@ For more information about the support scope of Red Hat Technology Preview featu
       reason: Succeeded
   ```
 
+  </div>
+
+</div>
+
 ## Watch namespace configuration examples
 
 To configure the `watchNamespace` field correctly for your bundle’s install mode, see the following examples. These show valid configurations for Operators that support the `AllNamespaces`, `OwnNamespace`, and `SingleNamespace` install modes.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `AllNamespaces` install mode**
+<div class="title">
+
+Example `AllNamespaces` install mode
 
 </div>
 
@@ -294,19 +353,21 @@ metadata:
   name: example-extension
 spec:
   namespace: openshift-operators
-  serviceAccount:
-    name: example-sa
   source:
     sourceType: Catalog
     catalog:
       packageName: example-operator
 ```
 
+</div>
+
 - The `config` field is omitted. The extension watches all namespaces by default.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `OwnNamespace` install mode**
+<div class="title">
+
+Example `OwnNamespace` install mode
 
 </div>
 
@@ -321,21 +382,23 @@ spec:
     configType: Inline
     inline:
       watchNamespace: example-operators
-  serviceAccount:
-    name: example-sa
   source:
     sourceType: Catalog
     catalog:
       packageName: example-operator
 ```
 
+</div>
+
 - You must set the `watchNamespace` field to use the `OwnNamespace` install mode.
 
 - The `watchNamespace` value must match the `spec.namespace` field value.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `SingleNamespace` install mode**
+<div class="title">
+
+Example `SingleNamespace` install mode
 
 </div>
 
@@ -350,13 +413,13 @@ spec:
     configType: Inline
     inline:
       watchNamespace: production
-  serviceAccount:
-    name: example-sa
   source:
     sourceType: Catalog
     catalog:
       packageName: example-operator
 ```
+
+</div>
 
 - You must set the `watchNamespace` field to use the `SingleNamespace` install mode.
 
@@ -368,12 +431,12 @@ spec:
 
 Validation errors occur when the `watchNamespace` field is omitted or contains an invalid value for the install modes supported by the bundle.
 
-| Error                              | Cause                                                                                                                   | Resolution                                                                                                      |
-|------------------------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| Required field missing             | The bundle requires the `watchNamespace` field but it is omitted.                                                       | Add the `watchNamespace` field with a value that matches the install modes supported by the bundle.             |
-| `OwnNamespace` validation error    | The bundle only supports `OwnNamespace` mode but the `watchNamespace` value does not match the `.spec.namespace` field. | Set the `watchNamespace` field to the same value as the `.spec.namespace` field.                                |
-| `SingleNamespace` validation error | The bundle only supports `SingleNamespace` mode but the `watchNamespace` value matches the `.spec.namespace` field.     | Set the `watchNamespace` field to a different namespace than the `.spec.namespace` field.                       |
-| Invalid configuration              | The `.spec.config` structure is malformed or has unsupported fields.                                                    | Verify the configuration follows the correct API structure with `configType: Inline` and valid `inline` fields. |
+| Error | Cause | Resolution |
+|----|----|----|
+| Required field missing | The bundle requires the `watchNamespace` field but it is omitted. | Add the `watchNamespace` field with a value that matches the install modes supported by the bundle. |
+| `OwnNamespace` validation error | The bundle only supports `OwnNamespace` mode but the `watchNamespace` value does not match the `.spec.namespace` field. | Set the `watchNamespace` field to the same value as the `.spec.namespace` field. |
+| `SingleNamespace` validation error | The bundle only supports `SingleNamespace` mode but the `watchNamespace` value matches the `.spec.namespace` field. | Set the `watchNamespace` field to a different namespace than the `.spec.namespace` field. |
+| Invalid configuration | The `.spec.config` structure is malformed or has unsupported fields. | Verify the configuration follows the correct API structure with `configType: Inline` and valid `inline` fields. |
 
 Common `watchNamespace` field validation errors
 
@@ -381,13 +444,10 @@ Common `watchNamespace` field validation errors
 
 The `deploymentConfig` API controls Operator pod runtime settings such as resources, node placement, and environment variables, providing feature parity with OLM (Classic) Subscription configuration.
 
-<div class="important">
-
-OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 Provides feature parity with the `Subscription.spec.config` configuration of the OLM (Classic). Configure resources, node placement, storage, environment variables, and other deployment settings.
 
@@ -395,9 +455,11 @@ Provides feature parity with the `Subscription.spec.config` configuration of the
 
 Configure how the Operator deploys in the `spec.config.inline.deploymentConfig` field as a JSON object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example `deploymentConfig` object**
+<div class="title">
+
+Example `deploymentConfig` object
 
 </div>
 
@@ -408,8 +470,6 @@ metadata:
   name: <extension_name>
 spec:
   namespace: <installation_namespace>
-  serviceAccount:
-    name: <service_account_name>
   source:
     sourceType: Catalog
     catalog:
@@ -433,10 +493,9 @@ spec:
           effect: NoSchedule
 ```
 
-where:
+</div>
 
-`serviceAccount:`
-Specifies the service account name for the Operator.
+where:
 
 `source:`
 Specifies the package source configuration.
@@ -491,25 +550,21 @@ Invalid configurations prevent installation and report errors in the `ClusterExt
 
 - Required field errors when mandatory nested fields are missing
 
-<div class="note">
-
-OLM v1 applies configurations during the `ClusterObjectSet` deployment process, modifying Operator manifests before organizing them into phases.
-
-</div>
+> [!NOTE]
+> OLM v1 applies configurations during the `ClusterObjectSet` deployment process, modifying Operator manifests before organizing them into phases.
 
 ## Converting from OLM (Classic)
 
 Transfer existing `Subscription.spec.config` settings to the `deploymentConfig` object. The YAML structure is the same, but some merge behaviors differ from OLM (Classic).
 
-<div class="note">
+> [!NOTE]
+> `volumes` and `volumeMounts` with the same name override existing entries in OLM v1 rather than appending as in OLM (Classic).
 
-`volumes` and `volumeMounts` with the same name override existing entries in OLM v1 rather than appending as in OLM (Classic).
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example OLM (Classic) subscription configuration**
+Example OLM (Classic) subscription configuration
 
 </div>
 
@@ -530,9 +585,13 @@ spec:
       effect: NoSchedule
 ```
 
-<div class="formalpara-title">
+</div>
 
-**Equivalent OLM v1 cluster extension configuration**
+<div class="formalpara">
+
+<div class="title">
+
+Equivalent OLM v1 cluster extension configuration
 
 </div>
 
@@ -543,8 +602,6 @@ metadata:
   name: my-operator
 spec:
   namespace: my-operator-ns
-  serviceAccount:
-    name: my-operator-sa
   config:
     configType: Inline
     inline:
@@ -561,17 +618,16 @@ spec:
       packageName: my-operator
 ```
 
+</div>
+
 # ClusterObjectSets deployment mechanism
 
 `ClusterObjectSets` deploy cluster extensions through ordered phases, enabling safe upgrades by maintaining both old and new revisions until the new version succeeds.
 
-<div class="important">
-
-OLM v1 ClusterObjectSets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 ClusterObjectSets is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 `ClusterObjectSets` are cluster-scoped APIs representing versioned resource sets organized into ordered phases. OLM v1 uses `ClusterObjectSets` to deploy Operator resources sequentially.
 
@@ -597,11 +653,8 @@ OLM v1 applies `deploymentConfig` settings during the `ClusterObjectSet` process
 
 Phases are system-determined groups that organize resources into ordered deployment stages based on their API group and kind. Objects are automatically assigned to well-known phases.
 
-<div class="note">
-
-All objects within a phase are applied in no particular order. The next phase begins only after all objects in the current phase pass their readiness probes.
-
-</div>
+> [!NOTE]
+> All objects within a phase are applied in no particular order. The next phase begins only after all objects in the current phase pass their readiness probes.
 
 The system assigns resources to the following phases in order:
 
@@ -648,6 +701,14 @@ The system assigns resources to the following phases in order:
 
 Monitor and troubleshoot cluster extension deployments by viewing ClusterObjectSet phases, resource status, and revision history.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  List all `ClusterObjectSets` in the cluster by entering the following command:
 
     ``` terminal
@@ -678,15 +739,22 @@ Monitor and troubleshoot cluster extension deployments by viewing ClusterObjectS
 
     Shows the active revisions currently deployed.
 
+</div>
+
 # Customize operator deployments
 
 Customize Operator pod deployments to meet production requirements by configuring resource allocation, node placement, and pod tolerations through the `ClusterExtension` resource.
 
-<div class="important">
+> [!IMPORTANT]
+> OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -694,11 +762,21 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - You have enabled the `TechPreviewNoUpgrade` feature set on the cluster.
 
-- You have created a service account and assigned enough role-based access controls (RBAC) to install, update, and manage the extension. For more information, see "Cluster extension permissions".
+- You have created the installation namespace.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have identified the operator you want to install and customize.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `ClusterExtension` resource with `deploymentConfig` customizations:
 
@@ -709,8 +787,6 @@ For more information about the support scope of Red Hat Technology Preview featu
       name: my-operator
     spec:
       namespace: my-operator-ns
-      serviceAccount:
-        name: my-operator-installer
       config:
         configType: Inline
         inline:
@@ -758,6 +834,16 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc get clusterextension my-operator -o yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `deploymentConfig` settings were applied:
 
   ``` terminal
@@ -766,25 +852,26 @@ For more information about the support scope of Red Hat Technology Preview featu
 
   Check the deployment specification for your configured settings such as resource limits, node selectors, tolerations, and volumes.
 
+</div>
+
 # `deploymentConfig` examples
 
 Customize Operator deployments using resource limits, node placement, custom volumes, environment variables, and combined configurations.
 
-<div class="important">
-
-OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Environment variables
 
 Add environment variables for runtime configuration.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Adding environment variables**
+<div class="title">
+
+Adding environment variables
 
 </div>
 
@@ -795,8 +882,6 @@ metadata:
   name: kmm-operator
 spec:
   namespace: openshift-kmm
-  serviceAccount:
-    name: kmm-operator-sa
   config:
     configType: Inline
     inline:
@@ -810,6 +895,8 @@ spec:
       packageName: kernel-module-management
 ```
 
+</div>
+
 where:
 
 `KMM_MANAGED`
@@ -819,9 +906,11 @@ Specifies the environment variable used when deploying the Kernel Module Managem
 
 Mount a custom CA certificate for HTTPS communication through a proxy.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Mounting a custom CA certificate**
+<div class="title">
+
+Mounting a custom CA certificate
 
 </div>
 
@@ -832,8 +921,6 @@ metadata:
   name: my-operator
 spec:
   namespace: my-operator-ns
-  serviceAccount:
-    name: my-operator-sa
   config:
     configType: Inline
     inline:
@@ -855,6 +942,8 @@ spec:
       packageName: my-operator
 ```
 
+</div>
+
 where:
 
 `volumes:`
@@ -870,9 +959,11 @@ Specifies the path where the certificate bundle is available inside the containe
 
 Spread Operator pods across nodes for high availability.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Pod anti-affinity for high availability**
+<div class="title">
+
+Pod anti-affinity for high availability
 
 </div>
 
@@ -883,8 +974,6 @@ metadata:
   name: my-operator
 spec:
   namespace: my-operator-ns
-  serviceAccount:
-    name: my-operator-sa
   config:
     configType: Inline
     inline:
@@ -907,6 +996,8 @@ spec:
       packageName: my-operator
 ```
 
+</div>
+
 where:
 
 `podAntiAffinity:`
@@ -922,9 +1013,11 @@ Specifies the topology key that groups nodes by hostname to ensure pods are spre
 
 Combine multiple deployment customizations.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Production Operator with combined customizations**
+<div class="title">
+
+Production Operator with combined customizations
 
 </div>
 
@@ -935,8 +1028,6 @@ metadata:
   name: production-operator
 spec:
   namespace: production-operators
-  serviceAccount:
-    name: production-operator-installer
   config:
     configType: Inline
     inline:
@@ -969,6 +1060,8 @@ spec:
       version: 2.1.0
 ```
 
+</div>
+
 where:
 
 `resources:`
@@ -990,30 +1083,27 @@ Specifies Prometheus monitoring annotations for the pod.
 
 Field reference for the `deploymentConfig` API including OLM (Classic) to OLM v1 field mappings and merge behavior for each configuration option.
 
-<div class="important">
-
-OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Field mapping from OLM (Classic) to OLM v1
 
 Field conversion from OLM (Classic) to OLM v1:
 
-| OLM (Classic) field path   | OLM v1 field path                                  | Notes                                                                                                           |
-|----------------------------|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `spec.config.env`          | `spec.config.inline.deploymentConfig.env`          | Environment variables are merged. OLM v1 values take precedence over bundle values.                             |
-| `spec.config.envFrom`      | `spec.config.inline.deploymentConfig.envFrom`      | Environment variable sources are appended to bundle sources. Duplicates are skipped.                            |
-| `spec.config.resources`    | `spec.config.inline.deploymentConfig.resources`    | Resource specifications completely replace bundle resource requirements.                                        |
-| `spec.config.nodeSelector` | `spec.config.inline.deploymentConfig.nodeSelector` | Node selectors completely replace bundle node selectors.                                                        |
-| `spec.config.tolerations`  | `spec.config.inline.deploymentConfig.tolerations`  | Tolerations are appended to bundle tolerations.                                                                 |
-| `spec.config.affinity`     | `spec.config.inline.deploymentConfig.affinity`     | Affinity rules selectively override bundle affinity. Non-nil fields replace corresponding bundle fields.        |
-| `spec.config.volumes`      | `spec.config.inline.deploymentConfig.volumes`      | Volumes override existing bundle volumes with the same name; new volumes are appended.                          |
-| `spec.config.volumeMounts` | `spec.config.inline.deploymentConfig.volumeMounts` | Volume mounts override existing bundle volume mounts with the same name; new mounts are appended.               |
-| `spec.config.annotations`  | `spec.config.inline.deploymentConfig.annotations`  | Annotations are merged with bundle annotations. Bundle annotations take precedence on conflicts.                |
-| `spec.config.selector`     | Not supported                                      | The `selector` field from OLM (Classic) is not supported in OLM v1. This field was never used in OLM (Classic). |
+| OLM (Classic) field path | OLM v1 field path | Notes |
+|----|----|----|
+| `spec.config.env` | `spec.config.inline.deploymentConfig.env` | Environment variables are merged. OLM v1 values take precedence over bundle values. |
+| `spec.config.envFrom` | `spec.config.inline.deploymentConfig.envFrom` | Environment variable sources are appended to bundle sources. Duplicates are skipped. |
+| `spec.config.resources` | `spec.config.inline.deploymentConfig.resources` | Resource specifications completely replace bundle resource requirements. |
+| `spec.config.nodeSelector` | `spec.config.inline.deploymentConfig.nodeSelector` | Node selectors completely replace bundle node selectors. |
+| `spec.config.tolerations` | `spec.config.inline.deploymentConfig.tolerations` | Tolerations are appended to bundle tolerations. |
+| `spec.config.affinity` | `spec.config.inline.deploymentConfig.affinity` | Affinity rules selectively override bundle affinity. Non-nil fields replace corresponding bundle fields. |
+| `spec.config.volumes` | `spec.config.inline.deploymentConfig.volumes` | Volumes override existing bundle volumes with the same name; new volumes are appended. |
+| `spec.config.volumeMounts` | `spec.config.inline.deploymentConfig.volumeMounts` | Volume mounts override existing bundle volume mounts with the same name; new mounts are appended. |
+| `spec.config.annotations` | `spec.config.inline.deploymentConfig.annotations` | Annotations are merged with bundle annotations. Bundle annotations take precedence on conflicts. |
+| `spec.config.selector` | Not supported | The `selector` field from OLM (Classic) is not supported in OLM v1. This field was never used in OLM (Classic). |
 
 OLM (Classic) to OLM v1 configuration field mapping
 
@@ -1079,9 +1169,11 @@ Specifies compute resource requirements that completely replace existing bundle 
 `nodeSelector`
 Specifies a map of key-value pairs for node selection. Completely replaces any existing node selector. Pods schedule only on nodes with all specified labels.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example node selector**
+<div class="title">
+
+Example node selector
 
 </div>
 
@@ -1090,6 +1182,8 @@ nodeSelector:
   node-role.kubernetes.io/infra: ""
   disktype: ssd
 ```
+
+</div>
 
 `tolerations`
 Specifies an array of toleration objects appended to existing bundle tolerations. Each toleration has:
@@ -1134,9 +1228,11 @@ Specifies an array of volume mount objects. Volume mounts with the same name as 
 `annotations`
 Specifies a map of key-value pairs for deployment and pod annotations. Annotations are applied to both the deployment metadata and the pod template metadata. Annotations from `deploymentConfig` are merged with bundle annotations. When keys conflict, bundle annotations take precedence.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example annotations**
+<div class="title">
+
+Example annotations
 
 </div>
 
@@ -1146,17 +1242,16 @@ annotations:
   monitoring.openshift.io/port: "8080"
 ```
 
+</div>
+
 # Troubleshoot `deploymentConfig`
 
 Common `deploymentConfig` issues include validation errors, configuration verification problems, and annotation conflicts that can prevent successful Operator installation.
 
-<div class="important">
-
-OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> OLM v1 `deploymentConfig` API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Validation errors
 

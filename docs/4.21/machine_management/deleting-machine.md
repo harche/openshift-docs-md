@@ -1,12 +1,17 @@
 If you need to remove a machine from your cluster, you can delete a specific machine. If the machine is part of a machine set, deleting the machine can help troubleshoot and resolve unhealthy nodes and other technical issues.
 
-# Deleting a specific machine
+# Delete a specific machine
 
 To remove a machine from your cluster, or restart a machine that is part of a machine set, you can use the OpenShift CLI (`oc`) to delete a specific machine.
 
-<div class="important">
+> [!IMPORTANT]
+> Do not delete a control plane machine unless your cluster uses a control plane machine set. If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
 
-Do not delete a control plane machine unless your cluster uses a control plane machine set. If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ Do not delete a control plane machine unless your cluster uses a control plane m
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  View the machines that are in the cluster by running the following command:
 
@@ -34,13 +49,12 @@ Do not delete a control plane machine unless your cluster uses a control plane m
 
     Replace `<machine>` with the name of the machine.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
+    >
+    > You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
 
-    By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
-
-    You can skip draining the node by annotating `machine.openshift.io/exclude-node-draining` in a specific machine.
-
-    </div>
+</div>
 
 # Lifecycle hooks for the machine deletion phase
 
@@ -139,9 +153,11 @@ The machine `Deleting` phase proceeds in the following order:
 
 The following YAML snippets demonstrate the format and placement of deletion lifecycle hook configurations within a machine set:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**YAML snippet demonstrating a `preDrain` lifecycle hook**
+<div class="title">
+
+YAML snippet demonstrating a `preDrain` lifecycle hook
 
 </div>
 
@@ -158,6 +174,8 @@ spec:
   ...
 ```
 
+</div>
+
 where:
 
 `<hook_name>`
@@ -166,9 +184,11 @@ Specifies the name of the `preDrain` lifecycle hook.
 `<hook_owner>`
 Specifies the hook-implementing controller that manages the `preDrain` lifecycle hook.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**YAML snippet demonstrating a `preTerminate` lifecycle hook**
+<div class="title">
+
+YAML snippet demonstrating a `preTerminate` lifecycle hook
 
 </div>
 
@@ -185,6 +205,8 @@ spec:
   ...
 ```
 
+</div>
+
 where:
 
 `<hook_name>`
@@ -197,9 +219,11 @@ Specifies the hook-implementing controller that manages the `preDrain` lifecycle
 
 The following example demonstrates the implementation of multiple fictional lifecycle hooks that interrupt the machine deletion process:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration for lifecycle hooks**
+<div class="title">
+
+Example configuration for lifecycle hooks
 
 </div>
 
@@ -222,6 +246,8 @@ spec:
       owner: my-custom-storage-detach-controller
   ...
 ```
+
+</div>
 
 where:
 
@@ -299,9 +325,11 @@ The control plane machine `Deleting` phase proceeds in the following order:
 
 9.  The machine controller deletes the `Node` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**YAML snippet demonstrating the etcd quorum protection `preDrain` lifecycle hook**
+<div class="title">
+
+YAML snippet demonstrating the etcd quorum protection `preDrain` lifecycle hook
 
 </div>
 
@@ -317,6 +345,8 @@ spec:
       owner: clusteroperator/etcd
   ...
 ```
+
+</div>
 
 where:
 

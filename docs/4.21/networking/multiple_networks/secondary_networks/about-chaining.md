@@ -40,9 +40,27 @@ The following example demonstrates plugin chaining by configuring a pod with two
 
 Each interface uses a chain of two plugins: `macvlan` to create the interface on a VLAN, and `route-override` to add static routes that direct specific traffic through that interface.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift CLI (`oc`).
 
 - An account with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for the example by running the following command:
 
@@ -196,7 +214,15 @@ Each interface uses a chain of two plugins: `macvlan` to create the interface on
     pod/chain-test-pod condition met
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Run the following command to list all network interfaces and their assigned IP addresses inside the pod. This verifies that the pod has the additional interfaces configured by plugin chaining:
 
@@ -269,3 +295,5 @@ Each interface uses a chain of two plugins: `macvlan` to create the interface on
     - For `172.16.0.0/12 via 192.168.200.1 dev eth2`, traffic destined for `172.16.0.0/12` is routed through `eth2` via the `sip-net` gateway. This route was added by the `route-override` plugin in the `sip-net` chain.
 
     - The connected subnet routes (`192.168.100.0/24` and `192.168.200.0/24`) were created by the `macvlan` plugin, while the default route uses `eth0`, the cluster network interface.
+
+</div>

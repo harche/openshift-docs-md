@@ -1,32 +1,67 @@
 Explore OpenShift Virtualization by taking guided tours, installing the Operator, and configuring a basic environment. Learn how to migrate from your current platform, then learn more about how to deploy and manage virtual machines (VMs) by following the additional resources links.
 
-<div class="note">
+> [!NOTE]
+> Cluster configuration procedures require `cluster-admin` privileges.
 
-Cluster configuration procedures require `cluster-admin` privileges.
-
-</div>
-
-# Getting started tour
+# Take the Getting started tour
 
 The **Getting started** tour introduces several key aspects of using OpenShift Virtualization. There are two ways to start the tour.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - If you see the **Welcome to OpenShift Virtualization** dialog, click **Start Tour**.
 
 - Otherwise, go to **Virtualization** → **Overview** → **Settings** → **User** → **Getting started resources** → **Guided tour**.
 
-# Quick start tours
+</div>
+
+# Take a quick start tour
 
 You can explore several OpenShift Virtualization capabilities by taking quick start tours in the web console.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click the **Help** icon **?** in the menu bar on the header of the OpenShift Container Platform web console.
 
 2.  Select **Quick Starts**. You can filter the list of tours by entering the keyword `virtual` in the **Filter** field.
+
+</div>
 
 # Additional resources
 

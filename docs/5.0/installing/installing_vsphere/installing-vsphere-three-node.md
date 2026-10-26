@@ -8,19 +8,36 @@ To configure a three-node cluster, set the number of worker nodes to `0` in the 
 
 Setting the number of worker nodes to `0` ensures that the control plane machines are schedulable. This allows application workloads to be scheduled to run from the control plane nodes.
 
-<div class="note">
+> [!NOTE]
+> Because application workloads run from control plane nodes, additional subscriptions are required, as the control plane nodes are considered to be compute nodes.
 
-Because application workloads run from control plane nodes, additional subscriptions are required, as the control plane nodes are considered to be compute nodes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have an existing `install-config.yaml` file.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Set the number of compute replicas to `0` in your `install-config.yaml` file, as shown in the following `compute` stanza:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `install-config.yaml` file for a three-node cluster**
+    <div class="title">
+
+    Example `install-config.yaml` file for a three-node cluster
 
     </div>
 
@@ -34,6 +51,8 @@ Because application workloads run from control plane nodes, additional subscript
     # ...
     ```
 
+    </div>
+
 2.  If you are deploying a cluster with user-provisioned infrastructure:
 
     - Configure your application ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes. In a three-node cluster, the Ingress Controller pods run on the control plane nodes. For more information, see the "Load balancing requirements for user-provisioned infrastructure".
@@ -42,9 +61,11 @@ Because application workloads run from control plane nodes, additional subscript
 
     - Do not create additional worker nodes.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `cluster-scheduler-02-config.yml` file for a three-node cluster**
+    <div class="title">
+
+    Example `cluster-scheduler-02-config.yml` file for a three-node cluster
 
     </div>
 
@@ -60,6 +81,10 @@ Because application workloads run from control plane nodes, additional subscript
         name: ""
     status: {}
     ```
+
+    </div>
+
+</div>
 
 # Additional resources
 

@@ -4,11 +4,29 @@ After installation, you can resolve and prevent performance issues of your Red 
 
 If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedicated ephemeral local disk.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an RHOSP cloud with a working Cinder.
 
 - Your RHOSP cloud has at least 75 GB of available storage to accommodate 3 root volumes for the OpenShift control plane.
 
 - The RHOSP cloud is deployed with Nova ephemeral storage that uses a local storage backend and not `rbd`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a Nova flavor for the control plane with at least 10 GB of ephemeral disk. Replace the values for `--ram`, `--disk`, and `<flavor_name>` based on your environment.
 
@@ -18,9 +36,11 @@ If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedi
 
 2.  Deploy a cluster with root volumes for the control plane; for example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example YAML file**
+    <div class="title">
+
+    Example YAML file
 
     </div>
 
@@ -38,6 +58,8 @@ If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedi
       replicas: 3
     # ...
     ```
+
+    </div>
 
 3.  Deploy the cluster you created by running the following command:
 
@@ -172,13 +194,10 @@ If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedi
     `[Service].ExecCondition=/bin/bash`
     Performs a quick check of the mount point directory before performing a full recursive relabel. If restorecon in the file path `/var/lib/etcd` cannot rename the directory, the recursive rename is not performed.
 
-    <div class="warning">
-
-    After you apply the `98-var-lib-etcd.yaml` file to the system, do not remove the file. Removing this file will break etcd members and lead to system instability.
-
-    If a rollback is necessary, modify the `ControlPlaneMachineSet` object to use a flavor that does not include ephemeral disks. This change regenerates the control plane nodes without using ephemeral disks for the etcd partition, which avoids issues related to the `98-var-lib-etcd.yaml` file. You can safely remove the `98-var-lib-etcd.yaml` file only after the update to the `ControlPlaneMachineSet` object is complete and no control plane nodes are using ephemeral disks.
-
-    </div>
+    > [!WARNING]
+    > After you apply the `98-var-lib-etcd.yaml` file to the system, do not remove the file. Removing this file will break etcd members and lead to system instability.
+    >
+    > If a rollback is necessary, modify the `ControlPlaneMachineSet` object to use a flavor that does not include ephemeral disks. This change regenerates the control plane nodes without using ephemeral disks for the etcd partition, which avoids issues related to the `98-var-lib-etcd.yaml` file. You can safely remove the `98-var-lib-etcd.yaml` file only after the update to the `ControlPlaneMachineSet` object is complete and no control plane nodes are using ephemeral disks.
 
 6.  Create the new `MachineConfig` object by running the following command:
 
@@ -186,11 +205,8 @@ If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedi
     $ oc create -f 98-var-lib-etcd.yaml
     ```
 
-    <div class="note">
-
-    Moving the etcd database onto the local disk of each control plane machine takes time.
-
-    </div>
+    > [!NOTE]
+    > Moving the etcd database onto the local disk of each control plane machine takes time.
 
 7.  Verify that the etcd databases has been transferred to the local disk of each control plane by running the following commands:
 
@@ -211,6 +227,8 @@ If you have an existing RHOSP cloud, you can move etcd from that cloud to a dedi
         ``` terminal
         $ oc wait clusteroperators --timeout=30m --all --for=condition=Progressing=false
         ```
+
+</div>
 
 # Additional resources
 

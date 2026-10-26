@@ -8,17 +8,14 @@ The **Observe** view in the **Developer** perspective enables you to monitor pro
 
 - The **Developer** perspective is enabled and you have switched to it.
 
-<div class="important">
-
-Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
-
-All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
-
-You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
-
-See also, "Enabling the **Developer** perspective in the web console".
-
-</div>
+> [!IMPORTANT]
+> Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
+>
+> All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
+>
+> You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
+>
+> See also, "Enabling the **Developer** perspective in the web console".
 
 # Enable the **Developer** perspective in the web console
 
@@ -28,7 +25,25 @@ Starting with OpenShift Container Platform 4.19, the perspectives in the web con
 
 You can enable the **Developer** perspective with the following steps:
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the web console as a user with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate to the **Cluster Settings** page by clicking <span class="menuchoice">Administration \> Cluster Settings</span>.
 
@@ -46,41 +61,42 @@ You can enable the **Developer** perspective with the following steps:
     $ oc patch console.operator.openshift.io/cluster --type='merge' -p '{"spec":{"customization":{"perspectives":[{"id":"dev","visibility":{"state":"Enabled"}}]}}}'
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > The change reflects in the web console after the console pod restarts successfully.
 
-    The change reflects in the web console after the console pod restarts successfully.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Locate the perspective switcher in the web console.
 
 2.  Verify that **Developer** is displayed as an available perspective option.
 
+</div>
+
 # Monitoring capabilities from the Developer perspective
 
 The **Observe** view in the **Developer** perspective shows monitoring tools filtered by your project access permissions to track performance, troubleshoot issues, and respond to alerts. You can monitor CPU, memory, bandwidth, and network metrics.
 
-<div class="important">
-
-Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
-
-All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
-
-You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
-
-See also, "Enabling the **Developer** perspective in the web console".
-
-</div>
+> [!IMPORTANT]
+> Starting with OpenShift Container Platform 4.19, the perspectives in the web console have unified. The **Developer** perspective is no longer enabled by default.
+>
+> All users can interact with all OpenShift Container Platform web console features. However, if you are not the cluster owner, you might need to request permission to access certain features from the cluster owner.
+>
+> You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
+>
+> See also, "Enabling the **Developer** perspective in the web console".
 
 The **Observe** view in the **Developer** perspective uses the same monitoring components as the **Administrator** perspective, but displays only the projects you have permissions for. You can monitor your applications without seeing cluster-wide metrics you cannot access.
 
-<div class="note">
-
-A project represents a Kubernetes namespace with additional annotations. When you select a project in the **Developer** perspective, you view the topology and metrics for that namespace.
-
-</div>
+> [!NOTE]
+> A project represents a Kubernetes namespace with additional annotations. When you select a project in the **Developer** perspective, you view the topology and metrics for that namespace.
 
 After selecting a project in the **Observe** view, the following tabs become available:
 
@@ -98,15 +114,20 @@ After selecting a project in the **Observe** view, the following tabs become ava
 
 The monitoring interface is the same as the **Administrator** perspective, with the key difference being project filtering based on your access permissions.
 
-<div class="note">
-
-In the **Administrator** perspective, the monitoring tabs are immediately available with a project dropdown for filtering. In the **Developer** perspective, you must select a project before the tabs are displayed. This scoping enables your developers to observe their applications by using the same monitoring tools as cluster administrators, focused only on their assigned projects.
-
-</div>
+> [!NOTE]
+> In the **Administrator** perspective, the monitoring tabs are immediately available with a project dropdown for filtering. In the **Developer** perspective, you must select a project before the tabs are displayed. This scoping enables your developers to observe their applications by using the same monitoring tools as cluster administrators, focused only on their assigned projects.
 
 # Viewing project dashboards
 
 View pre-built dashboards showing CPU usage, memory usage, bandwidth consumption, and network information across your project (namespace) topology to help you monitor application performance.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Developer** perspective navigation menu, select **Observe**.
 
@@ -116,9 +137,19 @@ View pre-built dashboards showing CPU usage, memory usage, bandwidth consumption
 
     The **Dashboards** tab displays pre-built Kubernetes compute resources dashboards showing metrics such as CPU usage, memory usage, bandwidth consumption, and network-related information. The dashboard layout includes metric cards at the top showing current utilization percentages, and expandable graph sections below showing detailed resource usage trends over time.
 
+</div>
+
 # Monitor your application metrics
 
 Inspect alerts, metric charts, and health check status for individual application workloads to troubleshoot performance issues and monitor health directly from the topology view.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Developer** perspective, navigate to the **Topology** view.
 
@@ -132,11 +163,10 @@ Inspect alerts, metric charts, and health check status for individual applicatio
 
     - Click **View monitoring dashboard** to open the full metrics dashboard for the workload.
 
-      <div class="note">
+      > [!NOTE]
+      > Only critical and warning alerts in the **Firing** state are displayed in the **Topology** view. Alerts in the **Silenced**, **Pending** and **Not Firing** states are not displayed.
 
-      Only critical and warning alerts in the **Firing** state are displayed in the **Topology** view. Alerts in the **Silenced**, **Pending** and **Not Firing** states are not displayed.
-
-      </div>
+</div>
 
 # Image vulnerability metrics and severity levels
 
@@ -164,15 +194,28 @@ After you create applications in your project and deploy them, use the **Develop
 
 - Drill down into severity to obtain the details, such as count of vulnerabilities, count of fixable vulnerabilities, and number of affected pods for each vulnerable image
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the Red Hat Quay Container Security Operator.
 
-  <div class="note">
+  > [!NOTE]
+  > The Red Hat Quay Container Security Operator detects vulnerabilities by scanning the images that are in the Red Hat Quay registry.
 
-  The Red Hat Quay Container Security Operator detects vulnerabilities by scanning the images that are in the Red Hat Quay registry.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Developer** perspective, click **Project** to open the project dashboard.
 
@@ -191,6 +234,8 @@ After you create applications in your project and deploy them, use the **Develop
         - **Base image** vulnerabilities display information from a Red Hat Security Advisory (RHSA).
 
         - **App dependency** vulnerabilities display information from the Snyk security application.
+
+</div>
 
 # Additional resources
 

@@ -1,10 +1,7 @@
 Review new features, resolved issues, known issues, Technology Preview features, removed features, and other additions in OpenShift API for Data Protection (OADP) 1.6.
 
-<div class="note">
-
-For additional information about OADP, see *OpenShift API for Data Protection (OADP) FAQ*.
-
-</div>
+> [!NOTE]
+> For additional information about OADP, see *OpenShift API for Data Protection (OADP) FAQ*.
 
 # OADP 1.6.1 release notes
 

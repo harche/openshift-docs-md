@@ -6,6 +6,14 @@ You can grant an unprivileged pod the capability to perform Filesystem in Usersp
 
 You expose the `/dev/fuse` device by adding the `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation to your pod definition.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Define the pod with `/dev/fuse` access:
 
     1.  Create a YAML file named `fuse-builder-pod.yaml` with the following content:
@@ -41,11 +49,8 @@ You expose the `/dev/fuse` device by adding the `io.kubernetes.cri-o.Devices: "/
         `spec.containers.securityContext`
         Specifies a `securityContext` that runs the container as an unprivileged user (for example, `runAsUser: 1000`).
 
-        <div class="note">
-
-        Depending on your cluster’s Security Context Constraints (SCCs) or other policies, you might need to further adjust the `securityContext` specification, for example, by allowing specific capabilities if `/dev/fuse` alone is not sufficient for `fuse-overlayfs` to operate.
-
-        </div>
+        > [!NOTE]
+        > Depending on your cluster’s Security Context Constraints (SCCs) or other policies, you might need to further adjust the `securityContext` specification, for example, by allowing specific capabilities if `/dev/fuse` alone is not sufficient for `fuse-overlayfs` to operate.
 
     2.  Create the pod by running the following command:
 
@@ -137,3 +142,5 @@ You expose the `/dev/fuse` device by adding the `io.kubernetes.cri-o.Devices: "/
         ``` terminal
         $ rm fuse-builder-pod.yaml
         ```
+
+</div>

@@ -1,14 +1,30 @@
 You can remove virtual machines (VMs) from your cluster to free up resources using either the web console or CLI. Deleting a VM removes the virtual machine definition and optionally its associated storage resources.
 
-# Deleting a virtual machine using the web console
+# Delete a VM by using the web console
 
-Deleting a virtual machine (VM) permanently removes it from the cluster.
+You can permanently remove a virtual machine (VM) from the cluster by using the OpenShift Container Platform web console. The **Delete** action is disabled while the VM is delete protected.
 
-If the VM is delete protected, the **Delete** action is disabled in the VM’s **Actions** menu.
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have disabled the VM’s delete protection setting.
 
 - You have stopped the VM.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  From the OpenShift Container Platform web console, choose your view:
 
@@ -26,9 +42,19 @@ If the VM is delete protected, the **Delete** action is disabled in the VM’s *
 
 4.  Click **Delete** to permanently delete the VM.
 
-# Deleting a virtual machine by using the CLI
+</div>
 
-You can delete a virtual machine (VM) by using the `oc` command-line interface (CLI). The `oc` client enables you to perform actions on multiple VMs.
+# Delete a VM by using the CLI
+
+You can delete a virtual machine (VM) by using the OpenShift CLI (`oc`). The command deletes a VM in the current project unless you specify another namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have disabled the VM’s delete protection setting.
 
@@ -36,7 +62,15 @@ You can delete a virtual machine (VM) by using the `oc` command-line interface (
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Delete the VM by running the following command:
 
@@ -44,8 +78,7 @@ You can delete a virtual machine (VM) by using the `oc` command-line interface (
   $ oc delete vm <vm_name>
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > This command only deletes a VM in the current project. Specify the `-n <project_name>` option if the VM you want to delete is in a different project or namespace.
 
-  This command only deletes a VM in the current project. Specify the `-n <project_name>` option if the VM you want to delete is in a different project or namespace.
-
-  </div>
+</div>

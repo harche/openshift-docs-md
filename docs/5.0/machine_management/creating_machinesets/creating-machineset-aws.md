@@ -1,18 +1,15 @@
 You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Amazon Web Services (AWS). For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
-<div class="important">
-
-You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
-
-Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
-
-To view the platform type for your cluster, run the following command:
-
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
-
-</div>
+> [!IMPORTANT]
+> You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. This limitation applies even if the compute machines that are attached to the cluster are installed on a platform that supports the feature. This parameter cannot be changed after installation.
+>
+> To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
 # Sample YAML for a compute machine set custom resource on AWS
 
@@ -115,35 +112,57 @@ Specifies the infrastructure ID and zone.
 `<custom_tag_name>`
 Optional: Specifies custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
 
-<div class="note">
+> [!NOTE]
+> Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
 
-Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
+> [!NOTE]
+> The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+>
+> ``` terminal
+> $ oc -n openshift-machine-api \
+>     -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
+>     get machineset/<infrastructure_id>-<role>-<zone>
+> ```
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
-
-``` terminal
-$ oc -n openshift-machine-api \
-    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
-    get machineset/<infrastructure_id>-<role>-<zone>
-```
+Additional resources
 
 </div>
 
 - [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
+</div>
+
 # Create a compute machine set
 
 To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Deploy an OpenShift Container Platform cluster.
 
 - Install the OpenShift CLI (`oc`).
 
 - Log in to `oc` as a user with `cluster-admin` permission.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a new YAML file that contains the compute machine set custom resource (CR) sample and is named `<file_name>.yaml`.
 
@@ -212,11 +231,8 @@ To dynamically manage machine compute resources, you can create your own compute
         `metadata.labels.name`
         Specifies a default node label.
 
-        <div class="note">
-
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
-
-        </div>
+        > [!NOTE]
+        > For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
         `spec.template.metadata.spec.providerSpec`
         Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
@@ -228,6 +244,16 @@ To dynamically manage machine compute resources, you can create your own compute
     ```
 
 4.  If you need compute machine sets in other availability zones, repeat this process to create more compute machine sets.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - View the list of compute machine sets by running the following command:
 
@@ -250,13 +276,31 @@ To dynamically manage machine compute resources, you can create your own compute
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
+</div>
+
 # Label GPU machine sets for the cluster autoscaler
 
 Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Your cluster uses a cluster autoscaler.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - On the machine set that you want to create machines for the cluster autoscaler to use to deploy GPU-enabled nodes, add a `cluster-api/accelerator` label:
 
@@ -278,15 +322,22 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
   `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
-  <div class="note">
+  > [!NOTE]
+  > You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
 
-  You must specify the value of this label for the `spec.resourceLimits.gpus.type` parameter in your `ClusterAutoscaler` CR. For more information, see "Cluster autoscaler resource definition".
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
+
+</div>
 
 # Assigning machines to placement groups for Elastic Fabric Adapter instances by using machine sets
 
@@ -294,15 +345,30 @@ You can configure a machine set to deploy machines on Elastic Fabric Adapter (EF
 
 [EFA](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`) as a user with administrator privileges.
 
 - You created a placement group in the AWS console.
 
-  <div class="note">
+  > [!NOTE]
+  > Ensure that the [rules and limitations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#limitations-placement-groups) for the type of placement group that you create are compatible with your intended use case.
 
-  Ensure that the [rules and limitations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#limitations-placement-groups) for the type of placement group that you create are compatible with your intended use case.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open an existing machine set custom resource (CR) or create a new one.
 
@@ -348,6 +414,16 @@ You can configure a machine set to deploy machines on Elastic Fabric Adapter (EF
 
 3.  Save your changes and exit the object specification.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
   - The placement group field has the value that you specified for the `placementGroupName` parameter in the machine set.
@@ -355,6 +431,8 @@ You can configure a machine set to deploy machines on Elastic Fabric Adapter (EF
   - If you specified a partition number, the partition number field has the value that you specified for the `placementGroupPartition` parameter in the machine set.
 
   - The interface type field indicates that it uses an EFA.
+
+</div>
 
 # Configuring the AWS EC2 Instance Metadata Service by using machine sets
 
@@ -364,19 +442,31 @@ Machine sets can create machines that allow the use of both IMDSv1 and [IMDSv2](
 
 You can specify whether to require the use of IMDSv2 by adding or editing the value of `metadataServiceOptions.authentication` in the machine set.
 
-<div class="important">
+> [!IMPORTANT]
+> Before configuring a machine set to create machines that require IMDSv2, ensure that any workloads that interact with the AWS metadata service support IMDSv2.
 
-Before configuring a machine set to create machines that require IMDSv2, ensure that any workloads that interact with the AWS metadata service support IMDSv2.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - To use IMDSv2, your AWS cluster must have been created with OpenShift Container Platform version 4.7 or later.
 
-  <div class="note">
+  > [!NOTE]
+  > To use IMDSv2 on AWS clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
 
-  To use IMDSv2 on AWS clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open an existing machine set custom resource (CR) or create a new one.
 
@@ -399,17 +489,45 @@ Before configuring a machine set to create machines that require IMDSv2, ensure 
 
 3.  Save your changes and exit the object specification.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Use the Instance Metadata Service to access instance metadata (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html)
 
 - [Boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images)
+
+</div>
 
 # Configuring storage throughput for gp3 drives
 
 You can improve performance for high traffic services by increasing the throughput of gp3 storage volumes in an AWS cluster. You can configure the storage throughput by editing your compute or control plane machine set.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You use gp3 storage volume(s).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Add or edit the following lines under the `providerSpec` field in your compute or control plane machine set:
 
@@ -426,6 +544,8 @@ You can improve performance for high traffic services by increasing the throughp
   `<throughput_value>`
   Specifies a value in MiB per second between 125 and 2,000. You can only edit this value on gp3 volumes. The default value is `125`.
 
+</div>
+
 # Creating Dedicated Instances by using machine sets
 
 You can configure a machine set to deploy machines as Dedicated Instances that run in a virtual private cloud (VPC) on hardware that only a single customer can use. To change use Dedicated Instances, you update the placement tenancy value in the machine set custom resource (CR).
@@ -434,7 +554,25 @@ Amazon Web Services (AWS) Dedicated Instances are EC2 instances that are physica
 
 Public tenancy is the default tenancy. Instances with public tenancy run on shared hardware and can share hardware with Dedicated Instances that belong to the same AWS account.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the OpenShift CLI (`oc`) as a user with administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In a text editor, open an existing machine set custom resource (CR) or create a new one.
 
@@ -457,29 +595,33 @@ Public tenancy is the default tenancy. Instances with public tenancy run on shar
 
 3.  Save your changes and exit the object specification.
 
+</div>
+
 # Machine sets that place machines on Dedicated Hosts
 
 You can configure machine sets to place machines on Amazon Web Services (AWS) Dedicated Hosts. Dedicated Hosts are physical servers with instance capacity that is fully dedicated to your use.
 
 You can use Dedicated Hosts with your existing per-socket, per-core, or per-VM software licenses. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
 
-<div class="important">
-
-AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Place machines on Dedicated Hosts by using machine sets
 
 You can configure a machine set to place machines on Amazon Web Services (AWS) Dedicated Hosts. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
 
-<div class="important">
+> [!IMPORTANT]
+> AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -510,7 +652,15 @@ For more information about the support scope of Red Hat Technology Preview featu
   `spec.template.spec.providerSpec.placement.host.dedicatedHost.dynamicHostAllocation.tags`
   Optional: Specifies tags to apply to the dynamically allocated Dedicated Host. If you specify tags, you must specify both a key and a value. For `<tag_name>`, specify the tag key, for example `Environment`. For `<tag_value>`, specify the tag value, for example `production`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the machine set exists by running the following command:
 
@@ -518,15 +668,22 @@ For more information about the support scope of Red Hat Technology Preview featu
   $ oc get machineset -n openshift-machine-api
   ```
 
+</div>
+
 ## Place machines on a specific Dedicated Host by using machine sets
 
 You can configure a machine set to place machines on a specific Amazon Web Services (AWS) Dedicated Host by specifying the host ID.
 
-<div class="important">
+> [!IMPORTANT]
+> AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -553,13 +710,23 @@ For more information about the support scope of Red Hat Technology Preview featu
   `<dedicated_host_id>`
   Specifies the ID of the AWS Dedicated Host on which to place the machine, for example `h-0123456789abcdef0`.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the machine set exists by running the following command:
 
   ``` terminal
   $ oc get machineset -n openshift-machine-api
   ```
+
+</div>
 
 # Machine sets that deploy machines as Spot Instances
 
@@ -581,6 +748,14 @@ When AWS terminates an instance, a termination handler running on the Spot Insta
 
 You can save on costs by creating a compute machine set that deploys machines as non-guaranteed instances. To launch a Spot Instance on AWS, you add `spotMarketOptions` to your compute machine set YAML file.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Add the following line under the `providerSpec` field:
 
   ``` yaml
@@ -591,13 +766,12 @@ You can save on costs by creating a compute machine set that deploys machines as
 
   You can optionally set the `spotMarketOptions.maxPrice` field to limit the cost of the Spot Instance. For example you can set `maxPrice: '2.50'`.
 
-  <div class="note">
+  > [!NOTE]
+  > If the `maxPrice` is set, this value is used as the hourly maximum spot price. If it is not set, the maximum price defaults to charge up to the On-Demand Instance price.
+  >
+  > It is strongly recommended to use the default On-Demand price as the `maxPrice` value and to not set the maximum price for Spot Instances.
 
-  If the `maxPrice` is set, this value is used as the hourly maximum spot price. If it is not set, the maximum price defaults to charge up to the On-Demand Instance price.
-
-  It is strongly recommended to use the default On-Demand price as the `maxPrice` value and to not set the maximum price for Spot Instances.
-
-  </div>
+</div>
 
 # Configure Capacity Reservations by using machine sets
 
@@ -609,19 +783,39 @@ These parameters specify the instance type, region, and number of instances that
 
 For more information, including limitations and suggested use cases for this Amazon Web Services offering, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You have purchased an On-Demand Capacity Reservation or Capacity Block for ML. For more information, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In a text editor, open an existing machine set custom resource (CR) or create a new one.
 
 2.  Update the CR to implement your configuration changes:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample configuration**
+    <div class="title">
+
+    Sample configuration
 
     </div>
 
@@ -638,6 +832,8 @@ For more information, including limitations and suggested use cases for this Ama
               marketType: <market_type>
     # ...
     ```
+
+    </div>
 
     where:
 
@@ -658,6 +854,16 @@ For more information, including limitations and suggested use cases for this Ama
 
 3.  Save your changes and exit the object specification.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 
   ``` terminal
@@ -670,6 +876,8 @@ For more information, including limitations and suggested use cases for this Ama
 
   In the output, verify that the characteristics of the listed machines match the parameters of your Capacity Reservation.
 
+</div>
+
 # Add a GPU node to an existing OpenShift Container Platform cluster
 
 You can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the AWS EC2 cloud provider.
@@ -680,15 +888,25 @@ For more information about the supported instance types, see the following NVIDI
 
 - [NVIDIA AI Enterprise support matrix](https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html)
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  View the existing nodes, machines, and machine sets by running the following command. Note that each node is an instance of a machine definition with a specific AWS region and OpenShift Container Platform role.
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -702,15 +920,19 @@ For more information about the supported instance types, see the following NVIDI
     ip-10-0-74-50.us-east-2.compute.internal    Ready    worker                 3d17h   v1.36.3
     ```
 
+    </div>
+
 2.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the AWS region. The installation program automatically load balances compute machines across availability zones.
 
     ``` terminal
     $ oc get machinesets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -720,15 +942,19 @@ For more information about the supported instance types, see the following NVIDI
     preserve-dsoc12r4-ktjfc-worker-us-east-2b   2         2         2       2           3d11h
     ```
 
+    </div>
+
 3.  View the machines that exist in the `openshift-machine-api` namespace by running the following command. At this time, there is only one compute machine per machine set, though a compute machine set could be scaled to add a node in a particular region and zone.
 
     ``` terminal
     $ oc get machines -n openshift-machine-api | grep worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -737,6 +963,8 @@ For more information about the supported instance types, see the following NVIDI
     preserve-dsoc12r4-ktjfc-worker-us-east-2b-dkv7w      Running   m5.xlarge   us-east-2   us-east-2b   3d11h
     preserve-dsoc12r4-ktjfc-worker-us-east-2b-k58cw      Running   m5.xlarge   us-east-2   us-east-2b   3d11h
     ```
+
+    </div>
 
 4.  Make a copy of one of the existing compute `MachineSet` definitions and output the result to a JSON file by running the following command. This will be the basis for the GPU-enabled compute machine set definition.
 
@@ -774,9 +1002,11 @@ For more information about the supported instance types, see the following NVIDI
     $ oc -n openshift-machine-api get preserve-dsoc12r4-ktjfc-worker-us-east-2a -o json | diff preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json -
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -806,15 +1036,19 @@ For more information about the supported instance types, see the following NVIDI
     > "instanceType": "m5.xlarge",
     ```
 
+    </div>
+
 8.  Create the GPU-enabled compute machine set from the definition by running the following command:
 
     ``` terminal
     $ oc create -f preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -822,7 +1056,17 @@ For more information about the supported instance types, see the following NVIDI
     machineset.machine.openshift.io/preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a created
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  View the machine set you created by running the following command:
 
@@ -832,9 +1076,11 @@ For more information about the supported instance types, see the following NVIDI
 
     The MachineSet replica count is set to `1` so a new `Machine` object is created automatically.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -842,21 +1088,29 @@ For more information about the supported instance types, see the following NVIDI
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a   1         1         1       1           4m21s
     ```
 
+    </div>
+
 2.  View the `Machine` object that the machine set created by running the following command:
 
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a    running    g4dn.xlarge   us-east-2   us-east-2a  4m36s
     ```
+
+    </div>
+
+</div>
 
 Note that there is no need to specify a namespace for the node. The node definition is cluster scoped.
 
@@ -865,6 +1119,14 @@ Note that there is no need to specify a namespace for the node. The node definit
 After the GPU-enabled node is created, you need to discover the GPU-enabled node so it can be scheduled. To do this, install the Node Feature Discovery (NFD) Operator.
 
 The NFD Operator identifies hardware device features in nodes. It solves the general problem of identifying and cataloging hardware resources in the infrastructure nodes so they can be made available to OpenShift Container Platform.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the Node Feature Discovery Operator from the software catalog in the OpenShift Container Platform console.
 
@@ -876,9 +1138,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -888,11 +1152,21 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     nfd-controller-manager-8646fcbb65-x5qgk    2/2      Running 7  (8h ago)   1d
     ```
 
+    </div>
+
 4.  Browse to the installed Operator in the console and select **Create Node Feature Discovery**.
 
 5.  Select **Create** to build a NFD custom resource. This creates NFD pods in the `openshift-nfd` namespace that poll the OpenShift Container Platform nodes for hardware resources and catalog them.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  After a successful build, verify that a NFD pod is running on each nodes by running the following command:
 
@@ -900,9 +1174,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc get pods -n openshift-nfd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -914,6 +1190,8 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     nfd-worker-xtz9b                           1/1     Running     5 (3d14h ago)   12d
     ```
 
+    </div>
+
     The NFD Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID `10de`.
 
 2.  View the NVIDIA GPU discovered by the NFD Operator by running the following command:
@@ -922,9 +1200,11 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     $ oc describe node ip-10-0-132-138.us-east-2.compute.internal | egrep 'Roles|pci'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -938,4 +1218,8 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     feature.node.kubernetes.io/pci-1d0f.present=true
     ```
 
+    </div>
+
     `10de` appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
+
+</div>

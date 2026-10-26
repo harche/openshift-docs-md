@@ -1,18 +1,20 @@
 You can update the GitOps Zero Touch Provisioning (ZTP) infrastructure independently from the hub cluster, Red Hat Advanced Cluster Management (RHACM), and the managed OpenShift Container Platform clusters.
 
-<div class="note">
+> [!NOTE]
+> You can update the Red Hat OpenShift GitOps Operator when new versions become available. When updating the GitOps ZTP plugin, review the updated files in the reference configuration and ensure that the changes meet your requirements.
 
-You can update the Red Hat OpenShift GitOps Operator when new versions become available. When updating the GitOps ZTP plugin, review the updated files in the reference configuration and ensure that the changes meet your requirements.
+> [!IMPORTANT]
+> Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+>
+> For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/5.0/html-single/governance/index#integrate-policy-generator) documentation.
+>
+> For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
 
-</div>
+<div>
 
-<div class="important">
+<div class="title">
 
-Using the `PolicyGenTemplate` CR to manage and deploy policies is deprecated and will be removed in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
-
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
-
-For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyGenerator` CR, see [Migrate to RHACM Policy Generator with OpenShift Container Platform](https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#).
+Additional resources
 
 </div>
 
@@ -20,15 +22,14 @@ For more information about migrating from a `PolicyGenTemplate` CR to a `PolicyG
 
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
 
+</div>
+
 # Overview of the GitOps ZTP update process
 
 You can update GitOps Zero Touch Provisioning (ZTP) for a fully operational hub cluster running an earlier version of the GitOps ZTP infrastructure. The update process avoids impact on managed clusters.
 
-<div class="note">
-
-Any changes to policy settings, including adding recommended content, results in updated policies that must be rolled out to the managed clusters and reconciled.
-
-</div>
+> [!NOTE]
+> Any changes to policy settings, including adding recommended content, results in updated policies that must be rolled out to the managed clusters and reconciled.
 
 At a high level, the strategy for updating the GitOps ZTP infrastructure is as follows:
 
@@ -47,6 +48,14 @@ At a high level, the strategy for updating the GitOps ZTP infrastructure is as f
 # Preparing for the upgrade
 
 Use the following procedure to prepare your site for the GitOps Zero Touch Provisioning (ZTP) upgrade.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the latest version of the GitOps ZTP container that has the custom resources (CRs) used to configure Red Hat OpenShift GitOps for use with GitOps ZTP.
 
@@ -76,19 +85,23 @@ Use the following procedure to prepare your site for the GitOps Zero Touch Provi
 
 4.  Diff the changes between the configuration and deployment source CRs in the `/update` folder and Git repo where you manage your fleet site CRs. Apply and push the required changes to your site repository.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > When you update GitOps ZTP to the latest version, you must apply the changes from the `update/argocd/deployment` directory to your site repository. Do not use older versions of the `argocd/deployment/` files.
 
-    When you update GitOps ZTP to the latest version, you must apply the changes from the `update/argocd/deployment` directory to your site repository. Do not use older versions of the `argocd/deployment/` files.
-
-    </div>
+</div>
 
 # Labeling the existing clusters
 
 To ensure that existing clusters remain untouched by the tool updates, label all existing managed clusters with the `ztp-done` label.
 
-<div class="note">
+> [!NOTE]
+> This procedure only applies when updating clusters that were not provisioned with Topology Aware Lifecycle Manager (TALM). Clusters that you provision with TALM are automatically labeled with `ztp-done`.
 
-This procedure only applies when updating clusters that were not provisioned with Topology Aware Lifecycle Manager (TALM). Clusters that you provision with TALM are automatically labeled with `ztp-done`.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -104,11 +117,21 @@ This procedure only applies when updating clusters that were not provisioned wit
     $ oc label managedcluster -l 'local-cluster!=true' ztp-done=
     ```
 
+</div>
+
 # Stopping the existing GitOps ZTP applications
 
 Removing the existing applications ensures that any changes to existing content in the Git repository are not rolled out until the new version of the tools is available.
 
 Use the application files from the `deployment` directory. If you used custom names for the applications, update the names in these files first.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Perform a non-cascaded delete on the `clusters` application to leave all generated resources in place:
 
@@ -126,15 +149,14 @@ Use the application files from the `deployment` directory. If you used custom na
     $ oc delete -f update/argocd/deployment/policies-app.yaml
     ```
 
+</div>
+
 # Required changes to the Git repository
 
 When upgrading the `ztp-site-generate` container from an earlier release of GitOps Zero Touch Provisioning (ZTP) to 4.10 or later, there are additional requirements for the contents of the Git repository. Existing content in the repository must be updated to reflect these changes.
 
-<div class="note">
-
-The following procedure assumes you are using `PolicyGenerator` resources instead of `PolicyGentemplate` resources for cluster policies management.
-
-</div>
+> [!NOTE]
+> The following procedure assumes you are using `PolicyGenerator` resources instead of `PolicyGentemplate` resources for cluster policies management.
 
 - Make required changes to `PolicyGenerator` files:
 
@@ -161,11 +183,8 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
       └── kustomization.yaml
   ```
 
-  <div class="note">
-
-  The files listed in the `generator` sections must contain either `ClusterInstance` or `{policy-gen-cr}` CRs only. If your existing YAML files contain other CRs, for example, `Namespace`, these other CRs must be pulled out into separate files and listed in the `resources` section.
-
-  </div>
+  > [!NOTE]
+  > The files listed in the `generator` sections must contain either `ClusterInstance` or `{policy-gen-cr}` CRs only. If your existing YAML files contain other CRs, for example, `Namespace`, these other CRs must be pulled out into separate files and listed in the `resources` section.
 
   The `PolicyGenerator` kustomization file must contain all `PolicyGenerator` YAML files in the `generator` section and `Namespace` CRs in the `resources` section. For example:
 
@@ -201,11 +220,8 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
 
   In OpenShift Container Platform 4.10 and later, the `pre-sync.yaml` and `post-sync.yaml` files are no longer required. The `update/deployment/kustomization.yaml` CR manages the policies deployment on the hub cluster.
 
-  <div class="note">
-
-  There is a set of `pre-sync.yaml` and `post-sync.yaml` files under both the `ClusterInstance` and `{policy-gen-cr}` trees.
-
-  </div>
+  > [!NOTE]
+  > There is a set of `pre-sync.yaml` and `post-sync.yaml` files under both the `ClusterInstance` and `{policy-gen-cr}` trees.
 
 - Review and incorporate recommended changes
 
@@ -217,6 +233,14 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
 
 Using the extracted `argocd/deployment` directory, and after ensuring that the applications point to your site Git repository, apply the full contents of the deployment directory. Applying the full contents of the directory ensures that all necessary resources for the applications are correctly configured.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  To install the GitOps ZTP plugin, patch the ArgoCD instance in the hub cluster with the relevant multicluster engine (MCE) subscription image. Customize the patch file that you previously extracted into the `out/argocd/deployment/` directory for your environment.
 
     1.  Select the `multicluster-operators-subscription` image that matches your RHACM version.
@@ -225,13 +249,10 @@ Using the extracted `argocd/deployment` directory, and after ensuring that the a
 
         - For RHACM 2.10 and later, use the `registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v<rhacm_version>` image.
 
-        <div class="important">
-
-        The version of the `multicluster-operators-subscription` image must match the RHACM version. Beginning with the MCE 2.10 release, RHEL 9 is the base image for `multicluster-operators-subscription` images.
-
-        Click `[Expand for Operator list]` in the "Platform Aligned Operators" table in [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) to view the complete supported Operators matrix for OpenShift Container Platform.
-
-        </div>
+        > [!IMPORTANT]
+        > The version of the `multicluster-operators-subscription` image must match the RHACM version. Beginning with the MCE 2.10 release, RHEL 9 is the base image for `multicluster-operators-subscription` images.
+        >
+        > Click `[Expand for Operator list]` in the "Platform Aligned Operators" table in [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators) to view the complete supported Operators matrix for OpenShift Container Platform.
 
     2.  Modify the `out/argocd/deployment/argocd-openshift-gitops-patch.json` file with the `multicluster-operators-subscription` image that matches your RHACM version:
 
@@ -280,9 +301,19 @@ Using the extracted `argocd/deployment` directory, and after ensuring that the a
     $ oc apply -k out/argocd/deployment
     ```
 
+</div>
+
 # Pulling ISO images for the desired OpenShift Container Platform version
 
 To pull ISO images for the desired OpenShift Container Platform version, update the `AgentServiceConfig` custom resource (CR) with references to the desired ISO and RootFS images that are hosted on the mirror registry HTTP server.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -291,6 +322,16 @@ To pull ISO images for the desired OpenShift Container Platform version, update 
 - You have RHACM with `MultiClusterHub` enabled.
 
 - You have enabled the assisted service.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `AgentServiceConfig` CR to update the `spec.osImages` field by running the following command:
 
@@ -324,7 +365,19 @@ To pull ISO images for the desired OpenShift Container Platform version, update 
 
 3.  Save and quit the editor to apply the changes.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Enabling the assisted service](../edge_computing/ztp-preparing-the-hub-cluster.xml#enabling-assisted-installer-service-on-bare-metal_ztp-preparing-the-hub-cluster)
+
+</div>
 
 # Rolling out the GitOps ZTP configuration changes
 
@@ -332,6 +385,16 @@ If any configuration changes were included in the upgrade due to implementing re
 
 To roll out the changes, create one or more `ClusterGroupUpgrade` CRs as detailed in the TALM documentation. The CR must contain the list of `Non-Compliant` policies that you want to push out to the managed clusters as well as a list or selector of which clusters should be included in the update.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [About the Topology Aware Lifecycle Manager configuration](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-about-topology-aware-lifecycle-manager-config_cnf-topology-aware-lifecycle-manager)
 
 - [About the auto-created ClusterGroupUpgrade CR for GitOps ZTP](../edge_computing/policygentemplate_for_ztp/ztp-talm-updating-managed-policies.xml#talo-precache-autocreated-cgu-for-ztp_ztp-talm)
+
+</div>

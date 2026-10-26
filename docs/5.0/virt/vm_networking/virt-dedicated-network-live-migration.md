@@ -1,10 +1,16 @@
 You can configure a dedicated secondary network for live migration. A dedicated network minimizes the effects of network saturation on tenant workloads during live migration.
 
-# Configuring a dedicated secondary network for live migration
+# Configure a dedicated secondary network for live migration
 
-After you have configured a Linux bridge network, you can configure a dedicated network for live migration. A dedicated network minimizes the effects of network saturation on tenant workloads during live migration.
+Configure a dedicated secondary network for live migration to minimize the effects of network saturation on tenant workloads during live migration.
 
-To configure a dedicated secondary network for live migration, you must first create a bridge network attachment definition (NAD) by using the CLI. You can then add the name of the `NetworkAttachmentDefinition` object to the `HyperConverged` custom resource (CR).
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -13,6 +19,18 @@ To configure a dedicated secondary network for live migration, you must first cr
 - Each node has at least two Network Interface Cards (NICs).
 
 - The NICs for live migration are connected to the same VLAN.
+
+- You have configured a Linux bridge network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `NetworkAttachmentDefinition` manifest according to the following example:
 
@@ -36,13 +54,13 @@ To configure a dedicated secondary network for live migration, you must first cr
       }'
     ```
 
-    - `metadata.name` defines the name of the `NetworkAttachmentDefinition` object.
+    - `metadata.name`: Defines the name of the `NetworkAttachmentDefinition` object.
 
-    - `config.master` defines the name of the NIC to be used for live migration.
+    - `config.master`: Defines the name of the NIC to be used for live migration.
 
-    - `config.type` defines the name of the CNI plugin that provides the network for the NAD.
+    - `config.type`: Defines the name of the CNI plugin that provides the network for the `NetworkAttachmentDefinition`.
 
-    - `config.range` defines an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
+    - `config.range`: Defines an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
 
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -71,9 +89,19 @@ To configure a dedicated secondary network for live migration, you must first cr
     # ...
     ```
 
-    - `spec.virtualization.liveMigrationConfig.network` defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
+    - `spec.virtualization.liveMigrationConfig.network`: Defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - When the node that the virtual machine runs on is placed into maintenance mode, the VM automatically migrates to another node in the cluster. You can verify that the migration occurred over the secondary network and not the default pod network by checking the target IP address in the virtual machine instance (VMI) metadata.
 
@@ -81,13 +109,33 @@ To configure a dedicated secondary network for live migration, you must first cr
   $ oc get vmi <vmi_name> -o jsonpath='{.status.migrationState.targetNodeAddress}'
   ```
 
-# Selecting a dedicated network by using the web console
+</div>
+
+# Select a dedicated migration network by using the web console
 
 You can select a dedicated network for live migration by using the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You configured a Multus network for live migration.
 
 - You created a network attachment definition for the network.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Go to **Virtualization → Settings** in the OpenShift Container Platform web console.
 
@@ -96,6 +144,8 @@ You can select a dedicated network for live migration by using the OpenShift Con
 3.  Click **Live Migration**.
 
 4.  Select the network from the **Live migration network** list.
+
+</div>
 
 # Additional resources
 

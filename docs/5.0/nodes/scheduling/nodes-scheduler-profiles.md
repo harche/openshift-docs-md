@@ -12,11 +12,8 @@ This profile attempts to spread pods evenly across nodes to get low resource usa
 `HighNodeUtilization`
 This profile attempts to place as many pods as possible on to as few nodes as possible. This minimizes node count and has high resource usage per node.
 
-<div class="note">
-
-Switching to the `HighNodeUtilization` scheduler profile will result in all pods of a `ReplicaSet` object being scheduled on the same node. This will add an increased risk for pod failure if the node fails.
-
-</div>
+> [!NOTE]
+> Switching to the `HighNodeUtilization` scheduler profile will result in all pods of a `ReplicaSet` object being scheduled on the same node. This will add an increased risk for pod failure if the node fails.
 
 `NoScoring`
 This is a low-latency profile that strives for the quickest scheduling cycle by disabling all score plugins. This might sacrifice better scheduling decisions for faster ones.
@@ -25,7 +22,25 @@ This is a low-latency profile that strives for the quickest scheduling cycle by 
 
 To customize how the cluster distributes pods across your nodes based on resource use, you can configure a specific scheduler profile.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `Scheduler` object:
 
@@ -50,3 +65,5 @@ To customize how the cluster distributes pods across your nodes based on resourc
     Set `spec.profile` to `LowNodeUtilization`, `HighNodeUtilization`, or `NoScoring`.
 
 3.  Save the file to apply the changes.
+
+</div>

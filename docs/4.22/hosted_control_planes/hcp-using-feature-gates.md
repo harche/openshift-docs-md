@@ -4,7 +4,25 @@ You can use feature gates in a hosted cluster to enable features that are not pa
 
 You can enable the `TechPreviewNoUpgrade` feature set in a hosted cluster by editing the `HostedCluster` custom resource (CR) with the OpenShift CLI.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Open the `HostedCluster` CR for editing on the hosting cluster by running the following command:
 
@@ -32,13 +50,20 @@ You can enable the `TechPreviewNoUpgrade` feature set in a hosted cluster by edi
 
     - `spec.configuration.featureGate.featureSet` is a subset of the current Technology Preview features.
 
-      <div class="warning">
-
-      Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. With this feature set, you can enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-      </div>
+      > [!WARNING]
+      > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. With this feature set, you can enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
 3.  Save the file to apply the changes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the `TechPreviewNoUpgrade` feature gate is enabled in your hosted cluster by running the following command:
 
@@ -46,6 +71,16 @@ You can enable the `TechPreviewNoUpgrade` feature set in a hosted cluster by edi
   $ oc get featuregate cluster -o yaml
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [FeatureGate \[config.openshift.io/v1](../rest_api/config_apis/featuregate-config-openshift-io-v1.xml#featuregate-config-openshift-io-v1)\]
+
+</div>

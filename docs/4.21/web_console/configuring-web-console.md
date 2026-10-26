@@ -8,6 +8,14 @@ You can change the OpenShift Container Platform web console to set a logout redi
 
 You can configure the web console settings by editing the `console.config.openshift.io` resource.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Edit the `console.config.openshift.io` resource:
 
     ``` terminal
@@ -32,11 +40,31 @@ You can configure the web console settings by editing the `console.config.opensh
 
     The `consoleURL` field is the web console URL. To update this to a custom value, see **Customizing the web console URL**.
 
+</div>
+
 # Disabling quick starts in the web console
 
 You can use the **Administrator** perspective of the web console to disable one or more quick starts.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have cluster administrator permissions and are logged in to the web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the **Administrator** perspective, navigate to **Administration** → **Cluster Settings**.
 
@@ -57,3 +85,5 @@ You can use the **Administrator** perspective of the web console to disable one 
     - To enable or disable multiple quick starts at once, press Ctrl and click the quick starts you want to move. Then, use the single arrow buttons to move the quick starts to the appropriate list.
 
     - To enable or disable all quick starts at once, click the double arrow buttons to move all of the quick starts to the appropriate list.
+
+</div>

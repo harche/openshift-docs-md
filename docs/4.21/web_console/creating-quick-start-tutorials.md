@@ -88,7 +88,25 @@ The main content area of a quick start includes the following sections:
 
 OpenShift Container Platform introduces the quick start custom resource, which is defined by a `ConsoleQuickStart` object. Operators and administrators can use this resource to contribute quick starts to the cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have cluster administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To create a new quick start, run:
 
@@ -106,9 +124,19 @@ OpenShift Container Platform introduces the quick start custom resource, which i
 
 4.  Save your edits.
 
+</div>
+
 ## View the quick start API documentation
 
 You can view the API documentation for the `ConsoleQuickStart` resource by using the `oc explain` command.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To see the quick start API documentation, run:
 
@@ -118,15 +146,19 @@ You can view the API documentation for the `ConsoleQuickStart` resource by using
 
   Run `oc explain -h` for more information about `oc explain` usage.
 
+</div>
+
 ## Map the elements in the quick start to the quick start CR
 
 These mappings show where each part of the quick start custom resource (CR) is displayed in the quick start within the web console.
 
 ### Conclusion element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the conclusion element in the YAML file**
+<div class="title">
+
+Viewing the conclusion element in the YAML file
 
 </div>
 
@@ -140,6 +172,8 @@ conclusion: >-
   Your Spring application is deployed and ready.
 ```
 
+</div>
+
 The `conclusion` field defines the conclusion text.
 
 In the web console, the conclusion is displayed in the last section of the quick start.
@@ -150,9 +184,11 @@ In the web console, the conclusion is displayed in the last section of the quick
 
 ### Description element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the description element in the YAML file**
+<div class="title">
+
+Viewing the description element in the YAML file
 
 </div>
 
@@ -166,6 +202,8 @@ spec:
 ...
 ```
 
+</div>
+
 The `description` field defines the description text.
 
 In the web console, the description is displayed on the introductory tile of the quick start on the **Quick Starts** page.
@@ -176,9 +214,11 @@ In the web console, the description is displayed on the introductory tile of the
 
 ### The `displayName` element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the `displayName` element in the YAML file**
+<div class="title">
+
+Viewing the `displayName` element in the YAML file
 
 </div>
 
@@ -192,6 +232,8 @@ spec:
   displayName: Get started with Spring
   durationMinutes: 10
 ```
+
+</div>
 
 The `displayName` field defines the display name text.
 
@@ -203,9 +245,11 @@ In the web console, the display name is displayed on the introductory tile of th
 
 ### The `durationMinutes` element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the `durationMinutes` element in the YAML file**
+<div class="title">
+
+Viewing the `durationMinutes` element in the YAML file
 
 </div>
 
@@ -220,6 +264,8 @@ spec:
   durationMinutes: 10
 ```
 
+</div>
+
 The `durationMinutes` field defines, in minutes, how long the quick start should take to complete.
 
 In the web console, the duration minutes element is displayed on the introductory tile of the quick start on the **Quick Starts** page.
@@ -230,9 +276,11 @@ In the web console, the duration minutes element is displayed on the introductor
 
 ### Icon element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the icon element in the YAML file**
+<div class="title">
+
+Viewing the icon element in the YAML file
 
 </div>
 
@@ -247,6 +295,8 @@ spec:
 ...
 ```
 
+</div>
+
 The `icon` field defines the icon as a base64 value.
 
 In the web console, the icon is displayed on the introductory tile of the quick start on the **Quick Starts** page.
@@ -257,9 +307,11 @@ In the web console, the icon is displayed on the introductory tile of the quick 
 
 ### Introduction element
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Viewing the introduction element in the YAML file**
+<div class="title">
+
+Viewing the introduction element in the YAML file
 
 </div>
 
@@ -288,6 +340,8 @@ In the web console, the icon is displayed on the introductory tile of the quick 
 ...
 ```
 
+</div>
+
 The `introduction` field introduces the quick start and lists the tasks within it.
 
 In the web console, after you click a quick start card, a side panel slides in that introduces the quick start and lists the tasks within it.
@@ -300,6 +354,14 @@ In the web console, after you click a quick start card, a side panel slides in t
 
 A default icon is provided for all quick starts. You can provide your own custom icon.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Find the `.svg` file that you want to use as your custom icon.
 
 2.  Use an [online tool to convert the text to base64](https://cryptii.com/pipes/text-to-base64).
@@ -310,6 +372,8 @@ A default icon is provided for all quick starts. You can provide your own custom
     icon: >-
        data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHJvbGU9ImltZyIgdmlld.
     ```
+
+</div>
 
 ## Limit access to a quick start
 
@@ -444,11 +508,8 @@ Embed executable and copyable CLI code snippets in a quick start using this mark
     `code block`{{copy}}
     `code block`{{execute}}
 
-<div class="note">
-
-If the `execute` syntax is used, the **Copy to clipboard** action is present whether you have the Web Terminal Operator installed or not.
-
-</div>
+> [!NOTE]
+> If the `execute` syntax is used, the **Copy to clipboard** action is present whether you have the Web Terminal Operator installed or not.
 
 ### Syntax for multi-line code snippets
 

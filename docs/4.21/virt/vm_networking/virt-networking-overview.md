@@ -2,13 +2,10 @@ To connect virtual machines (VMs) to cluster networks, configure default and use
 
 OpenShift Virtualization support for single-stack IPv6 clusters is limited to the OVN-Kubernetes localnet and Linux bridge Container Network Interface (CNI) plugins.
 
-<div class="important">
-
-Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The following figure illustrates the typical network setup of OpenShift Virtualization. Other configurations are also possible.
 
@@ -31,17 +28,11 @@ The following figure illustrates the typical network setup of OpenShift Virtuali
 
 ![20](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTUzQjc5MjNERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTUzQjc5MjRERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNTNCNzkyMURFRTIxMUU5OTE0RDkyNzU5NERGNTU2MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNTNCNzkyMkRFRTIxMUU5OTE0RDkyNzU5NERGNTU2MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgiZEKEAAAReSURBVHjarJdZKG1vGMbtZTtmGVNELoSiZMwQZZ4uKC4UF8iVuJCxFDJcuZKhDCkuhEiGhDKUK+FCKUKSMUNklvH8nOXPPv72svbhvdlrrf1937Pe53vf53uW4vn5WeuruLi4mJ2dnZycnJmZWV9ff3h4UCgUT09P5ubmXl5e4eHhfn5+rq6uX66jkAbb2Njo6ekZHx8H4+bmBoxPh1lbW4OanJwcEhKiq6urMdjh4WFtbW1HR8fx8bGOjg5LqEMiyPX29lapVPr6+ubl5cXExGgA1t/fX1ZWtrq6amBgwBJa8oKlyF5bWzs1NbW6utrU1PRrsJqaGoayJXp6elqaBxMvLy9Jsbm52cXFRQqMhADT19fnBbW+EeA5Ojp2dna6ubl9DgZMaWmpoaGhIAha3ws2GDxnZ+eBgQE7O7uPYENDQ3DNDn0zJ1W8s7Oz2NjY7u5uSownrxkcHByUlJQA/FNIYr2YmJiMjIzU19eLT17B6urqqL1/qwjpYPsB29raeqVxc3MzKCjo6urq0yqHDbGNJFaEDxZV17Ln5+cFBQWVlZUvq6MRR0dHpPzpUFrH29u7qqpKAmxpaSk/P18dMbxHV1dXdna2kj0cHR399euXhDpYWFgEBARIgFHADFP3L9Wxs7MzMTGhnJubQ/ckBI02gOH9/f0PLLE6QmxkZMT17u6uhJiJi0xNTSnRcgmFFUlYXFyMjIxEGlSRjI2Ne3t7AeMl2tvbpcGohrW1NSWnhvQ4/r27u4MH1YeQX1RU5ODgwPXCwgIUSVcyYHSXAKCc9tRRCZ44OTnl5OSI/zY0NFxfX0uLDuV6enoqPD4+ato60J6RkWFjYyOmNTw8zOHw5SyABGkO/x9QiuKlp6e/pUX5yNFSgATVbZcTdHdWVpaVlRXXy8vLY2NjVJBM9RLoIY2QaHD0Wrxtamo6OTmRI6ekBNWCp6enfDAqHiGghbleWVmh9OXslrhhkCHgjWQiUXJIaGJionjb1taGPZF5Stzf39va2gqBgYF4IwmxeWdcEHJzc8XS397e7uvrk5mWmBn8C5QWP9KiLpZ7fHx8dHS0eNvS0oJEyfRCvCgtHxUV9XLEIMRJSUnSr8mr4SmgQlTI+fl54GW6B/gPDg4eHBx8ASMtDm8UWaKIRdEi3gRTJpLo73AGcXFxLxPIsbi4mMkSPcccdsvwv5DviGj5sLAwOHy3BRERESkpKXj6n/UEFKGZmVlFRYW4u8IbSzzy8fHBf2kqYBKNDO34XXd3978MD2Fpadna2koV/AgeSNRFYWFhWlra+xGqOgK3jIelGbAo32SPouDAw1//dV5/GIdb5quCcxk85vyDV4QYugj79gFJ7VcMXDOa44POpcpF1ZBT4vAfGhpaXl7u4eGh2ccgX4KNjY00I56AVZR/QlUMmfvwJ2h5LJO/v39mZmZCQoK6xlB8+Zm7t7c3PT2NN8Iy47FwH+IUUYTQcnt7e/LgA/BF/ST777cAAwAcKGKk5hZhPwAAAABJRU5ErkJggg==) Secondary VM networks are typically bridged directly to a physical network, with or without VLAN encapsulation. It is also possible to create virtual overlay networks for secondary networks.
 
-<div class="important">
+> [!IMPORTANT]
+> Connecting VMs directly to the underlay network is not supported on public clouds.
 
-Connecting VMs directly to the underlay network is not supported on public clouds.
-
-</div>
-
-<div class="note">
-
-Connecting VMs to user-defined networks with the `layer2` topology is recommended on public clouds.
-
-</div>
+> [!NOTE]
+> Connecting VMs to user-defined networks with the `layer2` topology is recommended on public clouds.
 
 ![20](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUNCQ0YxRUVERUUxMTFFOTkxNEQ5Mjc1OTRERjU1NjIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTUzQjc5MjBERUUyMTFFOTkxNEQ5Mjc1OTRERjU1NjIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1Q0JDRjFFQ0RFRTExMUU5OTE0RDkyNzU5NERGNTU2MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1Q0JDRjFFRERFRTExMUU5OTE0RDkyNzU5NERGNTU2MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuRvZu8AAATVSURBVHjarJdbKN9/GMf9Ds6GOYzlcKXIRI6x0BznVKymZLtYsRC5UexPsVYupFbL4cKGSEKxUJLDKFciuRE2zMScF5uZs/+Lrwzx+f2M5+r7+/6ez/P+PKf383xlh4eHGqrk169f/f39nz596uvrm5iY2Nvbk8lkBwcHJiYm7u7uwcHB3t7eDx48UGlHJgabmppqaGjo6OgA48+fP2BcqmZhYQFqXFxcQECAtrb2tcGWlpbevXtXXV29srKiqamJiauQEHzd2tpSKpVeXl4ZGRnh4eHXAPv48WNeXt7nz5/19PQwoaGeYArvFQrF8+fP8/PzjY2NVYMVFhaiSkp0dHQ0ri8c3NjYwMWysjIHBwcRGA4BpqurywU1biDg2dnZ1dbWOjk5XQ4GTG5urr6+vlwu17iZkGDw7O3tm5ubbWxsLoK1trYSazJ0Q5/O4q2vr0dERNTX11NivDnxYHFxMScnB+DbQpLqxdDQsK2trbi4WHpzAlZUVETt/VtFiIX0AzYzM3MCNj09XVVVRZWrPLm9vf37vOzv74uPEMC5ubn379/zfNRDcMTy8jIuq+whV1dXckBZc99v377BLJ2dnZAZIREwEcp1dXVpaWmytbW1J0+eDA4OCmKIoZ2dnfT09KysLAMDg7N/wZkpKSmwmpaWlphdy8vLFUFBQZWVlZgTsBFUFBkZWVJSIlkcHR0dHx+HIOAwa2trR0fHpqYmelnMZ3fu3JHD5QKGPSWF+Ph46Zmb+fn5BQYGPn36lODzxtfX19nZmXQKLNBRX758kTM1xEiScC/poaWlZXV1lWrq6ur6+vWr1E+4KJ4egNFdCm6kcqQRBIqKSPIMHRBGHhISEpgpWBkZGXn79i3eC3iHvwCSmZmZqfSM26CamppKgZCqzc1NqOH+/fv8NTQ0lJSURApV9ihGlOrEEM/AuHv3rvRT71hOr2xkZIRb6rCXzNTUVEy7GILDampqQkJC+NnT01NRUfHz589Hjx4lJyfTQ5R1dHS0uHkkzxTkgMoWKFGrYWFhmZmZPI+NjUVFRRE6SAfSw6eHDx9SHRBCY2OjoNW48dEwcXNzUzkMWTHEOvfu3RMrwGrm5uZKdqPu7m5x1RKi3d1dCpLJC/GcDaOkQ2zFYBy3srKSUcexsbFwpWDXIM7/Hcul/w4PD2OB5hNYIK/Z2dlyhqmHh4c4bSSjoKDg5cuXAwMDcKn0EracnJxkA5OoRIBEaVA7jx8/PprU7e3tHBCPGNRoL1jY1tbW0tIS0z9+/JidnV1YWOAq0iC+Sjjo7+8P9RyB4RaDg1tTxyqLheiTbWmmK49Fnf2OzQACOuowfHz16hXdprI30aHQiQF1zCl1VkoGLIOFGP5dC2jYZ8+ekcbb3QkIA7zz5s0b6VryUy7hlaenJ/uXOgSm5rZKEbHvuri4nFt4EBj5w4cPbJa3ggcSdQHvvHjx4m8WzmrQs+ywNAM9e8PoURSMCPbrcym/oMe2zFdFaGgoeJz5h12RwFBBrG8XkK78iiHWaLN0wCz0g7iNzpY48WdjeP36NXvY9T4G2ZlKS0tpRpoXK1JXnV2ZObt3LHQeLeHj45OYmBgTE3PVzJKp3Am+f//e29sL1bIyz8/PM6OlIxIJweVwCn7wAQjtiUfj/wIMAK6TwUom7w/wAAAAAElFTkSuQmCC) Secondary VM networks can be defined on dedicated set of NICs, as shown in figure 1, or they can use the machine network.
 
@@ -70,7 +61,7 @@ A cluster-scoped CRD introduced by the user-defined network API that cluster adm
 `NodeNetworkConfigurationPolicy`
 A CRD introduced by the nmstate project, describing the requested network configuration on nodes. You update the node network configuration, including adding and removing interfaces, by applying a `NodeNetworkConfigurationPolicy` manifest to the cluster.
 
-# Manage overlay networks
+# Overlay networks
 
 To ensure your virtual machines (VMs) connect reliably by using the standard OpenShift Container Platform networking model, configure the default pod network for cluster-wide connectivity.
 
@@ -94,10 +85,7 @@ Configure a secondary UDN with layer 2 topology to create a private isolated com
 Configure external ingress by exposing a VM as a service
 You can expose a VM within the cluster or outside the cluster by creating a `Service` object. For on-premise clusters, you can configure a load balancing service by using the MetalLB Operator. You can install the MetalLB Operator by using the OpenShift Container Platform web console or the CLI.
 
-Add a VM to a Service Mesh
-OpenShift Virtualization is integrated with Red Hat OpenShift Service Mesh. You can monitor, visualize, and control traffic between pods and virtual machines on the default pod network with IPv4.
-
-# Connect to the provider’s physical network
+# VM physical network access methods
 
 To give virtual machines (VMs) access to the internet or other physical devices, you configure the node network, define the secondary network, and attach the VM to the secondary network.
 
@@ -119,11 +107,8 @@ Cluster administrators can use the following steps to configure the localnet UDN
 Connect a VM to the physical network by using a Linux bridge
 Install the Kubernetes NMState Operator to configure Linux bridges, VLANs, and bonding for your secondary networks. The OVN-Kubernetes `localnet` topology is the recommended way of connecting a VM to the underlying physical network, but OpenShift Virtualization also supports Linux bridge networks.
 
-<div class="note">
-
-You cannot directly attach to the default machine network when using Linux bridge networks.
-
-</div>
+> [!NOTE]
+> You cannot directly attach to the default machine network when using Linux bridge networks.
 
 You can create a Linux bridge network and attach a VM to the network by performing the following steps:
 
@@ -150,7 +135,7 @@ You can connect a VM to an SR-IOV network by performing the following steps:
 
 <!-- -->
 
-Connect a VM to the physical network by using DPDK drivers with SR-IOV hardware
+VM connectivity with DPDK and SR-IOV
 The Data Plane Development Kit (DPDK) provides a set of libraries and drivers for fast packet processing. You can configure clusters and VMs to run DPDK workloads over SR-IOV networks by performing the following steps:
 
 1.  Configure the node hardware.
@@ -159,21 +144,21 @@ The Data Plane Development Kit (DPDK) provides a set of libraries and drivers fo
 
 3.  Configure the VM and guest OS to run DPDK applications.
 
-## Comparing Linux bridge CNI and OVN-Kubernetes localnet topology
+## Linux bridge CNI and OVN-Kubernetes localnet comparison
 
-A comparison of features available when using the Linux bridge CNI compared to the localnet topology for an OVN-Kubernetes plugin.
+The following table compares the features available when you use the Linux bridge CNI with the OVN-Kubernetes localnet topology.
 
-| Feature                                       | Available on Linux bridge CNI                          | Available on OVN-Kubernetes localnet |
-|-----------------------------------------------|--------------------------------------------------------|--------------------------------------|
-| Layer 2 access to the underlay native network | Only on secondary network interface controllers (NICs) | Yes                                  |
-| Layer 2 access to underlay VLANs              | Yes                                                    | Yes                                  |
-| Layer 2 trunk access                          | Yes                                                    | No                                   |
-| Network policies                              | No                                                     | Yes                                  |
-| MAC spoof filtering                           | Yes                                                    | Yes (Always on)                      |
+| Feature | Available on Linux bridge CNI | Available on OVN-Kubernetes localnet |
+|----|----|----|
+| Layer 2 access to the underlay native network | Only on secondary network interface controllers (NICs) | Yes |
+| Layer 2 access to underlay VLANs | Yes | Yes |
+| Layer 2 trunk access | Yes | No |
+| Network policies | No | Yes |
+| MAC spoof filtering | Yes | Yes (Always on) |
 
 Linux bridge CNI compared to an OVN-Kubernetes localnet topology
 
-# Manage VM network interface configuration
+# VM network interface management options
 
 Manage virtual machine (VM) network configuration to scale connectivity without incurring application downtime, troubleshoot network latency, define and automate management of MAC address pools, configure IP addresses, and isolate live migration traffic.
 
@@ -186,11 +171,8 @@ You can access a virtual machine (VM) that is attached to a secondary network in
 Manage the link state of a VM network interface
 You can manage the link state of a primary or secondary VM network interface by using the OpenShift Container Platform web console or the command line. By specifying the link state, you can logically connect or disconnect the virtual network interface controller (vNIC) from a network.
 
-<div class="note">
-
-OpenShift Virtualization does not support link state management for Single Root I/O Virtualization (SR-IOV) secondary network interfaces and their link states are not reported.
-
-</div>
+> [!NOTE]
+> OpenShift Virtualization does not support link state management for Single Root I/O Virtualization (SR-IOV) secondary network interfaces and their link states are not reported.
 
 Configure and view VM IP address
 You can configure the IP address of a secondary network interface when you create a VM. The IP address is provisioned with cloud-init. You can view the IP address of a VM by using the OpenShift Container Platform web console or the command line. The network information is collected by the QEMU guest agent.
@@ -201,7 +183,10 @@ The KubeMacPool component allocates MAC addresses for VM network interfaces from
 Configure a dedicated network for live migration
 You can configure a dedicated Multus network for live migration. A dedicated network minimizes the effects of network saturation on tenant workloads during live migration.
 
-# Configure VM SSH access
+View network details in the web console
+On the **VirtualMachine details** page, the **Configuration** → **Network** tab lists the VM’s network interfaces. Each network name is a link that opens the details page for the associated network resource, such as a network attachment definition (NAD), user-defined network (UDN), or cluster user-defined network (CUDN). Networks that use the default pod network display "Pod networking" as plain text because there is no corresponding network resource to go to.
+
+# VM SSH access
 
 You can use SSH to securely access your virtual machines (VMs) from the command line.
 
@@ -247,7 +232,7 @@ You configure a secondary network, attach a VM to the secondary network interfac
 
 - [Install the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
 
-- [Connect a VM to the physical network by using DPDK drivers with SR-IOV hardware](../../virt/vm_networking/virt-using-dpdk-with-sriov.xml#virt-using-dpdk-with-sriov)
+- [VM connectivity with DPDK and SR-IOV](../../virt/vm_networking/virt-using-dpdk-with-sriov.xml#virt-using-dpdk-with-sriov)
 
 - [Configure a dedicated network for live migration](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-dedicated-network-live-migration)
 

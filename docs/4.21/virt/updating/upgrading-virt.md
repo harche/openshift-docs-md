@@ -1,6 +1,6 @@
 Learn how to keep OpenShift Virtualization updated and compatible with OpenShift Container Platform.
 
-# About updating OpenShift Virtualization
+# OpenShift Virtualization update behavior
 
 When you install OpenShift Virtualization, you select an update channel and an approval strategy. Both settings affect supportability.
 
@@ -18,11 +18,8 @@ Most OpenShift Virtualization installations use the **stable** release channel a
 
 With these settings, the update process starts automatically when a new Operator version is available in the **stable** channel. This keeps OpenShift Virtualization and OpenShift Container Platform versions compatible and ensures that OpenShift Virtualization is suitable for production environments.
 
-<div class="note">
-
-Each minor version of OpenShift Virtualization is supported only with the corresponding OpenShift Container Platform version. For example, you must run OpenShift Virtualization 4.21 on OpenShift Container Platform 4.21.
-
-</div>
+> [!NOTE]
+> Each minor version of OpenShift Virtualization is supported only with the corresponding OpenShift Container Platform version. For example, you must run OpenShift Virtualization 4.21 on OpenShift Container Platform 4.21.
 
 ## What to expect
 
@@ -34,13 +31,10 @@ You can expect consistent update behavior in OpenShift Virtualization, including
 
 - An update preserves data volumes and their associated persistent volume claims.
 
-<div class="important">
-
-If virtual machines use hostpath provisioner storage, they cannot be live migrated and might block an OpenShift Container Platform cluster update.
-
-As a workaround, reconfigure the virtual machines so they can power off automatically during a cluster update. Set the `evictionStrategy` field to `None` and the `runStrategy` field to `Always`.
-
-</div>
+> [!IMPORTANT]
+> If virtual machines use hostpath provisioner storage, they cannot be live migrated and might block an OpenShift Container Platform cluster update.
+>
+> As a workaround, reconfigure the virtual machines so they can power off automatically during a cluster update. Set the `evictionStrategy` field to `None` and the `runStrategy` field to `Always`.
 
 ## How updates work
 
@@ -50,13 +44,31 @@ Learn how Operator Lifecycle Manager (OLM) updates the OpenShift Virtualization 
 
 - OLM provides z-stream and minor version updates for OpenShift Virtualization. Minor version updates become available when you update OpenShift Container Platform to the next minor version. You cannot update OpenShift Virtualization to the next minor version without first updating OpenShift Container Platform.
 
-## Changing update settings
+## Change update settings
 
 You can control how and when updates are installed by changing the update channel and approval strategy for the OpenShift Virtualization Operator subscription.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift Virtualization Operator.
 
 - You have logged in to the OpenShift Container Platform web console as a cluster administrator.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Ecosystem** → **Installed Operators**.
 
@@ -70,6 +82,8 @@ You can control how and when updates are installed by changing the update channe
 
 6.  Click **Save**.
 
+</div>
+
 ## Manual approval strategy
 
 If you use the **Manual** approval strategy, you must approve every pending update. If OpenShift Container Platform and OpenShift Virtualization updates are out of sync, your cluster becomes unsupported.
@@ -80,7 +94,25 @@ To avoid risk to cluster supportability and functionality, use the **Automatic**
 
 If an installed Operator has the approval strategy in its subscription set to **Manual**, you must manually approve the update before installation can begin. Manual approval reviews the changes and control when updates are applied to prevent unexpected downtime.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An Operator previously installed using Operator Lifecycle Manager (OLM).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -94,7 +126,9 @@ If an installed Operator has the approval strategy in its subscription set to **
 
 6.  Navigate back to the **Ecosystem** → **Installed Operators** page to monitor the progress of the update. When complete, the status changes to **Succeeded** and **Up to date**.
 
-# Remove unused Operators and resources
+</div>
+
+# Operator and resource cleanup
 
 When updating OpenShift Virtualization to version 4.21, you can remove certain Operators and resources that are no longer required. This helps reclaim space and resources on your cluster.
 
@@ -108,25 +142,37 @@ All VM templates that are included with OpenShift Virtualization now use the RHE
 
 Updating OpenShift Virtualization does not change the `machineType` value of any existing VMs. These VMs continue to function as they did before the update. You can optionally change a VM’s machine type so that it can benefit from RHEL 9 improvements.
 
-<div class="important">
+> [!IMPORTANT]
+> Before you change a VM’s `machineType` value, you must shut down the VM.
 
-Before you change a VM’s `machineType` value, you must shut down the VM.
-
-</div>
-
-# Monitoring update status
+# Monitor update status
 
 To monitor the status of a OpenShift Virtualization Operator update, watch the cluster service version (CSV) `PHASE`. You can also monitor the CSV conditions in the web console or by using the CLI.
 
-<div class="note">
+> [!NOTE]
+> The `PHASE` and conditions values are approximations that are based on available information.
 
-The `PHASE` and conditions values are approximations that are based on available information.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have logged in to the OpenShift Container Platform cluster as a cluster administrator.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command:
 
@@ -159,15 +205,14 @@ The `PHASE` and conditions values are approximations that are based on available
     Upgradeable        True  Reconcile completed successfully
     ```
 
+</div>
+
 # VM workload updates
 
 When you update OpenShift Virtualization, virtual machine workloads, including `libvirt`, `virt-launcher`, and `qemu`, update automatically if they support live migration.
 
-<div class="note">
-
-Each virtual machine has a `virt-launcher` pod that runs the virtual machine instance (VMI). The `virt-launcher` pod runs an instance of `libvirt`, which is used to manage the virtual machine (VM) process.
-
-</div>
+> [!NOTE]
+> Each virtual machine has a `virt-launcher` pod that runs the virtual machine instance (VMI). The `virt-launcher` pod runs an instance of `libvirt`, which is used to manage the virtual machine (VM) process.
 
 You can configure how workloads are updated by editing the `spec.workloadUpdateStrategy` stanza of the `HyperConverged` custom resource (CR). There are two available workload update methods: `LiveMigrate` and `Evict`.
 
@@ -199,25 +244,37 @@ If the pod is stuck in the pending state for any reason.
 
 When a VMI fails to migrate, the `virt-controller` tries to migrate it again. It repeats this process until all migratable VMIs are running on new `virt-launcher` pods. If a VMI is improperly configured, however, these attempts can repeat indefinitely.
 
-<div class="note">
+> [!NOTE]
+> Each attempt corresponds to a migration object. Only the five most recent attempts are held in a buffer. This prevents migration objects from accumulating on the system while retaining information for debugging.
 
-Each attempt corresponds to a migration object. Only the five most recent attempts are held in a buffer. This prevents migration objects from accumulating on the system while retaining information for debugging.
-
-</div>
-
-## Configuring workload update methods
+## Configure workload update methods
 
 You can configure how virtual machine workloads are updated during cluster upgrades by editing the `HyperConverged` custom resource (CR).
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have enabled live migration in the cluster.
 
-  <div class="note">
-
-  If a `VirtualMachineInstance` CR contains `evictionStrategy: LiveMigrate` and the virtual machine instance (VMI) does not support live migration, the VMI will not update.
-
-  </div>
+  > [!NOTE]
+  > If a `VirtualMachineInstance` CR contains `evictionStrategy: LiveMigrate` and the virtual machine instance (VMI) does not support live migration, the VMI will not update.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To open the `HyperConverged` CR in your default editor, run the following command:
 
@@ -252,33 +309,47 @@ You can configure how virtual machine workloads are updated during cluster upgra
 
     - `spec.workloadUpdateStrategy.batchEvictionInterval` defines the interval to wait before evicting the next batch of workloads. This does not apply to the `LiveMigrate` method.
 
-      <div class="note">
-
-      You can configure live migration limits and timeouts by editing the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.
-
-      </div>
+      > [!NOTE]
+      > You can configure live migration limits and timeouts by editing the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.
 
 3.  To apply your changes, save and exit the editor.
 
-## Viewing outdated VM workloads
+</div>
+
+## View outdated VM workloads
 
 You can view a list of outdated virtual machine (VM) workloads by using the CLI.
 
-<div class="note">
+> [!NOTE]
+> If there are outdated virtualization pods in your cluster, the `OutdatedVirtualMachineInstanceWorkloads` alert fires.
 
-If there are outdated virtualization pods in your cluster, the `OutdatedVirtualMachineInstanceWorkloads` alert fires.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To view a list of outdated virtual machine instances (VMIs), run the following command:
 
   ``` terminal
   $ oc get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
   ```
+
+</div>
 
 # Control Plane Only updates
 
@@ -288,35 +359,37 @@ Every even-numbered minor version of OpenShift Container Platform is an Extended
 
 To move between EUS versions, first update OpenShift Virtualization to the latest z-stream release of the next odd-numbered minor version. Then update the cluster to the target EUS version of OpenShift Container Platform. After the cluster update, update OpenShift Virtualization to the target EUS version.
 
-<div class="note">
-
-You can update OpenShift Virtualization directly to the latest z-stream release of your current minor version without applying each intermediate z-stream update.
-
-</div>
+> [!NOTE]
+> You can update OpenShift Virtualization directly to the latest z-stream release of your current minor version without applying each intermediate z-stream update.
 
 For more information about EUS versions, see the "OpenShift Container Platform Life Cycle Policy".
 
-## Preventing workload updates during a Control Plane Only update
+## Prevent workload updates during a Control Plane Only update
 
 When updating between Extended Update Support (EUS) versions, temporarily disable automatic workload updates. This prevents OpenShift Virtualization from migrating or evicting virtual machines during the upgrade.
 
-<div class="important">
+> [!IMPORTANT]
+> In OpenShift Container Platform 4.16, the underlying Red Hat Enterprise Linux CoreOS (RHCOS) upgraded to version 9.4 of Red Hat Enterprise Linux (RHEL). All `virt-launcher` pods in the cluster must use the same RHEL version.
+>
+> After upgrading to OpenShift Container Platform 4.16, re-enable workload updates in OpenShift Virtualization. This allows `virt-launcher` pods to update. Before upgrading to the next OpenShift Container Platform version, verify that all VMIs use up-to-date workloads:
+>
+> ``` terminal
+> $ oc get kv kubevirt-kubevirt-hyperconverged -o json -n openshift-cnv | jq .status.outdatedVirtualMachineInstanceWorkloads
+> ```
+>
+> If the command returns a value greater than `0`, list VMIs with outdated `virt-launcher` pods and start live migration:
+>
+> ``` terminal
+> $ oc get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
+> ```
+>
+> For supported OpenShift Container Platform releases and their RHEL versions, see [RHEL Versions Utilized by RHCOS and OpenShift Container Platform](https://access.redhat.com/articles/6907891).
 
-In OpenShift Container Platform 4.16, the underlying Red Hat Enterprise Linux CoreOS (RHCOS) upgraded to version 9.4 of Red Hat Enterprise Linux (RHEL). All `virt-launcher` pods in the cluster must use the same RHEL version.
+<div>
 
-After upgrading to OpenShift Container Platform 4.16, re-enable workload updates in OpenShift Virtualization. This allows `virt-launcher` pods to update. Before upgrading to the next OpenShift Container Platform version, verify that all VMIs use up-to-date workloads:
+<div class="title">
 
-``` terminal
-$ oc get kv kubevirt-kubevirt-hyperconverged -o json -n openshift-cnv | jq .status.outdatedVirtualMachineInstanceWorkloads
-```
-
-If the command returns a value greater than `0`, list VMIs with outdated `virt-launcher` pods and start live migration:
-
-``` terminal
-$ oc get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
-```
-
-For supported OpenShift Container Platform releases and their RHEL versions, see [RHEL Versions Utilized by RHCOS and OpenShift Container Platform](https://access.redhat.com/articles/6907891).
+Prerequisites
 
 </div>
 
@@ -329,6 +402,16 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 - You paused the worker nodes' machine config pools as described in the OpenShift Container Platform documentation.
 
 - Use the default **Automatic** approval strategy. If you use the **Manual** approval strategy, you must approve all pending updates in the web console. For more details, see "Manually approving a pending Operator update".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command and record the `workloadUpdateMethods` value:
 
@@ -362,11 +445,8 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
     $ oc get clusterversion
     ```
 
-    <div class="note">
-
-    Updating OpenShift Container Platform to the next version is a prerequisite for updating OpenShift Virtualization. For more details, see the "Updating clusters" section of the OpenShift Container Platform documentation.
-
-    </div>
+    > [!NOTE]
+    > Updating OpenShift Container Platform to the next version is a prerequisite for updating OpenShift Virtualization. For more details, see the "Updating clusters" section of the OpenShift Container Platform documentation.
 
 6.  Update OpenShift Virtualization.
 
@@ -417,15 +497,35 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
     "[{\"op\":\"add\",\"path\":\"/spec/workloadUpdateStrategy/workloadUpdateMethods\", \"value\":{WorkloadUpdateMethodConfig}}]"
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the status of VM migrations:
 
   ``` terminal
   $ oc get vmim -A
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - Unpause the machine config pools for each compute node.
+
+</div>
 
 # Early access releases
 
@@ -437,11 +537,8 @@ The **stable** channel matches the underlying OpenShift Container Platform versi
 
 Red Hat promotes some candidate releases to the **stable** channel. Other candidate releases might not include all GA features. Red Hat might remove some features from candidate builds before GA. Candidate releases might not offer update paths to later GA releases.
 
-<div class="important">
-
-Use the candidate channel only for testing where you can delete and re-create the cluster.
-
-</div>
+> [!IMPORTANT]
+> Use the candidate channel only for testing where you can delete and re-create the cluster.
 
 # Additional resources
 

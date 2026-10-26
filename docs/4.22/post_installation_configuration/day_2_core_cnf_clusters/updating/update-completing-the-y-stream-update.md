@@ -4,15 +4,28 @@ Complete the following steps to perform a y-stream cluster update.
 
 When you update to all versions from 4.11 and later, you must manually acknowledge that the update can continue.
 
-<div class="important">
+> [!IMPORTANT]
+> Before you acknowledge the update, verify that you are not using any of the Kubernetes APIs that are removed from the version you are updating to. For example, in OpenShift Container Platform 4.17, there are no API removals. See "Kubernetes API removals" for more information.
 
-Before you acknowledge the update, verify that you are not using any of the Kubernetes APIs that are removed from the version you are updating to. For example, in OpenShift Container Platform 4.17, there are no API removals. See "Kubernetes API removals" for more information.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have verified that APIs for all of the applications running on your cluster are compatible with the next Y-stream release of OpenShift Container Platform. For more details about compatibility, see "Verifying cluster API versions between update versions".
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Check the cluster update status to determine if administrative acknowledgment is required by running the following command:
 
@@ -50,13 +63,18 @@ Before you acknowledge the update, verify that you are not using any of the Kube
     4.16.34     quay.io/openshift-release-dev/ocp-release@sha256:41bb08c560f6db5039ccdf242e590e8b23049b5eb31e1c4f6021d1d520b353b8
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > In this example, a linked Red Hat Knowledgebase article ([Preparing to upgrade to OpenShift Container Platform 4.16](https://access.redhat.com/articles/7031404)) provides more detail about verifying API compatibility between releases.
 
-  In this example, a linked Red Hat Knowledgebase article ([Preparing to upgrade to OpenShift Container Platform 4.16](https://access.redhat.com/articles/7031404)) provides more detail about verifying API compatibility between releases.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the update by running the following command:
 
@@ -73,23 +91,35 @@ Before you acknowledge the update, verify that you are not using any of the Kube
   }
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > In this example, the cluster is updated from version 4.14 to 4.15, and then from 4.15 to 4.16 in a Control Plane Only update.
 
-  In this example, the cluster is updated from version 4.14 to 4.15, and then from 4.15 to 4.16 in a Control Plane Only update.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Kubernetes API removals](../../../updating/preparing_for_updates/updating-cluster-prepare.xml#kube-api-removals_updating-cluster-prepare)
+
+</div>
 
 # Starting the cluster update
 
 When updating from one y-stream release to the next, you must ensure that the intermediate z-stream releases are also compatible.
 
-<div class="note">
+> [!NOTE]
+> You can verify that you are updating to a viable release by running the `oc adm upgrade` command. The `oc adm upgrade` command lists the compatible update releases.
 
-You can verify that you are updating to a viable release by running the `oc adm upgrade` command. The `oc adm upgrade` command lists the compatible update releases.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -100,6 +130,10 @@ You can verify that you are updating to a viable release by running the `oc adm 
     ```
 
     <div class="important">
+
+    <div class="title">
+
+    </div>
 
     - **Control plane only update**: Ensure you point to the interim \<y+1\> release path
 
@@ -117,11 +151,31 @@ You can verify that you are updating to a viable release by running the `oc adm 
 
     \+ `<version>`:: Specifies the version number for your particular update, such as `4.15.33`.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Selecting the target release](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-api.xml#update-selecting-the-target-release_update-api)
+
+</div>
 
 # Monitoring the cluster update
 
 You should check the cluster health often during the update. Check for the node status, cluster Operators status and failed pods.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Monitor the cluster update. For example, to monitor the cluster update from version 4.14 to 4.15, run the following command:
 
@@ -129,9 +183,11 @@ You should check the cluster health often during the update. Check for the node 
   $ watch "oc get clusterversion; echo; oc get co | head -1; oc get co | grep 4.14; oc get co | grep 4.15; echo; oc get no; echo; oc get po -A | grep -E -iv 'running|complete'"
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -164,21 +220,26 @@ You should check the cluster health often during the update. Check for the node 
   openshift-marketplace   redhat-marketplace-rf86t   0/1     ContainerCreating   0          0s
   ```
 
-<div class="formalpara-title">
+  </div>
 
-**Verification**
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 During the update the `watch` command cycles through one or several of the cluster Operators at a time, providing a status of the Operator update in the `MESSAGE` column.
 
+</div>
+
 When the cluster Operators update process is complete, each control plane nodes is rebooted, one at a time.
 
-<div class="note">
-
-During this part of the update, messages are reported that state cluster Operators are being updated again or are in a degraded state. This is because the control plane node is offline while it reboots nodes.
-
-</div>
+> [!NOTE]
+> During this part of the update, messages are reported that state cluster Operators are being updated again or are in a degraded state. This is because the control plane node is offline while it reboots nodes.
 
 As soon as the last control plane node reboot is complete, the cluster version is displayed as updated.
 
@@ -214,15 +275,25 @@ worker-1       Ready    mcp-2,worker           5d    v1.28.13+2ca1a23
 
 Software needs to vetted before it is loaded onto a production cluster. Production clusters are also quite often configured in disconnected network, which means that they are not always directly connected to the internet. Because the clusters are in a disconnected network, the OpenShift Container Platform Operators are configured for manual update during installation so that new versions can be managed on a cluster-by-cluster basis. Complete the following procedure to move the Operators to the newer versions.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Check to see which Operators need to be updated:
 
     ``` terminal
     $ oc get installplan -A | grep -E 'APPROVED|false'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -232,6 +303,8 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
     openshift-nmstate   install-5r7wr   kubernetes-nmstate-operator.4.16.0-202409251605   Manual     false
     ```
 
+    </div>
+
 2.  Patch the `InstallPlan` resources for those Operators:
 
     ``` terminal
@@ -239,9 +312,11 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
     '{"spec":{"approved":true}}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -249,15 +324,19 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
     installplan.operators.coreos.com/install-nwjnh patched
     ```
 
+    </div>
+
 3.  Monitor the namespace by running the following command:
 
     ``` terminal
     $ oc get all -n metallb-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -279,6 +358,8 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
     replicaset.apps/metallb-operator-webhook-server-d76f9c6c8        1         1         1       4m1s
     ```
 
+    </div>
+
     When the update is complete, the required pods should be in a `Running` state, and the required `ReplicaSet` resources should be ready:
 
     ``` terminal
@@ -295,6 +376,16 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
     replicaset.apps/metallb-operator-webhook-server-d76f9c6c8        0         0         0       4m22s
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the Operators do not need to be updated for a second time:
 
   ``` terminal
@@ -303,15 +394,22 @@ Software needs to vetted before it is loaded onto a production cluster. Producti
 
   There should be no output returned.
 
-  <div class="note">
+  > [!NOTE]
+  > Sometimes you have to approve an update twice because some Operators have interim z-stream release versions that need to be installed before the final version.
 
-  Sometimes you have to approve an update twice because some Operators have interim z-stream release versions that need to be installed before the final version.
+</div>
 
-  </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Updating the worker nodes](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.xml#update-updating-the-worker-nodes_completing-the-update)
+
+</div>
 
 # Updating the worker nodes
 
@@ -319,9 +417,14 @@ You upgrade the worker nodes after you have updated the control plane by unpausi
 
 In the case of control plane only upgrades, note that when a worker node is updated it will only require one reboot and will jump \<y+2\>-release versions. This is a feature that was added to decrease the amount of time that it takes to upgrade large bare-metal clusters.
 
-<div class="important">
+> [!IMPORTANT]
+> This is a potential holding point. You can have a cluster version that is fully supported to run in production with the control plane that is updated to a new EUS release while the worker nodes are at a \<y-2\>-release. This allows large clusters to upgrade in steps across several maintenance windows.
 
-This is a potential holding point. You can have a cluster version that is fully supported to run in production with the control plane that is updated to a new EUS release while the worker nodes are at a \<y-2\>-release. This allows large clusters to upgrade in steps across several maintenance windows.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -331,9 +434,11 @@ This is a potential holding point. You can have a cluster version that is fully 
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -345,11 +450,10 @@ This is a potential holding point. You can have a cluster version that is fully 
     worker   rendered-worker-f1ab7b9a768e1b0ac9290a18817f60f0   True      False      False      0              0                   0                     0                      36d
     ```
 
-    <div class="note">
-
-    You decide how many `mcp` groups to upgrade at a time. This depends on how many pods can be taken down at a time and how your pod disruption budget and anti-affinity settings are configured.
-
     </div>
+
+    > [!NOTE]
+    > You decide how many `mcp` groups to upgrade at a time. This depends on how many pods can be taken down at a time and how your pod disruption budget and anti-affinity settings are configured.
 
 2.  Get the list of nodes in the cluster:
 
@@ -357,9 +461,11 @@ This is a potential holding point. You can have a cluster version that is fully 
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -372,15 +478,19 @@ This is a potential holding point. You can have a cluster version that is fully 
     worker-1       Ready    mcp-2,worker           5d8h   v1.27.15+6147456
     ```
 
+    </div>
+
 3.  Confirm the `MachineConfigPool` groups that are paused:
 
     ``` terminal
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -392,11 +502,10 @@ This is a potential holding point. You can have a cluster version that is fully 
     mcp-2   true
     ```
 
-    <div class="note">
-
-    Each `MachineConfigPool` can be unpaused independently. Therefore, if a maintenance window runs out of time other MCPs do not need to be unpaused immediately. The cluster is supported to run with some worker nodes still at \<y-2\>-release version.
-
     </div>
+
+    > [!NOTE]
+    > Each `MachineConfigPool` can be unpaused independently. Therefore, if a maintenance window runs out of time other MCPs do not need to be unpaused immediately. The cluster is supported to run with some worker nodes still at \<y-2\>-release version.
 
 4.  Unpause the required `mcp` group to begin the upgrade:
 
@@ -404,9 +513,11 @@ This is a potential holding point. You can have a cluster version that is fully 
     $ oc patch mcp/mcp-1 --type merge --patch '{"spec":{"paused":false}}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -414,15 +525,19 @@ This is a potential holding point. You can have a cluster version that is fully 
     machineconfigpool.machineconfiguration.openshift.io/mcp-1 patched
     ```
 
+    </div>
+
 5.  Confirm that the required `mcp` group is unpaused:
 
     ``` terminal
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -434,15 +549,19 @@ This is a potential holding point. You can have a cluster version that is fully 
     mcp-2   true
     ```
 
+    </div>
+
 6.  As each `mcp` group is upgraded, continue to unpause and upgrade the remaining nodes.
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -455,9 +574,21 @@ This is a potential holding point. You can have a cluster version that is fully 
     worker-1       NotReady,SchedulingDisabled   mcp-2,worker           5d8h   v1.27.15+6147456
     ```
 
+    </div>
+
+</div>
+
 # Verifying the health of the newly updated cluster
 
 After updating the cluster, verify that the cluster is back up and running.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the cluster version by running the following command:
 
@@ -465,9 +596,11 @@ After updating the cluster, verify that the cluster is back up and running.
     $ oc get clusterversion
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -475,6 +608,8 @@ After updating the cluster, verify that the cluster is back up and running.
     NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     version   4.16.14   True        False         4h38m   Cluster version is 4.16.14
     ```
+
+    </div>
 
     This should return the new cluster version and the `PROGRESSING` column should return `False`.
 
@@ -484,9 +619,11 @@ After updating the cluster, verify that the cluster is back up and running.
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -499,6 +636,8 @@ After updating the cluster, verify that the cluster is back up and running.
     worker-1       Ready    mcp-2,worker           5d9h   v1.29.8+f10c92d
     ```
 
+    </div>
+
     All nodes in the cluster should be in a `Ready` status and running the same version.
 
 3.  Check that there are no paused `mcp` resources in the cluster:
@@ -507,9 +646,11 @@ After updating the cluster, verify that the cluster is back up and running.
     $ oc get mcp -o json | jq -r '["MCP","Paused"], ["---","------"], (.items[] | [(.metadata.name), (.spec.paused)]) | @tsv' | grep -v worker
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -521,15 +662,19 @@ After updating the cluster, verify that the cluster is back up and running.
     mcp-2   false
     ```
 
+    </div>
+
 4.  Check that all cluster Operators are available:
 
     ``` terminal
     $ oc get co
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -570,6 +715,8 @@ After updating the cluster, verify that the cluster is back up and running.
     storage                                    4.16.14   True        False         False      5d9h
     ```
 
+    </div>
+
     All cluster Operators should report `True` in the `AVAILABLE` column.
 
 5.  Check that all pods are healthy:
@@ -580,8 +727,7 @@ After updating the cluster, verify that the cluster is back up and running.
 
     This should not return any pods.
 
-    <div class="note">
+    > [!NOTE]
+    > You might see a few pods still moving after the update. Watch this for a while to make sure all pods are cleared.
 
-    You might see a few pods still moving after the update. Watch this for a while to make sure all pods are cleared.
-
-    </div>
+</div>

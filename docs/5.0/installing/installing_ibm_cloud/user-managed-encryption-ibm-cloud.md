@@ -8,11 +8,8 @@ You can specify that:
 
 When you bring your own root key, you change the `install-config.yaml` file to specify the Cloud Resource Name (CRN) of the root key by using the `encryptionKey` parameter.
 
-<div class="note">
-
-Make sure you have integrated Key Protect with your IBM Cloud Block Storage service. For more information, see "Key Protect documentation".
-
-</div>
+> [!NOTE]
+> Make sure you have integrated Key Protect with your IBM Cloud Block Storage service. For more information, see "Key Protect documentation".
 
 # Additional resources
 

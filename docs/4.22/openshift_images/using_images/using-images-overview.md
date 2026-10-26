@@ -6,11 +6,8 @@ The xPaaS middleware images are provided in their product repositories on the Re
 
 All Red Hat supported images are described in the Red Hat Ecosystem Catalog. For every version of each image, you can find details on its contents and usage.
 
-<div class="important">
-
-The newer versions of container images are not compatible with earlier versions of OpenShift Container Platform. Verify and use the correct version of container images, based on your version of OpenShift Container Platform.
-
-</div>
+> [!IMPORTANT]
+> The newer versions of container images are not compatible with earlier versions of OpenShift Container Platform. Verify and use the correct version of container images, based on your version of OpenShift Container Platform.
 
 # Additional resources
 

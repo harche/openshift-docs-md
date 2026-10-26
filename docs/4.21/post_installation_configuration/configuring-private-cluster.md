@@ -6,11 +6,8 @@ You can make a deployed cluster private by restricting DNS, Ingress Controller, 
 
 By default, OpenShift Container Platform is provisioned using publicly-accessible DNS and endpoints. You can set the DNS, Ingress Controller, and API server to private after you deploy your private cluster.
 
-<div class="important">
-
-If the cluster has any public subnets, load balancer services created by administrators might be publicly accessible. To ensure cluster security, verify that these services are explicitly annotated as private.
-
-</div>
+> [!IMPORTANT]
+> If the cluster has any public subnets, load balancer services created by administrators might be publicly accessible. To ensure cluster security, verify that these services are explicitly annotated as private.
 
 ## DNS
 
@@ -46,15 +43,25 @@ After you deploy a cluster, you can modify its DNS to use only a private zone by
 
 Alternatively, even in a private cluster, you might keep the public zone for DNS records because it allows clients to resolve DNS names for applications running on that cluster. For example, an organization can have machines that connect to the public internet and then establish VPN connections for certain private IP ranges in order to connect to private IP addresses. The DNS lookups from these machines use the public DNS to determine the private addresses of those services, and then connect to the private addresses over the VPN.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Review the `DNS` CR for your cluster by running the following command and observing the output:
 
     ``` terminal
     $ oc get dnses.config.openshift.io/cluster -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -79,6 +86,8 @@ Alternatively, even in a private cluster, you might keep the public zone for DNS
     status: {}
     ```
 
+    </div>
+
     Note that the `spec` section contains both a private and a public zone.
 
 2.  Patch the `DNS` CR to remove the public zone by running the following command:
@@ -87,9 +96,11 @@ Alternatively, even in a private cluster, you might keep the public zone for DNS
     $ oc patch dnses.config.openshift.io/cluster --type=merge --patch='{"spec": {"publicZone": null}}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -97,13 +108,22 @@ Alternatively, even in a private cluster, you might keep the public zone for DNS
     dns.config.openshift.io/cluster patched
     ```
 
+    </div>
+
     The Ingress Operator consults the `DNS` CR definition when it creates DNS records for `IngressController` objects. If only private zones are specified, only private records are created.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > Existing DNS records are not modified when you remove the public zone. You must manually delete previously published public DNS records if you no longer want them to be published publicly.
 
-    Existing DNS records are not modified when you remove the public zone. You must manually delete previously published public DNS records if you no longer want them to be published publicly.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Review the `DNS` CR for your cluster and confirm that the public zone was removed, by running the following command and observing the output:
 
@@ -111,9 +131,11 @@ Alternatively, even in a private cluster, you might keep the public zone for DNS
   $ oc get dnses.config.openshift.io/cluster -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -136,11 +158,23 @@ Alternatively, even in a private cluster, you might keep the public zone for DNS
   status: {}
   ```
 
+  </div>
+
+</div>
+
 # Set the Ingress Controller to private
 
 You can configure the default Ingress Controller to use an internal endpoint so that application routes are published only in the private DNS zone.
 
 After you deploy a cluster, you can modify its Ingress Controller to use only a private zone.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the default Ingress Controller to use only an internal endpoint:
 
@@ -159,9 +193,11 @@ After you deploy a cluster, you can modify its Ingress Controller to use only a 
     EOF
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -170,7 +206,11 @@ After you deploy a cluster, you can modify its Ingress Controller to use only a 
     ingresscontroller.operator.openshift.io/default replaced
     ```
 
+    </div>
+
     The public DNS entry is removed, and the private zone entry is updated.
+
+</div>
 
 # Restrict the API server to private for an Amazon Web Services cluster
 
@@ -178,15 +218,20 @@ If the security posture of your organization does not allow clusters to use an o
 
 To implement this API server restriction, use the Amazon Web Services (AWS) console and OpenShift CLI (`oc`) to delete the external load balancer components.
 
-<div class="important">
+> [!IMPORTANT]
+> The OpenShift CLI (`oc`) steps that remove the external load balancers require the Machine API. For clusters that cannot use the Machine API, you must manually remove the external load balancers.
+>
+> Clusters with the infrastructure platform type `none` cannot use the Machine API. To view the platform type for your cluster, run the following command:
+>
+> ``` terminal
+> $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+> ```
 
-The OpenShift CLI (`oc`) steps that remove the external load balancers require the Machine API. For clusters that cannot use the Machine API, you must manually remove the external load balancers.
+<div>
 
-Clusters with the infrastructure platform type `none` cannot use the Machine API. To view the platform type for your cluster, run the following command:
+<div class="title">
 
-``` terminal
-$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
-```
+Prerequisites
 
 </div>
 
@@ -196,15 +241,22 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 - You have access to the OpenShift CLI (`oc`) as a user with administrator privileges.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Log in to the AWS console as a user with administrator privileges.
 
 2.  Delete the external load balancer.
 
-    <div class="note">
-
-    The API DNS entry in the private zone already points to the internal load balancer, which uses an identical configuration, so you do not need to modify the internal load balancer.
-
-    </div>
+    > [!NOTE]
+    > The API DNS entry in the private zone already points to the internal load balancer, which uses an identical configuration, so you do not need to modify the internal load balancer.
 
 3.  Delete the `api.<cluster_name>.<domain_name>` DNS entry in the public zone.
 
@@ -258,9 +310,11 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
           $ oc get machine -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -273,6 +327,8 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
           <cluster_id>-worker-us-east-1a-<zone_tag>   running   m4.xlarge   us-east-1   us-east-1a   15m
           <cluster_id>-worker-us-east-1b-<zone_tag>   running   m4.xlarge   us-east-1   us-east-1b   15m
           ```
+
+          </div>
 
           The control plane machines contain the `master` string in their names.
 
@@ -311,15 +367,45 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
           4.  Repeat this process for each control plane machine.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Updating the control plane configuration](../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines)
+
+</div>
 
 # Restrict the API server to private for an Microsoft Azure cluster
 
 If the security posture of your organization does not allow clusters to use an open API endpoint, you can restrict the API server to use only internal load balancers. To implement this API server restriction, use the Microsoft Azure console to delete the external load balancer component.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have installed an OpenShift Container Platform cluster on Azure.
 
 - You have access to the Azure console as a user with administrator privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the Azure console as a user with administrator privileges.
 
@@ -337,7 +423,19 @@ If the security posture of your organization does not allow clusters to use an o
 
     where `<cluster_name>` is the name of the cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the Ingress Controller endpoint publishing scope to Internal](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/nw-configuring-ingress-controller-endpoint-publishing-strategy.xml#nw-ingresscontroller-change-internal_nw-configuring-ingress-controller-endpoint-publishing-strategy)
+
+</div>
 
 # Configure a private storage endpoint on Azure
 
@@ -345,11 +443,8 @@ You can configure the Image Registry Operator to use a private Azure storage end
 
 You can leverage the Image Registry Operator to use private endpoints on Azure, which enables seamless configuration of private storage accounts when OpenShift Container Platform is deployed on private Azure clusters. This allows you to deploy the image registry without exposing public-facing storage endpoints.
 
-<div class="important">
-
-Do not configure a private storage endpoint on Microsoft Azure Red Hat OpenShift (ARO), because the endpoint can put your Microsoft Azure Red Hat OpenShift cluster in an unrecoverable state.
-
-</div>
+> [!IMPORTANT]
+> Do not configure a private storage endpoint on Microsoft Azure Red Hat OpenShift (ARO), because the endpoint can put your Microsoft Azure Red Hat OpenShift cluster in an unrecoverable state.
 
 You can configure the Image Registry Operator to use private storage endpoints on Azure in one of two ways:
 
@@ -371,11 +466,29 @@ You can configure a private Azure storage endpoint by enabling the Image Registr
 
 The following procedure shows you how to set up a private storage endpoint on Azure by configuring the Image Registry Operator to discover VNet and subnet names.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the image registry to run on Azure.
 
 - Your network has been set up using the Installer Provisioned Infrastructure installation method.
 
   For users with a custom network setup, see "Configuring a private storage endpoint on Azure with user-provided VNet and subnet names".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Image Registry Operator `config` object and set `networkAccess.type` to `Internal`:
 
@@ -407,13 +520,18 @@ The following procedure shows you how to set up a private storage endpoint on Az
     $ oc patch configs.imageregistry cluster --type=merge -p '{"spec":{"disableRedirect": true}}'
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > When redirect is enabled, pulling images from outside of the cluster will not work.
 
-    When redirect is enabled, pulling images from outside of the cluster will not work.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Fetch the registry service name by running the following command:
 
@@ -421,9 +539,11 @@ The following procedure shows you how to set up a private storage endpoint on Az
     $ oc get imagestream -n openshift
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -432,6 +552,8 @@ The following procedure shows you how to set up a private storage endpoint on Az
     cli    image-registry.openshift-image-registry.svc:5000/openshift/cli   latest   8 hours ago
     ...
     ```
+
+    </div>
 
 2.  Enter debug mode by running the following command:
 
@@ -451,9 +573,11 @@ The following procedure shows you how to set up a private storage endpoint on Az
     $ podman login --tls-verify=false -u unused -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -461,15 +585,19 @@ The following procedure shows you how to set up a private storage endpoint on Az
     Login Succeeded!
     ```
 
+    </div>
+
 5.  Enter the following command to verify that you can pull an image from the registry:
 
     ``` terminal
     $ podman pull --tls-verify=false image-registry.openshift-image-registry.svc:5000/openshift/tools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -483,17 +611,39 @@ The following procedure shows you how to set up a private storage endpoint on Az
     22667f53682a2920948d19c7133ab1c9c3f745805c14125859d20cede07f11f9
     ```
 
+    </div>
+
+</div>
+
 ## Configure a private storage endpoint on Azure with user-provided VNet and subnet names
 
 You can configure a private Azure storage endpoint for the image registry by specifying user-provided VNet and subnet names, enabling registry storage without public network access.
 
 Use the following procedure to configure a storage account that has public network access disabled and is exposed behind a private storage endpoint on Azure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the image registry to run on Azure.
 
 - You must know the VNet and subnet names used for your Azure environment.
 
 - If your network was configured in a separate resource group in Azure, you must also know its name.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the Image Registry Operator `config` object and configure the private endpoint using your VNet and subnet names:
 
@@ -523,13 +673,18 @@ Use the following procedure to configure a storage account that has public netwo
     $ oc get configs.imageregistry/cluster -o=jsonpath="{.spec.storage.azure.privateEndpointName}" -w
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > When redirect is enabled, pulling images from outside of the cluster will not work.
 
-    When redirect is enabled, pulling images from outside of the cluster will not work.
+</div>
 
-    </div>
+<div>
 
-<!-- -->
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Fetch the registry service name by running the following command:
 
@@ -537,9 +692,11 @@ Use the following procedure to configure a storage account that has public netwo
     $ oc get imagestream -n openshift
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -548,6 +705,8 @@ Use the following procedure to configure a storage account that has public netwo
     cli    image-registry.openshift-image-registry.svc:5000/openshift/cli   latest   8 hours ago
     ...
     ```
+
+    </div>
 
 2.  Enter debug mode by running the following command:
 
@@ -567,9 +726,11 @@ Use the following procedure to configure a storage account that has public netwo
     $ podman login --tls-verify=false -u unused -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -577,15 +738,19 @@ Use the following procedure to configure a storage account that has public netwo
     Login Succeeded!
     ```
 
+    </div>
+
 5.  Enter the following command to verify that you can pull an image from the registry:
 
     ``` terminal
     $ podman pull --tls-verify=false image-registry.openshift-image-registry.svc:5000/openshift/tools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -599,6 +764,10 @@ Use the following procedure to configure a storage account that has public netwo
     22667f53682a2920948d19c7133ab1c9c3f745805c14125859d20cede07f11f9
     ```
 
+    </div>
+
+</div>
+
 ## Optional: Disabling redirect when using a private storage endpoint on Azure
 
 You can disable redirect when using a private Azure storage endpoint so that users outside the cluster can pull images through the image registry route.
@@ -607,11 +776,27 @@ By default, redirect is enabled when using the image registry. Redirect allows o
 
 In some cases, users might want to disable redirect so that users from outside of the cluster can pull images from the registry.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured the image registry to run on Azure.
 
 - You have configured a route.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enter the following command to disable redirect on the image registry configuration:
 
@@ -619,15 +804,27 @@ In some cases, users might want to disable redirect so that users from outside o
   $ oc patch configs.imageregistry cluster --type=merge -p '{"spec":{"disableRedirect": true}}'
   ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 1.  Fetch the registry service name by running the following command:
 
     ``` terminal
     $ oc get imagestream -n openshift
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -637,21 +834,27 @@ In some cases, users might want to disable redirect so that users from outside o
     ...
     ```
 
+    </div>
+
 2.  Enter the following command to log in to your container registry:
 
     ``` terminal
     $ podman login --tls-verify=false -u unused -p $(oc whoami -t) default-route-openshift-image-registry.<cluster_dns>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     Login Succeeded!
     ```
+
+    </div>
 
 3.  Enter the following command to verify that you can pull an image from the registry:
 
@@ -660,9 +863,11 @@ In some cases, users might want to disable redirect so that users from outside o
     /openshift/tools
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -675,3 +880,7 @@ In some cases, users might want to disable redirect so that users from outside o
     Storing signatures
     22667f53682a2920948d19c7133ab1c9c3f745805c14125859d20cede07f11f9
     ```
+
+    </div>
+
+</div>

@@ -6,17 +6,37 @@ After you successfully enable Gateway API, you can begin deploying gateways, ass
 
 To configure Gateway API for use on your cluster, you must create a `GatewayClass` resource. During the creation of the `GatewayClass` resource, the Ingress Operator installs a lightweight Istio control plane, based on Red Hat OpenShift Service Mesh, in the `openshift-ingress` namespace.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `GatewayClass` object:
 
     1.  Create a YAML file, `openshift-default.yaml`, that contains the following information:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `GatewayClass` CR**
+        <div class="title">
+
+        Example `GatewayClass` CR
 
         </div>
 
@@ -29,13 +49,12 @@ To configure Gateway API for use on your cluster, you must create a `GatewayClas
           controllerName: openshift.io/gateway-controller/v1
         ```
 
+        </div>
+
         - `metadata.name`: The name of your `GatewayClass` object. The name must consist of a maximum of 63 lowercase alphanumeric characters or hyphens (`-`). The name must also start and end with an alphanumeric character.
 
-          <div class="important">
-
-          The `controllerName` value must be exactly as shown for the Ingress Operator to manage it. If you set this field to anything else, the Ingress Operator ignores the `GatewayClass` object and all associated `Gateway`, `GRPCRoute`, and `HTTPRoute` objects. The controller name is tied to the implementation of Gateway API in OpenShift Container Platform, and `openshift.io/gateway-controller/v1` is the only controller name allowed.
-
-          </div>
+          > [!IMPORTANT]
+          > The `controllerName` value must be exactly as shown for the Ingress Operator to manage it. If you set this field to anything else, the Ingress Operator ignores the `GatewayClass` object and all associated `Gateway`, `GRPCRoute`, and `HTTPRoute` objects. The controller name is tied to the implementation of Gateway API in OpenShift Container Platform, and `openshift.io/gateway-controller/v1` is the only controller name allowed.
 
     2.  Run the following command to create the `GatewayClass` resource:
 
@@ -43,9 +62,11 @@ To configure Gateway API for use on your cluster, you must create a `GatewayClas
         $ oc create -f openshift-default.yaml
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -53,15 +74,29 @@ To configure Gateway API for use on your cluster, you must create a `GatewayClas
         gatewayclass.gateway.networking.k8s.io/openshift-default created
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `GatewayClass` CR has been accepted and the controller is successfully installed by running the following command:
 
   ``` terminal
   $ oc get gatewayclass openshift-default -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -87,4 +122,8 @@ To configure Gateway API for use on your cluster, you must create a `GatewayClas
   # ...
   ```
 
+  </div>
+
   Inspect the `status.conditions` block in the output. A healthy `GatewayClass` CR reports a status of `True` for the `Accepted`, `ControllerInstalled`, and `CRDsReady` conditions.
+
+</div>

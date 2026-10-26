@@ -20,16 +20,16 @@ If no mode is specified, or the `credentialsMode` parameter is set to an empty s
 
 Not all CCO modes are supported for all cloud providers, as described in the following table:
 
-| Cloud provider                     | Mint | Passthrough | Manual with long-term credentials | Manual with short-term credentials |
-|------------------------------------|------|-------------|-----------------------------------|------------------------------------|
-| Amazon Web Services (AWS)          | X    | X           | X                                 | X                                  |
-| Global Microsoft Azure             |      | X           | X                                 | X                                  |
-| Microsoft Azure Stack Hub          |      |             | X                                 |                                    |
-| Google Cloud                       | X    | X           | X                                 | X                                  |
-| IBM Cloud®                         |      |             | X <sup>\[1\]</sup>                |                                    |
-| Nutanix                            |      |             | X <sup>\[1\]</sup>                |                                    |
-| Red Hat OpenStack Platform (RHOSP) |      | X           |                                   |                                    |
-| VMware vSphere                     |      | X           |                                   |                                    |
+| Cloud provider | Mint | Passthrough | Manual with long-term credentials | Manual with short-term credentials |
+|----|----|----|----|----|
+| Amazon Web Services (AWS) | X | X | X | X |
+| Global Microsoft Azure |  | X | X | X |
+| Microsoft Azure Stack Hub |  |  | X |  |
+| Google Cloud | X | X | X | X |
+| IBM Cloud® |  |  | X <sup>\[1\]</sup> |  |
+| Nutanix |  |  | X <sup>\[1\]</sup> |  |
+| Red Hat OpenStack Platform (RHOSP) |  | X |  |  |
+| VMware vSphere |  | X |  |  |
 
 CCO mode support matrix
 
@@ -50,13 +50,28 @@ You can determine what mode the Cloud Credential Operator (CCO) is configured to
 
 Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
-<div class="note">
+> [!NOTE]
+> Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud clusters support multiple CCO modes.
 
-Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud clusters support multiple CCO modes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console as a user with the `cluster-admin` role.
 
@@ -78,25 +93,19 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
     - `Manual`: The CCO is operating in manual mode.
 
-    <div class="important">
-
-    To determine the specific configuration of an AWS, Google Cloud, or global Microsoft Azure cluster that has a `spec.credentialsMode` of `''`, `Mint`, or `Manual`, you must investigate further.
-
-    AWS and Google Cloud clusters support using mint mode with the root secret deleted.
-
-    An AWS, Google Cloud, or global Microsoft Azure cluster that uses manual mode might be configured to create and manage cloud credentials from outside of the cluster with AWS STS, Google Cloud Workload Identity, or Microsoft Entra Workload ID. You can determine whether your cluster uses this strategy by examining the cluster `Authentication` object.
-
-    </div>
+    > [!IMPORTANT]
+    > To determine the specific configuration of an AWS, Google Cloud, or global Microsoft Azure cluster that has a `spec.credentialsMode` of `''`, `Mint`, or `Manual`, you must investigate further.
+    >
+    > AWS and Google Cloud clusters support using mint mode with the root secret deleted.
+    >
+    > An AWS, Google Cloud, or global Microsoft Azure cluster that uses manual mode might be configured to create and manage cloud credentials from outside of the cluster with AWS STS, Google Cloud Workload Identity, or Microsoft Entra Workload ID. You can determine whether your cluster uses this strategy by examining the cluster `Authentication` object.
 
 7.  AWS or Google Cloud clusters that use the default (`''`) only: To determine whether the cluster is operating in mint or passthrough mode, inspect the annotations on the cluster root secret:
 
     1.  Navigate to **Workloads** → **Secrets** and look for the root secret for your cloud provider.
 
-        <div class="note">
-
-        Ensure that the **Project** dropdown is set to **All Projects**.
-
-        </div>
+        > [!NOTE]
+        > Ensure that the **Project** dropdown is set to **All Projects**.
 
         | Platform     | Secret name       |
         |--------------|-------------------|
@@ -113,11 +122,8 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
 8.  AWS or Google Cloud clusters that use mint mode only: To determine whether the cluster is operating without the root secret, navigate to **Workloads** → **Secrets** and look for the root secret for your cloud provider.
 
-    <div class="note">
-
-    Ensure that the **Project** dropdown is set to **All Projects**.
-
-    </div>
+    > [!NOTE]
+    > Ensure that the **Project** dropdown is set to **All Projects**.
 
     | Platform     | Secret name       |
     |--------------|-------------------|
@@ -144,21 +150,38 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
         - An empty value (`''`) indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
 
+</div>
+
 ## Determine the Cloud Credential Operator mode by using the CLI
 
 You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
 
 Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
-<div class="note">
+> [!NOTE]
+> Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud clusters support multiple CCO modes.
 
-Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud clusters support multiple CCO modes.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator permissions.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to `oc` on the cluster as a user with the `cluster-admin` role.
 
@@ -179,15 +202,12 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
     - `Manual`: The CCO is operating in manual mode.
 
-    <div class="important">
-
-    To determine the specific configuration of an AWS, Google Cloud, or global Microsoft Azure cluster that has a `spec.credentialsMode` of `''`, `Mint`, or `Manual`, you must investigate further.
-
-    AWS and Google Cloud clusters support using mint mode with the root secret deleted.
-
-    An AWS, Google Cloud, or global Microsoft Azure cluster that uses manual mode might be configured to create and manage cloud credentials from outside of the cluster with AWS STS, Google Cloud Workload Identity, or Microsoft Entra Workload ID. You can determine whether your cluster uses this strategy by examining the cluster `Authentication` object.
-
-    </div>
+    > [!IMPORTANT]
+    > To determine the specific configuration of an AWS, Google Cloud, or global Microsoft Azure cluster that has a `spec.credentialsMode` of `''`, `Mint`, or `Manual`, you must investigate further.
+    >
+    > AWS and Google Cloud clusters support using mint mode with the root secret deleted.
+    >
+    > An AWS, Google Cloud, or global Microsoft Azure cluster that uses manual mode might be configured to create and manage cloud credentials from outside of the cluster with AWS STS, Google Cloud Workload Identity, or Microsoft Entra Workload ID. You can determine whether your cluster uses this strategy by examining the cluster `Authentication` object.
 
 3.  AWS or Google Cloud clusters that use the default (`''`) only: To determine whether the cluster is operating in mint or passthrough mode, run the following command:
 
@@ -232,6 +252,8 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
     - An output of a URL that is associated with your cloud provider indicates that the CCO is using manual mode with short-term credentials for components. These clusters are configured using the `ccoctl` utility to create and manage cloud credentials from outside of the cluster.
 
     - An empty output indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
+
+</div>
 
 # About the Cloud Credential Operator default behavior
 

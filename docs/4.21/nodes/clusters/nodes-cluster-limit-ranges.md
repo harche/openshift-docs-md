@@ -22,9 +22,11 @@ All requests to create and modify resources are evaluated against each `LimitRan
 
 The following shows a limit range object for all components: pod, container, image, image stream, or PVC. You can configure limits for any or all of these components in the same object. You create a different limit range object for each project where you want to control resources.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Sample limit range object for a container**
+<div class="title">
+
+Sample limit range object for a container
 
 </div>
 
@@ -51,6 +53,8 @@ spec:
       maxLimitRequestRatio:
         cpu: "10"
 ```
+
+</div>
 
 # About component limits
 
@@ -75,9 +79,11 @@ If the `LimitRange` object defines a `max` CPU, you do not need to define a CPU 
 
 If the `Pod` spec does not specify a container resource memory or limit, the `default` or `defaultRequest` CPU and memory values for containers specified in the limit range object are assigned to the container.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Container `LimitRange` object definition**
+<div class="title">
+
+Container `LimitRange` object definition
 
 </div>
 
@@ -104,6 +110,8 @@ spec:
       maxLimitRequestRatio:
         cpu: "10"
 ```
+
+</div>
 
 where:
 
@@ -150,9 +158,11 @@ Across all containers in a pod, the following requirements must hold true:
 
 - The ratio of the container limits to requests must be less than or equal to the `maxLimitRequestRatio` constraint specified in the `LimitRange` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Pod `LimitRange` object definition**
+<div class="title">
+
+Pod `LimitRange` object definition
 
 </div>
 
@@ -173,6 +183,8 @@ spec:
       maxLimitRequestRatio:
         cpu: "10"
 ```
+
+</div>
 
 where:
 
@@ -201,9 +213,11 @@ When pushing images to an OpenShift image registry, the following requirement mu
 
 - The size of the image must be less than or equal to the `max` size for images that is specified in the `LimitRange` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Image `LimitRange` object definition**
+<div class="title">
+
+Image `LimitRange` object definition
 
 </div>
 
@@ -219,6 +233,8 @@ spec:
         storage: 1Gi
 ```
 
+</div>
+
 where:
 
 `metadata.name`
@@ -227,19 +243,13 @@ Specifies the name of the limit range object.
 `spec.limit.max.storage`
 Specifies the maximum size of an image that can be pushed to an OpenShift image registry.
 
-<div class="note">
+> [!NOTE]
+> To prevent blobs that exceed the limit from being uploaded to the registry, the registry must be configured to enforce quotas.
 
-To prevent blobs that exceed the limit from being uploaded to the registry, the registry must be configured to enforce quotas.
-
-</div>
-
-<div class="warning">
-
-The image size is not always available in the manifest of an uploaded image. This is especially the case for images built with Docker 1.10 or higher and pushed to a v2 registry. If such an image is pulled with an older Docker daemon, the image manifest is converted by the registry to schema v1 lacking all the size information. No storage limit set on images prevent it from being uploaded.
-
-[The issue is being addressed.](https://github.com/openshift/origin/issues/7706)
-
-</div>
+> [!WARNING]
+> The image size is not always available in the manifest of an uploaded image. This is especially the case for images built with Docker 1.10 or higher and pushed to a v2 registry. If such an image is pulled with an older Docker daemon, the image manifest is converted by the registry to schema v1 lacking all the size information. No storage limit set on images prevent it from being uploaded.
+>
+> [The issue is being addressed.](https://github.com/openshift/origin/issues/7706)
 
 Image stream limits
 A limit range allows you to specify limits for image streams.
@@ -250,15 +260,14 @@ For each image stream, the following requirements must hold true:
 
 - The count of unique image identities recorded in `imagestream.status.tags` must be less than or equal to the `openshift.io/images` constraint in the `LimitRange` object.
 
-<div class="important">
+> [!IMPORTANT]
+> The names `openshift.io/image-tags` and `openshift.io/images` do not mean a maximum number of tag names versus a maximum number of images per tag. The first limit applies to tag definitions and their references in the `ImageStream` `spec.tags` resource. The second applies to distinct resolved images (typically by digest) recorded in the `ImageStream` `status.tags` resource. Creating or updating tags, including by pushing to the OpenShift image registry, can be rejected if it would exceed either limit.
 
-The names `openshift.io/image-tags` and `openshift.io/images` do not mean a maximum number of tag names versus a maximum number of images per tag. The first limit applies to tag definitions and their references in the `ImageStream` `spec.tags` resource. The second applies to distinct resolved images (typically by digest) recorded in the `ImageStream` `status.tags` resource. Creating or updating tags, including by pushing to the OpenShift image registry, can be rejected if it would exceed either limit.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Imagestream `LimitRange` object definition**
+Imagestream `LimitRange` object definition
 
 </div>
 
@@ -274,6 +283,8 @@ spec:
         openshift.io/image-tags: 20
         openshift.io/images: 30
 ```
+
+</div>
 
 where
 
@@ -299,9 +310,11 @@ Across all persistent volume claims in a project, the following requirements mus
 
 - The resource request in a persistent volume claim (PVC) must be less than or equal the `max` constraint for PVCs that is specified in the `LimitRange` object.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**PVC `LimitRange` object definition**
+<div class="title">
+
+PVC `LimitRange` object definition
 
 </div>
 
@@ -319,6 +332,8 @@ spec:
         storage: "50Gi"
 ```
 
+</div>
+
 where:
 
 `metadata.name`
@@ -333,6 +348,14 @@ Specifies the maximum amount of storage that can be requested in a persistent vo
 # Create a Limit Range
 
 You can define `LimitRange` objects to set specific resource limits for a pod, container, image, image stream, or persistent volume claim (PVC) in a specific project. A limit range allows you to restrict resource consumption in that project.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `LimitRange` object with your required specifications:
 
@@ -422,11 +445,21 @@ You can define `LimitRange` objects to set specific resource limits for a pod, c
     `<project>`
     Specifies the project where you want the limits to apply.
 
+</div>
+
 # View a limit
 
 You can view the limits defined in a project by navigating in the web console to the project’s **Quota** page. This allows you to see details about each of the limit ranges in a project.
 
 You can also use the CLI to view limit range details:
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the list of `LimitRange` objects defined in the project. For example, for a project called **demoproject**:
 
@@ -460,12 +493,24 @@ You can also use the CLI to view limit range details:
     PersistentVolumeClaim           storage                 -       50Gi    -               -               -
     ```
 
+</div>
+
 # Delete a Limit Range
 
 You can remove any active `LimitRange` object so that it no longer enforces the limits in a project.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Run the following command:
 
   ``` terminal
   $ oc delete limits <limit_name>
   ```
+
+</div>

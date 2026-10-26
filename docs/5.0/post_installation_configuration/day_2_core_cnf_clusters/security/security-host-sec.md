@@ -37,7 +37,13 @@ Serves as a lightweight container runtime that enforces security boundaries and 
 
 - [Introduction to SELinux](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/using_selinux/index#introduction-to-selinux_getting-started-with-selinux)
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About RHCOS](../../../architecture/architecture-rhcos.xml#rhcos-about_architecture-rhcos)
 
@@ -45,17 +51,16 @@ Serves as a lightweight container runtime that enforces security boundaries and 
 
 - [Linux capabilities](../../../post_installation_configuration/day_2_core_cnf_clusters/security/security-host-sec.xml#security-linux-capabilities-overview_security-host-sec)
 
+</div>
+
 # Command-line host access
 
 Configure an external authenticator to restrict direct access and prevent unauthorized modifications. The Machine Config Operator (MCO) manages these logins and maintains consistency across your cluster.
 
 Examples of external authenticators include lightweight directory access protocol (LDAP) and System Security Services Daemon (SSSD). If a node reboot leads to timeout issues, create a node disruption policy. With this policy, you can configure an external authenticator on a host without requiring a node reboot. For more information, see "Using node disruption policies to minimize disruption from machine config changes" in the *Additional resources* section.
 
-<div class="important">
-
-Do not configure direct access to the root ID on any OpenShift Container Platform cluster server.
-
-</div>
+> [!IMPORTANT]
+> Do not configure direct access to the root ID on any OpenShift Container Platform cluster server.
 
 You can connect to a node in the cluster by using the following methods:
 
@@ -81,11 +86,8 @@ Avoid using the root user. Instead, use the core user ID (or your own ID). To co
 $ ssh core@<worker_node_name>
 ```
 
-<div class="important">
-
-The core user ID is initially given `sudo` privileges within the cluster.
-
-</div>
+> [!IMPORTANT]
+> The core user ID is initially given `sudo` privileges within the cluster.
 
 If you cannot connect to a node by using SSH, add your SSH key to the core user. For more information, see "How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod" in the *Additional resources* section.
 
@@ -98,9 +100,14 @@ $ sudo -i
 Console Access
 Ensure that consoles are secure. Do not allow direct login with the root ID, instead use individual IDs.
 
-<div class="note">
+> [!NOTE]
+> Follow the best practices of your organization for securing console access.
 
-Follow the best practices of your organization for securing console access.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -109,6 +116,8 @@ Follow the best practices of your organization for securing console access.
 - [Starting debug pods with root access](../../../support/troubleshooting/investigating-pod-issues.xml#starting-debug-pods-with-root-access_investigating-pod-issues)
 
 - [How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod](https://access.redhat.com/solutions/4073041)
+
+</div>
 
 # Linux capabilities
 
@@ -134,17 +143,14 @@ Linux capabilities define the actions a process can perform on the host system. 
 
 You can modify which capabilities that a pod can receive by configuring Security Context Constraints (SCCs).
 
-<div class="important">
-
-You must not assign the following capabilities to a pod:
-
-- `SYS_ADMIN`: A powerful capability that grants elevated privileges. Allowing this capability can break security boundaries and pose a significant security risk.
-
-- `NET_ADMIN`: Allows control over networking, like SR-IOV ports, but can be replaced with alternative solutions in modern setups.
-
-For more information about Linux capabilities, see "Linux capabilities".
-
-</div>
+> [!IMPORTANT]
+> You must not assign the following capabilities to a pod:
+>
+> - `SYS_ADMIN`: A powerful capability that grants elevated privileges. Allowing this capability can break security boundaries and pose a significant security risk.
+>
+> - `NET_ADMIN`: Allows control over networking, like SR-IOV ports, but can be replaced with alternative solutions in modern setups.
+>
+> For more information about Linux capabilities, see "Linux capabilities".
 
 ## Additional resources
 

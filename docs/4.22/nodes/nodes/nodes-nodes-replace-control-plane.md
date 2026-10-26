@@ -18,15 +18,20 @@ If a control plane node on your bare-metal cluster has failed and cannot be reco
   $ oc get machinesets,controlplanemachinesets -n openshift-machine-api
   ```
 
-  <div class="important">
-
-  There should be only one or more `machinesets` for the workers. If `controlplanemachinesets` exists for the control plane, do not use this procedure.
-
-  </div>
+  > [!IMPORTANT]
+  > There should be only one or more `machinesets` for the workers. If `controlplanemachinesets` exists for the control plane, do not use this procedure.
 
 # Removing the unhealthy etcd member
 
 Begin removing the failed control plane node by first disabling the quorum guard, then removing the unhealthy etcd member and its secrets.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Turn off the etcd quorum guard by running the following command:
 
@@ -42,9 +47,11 @@ Begin removing the failed control plane node by first disabling the quorum guard
     $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -54,6 +61,8 @@ Begin removing the failed control plane node by first disabling the quorum guard
     etcd-openshift-control-plane-2   5/5   Running   0    3h58m   192.168.10.11   openshift-control-plane-2   <none>           <none>
     ```
 
+    </div>
+
 3.  Connect to a running etcd container by running the following command:
 
     ``` terminal
@@ -62,9 +71,11 @@ Begin removing the failed control plane node by first disabling the quorum guard
 
     Replace `<etcd_pod>` with the name of an etcd pod associated with one of the healthy nodes.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -72,15 +83,19 @@ Begin removing the failed control plane node by first disabling the quorum guard
     $ oc rsh -n openshift-etcd etcd-openshift-control-plane-0
     ```
 
+    </div>
+
 4.  View the etcd member list by running the following command. Make note of the ID and the name of the unhealthy etcd member because these values are required later.
 
     ``` terminal
     sh-4.2# etcdctl member list -w table
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -94,11 +109,10 @@ Begin removing the failed control plane node by first disabling the quorum guard
     +------------------+---------+------------------------------+---------------------------+---------------------------+
     ```
 
-    <div class="important">
-
-    The `etcdctl endpoint health` command will list the removed member until the replacement is complete and the new member is added.
-
     </div>
+
+    > [!IMPORTANT]
+    > The `etcdctl endpoint health` command will list the removed member until the replacement is complete and the new member is added.
 
 5.  Remove the unhealthy etcd member by running the following command:
 
@@ -108,9 +122,11 @@ Begin removing the failed control plane node by first disabling the quorum guard
 
     Replace `<unhealthy_member_id>` with the ID of the etcd member on the unhealthy node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -118,9 +134,13 @@ Begin removing the failed control plane node by first disabling the quorum guard
     sh-4.2# etcdctl member remove 6fc1e7c9db35841d
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -128,15 +148,19 @@ Begin removing the failed control plane node by first disabling the quorum guard
     Member 6fc1e7c9db35841d removed from cluster b23536c33f2cdd1b
     ```
 
+    </div>
+
 6.  View the member list again by running the following command and verify that the member was removed:
 
     ``` terminal
     sh-4.2# etcdctl member list -w table
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -149,11 +173,10 @@ Begin removing the failed control plane node by first disabling the quorum guard
     +------------------+---------+------------------------------+---------------------------+---------------------------+
     ```
 
-    <div class="important">
-
-    After you remove the member, the cluster might be unreachable for a short time while the remaining etcd instances reboot.
-
     </div>
+
+    > [!IMPORTANT]
+    > After you remove the member, the cluster might be unreachable for a short time while the remaining etcd instances reboot.
 
 7.  Exit the rsh session into the etcd pod by running the following command:
 
@@ -169,9 +192,11 @@ Begin removing the failed control plane node by first disabling the quorum guard
 
     Replace `<node_name>` with the name of the failed node whose etcd member you removed.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -179,9 +204,13 @@ Begin removing the failed control plane node by first disabling the quorum guard
     $ oc get secrets -n openshift-etcd | grep openshift-control-plane-2
     ```
 
-    <div class="formalpara-title">
+    </div>
 
-    **Example output**
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -190,6 +219,8 @@ Begin removing the failed control plane node by first disabling the quorum guard
     etcd-serving-metrics-openshift-control-plane-2  kubernetes.io/tls   2   134m
     etcd-serving-openshift-control-plane-2          kubernetes.io/tls   2   134m
     ```
+
+    </div>
 
 9.  Delete the secrets associated with the affected node that was removed:
 
@@ -217,9 +248,19 @@ Begin removing the failed control plane node by first disabling the quorum guard
 
         Replace `<node_name>` with the name of the affected node.
 
+</div>
+
 # Creating the new control plane node
 
 Begin creating the new control plane node by creating a `BareMetalHost` object and node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Edit the `bmh_affected.yaml` file that you previously saved:
 
@@ -237,9 +278,11 @@ Begin creating the new control plane node by creating a `BareMetalHost` object a
 
     The resulting file should resemble the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `bmh_affected.yaml` file**
+    <div class="title">
+
+    Example `bmh_affected.yaml` file
 
     </div>
 
@@ -268,6 +311,8 @@ Begin creating the new control plane node by creating a `BareMetalHost` object a
         namespace: openshift-machine-api
     ```
 
+    </div>
+
 2.  Create the `BareMetalHost` object using the `bmh_affected.yaml` file by running the following command:
 
     ``` terminal
@@ -294,9 +339,11 @@ Begin creating the new control plane node by creating a `BareMetalHost` object a
 
 4.  Create an Nmstate YAML file titled `new_controlplane_nmstate.yaml` for the new node’s network configuration, using the following example for reference:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Nmstate YAML file**
+    <div class="title">
+
+    Example Nmstate YAML file
 
     </div>
 
@@ -329,15 +376,14 @@ Begin creating the new control plane node by creating a `BareMetalHost` object a
         table-id: 254
     ```
 
-    <div class="note">
-
-    If you installed your cluster using the Agent-based Installer, you can use the failed node’s `networkConfig` section in the `agent-config.yaml` file from the original cluster deployment as a starting point for the new control plane node’s Nmstate file. For example, the following command extracts the `networkConfig` section for the first control plane node:
-
-    ``` terminal
-    $ cat agent-config-iso.yaml | yq .hosts[0].networkConfig > new_controlplane_nmstate.yaml
-    ```
-
     </div>
+
+    > [!NOTE]
+    > If you installed your cluster using the Agent-based Installer, you can use the failed node’s `networkConfig` section in the `agent-config.yaml` file from the original cluster deployment as a starting point for the new control plane node’s Nmstate file. For example, the following command extracts the `networkConfig` section for the first control plane node:
+    >
+    > ``` terminal
+    > $ cat agent-config-iso.yaml | yq .hosts[0].networkConfig > new_controlplane_nmstate.yaml
+    > ```
 
 5.  Create the customized Red Hat Enterprise Linux CoreOS (RHCOS) live ISO by running the following command:
 
@@ -355,9 +401,19 @@ Begin creating the new control plane node by creating a `BareMetalHost` object a
 
 7.  Approve the Certificate Signing Requests (CSR) to join the new node to the cluster.
 
+</div>
+
 # Linking the node, bare metal host, and machine together
 
 Continue creating the new control plane node by creating a machine and then linking it with the new `BareMetalHost` object and node.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the `providerID` for control plane nodes by running the following command:
 
@@ -365,9 +421,11 @@ Continue creating the new control plane node by creating a machine and then link
     $ oc get -n openshift-machine-api baremetalhost -l installer.openshift.io/role=control-plane -ojson | jq -r '.items[] | "baremetalhost:///openshift-machine-api/" + .metadata.name + "/" + .metadata.uid'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -377,6 +435,8 @@ Continue creating the new control plane node by creating a machine and then link
     baremetalhost:///openshift-machine-api/master-02/dc5a94f3-625b-43f6-ab5a-7cc4fc79f105
     ```
 
+    </div>
+
 2.  Get cluster information for labels by running the following command:
 
     ``` terminal
@@ -385,9 +445,11 @@ Continue creating the new control plane node by creating a machine and then link
         -L machine.openshift.io/cluster-api-cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -397,6 +459,8 @@ Continue creating the new control plane node by creating a machine and then link
     ci-op-jcp3s7wx-ng5sd-master-1  Running                     10h  ci-op-jcp3s7wx-ng5sd
     ci-op-jcp3s7wx-ng5sd-master-2  Running                     10h  ci-op-jcp3s7wx-ng5sd
     ```
+
+    </div>
 
 3.  Create a `Machine` object for the new control plane node by creating a yaml file similar to the following:
 
@@ -510,15 +574,12 @@ Continue creating the new control plane node by creating a machine and then link
     $ oc get bmh -n openshift-machine-api -ojson | jq -r '.items[] | .metadata.name + "   ProvisioningState:" +  .status.provisioning.state'
     ```
 
-    <div class="important">
-
-    If the provisioning state is not `unmanaged`, change the provisioning state by running the following command:
-
-    ``` terminal
-    $ oc patch -n openshift-machine-api bmh $NEW_NODE_NAME --subresource status --type json -p '[{"op":"replace","path":"/status/provisioning/state","value":"unmanaged"}]'
-    ```
-
-    </div>
+    > [!IMPORTANT]
+    > If the provisioning state is not `unmanaged`, change the provisioning state by running the following command:
+    >
+    > ``` terminal
+    > $ oc patch -n openshift-machine-api bmh $NEW_NODE_NAME --subresource status --type json -p '[{"op":"replace","path":"/status/provisioning/state","value":"unmanaged"}]'
+    > ```
 
 8.  Set the machine’s state to `Provisioned` by running the following command:
 
@@ -526,9 +587,19 @@ Continue creating the new control plane node by creating a machine and then link
     $ oc patch -n openshift-machine-api machines $NEW_MACHINE_NAME -n openshift-machine-api --subresource status --type json -p '[{"op":"replace","path":"/status/phase","value":"Provisioned"}]'
     ```
 
+</div>
+
 # Adding the new etcd member
 
 Finish adding the new control plane node by adding the new etcd member to the cluster.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the new etcd member to the cluster by performing the following steps in a single bash shell session:
 
@@ -598,9 +669,19 @@ Finish adding the new control plane node by adding the new etcd member to the cl
     $ watch oc get co
     ```
 
+</div>
+
 # Re-enabling the etcd quorum guard
 
 Re-enable the etcd quorum guard after completing the control plane node replacement to restore normal cluster operation and verify that the cluster has returned to a healthy three-member etcd configuration.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Turn the quorum guard back on by running the following command:
 
@@ -616,9 +697,11 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
 
 3.  If using single-node OpenShift, restart the node. Otherwise, you might encounter the following error in the etcd cluster Operator:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -626,7 +709,17 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     EtcdCertSignerControllerDegraded: [Operation cannot be fulfilled on secrets "etcd-peer-sno-0": the object has been modified; please apply your changes to the latest version and try again, Operation cannot be fulfilled on secrets "etcd-serving-sno-0": the object has been modified; please apply your changes to the latest version and try again, Operation cannot be fulfilled on secrets "etcd-serving-metrics-sno-0": the object has been modified; please apply your changes to the latest version and try again]
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that all etcd pods are running by running the following command:
 
@@ -634,9 +727,11 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     $ oc -n openshift-etcd get pods -l k8s-app=etcd
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -645,6 +740,8 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     etcd-openshift-control-plane-1      5/5     Running     0     107m
     etcd-openshift-control-plane-3      5/5     Running     0     12m
     ```
+
+    </div>
 
     If the output from the previous command only lists two pods, you can manually force an etcd redeployment. In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
 
@@ -666,9 +763,11 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     sh-4.2# etcdctl member list -w table
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -682,6 +781,8 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     +------------------+---------+--------------------+---------------------------+---------------------------+-----------------+
     ```
 
+    </div>
+
     Verify that exactly three etcd members are listed.
 
 4.  Verify that all etcd members are healthy by running the following command:
@@ -690,9 +791,11 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     sh-4.2# etcdctl endpoint health --cluster
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -701,6 +804,8 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     https://192.168.10.9:2379 is healthy: successfully committed proposal: took = 11.559829ms
     https://192.168.10.12:2379 is healthy: successfully committed proposal: took = 11.665203ms
     ```
+
+    </div>
 
 5.  Exit the rsh session by running the following command:
 
@@ -714,9 +819,11 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     $ oc get etcd -o=jsonpath='{range.items[0].status.conditions[?(@.type=="NodeInstallerProgressing")]}{"\n"}{"\n"}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -724,9 +831,21 @@ Re-enable the etcd quorum guard after completing the control plane node replacem
     AllNodesAtLatestRevision
     ```
 
+    </div>
+
+</div>
+
 # Deleting the machine of the unhealthy etcd member
 
 Finish removing the failed control plane node by deleting the machine of the unhealthy etcd member.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure that the Bare Metal Operator is available by running the following command:
 
@@ -734,9 +853,11 @@ Finish removing the failed control plane node by deleting the machine of the unh
     $ oc get clusteroperator baremetal
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -744,6 +865,8 @@ Finish removing the failed control plane node by deleting the machine of the unh
     NAME        VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
     baremetal   4.22.0    True        False         False      3d15h
     ```
+
+    </div>
 
 2.  Save the `BareMetalHost` object of the affected node to a file for later use by running the following command:
 
@@ -773,9 +896,11 @@ Finish removing the failed control plane node by deleting the machine of the unh
     $ oc get machines -n openshift-machine-api -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -788,6 +913,8 @@ Finish removing the failed control plane node by deleting the machine of the unh
     examplecluster-compute-1        Running                      165m   openshift-compute-1        baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9        provisioned
     ```
 
+    </div>
+
 6.  Delete the machine of the unhealthy member by running the following command:
 
     ``` terminal
@@ -796,9 +923,11 @@ Finish removing the failed control plane node by deleting the machine of the unh
 
     Replace `<machine_name>` with the machine name associated with the affected node.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command**
+    <div class="title">
+
+    Example command
 
     </div>
 
@@ -806,19 +935,15 @@ Finish removing the failed control plane node by deleting the machine of the unh
     $ oc delete machine -n openshift-machine-api examplecluster-control-plane-2
     ```
 
-    <div class="note">
-
-    After you remove the `BareMetalHost` and `Machine` objects, the machine controller automatically deletes the `Node` object.
-
     </div>
+
+    > [!NOTE]
+    > After you remove the `BareMetalHost` and `Machine` objects, the machine controller automatically deletes the `Node` object.
 
 7.  If deletion of the machine is delayed for any reason or the command is obstructed and delayed, force deletion by removing the machine object finalizer field.
 
-    <div class="warning">
-
-    Do not interrupt machine deletion by pressing `Ctrl+c`. You must allow the command to proceed to completion. Open a new terminal window to edit and delete the finalizer fields.
-
-    </div>
+    > [!WARNING]
+    > Do not interrupt machine deletion by pressing `Ctrl+c`. You must allow the command to proceed to completion. Open a new terminal window to edit and delete the finalizer fields.
 
     1.  On a new terminal window, edit the machine configuration by running the following command:
 
@@ -833,9 +958,11 @@ Finish removing the failed control plane node by deleting the machine of the unh
         - machine.machine.openshift.io
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -843,9 +970,21 @@ Finish removing the failed control plane node by deleting the machine of the unh
         machine.machine.openshift.io/examplecluster-control-plane-2 edited
         ```
 
+        </div>
+
+</div>
+
 # Verifying that the failed node was deleted
 
 Before proceeding to create a replacement control plane node, verify that the failed node was successfully deleted.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the machine was deleted by running the following command:
 
@@ -853,9 +992,11 @@ Before proceeding to create a replacement control plane node, verify that the fa
     $ oc get machines -n openshift-machine-api -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -867,15 +1008,19 @@ Before proceeding to create a replacement control plane node, verify that the fa
     examplecluster-compute-1          Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
     ```
 
+    </div>
+
 2.  Verify that the node has been deleted by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -887,11 +1032,15 @@ Before proceeding to create a replacement control plane node, verify that the fa
     openshift-compute-1       Ready worker 176m v1.35.4
     ```
 
+    </div>
+
 3.  Wait for all of the cluster Operators to complete rolling out changes. Run the following command to monitor the progress:
 
     ``` terminal
     $ watch oc get co
     ```
+
+</div>
 
 # Additional resources
 

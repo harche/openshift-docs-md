@@ -2,11 +2,29 @@ The hosted control planes feature, as well as the `hypershift-addon` managed clu
 
 You can uninstall the HyperShift Operator and disable the hosted control planes feature. When you disable the hosted control planes feature, you must destroy the hosted cluster and the managed cluster resource on multicluster engine Operator, as described in the *Destroying a hosted cluster* section.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Destroying a hosted cluster](../../hosted_control_planes/hcp-destroy/hcp-destroy-aws.xml#hcp-destroy-aws)
+
+</div>
 
 # Manually enabling the hosted control planes feature
 
 If the hosted control planes feature is disabled, you can manually enable it.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to enable the feature:
 
@@ -25,9 +43,11 @@ If the hosted control planes feature is disabled, you can manually enable it.
 
     The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -45,9 +65,21 @@ If the hosted control planes feature is disabled, you can manually enable it.
           enabled: true
     ```
 
+    </div>
+
+</div>
+
 # Manually enabling the hypershift-addon managed cluster add-on for local-cluster
 
 Enabling the hosted control planes feature automatically enables the `hypershift-addon` managed cluster add-on. If you need to enable the `hypershift-addon` managed cluster add-on manually, use the `hypershift-addon` to install the HyperShift Operator on `local-cluster`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `ManagedClusterAddon` add-on named `hypershift-addon` by creating a file that resembles the following example:
 
@@ -84,9 +116,19 @@ Enabling the hosted control planes feature automatically enables the `hypershift
 
     Your `hypershift-addon` managed cluster add-on is installed and the hosting cluster is available to create and manage hosted clusters.
 
+</div>
+
 # Uninstalling the HyperShift Operator
 
 Before you can disable the hosted control planes feature, you need to uninstall the HyperShift Operator and disable the `hypershift-addon` from the `local-cluster`.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to ensure that there is no hosted cluster running:
 
@@ -94,11 +136,8 @@ Before you can disable the hosted control planes feature, you need to uninstall 
     $ oc get hostedcluster -A
     ```
 
-    <div class="important">
-
-    If a hosted cluster is running, the HyperShift Operator does not uninstall, even if the `hypershift-addon` is disabled.
-
-    </div>
+    > [!IMPORTANT]
+    > If a hosted cluster is running, the HyperShift Operator does not uninstall, even if the `hypershift-addon` is disabled.
 
 2.  Disable the `hypershift-addon` by running the following command:
 
@@ -109,17 +148,34 @@ Before you can disable the hosted control planes feature, you need to uninstall 
 
     The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-    <div class="note">
+    > [!NOTE]
+    > You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
 
-    You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
-
-    </div>
+</div>
 
 # Disabling the hosted control planes feature
 
 If you no longer use the hosted control planes feature, you can disable it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You uninstalled the HyperShift Operator. For more information, see "Uninstalling the HyperShift Operator".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to disable the hosted control planes feature:
 
@@ -153,3 +209,5 @@ If you no longer use the hosted control planes feature, you can disable it.
         - name: hypershift-local-hosting
           enabled: false
     ```
+
+</div>

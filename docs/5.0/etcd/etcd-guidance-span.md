@@ -2,11 +2,8 @@ Evaluate considerations and metrics for OpenShift Container Platform clusters th
 
 Red Hat strongly recommends a deployment model where OpenShift Container Platform clusters are deployed within a data center, but also acknowledges that there can be scenarios where a provider can use a deployment model where a cluster can span across data centers. This guidance outlines considerations when exploring the use of cluster deployments that span many data centers and describes important metrics that affect the supportability of such deployments. The design of such deployments must adhere to these guidelines for the product to function optimally and to ensure the highest quality of support with the appropriate product support subscriptions.
 
-<div class="warning">
-
-A cluster deployment that spans many data centers extends the cluster as a single failure domain across locations and must not be considered a replacement for a disaster recovery plan.
-
-</div>
+> [!WARNING]
+> A cluster deployment that spans many data centers extends the cluster as a single failure domain across locations and must not be considered a replacement for a disaster recovery plan.
 
 Clusters that span many data centers follow standard Red Hat OpenShift Container Platform support guidance. Review the "Red Hat OpenShift Container Platform Lifecycle" and "Red Hat Production Support Scope of Coverage" for more information.
 
@@ -60,11 +57,19 @@ Using different infrastructure platform providers for control plane nodes is dis
 
 - For guidance on cluster deployments that span data centers using OpenShift Data Foundation as the storage provider, see "Configuring OpenShift Data Foundation Disaster Recovery for OpenShift Workloads".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Understanding and Validating MTU setting with OpenShift Container Platform 4.x (Red Hat Knowledgebase)](https://access.redhat.com/articles/7010220)
 
 - [Configuring OpenShift Data Foundation Disaster Recovery for OpenShift Workloads](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.19/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index)
+
+</div>
 
 # Site recommendations for multisite clusters
 
@@ -102,6 +107,14 @@ An object storage solution should be used for the registry, and this storage sol
 
 Because disk I/O is a critical factor in the health of etcd database, it is required that they are deployed on a high speed, low latency media. See etcd guidance on "How etcd peer round trip time affects performance" and "Determining the size of the etcd database and understanding its effects" for more details on the exact requirements to meet.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Ensuring reliable etcd performance and scalability](../etcd/etcd-performance.xml#etcd-leader-election-log-replication_etcd-performance)
 
 - [Understanding and Validating MTU setting with OpenShift Container Platform 4.x (Red Hat Knowledgebase)](https://access.redhat.com/articles/7010220)
@@ -109,6 +122,8 @@ Because disk I/O is a critical factor in the health of etcd database, it is requ
 - [How etcd peer round trip time affects performance](../etcd/etcd-performance.xml#etcd-peer-round-trip_etcd-performance)
 
 - [Determining the size of the etcd database and understanding its effects](../etcd/etcd-performance.xml#etcd-database-size_etcd-performance)
+
+</div>
 
 # Workload placement considerations
 

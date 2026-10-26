@@ -39,11 +39,8 @@ Specifies the location of the file containing the compliance content.
 `spec.contentImage`
 Specifies the content image location.
 
-<div class="important">
-
-The base image used for the content images must include `coreutils`.
-
-</div>
+> [!IMPORTANT]
+> The base image used for the content images must include `coreutils`.
 
 # Updating security content
 
@@ -55,9 +52,11 @@ Security content is included as container images that the `ProfileBundle` object
 $ oc -n openshift-compliance get profilebundles rhcos4 -oyaml
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -85,6 +84,8 @@ status:
     type: Ready
   dataStreamStatus: VALID
 ```
+
+</div>
 
 where:
 

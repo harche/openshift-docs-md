@@ -1,26 +1,28 @@
 After preparing your environment, install the virtualized control plane cluster by using your preferred installation method. The agent-based installer and GitOps Zero Touch Provisioning (ZTP) are the recommended methods for virtualized control plane deployments.
 
-<div class="important">
-
-KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> KubeVirt Redfish is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Deploying a virtualized control plane with the Agent-based installer
 
 Use the Agent-based Installer to deploy a virtualized control plane cluster. This method generates a bootable ISO containing all required configuration. You must mount the ISO to both the virtualized control plane nodes, by using KubeVirt Redfish, and the baremetal worker nodes, by using the Redfish API.
 
-<div class="important">
+> [!IMPORTANT]
+> When configuring the Agent-based Installer, the `platform` parameter in `install-config.yaml` determines the level of hardware management:
+>
+> `platform: baremetal`
+> Enables full hardware awareness. The cluster installs the Bare Metal Operator, and uses it to manage node lifecycle, power states, and automatic remediation through the Redfish API.
+>
+> `platform: none`
+> Treats infrastructure as generic compute. The cluster cannot control power states or boot orders. Requires external DNS and load balancing.
 
-When configuring the Agent-based Installer, the `platform` parameter in `install-config.yaml` determines the level of hardware management:
+<div>
 
-`platform: baremetal`
-Enables full hardware awareness. The cluster installs the Bare Metal Operator, and uses it to manage node lifecycle, power states, and automatic remediation through the Redfish API.
+<div class="title">
 
-`platform: none`
-Treats infrastructure as generic compute. The cluster cannot control power states or boot orders. Requires external DNS and load balancing.
+Prerequisites
 
 </div>
 
@@ -31,6 +33,16 @@ Treats infrastructure as generic compute. The cluster cannot control power state
 - You have network access to the KubeVirt Redfish route.
 
 - An HTTP server is available to host the agent ISO.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `install-config.yaml` file with BMC addresses pointing to KubeVirt Redfish for the virtualized control plane nodes and real Redfish endpoints for the baremetal worker nodes:
 
@@ -243,6 +255,16 @@ Treats infrastructure as generic compute. The cluster cannot control power state
 
     - Replace `<installation_directory>` with the path to the directory where the agent ISO was generated.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After installation completes, verify the cluster is operational:
 
   ``` terminal
@@ -250,9 +272,19 @@ Treats infrastructure as generic compute. The cluster cannot control power state
   $ oc get nodes
   ```
 
+</div>
+
 # Deploying a virtualized control plane with GitOps ZTP
 
 Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clusters at scale. GitOps Zero Touch Provisioning (ZTP) uses GitOps to manage cluster deployments declaratively through Red Hat Advanced Cluster Management (RHACM).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - RHACM is installed on a hub cluster.
 
@@ -263,6 +295,16 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
 - A Git repository is configured for GitOps ZTP manifests.
 
 - A pull secret is available for the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create `Secret` custom resources (CRs) that contain the BMC credentials for each node. The following example shows a secret for a control plane node:
 
@@ -406,6 +448,16 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
 
     ZTP generates the required resources and uses KubeVirt Redfish to provision the VMs automatically.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the cluster deployment from the hub cluster:
 
   ``` terminal
@@ -413,13 +465,20 @@ Use GitOps Zero Touch Provisioning (ZTP) to deploy virtualized control plane clu
   $ oc get agentclusterinstall my-vcp-cluster -n my-vcp-cluster -o jsonpath='{.status.debugInfo.stateInfo}'
   ```
 
+</div>
+
 # Deploying a virtualized control plane with installer-provisioned infrastructure
 
 Use installer-provisioned infrastructure to deploy a virtualized control plane cluster. Installer-provisioned infrastructure provides full lifecycle management where the installation program automates hardware provisioning, power states, and cluster initialization.
 
-<div class="note">
+> [!NOTE]
+> Installer-provisioned infrastructure for virtualized control planes requires a provisioning network or a RHEL 9 provisioner node. Verify Installer-provisioned infrastructure support for virtualized control plane deployments with your Red Hat representative, as this combination may have additional requirements.
 
-Installer-provisioned infrastructure for virtualized control planes requires a provisioning network or a RHEL 9 provisioner node. Verify Installer-provisioned infrastructure support for virtualized control plane deployments with your Red Hat representative, as this combination may have additional requirements.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -430,6 +489,16 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
 - A RHEL 9 provisioner node is available, or a provisioning network is configured.
 
 - You have network access to the KubeVirt Redfish route.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the `install-config.yaml` file with BMC addresses pointing to KubeVirt Redfish for the virtualized control plane nodes and real Redfish endpoints for the baremetal worker nodes:
 
@@ -618,12 +687,24 @@ Installer-provisioned infrastructure for virtualized control planes requires a p
 
     The installation process uses KubeVirt Redfish to manage VM power states and boot configuration automatically.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - After installation completes, verify the cluster is operational by running the following commands:
 
   ``` terminal
   $ export KUBECONFIG=<installation_directory>/auth/kubeconfig
   $ oc get nodes
   ```
+
+</div>
 
 # Additional resources
 

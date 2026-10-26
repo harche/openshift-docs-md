@@ -20,11 +20,8 @@ The hosting cluster must have a storage solution that supports VM disk images an
 
 Use Logical Volume Manager (LVM) Storage backed by NVMe drives for virtualized control plane storage. LVM Storage writes directly to local disks, providing the consistent low latency that `etcd` requires. Use dedicated NVMe drives for control plane VM disks to ensure predictable performance.
 
-<div class="important">
-
-Do not use Red Hat OpenShift Data Foundation (ODF) for control plane VM disk storage. ODF replicates data across multiple storage nodes, which can cause unpredictable latency spikes during synchronization that affect `etcd` performance.
-
-</div>
+> [!IMPORTANT]
+> Do not use Red Hat OpenShift Data Foundation (ODF) for control plane VM disk storage. ODF replicates data across multiple storage nodes, which can cause unpredictable latency spikes during synchronization that affect `etcd` performance.
 
 During installation of the virtualized control plane, KubeVirt Redfish requires a shared storage location for the installation ISO. When the installer mounts boot media through the Redfish API, KubeVirt Redfish creates a data volume, downloads the installation ISO into that volume, and attaches the volume to the VM as virtual media. Because control plane VMs can be scheduled on any worker node in the hosting cluster, the storage location for the installation ISO must be accessible from all nodes. Do not use a node-local storage class such as LVM Storage for this volume.
 
@@ -64,11 +61,8 @@ Each control plane VM requires the following minimum resources:
 
 - 120 GiB storage
 
-  <div class="note">
-
-  Use Logical Volume Manager (LVM) Storage backed by NVMe drives for virtualized control plane storage.
-
-  </div>
+  > [!NOTE]
+  > Use Logical Volume Manager (LVM) Storage backed by NVMe drives for virtualized control plane storage.
 
 # KubeVirt Redfish requirements
 

@@ -55,19 +55,16 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
 - The `mode` field specifies the bonding mode.
 
-  <div class="note">
-
-  The supported bonding modes are:
-
-  - `balance-rr` - 0
-
-  - `active-backup` - 1
-
-  - `balance-xor` - 2
-
-  For `balance-rr` or `balance-xor` modes, you must set the `trust` mode to `on` for the SR-IOV virtual function.
-
-  </div>
+  > [!NOTE]
+  > The supported bonding modes are:
+  >
+  > - `balance-rr` - 0
+  >
+  > - `active-backup` - 1
+  >
+  > - `balance-xor` - 2
+  >
+  > For `balance-rr` or `balance-xor` modes, you must set the `trust` mode to `on` for the SR-IOV virtual function.
 
 - The `failOverMac` field is mandatory for active-backup mode and must be set to `1`.
 
@@ -79,6 +76,14 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
 You can create a pod that uses a bond interface by applying a YAML configuration that references SR-IOV and bond network attachments.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The SR-IOV Network Operator must be installed and configured to obtain virtual functions in a container.
 
 - To configure SR-IOV interfaces, an SR-IOV network and policy must be created for each interface.
@@ -86,6 +91,16 @@ You can create a pod that uses a bond interface by applying a YAML configuration
 - The SR-IOV Network Operator creates a network attachment definition for each SR-IOV interface, based on the SR-IOV network and policy defined.
 
 - The `linkState` is set to the default value `auto` for the SR-IOV virtual function.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a pod with a YAML file named for example `podbonding.yaml` with content similar to the following:
 
@@ -142,11 +157,8 @@ You can create a pod that uses a bond interface by applying a YAML configuration
 
     - The `net2` interface is based on an SR-IOV virtual function.
 
-    <div class="note">
-
-    If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
-
-    </div>
+    > [!NOTE]
+    > If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
 
 4.  Optional: If you want to set a specific interface name, for example `bond0`, edit the `k8s.v1.cni.cncf.io/networks` annotation and set `bond0` as the interface name as follows:
 
@@ -154,3 +166,5 @@ You can create a pod that uses a bond interface by applying a YAML configuration
     annotations:
             k8s.v1.cni.cncf.io/networks: demo/sriovnet1, demo/sriovnet2, demo/bond-net1@bond0
     ```
+
+</div>

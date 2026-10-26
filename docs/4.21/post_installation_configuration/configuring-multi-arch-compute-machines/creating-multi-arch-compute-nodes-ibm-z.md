@@ -6,11 +6,8 @@ The following procedures explain how to create a RHCOS compute machine using a z
 
 To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for "Installing a cluster on IBM Z® and IBM® LinuxONE". You can then add `x86_64` compute machines as described in "Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z".
 
-<div class="note">
-
-Before adding a secondary architecture node to your cluster, installing the Multiarch Tuning Operator and deploying a `ClusterPodPlacementConfig` object are best practices. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
-
-</div>
+> [!NOTE]
+> Before adding a secondary architecture node to your cluster, installing the Multiarch Tuning Operator and deploying a `ClusterPodPlacementConfig` object are best practices. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
 # Additional resources
 
@@ -26,9 +23,27 @@ Before adding a secondary architecture node to your cluster, installing the Mult
 
 You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines running on IBM Z® with z/VM and attach them to your existing cluster.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have a domain name server (DNS) that can perform hostname and reverse lookup for the nodes.
 
 - You have an HTTP or HTTPS server running on your provisioning machine that is accessible to the machines you create.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Extract the Ignition config file from the cluster by running the following command:
 
@@ -113,27 +128,18 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
       1.  Use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed. For multipathing, repeat this step for each additional path.
 
-          <div class="note">
-
-          When you install with multiple paths, you must enable multipathing directly after the installation. Enabling multipathing much later can cause problems for your cluster.
-
-          </div>
+          > [!NOTE]
+          > When you install with multiple paths, you must enable multipathing directly after the installation. Enabling multipathing much later can cause problems for your cluster.
 
       2.  Set the install device as: `coreos.inst.install_dev=/dev/sda`.
 
-          <div class="note">
-
-          If additional LUNs are configured with NPIV, FCP requires `zfcp.allow_lun_scan=0`. If you must enable `zfcp.allow_lun_scan=1` because you use a CSI driver, for example, you must configure your NPIV so that each node cannot access the boot partition of another node.
-
-          </div>
+          > [!NOTE]
+          > If additional LUNs are configured with NPIV, FCP requires `zfcp.allow_lun_scan=0`. If you must enable `zfcp.allow_lun_scan=1` because you use a CSI driver, for example, you must configure your NPIV so that each node cannot access the boot partition of another node.
 
       3.  You can adjust further parameters if required.
 
-          <div class="important">
-
-          Additional postinstallation steps are required to fully enable multipathing. For more information, see “Enabling multipathing with kernel arguments on RHCOS" in *Machine configuration*.
-
-          </div>
+          > [!IMPORTANT]
+          > Additional postinstallation steps are required to fully enable multipathing. For more information, see “Enabling multipathing with kernel arguments on RHCOS" in *Machine configuration*.
 
           The following is an example parameter file, `additional-worker-fcp.parm` for a worker node with multipathing:
 
@@ -160,11 +166,8 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
     See [PUNCH](https://www.ibm.com/docs/en/zvm/latest?topic=commands-punch) in IBM® Documentation.
 
-    <div class="tip">
-
-    You can use the CP PUNCH command or, if you use Linux, the `vmur` command to transfer files between two z/VM guest virtual machines.
-
-    </div>
+    > [!TIP]
+    > You can use the CP PUNCH command or, if you use Linux, the `vmur` command to transfer files between two z/VM guest virtual machines.
 
 9.  Log in to CMS on the bootstrap machine.
 
@@ -176,11 +179,31 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
     See [IPL](https://www.ibm.com/docs/en/zvm/latest?topic=commands-ipl) in IBM® Documentation.
 
+</div>
+
 # Approve the certificate signing requests for your machines
 
 To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You added machines to your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Confirm that the cluster recognizes the machines:
 
@@ -188,9 +211,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -201,13 +226,12 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     master-2  Ready     master  64m  v1.34.2
     ```
 
+    </div>
+
     The output lists all of the machines that you created.
 
-    <div class="note">
-
-    The preceding output might not include the compute nodes until you approve some CSRs.
-
-    </div>
+    > [!NOTE]
+    > The preceding output might not include the compute nodes until you approve some CSRs.
 
 2.  Review the pending CSRs and ensure that you see the client requests with the `Pending` or `Approved` status for each machine that you added to the cluster:
 
@@ -215,9 +239,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -228,21 +254,17 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     ...
     ```
 
+    </div>
+
     In this example, two machines are joining the cluster. You might see more approved CSRs in the list.
 
 3.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-    <div class="note">
+    > [!NOTE]
+    > You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
-
-    </div>
-
-    <div class="note">
-
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
-
-    </div>
+    > [!NOTE]
+    > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     - To approve them individually, run the following command for each valid CSR:
 
@@ -261,11 +283,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
       ```
 
-      <div class="note">
-
-      Some Operators might not become available until you approve some CSRs.
-
-      </div>
+      > [!NOTE]
+      > Some Operators might not become available until you approve some CSRs.
 
 4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
@@ -273,9 +292,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get csr
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -285,6 +306,8 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     csr-c57lv   5m26s   system:node:ip-10-0-95-157.us-east-2.compute.internal                       Pending
     ...
     ```
+
+    </div>
 
 5.  If the remaining CSRs are not approved, and are in the `Pending` status, approve the CSRs for your cluster machines:
 
@@ -311,9 +334,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -326,8 +351,9 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
     worker-1  Ready     worker  11m  v1.34.2
     ```
 
-    <div class="note">
-
-    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
-
     </div>
+
+    > [!NOTE]
+    > You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
+
+</div>

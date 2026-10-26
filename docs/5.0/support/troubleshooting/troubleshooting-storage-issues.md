@@ -13,6 +13,14 @@ Unable to attach or mount volumes: unmounted volumes=[sso-mysql-pvol], unattache
 Multi-Attach error for volume "pvc-8837384d-69d7-40b2-b2e6-5df86943eef9" Volume is already used by pod(s) sso-mysql-1-ns6b4
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To resolve the multi-attach issue, use one of the following solutions:
 
   - Enable multiple attachments by using RWX volumes:
@@ -30,3 +38,5 @@ Multi-Attach error for volume "pvc-8837384d-69d7-40b2-b2e6-5df86943eef9" Volume 
     ```
 
     This command deletes the volumes stuck on shutdown or crashed nodes after six minutes.
+
+</div>

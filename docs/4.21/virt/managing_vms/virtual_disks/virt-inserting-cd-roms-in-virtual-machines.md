@@ -2,13 +2,10 @@ To attach a storage device to a virtual machine (VM) without rebooting the VM, y
 
 This also makes it possible to install an operating system from a CD-ROM in the VM.
 
-<div class="important">
-
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 # Inserting a CD-ROM in a live VM by using the command line
 
@@ -16,11 +13,16 @@ To make data on a CD-ROM storage device available to a running virtual machine (
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you can insert and eject ISO images in the drive while the VM is running.
 
-<div class="important">
+> [!IMPORTANT]
+> Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -37,13 +39,20 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-  <div class="note">
-
-  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
-
-  </div>
+  > [!NOTE]
+  > The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
 
 - You have an ISO image of a CD-ROM available in the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command to edit the configuration of the VM in which you want to insert the CD-ROM:
 
@@ -101,17 +110,24 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 6.  Optional: Eject the CD-ROM volume. To do so, remove the `cdrom` volume from the `spec.template.spec.volumes` section of the VM configuration. You can do this while the VM is running.
 
+</div>
+
 # Inserting a CD-ROM in a live VM by using the web console
 
 To make data on a CD-ROM storage device available to a running virtual machine (VM), create a virtual CD-ROM drive in the VM and insert the CD-ROM into the drive as an ISO image.
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but you can insert and eject ISO images in the drive while the VM is running.
 
-<div class="important">
+> [!IMPORTANT]
+> Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -128,11 +144,18 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-  <div class="note">
+  > [!NOTE]
+  > The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
 
-  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **VirtualMachines**.
 
@@ -171,3 +194,5 @@ For more information about the support scope of Red Hat Technology Preview featu
 12. Optional: In the guest operating system, verify that the CD-ROM has been detected.
 
 13. Optional: To eject the CD-ROM from the VM, click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) next to the CD-ROM device in the web console, and select **Eject**. You can do this while the VM is running.
+
+</div>

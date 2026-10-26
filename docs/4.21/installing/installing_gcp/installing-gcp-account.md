@@ -4,32 +4,55 @@ Before you can install OpenShift Container Platform, you must configure a Google
 
 To install OpenShift Container Platform, you must create a project in your Google Cloud account to host the cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Create a project to host your OpenShift Container Platform cluster. See [Creating and Managing Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects) in the Google Cloud documentation.
 
-  <div class="important">
+  > [!IMPORTANT]
+  > Your Google Cloud project must use the Premium Network Service Tier if you are using installer-provisioned infrastructure. The Standard Network Service Tier is not supported for clusters installed using the installation program. The installation program configures internal load balancing for the `api-int.<cluster_name>.<base_domain>` URL; the Premium Tier is required for internal load balancing.
 
-  Your Google Cloud project must use the Premium Network Service Tier if you are using installer-provisioned infrastructure. The Standard Network Service Tier is not supported for clusters installed using the installation program. The installation program configures internal load balancing for the `api-int.<cluster_name>.<base_domain>` URL; the Premium Tier is required for internal load balancing.
-
-  </div>
+</div>
 
 # Enabling API services in Google Cloud
 
 You must enable several API services in your Google Cloud project to complete OpenShift Container Platform installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created a project to host your cluster.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enable the following required API services in the project that hosts your cluster. You can also enable optional API services which are not required for installation. See [Enabling services](https://cloud.google.com/service-usage/docs/enable-disable#enabling) in the Google Cloud documentation.
 
-  | API service                              | Console service name                  |
-  |------------------------------------------|---------------------------------------|
-  | Compute Engine API                       | `compute.googleapis.com`              |
-  | Cloud Resource Manager API               | `cloudresourcemanager.googleapis.com` |
-  | Cloud DNS API                            | `dns.googleapis.com`                  |
-  | IAM Service Account Credentials API      | `iamcredentials.googleapis.com`       |
-  | Identity and Access Management (IAM) API | `iam.googleapis.com`                  |
-  | Service Usage API                        | `serviceusage.googleapis.com`         |
+  | API service | Console service name |
+  |----|----|
+  | Compute Engine API | `compute.googleapis.com` |
+  | Cloud Resource Manager API | `cloudresourcemanager.googleapis.com` |
+  | Cloud DNS API | `dns.googleapis.com` |
+  | IAM Service Account Credentials API | `iamcredentials.googleapis.com` |
+  | Identity and Access Management (IAM) API | `iam.googleapis.com` |
+  | Service Usage API | `serviceusage.googleapis.com` |
 
   Required API services
 
@@ -42,19 +65,26 @@ You must enable several API services in your Google Cloud project to complete Op
 
   Optional API services
 
+</div>
+
 # Configuring DNS for Google Cloud
 
 Configure a public hosted zone in your Google Cloud account to provide DNS resolution and name lookup for your OpenShift Container Platform cluster.
 
 To install OpenShift Container Platform, the Google Cloud account you use must have a dedicated public hosted zone in the same project that you host the OpenShift Container Platform cluster. This zone must be authoritative for the domain. The DNS service provides cluster DNS resolution and name lookup for external connections to the cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through Google Cloud or another source.
 
-    <div class="note">
-
-    If you purchase a new domain, it can take time for the relevant DNS changes to propagate. For more information about purchasing domains through Google, see [Google Domains](https://domains.google/).
-
-    </div>
+    > [!NOTE]
+    > If you purchase a new domain, it can take time for the relevant DNS changes to propagate. For more information about purchasing domains through Google, see [Google Domains](https://domains.google/).
 
 2.  Create a public hosted zone for your domain or subdomain in your Google Cloud project. See [Creating public zones](https://cloud.google.com/dns/zones/#creating_public_zones) in the Google Cloud documentation.
 
@@ -70,36 +100,35 @@ To install OpenShift Container Platform, the Google Cloud account you use must h
 
 6.  If you use a subdomain, follow your company’s procedures to add its delegation records to the parent domain. This process might include a request to your company’s IT department or the division that controls the root domain and DNS services for your company.
 
+</div>
+
 # Google Cloud account limits
 
 A default OpenShift Container Platform cluster consumes specific Google Cloud resource quotas that you might need to increase before installation, depending on your region and cluster size.
 
 A default cluster, which contains three compute and three control plane machines, uses the following resources. Note that some resources are required only during the bootstrap process and are removed after the cluster deploys.
 
-| Service                    | Component | Location | Total resources required | Resources removed after bootstrap |
-|----------------------------|-----------|----------|--------------------------|-----------------------------------|
-| Service account            | IAM       | Global   | 6                        | 1                                 |
-| Firewall rules             | Compute   | Global   | 11                       | 1                                 |
-| Forwarding rules           | Compute   | Global   | 2                        | 0                                 |
-| In-use global IP addresses | Compute   | Global   | 4                        | 1                                 |
-| Health checks              | Compute   | Global   | 3                        | 0                                 |
-| Images                     | Compute   | Global   | 1                        | 0                                 |
-| Networks                   | Compute   | Global   | 2                        | 0                                 |
-| Static IP addresses        | Compute   | Region   | 4                        | 1                                 |
-| Routers                    | Compute   | Global   | 1                        | 0                                 |
-| Routes                     | Compute   | Global   | 2                        | 0                                 |
-| Subnetworks                | Compute   | Global   | 2                        | 0                                 |
-| Target pools               | Compute   | Global   | 3                        | 0                                 |
-| CPUs                       | Compute   | Region   | 28                       | 4                                 |
-| Persistent disk SSD (GB)   | Compute   | Region   | 896                      | 128                               |
+| Service | Component | Location | Total resources required | Resources removed after bootstrap |
+|----|----|----|----|----|
+| Service account | IAM | Global | 6 | 1 |
+| Firewall rules | Compute | Global | 11 | 1 |
+| Forwarding rules | Compute | Global | 2 | 0 |
+| In-use global IP addresses | Compute | Global | 4 | 1 |
+| Health checks | Compute | Global | 3 | 0 |
+| Images | Compute | Global | 1 | 0 |
+| Networks | Compute | Global | 2 | 0 |
+| Static IP addresses | Compute | Region | 4 | 1 |
+| Routers | Compute | Global | 1 | 0 |
+| Routes | Compute | Global | 2 | 0 |
+| Subnetworks | Compute | Global | 2 | 0 |
+| Target pools | Compute | Global | 3 | 0 |
+| CPUs | Compute | Region | 28 | 4 |
+| Persistent disk SSD (GB) | Compute | Region | 896 | 128 |
 
 Google Cloud resources used in a default cluster
 
-<div class="note">
-
-If any of the quotas are insufficient during installation, the installation program displays an error that states both which quota was exceeded and the region.
-
-</div>
+> [!NOTE]
+> If any of the quotas are insufficient during installation, the installation program displays an error that states both which quota was exceeded and the region.
 
 Be sure to consider your actual cluster size, planned cluster growth, and any usage from other clusters that are associated with your account. The CPU, static IP addresses, and persistent disk SSD (storage) quotas are the ones that are most likely to be insufficient.
 
@@ -129,41 +158,72 @@ If you plan to deploy your cluster in one of the following regions, you will exc
 
 You can increase resource quotas from the Google Cloud console, but you might need to file a support ticket. Be sure to plan your cluster size early so that you can allow time to resolve the support ticket before you install your OpenShift Container Platform cluster.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Manage your quotas using the console (Google Cloud documentation)](https://cloud.google.com/docs/quota)
 
 - [Google Cloud console](https://console.cloud.google.com/iam-admin/quotas)
+
+</div>
 
 # Creating a service account in Google Cloud
 
 OpenShift Container Platform requires a Google Cloud service account that provides authentication and authorization to access data in the Google APIs. If you do not have an existing IAM service account that contains the required roles in your project, you must create one.
 
-<div class="note">
+> [!NOTE]
+> To reduce the scope of permissions granted to the main service account in your Google Cloud project while still being able to use the Google Cloud Container Storage Interface (CSI) Driver Operator, you can transfer the control of permissions from the project-wide service account to the control plane and compute node service accounts instead, thus reducing the scope of the permission. For more information, see Section *Reducing permissions while using the Google Cloud CSI Driver Operator*.
 
-To reduce the scope of permissions granted to the main service account in your Google Cloud project while still being able to use the Google Cloud Container Storage Interface (CSI) Driver Operator, you can transfer the control of permissions from the project-wide service account to the control plane and compute node service accounts instead, thus reducing the scope of the permission. For more information, see Section *Reducing permissions while using the Google Cloud CSI Driver Operator*.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You created a project to host your cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a service account in the project that you use to host your OpenShift Container Platform cluster. See [Creating a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account) in the Google Cloud documentation.
 
 2.  Grant the service account the appropriate permissions. You can either grant the individual permissions that follow or assign the `Owner` role to it. See [Granting roles to a service account for specific resources](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource).
 
-    <div class="note">
-
-    While making the service account an owner of the project is the easiest way to gain the required permissions, it means that service account has complete control over the project. You must determine if the risk that comes from offering that power is acceptable.
-
-    </div>
+    > [!NOTE]
+    > While making the service account an owner of the project is the easiest way to gain the required permissions, it means that service account has complete control over the project. You must determine if the risk that comes from offering that power is acceptable.
 
 3.  You can create the service account key in JSON format, or attach the service account to a Google Cloud virtual machine. See [Creating service account keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys) and [Creating and enabling service accounts for instances](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances) in the Google Cloud documentation.
 
-    <div class="note">
+    > [!NOTE]
+    > If you use a virtual machine with an attached service account to create your cluster, you must set `credentialsMode: Manual` in the `install-config.yaml` file before installation.
 
-    If you use a virtual machine with an attached service account to create your cluster, you must set `credentialsMode: Manual` in the `install-config.yaml` file before installation.
+</div>
 
-    </div>
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Reducing permissions while using the Google Cloud CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-pd-reduce-permissions_persistent-storage-csi-gcp-pd)
+
+</div>
 
 ## Required Google Cloud roles
 
@@ -656,23 +716,25 @@ The following Image permission is required for deletion:
 
 When you are installing a cluster to a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), you must configure the service account for both the host project and the service project.
 
-<div class="important">
-
-You can use granular permissions for a Cloud Credential Operator that operates in either Manual or Mint credentials mode. For more information about the minimum permissions required for a standard installation that is configured with either of these credentials modes, see "Required Google Cloud permissions for installer-provisioned infrastructure".
-
-You cannot use granular permissions in Passthrough credentials mode. For more information about the minimum roles required, see "Required Google Cloud roles".
-
-</div>
+> [!IMPORTANT]
+> You can use granular permissions for a Cloud Credential Operator that operates in either Manual or Mint credentials mode. For more information about the minimum permissions required for a standard installation that is configured with either of these credentials modes, see "Required Google Cloud permissions for installer-provisioned infrastructure".
+>
+> You cannot use granular permissions in Passthrough credentials mode. For more information about the minimum roles required, see "Required Google Cloud roles".
 
 If you are not installing to a shared Virtual Private Cloud (VPC), you can skip the procedure.
 
-<div class="important">
-
-When installing a cluster on shared Virtual Private Cloud (VPC) infrastructure and you want to manually create credentials, grant the `compute.subnetworks.use` permission on the host project to the credentials that the Machine API Operator uses.
-
-</div>
+> [!IMPORTANT]
+> When installing a cluster on shared Virtual Private Cloud (VPC) infrastructure and you want to manually create credentials, grant the `compute.subnetworks.use` permission on the host project to the credentials that the Machine API Operator uses.
 
 Ensure that the host project applies one of the following configurations to the service account, noting that the permissions for creating and deleting firewalls are not required if you manage your own firewall rules:
+
+<div class="example">
+
+<div class="title">
+
+Required permissions for creating firewalls in the host project
+
+</div>
 
 - `projects/<host-project>/roles/dns.networks.bindPrivateDNSZone`
 
@@ -680,17 +742,35 @@ Ensure that the host project applies one of the following configurations to the 
 
 - `roles/compute.securityAdmin`
 
-<!-- -->
+</div>
+
+<div class="example">
+
+<div class="title">
+
+Required permissions for deleting firewalls in the host project
+
+</div>
 
 - `compute.firewalls.delete`
 
 - `compute.networks.updatePolicy`
 
-<!-- -->
+</div>
+
+<div class="example">
+
+<div class="title">
+
+Required minimal permissions
+
+</div>
 
 - `projects/<host-project>/roles/dns.networks.bindPrivateDNSZone`
 
 - `roles/compute.networkUser`
+
+</div>
 
 If you do not supply a service account for control plane nodes in the `install-config.yaml` file, grant the following permissions to the service account in the host project. If you do not supply a service account for compute nodes in the `install-config.yaml` file, grant the following permissions to the service account in the host project for cluster destruction. If you do supply service accounts for control plane and compute nodes, you do not need to grant the following permissions.
 
@@ -703,6 +783,14 @@ If you do not supply a service account for control plane nodes in the `install-c
 </div>
 
 The following permissions are required when you select a separate project for the location of the DNS zone or zones. These permissions are also required when the DNS zone or zones are located in a third project.
+
+<div class="example">
+
+<div class="title">
+
+Required minimal permissions for provisioning DNS resources in a separate project
+
+</div>
 
 - `dns.changes.create`
 
@@ -724,17 +812,16 @@ The following permissions are required when you select a separate project for th
 
 - `dns.resourceRecordSets.list`
 
+</div>
+
 ## Required Google Cloud permissions for user-provided service accounts
 
 If your organization’s security policies prevent the installation program from creating service accounts, you can provide your own service accounts with the required roles for the control plane and compute nodes.
 
 By default, the installation program creates a service account for the control plane and compute nodes. The service account that the installation program uses requires the roles and permissions that are listed in the *Creating a service account in Google Cloud* section, and the `resourcemanager.projects.getIamPolicy` and `resourcemanager.projects.setIamPolicy` permissions. These permissions should be applied to the service account in the host project. If this approach does not meet the security requirements of your organization, you can provide a service account email address for the control plane or compute nodes in the `install-config.yaml` file. For more information, see the *Installation configuration parameters for Google Cloud* page. If you provide a service account for control plane nodes during an installation into a shared VPC, you must grant that service account the `roles/compute.networkUser` role in the host project. If you want the installation program to automatically create firewall rules when you supply the control plane service account, you must grant that service account the `roles/compute.networkAdmin` and `roles/compute.securityAdmin` roles in the host project. If you only supply the `roles/compute.networkUser` role, you must create the firewall rules manually.
 
-<div class="important">
-
-The following roles are required for user-provided service accounts for control plane and compute nodes.
-
-</div>
+> [!IMPORTANT]
+> The following roles are required for user-provided service accounts for control plane and compute nodes.
 
 The following roles are required for user-provided service accounts for control plane nodes:
 
@@ -758,26 +845,23 @@ The following roles are required for user-provided service accounts for compute 
 
 You can manage your own firewall rules when installing a cluster on Google Cloud into an existing VPC by enabling the `firewallRulesManagement` parameter in the `install-config.yaml` file. You can limit the permissions that you grant to the installation program by managing your own firewall rules.
 
-<div class="important">
-
-If you manage your own firewall rules, you must continue to manage them through the lifetime of the cluster. If you create a new service, create a new firewall rule that permits traffic on the service port, from the desired source addresses to the compute nodes. An example rule is described in the table below.
-
-</div>
+> [!IMPORTANT]
+> If you manage your own firewall rules, you must continue to manage them through the lifetime of the cluster. If you create a new service, create a new firewall rule that permits traffic on the service port, from the desired source addresses to the compute nodes. An example rule is described in the table below.
 
 If you want to manage your own firewall rules, you must create the following rules before installation:
 
-| Rule Name            | Protocol:Port                                                                                          | Source                                                                  | Destination                                        |
-|----------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|----------------------------------------------------|
-| bootstrap-in-ssh     | `tcp:22`                                                                                               | `<allowed_external_cidr>`                                               | `<control_plane_node_tags>`                        |
-| api                  | `tcp:6443`                                                                                             | `<allowed_external_cidr>`                                               | `<control_plane_node_tags>`                        |
-| health-checks        | `tcp:6080,6443,22624`                                                                                  | `35.191.0.0/16`, `130.211.0.0/22`, `209.85.152.0/22`, `209.85.204.0/22` | `<control_plane_node_tags>`                        |
-| etcd                 | `tcp:2379,2380`                                                                                        | `<control_plane_node_tags>`                                             | `<control_plane_node_tags>`                        |
-| control-plane        | `tcp:10257,10259,22623`                                                                                | `<control_plane_node_tags>`, `<compute_node_tags>`                      | `<control_plane_node_tags>`                        |
-| internal-network     | icmp,`tcp:22`                                                                                          | `<internal_network_cidr>`                                               | `<control_plane_node_tags>`, `<compute_node_tags>` |
-| internal-cluster     | `udp:500,4500,4789,6081`, `udp:9000-9999,30000-32767`, `esp`, `tcp:9000-9999,10250`, `tcp:30000-32767` | `<control_plane_node_tags>`, `<compute_node_tags>`                      | `<control_plane_node_tags>`, `<compute_node_tags>` |
-| ingress-k8s-fw       | `tcp:80,443`                                                                                           | `<allowed_external_cidr>`                                               | `<control_plane_node_tags>`, `<compute_node_tags>` |
-| ingress-k8s-http-hc  | `tcp:30000-32767`                                                                                      | `35.191.0.0/16`, `130.211.0.0/22`, `209.85.152.0/22`, `209.85.204.0/22` | `<control_plane_node_tags>`, `<compute_node_tags>` |
-| `<sample_rule_name>` | `<service_port>`                                                                                       | `<allowed_external_cidr>`                                               | `<compute_node_tags>`                              |
+| Rule Name | Protocol:Port | Source | Destination |
+|----|----|----|----|
+| bootstrap-in-ssh | `tcp:22` | `<allowed_external_cidr>` | `<control_plane_node_tags>` |
+| api | `tcp:6443` | `<allowed_external_cidr>` | `<control_plane_node_tags>` |
+| health-checks | `tcp:6080,6443,22624` | `35.191.0.0/16`, `130.211.0.0/22`, `209.85.152.0/22`, `209.85.204.0/22` | `<control_plane_node_tags>` |
+| etcd | `tcp:2379,2380` | `<control_plane_node_tags>` | `<control_plane_node_tags>` |
+| control-plane | `tcp:10257,10259,22623` | `<control_plane_node_tags>`, `<compute_node_tags>` | `<control_plane_node_tags>` |
+| internal-network | icmp,`tcp:22` | `<internal_network_cidr>` | `<control_plane_node_tags>`, `<compute_node_tags>` |
+| internal-cluster | `udp:500,4500,4789,6081`, `udp:9000-9999,30000-32767`, `esp`, `tcp:9000-9999,10250`, `tcp:30000-32767` | `<control_plane_node_tags>`, `<compute_node_tags>` | `<control_plane_node_tags>`, `<compute_node_tags>` |
+| ingress-k8s-fw | `tcp:80,443` | `<allowed_external_cidr>` | `<control_plane_node_tags>`, `<compute_node_tags>` |
+| ingress-k8s-http-hc | `tcp:30000-32767` | `35.191.0.0/16`, `130.211.0.0/22`, `209.85.152.0/22`, `209.85.204.0/22` | `<control_plane_node_tags>`, `<compute_node_tags>` |
+| `<sample_rule_name>` | `<service_port>` | `<allowed_external_cidr>` | `<compute_node_tags>` |
 
 where:
 
@@ -819,9 +903,25 @@ If your organization uses the following policies, they must be modified or remov
 
 - VPC Service Controls egress rules
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You created a project to host your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Modify the `constraints/compute.trustedImageProjects` constraint in your Google Cloud project and add `projects/rhcos-cloud` to the `allowedValues` list, as in the following example:
 
@@ -899,6 +999,8 @@ If your organization uses the following policies, they must be modified or remov
 
     `<project_id>`
     Specifies one or more projects that the specified identities can access. You can specify a wildcard such as `projects/*` to grant access to all projects, or specific project IDs such as `projects/1234567890`.
+
+</div>
 
 # Supported Google Cloud regions
 
@@ -984,11 +1086,8 @@ You can deploy to the following Google Cloud regions:
 
 - `us-west4` (Las Vegas, Nevada, USA)
 
-<div class="note">
-
-To determine which machine type instances are available by region and zone, see the Google [documentation](https://cloud.google.com/compute/docs/regions-zones#available).
-
-</div>
+> [!NOTE]
+> To determine which machine type instances are available by region and zone, see the Google [documentation](https://cloud.google.com/compute/docs/regions-zones#available).
 
 # Additional resources
 

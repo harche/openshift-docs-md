@@ -6,11 +6,8 @@ Container Storage Interface (CSI) architecture uses containerized drivers and br
 
 The Container Storage Interface (CSI) allows OpenShift Container Platform to consume storage from storage back ends that implement the CSI interface as persistent storage.
 
-<div class="note">
-
-OpenShift Container Platform 4.17 supports version 1.6.0 of the CSI specification.
-
-</div>
+> [!NOTE]
+> OpenShift Container Platform 4.17 supports version 1.6.0 of the CSI specification.
 
 For more information about the CSI spec, see "CSI spec".
 
@@ -24,7 +21,17 @@ The following diagram provides a high-level overview about the components runnin
 
 It is possible to run multiple CSI drivers for different storage back ends. Each driver needs its own external controllers deployment and daemon set with the driver and CSI registrar.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [CSI spec](https://github.com/container-storage-interface/spec)
+
+</div>
 
 ## External CSI controllers
 
@@ -44,17 +51,11 @@ External CSI controllers is a deployment that deploys one or more pods with five
 
 The CSI attacher and CSI provisioner containers communicate with the CSI driver container using UNIX Domain Sockets, ensuring that no CSI communication leaves the pod. The CSI driver is not accessible from outside of the pod.
 
-<div class="note">
+> [!NOTE]
+> The `attach`, `detach`, `provision`, and `delete` operations typically require the CSI driver to use credentials to the storage backend. Run the CSI controller pods on infrastructure nodes so the credentials are never leaked to user processes, even in case of a catastrophic security breach on a compute node.
 
-The `attach`, `detach`, `provision`, and `delete` operations typically require the CSI driver to use credentials to the storage backend. Run the CSI controller pods on infrastructure nodes so the credentials are never leaked to user processes, even in case of a catastrophic security breach on a compute node.
-
-</div>
-
-<div class="note">
-
-The external attacher must also run for CSI drivers that do not support third-party `attach` or `detach` operations. The external attacher does not issue any `ControllerPublish` or `ControllerUnpublish` operations to the CSI driver. However, it still must run to implement the necessary OpenShift Container Platform attachment API.
-
-</div>
+> [!NOTE]
+> The external attacher must also run for CSI drivers that do not support third-party `attach` or `detach` operations. The external attacher does not issue any `ControllerPublish` or `ControllerUnpublish` operations to the CSI driver. However, it still must run to implement the necessary OpenShift Container Platform attachment API.
 
 ## CSI driver daemon set
 
@@ -74,51 +75,42 @@ OpenShift Container Platform installs several CSI drivers by default, automatica
 
 To create CSI-provisioned persistent volumes that mount to these supported storage assets, OpenShift Container Platform installs the necessary CSI driver Operator, the CSI driver, and the required storage class by default. For more details about the default namespace of the Operator and driver, see the documentation for the specific CSI Driver Operator.
 
-<div class="important">
-
-The AWS EFS CSI driver is not installed by default, and must be installed manually. For instructions about installing the AWS EFS CSI driver, see "Setting up the AWS Elastic File Service CSI Driver Operator".
-
-</div>
+> [!IMPORTANT]
+> The AWS EFS CSI driver is not installed by default, and must be installed manually. For instructions about installing the AWS EFS CSI driver, see "Setting up the AWS Elastic File Service CSI Driver Operator".
 
 The following table describes the CSI drivers that are installed with OpenShift Container Platform, supported by OpenShift Container Platform, and which CSI features they support, such as volume snapshots and resize.
 
-<div class="important">
-
-If your CSI driver is not listed in the following table, you must follow the installation instructions provided by your CSI storage vendor to use their supported CSI features.
-
-</div>
+> [!IMPORTANT]
+> If your CSI driver is not listed in the following table, you must follow the installation instructions provided by your CSI storage vendor to use their supported CSI features.
 
 For a list of third-party-certified CSI drivers, see the "Red Hat ecosystem portal".
 
-| CSI driver                                         | CSI volume snapshots | CSI volume group snapshots | CSI cloning        | CSI resize         | Inline ephemeral volumes | Changed block tracking <sup>\[1\]</sup> | User namespaces     |
-|----------------------------------------------------|----------------------|----------------------------|--------------------|--------------------|--------------------------|-----------------------------------------|---------------------|
-| AWS EBS                                            | ✅                   |                            |                    | ✅                 |                          |                                         | ✅                  |
-| AWS EFS                                            |                      |                            |                    |                    |                          |                                         |                     |
-| Google Compute Platform (GCP) persistent disk (PD) | ✅                   |                            | ✅<sup>\[2\]</sup> | ✅                 |                          |                                         | ✅                  |
-| GCP Filestore                                      | ✅                   |                            |                    | ✅                 |                          |                                         |                     |
-| IBM Power® Virtual Server Block                    |                      |                            |                    | ✅                 |                          |                                         | ✅                  |
-| IBM Cloud® Block                                   | ✅<sup>\[3\]</sup>   |                            |                    | ✅<sup>\[3\]</sup> |                          |                                         | ✅                  |
-| LVM Storage                                        | ✅                   |                            | ✅                 | ✅                 |                          |                                         | ✅                  |
-| Microsoft Azure Disk                               | ✅                   |                            | ✅                 | ✅                 |                          |                                         | ✅                  |
-| Microsoft Azure Stack Hub                          | ✅                   |                            | ✅                 | ✅                 |                          |                                         | ✅                  |
-| Microsoft Azure File                               | ✅                   |                            | ✅                 | ✅                 | ✅                       |                                         |                     |
-| OpenStack Cinder                                   | ✅                   |                            | ✅                 | ✅                 |                          |                                         | ✅                  |
-| OpenShift Data Foundation                          | ✅                   | ✅                         | ✅                 | ✅                 |                          | ✅ <sup>\[4\]</sup>                     | ✅ <sup>\[5\]</sup> |
-| OpenStack Manila                                   | ✅                   |                            |                    | ✅                 |                          |                                         |                     |
-| CIFS/SMB                                           |                      |                            | ✅                 |                    |                          |                                         |                     |
-| VMware vSphere                                     | ✅<sup>\[6\]</sup>   |                            |                    | ✅<sup>\[7\]</sup> |                          |                                         | ✅ <sup>\[8\]</sup> |
+| CSI driver | CSI volume snapshots | CSI volume group snapshots | CSI cloning | CSI resize | Inline ephemeral volumes | Changed block tracking <sup>\[1\]</sup> | User namespaces |
+|----|----|----|----|----|----|----|----|
+| AWS EBS | ✅ |  |  | ✅ |  |  | ✅ |
+| AWS EFS |  |  |  |  |  |  |  |
+| Google Compute Platform (GCP) persistent disk (PD) | ✅ |  | ✅<sup>\[2\]</sup> | ✅ |  |  | ✅ |
+| GCP Filestore | ✅ |  |  | ✅ |  |  |  |
+| IBM Power® Virtual Server Block |  |  |  | ✅ |  |  | ✅ |
+| IBM Cloud® Block | ✅<sup>\[3\]</sup> |  |  | ✅<sup>\[3\]</sup> |  |  | ✅ |
+| LVM Storage | ✅ |  | ✅ | ✅ |  |  | ✅ |
+| Microsoft Azure Disk | ✅ |  | ✅ | ✅ |  |  | ✅ |
+| Microsoft Azure Stack Hub | ✅ |  | ✅ | ✅ |  |  | ✅ |
+| Microsoft Azure File | ✅ |  | ✅ | ✅ | ✅ |  |  |
+| OpenStack Cinder | ✅ |  | ✅ | ✅ |  |  | ✅ |
+| OpenShift Data Foundation | ✅ | ✅ | ✅ | ✅ |  | ✅ <sup>\[4\]</sup> | ✅ <sup>\[5\]</sup> |
+| OpenStack Manila | ✅ |  |  | ✅ |  |  |  |
+| CIFS/SMB |  |  | ✅ |  |  |  |  |
+| VMware vSphere | ✅<sup>\[6\]</sup> |  |  | ✅<sup>\[7\]</sup> |  |  | ✅ <sup>\[8\]</sup> |
 
 Supported CSI drivers and features in OpenShift Container Platform
 
 1\.
 
-<div class="important">
-
-Changed block tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Changed block tracking is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 2\.
 
@@ -150,13 +142,21 @@ RBD supports user namespaces; CephFS does not.
 
 - File persistent volumes (PVs), such as vSAN file service, do not support user namespaces.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Setting up the AWS EFS CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#persistent-storage-efs-csi-driver-operator-setup_persistent-storage-csi-aws-efs)
 
 - [Red Hat ecosystem portal](https://catalog.redhat.com/)
 
 - [Third-party support policy](https://access.redhat.com/articles/third-party-software-support)
+
+</div>
 
 # Dynamic provisioning
 
@@ -165,6 +165,14 @@ Dynamic provisioning creates persistent volumes on-demand from storage class con
 Dynamic provisioning of persistent storage depends on the capabilities of the CSI driver and underlying storage back end. The provider of the CSI driver should document how to create a storage class in OpenShift Container Platform and the parameters available for configuration.
 
 The created storage class can be configured to enable dynamic provisioning.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a default storage class that ensures all PVCs that do not require any special storage class are provisioned by the installed CSI driver.
 
@@ -188,15 +196,33 @@ The created storage class can be configured to enable dynamic provisioning.
 
 - `parameters.csi.storage.k8s.io/fstype`: The vSphere CSI driver supports all of the file systems supported by the underlying Red Hat Core operating system release, including XFS and Ext4.
 
+</div>
+
 # Example using the CSI driver
 
 Deploy a MySQL application using Container Storage Interface (CSI) persistent storage to demonstrate dynamic volume provisioning. This example shows CSI drivers automatically creating and binding persistent volume claims to dynamically provisioned volumes without manual intervention.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The CSI driver has been deployed.
 
 - A storage class has been created for dynamic provisioning.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create the MySQL template:
 
@@ -204,9 +230,11 @@ Deploy a MySQL application using Container Storage Interface (CSI) persistent st
   # oc new-app mysql-persistent
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -215,13 +243,17 @@ Deploy a MySQL application using Container Storage Interface (CSI) persistent st
   ...
   ```
 
+  </div>
+
   ``` terminal
   # oc get pvc
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -229,3 +261,7 @@ Deploy a MySQL application using Container Storage Interface (CSI) persistent st
   NAME           STATUS         VOLUME                                   CAPACITY ACCESS MODES   STORAGECLASS   AGE
   mysql          Bound          kubernetes-dynamic-pv-3271ffcb4e1811e8   1Gi      RWO            gp3-csi        3s
   ```
+
+  </div>
+
+</div>

@@ -14,15 +14,35 @@ For example, you have configured the following two BSLs:
 
 As you have already set the BSL created through the DPA as the default, you cannot set the independently created BSL again as the default. This means, at any given time, you can set only one BSL as the default BSL.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must install the OADP Operator.
 
 - You must create the secrets by using the credentials provided by the cloud provider.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Configure the `DataProtectionApplication` CR with more than one `BackupStorageLocation` CR. See the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example DPA**
+    <div class="title">
+
+    Example DPA
 
     </div>
 
@@ -63,6 +83,8 @@ As you have already set the BSL created through the DPA as the default, you cann
     #...
     ```
 
+    </div>
+
     where:
 
     `name: aws`
@@ -94,9 +116,11 @@ As you have already set the BSL created through the DPA as the default, you cann
 
 2.  Specify the BSL to be used in the backup CR. See the following example.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example backup CR**
+    <div class="title">
+
+    Example backup CR
 
     </div>
 
@@ -111,6 +135,8 @@ As you have already set the BSL created through the DPA as the default, you cann
       defaultVolumesToFsBackup: true
     ```
 
+    </div>
+
     where:
 
     `<namespace>`
@@ -118,6 +144,8 @@ As you have already set the BSL created through the DPA as the default, you cann
 
     `<backup_storage_location>`
     Specifies the storage location.
+
+</div>
 
 # Change the default backup storage location in a DPA
 
@@ -135,6 +163,14 @@ To prevent this conflict, the Operator checks whether the BSL already exists. If
 Workaround
 To change the default BSL, delete and re-create the DPA. Deleting and re-creating the DPA ensures that the BSL resources are created from scratch. The new `default` setting is applied during initial creation and re-deployment of the DPA.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Delete the existing DPA by running the following command:
 
     ``` terminal
@@ -151,15 +187,35 @@ To change the default BSL, delete and re-create the DPA. Deleting and re-creatin
 
     Replace `<updated_dpa_file>` with the file name of the updated DPA custom resource definition.
 
+</div>
+
 # Configure two backup BSLs with different cloud credentials
 
 Configure two backup storage locations with different cloud credentials to back up applications to multiple storage targets. With this setup, you can distribute backups across different storage providers for redundancy.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You must install the OADP Operator.
 
 - You must configure two backup storage locations: AWS S3 and Multicloud Object Gateway (MCG).
 
 - You must have an application with a database deployed on a Red Hat OpenShift cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the first `Secret` for the AWS S3 storage provider with the default name by running the following command:
 
@@ -185,9 +241,11 @@ Configure two backup storage locations with different cloud credentials to back 
 
 3.  Configure the DPA with the two BSLs as shown in the following example.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example DPA**
+    <div class="title">
+
+    Example DPA
 
     </div>
 
@@ -237,6 +295,8 @@ Configure two backup storage locations with different cloud credentials to back 
           - aws
     ```
 
+    </div>
+
     where:
 
     `<region_name>`
@@ -280,9 +340,11 @@ Configure two backup storage locations with different cloud credentials to back 
     $ oc get bsl
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -292,17 +354,18 @@ Configure two backup storage locations with different cloud credentials to back 
     mcg    Available   5s               3m28s
     ```
 
-7.  Create a backup CR with the default BSL.
-
-    <div class="note">
-
-    In the following example, the `storageLocation` field is not specified in the backup CR.
-
     </div>
 
-    <div class="formalpara-title">
+7.  Create a backup CR with the default BSL.
 
-    **Example backup CR**
+    > [!NOTE]
+    > In the following example, the `storageLocation` field is not specified in the backup CR.
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example backup CR
 
     </div>
 
@@ -317,6 +380,8 @@ Configure two backup storage locations with different cloud credentials to back 
       - <mysql_namespace>
       defaultVolumesToFsBackup: true
     ```
+
+    </div>
 
     where:
 
@@ -347,9 +412,11 @@ Configure two backup storage locations with different cloud credentials to back 
 
 10. Create a backup CR by using MCG as the BSL. In the following example, note that the second `storageLocation` value is specified at the time of backup CR creation.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example backup `CR`**
+    <div class="title">
+
+    Example backup `CR`
 
     </div>
 
@@ -365,6 +432,8 @@ Configure two backup storage locations with different cloud credentials to back 
       storageLocation: mcg
       defaultVolumesToFsBackup: true
     ```
+
+    </div>
 
     where:
 
@@ -396,4 +465,16 @@ Configure two backup storage locations with different cloud credentials to back 
     `<backup_name>`
     Specifies the name of the backup.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating profiles for different credentials](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#oadp-aws-secrets-for-different-credentials_installing-oadp-aws)
+
+</div>

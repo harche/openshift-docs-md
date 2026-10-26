@@ -34,4 +34,14 @@ For clusters upgraded from 4.12, and earlier, to 4.13, and later, the CSI storag
 
 For information about changing the default storage class, see *Changing the default storage class* under *Additional resources*.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Changing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#change-default-storage-class_persistent-storage-csi-sc-manage)
+
+</div>

@@ -34,7 +34,13 @@ The requirements are as follows:
 
   - If you use RHOSO, see "NFV performance considerations (Red Hat OpenStack Services on OpenShift (RHOSO) documentation)".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [About Single Root I/O Virtualization (SR-IOV) hardware networks](../../networking/hardware_networks/about-sriov.xml#about-sriov)
 
@@ -45,6 +51,8 @@ The requirements are as follows:
 - [Planning an SR-IOV deployment (Red Hat OpenStack Services on OpenShift (RHOSO) documentation)](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/plan-sriov-deploy_rhoso-nfv)
 
 - [NFV performance considerations (Red Hat OpenStack Services on OpenShift (RHOSO) documentation)](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html-single/deploying_a_network_functions_virtualization_environment/index#nfv-perf-consider_rhoso-nfv)
+
+</div>
 
 ## Requirements for clusters on RHOSP or RHOSO that use OVS-DPDK
 
@@ -64,7 +72,13 @@ The requirements are as follows:
 
   - Configure your OVS-DPDK deployment. For more information, see"Creating the data plane for SR-IOV and DPDK environments (Red Hat OpenStack Services on OpenShift (RHOSO) documentation)".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Planning your OVS-DPDK deployment (Red Hat OpenStack Platform (RHOSP) documentation)](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_network_functions_virtualization/plan-ovs-dpdk-deploy_rhosp-nfv)
 
@@ -78,27 +92,41 @@ The requirements are as follows:
 
 - [Creating the data plane for SR-IOV and DPDK environments (Red Hat OpenStack Services on OpenShift (RHOSO) documentation)](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/assembly_create-data-plane-sriov-dpdk_rhoso-nfv)
 
+</div>
+
 # Creating SR-IOV networks for compute machines
 
 If your Red Hat OpenStack Platform (RHOSP) deployment supports single root I/O virtualization (SR-IOV), you can provision SR-IOV networks that compute machines run on.
 
 You must configure your RHOSP platform before you install a cluster that uses SR-IOV on the platform.
 
-<div class="note">
+> [!NOTE]
+> The procedure uses an example of creating an external flat network and an external VLAN-based network that can be attached to a compute machine. Depending on your RHOSP deployment, other network types might be required.
 
-The procedure uses an example of creating an external flat network and an external VLAN-based network that can be attached to a compute machine. Depending on your RHOSP deployment, other network types might be required.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Your cluster supports SR-IOV.
 
-  <div class="note">
-
-  If you are unsure about what your cluster supports, review the OpenShift Container Platform SR-IOV hardware networks documentation.
-
-  </div>
+  > [!NOTE]
+  > If you are unsure about what your cluster supports, review the OpenShift Container Platform SR-IOV hardware networks documentation.
 
 - You created radio and uplink provider networks as part of your RHOSP deployment. The names `radio` and `uplink` are used in all example commands to represent these networks.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  On a command line, create a radio RHOSP network:
 
@@ -124,7 +152,19 @@ The procedure uses an example of creating an external flat network and an extern
     $ openstack subnet create --network uplink --subnet-range <uplink_network_subnet_range> uplink
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Planning an SR-IOV deployment](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html-single/network_functions_virtualization_planning_and_configuration_guide/index#assembly_sriov_parameters)
+
+</div>
 
 # Preparing to install a cluster that uses OVS-DPDK
 
@@ -132,11 +172,21 @@ You must configure your RHOSP platform before you install a cluster that uses OV
 
 After you perform preinstallation tasks, install your cluster by following the most relevant OpenShift Container Platform on RHOSP installation instructions. You can then perform the tasks outlined in the additional resources section.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Depending on your platform, complete one of the following tasks:
 
   - If you use Red Hat OpenStack Platform (RHOSP), create a flavor and deploy an instance for OVS-DPDK before you install a cluster on RHOSP.
 
   - If you use Red Hat OpenStack Services on OpenShift (RHOSO), create a custom OVS-DPDK compute service before you install a cluster on RHOSO.
+
+</div>
 
 # Next steps after completing preparatory tasks
 

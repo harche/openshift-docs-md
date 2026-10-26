@@ -1,10 +1,7 @@
 Release notes for additional related components and products not included in the core [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-5-0-release-notes.xml#ocp-5-0-release-notes) are available in the following documentation.
 
-<div class="important">
-
-The following release notes are for downstream Red Hat products only; upstream or community release notes for related products are not included.
-
-</div>
+> [!IMPORTANT]
+> The following release notes are for downstream Red Hat products only; upstream or community release notes for related products are not included.
 
 A
 [AWS Load Balancer Operator](../networking/networking_operators/aws_load_balancer_operator/aws-load-balancer-operator-release-notes.xml#aws-load-balancer-operator-release-notes)

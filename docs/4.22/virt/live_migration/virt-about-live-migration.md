@@ -9,25 +9,19 @@ Live migration requirements
 
 - Sufficient RAM and network bandwidth.
 
-  <div class="note">
-
-  You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
-
-      Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
-
-  The default number of migrations that can run in parallel in the cluster is 5. For more information, see "Configuring live migration" in the Additional resources section.
-
-  </div>
+  > [!NOTE]
+  > You must ensure that there is enough memory request capacity in the cluster to support node drains that result in live migrations. You can determine the approximate required spare memory by using the following calculation:
+  >
+  >     Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
+  >
+  > The default number of migrations that can run in parallel in the cluster is 5. For more information, see "Configuring live migration" in the Additional resources section.
 
 - If the virtual machine uses a host model CPU, the nodes must support the virtual machine’s host model CPU.
 
-<div class="note">
+> [!NOTE]
+> A dedicated Multus network for live migration is highly recommended. For more information, see "Using a dedicated network for live migration" in the Additional resources section. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
 
-A dedicated Multus network for live migration is highly recommended. For more information, see "Using a dedicated network for live migration" in the Additional resources section. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
-
-</div>
-
-# About live migration permissions
+# Live migration permissions
 
 In OpenShift Virtualization 4.19 and later, live migration operations are restricted to users who are explicitly granted the `kubevirt.io:migrate` cluster role. Users with this role can create, delete, and update virtual machine (VM) live migration requests.
 
@@ -37,13 +31,31 @@ Before OpenShift Virtualization 4.19, namespace administrators had live migratio
 
 As a cluster administrator, you can preserve the old behavior by creating a temporary cluster role before updating. After assigning the new role to users, delete the temporary role to enforce the more restrictive permissions. If you have already updated, you can still revert to the old behavior by aggregating the `kubevirt.io:migrate` role into the `admin` cluster role.
 
-# Preserving pre-4.19 live migration permissions during update
+# Preserve pre-4.19 live migration permissions during update
 
 Before you update to OpenShift Virtualization 4.22, you can create a temporary cluster role to preserve the previous live migration permissions until you are ready for the more restrictive default permissions to take effect.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OpenShift CLI (`oc`) is installed.
 
 - You have cluster administrator permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Before updating to OpenShift Virtualization 4.22, create a temporary `ClusterRole` object. For example:
 
@@ -108,15 +120,33 @@ Before you update to OpenShift Virtualization 4.22, you can create a temporary c
 
     After you delete the temporary cluster role, only users with the `kubevirt.io:migrate` role can create, delete, and update live migration requests.
 
-# Granting live migration permissions
+</div>
+
+# Grant live migration permissions
 
 You can grant trusted users or groups the ability to create, delete, and update live migration instances.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - The OpenShift CLI (`oc`) is installed.
 
 - You have cluster administrator permissions.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - (Optional) To change the default behavior so that namespace administrators always have permission to create, delete, and update live migrations, aggregate the `kubevirt.io:migrate` role into the `admin` cluster role by running the following command:
 
@@ -138,6 +168,8 @@ You can grant trusted users or groups the ability to create, delete, and update 
     $ oc create clusterrolebinding kvmigrate --clusterrole=kubevirt.io:migrate --user=<first_user> --user=<second_user> --group=<group_name>
     ```
 
+</div>
+
 # VM migration tuning
 
 You can adjust your cluster-wide live migration settings based on the type of workload and migration scenario.
@@ -148,23 +180,17 @@ If you are migrating multiple VMs per node at the same time, set a `bandwidthPer
 
 A large VM running a heavy workload (for example, database processing), with higher memory dirty rates, requires a higher bandwidth to complete the migration.
 
-<div class="note">
-
-Post copy mode, when enabled, triggers if the initial pre-copy phase does not complete within the defined timeout. During post copy, the VM CPUs pause on the source host while transferring the minimum required memory pages. Then the VM CPUs activate on the destination host, and the remaining memory pages transfer into the destination node at runtime. This can impact performance during the transfer.
-
-Post copy mode should not be used for critical data, or with unstable networks.
-
-</div>
+> [!NOTE]
+> Post copy mode, when enabled, triggers if the initial pre-copy phase does not complete within the defined timeout. During post copy, the VM CPUs pause on the source host while transferring the minimum required memory pages. Then the VM CPUs activate on the destination host, and the remaining memory pages transfer into the destination node at runtime. This can impact performance during the transfer.
+>
+> Post copy mode should not be used for critical data, or with unstable networks.
 
 # VM migration support for RHCOS 10.x
 
-<div class="important">
-
-Live migration support for RHCOS 10.x is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Live migration support for RHCOS 10.x is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 OpenShift Virtualization 4.22 and later versions supports live migration with RHCOS 10.x worker nodes as a Technology Preview feature.
 

@@ -1,12 +1,9 @@
 You can decouple OpenShift Virtualization monitoring from the main deployment by using the standalone observability controller. The controller externalizes monitoring into a standalone Operator.
 
-<div class="important">
-
-The standalone observability controller is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> The standalone observability controller is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The standalone observability controller provides the following capabilities:
 
@@ -20,11 +17,16 @@ The standalone observability controller provides the following capabilities:
 
 You can enable the standalone observability controller by setting the `deployObservabilityController` feature gate in the `HyperConverged` custom resource (CR). By enabling the standalone observability controller, you can update monitoring and alerts independently of the OpenShift Virtualization control plane.
 
-<div class="important">
+> [!IMPORTANT]
+> The standalone observability controller is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-The standalone observability controller is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+<div>
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -32,7 +34,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Enable the `deployObservabilityController` feature gate by running the following command:
 
@@ -42,7 +52,15 @@ For more information about the support scope of Red Hat Technology Preview featu
     "value": {"name": "deployObservabilityController"}}]'
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify that the feature gate is enabled by running the following command:
 
@@ -51,12 +69,18 @@ For more information about the support scope of Red Hat Technology Preview featu
     -o jsonpath='{.spec.featureGates}'
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Expected output**
+  <div class="title">
+
+  Expected output
 
   </div>
 
   ``` json
   [{"name":"deployObservabilityController"}]
   ```
+
+  </div>
+
+</div>

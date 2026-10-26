@@ -4,7 +4,17 @@ Resolve common installation issues with the Data Protection Application (DPA), s
 
 Resolve the `Backup storage contains invalid top-level directories` error that occurs when object storage contains non-Velero directories. This helps you configure the correct bucket prefix for shared object storage.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - If the object storage is not dedicated to Velero, you must specify a prefix for the bucket by setting the `spec.backupLocations.velero.objectStorage.prefix` parameter in the `DataProtectionApplication` manifest.
+
+</div>
 
 # Resolve incorrect AWS credentials
 
@@ -24,7 +34,13 @@ If you incorrectly format the `credentials-velero` file used for creating the `S
   NoCredentialProviders: no valid providers in chain.
   ```
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Ensure that the `credentials-velero` file is correctly formatted, as shown in the following example:
 
@@ -39,3 +55,5 @@ If you incorrectly format the `credentials-velero` file used for creating the `S
 
   `aws_access_key_id`
   Do not enclose the values with quotation marks (`"`, `'`).
+
+</div>

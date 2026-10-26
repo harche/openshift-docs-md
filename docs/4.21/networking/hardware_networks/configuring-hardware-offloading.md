@@ -48,7 +48,13 @@ Before you configure hardware offloading, ensure that the following conditions a
 
 - In your OVN-Kubernetes network plugin configuration, the `gatewayConfig.routingViaHost` field is set to `false`.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
 
@@ -56,13 +62,33 @@ Before you configure hardware offloading, ensure that the following conditions a
 
 - [OVN-Kubernetes network plugin configuration](../../networking/networking_operators/cluster-network-operator.xml#gatewayConfig-object_cluster-network-operator)
 
+</div>
+
 # Set the SR-IOV Network Operator into systemd mode
 
 To support hardware offloading, you must first set the SR-IOV Network Operator into `systemd` mode.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user that has the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `SriovOperatorConfig` custom resource (CR) to deploy all the SR-IOV Operator components:
 
@@ -91,11 +117,31 @@ To support hardware offloading, you must first set the SR-IOV Network Operator i
         $ oc apply -f sriovOperatorConfig.yaml
         ```
 
+</div>
+
 # Configure a machine config pool for hardware offloading
 
 To enable hardware offloading, you now create a dedicated machine config pool and configure it to work with the SR-IOV Network Operator.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - SR-IOV Network Operator installed and set into `systemd` mode.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a machine config pool for machines you want to use hardware offloading on.
 
@@ -169,13 +215,12 @@ To enable hardware offloading, you now create a dedicated machine config pool an
         $ oc create -f <SriovNetworkPoolConfig_name>.yaml
         ```
 
-        <div class="note">
+        > [!NOTE]
+        > When you apply the configuration specified in a `SriovNetworkPoolConfig` object, the SR-IOV Operator drains and restarts the nodes in the machine config pool.
+        >
+        > It might take several minutes for a configuration changes to apply.
 
-        When you apply the configuration specified in a `SriovNetworkPoolConfig` object, the SR-IOV Operator drains and restarts the nodes in the machine config pool.
-
-        It might take several minutes for a configuration changes to apply.
-
-        </div>
+</div>
 
 # Configure the SR-IOV network node policy
 
@@ -183,9 +228,27 @@ You can create an SR-IOV network device configuration for a node by creating an 
 
 The following procedure creates an SR-IOV interface for a network interface controller with hardware offloading.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file, such as `sriov-node-policy.yaml`, with content such as the following example:
 
@@ -224,13 +287,12 @@ The following procedure creates an SR-IOV interface for a network interface cont
     $ oc create -f sriov-node-policy.yaml
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > When you apply the configuration specified in a `SriovNetworkPoolConfig` object, the SR-IOV Operator drains and restarts the nodes in the machine config pool.
+    >
+    > It might take several minutes for a configuration change to apply.
 
-    When you apply the configuration specified in a `SriovNetworkPoolConfig` object, the SR-IOV Operator drains and restarts the nodes in the machine config pool.
-
-    It might take several minutes for a configuration change to apply.
-
-    </div>
+</div>
 
 ## An example SR-IOV network node policy for OpenStack
 
@@ -262,9 +324,27 @@ Follow this procedure to assign a virtual function to the OVN-Kubernetes managem
 
 This procedure results in the creation of two pools: the first has a virtual function used by OVN-Kubernetes, and the second comprises the remaining virtual functions.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Add the `network.operator.openshift.io/smart-nic` label to each worker node with a SmartNIC present by running the following command:
 
@@ -332,11 +412,8 @@ This procedure results in the creation of two pools: the first has a virtual fun
 
     - `<num_vfs>` specifies the number of virtual functions. Replace this value with the value specified in the `sriov-node-mgmt-vf-policy.yaml` file. For more information, see *SR-IOV network node configuration object* in the *Additional resources* section.
 
-    <div class="note">
-
-    The `sriov-node-mgmt-vf-policy.yaml` file has different values for the `pfNames` and `resourceName` keys than the `sriov-node-policy.yaml` file.
-
-    </div>
+    > [!NOTE]
+    > The `sriov-node-mgmt-vf-policy.yaml` file has different values for the `pfNames` and `resourceName` keys than the `sriov-node-policy.yaml` file.
 
 4.  Apply the configuration for both policies:
 
@@ -368,15 +445,45 @@ This procedure results in the creation of two pools: the first has a virtual fun
         $ oc create -f hardware-offload-config.yaml
         ```
 
+</div>
+
+<div id="additional-resources_using-vf-improve-network-traffic-performance">
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [SR-IOV network node configuration object](../../networking/hardware_networks/configuring-sriov-device.xml#nw-sriov-networknodepolicy-object_configuring-sriov-device)
+
+</div>
 
 # Create a network attachment definition
 
 After you define the machine config pool and the SR-IOV network node policy, you can create a network attachment definition for the network interface controller (NIC) you specified.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file, such as `net-attach-def.yaml`, with content such as the following example:
 
@@ -404,6 +511,16 @@ After you define the machine config pool and the SR-IOV network node policy, you
     $ oc create -f net-attach-def.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Run the following command to check that the new definition exists:
 
   ``` terminal
@@ -412,9 +529,19 @@ After you define the machine config pool and the SR-IOV network node policy, you
 
   The output shows the namespace, name, and age of the new definition.
 
+</div>
+
 # Add the network attachment definition to your pods
 
 After you create the machine config pool, the `SriovNetworkPoolConfig` and `SriovNetworkNodePolicy` custom resources, and the network attachment definition, you can apply these configurations to your pods by adding the network attachment definition to your pod specifications.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - In the pod specification, add the `.metadata.annotations.k8s.v1.cni.cncf.io/networks` field and specify the network attachment definition you created for hardware offloading:
 
@@ -426,3 +553,5 @@ After you create the machine config pool, the `SriovNetworkPoolConfig` and `Srio
   ```
 
   - `<namespace>/<net_attach_def_name>` specifies the namespace and name of the network attachment definition you created for hardware offloading.
+
+</div>

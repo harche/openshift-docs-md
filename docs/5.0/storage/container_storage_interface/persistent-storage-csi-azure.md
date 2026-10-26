@@ -14,9 +14,14 @@ The Azure Disk CSI Driver Operator provides a storage class named `managed-csi` 
 Azure Disk CSI driver
 The Azure Disk CSI driver enables you to create and mount Azure Disk PVs.
 
-<div class="note">
+> [!NOTE]
+> OpenShift Container Platform provides automatic migration for the Azure Disk in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
 
-OpenShift Container Platform provides automatic migration for the Azure Disk in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -27,6 +32,8 @@ OpenShift Container Platform provides automatic migration for the Azure Disk in-
 - [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)
 
 - [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+</div>
 
 # About CSI
 
@@ -44,7 +51,25 @@ When creating a storage class, you can designate the storage account type. This 
 
 Both zone-redundant storage (ZRS) and PremiumV2_LRS have some region limitations. For information about these limitations, see "ZRS limitations" and "Premium_LRS limitations".
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster with administrator rights
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a storage class designating the storage account type using a YAML file similar to the following:
 
@@ -67,11 +92,8 @@ Both zone-redundant storage (ZRS) and PremiumV2_LRS have some region limitations
 
     - `parameters.skuName`: The storage account type. This corresponds to your Azure storage account SKU tier:\`Standard_LRS\`, `Premium_LRS`, `StandardSSD_LRS`, `UltraSSD_LRS`, `Premium_ZRS`, `StandardSSD_ZRS`, `PremiumV2_LRS`.
 
-      <div class="note">
-
-      For PremiumV2_LRS, specify `cachingMode: None` in `storageclass.parameters`.
-
-      </div>
+      > [!NOTE]
+      > For PremiumV2_LRS, specify `cachingMode: None` in `storageclass.parameters`.
 
 2.  Ensure that the storage class was created by listing the storage classes:
 
@@ -79,9 +101,11 @@ Both zone-redundant storage (ZRS) and PremiumV2_LRS have some region limitations
     $ oc get storageclass
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -92,13 +116,27 @@ Both zone-redundant storage (ZRS) and PremiumV2_LRS have some region limitations
     sc-prem-zrs             disk.csi.azure.com   Delete          WaitForFirstConsumer   true                   4m25s
     ```
 
+    </div>
+
     In this example, `sc-prem-zrs` is the new storage class with storage account type.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [SKU Types](https://learn.microsoft.com/en-us/rest/api/storagerp/srp_sku_types)
 
 - [ZRS limitations](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-deploy-zrs?tabs=portal#limitations)
 
 - [Premium_LRS limitations](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-deploy-premium-v2?tabs=azure-cli#limitations)
+
+</div>
 
 # Performance plus for Azure Disk
 
@@ -118,7 +156,17 @@ The following Azure disk types support performance plus:
 
 To see what the increased limits are for IOPS and throughput, consult the columns that begin with **Expanded** in the tables in "Scalability and performance targets for VM disks".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Scalability and performance targets for VM disks](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-scalability-targets)
+
+</div>
 
 ## Limitations for performance plus
 
@@ -128,21 +176,34 @@ Performance plus for Azure Disk has the following limitations:
 
 - Can be enabled only on Standard HDD, Standard SSD, and Premium SSD managed disks that are 513 GiB or larger.
 
-  <div class="important">
-
-  If you request a smaller value, the disk size is rounded up to 513GiB.
-
-  </div>
+  > [!IMPORTANT]
+  > If you request a smaller value, the disk size is rounded up to 513GiB.
 
 - Can be enabled only on new disks. For a workaround, see "Enabling performance plus by snapshot or cloning".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Enabling performance plus by snapshot or cloning](../../storage/container_storage_interface/persistent-storage-csi-azure.xml#persistent-storage-csi-azure-disk-perf-plus-create-new-disk-by-snapshot-clone_persistent-storage-csi-azure)
+
+</div>
 
 ## Creating a storage class to use performance plus enhanced disks
 
 To provision Azure disks with enhanced IOPS and throughput, create a storage class with performance plus enabled that automatically applies to persistent volume claims.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to a Microsoft Azure cluster with cluster-admin privileges.
 
@@ -150,11 +211,23 @@ To provision Azure disks with enhanced IOPS and throughput, create a storage cla
 
   For information about enabling performance plus on disks, see the "Microsoft Azure storage documentation".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a storage class using the following example YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example storage class YAML file**
+    <div class="title">
+
+    Example storage class YAML file
 
     </div>
 
@@ -173,6 +246,8 @@ To provision Azure disks with enhanced IOPS and throughput, create a storage cla
     allowVolumeExpansion: true
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the storage class.
 
     - `provisioner`: Specifies the Azure Disk Container Storage Interface (CSI) driver provisioner.
@@ -183,9 +258,11 @@ To provision Azure disks with enhanced IOPS and throughput, create a storage cla
 
 2.  Create a persistent volume claim (PVC) that uses this storage class by using the following example YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC YAML file**
+    <div class="title">
+
+    Example PVC YAML file
 
     </div>
 
@@ -203,17 +280,29 @@ To provision Azure disks with enhanced IOPS and throughput, create a storage cla
           storage: 513Gi
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the PVC name.
 
     - `spec.storageClassName`: References the performance plus storage class.
 
     - `spec.resources.requests.storage`: Any disk size smaller than 513GiB is automatically rounded up.
 
+</div>
+
 ## Enabling performance plus by snapshot or cloning
 
 To work around the limitation that performance plus applies only to new disks, snapshot or clone an existing volume to provision a new disk with performance plus enabled.
 
 Normally, performance plus can be enabled only on new disks. For a workaround, you can use this procedure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to a Microsoft Azure cluster with cluster-admin privileges.
 
@@ -223,13 +312,35 @@ Normally, performance plus can be enabled only on new disks. For a workaround, y
 
   For more information about creating the storage class, see "Creating a storage class to use performance plus enhanced disks".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Do one of the following to enable performance plus:
 
     - Create a snapshot of the existing volume that does not have performance plus enabled on it, and then provision a new disk from that snapshot using a storage class with `enablePerformancePlus` set to "true".
 
     - Clone the persistent volume claim (PVC) using a storage class with `enablePerformancePlus` set to "true" to create a new disk clone.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Creating a storage class to use performance plus enhanced disks](../../storage/container_storage_interface/persistent-storage-csi-azure.xml#persistent-storage-csi-azure-disk-perf-plus-sc_persistent-storage-csi-azure)
+
+</div>
 
 # User-managed encryption
 
@@ -241,21 +352,15 @@ This features supports the following storage types:
 
 - Amazon Web Services (AWS) Elastic Block storage (EBS)
 
-  <div class="note">
-
-  If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
-
-  </div>
+  > [!NOTE]
+  > If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
 
   For information about installing AWS EBS with user-managed encryption, see "Optional AWS configuration parameters".
 
 - Microsoft Azure Disk storage
 
-  <div class="note">
-
-  If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
-
-  </div>
+  > [!NOTE]
+  > If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
 
   For information about installing Azure Disk with user-managed encryption, see "Preparing an Azure Disk Encryption Set".
 
@@ -267,9 +372,17 @@ This features supports the following storage types:
 
   For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Preparing an Azure Disk Encryption Set](../../installing/installing_azure/ipi/installing-azure-preparing-ipi.xml#preparing-disk-encryption-sets_installing-azure-preparing-ipi)
+
+</div>
 
 # Machine sets that deploy machines with ultra disks using PVCs
 
@@ -277,17 +390,45 @@ You can create a machine set running on Microsoft Azure that deploys machines wi
 
 Both the in-tree plugin and CSI driver support using PVCs to enable ultra disks. You can also deploy machines with ultra disks as data disks without creating a PVC.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Microsoft Azure ultra disks documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#ultra-disks)
 
 - [Machine sets that deploy machines on ultra disks using in-tree PVCs](../../storage/persistent_storage/persistent-storage-azure.xml#machineset-azure-ultra-disk_persistent-storage-azure)
 
 - [Machine sets that deploy machines on ultra disks as data disks](../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-ultra-disk_creating-machineset-azure)
 
+</div>
+
 ## Creating machines with ultra disks by using machine sets
 
 You can deploy machines with ultra disks on Microsoft Azure by editing your machine set YAML file.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Have an existing Microsoft Azure cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Copy an existing Azure `MachineSet` custom resource (CR) and edit it by running the following command:
 
@@ -425,7 +566,15 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     `spec.volumes.persistentVolumeClaim.claimName`
     Specifies the name of the PVC to attach. This pod references the `ultra-disk` PVC.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Validate that the machines are created by running the following command:
 
@@ -442,6 +591,16 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     ```
 
     In this command, `oc debug node/<node_name>` starts a debugging shell on the node `<node_name>` and passes a command with `--`. The passed command `chroot /host` provides access to the underlying host OS binaries, and `lsblk` shows the block devices that are attached to the host OS machine.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Next steps
+
+</div>
 
 - To use an ultra disk from within a pod, create a workload that uses the mount point. Create a YAML file similar to the following example:
 
@@ -468,6 +627,8 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     nodeSelector:
       disktype: ultrassd
   ```
+
+</div>
 
 ## Troubleshooting resources for machine sets that enable ultra disks
 

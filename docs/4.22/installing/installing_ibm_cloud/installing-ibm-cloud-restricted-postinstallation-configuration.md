@@ -4,6 +4,14 @@ After you install a cluster on IBM Cloud® in a disconnected environment, you mu
 
 To use only trusted or locally available Operator catalogs, disable the default software catalog sources that OpenShift Container Platform configures during installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
   ``` terminal
@@ -11,11 +19,10 @@ To use only trusted or locally available Operator catalogs, disable the default 
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-  <div class="tip">
+  > [!TIP]
+  > Or, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
-  Or, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
-
-  </div>
+</div>
 
 # Installing the policy resources into the cluster
 
@@ -25,21 +32,36 @@ Mirroring the OpenShift Container Platform content using the oc-mirror OpenShift
 
 - The `CatalogSource` resource is used by Operator Lifecycle Manager (OLM) Classic to retrieve information about the available Operators in the mirror registry, which lets users discover and install Operators.
 
-  <div class="note">
-
-  OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
-
-  The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. The oc-mirror plugin v2 does, however, generate `ClusterCatalog` resources automatically.
-
-  For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
-
-  </div>
+  > [!NOTE]
+  > OLM v1 uses the `ClusterCatalog` resource to retrieve information about the available cluster extensions in the mirror registry.
+  >
+  > The oc-mirror plugin v1 does not generate `ClusterCatalog` resources automatically; you must manually create them. The oc-mirror plugin v2 does, however, generate `ClusterCatalog` resources automatically.
+  >
+  > For more information on creating and applying `ClusterCatalog` resources, see "Adding a catalog to a cluster" in "Extensions".
 
 After you install the cluster, you must install these resources into the cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have mirrored the image set to the registry mirror in the disconnected environment.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift CLI as a user with the `cluster-admin` role.
 
@@ -49,7 +71,15 @@ After you install the cluster, you must install these resources into the cluster
     $ oc apply -f ./oc-mirror-workspace/results-<id>/
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `ImageContentSourcePolicy` resources were successfully installed:
 
@@ -62,6 +92,8 @@ After you install the cluster, you must install these resources into the cluster
     ``` terminal
     $ oc get catalogsource --all-namespaces
     ```
+
+</div>
 
 # Telemetry access for OpenShift Container Platform
 

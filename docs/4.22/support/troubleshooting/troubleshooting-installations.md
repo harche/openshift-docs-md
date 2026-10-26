@@ -42,11 +42,8 @@ You can alternatively install OpenShift Container Platform 4.17 on infrastructur
 
 - Install cloud provider integration if you want to enable features such as dynamic storage, on-demand service routing, node hostname to Kubernetes hostname resolution, and cluster autoscaling.
 
-  <div class="note">
-
-  It is not possible to enable cloud provider integration in OpenShift Container Platform environments that mix resources from different cloud providers, or that span multiple physical or virtual platforms. The node life cycle controller will not allow nodes that are external to the existing provider to be added to a cluster, and it is not possible to specify more than one cloud provider integration.
-
-  </div>
+  > [!NOTE]
+  > It is not possible to enable cloud provider integration in OpenShift Container Platform environments that mix resources from different cloud providers, or that span multiple physical or virtual platforms. The node life cycle controller will not allow nodes that are external to the existing provider to be added to a cluster, and it is not possible to specify more than one cloud provider integration.
 
 - A provider-specific Machine API implementation is required if you want to use machine sets or autoscaling to automatically provision OpenShift Container Platform cluster nodes.
 
@@ -60,11 +57,29 @@ You can alternatively install OpenShift Container Platform 4.17 on infrastructur
 
 Check your load balancer configuration prior to starting an OpenShift Container Platform installation.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have configured an external load balancer of your choosing, in preparation for an OpenShift Container Platform installation. The following example is based on a Red Hat Enterprise Linux (RHEL) host using HAProxy to provide load balancing services to a cluster.
 
 - You have configured DNS in preparation for an OpenShift Container Platform installation.
 
 - You have SSH access to your load balancer.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check that the `haproxy` systemd service is active:
 
@@ -86,11 +101,8 @@ Check your load balancer configuration prior to starting an OpenShift Container 
       $ ssh <user_name>@<load_balancer> ss -nltupe | grep -E ':80|:443|:6443|:22623'
       ```
 
-      <div class="note">
-
-      Red Hat recommends the `ss` command instead of `netstat` in Red Hat Enterprise Linux (RHEL) 7 or later. `ss` is provided by the iproute package. For more information on the `ss` command, see the [Red Hat Enterprise Linux (RHEL) 7 Performance Tuning Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-ss).
-
-      </div>
+      > [!NOTE]
+      > Red Hat recommends the `ss` command instead of `netstat` in Red Hat Enterprise Linux (RHEL) 7 or later. `ss` is provided by the iproute package. For more information on the `ss` command, see the [Red Hat Enterprise Linux (RHEL) 7 Performance Tuning Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-ss).
 
 3.  Check that the wildcard DNS record resolves to the load balancer:
 
@@ -98,13 +110,31 @@ Check your load balancer configuration prior to starting an OpenShift Container 
     $ dig <wildcard_fqdn> @<dns_server>
     ```
 
+</div>
+
 # Specifying OpenShift Container Platform installer log levels
 
 By default, the OpenShift Container Platform installer log level is set to `info`. If more detailed logging is required when diagnosing a failed OpenShift Container Platform installation, you can increase the `openshift-install` log level to `debug` when starting the installation again.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the installation host.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the installation log level to `debug` when initiating the installation:
 
@@ -115,6 +145,8 @@ By default, the OpenShift Container Platform installer log level is set to `info
   where
 
 - Possible log levels include `info`, `warn`, `error,` and `debug`.
+
+</div>
 
 # Troubleshooting openshift-install command issues
 
@@ -132,6 +164,14 @@ If you experience issues running the `openshift-install` command, check the foll
 
 You can monitor high-level installation, bootstrap, and control plane logs as an OpenShift Container Platform installation progresses. This provides greater visibility into how an installation progresses and helps identify the stage at which an installation failure occurs.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -140,11 +180,18 @@ You can monitor high-level installation, bootstrap, and control plane logs as an
 
 - You have the fully qualified domain names of the bootstrap and control plane nodes.
 
-  <div class="note">
+  > [!NOTE]
+  > The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
 
-  The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Watch the installation log as the installation progresses:
 
@@ -158,11 +205,8 @@ You can monitor high-level installation, bootstrap, and control plane logs as an
     $ ssh core@<bootstrap_fqdn> journalctl -b -f -u bootkube.service
     ```
 
-    <div class="note">
-
-    The `bootkube.service` log on the bootstrap node outputs etcd `connection refused` errors, indicating that the bootstrap server is unable to connect to etcd on control plane nodes. After etcd has started on each control plane node and the nodes have joined the cluster, the errors should stop.
-
-    </div>
+    > [!NOTE]
+    > The `bootkube.service` log on the bootstrap node outputs etcd `connection refused` errors, indicating that the bootstrap server is unable to connect to etcd on control plane nodes. After etcd has started on each control plane node and the nodes have joined the cluster, the errors should stop.
 
 3.  Monitor `kubelet.service` journald unit logs on control plane nodes, after they have booted. This provides visibility into control plane node agent activity.
 
@@ -192,15 +236,35 @@ You can monitor high-level installation, bootstrap, and control plane logs as an
         $ ssh core@master-N.cluster_name.sub_domain.domain journalctl -b -f -u crio.service
         ```
 
+</div>
+
 # Gathering bootstrap node diagnostic data
 
 When experiencing bootstrap-related issues, you can gather `bootkube.service` `journald` unit logs and container logs from the bootstrap node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have SSH access to your bootstrap node.
 
 - You have the fully qualified domain name of the bootstrap node.
 
 - If you are hosting Ignition configuration files by using an HTTP server, you must have the HTTP server’s fully qualified domain name and the port number. You must also have SSH access to the HTTP host.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you have access to the bootstrap node’s console, monitor the console until the node reaches the login prompt.
 
@@ -240,11 +304,8 @@ When experiencing bootstrap-related issues, you can gather `bootkube.service` `j
     $ ssh core@<bootstrap_fqdn> journalctl -b -f -u bootkube.service
     ```
 
-    <div class="note">
-
-    The `bootkube.service` log on the bootstrap node outputs etcd `connection refused` errors, indicating that the bootstrap server is unable to connect to etcd on control plane nodes. After etcd has started on each control plane node and the nodes have joined the cluster, the errors should stop.
-
-    </div>
+    > [!NOTE]
+    > The `bootkube.service` log on the bootstrap node outputs etcd `connection refused` errors, indicating that the bootstrap server is unable to connect to etcd on control plane nodes. After etcd has started on each control plane node and the nodes have joined the cluster, the errors should stop.
 
 6.  Collect logs from the bootstrap node containers.
 
@@ -260,11 +321,21 @@ When experiencing bootstrap-related issues, you can gather `bootkube.service` `j
 
     - The load balancer proxies port 6443 connections to bootstrap and control plane nodes. Ensure that the proxy configuration meets OpenShift Container Platform installation requirements.
 
+</div>
+
 # Investigating control plane node installation issues
 
 If you experience control plane node installation issues, determine the control plane node OpenShift Container Platform software defined network (SDN), and network Operator status.
 
 Collect `kubelet.service`, `crio.service` journald unit logs, and control plane node container logs for visibility into control plane node agent, CRI-O container runtime, and pod activity.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -276,11 +347,18 @@ Collect `kubelet.service`, `crio.service` journald unit logs, and control plane 
 
 - If you are hosting Ignition configuration files by using an HTTP server, you must have the HTTP server’s fully qualified domain name and the port number. You must also have SSH access to the HTTP host.
 
-  <div class="note">
+  > [!NOTE]
+  > The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
 
-  The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you have access to the console for the control plane node, monitor the console until the node reaches the login prompt. During the installation, Ignition log messages are output to the console.
 
@@ -328,11 +406,8 @@ Collect `kubelet.service`, `crio.service` journald unit logs, and control plane 
         $ oc describe node <master_node>
         ```
 
-        <div class="note">
-
-        It is not possible to run `oc` commands if an installation issue prevents the OpenShift Container Platform API from running or if the kubelet is not running yet on each node:
-
-        </div>
+        > [!NOTE]
+        > It is not possible to run `oc` commands if an installation issue prevents the OpenShift Container Platform API from running or if the kubelet is not running yet on each node:
 
 6.  Determine OVN-Kubernetes status.
 
@@ -394,11 +469,8 @@ Collect `kubelet.service`, `crio.service` journald unit logs, and control plane 
         $ ssh core@<master-node>.<cluster_name>.<base_domain> journalctl -b -f -u kubelet.service
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
 
 9.  Retrieve `crio.service` journald unit logs on control plane nodes, after they have booted. This provides visibility into control plane node CRI-O container runtime activity.
 
@@ -490,9 +562,19 @@ Collect `kubelet.service`, `crio.service` journald unit logs, and control plane 
         $ openssl s_client -connect api-int.<cluster_name>:22623 | openssl x509 -noout -text
         ```
 
+</div>
+
 # Investigating etcd installation issues
 
 If you experience etcd issues during installation, you can check etcd pod status and collect etcd pod logs. You can also verify etcd DNS records and check DNS availability on control plane nodes.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -501,6 +583,16 @@ If you experience etcd issues during installation, you can check etcd pod status
 - You have SSH access to your hosts.
 
 - You have the fully qualified domain names of the control plane nodes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the status of etcd pods.
 
@@ -568,17 +660,24 @@ If you experience etcd issues during installation, you can check etcd pod status
         $ ssh core@<master-node>.<cluster_name>.<base_domain> sudo crictl logs -f <container_id>
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
 
 4.  Validate primary and secondary DNS server connectivity from control plane nodes.
+
+</div>
 
 # Investigating control plane node kubelet and API server issues
 
 To investigate control plane node kubelet and API server issues during installation, check DNS, DHCP, and load balancer functionality. Also, verify that certificates have not expired.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -587,6 +686,16 @@ To investigate control plane node kubelet and API server issues during installat
 - You have SSH access to your hosts.
 
 - You have the fully qualified domain names of the control plane nodes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the API server’s DNS record directs the kubelet on control plane nodes to `https://api-int.<cluster_name>.<base_domain>:6443`. Ensure that the record references the load balancer.
 
@@ -608,11 +717,8 @@ To investigate control plane node kubelet and API server issues during installat
         $ ssh core@<master-node>.<cluster_name>.<base_domain> journalctl -b -f -u kubelet.service
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
 
 5.  Check for certificate expiration messages in the control plane node kubelet logs.
 
@@ -628,11 +734,21 @@ To investigate control plane node kubelet and API server issues during installat
         $ ssh core@<master-node>.<cluster_name>.<base_domain> journalctl -b -f -u kubelet.service  | grep -is 'x509: certificate has expired'
         ```
 
+</div>
+
 # Investigating worker node installation issues
 
 If you experience worker node installation issues, you can review the worker node status.
 
 Collect `kubelet.service`, `crio.service` journald unit logs and the worker node container logs for visibility into the worker node agent, CRI-O container runtime and pod activity. Additionally, you can check the Ignition file and Machine API Operator functionality. If worker node postinstallation configuration fails, check Machine Config Operator (MCO) and DNS functionality. You can also verify system clock synchronization between the bootstrap, master, and worker nodes, and validate certificates.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -644,11 +760,18 @@ Collect `kubelet.service`, `crio.service` journald unit logs and the worker node
 
 - If you are hosting Ignition configuration files by using an HTTP server, you must have the HTTP server’s fully qualified domain name and the port number. You must also have SSH access to the HTTP host.
 
-  <div class="note">
+  > [!NOTE]
+  > The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
 
-  The initial `kubeadmin` password can be found in `<install_directory>/auth/kubeadmin-password` on the installation host.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you have access to the worker node’s console, monitor the console until the node reaches the login prompt. During the installation, Ignition log messages are output to the console.
 
@@ -696,11 +819,8 @@ Collect `kubelet.service`, `crio.service` journald unit logs and the worker node
         $ oc describe node <worker_node>
         ```
 
-        <div class="note">
-
-        It is not possible to run `oc` commands if an installation issue prevents the OpenShift Container Platform API from running or if the kubelet is not running yet on each node.
-
-        </div>
+        > [!NOTE]
+        > It is not possible to run `oc` commands if an installation issue prevents the OpenShift Container Platform API from running or if the kubelet is not running yet on each node.
 
 6.  Unlike control plane nodes, worker nodes are deployed and scaled using the Machine API Operator. Check the status of the Machine API Operator.
 
@@ -742,11 +862,8 @@ Collect `kubelet.service`, `crio.service` journald unit logs and the worker node
         $ ssh core@<worker-node>.<cluster_name>.<base_domain> journalctl -b -f -u kubelet.service
         ```
 
-        <div class="note">
-
-        OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
-
-        </div>
+        > [!NOTE]
+        > OpenShift Container Platform 4.17 cluster nodes running Red Hat Enterprise Linux CoreOS (RHCOS) are immutable and rely on Operators to apply cluster changes. Accessing cluster nodes by using SSH is not recommended. Before attempting to collect diagnostic data over SSH, review whether the data collected by running `oc adm must gather` and other `oc` commands is sufficient instead. However, if the OpenShift Container Platform API is not available, or the kubelet is not properly functioning on the target node, `oc` operations will be impacted. In such situations, it is possible to access nodes using `ssh core@<node>.<cluster_name>.<base_domain>`.
 
 8.  Retrieve `crio.service` journald unit logs on worker nodes, after they have booted. This provides visibility into worker node CRI-O container runtime activity.
 
@@ -838,13 +955,33 @@ Collect `kubelet.service`, `crio.service` journald unit logs and the worker node
         $ openssl s_client -connect api-int.<cluster_name>:22623 | openssl x509 -noout -text
         ```
 
+</div>
+
 # Querying Operator status after installation
 
 You can check Operator status at the end of an installation. Retrieve diagnostic data for Operators that do not become available. Review logs for any Operator pods that are listed as `Pending` or have an error status. Validate base images used by problematic pods.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check that cluster Operators are all available at the end of an installation.
 
@@ -860,9 +997,11 @@ You can check Operator status at the end of an installation. Retrieve diagnostic
         $ oc get csr
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -875,6 +1014,8 @@ You can check Operator status at the end of an installation. Retrieve diagnostic
         ...
         ```
 
+        </div>
+
         - In this example, `csr-8b2br` represents a client request CSR.
 
         - The `csr-bfd72` represents a server request CSR.
@@ -883,17 +1024,11 @@ You can check Operator status at the end of an installation. Retrieve diagnostic
 
     2.  If the CSRs were not approved, after all of the pending CSRs for the machines you added are in `Pending` status, approve the CSRs for your cluster machines:
 
-        <div class="note">
+        > [!NOTE]
+        > Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After you approve the initial CSRs, the subsequent node client CSRs are automatically approved by the cluster `kube-controller-manager`.
 
-        Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After you approve the initial CSRs, the subsequent node client CSRs are automatically approved by the cluster `kube-controller-manager`.
-
-        </div>
-
-        <div class="note">
-
-        For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
-
-        </div>
+        > [!NOTE]
+        > For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
 
         - To approve them individually, run the following command for each valid CSR:
 
@@ -945,13 +1080,20 @@ You can check Operator status at the end of an installation. Retrieve diagnostic
         $ oc adm release info <image_path>:<tag> --commits
         ```
 
+</div>
+
 # Gathering logs from a failed installation
 
 If you provided an SSH key to your installation program, you can gather data about your failed installation.
 
-<div class="note">
+> [!NOTE]
+> You use a different command to gather logs about an unsuccessful installation than to gather logs from a running cluster. If you must gather logs from a running cluster, use the `oc adm must-gather` command.
 
-You use a different command to gather logs about an unsuccessful installation than to gather logs from a running cluster. If you must gather logs from a running cluster, use the `oc adm must-gather` command.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -960,6 +1102,16 @@ You use a different command to gather logs about an unsuccessful installation th
 - The `ssh-agent` process is active on your computer, and you provided the same SSH key to both the `ssh-agent` process and the installation program.
 
 - If you tried to install a cluster on infrastructure that you provisioned, you must have the fully qualified domain names of the bootstrap and control plane nodes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Generate the commands that are required to obtain the installation logs from the bootstrap and control plane machines:
 
@@ -991,15 +1143,14 @@ You use a different command to gather logs about an unsuccessful installation th
 
       - `<master_*_address>`:: For each control plane, or master, machine in your cluster, replace this placeholder with its fully qualified domain name or IP address.
 
-        <div class="note">
+        > [!NOTE]
+        > A default cluster contains three control plane machines. List all of your control plane machines as shown, no matter how many your cluster uses.
 
-        A default cluster contains three control plane machines. List all of your control plane machines as shown, no matter how many your cluster uses.
+      <div class="formalpara">
 
-        </div>
+      <div class="title">
 
-      <div class="formalpara-title">
-
-      **Example output**
+      Example output
 
       </div>
 
@@ -1008,7 +1159,11 @@ You use a different command to gather logs about an unsuccessful installation th
       INFO Bootstrap gather logs captured here "<installation_directory>/log-bundle-<timestamp>.tar.gz"
       ```
 
+      </div>
+
       If you open a Red Hat support case about your installation failure, include the compressed logs when opening a Red Hat support case.
+
+</div>
 
 # Additional resources
 

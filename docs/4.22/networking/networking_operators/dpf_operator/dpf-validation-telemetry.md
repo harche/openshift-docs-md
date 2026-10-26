@@ -4,9 +4,14 @@ After provisioning the DPUs and verifying system readiness, validate end-to-end 
 
 You can deploy traffic test pods and services across the management cluster to validate end-to-end connectivity through the DPU data plane. The test workloads include a server pod on a control plane node and worker pods on DPU-enabled nodes, with both standard and host-network configurations.
 
-<div class="note">
+> [!NOTE]
+> These test workloads use the `nicolaka/netshoot` container image, a community networking-troubleshooting image that is not officially supported by Red Hat or NVIDIA. Use it only for connectivity validation and testing, not in production workloads.
 
-These test workloads use the `nicolaka/netshoot` container image, a community networking-troubleshooting image that is not officially supported by Red Hat or NVIDIA. Use it only for connectivity validation and testing, not in production workloads.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -15,6 +20,16 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
 - At least one DPU-enabled worker node is available.
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `traffic-pods.yaml` with the following content:
 
@@ -305,11 +320,8 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
 
     - A `traffic-test-worker-hostnetwork` deployment that uses host networking on DPU-enabled worker nodes, with `ClusterIP` and `NodePort` services.
 
-      <div class="note">
-
-      The worker deployments set `replicas: 1` for a single DPU worker node. Set the replica count of the `traffic-test-worker` and `traffic-test-worker-hostnetwork` deployments to the number of DPU-enabled worker nodes so that the `topologySpreadConstraints` place one pod on each node.
-
-      </div>
+      > [!NOTE]
+      > The worker deployments set `replicas: 1` for a single DPU worker node. Set the replica count of the `traffic-test-worker` and `traffic-test-worker-hostnetwork` deployments to the number of DPU-enabled worker nodes so that the `topologySpreadConstraints` place one pod on each node.
 
 2.  Apply the manifest:
 
@@ -317,7 +329,15 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
     $ oc apply -f traffic-pods.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the test pods are running:
 
@@ -325,9 +345,11 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
     $ oc get pods -n workload -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -340,6 +362,8 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
     traffic-test-worker-hostnetwork-596d569d99-x6m7r   1/1     Running   0          2m10s   10.0.110.12    host-worker2       <none>           <none>
     ```
 
+    </div>
+
     Confirm that the `traffic-test-master` pod is on a control plane node and that the `traffic-test-worker` pods are distributed across different DPU-enabled worker nodes.
 
 2.  Verify that the services are created:
@@ -348,9 +372,11 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
     $ oc get svc -n workload
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -364,13 +390,35 @@ These test workloads use the `nicolaka/netshoot` container image, a community ne
     traffic-test-worker-nodeport               NodePort    172.30.108.72    <none>        5000:32570/TCP   13m
     ```
 
+    </div>
+
+</div>
+
 # Run traffic validation tests
 
 You can run connectivity tests between the traffic test pods and services to verify that the DPU services and service chains are configured correctly. A successful test confirms that end-to-end traffic flows through the DPU data plane as expected.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - The traffic test pods and services are deployed in the `workload` namespace and all pods are in a `Running` state.
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run a ping connectivity test between pods on different worker nodes.
 
@@ -380,9 +428,11 @@ You can run connectivity tests between the traffic test pods and services to ver
     $ oc -n workload exec -it <worker_pod_name> -- ping -c 4 <target_pod_ip>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -397,6 +447,8 @@ You can run connectivity tests between the traffic test pods and services to ver
     4 packets transmitted, 4 received, 0% packet loss, time 3028ms
     rtt min/avg/max/mdev = 0.421/0.853/1.606/0.466 ms
     ```
+
+    </div>
 
     Verify that all 4 packets are received with 0% packet loss.
 
@@ -430,21 +482,17 @@ You can run connectivity tests between the traffic test pods and services to ver
 
     A `succeeded` message confirms that NodePort services are reachable through the DPU networking stack.
 
+</div>
+
 # DPU telemetry observability with DOCA Telemetry Service
 
 The DOCA Telemetry Service (DTS) exposes DPU hardware telemetry, such as PCIe link speed, uplink throughput, packets, errors, and NIC channel activity, as Prometheus metrics. You can view these metrics by using the OpenShift Container Platform web console or a Grafana dashboard.
 
-<div class="note">
+> [!NOTE]
+> In a standard DPF installation, the DTS deployment objects are applied automatically during the postinstallation step. Apply them manually only when you are adding DTS to an existing cluster.
 
-In a standard DPF installation, the DTS deployment objects are applied automatically during the postinstallation step. Apply them manually only when you are adding DTS to an existing cluster.
-
-</div>
-
-<div class="note">
-
-Neither the DPF Operator nor the DTS `DPUService` installs Grafana on OpenShift Container Platform. Red Hat does not offer a certified Grafana Operator. The community Grafana Operator from OperatorHub is the standard way to run Grafana on OpenShift Container Platform.
-
-</div>
+> [!NOTE]
+> Neither the DPF Operator nor the DTS `DPUService` installs Grafana on OpenShift Container Platform. Red Hat does not offer a certified Grafana Operator. The community Grafana Operator from OperatorHub is the standard way to run Grafana on OpenShift Container Platform.
 
 DTS runs on every DPU in the hosted cluster and collects counters from sysfs and ethtool providers. OpenShift Container Platform includes a built-in Prometheus instance, so you do not need to deploy a separate monitoring stack to scrape DTS metrics.
 
@@ -477,9 +525,27 @@ References the template and configuration so that DTS is rolled out to the DPUs 
 
 OpenShift Container Platform includes Prometheus, but by default it only monitors OpenShift Container Platform platform components. You must enable user workload monitoring so that Prometheus can scrape user namespaces where DPF and DTS run, such as `dpf-operator-system`.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - A DPF cluster is deployed with at least one provisioned DPU.
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `cluster-monitoring-config.yaml` with the following content:
 
@@ -494,15 +560,12 @@ OpenShift Container Platform includes Prometheus, but by default it only monitor
         enableUserWorkload: true
     ```
 
-    <div class="note">
-
-    If the `cluster-monitoring-config` `ConfigMap` already exists with other settings, edit it instead of replacing it, and add only the `enableUserWorkload: true` line to the existing `config.yaml` data:
-
-    ``` terminal
-    $ oc -n openshift-monitoring edit configmap cluster-monitoring-config
-    ```
-
-    </div>
+    > [!NOTE]
+    > If the `cluster-monitoring-config` `ConfigMap` already exists with other settings, edit it instead of replacing it, and add only the `enableUserWorkload: true` line to the existing `config.yaml` data:
+    >
+    > ``` terminal
+    > $ oc -n openshift-monitoring edit configmap cluster-monitoring-config
+    > ```
 
 2.  Apply the `ConfigMap`:
 
@@ -510,15 +573,27 @@ OpenShift Container Platform includes Prometheus, but by default it only monitor
     $ oc apply -f cluster-monitoring-config.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the user workload monitoring pods are running in the `openshift-user-workload-monitoring` namespace:
 
   ``` terminal
   $ oc -n openshift-user-workload-monitoring get pods
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -529,11 +604,23 @@ OpenShift Container Platform includes Prometheus, but by default it only monitor
   thanos-ruler-user-workload-0           ...     Running   0          ...
   ```
 
+  </div>
+
   Confirm that pods named `prometheus-user-workload`, `thanos-ruler-user-workload`, and `prometheus-operator` are all in a `Running` state.
+
+</div>
 
 # Configure the DTS ServiceMonitor
 
 Create a `ServiceMonitor` resource to instruct the user workload monitoring Prometheus instance to scrape the DOCA Telemetry Service (DTS) metrics endpoint. The `ServiceMonitor` selects the mirrored DTS service in the `dpf-operator-system` namespace and scrapes its `/metrics` path on the `httpserverport` every 30 seconds.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - User workload monitoring is enabled in OpenShift Container Platform.
 
@@ -542,6 +629,16 @@ Create a `ServiceMonitor` resource to instruct the user workload monitoring Prom
   For details, see "DPU telemetry observability with DTS".
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dts-servicemonitor.yaml` with the following content:
 
@@ -576,15 +673,27 @@ Create a `ServiceMonitor` resource to instruct the user workload monitoring Prom
     $ oc apply -f dts-servicemonitor.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the `ServiceMonitor` is created in the `dpf-operator-system` namespace:
 
   ``` terminal
   $ oc -n dpf-operator-system get servicemonitor doca-telemetry-service-monitor
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -593,15 +702,37 @@ Create a `ServiceMonitor` resource to instruct the user workload monitoring Prom
   doca-telemetry-service-monitor     ...
   ```
 
+  </div>
+
+</div>
+
 # Install the DTS console dashboard
 
 You can install a DTS dashboard that integrates directly into the OpenShift Container Platform web console. This dashboard provides visibility of DPU telemetry metrics without requiring Grafana or additional tools.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - User workload monitoring is enabled in OpenShift Container Platform.
 
 - The DTS `ServiceMonitor` is configured and collecting metrics.
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a file named `dts-console-dashboard.yaml` with the following content to define a console dashboard `ConfigMap` in the `openshift-config-managed` namespace:
 
@@ -751,7 +882,15 @@ You can install a DTS dashboard that integrates directly into the OpenShift Cont
     $ oc apply -f dts-console-dashboard.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the dashboard `ConfigMap` is created:
 
@@ -759,9 +898,11 @@ You can install a DTS dashboard that integrates directly into the OpenShift Cont
     $ oc -n openshift-config-managed get configmap dpf-dts-console-dashboard
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -769,6 +910,8 @@ You can install a DTS dashboard that integrates directly into the OpenShift Cont
     NAME                        DATA   AGE
     dpf-dts-console-dashboard   1      ...
     ```
+
+    </div>
 
 2.  Access the dashboard in the OpenShift Container Platform web console:
 
@@ -778,15 +921,22 @@ You can install a DTS dashboard that integrates directly into the OpenShift Cont
 
         The dashboard displays PCIe link speed and width, uplink throughput, packets per second, errors and drops per second, and NIC channel activity, with each DPU as its own line.
 
-<div class="note">
-
-The DTS console dashboard renders against the platform Thanos or user workload monitoring Prometheus instance. No Grafana dependency is required for basic DPU telemetry viewing.
-
 </div>
+
+> [!NOTE]
+> The DTS console dashboard renders against the platform Thanos or user workload monitoring Prometheus instance. No Grafana dependency is required for basic DPU telemetry viewing.
 
 # Install Grafana for DTS metrics visualization
 
 You can install the Grafana Operator and a Grafana instance to provide enhanced visualization for DPU telemetry metrics, including per-DPU filtering and customizable dashboards. You can also deploy a dashboard ConfigMap that adds DTS metrics to the OpenShift Container Platform web console.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have enabled user workload monitoring in OpenShift Container Platform.
 
@@ -798,6 +948,16 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
 
 - You have installed the `helm` CLI.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Install the Grafana Operator by using Helm:
 
     ``` terminal
@@ -807,9 +967,11 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
         --create-namespace
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -824,6 +986,8 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     REVISION: 2
     TEST SUITE: None
     ```
+
+    </div>
 
 2.  Grant OpenShift Route permissions to the Grafana Operator:
 
@@ -869,9 +1033,11 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     $ oc apply -f grafana-operator-route-rbac.yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -879,6 +1045,8 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     clusterrole.rbac.authorization.k8s.io/grafana-operator-route-manager created
     clusterrolebinding.rbac.authorization.k8s.io/grafana-operator-route-manager created
     ```
+
+    </div>
 
 3.  Create Grafana RBAC for Prometheus access:
 
@@ -968,11 +1136,8 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     $ oc apply -f grafana-cr.yaml
     ```
 
-    <div class="warning">
-
-    The default credentials (`admin`/`admin`) are suitable for lab environments only. Change the `admin_password` for non-lab deployments.
-
-    </div>
+    > [!WARNING]
+    > The default credentials (`admin`/`admin`) are suitable for lab environments only. Change the `admin_password` for non-lab deployments.
 
 5.  Configure the Prometheus datasource:
 
@@ -1203,7 +1368,15 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     $ oc apply -f dts-grafana-dashboard.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the Grafana Operator is running:
 
@@ -1211,9 +1384,11 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     $ oc get pods -n grafana-operator
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1222,15 +1397,19 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     grafana-operator-66d8c8c7b-xyz12   1/1     Running   0          5m42s
     ```
 
+    </div>
+
 2.  Verify that the Grafana instance is running:
 
     ``` terminal
     $ oc get grafana -n dpf-operator-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1239,15 +1418,19 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     dpf-grafana   3m15s
     ```
 
+    </div>
+
 3.  Verify that the Grafana pod is running on a control plane node:
 
     ``` terminal
     $ oc get pods -n dpf-operator-system -o wide | grep grafana
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1256,15 +1439,19 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     grafana-deployment-7c8b9d-xyz12  1/1     Running   0          2m38s   10.128.0.45   master-node-1   <none>           <none>
     ```
 
+    </div>
+
 4.  Verify the Grafana route exists:
 
     ``` terminal
     $ oc get route -n dpf-operator-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1272,6 +1459,8 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
     NAME                HOST/PORT                               PATH   SERVICES      PORT      TERMINATION   WILDCARD
     dpf-grafana-route   dpf-grafana-route-dpf-operator-system.apps.cluster.example.com          dpf-grafana   grafana   edge          None
     ```
+
+    </div>
 
 5.  Access the Grafana web interface:
 
@@ -1303,9 +1492,19 @@ You can install the Grafana Operator and a Grafana instance to provide enhanced 
 
         - Error monitoring: combined error, drop, and CRC error rates
 
+</div>
+
 # View DTS metrics and dashboards
 
 After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics by using the OpenShift Container Platform web console, `PromQL` queries, or Grafana dashboards.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured the DTS `ServiceMonitor`.
 
@@ -1315,6 +1514,16 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
 - Optional: You have installed Grafana for DTS metrics visualization.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Verify that the DTS `DPUService` is ready on the management cluster. The object name carries a generated suffix, so select it by its stable label:
 
     ``` terminal
@@ -1322,9 +1531,11 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
       -l svc.dpu.nvidia.com/dpudeployment-service=doca-telemetry-service
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -1333,15 +1544,14 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
     doca-telemetry-service-89p28   True    Success   ...
     ```
 
+    </div>
+
     A status of `READY: True` and `PHASE: Success` confirms that DTS is deployed and running.
 
 2.  View metrics in the OpenShift Container Platform web console.
 
-    <div class="note">
-
-    The OpenShift Container Platform web console reads from the cluster Prometheus instance through Thanos and user workload monitoring. Grafana is not required for basic metric viewing.
-
-    </div>
+    > [!NOTE]
+    > The OpenShift Container Platform web console reads from the cluster Prometheus instance through Thanos and user workload monitoring. Grafana is not required for basic metric viewing.
 
     To run an ad hoc query, go to **Observe** → **Metrics** in the web console, enter a DTS `PromQL` query, and click **Run queries**.
 
@@ -1353,11 +1563,11 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     You should get one series per DPU. Hover over a line to see its labels. Note the `source` label, which is the DPU node name that identifies each DPU.
 
-    | Query                                                            | Description                                                                                                                |
-    |------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-    | `current_link_speed{job=~"doca-telemetry-service.*"}`            | Returns the current PCIe link speed for each DPU. Each series includes a `source` label that identifies the DPU node name. |
-    | `rate(p0_eth_rx_bytes{job=~"doca-telemetry-service.*"}[5m]) * 8` | Calculates the uplink receive throughput in bits per second over a 5-minute window.                                        |
-    | `rate(ch_poll{job=~"doca-telemetry-service.*"}[5m])`             | Calculates the NIC channel polling activity rate over a 5-minute window.                                                   |
+    | Query | Description |
+    |----|----|
+    | `current_link_speed{job=~"doca-telemetry-service.*"}` | Returns the current PCIe link speed for each DPU. Each series includes a `source` label that identifies the DPU node name. |
+    | `rate(p0_eth_rx_bytes{job=~"doca-telemetry-service.*"}[5m]) * 8` | Calculates the uplink receive throughput in bits per second over a 5-minute window. |
+    | `rate(ch_poll{job=~"doca-telemetry-service.*"}[5m])` | Calculates the NIC channel polling activity rate over a 5-minute window. |
 
     DTS `PromQL` queries
 
@@ -1373,11 +1583,8 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     Open the outputted URL in a browser. Anonymous access provides read-only viewer permissions. To edit dashboards, click **Sign in** and use `admin` / `admin` as the default credentials set in the Grafana custom resource.
 
-    <div class="important">
-
-    Change the default Grafana credentials for non-lab clusters.
-
-    </div>
+    > [!IMPORTANT]
+    > Change the default Grafana credentials for non-lab clusters.
 
     In Grafana, go to **Dashboards** and open **DOCA DPU Telemetry (DTS)**. Use the **DPU (source)** dropdown menu to focus on a specific DPU or select **All**. Adjust the time range by using the **time-range** control on the dashboard toolbar. The dashboard refreshes every 30 seconds.
 
@@ -1385,12 +1592,14 @@ After you configure the DTS `ServiceMonitor`, you can view DPU telemetry metrics
 
     The DPF Operator installs framework dashboards that track DPU lifecycle and control-plane health separately from the DTS hardware telemetry dashboard. These dashboards are loaded into Grafana automatically through `GrafanaDashboard` resources created from `ConfigMaps`.
 
-    | Dashboard                           | Description                                                                                     |
-    |-------------------------------------|-------------------------------------------------------------------------------------------------|
-    | DOCA Platform DPU Fleet Health      | Fleet-wide DPU health, provisioning state, and version distribution.                            |
-    | DOCA Platform DPU Health Detail     | Per-DPU status, conditions, and history timelines.                                              |
-    | DOCA Platform Framework State       | Inventory and readiness of every DPF resource type.                                             |
+    | Dashboard | Description |
+    |----|----|
+    | DOCA Platform DPU Fleet Health | Fleet-wide DPU health, provisioning state, and version distribution. |
+    | DOCA Platform DPU Health Detail | Per-DPU status, conditions, and history timelines. |
+    | DOCA Platform Framework State | Inventory and readiness of every DPF resource type. |
     | DOCA Platform Framework Performance | Time for DPF resources to reach their conditions, including reconcile and provisioning timings. |
-    | Controller Runtime                  | DPF controller internals: CPU and memory usage, reconcile rates, queues, and errors.            |
+    | Controller Runtime | DPF controller internals: CPU and memory usage, reconcile rates, queues, and errors. |
 
     DPF framework dashboards
+
+</div>

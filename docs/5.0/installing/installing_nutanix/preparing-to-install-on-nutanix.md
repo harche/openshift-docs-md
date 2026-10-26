@@ -15,7 +15,17 @@ Version requirements for Nutanix virtual environments
 
 You can install an OpenShift Container Platform cluster on Nutanix by using the Agent-based Installer. The Agent-based Installer can be used to install a three-node cluster, which is a smaller, more resource efficient cluster for testing, development, and production.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Preparing to install with the Agent-based Installer](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#preparing-to-install-with-agent-based-installer)
+
+</div>
 
 # Environment requirements
 
@@ -48,7 +58,7 @@ Consider the following when managing this user account:
 <col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Nutanix Object</th>
 <th style="text-align: left;">When required</th>
 <th style="text-align: left;">Required permissions in Nutanix API</th>
@@ -56,7 +66,7 @@ Consider the following when managing this user account:
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Categories</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><ul>
@@ -72,7 +82,7 @@ Consider the following when managing this user account:
 </ul></td>
 <td style="text-align: left;"><p>Create, read, and delete categories that are assigned to the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Images</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><ul>
@@ -82,7 +92,7 @@ Consider the following when managing this user account:
 </ul></td>
 <td style="text-align: left;"><p>Create, read, and delete the operating system images used for the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Virtual Machines</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><ul>
@@ -92,31 +102,31 @@ Consider the following when managing this user account:
 </ul></td>
 <td style="text-align: left;"><p>Create, read, and delete the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Clusters</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Cluster</code></p></td>
 <td style="text-align: left;"><p>View the Prism Element clusters that host the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Subnets</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Subnet</code></p></td>
 <td style="text-align: left;"><p>View the subnets that host the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Projects</p></td>
 <td style="text-align: left;"><p>If you will associate a project with compute machines, control plane machines, or all machines.</p></td>
 <td style="text-align: left;"><p><code>View_Project</code></p></td>
 <td style="text-align: left;"><p>View the projects defined in Prism Central and allow a project to be assigned to the OpenShift Container Platform machines.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Tasks</p></td>
 <td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>View_Task</code></p></td>
 <td style="text-align: left;"><p>Fetch and view tasks on the Prism Element that contain OpenShift Container Platform machines and nodes.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Hosts</p></td>
 <td style="text-align: left;"><p>If you use GPUs with compute machines.</p></td>
 <td style="text-align: left;"><p><code>View_Host</code></p></td>
@@ -124,8 +134,6 @@ Consider the following when managing this user account:
 </tr>
 </tbody>
 </table>
-
-Required permissions for creating a Custom Cloud Native role
 
 ## Cluster limits
 
@@ -161,11 +169,8 @@ You must use either AHV IP Address Management (IPAM) or Dynamic Host Configurati
 
 Nutanix Flow Virtual Networking is supported for new cluster installations. To use this feature, enable Flow Virtual Networking on your AHV cluster before installing.
 
-<div class="note">
-
-It is recommended that each OpenShift Container Platform node in the cluster have access to a Network Time Protocol (NTP) server that is discoverable via DHCP. Installation is possible without an NTP server. However, an NTP server prevents errors typically associated with asynchronous server clocks.
-
-</div>
+> [!NOTE]
+> It is recommended that each OpenShift Container Platform node in the cluster have access to a Network Time Protocol (NTP) server that is discoverable via DHCP. Installation is possible without an NTP server. However, an NTP server prevents errors typically associated with asynchronous server clocks.
 
 ## Required IP Addresses
 
@@ -185,9 +190,9 @@ If you use your own DNS or DHCP server, you must also create records for each no
 
 A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
-| Component   | Record                                 | Description                                                                                                                                                                                                                                                                                 |
-|-------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| API VIP     | `api.<cluster_name>.<base_domain>.`    | This DNS A/AAAA or CNAME record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster.                                                                           |
+| Component | Record | Description |
+|----|----|----|
+| API VIP | `api.<cluster_name>.<base_domain>.` | This DNS A/AAAA or CNAME record must point to the load balancer for the control plane machines. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
 | Ingress VIP | `*.apps.<cluster_name>.<base_domain>.` | A wildcard DNS A/AAAA or CNAME record that points to the load balancer that targets the machines that run the Ingress router pods, which are the worker nodes by default. This record must be resolvable by both clients external to the cluster and from all the nodes within the cluster. |
 
 Required DNS records
@@ -212,15 +217,30 @@ The Cloud Credential Operator (CCO) manages cloud provider credentials as Kubern
 
 To create and manage cloud credentials from outside of the cluster when the Cloud Credential Operator (CCO) is operating in manual mode, extract and prepare the CCO utility (`ccoctl`) binary.
 
-<div class="note">
+> [!NOTE]
+> The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
-The `ccoctl` utility is a Linux binary that must run in a Linux environment.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You have access to an OpenShift Container Platform account with cluster administrator access.
 
 - You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set a variable for the OpenShift Container Platform release image by running the following command:
 
@@ -234,11 +254,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE -a ~/.pull-secret)
     ```
 
-    <div class="note">
-
-    Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
-
-    </div>
+    > [!NOTE]
+    > Ensure that the architecture of the `$RELEASE_IMAGE` matches the architecture of the environment in which you will use the `ccoctl` tool.
 
 3.  Extract the `ccoctl` binary from the CCO container image within the OpenShift Container Platform release image by running the following command:
 
@@ -254,11 +271,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
     - `rhel9`: Specify this value for hosts that use RHEL 9.
 
-    <div class="note">
-
-    The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
-
-    </div>
+    > [!NOTE]
+    > The `ccoctl` binary is created in the directory from where you executed the command and not in `/usr/bin/`. You must rename the directory or move the `ccoctl.<rhel_version>` binary to `ccoctl`.
 
 4.  Change the permissions to make `ccoctl` executable by running the following command:
 
@@ -266,15 +280,27 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     $ chmod 775 ccoctl
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - To verify that `ccoctl` is ready to use, display the help file. Use a relative file name when you run the command, for example:
 
   ``` terminal
   $ ./ccoctl
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -298,6 +324,18 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)
+
+</div>

@@ -1,14 +1,11 @@
 OpenShift Virtualization provides a comprehensive virtualization solution that allows you to run and manage virtual machine workloads alongside container workloads in your OpenShift Container Platform cluster.
 
-# What you can do with OpenShift Virtualization
+# OpenShift Virtualization capabilities
 
 OpenShift Virtualization provides scalable, enterprise-grade virtualization functionality for your cluster. You can use it to manage virtual machines (VMs) exclusively or alongside container workloads.
 
-<div class="note">
-
-If you have a Red Hat OpenShift Virtualization Engine subscription, you can run unlimited VMs on subscribed hosts, but you cannot run application instances in containers. For more information, see the subscription guide section about "Red Hat OpenShift Virtualization Engine and related products".
-
-</div>
+> [!NOTE]
+> If you have a Red Hat OpenShift Virtualization Engine subscription, you can run unlimited VMs on subscribed hosts, but you cannot run application instances in containers. For more information, see the subscription guide section about "Red Hat OpenShift Virtualization Engine and related products".
 
 OpenShift Virtualization adds new objects into your OpenShift Container Platform cluster by using Kubernetes custom resources to enable virtualization tasks. These tasks include:
 
@@ -26,19 +23,13 @@ OpenShift Virtualization adds new objects into your OpenShift Container Platform
 
 You can manage your cluster and virtualization resources by using the **Virtualization** perspective of the OpenShift Container Platform web console, and by using the OpenShift CLI (`oc`).
 
-<div class="important">
-
-For supported and unsupported OVN-Kubernetes network plug-in use cases, see "OVN-Kubernetes purpose".
-
-</div>
+> [!IMPORTANT]
+> For supported and unsupported OVN-Kubernetes network plug-in use cases, see "OVN-Kubernetes purpose".
 
 OpenShift Virtualization is designed and tested to work well with Red Hat OpenShift Data Foundation features.
 
-<div class="important">
-
-When you deploy OpenShift Virtualization with OpenShift Data Foundation, you must create a dedicated storage class for Windows virtual machine disks. See "Optimizing ODF PersistentVolumes for Windows VMs" for details.
-
-</div>
+> [!IMPORTANT]
+> When you deploy OpenShift Virtualization with OpenShift Data Foundation, you must create a dedicated storage class for Windows virtual machine disks. See "Optimizing ODF PersistentVolumes for Windows VMs" for details.
 
 You can use OpenShift Virtualization with OVN-Kubernetes or one of the other certified network plug-ins listed in "Certified OpenShift CNI Plug-ins".
 
@@ -46,9 +37,9 @@ You can check your OpenShift Virtualization cluster for compliance issues by ins
 
 For information about partnering with Independent Software Vendors (ISVs) and Services partners for specialized storage, networking, backup, and additional functionality, see the Red Hat Ecosystem Catalog.
 
-# Comparing OpenShift Virtualization to VMware vSphere
+# VMware vSphere to OpenShift Virtualization concept mapping
 
-If you are familiar with VMware vSphere, the following table lists OpenShift Virtualization components that you can use to accomplish similar tasks.
+If you are familiar with VMware vSphere, you can map its concepts to the OpenShift Virtualization components that accomplish similar tasks.
 
 However, because OpenShift Virtualization is conceptually different from vSphere, and much of its functionality comes from the underlying OpenShift Container Platform, OpenShift Virtualization does not have direct alternatives for all vSphere concepts or components.
 
@@ -60,48 +51,48 @@ However, because OpenShift Virtualization is conceptually different from vSphere
 <col style="width: 42%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">vSphere concept</th>
 <th style="text-align: left;">OpenShift Virtualization</th>
 <th style="text-align: left;">Explanation</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Datastore</p></td>
 <td style="text-align: left;"><p>Persistent volume (PV)</p>
 <p>Persistent volume claim (PVC)</p></td>
 <td style="text-align: left;"><p>Stores VM disks. A PV represents existing storage and is attached to a VM through a PVC. When created with the <code>ReadWriteMany</code> (RWX) access mode, PVCs can be mounted by multiple VMs simultaneously.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Dynamic Resource Scheduling (DRS)</p></td>
 <td style="text-align: left;"><p>Pod eviction policy</p>
 <p>Descheduler</p></td>
 <td style="text-align: left;"><p>Provides active resource balancing. A combination of pod eviction policies and a descheduler allows VMs to be live migrated to more appropriate nodes to keep node resource utilization manageable.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NSX</p></td>
 <td style="text-align: left;"><p>Multus OVN-Kubernetes</p>
 <p>Third-party container network interface (CNI) plug-ins</p></td>
 <td style="text-align: left;"><p>Provides an overlay network configuration. There is no direct equivalent for NSX in OpenShift Virtualization, but you can use the OVN-Kubernetes network provider or install certified third-party CNI plug-ins.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Storage Policy Based Management (SPBM)</p></td>
 <td style="text-align: left;"><p>Storage class</p></td>
 <td style="text-align: left;"><p>Provides policy-based storage selection. Storage classes represent various storage types and describe storage capabilities, such as quality of service, backup policy, reclaim policy, and whether volume expansion is allowed. A PVC can request a specific storage class to satisfy application requirements.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>vCenter</p>
 <p>vRealize Operations</p></td>
 <td style="text-align: left;"><p>OpenShift Metrics and Monitoring</p></td>
 <td style="text-align: left;"><p>Provides host and VM metrics. You can view metrics and monitor the overall health of the cluster and VMs by using the OpenShift Container Platform web console.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>vMotion</p></td>
 <td style="text-align: left;"><p>Live migration</p></td>
 <td style="text-align: left;"><p>Moves a running VM to another node without interruption. For live migration to be available, the PVC attached to the VM must have the <code>ReadWriteMany</code> (RWX) access mode.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>vSwitch</p>
 <p>DvSwitch</p></td>
 <td style="text-align: left;"><p>NMState Operator</p>
@@ -111,15 +102,13 @@ However, because OpenShift Virtualization is conceptually different from vSphere
 </tbody>
 </table>
 
-Mapping of vSphere concepts to their closest OpenShift Virtualization counterparts
-
 # Supported cluster versions for OpenShift Virtualization
 
 OpenShift Virtualization 4.22 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
 
 The latest stable release of OpenShift Virtualization 4.22 is 4.22.9.
 
-# About volume and access modes for virtual machine disks
+# Volume and access modes for VM disks
 
 If you use the storage API with known storage providers, the volume and access modes are selected automatically. However, if you use a storage class that does not have a storage profile, you must configure the volume and access mode.
 
@@ -133,21 +122,18 @@ For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volu
 
   For example, if you use Red Hat OpenShift Data Foundation, Ceph RBD volumes are preferable to CephFS volumes.
 
-<div class="important">
+> [!IMPORTANT]
+> You cannot live migrate virtual machines with the following configurations:
+>
+> - Storage volume with `ReadWriteOnce` (RWO) access mode
+>
+> - Passthrough features such as GPUs
+>
+> Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
 
-You cannot live migrate virtual machines with the following configurations:
+# Single-node OpenShift feature support
 
-- Storage volume with `ReadWriteOnce` (RWO) access mode
-
-- Passthrough features such as GPUs
-
-Set the `evictionStrategy` field to `None` for these virtual machines. The `None` strategy powers down VMs during node reboots.
-
-</div>
-
-# Single-node OpenShift differences
-
-You can install OpenShift Virtualization on single-node OpenShift.
+You can install OpenShift Virtualization on single-node OpenShift. The topology does not support high availability, pod disruption, live migration, or eviction strategies.
 
 However, you should be aware that Single-node OpenShift does not support the following features:
 

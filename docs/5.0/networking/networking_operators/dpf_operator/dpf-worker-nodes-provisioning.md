@@ -4,9 +4,14 @@ After the DPF Operator and the hosted cluster are configured, adjust the OVN-Kub
 
 You can install the OVN-Kubernetes resource injector by using Helm to deploy a mutating admission webhook that automatically injects SR-IOV virtual function resource requests and network attachment annotations into each pod scheduled to a worker node.
 
-<div class="note">
+> [!NOTE]
+> Virtual function resource capacity on worker nodes is provided by the `NodeSRIOVDevicePluginConfig` resource, which replaces the manual SR-IOV device plugin `DaemonSet` and control plane node patching used in earlier DPF versions.
 
-Virtual function resource capacity on worker nodes is provided by the `NodeSRIOVDevicePluginConfig` resource, which replaces the manual SR-IOV device plugin `DaemonSet` and control plane node patching used in earlier DPF versions.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -19,6 +24,16 @@ Virtual function resource capacity on worker nodes is provided by the `NodeSRIOV
 - You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
 
 - You have created the `NodeSRIOVDevicePluginConfig` resource.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Install the OVN-Kubernetes resource injector by using Helm:
 
@@ -42,9 +57,11 @@ Virtual function resource capacity on worker nodes is provided by the `NodeSRIOV
       --set commonManifests.enabled=false
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -58,15 +75,29 @@ Virtual function resource capacity on worker nodes is provided by the `NodeSRIOV
     TEST SUITE: None
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify the resource injector mutating webhook configuration was applied:
 
   ``` terminal
   $ oc get mutatingwebhookconfiguration | grep ovn
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -74,6 +105,10 @@ Virtual function resource capacity on worker nodes is provided by the `NodeSRIOV
   NAME                                                WEBHOOKS   AGE
   ovn-kubernetes-ovn-kubernetes-resource-injector     1          22h
   ```
+
+  </div>
+
+</div>
 
 # OVN-Kubernetes DPU-Host mode
 
@@ -84,6 +119,14 @@ When the `DPFOperatorConfig` resource is created and worker nodes with the `work
 # Add worker nodes by using the Bare Metal Operator
 
 You can add DPU-equipped worker nodes to the management cluster by creating `BareMetalHost` resources that the Bare Metal Operator provisions.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
 
@@ -100,6 +143,16 @@ You can add DPU-equipped worker nodes to the management cluster by creating `Bar
 - You have the MAC address of the management network interface for each server.
 
 - You have the name of the root disk device for each server.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Set the following environment variables for the worker node:
 
@@ -164,11 +217,8 @@ You can add DPU-equipped worker nodes to the management cluster by creating `Bar
       watchAllNamespaces: false
     ```
 
-    <div class="important">
-
-    When `provisioningNetwork` is set to `Disabled`, servers boot by using Redfish virtual media instead of PXE.
-
-    </div>
+    > [!IMPORTANT]
+    > When `provisioningNetwork` is set to `Disabled`, servers boot by using Redfish virtual media instead of PXE.
 
 5.  Apply the `Provisioning` resource:
 
@@ -246,11 +296,8 @@ You can add DPU-equipped worker nodes to the management cluster by creating `Bar
           namespace: openshift-machine-api
       ```
 
-      <div class="important">
-
-      Adding a regular worker node without a DPU is a Technology Preview feature.
-
-      </div>
+      > [!IMPORTANT]
+      > Adding a regular worker node without a DPU is a Technology Preview feature.
 
 9.  Apply the `BareMetalHost` resource:
 
@@ -258,15 +305,27 @@ You can add DPU-equipped worker nodes to the management cluster by creating `Bar
     $ envsubst < baremetalhost.yaml | oc apply -f -
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Monitor the provisioning progress:
 
   ``` terminal
   $ oc get bmh -n openshift-machine-api -w
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -280,13 +339,22 @@ You can add DPU-equipped worker nodes to the management cluster by creating `Bar
   worker-01   provisioned               true             10m
   ```
 
+  </div>
+
+</div>
+
 # Approve worker node CSRs
 
 You must approve the pending certificate signing requests (CSRs) for worker nodes that join the management cluster.
 
-<div class="note">
+> [!NOTE]
+> Worker nodes provisioned by using a `BareMetalHost` resource do not have an associated `Machine` object, so the default OpenShift machine approver does not automatically approve their certificate signing requests (CSRs). You must manually approve the `kube-apiserver-client-kubelet` CSR from the `node-bootstrapper` service account and the `kubelet-serving` CSR from the node for each worker node.
 
-Worker nodes provisioned by using a `BareMetalHost` resource do not have an associated `Machine` object, so the default OpenShift machine approver does not automatically approve their certificate signing requests (CSRs). You must manually approve the `kube-apiserver-client-kubelet` CSR from the `node-bootstrapper` service account and the `kubelet-serving` CSR from the node for each worker node.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -295,6 +363,16 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
 - You have installed the `oc` CLI.
 
 - Worker nodes are booted and attempting to join the management cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Watch for pending CSRs:
 
@@ -308,9 +386,11 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
     $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -321,6 +401,8 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
     certificatesigningrequest.certificates.k8s.io/csr-f5vk7 approved
     ```
 
+    </div>
+
     Repeat this step until no pending CSRs remain. Each node typically generates multiple CSRs.
 
 3.  Verify that the worker nodes joined the cluster:
@@ -329,9 +411,11 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -344,15 +428,24 @@ Worker nodes provisioned by using a `BareMetalHost` resource do not have an asso
     master-2           Ready      control-plane,master,worker   4d22h   v1.36.3
     ```
 
-    <div class="note">
-
-    The worker nodes show a status of `NotReady` until the DPU provisioning process is fully completed and all OVN-Kubernetes CNI components on the host and the DPU are running. Do not proceed to the next steps until all pending CSRs are approved.
-
     </div>
+
+    > [!NOTE]
+    > The worker nodes show a status of `NotReady` until the DPU provisioning process is fully completed and all OVN-Kubernetes CNI components on the host and the DPU are running. Do not proceed to the next steps until all pending CSRs are approved.
+
+</div>
 
 # Verify DPU provisioning
 
 After the worker nodes join the management cluster, the `DPUSet` controller automatically detects nodes with the `feature.node.kubernetes.io/dpu-enabled` label, which the Node Feature Discovery Operator applies to DPU-equipped nodes. The controller then creates a `DPU` object for each node and starts the provisioning process. You can monitor the provisioning stages to verify progress.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
 
@@ -360,15 +453,27 @@ After the worker nodes join the management cluster, the `DPUSet` controller auto
 
 - The worker node CSRs are approved and the nodes have joined the management cluster.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Watch for `DPU` object creation:
 
     ``` terminal
     $ oc get dpu -n dpf-operator-system -w
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -386,6 +491,8 @@ After the worker nodes join the management cluster, the `DPUSet` controller auto
     <node-name>-<dpu-id>             Unknown       Node Effect Removal          71m
     <node-name>-<dpu-id>     True    True          Ready                        71m
     ```
+
+    </div>
 
     The `DPU` objects progress through the following provisioning stages:
 
@@ -410,11 +517,8 @@ After the worker nodes join the management cluster, the `DPUSet` controller auto
     `Error`
     Provisioning failed. Check events and conditions for details.
 
-    <div class="important">
-
-    When the provisioning stage reaches `DPU Cluster Config`, proceed to "Configure authorization for the hosted cluster" to complete the DPU node join process.
-
-    </div>
+    > [!IMPORTANT]
+    > When the provisioning stage reaches `DPU Cluster Config`, proceed to "Configure authorization for the hosted cluster" to complete the DPU node join process.
 
 2.  Monitor detailed provisioning progress:
 
@@ -438,9 +542,19 @@ After the worker nodes join the management cluster, the `DPUSet` controller auto
     $ oc logs -n dpf-operator-system -l dpu.nvidia.com/component=dpf-provisioning-controller-manager --tail=-1 -f | grep <dpu_name>
     ```
 
+</div>
+
 # Configure authorization for the hosted cluster
 
 DPF services running on DPU nodes require privileged access to host networking and devices. You must create a `ClusterRoleBinding` on the hosted cluster that grants the `privileged` security context constraint (SCC) to all service accounts in the `dpf-operator-system` namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the hosted cluster as a user with the `cluster-admin` role.
 
@@ -449,6 +563,16 @@ DPF services running on DPU nodes require privileged access to host networking a
 - The hosted cluster kubeconfig file is available.
 
 - DPU provisioning has reached the `DPU Cluster Config` stage.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Get the hosted cluster kubeconfig:
 
@@ -488,15 +612,35 @@ DPF services running on DPU nodes require privileged access to host networking a
     $ oc apply -f dpu-cluster-scc.yaml
     ```
 
+</div>
+
 # Verify full system readiness
 
 After the DPU provisioning process completes, you can verify that all worker nodes, SR-IOV virtual functions, and DPU services are operational on the management cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the management cluster as a user with the `cluster-admin` role.
 
 - You have installed the `oc` CLI.
 
 - DPU provisioning has completed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Switch back to the management cluster context:
 
@@ -510,9 +654,11 @@ After the DPU provisioning process completes, you can verify that all worker nod
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -525,6 +671,8 @@ After the DPU provisioning process completes, you can verify that all worker nod
     master-2           Ready    control-plane,master,worker   4d23h   v1.36.3
     ```
 
+    </div>
+
 3.  Verify that SR-IOV virtual functions are registered as Kubernetes node resources on the worker nodes:
 
     ``` terminal
@@ -532,9 +680,11 @@ After the DPU provisioning process completes, you can verify that all worker nod
       jq '.items[] | {name: .metadata.name, capacity: .status.capacity."openshift.io/bf3_vfs", allocatable: .status.allocatable."openshift.io/bf3_vfs"}'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -551,15 +701,19 @@ After the DPU provisioning process completes, you can verify that all worker nod
     }
     ```
 
+    </div>
+
 4.  Verify that all DPU services are in a `Success` phase:
 
     ``` terminal
     $ oc get dpuservices -n dpf-operator-system
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -578,8 +732,12 @@ After the DPU provisioning process completes, you can verify that all worker nod
     sriov-device-plugin             True    Success   26h
     ```
 
+    </div>
+
 5.  Optional: View detailed DPU service status:
 
     ``` terminal
     $ oc -n dpf-operator-system exec deploy/dpf-operator-controller-manager -- /dpfctl describe all --show-resources=dpuservice --grouping=false
     ```
+
+</div>

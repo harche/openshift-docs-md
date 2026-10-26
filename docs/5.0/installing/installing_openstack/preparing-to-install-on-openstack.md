@@ -24,9 +24,14 @@ You can install a cluster on RHOSP infrastructure that you provision. By using t
 
 Beginning with OpenShift Container Platform 4.10, HTTPS certificates must contain subject alternative name (SAN) fields. You can run a script to scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
 
-<div class="important">
+> [!IMPORTANT]
+> OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the provided script to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
 
-OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the provided script to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -43,6 +48,16 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
   - [OpenSSL version 1.1.1l or greater](https://www.openssl.org/)
 
 - Populate the machine with RHOSP credentials for the target cloud.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Save the following script to your machine:
 
@@ -121,15 +136,14 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
 
 3.  Replace any certificates that the script reports as `INVALID` with certificates that contain SAN fields.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates will be rejected with the following message:
+    >
+    > ``` txt
+    > x509: certificate relies on legacy Common Name field, use SANs instead
+    > ```
 
-    You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates will be rejected with the following message:
-
-    ``` txt
-    x509: certificate relies on legacy Common Name field, use SANs instead
-    ```
-
-    </div>
+</div>
 
 ## Scanning RHOSP endpoints for legacy HTTPS certificates manually
 
@@ -137,9 +151,14 @@ Starting in OpenShift Container Platform 4.10, HTTPS certificates require subjec
 
 These steps scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
 
-<div class="important">
+> [!IMPORTANT]
+> OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the procedure steps to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
 
-OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the procedure steps to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -153,11 +172,8 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
 
 2.  For each public endpoint, note the host and the port.
 
-    <div class="tip">
-
-    Determine the host of an endpoint by removing the scheme, the port, and the path.
-
-    </div>
+    > [!TIP]
+    > Determine the host of an endpoint by removing the scheme, the port, and the path.
 
 3.  For each endpoint, run the following commands to extract the SAN field of the certificate:
 
@@ -182,9 +198,11 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
             | openssl x509 -noout -ext subjectAltName
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -193,17 +211,18 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
             DNS:your.host.example.net
         ```
 
+        </div>
+
         For each endpoint, look for output that resembles the previous example. If there is no output for an endpoint, the certificate of that endpoint is invalid and must be re-issued.
 
-        <div class="important">
+        > [!IMPORTANT]
+        > You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates are rejected with the following message:
+        >
+        > ``` txt
+        > x509: certificate relies on legacy Common Name field, use SANs instead
+        > ```
 
-        You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates are rejected with the following message:
-
-        ``` txt
-        x509: certificate relies on legacy Common Name field, use SANs instead
-        ```
-
-        </div>
+</div>
 
 # Additional resources
 

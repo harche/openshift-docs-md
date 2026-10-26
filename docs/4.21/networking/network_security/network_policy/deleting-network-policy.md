@@ -4,15 +4,17 @@ As a cluster administrator, you can delete a network policy from a namespace.
 
 You can delete a network policy in a namespace by using the CLI.
 
-<div class="note">
+> [!NOTE]
+> If you log in with `cluster-admin` privileges, you can delete network policies in any namespace in the cluster.
 
-If you log in with `cluster-admin` privileges, you can delete network policies in any namespace in the cluster.
+> [!NOTE]
+> If you log in with `cluster-admin` privileges, you can delete network policies in any namespace in the cluster. In the web console, you can delete policies directly in YAML or by using the **Actions** menu.
 
-</div>
+<div>
 
-<div class="note">
+<div class="title">
 
-If you log in with `cluster-admin` privileges, you can delete network policies in any namespace in the cluster. In the web console, you can delete policies directly in YAML or by using the **Actions** menu.
+Prerequisites
 
 </div>
 
@@ -24,7 +26,15 @@ If you log in with `cluster-admin` privileges, you can delete network policies i
 
 - You are working in the namespace where the network policy exists.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To delete a network policy object, enter the following command. Successful output lists the name of the policy object and the `deleted` status.
 
@@ -39,3 +49,5 @@ If you log in with `cluster-admin` privileges, you can delete network policies i
 
   `<namespace>`
   Optional parameter. If you defined the object in a different namespace than the current namespace, the parameter specifices the namespace.
+
+</div>

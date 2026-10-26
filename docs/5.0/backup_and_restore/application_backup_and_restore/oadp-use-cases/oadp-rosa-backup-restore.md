@@ -6,6 +6,14 @@ Perform a backup by using OpenShift API for Data Protection (OADP) with OpenShif
 
 Either Data Protection Application (DPA) configuration will work.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a workload to back up by running the following commands:
 
     ``` terminal
@@ -140,15 +148,22 @@ Either Data Protection Application (DPA) configuration will work.
     Hello OpenShift!
     ```
 
-    <div class="note">
+    > [!NOTE]
+    > For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
 
-    For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
-
-    </div>
+</div>
 
 # Clean up a cluster after a backup with OADP and ROSA STS
 
 Uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from the hello-world example.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Delete the workload by running the following command:
 
@@ -168,15 +183,12 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     $ oc -n openshift-adp delete cloudstorage ${CLUSTER_NAME}-oadp
     ```
 
-    <div class="warning">
-
-    If this command hangs, you might need to delete the finalizer by running the following command:
-
-    ``` terminal
-    $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
-    ```
-
-    </div>
+    > [!WARNING]
+    > If this command hangs, you might need to delete the finalizer by running the following command:
+    >
+    > ``` terminal
+    > $ oc -n openshift-adp patch cloudstorage ${CLUSTER_NAME}-oadp -p '{"metadata":{"finalizers":null}}' --type=merge
+    > ```
 
 4.  If the Operator is no longer required, remove it by running the following command:
 
@@ -229,3 +241,5 @@ Uninstall the OpenShift API for Data Protection (OADP) Operator together with th
     ``` terminal
     $ aws iam delete-role --role-name "${ROLE_NAME}"
     ```
+
+</div>

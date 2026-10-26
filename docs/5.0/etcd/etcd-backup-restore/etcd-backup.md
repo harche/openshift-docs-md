@@ -6,11 +6,8 @@ Back up the etcd data for your cluster regularly and store it in a secure locati
 
 Be sure to take an etcd backup before you update your cluster. Taking a backup before you update is important because when you restore your cluster, you must use an etcd backup that was taken from the same z-stream release. For example, an OpenShift Container Platform 4.17.5 cluster must use an etcd backup that was taken from 4.17.5.
 
-<div class="important">
-
-Back up your cluster’s etcd data by performing a single invocation of the backup script on a control plane host. Do not take a backup for each control plane host.
-
-</div>
+> [!IMPORTANT]
+> Back up your cluster’s etcd data by performing a single invocation of the backup script on a control plane host. Do not take a backup for each control plane host.
 
 After you have an etcd backup, you can restore to a previous cluster state.
 
@@ -18,23 +15,35 @@ After you have an etcd backup, you can restore to a previous cluster state.
 
 You can back up etcd data by creating an etcd snapshot and saving the static pod resources on a control plane host. This backup preserves the cluster state and provides the resources required to restore etcd at a later time.
 
-<div class="important">
-
-Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
-
-</div>
+> [!IMPORTANT]
+> Only save a backup from a single control plane host. Do not take a backup from each control plane host in the cluster.
 
 For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data on only one node in the cluster. The cluster restore process is driven by data from a single node, so you can perform the etcd backup steps on only one node.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have verified whether the cluster-wide proxy is enabled.
 
-  <div class="tip">
+  > [!TIP]
+  > You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
 
-  You can check whether the proxy is enabled by reviewing the output of `oc get proxy cluster -o yaml`. The proxy is enabled if the `httpProxy`, `httpsProxy`, and `noProxy` fields have values set.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Start a debug session as root for a control plane node:
 
@@ -64,19 +73,18 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
 
 4.  Run the `cluster-backup.sh` script with the path to the directory where you want to save the backup:
 
-    <div class="tip">
-
-    The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
-
-    </div>
+    > [!TIP]
+    > The `cluster-backup.sh` script is maintained as a component of the etcd Cluster Operator and is a wrapper around the `etcdctl snapshot save` command.
 
     ``` terminal
     sh-4.4# /usr/local/bin/cluster-backup.sh /home/core/assets/backup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example script output**
+    <div class="title">
+
+    Example script output
 
     </div>
 
@@ -99,43 +107,66 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
     snapshot db and kube resources are successfully saved to /home/core/assets/backup
     ```
 
+    </div>
+
     In this example, two files are created in the `/home/core/assets/backup/` directory on the control plane host:
 
     - `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The `cluster-backup.sh` script confirms the validity of the snapshot.
 
     - `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
 
-      <div class="note">
+      > [!NOTE]
+      > If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+      >
+      > The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
 
-      If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+</div>
 
-      The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
+<div>
 
-      </div>
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+</div>
 
 # Creating automated etcd backups
 
 You can enable automated etcd backups for your cluster by applying a `FeatureGate` and backup custom resources (CRs).
 
-<div class="important">
+> [!IMPORTANT]
+> Automating etcd backups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-Automating etcd backups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+> [!WARNING]
+> Enabling the `TechPreviewNoUpgrade` feature set on your cluster prevents minor version updates. The `TechPreviewNoUpgrade` feature set cannot be disabled. Do not enable this feature set on production clusters.
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+<div>
 
-</div>
+<div class="title">
 
-<div class="warning">
-
-Enabling the `TechPreviewNoUpgrade` feature set on your cluster prevents minor version updates. The `TechPreviewNoUpgrade` feature set cannot be disabled. Do not enable this feature set on production clusters.
+Prerequisites
 
 </div>
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a `FeatureGate` custom resource (CR) file named `enable-tech-preview-no-upgrade.yaml` with the following contents:
 
@@ -162,9 +193,11 @@ Enabling the `TechPreviewNoUpgrade` feature set on your cluster prevents minor v
     $ oc get crd | grep backup
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -173,13 +206,35 @@ Enabling the `TechPreviewNoUpgrade` feature set on your cluster prevents minor v
     etcdbackups.operator.openshift.io 2023-10-25T13:32:04Z
     ```
 
+    </div>
+
+</div>
+
 ## Creating a single automated etcd backup
 
 You can create a single automated etcd backup by applying an `EtcdBackup` custom resource (CR). Backup data is stored on either dynamically-provisioned or local storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If dynamically-provisioned storage is available, complete the following steps to create a single automated etcd backup:
 
@@ -217,9 +272,11 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc get pvc
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -228,11 +285,10 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         etcd-backup-pvc   Bound                                                       51s
         ```
 
-        <div class="note">
-
-        Dynamic PVCs stay in the `Pending` state until they are mounted.
-
         </div>
+
+        > [!NOTE]
+        > Dynamic PVCs stay in the `Pending` state until they are mounted.
 
     4.  Create a CR file named `etcd-single-backup.yaml` with contents such as the following example:
 
@@ -317,9 +373,11 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc get pv
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -327,6 +385,8 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         NAME                    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS                REASON   AGE
         etcd-backup-pv-fs       100Gi      RWO            Retain           Available           etcd-backup-local-storage            10s
         ```
+
+        </div>
 
     5.  Create a PVC named `etcd-backup-pvc.yaml` with contents such as the following example:
 
@@ -379,15 +439,35 @@ You can create a single automated etcd backup by applying an `EtcdBackup` custom
         $ oc apply -f etcd-single-backup.yaml
         ```
 
+</div>
+
 ## Creating recurring automated etcd backups
 
 You can create recurring automated etcd backups by applying a custom resource (CR) that defines a backup schedule and retention policy. Backup data is stored on either dynamically-provisioned or local storage.
 
 Use dynamically-provisioned storage to keep the created etcd backup data in a safe, external location if possible. If dynamically-provisioned storage is not available, consider storing the backup data on an NFS share to make backup recovery more accessible.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If dynamically-provisioned storage is available, complete the following steps to create automated recurring backups:
 
@@ -414,17 +494,14 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         `spec.resources.requests.storage`
         Specifies the amount of storage available to the PVC. Adjust this value for your requirements.
 
-        <div class="note">
-
-        Each of the following providers requires changes to the `accessModes` and `storageClassName` keys:
-
-        | Provider                                                   | `accessModes` value | `storageClassName` value |
-        |------------------------------------------------------------|---------------------|--------------------------|
-        | AWS with the `versioned-installer-efc_operator-ci` profile | `- ReadWriteMany`   | `efs-sc`                 |
-        | Google Cloud                                               | `- ReadWriteMany`   | `filestore-csi`          |
-        | Microsoft Azure                                            | `- ReadWriteMany`   | `azurefile-csi`          |
-
-        </div>
+        > [!NOTE]
+        > Each of the following providers requires changes to the `accessModes` and `storageClassName` keys:
+        >
+        > | Provider | `accessModes` value | `storageClassName` value |
+        > |----|----|----|
+        > | AWS with the `versioned-installer-efc_operator-ci` profile | `- ReadWriteMany` | `efs-sc` |
+        > | Google Cloud | `- ReadWriteMany` | `filestore-csi` |
+        > | Microsoft Azure | `- ReadWriteMany` | `azurefile-csi` |
 
     2.  Apply the PVC by running the following command:
 
@@ -438,9 +515,11 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         $ oc get pvc
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -449,19 +528,15 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         etcd-backup-pvc   Bound                                                       51s
         ```
 
-        <div class="note">
-
-        Dynamic PVCs stay in the `Pending` state until they are mounted.
-
         </div>
+
+        > [!NOTE]
+        > Dynamic PVCs stay in the `Pending` state until they are mounted.
 
 2.  If dynamically-provisioned storage is unavailable, create a local storage PVC by completing the following steps:
 
-    <div class="warning">
-
-    If you delete or otherwise lose access to the node that contains the stored backup data, you can lose data.
-
-    </div>
+    > [!WARNING]
+    > If you delete or otherwise lose access to the node that contains the stored backup data, you can lose data.
 
     1.  Create a `StorageClass` CR file named `etcd-backup-local-storage.yaml` with the following contents:
 
@@ -515,15 +590,12 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         `spec.nodeAffinity.required.nodeSelectorTerms.matchExpressions.values`
         Specifies the control plane node to attach this PV to. Replace with the actual node name.
 
-        <div class="tip">
-
-        List the available nodes by running the following command:
-
-        ``` terminal
-        $ oc get nodes
-        ```
-
-        </div>
+        > [!TIP]
+        > List the available nodes by running the following command:
+        >
+        > ``` terminal
+        > $ oc get nodes
+        > ```
 
     4.  Verify that the PV was created by running the following command:
 
@@ -531,9 +603,11 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         $ oc get pv
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -541,6 +615,8 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
         NAME                    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS                REASON   AGE
         etcd-backup-pv-fs       100Gi      RWX            Delete           Available           etcd-backup-local-storage            10s
         ```
+
+        </div>
 
     5.  Create a PVC named `etcd-backup-pvc.yaml` with contents such as the following example:
 
@@ -610,11 +686,8 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
       `spec.etcd.retentionPolicy.retentionNumber.maxNumberOfBackups`
       Specifies the maximum number of backups to retain. Adjust this value for your needs. Defaults to 15 backups if unspecified.
 
-      <div class="warning">
-
-      A known issue causes the number of retained backups to be one greater than the configured value.
-
-      </div>
+      > [!WARNING]
+      > A known issue causes the number of retained backups to be one greater than the configured value.
 
       1.  For retention based on the file size of backups, use the following:
 
@@ -632,11 +705,8 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
       `spec.etcd.retentionPolicy.retentionSize.maxSizeOfBackupsGb`
       Specifies the maximum file size of the retained backups in gigabytes. Adjust this value for your needs. Defaults to 10 GB if unspecified.
 
-      <div class="warning">
-
-      A known issue causes the maximum size of retained backups to be up to 10 GB greater than the configured value.
-
-      </div>
+      > [!WARNING]
+      > A known issue causes the maximum size of retained backups to be up to 10 GB greater than the configured value.
 
 4.  Create the cron job defined by the CRD by running the following command:
 
@@ -649,3 +719,5 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
     ``` terminal
     $ oc get cronjob -n openshift-etcd
     ```
+
+</div>

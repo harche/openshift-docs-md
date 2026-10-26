@@ -4,21 +4,33 @@ You use the performance profile configuration to make these changes.
 
 You can update the kernel to kernel-rt, reserve CPUs for cluster and operating system housekeeping duties, including pod infra containers, isolate CPUs for application containers to run the workloads, and disable unused CPUs to reduce power consumption.
 
-<div class="note">
+> [!NOTE]
+> When writing your applications, follow the general recommendations described in [RHEL for Real Time processes and threads](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/9/html-single/understanding_rhel_for_real_time/index#assembly_rhel-for-real-time-processes-and-threads_understanding-RHEL-for-Real-Time-core-concepts).
 
-When writing your applications, follow the general recommendations described in [RHEL for Real Time processes and threads](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/9/html-single/understanding_rhel_for_real_time/index#assembly_rhel-for-real-time-processes-and-threads_understanding-RHEL-for-Real-Time-core-concepts).
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
+</div>
+
 # Schedule a low latency workload onto a compute node
 
 You can schedule low latency workloads onto a compute node where a performance profile that configures real-time capabilities is applied.
 
-<div class="note">
+> [!NOTE]
+> To schedule a workload on specific nodes, use label selectors in the `Pod` custom resource (CR). The label selectors must match the nodes that are attached to the machine config pool that was configured for low latency by the Node Tuning Operator.
 
-To schedule a workload on specific nodes, use label selectors in the `Pod` custom resource (CR). The label selectors must match the nodes that are attached to the machine config pool that was configured for low latency by the Node Tuning Operator.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -28,11 +40,23 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
 
 - You have applied a performance profile in the cluster that tunes compute nodes for low latency workloads.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a `Pod` CR for the low latency workload and apply it in the cluster, for example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `Pod` spec configured to use real-time processing**
+    <div class="title">
+
+    Example `Pod` spec configured to use real-time processing
 
     </div>
 
@@ -42,7 +66,6 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     metadata:
       name: dynamic-low-latency-pod
       annotations:
-        cpu-quota.crio.io: "disable"
         cpu-load-balancing.crio.io: "disable"
         irq-load-balancing.crio.io: "disable"
     spec:
@@ -71,10 +94,9 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     # ...
     ```
 
-    where
+    </div>
 
-    `metadata.annotations.cpu-quota.crio.io`
-    Disables the CPU completely fair scheduler (CFS) quota at the pod run time.
+    where
 
     `metadata.annotations.cpu-load-balancing.crio.io`
     Disables CPU load balancing.
@@ -96,9 +118,11 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     $ oc get pod -o wide
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
@@ -107,15 +131,19 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     dynamic-low-latency-pod  1/1     Running   0          5h33m   10.131.0.10  cnf-worker.example.com
     ```
 
+    </div>
+
 4.  Get the CPUs that the pod configured for IRQ dynamic load balancing runs on:
 
     ``` terminal
     $ oc exec -it dynamic-low-latency-pod -- /bin/bash -c "grep Cpus_allowed_list /proc/self/status | awk '{print $2}'"
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
@@ -123,7 +151,17 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     Cpus_allowed_list:  2-3
     ```
 
-<!-- -->
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Log in to the node to verify the configuration.
 
@@ -137,9 +175,11 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     sh-4.4# chroot /host
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Expected output**
+    <div class="title">
+
+    Expected output
 
     </div>
 
@@ -147,15 +187,19 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     sh-4.4#
     ```
 
+    </div>
+
 3.  Ensure the default system CPU affinity mask does not include the `dynamic-low-latency-pod` CPUs, for example, CPUs 2 and 3.
 
     ``` terminal
     sh-4.4# cat /proc/irq/default_smp_affinity
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -163,15 +207,19 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     33
     ```
 
+    </div>
+
 4.  Ensure the system IRQs are not configured to run on the `dynamic-low-latency-pod` CPUs:
 
     ``` terminal
     sh-4.4# find /proc/irq/ -name smp_affinity_list -exec sh -c 'i="$1"; mask=$(cat $i); file=$(echo $i); echo $file: $mask' _ {} \;
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -201,15 +249,26 @@ To schedule a workload on specific nodes, use label selectors in the `Pod` custo
     /proc/irq/30/smp_affinity_list: 0-5
     ```
 
-    <div class="warning">
-
-    When you tune nodes for low latency, the usage of execution probes in conjunction with applications that require guaranteed CPUs can cause latency spikes. Use other probes, such as a properly configured set of network probes, as an alternative.
-
     </div>
+
+    > [!WARNING]
+    > When you tune nodes for low latency, the usage of execution probes in conjunction with applications that require guaranteed CPUs can cause latency spikes. Use other probes, such as a properly configured set of network probes, as an alternative.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Placing pods on specific nodes using node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-pods-node-selectors)
 
 - [Assigning pods to nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node)
+
+</div>
 
 # Create a pod with a guaranteed QoS class
 
@@ -223,9 +282,27 @@ To create a pod with a QoS class of `Guaranteed`, you must apply the following s
 
 In general, a pod with a QoS class of `Guaranteed` will not be evicted from a node. One exception is during resource contention caused by system daemons exceeding reserved resources. In this scenario, the `kubelet` might evict pods to preserve node stability, starting with the lowest priority pods.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - The OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a namespace for the pod by running the following command:
 
@@ -235,9 +312,11 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
 
     - qos-example: Specifies a `qos-example` example namespace.
 
-      <div class="formalpara-title">
+      <div class="formalpara">
 
-      **Example output**
+      <div class="title">
+
+      Example output
 
       </div>
 
@@ -245,13 +324,17 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
       namespace/qos-example created
       ```
 
+      </div>
+
 2.  Create the `Pod` resource:
 
     1.  Create a YAML file that defines the `Pod` resource:
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example `qos-example.yaml` file**
+        <div class="title">
+
+        Example `qos-example.yaml` file
 
         </div>
 
@@ -282,6 +365,8 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
                 drop: [ALL]
         ```
 
+        </div>
+
         where:
 
         `spec.containers.image`
@@ -299,11 +384,8 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
         `spec.containers.resources.requests.cpu`
         Specifies a CPU request of 1 CPU.
 
-        <div class="note">
-
-        If you specify a memory limit for a container, but do not specify a memory request, OpenShift Container Platform automatically assigns a memory request that matches the limit. Similarly, if you specify a CPU limit for a container, but do not specify a CPU request, OpenShift Container Platform automatically assigns a CPU request that matches the limit.
-
-        </div>
+        > [!NOTE]
+        > If you specify a memory limit for a container, but do not specify a memory request, OpenShift Container Platform automatically assigns a memory request that matches the limit. Similarly, if you specify a CPU limit for a container, but do not specify a CPU request, OpenShift Container Platform automatically assigns a CPU request that matches the limit.
 
     2.  Create the `Pod` resource by running the following command:
 
@@ -311,9 +393,11 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
         $ oc apply -f qos-example.yaml --namespace=qos-example
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -321,21 +405,39 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
         pod/qos-demo created
         ```
 
+        </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - View the `qosClass` value for the pod by running the following command:
 
   ``` terminal
   $ oc get pod qos-demo --namespace=qos-example --output=yaml | grep qosClass
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
   ``` yaml
       qosClass: Guaranteed
   ```
+
+  </div>
+
+</div>
 
 # Disabling CPU load balancing in a Pod
 
@@ -372,11 +474,8 @@ spec:
   #...
 ```
 
-<div class="note">
-
-Only disable CPU load balancing when the CPU manager static policy is enabled and for pods with guaranteed QoS that use whole CPUs. Otherwise, disabling CPU load balancing can affect the performance of other containers in the cluster.
-
-</div>
+> [!NOTE]
+> Only disable CPU load balancing when the CPU manager static policy is enabled and for pods with guaranteed QoS that use whole CPUs. Otherwise, disabling CPU load balancing can affect the performance of other containers in the cluster.
 
 # Disable power saving mode for high priority pods
 
@@ -392,14 +491,14 @@ By disabling P-states and C-states at the pod level, you can configure high prio
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Annotation</th>
 <th style="text-align: left;">Possible Values</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p><code>cpu-c-states.crio.io:</code></p></td>
 <td style="text-align: left;"><ul>
 <li><p><code>"enable"</code></p></li>
@@ -408,7 +507,7 @@ By disabling P-states and C-states at the pod level, you can configure high prio
 </ul></td>
 <td style="text-align: left;"><p>This annotation allows you to enable or disable C-states for each CPU. Alternatively, you can also specify a maximum latency in microseconds for the C-states. For example, enable C-states with a maximum latency of 10 microseconds with the setting <code>cpu-c-states.crio.io</code>: <code>"max_latency:10"</code>. Set the value to <code>"disable"</code> to provide the best performance for a pod.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p><code>cpu-freq-governor.crio.io:</code></p></td>
 <td style="text-align: left;"><p>Any supported <code>cpufreq governor</code>.</p></td>
 <td style="text-align: left;"><p>Sets the <code>cpufreq</code> governor for each CPU. The <code>"performance"</code> governor is recommended for high priority workloads.</p></td>
@@ -416,15 +515,33 @@ By disabling P-states and C-states at the pod level, you can configure high prio
 </tbody>
 </table>
 
-Configuration for high priority workloads
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have configured power saving in the performance profile for the node where the high priority workload pods are scheduled.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Add the required annotations to your high priority workload pods. The annotations override the `default` settings.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example high priority workload annotation**
+    <div class="title">
+
+    Example high priority workload annotation
 
     </div>
 
@@ -445,42 +562,49 @@ Configuration for high priority workloads
       #...
     ```
 
+    </div>
+
 2.  Restart the pods to apply the annotation.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-tuning-low-latency-nodes-with-perf-profile)
 
-# Disable CPU CFS quota
+</div>
 
-To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.crio.io: "disable"` annotation. This annotation disables the CPU completely fair scheduler (CFS) quota when the pod runs.
+# CPU quota annotation for pods
 
-- To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.crio.io: "disable"` annotation. This annotation disables the CPU completely fair scheduler (CFS) quota when the pod runs.
+On OpenShift Container Platform, you do not need the `cpu-quota.crio.io` annotation to disable the CPU completely fair scheduler (CFS) quota for pods.
 
-  <div class="formalpara-title">
+Starting in OpenShift Container Platform 4.20, the kubelet automatically disables the CPU CFS quota (which prevents CPU throttling) for pods that meet all of the following:
 
-  **Example pod specification with `cpu-quota.crio.io` disabled**
+- The pod has a `Guaranteed` quality of service (`QoS`) class.
 
-  </div>
+- The pod requests whole CPUs.
 
-  ``` yaml
-  apiVersion: v1
-  kind: Pod
-  metadata:
-    annotations:
-        cpu-quota.crio.io: "disable"
-  spec:
-      runtimeClassName: performance-<profile_name>
-  #...
-  ```
+- The CPU manager static policy is enabled, for example by a performance profile.
 
-  <div class="note">
+If your workloads already include the `cpu-quota.crio.io: "disable"` annotation, you can leave it in place. The annotation has no effect because the kubelet provides this functionality automatically.
 
-  Only disable CPU CFS quota when the CPU manager static policy is enabled and for pods with guaranteed QoS that use whole CPUs. For example, pods that contain CPU-pinned containers. Otherwise, disabling CPU CFS quota can affect the performance of other containers in the cluster.
+<div>
 
-  </div>
+<div class="title">
 
-<!-- -->
+Additional resources
+
+</div>
 
 - [Recommended firmware configuration for vDU cluster hosts](../edge_computing/ztp-vdu-validating-cluster-tuning.xml#ztp-du-firmware-config-reference_vdu-config-ref)
+
+</div>
 
 # Configure interrupt processing for individual pods
 
@@ -496,9 +620,14 @@ Preserves IRQ handling on the first CPU that is allocated to the container, incl
 
 You can use the `housekeeping` value to reduce the overall CPU footprint by allowing a small subset of container CPUs to handle both application housekeeping work and system interrupts.
 
-<div class="note">
+> [!NOTE]
+> When using the `housekeeping` value, the CPUs designated for housekeeping handle interrupts for the entire system.
 
-When using the `housekeeping` value, the CPUs designated for housekeeping handle interrupts for the entire system.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -506,11 +635,23 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
 
 - You set the `globallyDisableIrqLoadBalancing` field to `false` in the performance profile.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the `Pod` resource and configure the `irq-load-balancing.crio.io` annotation:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example pod specification**
+    <div class="title">
+
+    Example pod specification
 
     </div>
 
@@ -535,6 +676,8 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
             memory: "4Gi"
     ```
 
+    </div>
+
     - `metadata.annotations.irq-load-balancing.crio.io`: Specifies if device interrupts are processed on the container CPUs. Set to `disable` to prevent all container CPUs from handling IRQs, or set to `housekeeping` to allow the first allocated CPU and its thread siblings to handle IRQs while excluding the remaining CPUs from IRQ handling.
 
     - `spec.runtimeClassName`: Specifies the runtime class for the performance profile. Replace `<profile_name>` with the name of your performance profile.
@@ -545,7 +688,15 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
     $ oc apply -f pod.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the CPUs assigned to the pod:
 
@@ -569,4 +720,16 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
 
     The output is a hexadecimal bitmask representing the CPUs excluded from IRQ handling.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Managing device interrupt processing for guaranteed pod isolated CPUs](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#managing-device-interrupt-processing-for-guaranteed-pod-isolated-cpus_cnf-tuning-low-latency-nodes-with-perf-profile)
+
+</div>

@@ -28,11 +28,29 @@ Matches define the specific conditions used for matching a rule against incoming
 
 Each rule can specify a maximum of 64 matches. However, the total number of matches across all rules in a single `GRPCRoute` resource cannot exceed 128. If your routing requirements exceed this limit, you must distribute your complex matching combinations across multiple routes.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed Red Hat OpenShift Service Mesh.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit a `GRPCRoute` YAML file to include your desired match conditions under the `spec.rules.matches` field.
 
@@ -78,6 +96,8 @@ Each rule can specify a maximum of 64 matches. However, the total number of matc
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 # Applying processing filters to gRPC requests
 
 When a gRPC request hits your route, you can apply processing filters to modify the request or response before the traffic reaches your backend.
@@ -86,11 +106,29 @@ You can define optional filters within your routing rules to apply processing di
 
 Because the data-plane behavior is provided by Red Hat OpenShift Service Mesh, you must validate specific feature support, such as filter capabilities and header matching, against your installed Service Mesh release.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed Red Hat OpenShift Service Mesh.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit a `GRPCRoute` YAML file to include your desired processing directives under the `spec.rules.filters` field.
 
@@ -134,6 +172,8 @@ Because the data-plane behavior is provided by Red Hat OpenShift Service Mesh, 
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 # Configuring routing destinations and traffic weights for gRPC
 
 When you route gRPC traffic, you must define backend service destinations and traffic weights to distribute requests across your APIs. `BackendRefs` designate the backend services where matching and filtered gRPC requests are delivered.
@@ -142,11 +182,29 @@ You can configure optional backend references for each routing rule. By defining
 
 Because Red Hat OpenShift Service Mesh handles the data-plane behavior, you must ensure that your `GRPCRoute` references an Istio ingress gateway in its `parentRefs` configuration.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - You have installed Red Hat OpenShift Service Mesh.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create or edit a `GRPCRoute` YAML file to include your desired service destinations and traffic weights under the `spec.rules.backendRefs` field.
 
@@ -185,6 +243,8 @@ Because Red Hat OpenShift Service Mesh handles the data-plane behavior, you mus
     ``` terminal
     $ oc apply -f <filename>.yaml
     ```
+
+</div>
 
 # GRPCRoute implementation details
 

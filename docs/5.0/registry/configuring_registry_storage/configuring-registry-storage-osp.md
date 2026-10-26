@@ -4,6 +4,14 @@ You configure the image registry to use custom storage on clusters that run on R
 
 After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use a Cinder volume that is in a specific availability zone for registry storage.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file that specifies the storage class and availability zone to use. For example:
 
     ``` yaml
@@ -18,11 +26,8 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
       availability: <availability_zone_name>
     ```
 
-    <div class="note">
-
-    OpenShift Container Platform does not verify the existence of the availability zone you choose. Verify the name of the availability zone before you apply the configuration.
-
-    </div>
+    > [!NOTE]
+    > OpenShift Container Platform does not verify the existence of the availability zone you choose. Verify the name of the availability zone before you apply the configuration.
 
 2.  From a command line, apply the configuration:
 
@@ -30,15 +35,19 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
     $ oc apply -f <storage_class_file_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
     ``` terminal
     storageclass.storage.k8s.io/custom-csi-storageclass created
     ```
+
+    </div>
 
 3.  Create a YAML file that specifies a persistent volume claim (PVC) that uses your storage class and the `openshift-image-registry` namespace. For example:
 
@@ -77,9 +86,11 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
     $ oc apply -f <pvc_file_name>
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -87,15 +98,19 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
     persistentvolumeclaim/csi-pvc-imageregistry created
     ```
 
+    </div>
+
 5.  Replace the original persistent volume claim in the image registry configuration with the new claim:
 
     ``` terminal
     $ oc patch configs.imageregistry.operator.openshift.io/cluster --type 'json' -p='[{"op": "replace", "path": "/spec/storage/pvc/claim", "value": "csi-pvc-imageregistry"}]'
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -103,15 +118,23 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
     config.imageregistry.operator.openshift.io/cluster patched
     ```
 
+    </div>
+
     Over the next several minutes, the configuration is updated.
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 To confirm that the registry is using the resources that you defined:
+
+</div>
 
 1.  Verify that the PVC claim value is identical to the name that you provided in your PVC definition:
 
@@ -119,9 +142,11 @@ To confirm that the registry is using the resources that you defined:
     $ oc get configs.imageregistry.operator.openshift.io/cluster -o yaml
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -135,15 +160,19 @@ To confirm that the registry is using the resources that you defined:
     ...
     ```
 
+    </div>
+
 2.  Verify that the status of the PVC is `Bound`:
 
     ``` terminal
     $ oc get pvc -n openshift-image-registry csi-pvc-imageregistry
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -151,3 +180,5 @@ To confirm that the registry is using the resources that you defined:
     NAME                   STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS             AGE
     csi-pvc-imageregistry  Bound    pvc-72a8f9c9-f462-11e8-b6b6-fa163e18b7b5   100Gi      RWO            custom-csi-storageclass  11m
     ```
+
+    </div>

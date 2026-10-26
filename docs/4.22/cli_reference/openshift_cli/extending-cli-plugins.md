@@ -6,6 +6,14 @@ You can write a plugin for the OpenShift CLI (`oc`) in any programming language 
 
 This procedure creates a simple Bash plugin that prints a message to the terminal when the `oc foo` command is issued.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a file called `oc-foo`.
 
     When naming your plugin file, keep the following in mind:
@@ -38,17 +46,47 @@ This procedure creates a simple Bash plugin that prints a message to the termina
 
     After you install this plugin for the OpenShift CLI (`oc`), you can invoke it by using the `oc foo` command.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Sample plugin repository](https://github.com/kubernetes/sample-cli-plugin)
 
 - [CLI runtime repository](https://github.com/kubernetes/cli-runtime/)
+
+</div>
 
 # Install and use a CLI plugin
 
 After you write a custom plugin for the OpenShift CLI (`oc`), you must install the plugin before you can use it.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You must have the `oc` CLI tool installed.
 
 - You must have a CLI plugin file that begins with `oc-` or `kubectl-`.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If necessary, update the plugin file to be executable.
 
@@ -68,9 +106,11 @@ After you write a custom plugin for the OpenShift CLI (`oc`), you must install t
     $ oc plugin list
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -79,6 +119,8 @@ After you write a custom plugin for the OpenShift CLI (`oc`), you must install t
 
     /usr/local/bin/<plugin_file>
     ```
+
+    </div>
 
     If your plugin is not listed here, verify that the file begins with `oc-` or `kubectl-`, is executable, and is on your `PATH`.
 
@@ -91,3 +133,5 @@ After you write a custom plugin for the OpenShift CLI (`oc`), you must install t
     ```
 
     Note that the command to invoke the plugin depends on the plugin file name. For example, a plugin with the file name of `oc-foo-bar` is invoked by the `oc foo bar` command.
+
+</div>

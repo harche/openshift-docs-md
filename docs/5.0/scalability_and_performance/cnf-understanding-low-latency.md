@@ -30,7 +30,17 @@ Ideally, all of the previously listed items are prioritized. Some of these items
 
 The environment in which an application is operating influences its behavior. For a typical data center with no strict latency requirements, only minimal default tuning is needed that enables CPU partitioning for some high performance workload pods. For data centers and workloads where latency is a higher priority, measures are still taken to optimize power consumption. The most complicated cases are clusters close to latency-sensitive equipment such as manufacturing machinery and software-defined radios. This last class of deployment is often referred to as Far edge. For Far edge deployments, ultra-low latency is the ultimate priority, and is achieved at the expense of power management.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Tuning for Zero Packet Loss in Red Hat OpenStack Platform (RHOSP)](https://www.redhat.com/en/blog/tuning-zero-packet-loss-red-hat-openstack-platform-part-1)
+
+</div>
 
 # About Hyper-Threading for low latency and real-time applications
 
@@ -40,10 +50,17 @@ Hyper-Threading allows for better system throughput for certain workload types w
 
 For telecommunications applications, design your application infrastructure to minimize latency as much as possible. Hyper-Threading can slow performance times and negatively affect throughput for compute-intensive workloads that require low latency. Disabling Hyper-Threading ensures predictable performance and can decrease processing times for these workloads.
 
-<div class="note">
+> [!NOTE]
+> Hyper-Threading implementation and configuration differs depending on the hardware you are running OpenShift Container Platform on. Consult the relevant host hardware tuning information for more details of the Hyper-Threading implementation specific to that hardware. Disabling Hyper-Threading can increase the cost per core of the cluster.
 
-Hyper-Threading implementation and configuration differs depending on the hardware you are running OpenShift Container Platform on. Consult the relevant host hardware tuning information for more details of the Hyper-Threading implementation specific to that hardware. Disabling Hyper-Threading can increase the cost per core of the cluster.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [Configuring Hyper-Threading for a cluster](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-hyperthreading-for-a-cluster_cnf-tuning-low-latency-nodes-with-perf-profile)
+
+</div>

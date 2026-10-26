@@ -16,8 +16,5 @@ You can perform the following tasks with this Operator:
 
 - Export flow data to external analysis tools for long-term storage or processing.
 
-<div class="note">
-
-For complete documentation about installing, configuring, and using the Network Observability Operator, see [Network Observability overview](../../observability/network_observability/network-observability-overview.xml#network-observability-overview) in the Observability section.
-
-</div>
+> [!NOTE]
+> For complete documentation about installing, configuring, and using the Network Observability Operator, see [Network Observability overview](../../observability/network_observability/network-observability-overview.xml#network-observability-overview) in the Observability section.

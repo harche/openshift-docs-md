@@ -8,6 +8,14 @@ To configure a custom certificate for the API server, specify the certificate de
 
 You can configure a custom certificate during either Day 1 or Day 2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
   - `tls.crt`: The certificate
@@ -23,6 +31,16 @@ You can configure a custom certificate during either Day 1 or Day 2 operations. 
 - The certificate must be valid for the external API endpoint.
 
 - The validity period of the certificate aligns with your cluster’s expected life cycle.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a secret with your custom certificate by entering the following command:
 
@@ -57,15 +75,35 @@ You can configure a custom certificate during either Day 1 or Day 2 operations. 
     $ oc apply -f <hosted_cluster_config>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Check the API server pods to ensure that the new certificate is mounted.
 
 - Test the connection to the API server by using the custom domain name.
 
 - Verify the certificate details in your browser or by using tools such as `openssl`.
 
+</div>
+
 # Configure the Kubernetes API server for a hosted cluster
 
 You can customize the Kubernetes API server for your hosted cluster.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a running hosted cluster.
 
@@ -83,17 +121,31 @@ You can customize the Kubernetes API server for your hosted cluster.
 
 - You have a configured custom certificate. For more information, see "Configuring a custom API server certificate in a hosted cluster".
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  In your provider platform, configure the DNS record so that the `kubeAPIServerDNSName` URL points to the IP address that the Kubernetes API server is being exposed to. The DNS record must be properly configured and resolvable from your cluster.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example command to configure the DNS record**
+    <div class="title">
+
+    Example command to configure the DNS record
 
     </div>
 
     ``` terminal
     $ dig + short kubeAPIServerDNSName
     ```
+
+    </div>
 
 2.  In your `HostedCluster` specification, modify the `kubeAPIServerDNSName` field, as shown in the following example:
 
@@ -142,36 +194,40 @@ You can customize the Kubernetes API server for your hosted cluster.
 
     2.  To retrieve the secret by using the console, go to your hosted cluster and click **Download Kubeconfig**.
 
-        <div class="note">
+        > [!NOTE]
+        > You cannot consume the new `kubeconfig` secret by using the **show login command** option in the console.
 
-        You cannot consume the new `kubeconfig` secret by using the **show login command** option in the console.
-
-        </div>
+</div>
 
 # OAuth server certificates for hosted control planes
 
 In hosted control planes, the OAuth server shares its serving certificate configuration with the Kubernetes API server. To configure a custom serving certificate for the OAuth server, you modify the `spec.configuration.apiServer` section in the `HostedCluster` resource.
 
-<div class="important">
-
-This configuration method deviates from the standard OpenShift Container Platform behavior. In OpenShift Container Platform, OAuth certificates are configured separately through the `componentRoute` properties of the Ingress Operator. In hosted control planes, the `namedCertificates` configuration in the API server settings applies to both the Kubernetes API server and the OAuth server.
-
-</div>
+> [!IMPORTANT]
+> This configuration method deviates from the standard OpenShift Container Platform behavior. In OpenShift Container Platform, OAuth certificates are configured separately through the `componentRoute` properties of the Ingress Operator. In hosted control planes, the `namedCertificates` configuration in the API server settings applies to both the Kubernetes API server and the OAuth server.
 
 In hosted control planes, the Control Plane Operator reads serving certificates through the shared `GetNamedCertificates()` function. Certificates are not configured in an OAuth-specific section of the `HostedCluster` resource. In addition, OAuth server certificates are not provided through an OAuth custom resource definition (CRD) configuration. Instead, hosted control planes automatically injects the selected certificates into the OAuth server deployment.
 
-| Area                  | OpenShift Container Platform                                              | hosted control planes                                                       |
-|-----------------------|---------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| Certificate source    | Ingress Operator generates and maps certificates through component routes | OAuth uses `apiServer.servingCerts.namedCertificates` settings              |
-| Certificate selection | Based on ingress-managed routes                                           | Based on host name match in `namedCertificates` property                    |
-| User responsibility   | No need to manually provide OAuth certificates                            | User must supply certificates if custom behavior is needed                  |
-| Code path             | Ingress Operator manages the OAuth route                                  | Control Plane Operator manages the OAuth server container runtime arguments |
+| Area | OpenShift Container Platform | hosted control planes |
+|----|----|----|
+| Certificate source | Ingress Operator generates and maps certificates through component routes | OAuth uses `apiServer.servingCerts.namedCertificates` settings |
+| Certificate selection | Based on ingress-managed routes | Based on host name match in `namedCertificates` property |
+| User responsibility | No need to manually provide OAuth certificates | User must supply certificates if custom behavior is needed |
+| Code path | Ingress Operator manages the OAuth route | Control Plane Operator manages the OAuth server container runtime arguments |
 
 OAuth certificate differences between OpenShift Container Platform and hosted control planes
 
 # Configure OAuth server certificates for a hosted cluster
 
 If you want to use certificates from a trusted certificate authority (CA) to access a hosted cluster, you can configure OAuth server certificates.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have a running hosted cluster.
 
@@ -184,6 +240,16 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
   - `tls.crt`
 
   - `tls.key`
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify your hosted cluster namespace:
 
@@ -221,15 +287,19 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
         $ echo "${OAUTH_HOST}"
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
         ``` terminal
         oauth-<hosted_cluster_namespace>-<hosted_cluster_name>.apps.<management_cluster_name>.<base_domain>
         ```
+
+        </div>
 
 3.  Generate a quick test certificate by entering the following command:
 
@@ -256,9 +326,11 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
       -n $HC_NAMESPACE
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -266,11 +338,10 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
     secret/my-oauth-cert-secret created
     ```
 
-    <div class="note">
-
-    Although the OAuth server runs in the hosted control plane namespace, the serving certificate must exist in the hosted cluster namespace. Secrets that are created in the hosted control plane namespace are not picked up.
-
     </div>
+
+    > [!NOTE]
+    > Although the OAuth server runs in the hosted control plane namespace, the serving certificate must exist in the hosted cluster namespace. Secrets that are created in the hosted control plane namespace are not picked up.
 
 6.  Edit the `HostedCluster` resource:
 
@@ -312,11 +383,18 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
 
     3.  Save and apply the changes. The Control Plane Operator reconciles the changes, the configuration propagates to the control plane, and the OAuth server begins serving the new certificate.
 
-        <div class="important">
+        > [!IMPORTANT]
+        > No separate OAuth certificate configuration field exists for a hosted cluster.
 
-        No separate OAuth certificate configuration field exists for a hosted cluster.
+</div>
 
-        </div>
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Verify the certificate being served by the route by entering the following command:
 
@@ -328,9 +406,11 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
     | openssl x509 -noout -subject -issuer -ext subjectAltName
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -341,11 +421,23 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
       DNS:oauth-<hosted_cluster_namespace>-<hosted_cluster_name>.apps.<management_cluster_name>.<base_domain>
   ```
 
+  </div>
+
   The output shows that the OAuth route is serving the custom certificate and the certificate comes from the `my-oauth-cert-secret` secret.
+
+</div>
 
 # Troubleshoot accessing a hosted cluster by using a custom DNS
 
 If you encounter an issue when you access a hosted cluster by using a custom DNS, you can determine the root cause so that you can resolve the issue.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Verify that the DNS record is properly configured and resolved.
 
@@ -362,9 +454,11 @@ If you encounter an issue when you access a hosted cluster by using a custom DNS
 
 4.  In the `HostedCluster` resource, verify that the status shows the correct custom `kubeconfig` information, as shown in the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example `HostedCluster` status**
+    <div class="title">
+
+    Example `HostedCluster` status
 
     </div>
 
@@ -374,9 +468,13 @@ If you encounter an issue when you access a hosted cluster by using a custom DNS
         name: sample-hosted-custom-admin-kubeconfig
     ```
 
+    </div>
+
 5.  Check the `kube-apiserver` logs in the `HostedControlPlane` namespace by entering the following command:
 
     ``` terminal
     $ oc logs -n <hosted_control_plane_namespace> \
       -l app=kube-apiserver -f -c kube-apiserver
     ```
+
+</div>

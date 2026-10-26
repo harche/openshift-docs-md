@@ -4,13 +4,18 @@ To ensure OpenShift Container Platform can successfully install and run the clus
 
 To install OpenShift Container Platform, the Amazon Web Services (AWS) account you use must have a dedicated public hosted zone in your Route 53 service. This zone must be authoritative for the domain. The Route 53 service provides cluster DNS resolution and name lookup for external connections to the cluster.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through AWS or another source.
 
-    <div class="note">
-
-    If you purchase a new domain through AWS, it takes time for the relevant DNS changes to propagate. For more information about purchasing domains through AWS, see [Registering Domain Names Using Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html) in the AWS documentation.
-
-    </div>
+    > [!NOTE]
+    > If you purchase a new domain through AWS, it takes time for the relevant DNS changes to propagate. For more information about purchasing domains through AWS, see [Registering Domain Names Using Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html) in the AWS documentation.
 
 2.  If you are using an existing domain and registrar, migrate its DNS to AWS. See [Making Amazon Route 53 the DNS Service for an Existing Domain](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/MigratingDNS.html) in the AWS documentation.
 
@@ -24,6 +29,8 @@ To install OpenShift Container Platform, the Amazon Web Services (AWS) account y
 
 6.  If you are using a subdomain, add its delegation records to the parent domain. This gives Amazon Route 53 responsibility for the subdomain. Follow the delegation procedure outlined by the DNS provider of the parent domain. See [Creating a subdomain that uses Amazon Route 53 as the DNS service without migrating the parent domain](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html) in the AWS documentation for an example high level procedure.
 
+</div>
+
 ## Ingress Operator endpoint configuration for AWS Route 53
 
 Configure Ingress Operator endpoints for OpenShift Container Platform clusters in Amazon Web Services (AWS) GovCloud (US) regions. Verifying these settings helps to ensure that your cluster connects to the correct API endpoints.
@@ -34,15 +41,14 @@ The Ingress Operator uses `https://tagging.us-gov-west-1.amazonaws.com` as the t
 
 For more information on AWS GovCloud (US) endpoints, see the [Service Endpoints](https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-govcloud-endpoints.html) in the AWS documentation about GovCloud (US).
 
-<div class="important">
+> [!IMPORTANT]
+> Private, disconnected installations are not supported for AWS GovCloud when you install in the `us-gov-east-1` region.
 
-Private, disconnected installations are not supported for AWS GovCloud when you install in the `us-gov-east-1` region.
+<div class="formalpara">
 
-</div>
+<div class="title">
 
-<div class="formalpara-title">
-
-**Example Route 53 configuration**
+Example Route 53 configuration
 
 </div>
 
@@ -60,6 +66,8 @@ platform:
     - name: tagging
       url: https://tagging.us-gov-west-1.amazonaws.com
 ```
+
+</div>
 
 where:
 
@@ -85,7 +93,7 @@ The following table summarizes the AWS components whose limits can impact your a
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">Component</th>
 <th style="text-align: left;">Number of clusters available by default</th>
 <th style="text-align: left;">Default AWS limit</th>
@@ -93,7 +101,7 @@ The following table summarizes the AWS components whose limits can impact your a
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Instance Limits</p></td>
 <td style="text-align: left;"><p>Varies</p></td>
 <td style="text-align: left;"><p>Varies</p></td>
@@ -106,59 +114,61 @@ The following table summarizes the AWS components whose limits can impact your a
 <p>These instance type counts are within a new account’s default limit. To deploy more worker nodes, enable autoscaling, deploy large workloads, or use a different instance type, review your account limits to ensure that your cluster can deploy the machines that you need.</p>
 <p>In most regions, the worker machines use an <code>m6i.large</code> instance and the bootstrap and control plane machines use <code>m6i.xlarge</code> instances. In some regions, including all regions that do not support these instance types, <code>m5.large</code> and <code>m5.xlarge</code> instances are used instead.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Elastic IPs (EIPs)</p></td>
 <td style="text-align: left;"><p>0 to 1</p></td>
 <td style="text-align: left;"><p>5 EIPs per account</p></td>
 <td style="text-align: left;"><p>To provision the cluster in a highly available configuration, the installation program creates a public and private subnet for each availability zone within a region. Each private subnet requires a NAT gateway, and each NAT gateway requires a separate elastic IP. Review the AWS region map to determine how many availability zones are in each region. To take advantage of the default high availability, install the cluster in a region with at least three availability zones. To install a cluster in a region with more than five availability zones, you must increase the EIP limit.</p>
 <div class="important">
+<div class="title">
+&#10;</div>
 <p>To use the <code>us-east-1</code> region, you must increase the EIP limit for your account.</p>
 </div></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Virtual Private Clouds (VPCs)</p></td>
 <td style="text-align: left;"><p>5</p></td>
 <td style="text-align: left;"><p>5 VPCs per region</p></td>
 <td style="text-align: left;"><p>Each cluster creates its own VPC.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Elastic Load Balancing (ELB/NLB)</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"><p>20 per region</p></td>
 <td style="text-align: left;"><p>By default, each cluster creates internal and external network load balancers for the master API server and a single Classic Load Balancer for the router. Deploying more Kubernetes <code>Service</code> objects with type <code>LoadBalancer</code> will create additional load balancers.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>NAT Gateways</p></td>
 <td style="text-align: left;"><p>5</p></td>
 <td style="text-align: left;"><p>5 per availability zone</p></td>
 <td style="text-align: left;"><p>The cluster deploys one NAT gateway in each availability zone.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Elastic Network Interfaces (ENIs)</p></td>
 <td style="text-align: left;"><p>At least 12</p></td>
 <td style="text-align: left;"><p>350 per region</p></td>
 <td style="text-align: left;"><p>The default installation creates 21 ENIs and an ENI for each availability zone in your region. For example, the <code>us-east-1</code> region contains six availability zones, so a cluster that is deployed in that zone uses 27 ENIs. Review the AWS region map to determine how many availability zones are in each region.</p>
 <p>Additional ENIs are created for additional machines and ELB load balancers that are created by cluster usage and deployed workloads.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>VPC Gateway</p></td>
 <td style="text-align: left;"><p>20</p></td>
 <td style="text-align: left;"><p>20 per account</p></td>
 <td style="text-align: left;"><p>Each cluster creates a single VPC Gateway for S3 access.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>S3 buckets</p></td>
 <td style="text-align: left;"><p>99</p></td>
 <td style="text-align: left;"><p>100 buckets per account</p></td>
 <td style="text-align: left;"><p>Because the installation process creates a temporary bucket and the registry component in each cluster creates a bucket, you can create only 99 OpenShift Container Platform clusters per AWS account.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;"><p>Security Groups</p></td>
 <td style="text-align: left;"><p>250</p></td>
 <td style="text-align: left;"><p>2,500 per account</p></td>
 <td style="text-align: left;"><p>Each cluster creates 10 distinct security groups.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;"><p>Security Groups on network interfaces</p></td>
 <td style="text-align: left;"><p>Varies</p></td>
 <td style="text-align: left;"><p>5 per network interface</p></td>
@@ -173,6 +183,14 @@ The following table summarizes the AWS components whose limits can impact your a
 </tbody>
 </table>
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Service Limits (AWS documentation)](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
 
 - [Regions and Zones (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html)
@@ -185,15 +203,14 @@ The following table summarizes the AWS components whose limits can impact your a
 
 - [Elastic load balancing (AWS documentation)](https://aws.amazon.com/elasticloadbalancing)
 
+</div>
+
 # Required AWS permissions for the IAM user
 
 To deploy all components of an OpenShift Container Platform cluster, you must grant all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
 
-<div class="note">
-
-Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
-
-</div>
+> [!NOTE]
+> Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
 
 When you attach the `AdministratorAccess` policy to the IAM user that you create in AWS, you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
 
@@ -329,11 +346,8 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:ModifyVpcAttribute`
 
-<div class="note">
-
-If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
-
-</div>
+> [!NOTE]
+> If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
 
 **Required Elastic Load Balancing permissions (ELB) for installation**
 
@@ -387,11 +401,8 @@ If you use an existing Virtual Private Cloud (VPC), your account does not requir
 
 - `elasticloadbalancing:SetSecurityGroups`
 
-<div class="important">
-
-OpenShift Container Platform uses both the ELB and ELBv2 API services to provision load balancers. The permission list shows permissions required by both services. A known issue exists in the AWS web console where both services use the same `elasticloadbalancing` action prefix but do not recognize the same actions. You can ignore the warnings about the service not recognizing certain `elasticloadbalancing` actions.
-
-</div>
+> [!IMPORTANT]
+> OpenShift Container Platform uses both the ELB and ELBv2 API services to provision load balancers. The permission list shows permissions required by both services. A known issue exists in the AWS web console where both services use the same `elasticloadbalancing` action prefix but do not recognize the same actions. You can ignore the warnings about the service not recognizing certain `elasticloadbalancing` actions.
 
 **Required IAM permissions for installation**
 
@@ -434,6 +445,10 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 - `iam:TagRole`
 
 <div class="note">
+
+<div class="title">
+
+</div>
 
 - If you specify an existing IAM role in the `install-config.yaml` file, the following IAM permissions are not required: `iam:CreateRole`,`iam:DeleteRole`, `iam:DeleteRolePolicy`, and `iam:PutRolePolicy`.
 
@@ -587,11 +602,8 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `ec2:ReplaceRouteTableAssociation`
 
-<div class="note">
-
-If you use an existing VPC, your account does not require these permissions to delete network resources. Instead, your account only requires the `tag:UntagResources` permission to delete network resources.
-
-</div>
+> [!NOTE]
+> If you use an existing VPC, your account does not require these permissions to delete network resources. Instead, your account only requires the `tag:UntagResources` permission to delete network resources.
 
 **Optional permissions for installing a cluster with a custom Key Management Service (KMS) key**
 
@@ -611,11 +623,8 @@ If you use an existing VPC, your account does not require these permissions to d
 
 - `kms:RevokeGrant`
 
-<div class="note">
-
-If you use an Amazon Machine Image (AMI) encrypted with a customer-managed key, you must grant the `kms:ReEncrypt*` permissions in addition to these permissions.
-
-</div>
+> [!NOTE]
+> If you use an Amazon Machine Image (AMI) encrypted with a customer-managed key, you must grant the `kms:ReEncrypt*` permissions in addition to these permissions.
 
 **Required permissions to delete a cluster with shared instance roles**
 
@@ -647,11 +656,8 @@ If you use an Amazon Machine Image (AMI) encrypted with a customer-managed key, 
 
 - `s3:PutLifecycleConfiguration`
 
-<div class="note">
-
-If you are managing your cloud provider credentials with mint mode, the IAM user also requires the `iam:CreateAccessKey` and `iam:CreateUser` permissions.
-
-</div>
+> [!NOTE]
+> If you are managing your cloud provider credentials with mint mode, the IAM user also requires the `iam:CreateAccessKey` and `iam:CreateUser` permissions.
 
 **Optional permissions for instance and quota checks for installation**
 
@@ -683,23 +689,25 @@ Before you install OpenShift Container Platform, you must create a secondary IAM
 
 Each Amazon Web Services (AWS) account contains a root user account that is based on the email address you used to create the account.
 
-<div class="important">
-
-This is a highly-privileged account, and it is recommended to use it for only initial account and billing configuration, creating an initial set of users, and securing the account.
-
-</div>
+> [!IMPORTANT]
+> This is a highly-privileged account, and it is recommended to use it for only initial account and billing configuration, creating an initial set of users, and securing the account.
 
 As you complete the [Creating an IAM User in Your AWS Account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) procedure in the Amazon Web Services (AWS) documentation, set the following options:
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Specify the IAM user name and select `Programmatic access`.
 
 2.  Attach the `AdministratorAccess` policy to ensure that the account has sufficient permission to create the cluster. This policy provides the cluster with the ability to grant credentials to each OpenShift Container Platform component. The cluster grants the components only the credentials that they require.
 
-    <div class="note">
-
-    While it is possible to create a policy that grants the all of the required AWS permissions and attach it to the user, this is not the preferred option. The cluster will not have the ability to grant additional credentials to individual components, so the same credentials are used by all components.
-
-    </div>
+    > [!NOTE]
+    > While it is possible to create a policy that grants the all of the required AWS permissions and attach it to the user, this is not the preferred option. The cluster will not have the ability to grant additional credentials to individual components, so the same credentials are used by all components.
 
 3.  Optional: Add metadata to the user by attaching tags.
 
@@ -707,21 +715,17 @@ As you complete the [Creating an IAM User in Your AWS Account](https://docs.aws.
 
 5.  Record the access key ID and secret access key values. You must use these values when you configure your local machine to run the installation program.
 
-    <div class="important">
+    > [!IMPORTANT]
+    > You cannot use a temporary session token that you generated while using a multi-factor authentication device to authenticate to AWS when you deploy a cluster. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials.
 
-    You cannot use a temporary session token that you generated while using a multi-factor authentication device to authenticate to AWS when you deploy a cluster. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials.
-
-    </div>
+</div>
 
 # IAM Policies and AWS authentication
 
 You can specify your own IAM roles if required. By default, the installation program creates instance profiles for the bootstrap, control plane, and compute instances with the necessary permissions for the cluster to operate.
 
-<div class="note">
-
-To enable pulling images from the Amazon Elastic Container Registry (ECR) as a postinstallation task in a single-node OpenShift cluster, you must add the `AmazonEC2ContainerRegistryReadOnly` policy to the IAM role associated with the cluster’s control plane role.
-
-</div>
+> [!NOTE]
+> To enable pulling images from the Amazon Elastic Container Registry (ECR) as a postinstallation task in a single-node OpenShift cluster, you must add the `AmazonEC2ContainerRegistryReadOnly` policy to the IAM role associated with the cluster’s control plane role.
 
 However, you can create your own IAM roles and specify them as part of the installation process. You might need to specify your own roles to deploy the cluster or to manage the cluster after installation. For example:
 
@@ -829,13 +833,33 @@ The following list specifies the default IAM permissions for compute instance pr
 
 Instead of allowing the installation program to create IAM instance profiles with the default permissions, you can use the `install-config.yaml` file to specify an existing IAM role for control plane and compute instances.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have an existing `install-config.yaml` file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Update `compute.platform.aws.iamRole` with an existing role for the compute machines.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `install-config.yaml` file with an IAM role for compute instances**
+    <div class="title">
+
+    Sample `install-config.yaml` file with an IAM role for compute instances
 
     </div>
 
@@ -848,11 +872,15 @@ Instead of allowing the installation program to create IAM instance profiles wit
           iamRole: ExampleRole
     ```
 
+    </div>
+
 2.  Update `controlPlane.platform.aws.iamRole` with an existing role for the control plane machines.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Sample `install-config.yaml` file with an IAM role for control plane instances**
+    <div class="title">
+
+    Sample `install-config.yaml` file with an IAM role for control plane instances
 
     </div>
 
@@ -865,15 +893,26 @@ Instead of allowing the installation program to create IAM instance profiles wit
           iamRole: ExampleRole
     ```
 
-3.  Save the file and reference it when installing the OpenShift Container Platform cluster.
-
-    <div class="note">
-
-    To change or update an IAM account after the cluster has been installed, see [RHOCP 4 AWS cloud-credentials access key is expired](https://access.redhat.com/solutions/4284011) (Red Hat Knowledgebase).
-
     </div>
 
+3.  Save the file and reference it when installing the OpenShift Container Platform cluster.
+
+    > [!NOTE]
+    > To change or update an IAM account after the cluster has been installed, see [RHOCP 4 AWS cloud-credentials access key is expired](https://access.redhat.com/solutions/4284011) (Red Hat Knowledgebase).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Deploying the cluster](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-launching-installer_installing-aws-customizations)
+
+</div>
 
 ## Using AWS IAM Analyzer to create policy templates
 
@@ -886,6 +925,14 @@ One way to determine which permissions the cluster instances require is to use t
 - A policy template contains the permissions the cluster has used over a specified period of time.
 
 - You can then use the template to create policies with fine-grained permissions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Ensure that CloudTrail is enabled. CloudTrail records all of the actions and events in your AWS account, including the API calls that are required to create a policy template. For more information, see the AWS documentation for [working with CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-getting-started.html).
 
@@ -903,11 +950,10 @@ One way to determine which permissions the cluster instances require is to use t
 
 8.  Deploy a production cluster using the existing instance profiles with the new policies.
 
-    <div class="note">
+    > [!NOTE]
+    > You can add [IAM Conditions](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to your policy to make it more restrictive and compliant with your organization security requirements.
 
-    You can add [IAM Conditions](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to your policy to make it more restrictive and compliant with your organization security requirements.
-
-    </div>
+</div>
 
 # Supported AWS Marketplace regions
 
@@ -919,21 +965,15 @@ While the offer must be purchased in North America, you can deploy the cluster t
 
 - GovCloud
 
-<div class="note">
-
-Deploying a OpenShift Container Platform cluster using an AWS Marketplace image is not supported for the AWS secret regions or China regions.
-
-</div>
+> [!NOTE]
+> Deploying a OpenShift Container Platform cluster using an AWS Marketplace image is not supported for the AWS secret regions or China regions.
 
 # Supported AWS regions
 
 You can deploy an OpenShift Container Platform cluster to the following regions.
 
-<div class="note">
-
-Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
-
-</div>
+> [!NOTE]
+> Your IAM user must have the permission `tag:GetResources` in the region `us-east-1` to delete the base cluster resources. As part of the AWS API requirement, the OpenShift Container Platform installation program performs various actions in this region.
 
 ## AWS public regions
 
@@ -1009,13 +1049,10 @@ The following AWS public regions are supported:
 
 ## AWS EUSC region
 
-<div class="important">
-
-European Sovereign Cloud (EUSC) region is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> European Sovereign Cloud (EUSC) region is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 Installing an OpenShift Container Platform cluster into the AWS European Sovereign Cloud (EUSC) region helps maximize the sovereignty of your data and satisfy your organization’s regulatory requirements. The AWS EUSC is separate and independent from other AWS regions. The infrastructure is located wholly within the European Union (EU). For more information, see [Establishing a European trust service provider for the AWS European Sovereign Cloud](https://aws.amazon.com/blogs/security/establishing-a-european-trust-service-provider-for-the-aws-european-sovereign-cloud/) in the AWS documentation.
 
@@ -1023,19 +1060,16 @@ The following AWS EUSC region is supported:
 
 - `eusc-de-east-1` (Brandenburg)
 
-<div class="important">
-
-The following list outlines the limitations that apply to installing an OpenShift Container Platform cluster into the AWS EUSC region:
-
-- Only one region, `eusc-de-east-1`, and two zones in that region are available.
-
-- The Amazon Machine Images (AMIs) for public Red Hat Enterprise Linux CoreOS (RHCOS) are not yet available in the EUSC region. As a workaround, until the AMI publication for RHCOS is extended to the EUSC region, you must edit your `install-config.yaml` file to specify a custom AMI in the `amiID` field.
-
-- Support is not yet provided for the AWS Security Token Service (STS).
-
-- Support is not yet provided for installing a cluster into a shared Virtual Private Cloud (VPC) with a cross-account private hosted zone.
-
-</div>
+> [!IMPORTANT]
+> The following list outlines the limitations that apply to installing an OpenShift Container Platform cluster into the AWS EUSC region:
+>
+> - Only one region, `eusc-de-east-1`, and two zones in that region are available.
+>
+> - The Amazon Machine Images (AMIs) for public Red Hat Enterprise Linux CoreOS (RHCOS) are not yet available in the EUSC region. As a workaround, until the AMI publication for RHCOS is extended to the EUSC region, you must edit your `install-config.yaml` file to specify a custom AMI in the `amiID` field.
+>
+> - Support is not yet provided for the AWS Security Token Service (STS).
+>
+> - Support is not yet provided for installing a cluster into a shared Virtual Private Cloud (VPC) with a cross-account private hosted zone.
 
 ## AWS GovCloud regions
 
@@ -1061,10 +1095,18 @@ The following AWS China regions are supported:
 
 - `cn-northwest-1` (Ningxia)
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Quickly install a cluster](../../installing/installing_aws/ipi/installing-aws-default.xml#installing-aws-default)
 
 - [Install a cluster with cloud customizations on installer-provisioned infrastructure](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
 
 - [Installing a cluster on user-provisioned infrastructure in AWS by using CloudFormation templates](../../installing/installing_aws/upi/installing-aws-user-infra.xml#installing-aws-user-infra)
+
+</div>

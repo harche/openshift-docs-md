@@ -1,16 +1,23 @@
 You can use the Cluster API to create and manage compute machine sets and compute machines in your OpenShift Container Platform cluster.
 
-<div class="important">
-
-Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The Cluster API is an upstream project that is integrated into OpenShift Container Platform as a Technology Preview for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare-metal platforms.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Kubernetes Cluster API (Kubernetes documentation)](https://cluster-api.sigs.k8s.io/)
+
+</div>
 
 # Cluster API overview
 
@@ -42,11 +49,8 @@ These limitiations are listed as follows:
 
 - To use this feature, you must enable the `TechPreviewNoUpgrade` feature set.
 
-  <div class="important">
-
-  Enabling this feature set cannot be undone and prevents minor version updates.
-
-  </div>
+  > [!IMPORTANT]
+  > Enabling this feature set cannot be undone and prevents minor version updates.
 
 - Only Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare-metal clusters can use the Cluster API.
 
@@ -62,13 +66,21 @@ These limitiations are listed as follows:
 
   For more information and a workaround for this issue, see "Referencing the intended objects when using the CLI" in the troubleshooting content.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling-features)
 
 - [Getting started with the Cluster API](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#cluster-api-getting-started)
 
 - [Referencing the intended objects when using the CLI](../../machine_management/cluster_api_machine_management/cluster-api-troubleshooting.xml#ts-capi-cli-reference-intended-objects_cluster-api-troubleshooting)
+
+</div>
 
 ## The Cluster CAPI Operator
 
@@ -80,7 +92,17 @@ The Cluster CAPI Operator is an OpenShift Container Platform Operator that maint
 
 If a cluster is configured correctly to allow the use of the Cluster API, the Cluster CAPI Operator installs the Cluster API components on the cluster. For more information, see the "Cluster CAPI Operator" entry in the *Cluster Operators reference* content.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Cluster CAPI Operator](../../operators/operator-reference.xml#cluster-capi-operator_operator-reference)
+
+</div>
 
 ## Cluster API primary resources
 

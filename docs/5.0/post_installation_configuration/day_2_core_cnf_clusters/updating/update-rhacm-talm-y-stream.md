@@ -6,9 +6,14 @@ You can update clusters through minor version, or y-stream, releases by using RH
 
 You must perform y-stream updates through consecutive versions. You cannot skip versions during y-stream updates. For example, to update from 4.20 to 4.22, you must update from 4.20 to 4.21, and then from 4.21 to 4.22. If you need to move 2 y-stream versions, consider EUS-to-EUS updates instead.
 
-<div class="note">
+> [!NOTE]
+> The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
 
-The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -21,6 +26,16 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 - You have reviewed the y-stream release notes for API deprecations and breaking changes.
 
 - You have scheduled a maintenance window. Y-stream updates take 1 to 2 hours.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Identify deprecated APIs in use on your cluster by running the following command:
 
@@ -326,7 +341,15 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 
     Worker nodes update in a rolling fashion. The process typically takes 30 to 60 minutes depending on the number of worker nodes.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify all nodes are at the target y-stream version by running the following command:
 
@@ -351,11 +374,23 @@ The following procedure uses `spoke1` as an example cluster name. Replace it wit
 
 4.  Run smoke tests for critical workloads.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If API deprecation warnings appear, update manifests to use new API versions before updating.
 
 - If Operator compatibility issues occur, update Operator subscriptions to channels that support the target y-stream.
 
 - If worker node updates get stuck, check `MachineConfigPool` resource status and node logs.
+
+</div>
 
 # Updating through sequential y-stream releases
 
@@ -363,15 +398,17 @@ You can update clusters through multiple sequential y-stream releases when you n
 
 For example, to update from 4.20 to 4.22, you must first update from 4.20 to 4.21, and then update from 4.21 to 4.22.
 
-<div class="note">
+> [!NOTE]
+> The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
 
-The following procedure uses `spoke1` as an example cluster name. Replace it with your actual cluster name throughout.
+> [!IMPORTANT]
+> When planning to update clusters through multiple sequential y-stream releases, allow at least 24 hours, and up to 48 hours, between y-stream updates to monitor cluster stability.
 
-</div>
+<div>
 
-<div class="important">
+<div class="title">
 
-When planning to update clusters through multiple sequential y-stream releases, allow at least 24 hours, and up to 48 hours, between y-stream updates to monitor cluster stability.
+Prerequisites
 
 </div>
 
@@ -388,6 +425,16 @@ When planning to update clusters through multiple sequential y-stream releases, 
 - You have reviewed the release notes for each intermediate y-stream version for API deprecations and breaking changes.
 
 - You have planned maintenance windows for each y-stream update.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Determine the complete update path:
 
@@ -541,7 +588,15 @@ When planning to update clusters through multiple sequential y-stream releases, 
 
     If updating through more than two y-streams, repeat the process for each intermediate version.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify the final cluster version by running the following command:
 
@@ -557,11 +612,23 @@ When planning to update clusters through multiple sequential y-stream releases, 
 
     Run smoke tests and validate that all CNF workloads operate correctly at the final version.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Troubleshooting
+
+</div>
+
 - If the cluster becomes degraded after the first y-stream update, resolve all issues before proceeding to the second y-stream.
 
 - If Operator versions are incompatible with an intermediate y-stream, update the Operator subscription before updating the cluster.
 
 - If configuration changes are needed between y-streams, apply those changes during the wait period before proceeding.
+
+</div>
 
 # Additional resources
 

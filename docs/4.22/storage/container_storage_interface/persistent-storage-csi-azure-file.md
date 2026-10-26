@@ -22,6 +22,14 @@ Azure File CSI Driver Operator does not support the following:
 
 For more information about supported features, see "Supported CSI drivers and features".
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
@@ -29,6 +37,8 @@ For more information about supported features, see "Supported CSI drivers and fe
 - [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)
 
 - [Supported CSI drivers and features](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi-drivers-supported_persistent-storage-csi)
+
+</div>
 
 # About CSI
 
@@ -50,17 +60,16 @@ The following restrictions apply:
 
 - FS Group policy behavior:
 
-  <div class="important">
-
-  Azure File CSI with NFS does not honor the fsGroupChangePolicy requested by pods. Azure File CSI with NFS applies a default OnRootMismatch FS Group policy regardless of the policy requested by the pod.
-
-  </div>
+  > [!IMPORTANT]
+  > Azure File CSI with NFS does not honor the fsGroupChangePolicy requested by pods. Azure File CSI with NFS applies a default OnRootMismatch FS Group policy regardless of the policy requested by the pod.
 
 - The Azure File CSI Operator does not automatically create a storage class for NFS. You must create it manually. Use a file similar to the following:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example Azure File storage class YAML file**
+  <div class="title">
+
+  Example Azure File storage class YAML file
 
   </div>
 
@@ -77,6 +86,8 @@ The following restrictions apply:
     - nconnect=4
   ```
 
+  </div>
+
 - `metadata.name`: Specifies the storage class name.
 
 - `provisioner`: Specifies the Azure File CSI provider.
@@ -87,21 +98,36 @@ The following restrictions apply:
 
 Cross-subscription support allows you to have an OpenShift Container Platform cluster in one Azure subscription and mount your Azure file share in another Azure subscription by using the Azure File Container Storage Interface (CSI) driver.
 
-<div class="important">
-
-Both the OpenShift Container Platform cluster and the Azure File share (pre-provisioning or to be provisioned) should be inside the same tenant.
-
-</div>
+> [!IMPORTANT]
+> Both the OpenShift Container Platform cluster and the Azure File share (pre-provisioning or to be provisioned) should be inside the same tenant.
 
 ## Dynamic provisioning across subscriptions for Azure File
 
 Enable Azure File dynamic provisioning across Azure subscriptions by granting the cluster’s Azure identity access to a storage account in a different subscription, then creating a storage class that references the target subscription.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Installed OpenShift Container Platform cluster on Azure with the service principal or managed identity as an Azure identity in one subscription (call it Subscription A)
 
 - Access to another subscription (call it Subscription B) with the storage that is in the same tenant as the cluster
 
 - Logged in to the Azure CLI
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Record the Azure identity (service principal or managed identity) by running the following applicable commands. The Azure identity is needed in a later step:
 
@@ -166,17 +192,16 @@ Enable Azure File dynamic provisioning across Azure subscriptions by granting th
 
       5.  To finish the role assignment, click **Review + assign**.
 
-          <div class="note">
-
-          If you only want to use a specific storage account to provision the Azure File share, you can also obtain the Azure identity (service principal or managed identity) permission to access the storage account by using similar steps.
-
-          </div>
+          > [!NOTE]
+          > If you only want to use a specific storage account to provision the Azure File share, you can also obtain the Azure identity (service principal or managed identity) permission to access the storage account by using similar steps.
 
 3.  Create an Azure File storage class by using a similar configuration to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example Azure File storage class YAML file**
+    <div class="title">
+
+    Example Azure File storage class YAML file
 
     </div>
 
@@ -201,6 +226,8 @@ Enable Azure File dynamic provisioning across Azure subscriptions by granting th
     volumeBindingMode: Immediate
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the storage class.
 
     - `parameters.subscriptionID`: Specifies the subscription B ID.
@@ -213,9 +240,11 @@ Enable Azure File dynamic provisioning across Azure subscriptions by granting th
 
 4.  Create a persistent volume claim (PVC) that specifies the Azure File storage class that you created in the previous step by using a similar configuration to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC YAML file**
+    <div class="title">
+
+    Example PVC YAML file
 
     </div>
 
@@ -233,9 +262,13 @@ Enable Azure File dynamic provisioning across Azure subscriptions by granting th
           storage: 5Gi
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the PVC.
 
     - `spec.storageClassName`: Specifies the name of the storage class that you created in the previous step.
+
+</div>
 
 ## Static provisioning across subscriptions for Azure File by creating a PV and PVC:
 
@@ -244,11 +277,29 @@ Provision Azure File storage across subscriptions using static provisioning by c
 Recommendation to use a storage class
 In the following example of static provisioning across subscriptions, the storage class referenced in the PV and PVC is not strictly necessary, as storage classes are not required to accomplish static provisioning. However, it is advisable to use a storage class to avoid cases where a manually created PVC accidentally does not match a manually created PV, and thus potentially triggers dynamic provisioning of a new PV. Other ways to avoid this issue would be to create a storage class with `provisioner: kubernetes.io/no-provisioner` or reference a non-existing storage class, which in both cases ensures that dynamic provisioning does not occur. When using either of these strategies, if a mis-matched PV and PVC occurs, the PVC stays in a pending state, and you can correct the error.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Installed OpenShift Container Platform cluster on Azure with the service principal or managed identity as an Azure identity in one subscription (call it Subscription A)
 
 - Access to another subscription (call it Subscription B) with the storage that is in the same tenant as the cluster
 
 - Logged in to the Azure CLI
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  For your Azure File share, record the resource group, storage account, storage account key, and Azure File name. These values are used for the next steps.
 
@@ -262,9 +313,11 @@ In the following example of static provisioning across subscriptions, the storag
 
 3.  Create a persistent volume (PV) by using a similar configuration to the following example file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PV YAML file**
+    <div class="title">
+
+    Example PV YAML file
 
     </div>
 
@@ -297,6 +350,8 @@ In the following example of static provisioning across subscriptions, the storag
           namespace: <secret-namespace>
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the PV.
 
     - `spec.capacity.storage`: Specifies the size of the PV.
@@ -313,9 +368,11 @@ In the following example of static provisioning across subscriptions, the storag
 
 4.  Create a persistent value claim (PVC) specifying the existing Azure File share referenced in Step 1 using a similar configuration to the following:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC YAML file**
+    <div class="title">
+
+    Example PVC YAML file
 
     </div>
 
@@ -333,15 +390,37 @@ In the following example of static provisioning across subscriptions, the storag
           storage: 5Gi
     ```
 
+    </div>
+
     - `metadata.name`: Specifies the name of the PVC.
 
     - `spec.storageClassName`: Specifies the name of the storage class that you specified for the PV in the previous step.
+
+</div>
 
 # Static provisioning for Azure File
 
 Use static provisioning to manually create persistent volumes (PVs) for existing Azure File shares. Create a secret with storage credentials, define a PV that references the share, and create a persistent volume claim (PVC) to consume the storage.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to an OpenShift Container Platform cluster with administrator rights
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If you have not yet created a secret for the Azure storage account, create it now:
 
@@ -363,9 +442,11 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
 
 2.  Create a PV by using the following example YAML file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PV YAML file**
+    <div class="title">
+
+    Example PV YAML file
 
     </div>
 
@@ -402,6 +483,8 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
           namespace: <my-namespace>
     ```
 
+    </div>
+
     - `spec.capacity.storage`: Specifies the Volume size.
 
     - `spec.accessModes`: Defines the read/write and mount permissions. For more information, see "Access modes".
@@ -430,9 +513,11 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
 
 3.  Create a PVC that references the PV using the following example file:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC YAML file**
+    <div class="title">
+
+    Example PVC YAML file
 
     </div>
 
@@ -451,6 +536,8 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
         requests:
           storage: 5Gi
     ```
+
+    </div>
 
     - `metadata.name`: Specifies the PVC name.
 
@@ -472,9 +559,11 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
 
     Where `<pvc-name>` is the name of your PVC.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -483,6 +572,20 @@ Use static provisioning to manually create persistent volumes (PVs) for existing
     pvc-name   Bound     pv-azurefile   5Gi        ReadWriteMany  my-sc          7m2s
     ```
 
+    </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Persistent storage using Azure File](../../storage/persistent_storage/persistent-storage-azure-file.xml#persistent-storage-using-azure-file)
 
 - [Access modes](../../storage/understanding-persistent-storage.xml#pv-access-modes_understanding-persistent-storage)
+
+</div>

@@ -2,11 +2,8 @@ The Agent-based installation method provides the flexibility to boot your on-pre
 
 Agent-based installation is a subcommand of the OpenShift Container Platform installer. It generates a bootable ISO image containing all of the information required to deploy an OpenShift Container Platform cluster with an available release image.
 
-<div class="important">
-
-Your vSphere account must include privileges for reading and creating the resources required to install an OpenShift Container Platform cluster.
-
-</div>
+> [!IMPORTANT]
+> Your vSphere account must include privileges for reading and creating the resources required to install an OpenShift Container Platform cluster.
 
 # Additional resources
 

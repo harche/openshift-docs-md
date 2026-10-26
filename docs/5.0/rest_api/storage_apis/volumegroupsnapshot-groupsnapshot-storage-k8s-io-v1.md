@@ -9,13 +9,13 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>      |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>     |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                    |
-| `spec`       | `object`                                                                             | Spec defines the desired characteristics of a group snapshot requested by a user. Required.                                                                                                                                                                                                              |
-| `status`     | `object`                                                                             | Status represents the current information of a group snapshot. Consumers must verify binding between VolumeGroupSnapshot and VolumeGroupSnapshotContent objects is successful (by validating that both VolumeGroupSnapshot and VolumeGroupSnapshotContent point to each other) before using this object. |
+| Property | Type | Description |
+|----|----|----|
+| `apiVersion` | `string` | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources> |
+| `kind` | `string` | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata> |
+| `spec` | `object` | Spec defines the desired characteristics of a group snapshot requested by a user. Required. |
+| `status` | `object` | Status represents the current information of a group snapshot. Consumers must verify binding between VolumeGroupSnapshot and VolumeGroupSnapshotContent objects is successful (by validating that both VolumeGroupSnapshot and VolumeGroupSnapshotContent point to each other) before using this object. |
 
 ## .spec
 
@@ -28,9 +28,9 @@ Type
 Required
 - `source`
 
-| Property                       | Type     | Description                                                                                                                                                                                                                                              |
-|--------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `source`                       | `object` | Source specifies where a group snapshot will be created from. This field is immutable after creation. Required.                                                                                                                                          |
+| Property | Type | Description |
+|----|----|----|
+| `source` | `object` | Source specifies where a group snapshot will be created from. This field is immutable after creation. Required. |
 | `volumeGroupSnapshotClassName` | `string` | VolumeGroupSnapshotClassName is the name of the VolumeGroupSnapshotClass requested by the VolumeGroupSnapshot. VolumeGroupSnapshotClassName may be left nil to indicate that the default class will be used. Empty string is not allowed for this field. |
 
 ## .spec.source
@@ -41,10 +41,10 @@ Source specifies where a group snapshot will be created from. This field is immu
 Type
 `object`
 
-| Property                         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `selector`                       | `object` | Selector is a label query over persistent volume claims that are to be grouped together for snapshotting. This labelSelector will be used to match the label added to a PVC. If the label is added or removed to a volume after a group snapshot is created, the existing group snapshots won’t be modified. Once a VolumeGroupSnapshotContent is created and the sidecar starts to process it, the volume list will not change with retries. |
-| `volumeGroupSnapshotContentName` | `string` | VolumeGroupSnapshotContentName specifies the name of a pre-existing VolumeGroupSnapshotContent object representing an existing volume group snapshot. This field should be set if the volume group snapshot already exists and only needs a representation in Kubernetes. This field is immutable.                                                                                                                                            |
+| Property | Type | Description |
+|----|----|----|
+| `selector` | `object` | Selector is a label query over persistent volume claims that are to be grouped together for snapshotting. This labelSelector will be used to match the label added to a PVC. If the label is added or removed to a volume after a group snapshot is created, the existing group snapshots won’t be modified. Once a VolumeGroupSnapshotContent is created and the sidecar starts to process it, the volume list will not change with retries. |
+| `volumeGroupSnapshotContentName` | `string` | VolumeGroupSnapshotContentName specifies the name of a pre-existing VolumeGroupSnapshotContent object representing an existing volume group snapshot. This field should be set if the volume group snapshot already exists and only needs a representation in Kubernetes. This field is immutable. |
 
 ## .spec.source.selector
 
@@ -54,11 +54,11 @@ Selector is a label query over persistent volume claims that are to be grouped t
 Type
 `object`
 
-| Property             | Type              | Description                                                                                                                                                                                                                                                     |
-|----------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `matchExpressions`   | `array`           | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
-| `matchExpressions[]` | `object`          | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.                                                                                                                                        |
-| `matchLabels`        | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
+| Property | Type | Description |
+|----|----|----|
+| `matchExpressions` | `array` | matchExpressions is a list of label selector requirements. The requirements are ANDed. |
+| `matchExpressions[]` | `object` | A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values. |
+| `matchLabels` | `object (string)` | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
 ## .spec.source.selector.matchExpressions
 
@@ -81,11 +81,11 @@ Required
 
 - `operator`
 
-| Property   | Type             | Description                                                                                                                                                                                                                                |
-|------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `key`      | `string`         | key is the label key that the selector applies to.                                                                                                                                                                                         |
-| `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
-| `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
+| Property | Type | Description |
+|----|----|----|
+| `key` | `string` | key is the label key that the selector applies to. |
+| `operator` | `string` | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist. |
+| `values` | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
 ## .status
 
@@ -95,12 +95,12 @@ Status represents the current information of a group snapshot. Consumers must ve
 Type
 `object`
 
-| Property                              | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|---------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `boundVolumeGroupSnapshotContentName` | `string`  | BoundVolumeGroupSnapshotContentName is the name of the VolumeGroupSnapshotContent object to which this VolumeGroupSnapshot object intends to bind to. If not specified, it indicates that the VolumeGroupSnapshot object has not been successfully bound to a VolumeGroupSnapshotContent object yet. NOTE: To avoid possible security issues, consumers must verify binding between VolumeGroupSnapshot and VolumeGroupSnapshotContent objects is successful (by validating that both VolumeGroupSnapshot and VolumeGroupSnapshotContent point at each other) before using this object. |
-| `creationTime`                        | `string`  | CreationTime is the timestamp when the point-in-time group snapshot is taken by the underlying storage system. If not specified, it may indicate that the creation time of the group snapshot is unknown. This field is updated based on the CreationTime field in VolumeGroupSnapshotContentStatus                                                                                                                                                                                                                                                                                     |
-| `error`                               | `object`  | Error is the last observed error during group snapshot creation, if any. This field could be helpful to upper level controllers (i.e., application controller) to decide whether they should continue on waiting for the group snapshot to be created based on the type of error reported. The snapshot controller will keep retrying when an error occurs during the group snapshot creation. Upon success, this error field will be cleared.                                                                                                                                          |
-| `readyToUse`                          | `boolean` | ReadyToUse indicates if all the individual snapshots in the group are ready to be used to restore a group of volumes. ReadyToUse becomes true when ReadyToUse of all individual snapshots become true. If not specified, it means the readiness of a group snapshot is unknown.                                                                                                                                                                                                                                                                                                         |
+| Property | Type | Description |
+|----|----|----|
+| `boundVolumeGroupSnapshotContentName` | `string` | BoundVolumeGroupSnapshotContentName is the name of the VolumeGroupSnapshotContent object to which this VolumeGroupSnapshot object intends to bind to. If not specified, it indicates that the VolumeGroupSnapshot object has not been successfully bound to a VolumeGroupSnapshotContent object yet. NOTE: To avoid possible security issues, consumers must verify binding between VolumeGroupSnapshot and VolumeGroupSnapshotContent objects is successful (by validating that both VolumeGroupSnapshot and VolumeGroupSnapshotContent point at each other) before using this object. |
+| `creationTime` | `string` | CreationTime is the timestamp when the point-in-time group snapshot is taken by the underlying storage system. If not specified, it may indicate that the creation time of the group snapshot is unknown. This field is updated based on the CreationTime field in VolumeGroupSnapshotContentStatus |
+| `error` | `object` | Error is the last observed error during group snapshot creation, if any. This field could be helpful to upper level controllers (i.e., application controller) to decide whether they should continue on waiting for the group snapshot to be created based on the type of error reported. The snapshot controller will keep retrying when an error occurs during the group snapshot creation. Upon success, this error field will be cleared. |
+| `readyToUse` | `boolean` | ReadyToUse indicates if all the individual snapshots in the group are ready to be used to restore a group of volumes. ReadyToUse becomes true when ReadyToUse of all individual snapshots become true. If not specified, it means the readiness of a group snapshot is unknown. |
 
 ## .status.error
 
@@ -110,10 +110,10 @@ Error is the last observed error during group snapshot creation, if any. This fi
 Type
 `object`
 
-| Property  | Type     | Description                                                                                                                                                              |
-|-----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Property | Type | Description |
+|----|----|----|
 | `message` | `string` | message is a string detailing the encountered error during snapshot creation if specified. NOTE: message may be logged, and it should not contain sensitive information. |
-| `time`    | `string` | time is the timestamp when the error was encountered.                                                                                                                    |
+| `time` | `string` | time is the timestamp when the error was encountered. |
 
 # API endpoints
 
@@ -157,10 +157,10 @@ HTTP method
 Description
 list objects of kind VolumeGroupSnapshot
 
-| HTTP code          | Reponse body                                                                                                     |
-|--------------------|------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshotList`](../objects/index.xml#io-k8s-storage-groupsnapshot-v1-VolumeGroupSnapshotList) schema |
-| 401 - Unauthorized | Empty                                                                                                            |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshotList`](../objects/index.xml#io-k8s-storage-groupsnapshot-v1-VolumeGroupSnapshotList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -172,10 +172,10 @@ HTTP method
 Description
 delete collection of VolumeGroupSnapshot
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -185,10 +185,10 @@ HTTP method
 Description
 list objects of kind VolumeGroupSnapshot
 
-| HTTP code          | Reponse body                                                                                                     |
-|--------------------|------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshotList`](../objects/index.xml#io-k8s-storage-groupsnapshot-v1-VolumeGroupSnapshotList) schema |
-| 401 - Unauthorized | Empty                                                                                                            |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshotList`](../objects/index.xml#io-k8s-storage-groupsnapshot-v1-VolumeGroupSnapshotList) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -198,25 +198,25 @@ HTTP method
 Description
 create a VolumeGroupSnapshot
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                                                        | Description |
-|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 201 - Created      | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 202 - Accepted     | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 201 - Created | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 202 - Accepted | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -234,17 +234,17 @@ HTTP method
 Description
 delete a VolumeGroupSnapshot
 
-| Parameter | Type     | Description                                                                                                                                                                                                                                              |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`  | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -254,10 +254,10 @@ HTTP method
 Description
 read the specified VolumeGroupSnapshot
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -267,17 +267,17 @@ HTTP method
 Description
 partially update the specified VolumeGroupSnapshot
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -287,24 +287,24 @@ HTTP method
 Description
 replace the specified VolumeGroupSnapshot
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                                                        | Description |
-|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 201 - Created      | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 201 - Created | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -322,10 +322,10 @@ HTTP method
 Description
 read status of the specified VolumeGroupSnapshot
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -335,17 +335,17 @@ HTTP method
 Description
 partially update status of the specified VolumeGroupSnapshot
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses
 
@@ -355,23 +355,23 @@ HTTP method
 Description
 replace status of the specified VolumeGroupSnapshot
 
-| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Description |
+|----|----|----|
+| `dryRun` | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed |
 | `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
 
 Query parameters
 
-| Parameter | Type                                                                                                                                                        | Description |
-|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `body`    | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |             |
+| Parameter | Type | Description |
+|----|----|----|
+| `body` | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |  |
 
 Body parameters
 
-| HTTP code          | Reponse body                                                                                                                                                |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK           | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 201 - Created      | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
-| 401 - Unauthorized | Empty                                                                                                                                                       |
+| HTTP code | Reponse body |
+|----|----|
+| 200 - OK | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 201 - Created | [`VolumeGroupSnapshot`](../storage_apis/volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1.xml#volumegroupsnapshot-groupsnapshot-storage-k8s-io-v1) schema |
+| 401 - Unauthorized | Empty |
 
 HTTP responses

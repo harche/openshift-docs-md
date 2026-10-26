@@ -1,16 +1,20 @@
 You can create Bring-Your-Own-Host (BYOH) Windows instances to bring existing Windows Server VMs into OpenShift Container Platform. By using BYOH Windows instances, you can mitigate major disruptions if a Windows server goes offline.
 
-# Configuring a BYOH Windows instance
+# Configure a bring-your-own-host Windows instance
 
 To create a Bring-Your-Own-Host (BYOH) Windows instance, you must create a config map in the Windows Machine Config Operator (WMCO) namespace.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Prerequisites**
+<div class="title">
+
+Prerequisites
 
 </div>
 
 Any Windows instances that are to be attached to the cluster as a node must fulfill the following requirements:
+
+</div>
 
 - The instance must be on the same network as the Linux worker nodes in the cluster.
 
@@ -34,23 +38,27 @@ Any Windows instances that are to be attached to the cluster as a node must fulf
 
   - Ends with an alphanumeric character.
 
-<div class="note">
+> [!NOTE]
+> Windows instances deployed by the WMCO are configured with the containerd container runtime. Because the WMCO installs and manages the runtime, it is recommended that you not manually install containerd on nodes.
 
-Windows instances deployed by the WMCO are configured with the containerd container runtime. Because the WMCO installs and manages the runtime, it is recommended that you not manually install containerd on nodes.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
 1.  Create a ConfigMap named `windows-instances` in the WMCO namespace that describes the Windows instances to be added.
 
-    <div class="note">
+    > [!NOTE]
+    > Format each entry in the config map’s data section by using the address as the key while formatting the value as `username=<username>`.
 
-    Format each entry in the config map’s data section by using the address as the key while formatting the value as `username=<username>`.
+    <div class="formalpara">
 
-    </div>
+    <div class="title">
 
-    <div class="formalpara-title">
-
-    **Example config map**
+    Example config map
 
     </div>
 
@@ -67,6 +75,8 @@ Windows instances deployed by the WMCO are configured with the containerd contai
         username=core
     ```
 
+    </div>
+
     where:
 
     `data`
@@ -74,7 +84,9 @@ Windows instances deployed by the WMCO are configured with the containerd contai
 
     Also, specify the user name of the administrator user created in the prerequisites.
 
-# Removing BYOH Windows instances
+</div>
+
+# Bring-your-own-host Windows instance removal
 
 You can remove a Bring-Your-Own-Host (BYOH) instance that is attached to the cluster by deleting the instance’s entry in the BYOH config map. Deleting an instance reverts that instance back to its previous state, before it was added to the cluster.
 

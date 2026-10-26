@@ -14,15 +14,22 @@ With the `LeaderWorkerSet` API, pods are grouped into units consisting of one le
 
 In the `LeaderWorkerSet` configuration, you define the size of the groups and the number of group replicas. If necessary, you can define separate templates for leader and worker pods, allowing for role-specific customization. You can also configure topology-aware placement, so that pods in the same group are co-located in the same topology.
 
-<div class="important">
-
-Before you install the Leader Worker Set Operator, you must install the cert-manager Operator for Red Hat OpenShift because it is required to configure services and manage metrics collection.
-
-</div>
+> [!IMPORTANT]
+> Before you install the Leader Worker Set Operator, you must install the cert-manager Operator for Red Hat OpenShift because it is required to configure services and manage metrics collection.
 
 Monitoring for the Leader Worker Set Operator is provided by default with OpenShift Container Platform through Prometheus.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [LeaderWorkerSet project](https://lws.sigs.k8s.io/)
+
+</div>
 
 ## LeaderWorkerSet architecture
 

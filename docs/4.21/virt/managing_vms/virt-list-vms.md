@@ -2,11 +2,27 @@ Use the web console or OpenShift CLI (`oc`) to list your virtual machines (VMs).
 
 # List virtual machines by using the CLI
 
-You can either list all of the virtual machines (VMs) in your cluster or limit the list to VMs in a specified namespace by using the OpenShift CLI (`oc`).
+You can list all of the virtual machines (VMs) in your cluster by using the OpenShift CLI (`oc`), or limit the list to a single namespace.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - List all of the VMs in your cluster by running the following command:
 
@@ -20,9 +36,19 @@ You can either list all of the virtual machines (VMs) in your cluster or limit t
   $ oc get vms -n <namespace>
   ```
 
+</div>
+
 # List virtual machines by using the web console
 
-You can list all of the virtual machines (VMs) in your cluster by using the web console.
+You can list all the virtual machines (VMs) in your cluster by using the OpenShift Container Platform web console. Search and filter options narrow the list.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu to access the tree view of all projects and VMs in your cluster.
 
@@ -30,21 +56,25 @@ You can list all of the virtual machines (VMs) in your cluster by using the web 
 
 3.  Optional: Click the **Advanced search** button next to the search bar to further filter VMs. You can filter your VMs by their name, project, labels, or the allocated vCPU and memory resources.
 
-# Organize virtual machines by using the web console
-
-In addition to creating virtual machines (VMs) in different projects, you can use the tree view to further organize them in folders.
-
-<div class="important">
-
-Enabling folders in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
 </div>
 
-<div class="note">
+# Organize virtual machines by using the web console
 
-OpenShift Virtualization does not enable folders in the virtual machine tree by default. To enable folders, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable folders in Virtual Machines tree view**.
+You can move virtual machines (VMs) into folders in the tree view of the OpenShift Container Platform web console. Folders give you finer organization than projects alone.
+
+> [!IMPORTANT]
+> Enabling folders in the virtual machine tree is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+> [!NOTE]
+> OpenShift Virtualization does not enable folders in the virtual machine tree by default. To enable folders, go to **Virtualization** → **Settings**. In the **Preview features** tab, select **Enable folders in Virtual Machines tree view**.
+
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -71,3 +101,5 @@ OpenShift Virtualization does not enable folders in the virtual machine tree by 
     - To move the VM from a folder to the project:
 
       - Click the name of the VM in the tree view and drag it on the project name. A highlight is displayed on the folder for permitted operations.
+
+</div>

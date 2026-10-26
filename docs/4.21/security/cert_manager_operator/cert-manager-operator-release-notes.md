@@ -76,13 +76,10 @@ Version `1.20.0` of the cert-manager Operator for Red Hat OpenShift is based on 
 
 ## New features and enhancements
 
-<div class="important">
-
-TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 TrustManager Technology Preview no longer requires a cluster preview FeatureSet
 With this release, the cert-manager Operator for Red Hat OpenShift no longer requires the `featuregates.config.openshift.io/cluster` object to use a preview `FeatureSet`, such as `TechPreviewNoUpgrade`, in order to enable the TrustManager Technology Preview operand.
@@ -137,19 +134,13 @@ TLS arguments are applied per operand component as follows:
 
   This feature is gated by the `TLSAdherence` feature gate. To use this feature, you must enable the `TechPreviewNoUpgrade` feature set. For more information, see [Understanding feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling).
 
-  <div class="note">
+  > [!NOTE]
+  > Elliptic curve preferences are not configurable because cert-manager does not yet support specifying curve preferences upstream.
 
-  Elliptic curve preferences are not configurable because cert-manager does not yet support specifying curve preferences upstream.
-
-  </div>
-
-<div class="important">
-
-{FeatureName} is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+> [!IMPORTANT]
+> {FeatureName} is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 ## Fixed issues
 
@@ -292,3 +283,277 @@ In this release, the cert-manager Operator for Red Hat OpenShift adds support fo
 ## Fixed issues
 
 - Before this update, the **ClusterIssuer** form view lacked an option to remove the self-signed field. As a consequence, you could not create issuer types other than self-signed. With this release, the form view sets the certificate authority (CA) as the default issuer type. As a result, you can switch to other issuer types by using the form view. ([OCPBUGS-65620](https://redhat.atlassian.net/browse/OCPBUGS-65620))
+
+# cert-manager Operator for Red Hat OpenShift 1.18.2
+
+Review the release notes for the cert-manager Operator for Red Hat OpenShift 1.18.2 to learn what is new and updated with this release.
+
+Issued: 16 October 2026
+
+The following advisories are available for the cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform 1.18.2:
+
+- [RHSA-2026:82347](https://access.redhat.com/errata/RHSA-2026:82347)
+
+- [RHSA-2026:82354](https://access.redhat.com/errata/RHSA-2026:82354)
+
+- [RHSA-2026:82372](https://access.redhat.com/errata/RHSA-2026:82372)
+
+- [RHSA-2026:82857](https://access.redhat.com/errata/RHSA-2026:82857)
+
+Version `1.18.2` of the cert-manager Operator for Red Hat OpenShift is based on the upstream cert-manager version `v1.18.6`. For more information, see the [cert-manager project release notes for v1.18.6](https://cert-manager.io/docs/releases/release-notes/release-notes-1.18/#v1186).
+
+## CVEs
+
+- [CVE-2024-34459](https://access.redhat.com/security/cve/CVE-2024-34459)
+
+- [CVE-2025-11187](https://access.redhat.com/security/cve/CVE-2025-11187)
+
+- [CVE-2025-13151](https://access.redhat.com/security/cve/CVE-2025-13151)
+
+- [CVE-2025-14087](https://access.redhat.com/security/cve/CVE-2025-14087)
+
+- [CVE-2025-14104](https://access.redhat.com/security/cve/CVE-2025-14104)
+
+- [CVE-2025-14512](https://access.redhat.com/security/cve/CVE-2025-14512)
+
+- [CVE-2025-14831](https://access.redhat.com/security/cve/CVE-2025-14831)
+
+- [CVE-2025-15281](https://access.redhat.com/security/cve/CVE-2025-15281)
+
+- [CVE-2025-15467](https://access.redhat.com/security/cve/CVE-2025-15467)
+
+- [CVE-2025-15468](https://access.redhat.com/security/cve/CVE-2025-15468)
+
+- [CVE-2025-15469](https://access.redhat.com/security/cve/CVE-2025-15469)
+
+- [CVE-2025-5278](https://access.redhat.com/security/cve/CVE-2025-5278)
+
+- [CVE-2025-6170](https://access.redhat.com/security/cve/CVE-2025-6170)
+
+- [CVE-2025-61726](https://access.redhat.com/security/cve/CVE-2025-61726)
+
+- [CVE-2025-61728](https://access.redhat.com/security/cve/CVE-2025-61728)
+
+- [CVE-2025-61730](https://access.redhat.com/security/cve/CVE-2025-61730)
+
+- [CVE-2025-66199](https://access.redhat.com/security/cve/CVE-2025-66199)
+
+- [CVE-2025-68121](https://access.redhat.com/security/cve/CVE-2025-68121)
+
+- [CVE-2025-68160](https://access.redhat.com/security/cve/CVE-2025-68160)
+
+- [CVE-2025-69418](https://access.redhat.com/security/cve/CVE-2025-69418)
+
+- [CVE-2025-69419](https://access.redhat.com/security/cve/CVE-2025-69419)
+
+- [CVE-2025-69420](https://access.redhat.com/security/cve/CVE-2025-69420)
+
+- [CVE-2025-69421](https://access.redhat.com/security/cve/CVE-2025-69421)
+
+- [CVE-2025-9086](https://access.redhat.com/security/cve/CVE-2025-9086)
+
+- [CVE-2025-9820](https://access.redhat.com/security/cve/CVE-2025-9820)
+
+- [CVE-2026-0861](https://access.redhat.com/security/cve/CVE-2026-0861)
+
+- [CVE-2026-0915](https://access.redhat.com/security/cve/CVE-2026-0915)
+
+- [CVE-2026-11822](https://access.redhat.com/security/cve/CVE-2026-11822)
+
+- [CVE-2026-11824](https://access.redhat.com/security/cve/CVE-2026-11824)
+
+- [CVE-2026-11979](https://access.redhat.com/security/cve/CVE-2026-11979)
+
+- [CVE-2026-13757](https://access.redhat.com/security/cve/CVE-2026-13757)
+
+- [CVE-2026-14164](https://access.redhat.com/security/cve/CVE-2026-14164)
+
+- [CVE-2026-15588](https://access.redhat.com/security/cve/CVE-2026-15588)
+
+- [CVE-2026-16118](https://access.redhat.com/security/cve/CVE-2026-16118)
+
+- [CVE-2026-1965](https://access.redhat.com/security/cve/CVE-2026-1965)
+
+- [CVE-2026-2100](https://access.redhat.com/security/cve/CVE-2026-2100)
+
+- [CVE-2026-22795](https://access.redhat.com/security/cve/CVE-2026-22795)
+
+- [CVE-2026-22796](https://access.redhat.com/security/cve/CVE-2026-22796)
+
+- [CVE-2026-25679](https://access.redhat.com/security/cve/CVE-2026-25679)
+
+- [CVE-2026-25681](https://access.redhat.com/security/cve/CVE-2026-25681)
+
+- [CVE-2026-2673](https://access.redhat.com/security/cve/CVE-2026-2673)
+
+- [CVE-2026-27135](https://access.redhat.com/security/cve/CVE-2026-27135)
+
+- [CVE-2026-27145](https://access.redhat.com/security/cve/CVE-2026-27145)
+
+- [CVE-2026-28390](https://access.redhat.com/security/cve/CVE-2026-28390)
+
+- [CVE-2026-29111](https://access.redhat.com/security/cve/CVE-2026-29111)
+
+- [CVE-2026-31790](https://access.redhat.com/security/cve/CVE-2026-31790)
+
+- [CVE-2026-32280](https://access.redhat.com/security/cve/CVE-2026-32280)
+
+- [CVE-2026-32281](https://access.redhat.com/security/cve/CVE-2026-32281)
+
+- [CVE-2026-32283](https://access.redhat.com/security/cve/CVE-2026-32283)
+
+- [CVE-2026-33186](https://access.redhat.com/security/cve/CVE-2026-33186)
+
+- [CVE-2026-33811](https://access.redhat.com/security/cve/CVE-2026-33811)
+
+- [CVE-2026-33814](https://access.redhat.com/security/cve/CVE-2026-33814)
+
+- [CVE-2026-33818](https://access.redhat.com/security/cve/CVE-2026-33818)
+
+- [CVE-2026-33845](https://access.redhat.com/security/cve/CVE-2026-33845)
+
+- [CVE-2026-33846](https://access.redhat.com/security/cve/CVE-2026-33846)
+
+- [CVE-2026-34180](https://access.redhat.com/security/cve/CVE-2026-34180)
+
+- [CVE-2026-34181](https://access.redhat.com/security/cve/CVE-2026-34181)
+
+- [CVE-2026-34182](https://access.redhat.com/security/cve/CVE-2026-34182)
+
+- [CVE-2026-34183](https://access.redhat.com/security/cve/CVE-2026-34183)
+
+- [CVE-2026-34986](https://access.redhat.com/security/cve/CVE-2026-34986)
+
+- [CVE-2026-3783](https://access.redhat.com/security/cve/CVE-2026-3783)
+
+- [CVE-2026-3832](https://access.redhat.com/security/cve/CVE-2026-3832)
+
+- [CVE-2026-3833](https://access.redhat.com/security/cve/CVE-2026-3833)
+
+- [CVE-2026-39820](https://access.redhat.com/security/cve/CVE-2026-39820)
+
+- [CVE-2026-39822](https://access.redhat.com/security/cve/CVE-2026-39822)
+
+- [CVE-2026-40355](https://access.redhat.com/security/cve/CVE-2026-40355)
+
+- [CVE-2026-40356](https://access.redhat.com/security/cve/CVE-2026-40356)
+
+- [CVE-2026-4046](https://access.redhat.com/security/cve/CVE-2026-4046)
+
+- [CVE-2026-4111](https://access.redhat.com/security/cve/CVE-2026-4111)
+
+- [CVE-2026-41989](https://access.redhat.com/security/cve/CVE-2026-41989)
+
+- [CVE-2026-42009](https://access.redhat.com/security/cve/CVE-2026-42009)
+
+- [CVE-2026-42010](https://access.redhat.com/security/cve/CVE-2026-42010)
+
+- [CVE-2026-42011](https://access.redhat.com/security/cve/CVE-2026-42011)
+
+- [CVE-2026-42012](https://access.redhat.com/security/cve/CVE-2026-42012)
+
+- [CVE-2026-42013](https://access.redhat.com/security/cve/CVE-2026-42013)
+
+- [CVE-2026-42014](https://access.redhat.com/security/cve/CVE-2026-42014)
+
+- [CVE-2026-42015](https://access.redhat.com/security/cve/CVE-2026-42015)
+
+- [CVE-2026-42499](https://access.redhat.com/security/cve/CVE-2026-42499)
+
+- [CVE-2026-42504](https://access.redhat.com/security/cve/CVE-2026-42504)
+
+- [CVE-2026-42764](https://access.redhat.com/security/cve/CVE-2026-42764)
+
+- [CVE-2026-42766](https://access.redhat.com/security/cve/CVE-2026-42766)
+
+- [CVE-2026-42767](https://access.redhat.com/security/cve/CVE-2026-42767)
+
+- [CVE-2026-42768](https://access.redhat.com/security/cve/CVE-2026-42768)
+
+- [CVE-2026-42769](https://access.redhat.com/security/cve/CVE-2026-42769)
+
+- [CVE-2026-42770](https://access.redhat.com/security/cve/CVE-2026-42770)
+
+- [CVE-2026-4424](https://access.redhat.com/security/cve/CVE-2026-4424)
+
+- [CVE-2026-4437](https://access.redhat.com/security/cve/CVE-2026-4437)
+
+- [CVE-2026-4438](https://access.redhat.com/security/cve/CVE-2026-4438)
+
+- [CVE-2026-45445](https://access.redhat.com/security/cve/CVE-2026-45445)
+
+- [CVE-2026-45446](https://access.redhat.com/security/cve/CVE-2026-45446)
+
+- [CVE-2026-45447](https://access.redhat.com/security/cve/CVE-2026-45447)
+
+- [CVE-2026-46597](https://access.redhat.com/security/cve/CVE-2026-46597)
+
+- [CVE-2026-4878](https://access.redhat.com/security/cve/CVE-2026-4878)
+
+- [CVE-2026-48864](https://access.redhat.com/security/cve/CVE-2026-48864)
+
+- [CVE-2026-5121](https://access.redhat.com/security/cve/CVE-2026-5121)
+
+- [CVE-2026-5260](https://access.redhat.com/security/cve/CVE-2026-5260)
+
+- [CVE-2026-5419](https://access.redhat.com/security/cve/CVE-2026-5419)
+
+- [CVE-2026-5435](https://access.redhat.com/security/cve/CVE-2026-5435)
+
+- [CVE-2026-54369](https://access.redhat.com/security/cve/CVE-2026-54369)
+
+- [CVE-2026-54370](https://access.redhat.com/security/cve/CVE-2026-54370)
+
+- [CVE-2026-54371](https://access.redhat.com/security/cve/CVE-2026-54371)
+
+- [CVE-2026-5450](https://access.redhat.com/security/cve/CVE-2026-5450)
+
+- [CVE-2026-56858](https://access.redhat.com/security/cve/CVE-2026-56858)
+
+- [CVE-2026-56859](https://access.redhat.com/security/cve/CVE-2026-56859)
+
+- [CVE-2026-56860](https://access.redhat.com/security/cve/CVE-2026-56860)
+
+- [CVE-2026-56862](https://access.redhat.com/security/cve/CVE-2026-56862)
+
+- [CVE-2026-58010](https://access.redhat.com/security/cve/CVE-2026-58010)
+
+- [CVE-2026-58011](https://access.redhat.com/security/cve/CVE-2026-58011)
+
+- [CVE-2026-58012](https://access.redhat.com/security/cve/CVE-2026-58012)
+
+- [CVE-2026-58013](https://access.redhat.com/security/cve/CVE-2026-58013)
+
+- [CVE-2026-58014](https://access.redhat.com/security/cve/CVE-2026-58014)
+
+- [CVE-2026-58015](https://access.redhat.com/security/cve/CVE-2026-58015)
+
+- [CVE-2026-58016](https://access.redhat.com/security/cve/CVE-2026-58016)
+
+- [CVE-2026-58055](https://access.redhat.com/security/cve/CVE-2026-58055)
+
+- [CVE-2026-5928](https://access.redhat.com/security/cve/CVE-2026-5928)
+
+- [CVE-2026-6238](https://access.redhat.com/security/cve/CVE-2026-6238)
+
+- [CVE-2026-6653](https://access.redhat.com/security/cve/CVE-2026-6653)
+
+- [CVE-2026-7383](https://access.redhat.com/security/cve/CVE-2026-7383)
+
+- [CVE-2026-8286](https://access.redhat.com/security/cve/CVE-2026-8286)
+
+- [CVE-2026-9076](https://access.redhat.com/security/cve/CVE-2026-9076)
+
+- [CVE-2026-9547](https://access.redhat.com/security/cve/CVE-2026-9547)
+
+- [CVE-2025-47911](https://access.redhat.com/security/cve/CVE-2025-47911)
+
+- [CVE-2025-47913](https://access.redhat.com/security/cve/CVE-2025-47913)
+
+- [CVE-2025-47914](https://access.redhat.com/security/cve/CVE-2025-47914)
+
+- [CVE-2025-58181](https://access.redhat.com/security/cve/CVE-2025-58181)
+
+- [CVE-2025-58190](https://access.redhat.com/security/cve/CVE-2025-58190)
+
+- [CVE-2026-27136](https://access.redhat.com/security/cve/CVE-2026-27136)

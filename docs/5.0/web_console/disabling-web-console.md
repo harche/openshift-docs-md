@@ -8,6 +8,14 @@ You can disable the OpenShift Container Platform web console.
 
 You can disable the web console by editing the `consoles.operator.openshift.io` resource.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - Edit the `consoles.operator.openshift.io` resource:
 
   ``` terminal
@@ -29,3 +37,5 @@ You can disable the web console by editing the `consoles.operator.openshift.io` 
 
   `spec.managementState.Removed`
   Set the `managementState` parameter value to `Removed` to disable the web console. The other valid values for this parameter are `Managed`, which enables the console under the cluster’s control, and `Unmanaged`, which means that you are taking control of web console management.
+
+</div>

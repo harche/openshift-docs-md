@@ -24,9 +24,14 @@ The following prerequisites must be met:
 
 - If you run an Operator or you have configured any application with the pod disruption budget, you might experience an interruption during the update process. If `minAvailable` is set to 1 in `PodDisruptionBudget`, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the `PodDisruptionBudget` field can prevent the node drain.
 
-<div class="note">
+> [!NOTE]
+> If you run an Operator or you have configured any application with the pod disruption budget, you might experience an interruption during the update process. If `minAvailable` is set to 1 in `PodDisruptionBudget`, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the `PodDisruptionBudget` field can prevent the node drain.
 
-If you run an Operator or you have configured any application with the pod disruption budget, you might experience an interruption during the update process. If `minAvailable` is set to 1 in `PodDisruptionBudget`, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the `PodDisruptionBudget` field can prevent the node drain.
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
@@ -42,17 +47,34 @@ If you run an Operator or you have configured any application with the pod disru
 
 - [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)
 
+</div>
+
 # Pausing a MachineHealthCheck resource
 
 During the update process, nodes in the cluster might become temporarily unavailable. For worker nodes, the `MachineHealthCheck` resources might identify such nodes as unhealthy and reboot them. To avoid rebooting worker nodes, you must pause all the `MachineHealthCheck` resources before updating the cluster.
 
-<div class="note">
+> [!NOTE]
+> Some `MachineHealthCheck` resources might not need to be paused. If your `MachineHealthCheck` resource relies on unrecoverable conditions, pausing that MHC is unnecessary.
 
-Some `MachineHealthCheck` resources might not need to be paused. If your `MachineHealthCheck` resource relies on unrecoverable conditions, pausing that MHC is unnecessary.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - You installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  List all of the available `MachineHealthCheck` resources that you want to pause by running the following command:
 
@@ -93,19 +115,26 @@ Some `MachineHealthCheck` resources might not need to be paused. If your `Machin
       expectedMachines: 5
     ```
 
-    <div class="important">
+    > [!IMPORTANT]
+    > Resume the machine health checks after updating the cluster. To resume the check, remove the pause annotation from the `MachineHealthCheck` resource by running the following command:
+    >
+    > ``` terminal
+    > $ oc -n openshift-machine-api annotate mhc <mhc-name> cluster.x-k8s.io/paused-
+    > ```
 
-    Resume the machine health checks after updating the cluster. To resume the check, remove the pause annotation from the `MachineHealthCheck` resource by running the following command:
-
-    ``` terminal
-    $ oc -n openshift-machine-api annotate mhc <mhc-name> cluster.x-k8s.io/paused-
-    ```
-
-    </div>
+</div>
 
 # Retrieving a release image digest
 
 In order to update a cluster in a disconnected environment using the `oc adm upgrade` command with the `--to-image` option, you must reference the sha256 digest that corresponds to your targeted release image.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command on a device that is connected to the internet:
 
@@ -117,9 +146,11 @@ In order to update a cluster in a disconnected environment using the `oc adm upg
 
     For `{ARCHITECTURE}`, specify the architecture of the cluster, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -127,15 +158,24 @@ In order to update a cluster in a disconnected environment using the `oc adm upg
     sha256:a8bfba3b6dddd1a2fbbead7dac65fe4fb8335089e4e7cae327f3bad334add31d
     ```
 
+    </div>
+
 2.  Copy the sha256 digest for use when updating your cluster.
+
+</div>
 
 # Update the disconnected cluster
 
 Update the disconnected cluster to the OpenShift Container Platform version that you downloaded the release images for.
 
-<div class="note">
+> [!NOTE]
+> If you have a local OpenShift Update Service, you can update by using the connected web console or CLI instructions instead of this procedure.
 
-If you have a local OpenShift Update Service, you can update by using the connected web console or CLI instructions instead of this procedure.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
@@ -143,11 +183,8 @@ If you have a local OpenShift Update Service, you can update by using the connec
 
 - You applied the release image signature ConfigMap for the new release to your cluster.
 
-  <div class="note">
-
-  The release image signature config map allows the Cluster Version Operator (CVO) to ensure the integrity of release images by verifying that the actual image signatures match the expected signatures.
-
-  </div>
+  > [!NOTE]
+  > The release image signature config map allows the Cluster Version Operator (CVO) to ensure the integrity of release images by verifying that the actual image signatures match the expected signatures.
 
 - You obtained the sha256 digest for your targeted release image.
 
@@ -155,7 +192,15 @@ If you have a local OpenShift Update Service, you can update by using the connec
 
 - You paused all `MachineHealthCheck` resources.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Update the cluster:
 
@@ -176,6 +221,10 @@ If you have a local OpenShift Update Service, you can update by using the connec
 
   <div class="note">
 
+  <div class="title">
+
+  </div>
+
   - See "Mirroring OpenShift Container Platform images" to review how your mirror registry and repository names are defined.
 
   - If you used an `ImageContentSourcePolicy` or `ImageDigestMirrorSet`, you can use the canonical registry and repository names instead of the names you defined. The canonical registry name is `quay.io` and the canonical repository name is `openshift-release-dev/ocp-release`.
@@ -184,9 +233,19 @@ If you have a local OpenShift Update Service, you can update by using the connec
 
   </div>
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Mirroring OpenShift Container Platform images](../../disconnected/updating/mirroring-image-repository.xml#mirroring-ocp-image-repository)
+
+</div>
 
 # Understanding image registry repository mirroring
 
@@ -208,7 +267,10 @@ Repository mirroring in OpenShift Container Platform includes the following attr
 
 - The mirror information you enter is added to the `/etc/containers/registries.conf` file on every node in the OpenShift Container Platform cluster.
 
-- When a node makes a request for an image from the source repository, it tries each mirrored repository in turn until it finds the requested content. If all mirrors fail, the cluster tries the source repository. If successful, the image is pulled to the node.
+- When a node makes a request for an image from the source repository, it first tries each mirrored repository in the configured order until it finds the requested manifest. When a mirror is selected, if the mirror fails with transient error such as `HTTP 5xx` or `network timeout`, a `BLOB_UNKNOWN` error, or an `HTTP 429` error, the node tries the next mirror for the remaining blobs. If all mirrors fail, the cluster attempts the source repository as a fallback, by default. If successful, the image is pulled to the node.
+
+  > [!NOTE]
+  > If the `mirrorSourcePolicy` parameter is set to `NeverContactSource` in the `ImageDigestMirrorSet` or `ImageTagMirrorSet` CR, the node does not perform fallback upon failure. However, by default, the `mirrorSourcePolicy` parameter is set to `AllowContactingSource`, which allows for fallback.
 
 You can set up repository mirroring in the following ways:
 
@@ -220,19 +282,16 @@ You can set up repository mirroring in the following ways:
 
   If you did not configure mirroring during OpenShift Container Platform installation, you can do so postinstallation by using any of the following custom resource (CR) objects:
 
-  - `ImageDigestMirrorSet` (IDMS). This object allows you to pull images from a mirrored registry by using digest specifications. The IDMS CR enables you to set a fall back policy that allows or stops continued attempts to pull from the source registry if the image pull fails.
+  - `ImageDigestMirrorSet` (IDMS). This object allows you to pull images from a mirrored registry by using digest specifications. The IDMS CR enables you to set a fallback policy by using the `mirrorSourcePolicy` field that allows or prevents continued attempts to pull from the source registry if the image pull fails. Use `AllowContactingSource` to allow fallback to the source registry or `NeverContactSource` to prevent it.
 
-  - `ImageTagMirrorSet` (ITMS). This object allows you to pull images from a mirrored registry by using image tags. The ITMS CR enables you to set a fall back policy that allows or stops continued attempts to pull from the source registry if the image pull fails.
+  - `ImageTagMirrorSet` (ITMS). This object allows you to pull images from a mirrored registry by using image tags. The ITMS CR enables you to set a fallback policy by using the `mirrorSourcePolicy` field that allows or prevents continued attempts to pull from the source registry if the image pull fails. Use `AllowContactingSource` to allow fallback to the source registry or `NeverContactSource` to prevent it.
 
-  - `ImageContentSourcePolicy` (ICSP). This object allows you to pull images from a mirrored registry by using digest specifications. The ICSP CR always falls back to the source registry if the mirrors do not work.
+  - `ImageContentSourcePolicy` (ICSP). This object allows you to pull images from a mirrored registry by using digest specifications. The ICSP CR always falls back to the source registry if a pull from a mirrored registry fails.
 
-    <div class="important">
-
-    Using an `ImageContentSourcePolicy` (ICSP) object to configure repository mirroring is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported. It will be removed in a future release and is not recommended for new deployments.
-
-    If you have existing YAML files that you used to create `ImageContentSourcePolicy` objects, you can use the `oc adm migrate icsp` command to convert those files to a `ImageDigestMirrorSet` YAML files. For more information, see "Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring".
-
-    </div>
+    > [!IMPORTANT]
+    > Using an `ImageContentSourcePolicy` (ICSP) object to configure repository mirroring is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported. It will be removed in a future release and is not recommended for new deployments.
+    >
+    > If you have existing YAML files that you used to create `ImageContentSourcePolicy` objects, you can use the `oc adm migrate icsp` command to convert those files to a `ImageDigestMirrorSet` YAML files. For more information, see "Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring".
 
 Each of these custom resource objects identify the following information:
 
@@ -251,6 +310,10 @@ Note the following actions and how they affect node drain behavior:
 - If you modify an ITMS, IDMS, or ICSP CR object, the MCO drains and reboots the node.
 
   <div class="important">
+
+  <div class="title">
+
+  </div>
 
   - When the MCO detects any of the following changes, it applies the update without draining or rebooting the node:
 
@@ -274,19 +337,34 @@ For new clusters, you can use IDMS, ITMS, and ICSP CRs objects as needed. Howeve
 
 If you upgraded a cluster, any existing ICSP objects remain stable, and both IDMS and ICSP objects are supported. Workloads that use ICSP objects continue to function as expected. However, if you want to take advantage of the fallback policies introduced in the IDMS CRs, you can migrate current workloads to IDMS objects by using the `oc adm migrate icsp` command as shown in the **Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring** section that follows. Migrating to IDMS objects does not require a cluster reboot.
 
-<div class="note">
-
-By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project.
-
-However, you can configure a cluster-wide `CRIOCredentialProviderConfig` object to enable project-scoped image pull secrets that you can use with mirrored repositories. For more information, see "Configuring project-scoped image pull secrets for mirrored registries".
-
-</div>
+> [!NOTE]
+> By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project.
+>
+> However, you can configure a cluster-wide `CRIOCredentialProviderConfig` object to enable project-scoped image pull secrets that you can use with mirrored repositories. For more information, see "Configuring project-scoped image pull secrets for mirrored registries".
 
 ## Configure image registry repository mirroring
 
 You can create postinstallation mirror configuration custom resources (CR) to redirect image pull requests from a source image registry to a mirrored image registry.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Configure mirrored repositories, by either:
 
@@ -385,9 +463,11 @@ You can create postinstallation mirror configuration custom resources (CR) to re
         $ oc get node
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -401,15 +481,19 @@ You can create postinstallation mirror configuration custom resources (CR) to re
         master-3.compute.local         Ready                      master   11m  v1.36.3
         ```
 
+        </div>
+
     2.  Start the debugging process to access the node:
 
         ``` terminal
         $ oc debug node/worker-1.compute.local
         ```
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -417,6 +501,8 @@ You can create postinstallation mirror configuration custom resources (CR) to re
         Starting pod/worker-1.compute.local-debug ...
         To use host binaries, run `chroot /host`
         ```
+
+        </div>
 
     3.  Change your root directory to `/host`:
 
@@ -432,9 +518,11 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
         The following output represents a `registries.conf` file where postinstallation mirror configuration CRs are applied.
 
-        <div class="formalpara-title">
+        <div class="formalpara">
 
-        **Example output**
+        <div class="title">
+
+        Example output
 
         </div>
 
@@ -503,6 +591,8 @@ You can create postinstallation mirror configuration custom resources (CR) to re
             pull-from-mirror = "tag-only"
         ```
 
+        </div>
+
         where:
 
         `[[registry]].location = "registry.access.redhat.com/ubi9/ubi-minimal"`
@@ -526,17 +616,27 @@ You can create postinstallation mirror configuration custom resources (CR) to re
         sh-4.2# podman pull --log-level=debug registry.access.redhat.com/ubi9/ubi-minimal@sha256:5cf...
         ```
 
-<div class="formalpara-title">
+</div>
 
-**Troubleshooting**
+<div class="formalpara">
+
+<div class="title">
+
+Troubleshooting
 
 </div>
 
 If the repository mirroring procedure does not work as described, use the following information about how repository mirroring works to help troubleshoot the problem:
 
-- The first working mirror is used to supply the pulled image.
+</div>
 
-- The main registry is only used if no other mirror works.
+- The first mirror that can serve the manifest supplies the manifest. If that mirror cannot serve a layer, the node tries the next configured mirror for that layer.
+
+- If every configured mirror fails, the node contacts the source registry by default, unless the `mirrorSourcePolicy.NeverContactSource` parameter is set in the `ImageDigestMirrorSet` or `ImageTagMirrorSet` CR. By default, the `mirrorSourcePolicy` parameter is set to `AllowContactingSource`, which enables the fall back behavior upon failure.
+
+- If the connection drops after a layer download has started, the node retries that same mirror for the remainder of the download.
+
+- A failed pull lists each mirror that the node tried and the reason that mirror failed.
 
 - From the system context, the `Insecure` flags are used as fallback.
 
@@ -556,9 +656,27 @@ Because the migration does not change the `registries.conf` file, the cluster do
 
 For more information about `ImageDigestMirrorSet` or `ImageTagMirrorSet` objects, see "Configuring image registry repository mirroring" in the previous section.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Access to the cluster as a user with the `cluster-admin` role.
 
 - Ensure that you have `ImageContentSourcePolicy` objects on your cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Use the following command to convert one or more `ImageContentSourcePolicy` YAML files to an `ImageDigestMirrorSet` YAML file:
 
@@ -580,9 +698,11 @@ For more information about `ImageDigestMirrorSet` or `ImageTagMirrorSet` objects
     $ oc adm migrate icsp icsp.yaml icsp-2.yaml --dest-dir idms-files
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -590,6 +710,8 @@ For more information about `ImageDigestMirrorSet` or `ImageTagMirrorSet` objects
     wrote ImageDigestMirrorSet to idms-files/imagedigestmirrorset_ubi8repo.5911620242173376087.yaml
     wrote ImageDigestMirrorSet to idms-files/imagedigestmirrorset_ubi9repo.6456931852378115011.yaml
     ```
+
+    </div>
 
 2.  Create the CR object by running the following command:
 
@@ -607,17 +729,37 @@ For more information about `ImageDigestMirrorSet` or `ImageTagMirrorSet` objects
 
 3.  Remove the ICSP objects after the IDMS objects are rolled out.
 
+</div>
+
 # Widening the scope of the mirror image catalog to reduce the frequency of cluster node reboots
 
 You can scope the mirrored image catalog at the repository level or the wider registry level. A widely scoped `ImageContentSourcePolicy` resource reduces the number of times the nodes need to reboot in response to changes to the resource.
 
 To widen the scope of the mirror image catalog in the `ImageContentSourcePolicy` resource, perform the following procedure.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - Install the OpenShift Container Platform CLI `oc`.
 
 - Log in as a user with `cluster-admin` privileges.
 
 - Configure a mirrored image catalog for use in your disconnected cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Run the following command, specifying values for `<local_registry>`, `<pull_spec>`, and `<pull_secret_file>`:
 
@@ -644,15 +786,27 @@ To widen the scope of the mirror image catalog in the `ImageContentSourcePolicy`
     $ oc apply -f imageContentSourcePolicy.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that `oc apply` successfully applied the change to `ImageContentSourcePolicy`:
 
   ``` terminal
   $ oc get ImageContentSourcePolicy -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -667,6 +821,10 @@ To widen the scope of the mirror image catalog in the `ImageContentSourcePolicy`
           {"apiVersion":"operator.openshift.io/v1alpha1","kind":"ImageContentSourcePolicy","metadata":{"annotations":{},"name":"redhat-operator-index"},"spec":{"repositoryDigestMirrors":[{"mirrors":["local.registry:5000"],"source":"registry.redhat.io"}]}}
   ...
   ```
+
+  </div>
+
+</div>
 
 After you update the `ImageContentSourcePolicy` resource, OpenShift Container Platform deploys the new settings to each node and the cluster starts using the mirrored repository for requests to the source repository.
 

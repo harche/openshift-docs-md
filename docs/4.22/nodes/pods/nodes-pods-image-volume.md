@@ -24,6 +24,14 @@ To mount an Open Container Initiative (OCI)-compliant container image or artifac
 
 You can create the pod directly or use a controlling object, such as a deployment or replica set.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file similar to the following.
 
     ``` yaml
@@ -94,15 +102,27 @@ You can create the pod directly or use a controlling object, such as a deploymen
     $ oc create -f <file_name>.yaml
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Examine the pod to view detailed information about the image pull and mount by using a command similar to the following:
 
   ``` terminal
   $ oc describe pod <pod_name>
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -144,8 +164,12 @@ You can create the pod directly or use a controlling object, such as a deploymen
   # ...
   ```
 
+  </div>
+
   - The `Containers` stanza shows that the two containers were created with the configured volume mounts.
 
   - The `Volumes` stanza shows that the two volumes were created.
 
   - The `Events` stanza shows that the images in the volumes were pulled.
+
+</div>

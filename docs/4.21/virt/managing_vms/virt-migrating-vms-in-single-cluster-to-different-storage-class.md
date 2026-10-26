@@ -1,12 +1,17 @@
 To optimize performance or reduce costs, you can migrate virtual machines (VMs) between storage classes within a single cluster. You can use the OpenShift Container Platform web console to perform these migrations in bulk.
 
-# Migrating VMs in a single cluster to a different storage class by using the web console
+# Migrate VM disks to a different storage class
 
 By using the OpenShift Container Platform web console, you can migrate single-cluster VMs in bulk from one storage class to another storage class.
 
-<div class="note">
+> [!NOTE]
+> When you migrate a virtual machine disk from one storage class to another, the source persistent volume claim (PVC) is not automatically deleted after the migration completes. After you verify that the migration was successful, you must manually delete the source PVC. This behavior is expected and applies only to storage class migrations.
 
-When you migrate a virtual machine disk from one storage class to another, the source persistent volume claim (PVC) is not automatically deleted after the migration completes. After you verify that the migration was successful, you must manually delete the source PVC. This behavior is expected and applies only to storage class migrations.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -35,3 +40,5 @@ When you migrate a virtual machine disk from one storage class to another, the s
 9.  Review the details, and click **Migrate VirtualMachine storage** to start the migration.
 
 10. Optional: Click **Stop** to interrupt the migration, or click **View storage migrations** to see the status of current and previous migrations.
+
+</div>

@@ -17,6 +17,14 @@ LAST SEEN   TYPE      REASON           OBJECT                MESSAGE
 
 To resolve the error, you must disable the user workload monitoring option by creating a config map in the `local-cluster` namespace. You can create the config map either before or after you enable the add-on. The add-on agent reconfigures the HyperShift Operator.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create the following config map:
 
     ``` yaml
@@ -36,9 +44,19 @@ To resolve the error, you must disable the user workload monitoring option by cr
     $ oc apply -f <filename>.yaml
     ```
 
+</div>
+
 # Verifying the status of the hosted control plane feature
 
 The hosted control plane feature is enabled by default. However, if you are not sure that it is enabled, you can run a command to verify its status.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  If the feature is disabled and you want to enable it, enter the following command. Replace `<multiclusterengine>` with the name of your multicluster engine Operator instance:
 
@@ -55,9 +73,11 @@ The hosted control plane feature is enabled by default. However, if you are not 
     $ oc get managedclusteraddons -n local-cluster hypershift-addon
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -65,6 +85,8 @@ The hosted control plane feature is enabled by default. However, if you are not 
     NAME               AVAILABLE   DEGRADED   PROGRESSING
     hypershift-addon   True        False
     ```
+
+    </div>
 
 3.  To avoid a timeout during this process, enter the following commands:
 
@@ -84,9 +106,19 @@ The hosted control plane feature is enabled by default. However, if you are not 
 
         When the process is complete, the `hypershift-addon` managed cluster add-on and the HyperShift Operator are installed, and the `local-cluster` managed cluster is available to host and manage hosted clusters.
 
+</div>
+
 # Configuring the hypershift-addon managed cluster add-on to run on an infrastructure node
 
 By default, no node placement preference is specified for the `hypershift-addon` managed cluster add-on. Consider running the add-ons on the infrastructure nodes, because by doing so, you can prevent incurring billing costs against subscription counts and separate maintenance and management tasks.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the hub cluster.
 
@@ -116,3 +148,5 @@ By default, no node placement preference is specified for the `hypershift-addon`
     ```
 
 4.  Save the changes. The `hypershift-addon` managed cluster add-on is deployed on an infrastructure node for new and existing managed clusters.
+
+</div>

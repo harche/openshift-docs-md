@@ -4,9 +4,27 @@ You can apply global configuration options in OpenShift Container Platform. Oper
 
 You can interact with cluster resources by using the OpenShift CLI (`oc`) tool in OpenShift Container Platform. The cluster resources that you see after running the `oc api-resources` command can be edited.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have access to the web console or you have installed the `oc` CLI tool.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  To see which configuration Operators have been applied, run the following command:
 
@@ -31,3 +49,5 @@ You can interact with cluster resources by using the OpenShift CLI (`oc`) tool i
     ``` terminal
     $ oc edit <resource_name>.config -o yaml
     ```
+
+</div>

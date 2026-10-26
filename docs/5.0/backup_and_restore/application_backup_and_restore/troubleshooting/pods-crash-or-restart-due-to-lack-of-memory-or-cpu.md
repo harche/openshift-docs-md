@@ -10,11 +10,29 @@ requests:
   memory: 128Mi
 ```
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Velero CPU and memory requirements based on collected data](../../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#oadp-velero-cpu-memory-requirements_about-installing-oadp)
+
+</div>
 
 # Set resource requests for a Velero pod
 
 Use the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Set the `cpu` and `memory` resource requests as shown in the following example:
 
@@ -33,6 +51,8 @@ Use the `configuration.velero.podConfig.resourceAllocations` specification field
 
   The `resourceAllocations` listed are for average usage.
 
+</div>
+
 # Velero server terminates with OOMKilled when accessing large Kopia repositories
 
 If the Velero server accesses large Kopia repositories, the Velero pod might crash and report an `OOMKilled` event.
@@ -42,6 +62,14 @@ During operations that access large Kopia repositories, such as backup deletion 
 This issue is typically caused by high memory usage when the Velero server loads many Kopia index blobs and related repository metadata. When the Backup Repository controller accesses a large-scale repository, the required memory can exceed the default limits.
 
 To resolve this issue, identify the peak memory usage and increase the memory limits in the `DataProtectionApplication` (DPA) custom resource (CR) so that the Velero server has enough memory to load the repository metadata.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Check the Velero logs around the time of the `OOMKilled` event for repository-open or index-loading activity.
 
@@ -85,13 +113,20 @@ To resolve this issue, identify the peak memory usage and increase the memory li
 
 7.  Record the final stable memory values for your environment to use for future sizing guidance.
 
+</div>
+
 # Set resource requests for a Restic pod
 
 Use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.
 
-<div class="note">
+> [!NOTE]
+> With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
 
-With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -112,13 +147,20 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
 
   The `resourceAllocations` listed are for average usage.
 
+</div>
+
 # Set resource requests for a nodeAgent pod
 
 Use the `configuration.nodeAgent.podConfig.resourceAllocations` specification field to set specific resource requests for a `nodeAgent` pod.
 
-<div class="note">
+> [!NOTE]
+> With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
 
-With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specification field is removed from Data Protection Application (DPA). Use the `nodeAgent` section with the `uploaderType` field set to `Kopia` instead of `Restic` .
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -170,7 +212,15 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
     $ oc create -f nodeAgent.yaml
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Verify that the `nodeAgent` pods are running by using the following command:
 
@@ -178,9 +228,11 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
     $ oc get pods
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -193,15 +245,19 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
     velero-7b6c7fb8d7-ppc8m                                     1/1     Running     0          4m2s
     ```
 
+    </div>
+
 2.  Check the resource requests by describing one of the `nodeAgent` pod:
 
     ``` terminal
     $ oc describe pod node-agent-hbj9l | grep -C 5 Requests
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -218,3 +274,7 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
           NODE_NAME:            (v1:spec.nodeName)
           VELERO_NAMESPACE:    openshift-adp (v1:metadata.namespace)
     ```
+
+    </div>
+
+</div>

@@ -48,11 +48,8 @@ Express ephemeral storage limits and requests using byte quantities with suffixe
 
 Limits and requests for ephemeral storage are measured in byte quantities. You can express storage as a plain integer or as a fixed-point number by using one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. For example, the following quantities all represent approximately the same value: 128974848, 129e6, 129M, and 123Mi. Pod-level limits aggregate all container limits plus `emptyDir` volumes, enabling proper scheduling and preventing pods from exhausting node storage.
 
-<div class="important">
-
-The suffixes for each byte quantity are case-sensitive. Be sure to use the correct case. Use the case-sensitive "M", such as used in "400M", to set the request at 400 megabytes. Use the case-sensitive "400Mi" to request 400 mebibytes. If you specify "400m" of ephemeral storage, the storage request is only 0.4 bytes.
-
-</div>
+> [!IMPORTANT]
+> The suffixes for each byte quantity are case-sensitive. Be sure to use the correct case. Use the case-sensitive "M", such as used in "400M", to set the request at 400 megabytes. Use the case-sensitive "400Mi" to request 400 mebibytes. If you specify "400m" of ephemeral storage, the storage request is only 0.4 bytes.
 
 The following example configuration file shows a pod with two containers:
 
@@ -66,9 +63,11 @@ The following example configuration file shows a pod with two containers:
 
   - Therefore, the pod has a request of 4GiB of local ephemeral storage, and a limit of 8GiB of local ephemeral storage.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example ephemeral storage configuration with quotas and limits**
+<div class="title">
+
+Example ephemeral storage configuration with quotas and limits
 
 </div>
 
@@ -104,13 +103,23 @@ spec:
       emptyDir: {}
 ```
 
+</div>
+
 - `spec.containers.name.resources.requests.ephemeral-storage`: Specifies the container request for local ephemeral storage.
 
 - `spec.containers.name.resources.limits.ephemeral-storage`: Specifies the container limit for local ephemeral storage.
 
-<!-- -->
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Resources managed by quotas](../applications/quotas/quotas-setting-per-project.xml#quotas-setting-per-project_quotas-setting-per-project)
+
+</div>
 
 ## Ephemeral storage management configuration affects pod scheduling and eviction
 
@@ -128,6 +137,14 @@ When you use the `df` command, the available space for only `/var/lib/kubelet` i
 
 You can use `/bin/df` as a tool to monitor ephemeral storage usage on the volume where ephemeral container data is located, which is `/var/lib/kubelet` and `/var/lib/containers`. The available space for only `/var/lib/kubelet` is shown when you use the `df` command if `/var/lib/containers` is placed on a separate disk by the cluster administrator.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To show the human-readable values of used and available space in `/var/lib`, run the following command:
 
   ``` terminal
@@ -136,9 +153,11 @@ You can use `/bin/df` as a tool to monitor ephemeral storage usage on the volume
 
   The output shows the ephemeral storage usage in `/var/lib`:
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -146,3 +165,7 @@ You can use `/bin/df` as a tool to monitor ephemeral storage usage on the volume
   Filesystem  Size  Used Avail Use% Mounted on
   /dev/disk/by-partuuid/4cd1448a-01    69G   32G   34G  49% /
   ```
+
+  </div>
+
+</div>

@@ -14,9 +14,19 @@ The Manila CSI Driver Operator creates the required storage class that is needed
 Manila CSI driver
 The Manila CSI driver enables you to create and mount Manila PVs. The driver is installed in the `openshift-manila-csi-driver` namespace.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+</div>
 
 # About CSI
 
@@ -39,13 +49,20 @@ To take snapshots of persistent volumes (PVs) and revert volumes to snapshots, y
 FSGroups are not supported
 Since Manila CSI provides shared file systems for access by multiple readers and multiple writers, it does not support the use of FSGroups. This is true even for persistent volumes created with the ReadWriteOnce access mode. It is therefore important not to specify the `fsType` attribute in any storage class that you manually create for use with Manila CSI Driver.
 
-<div class="important">
+> [!IMPORTANT]
+> In Red Hat OpenStack Platform 16.x and 17.x, the Shared File Systems service (Manila) with CephFS through NFS fully supports serving shares to OpenShift Container Platform through the Manila CSI. However, this solution is not intended for massive scale. Be sure to review important recommendations in "CephFS NFS Manila-CSI Workload Recommendations for Red Hat OpenStack Platform".
 
-In Red Hat OpenStack Platform 16.x and 17.x, the Shared File Systems service (Manila) with CephFS through NFS fully supports serving shares to OpenShift Container Platform through the Manila CSI. However, this solution is not intended for massive scale. Be sure to review important recommendations in "CephFS NFS Manila-CSI Workload Recommendations for Red Hat OpenStack Platform".
+<div>
+
+<div class="title">
+
+Additional resources
 
 </div>
 
 - [CephFS NFS Manila-CSI Workload Recommendations for Red Hat OpenStack Platform](https://access.redhat.com/articles/6667651)
+
+</div>
 
 # Manila CSI volumes dynamic provisioning
 
@@ -55,23 +72,35 @@ The YAML files that are created are completely decoupled from Manila and from it
 
 You can use the same pod and persistent volume claim (PVC) definitions on-premise that you use with OpenShift Container Platform on AWS, Google Cloud, Azure, and other platforms, with the exception of the storage class reference in the PVC definition.
 
-<div class="important">
+> [!IMPORTANT]
+> By default, the access rule that is assigned to a volume is `0.0.0.0/0`, which allows access from all IPv4 clients. To limit client access, create custom storage classes that use specific client IP addresses or subnets. For more information, see "Customizing Manila share access rules".
 
-By default, the access rule that is assigned to a volume is `0.0.0.0/0`, which allows access from all IPv4 clients. To limit client access, create custom storage classes that use specific client IP addresses or subnets. For more information, see "Customizing Manila share access rules".
-
-</div>
-
-<div class="note">
-
-Manila service is optional. If the service is not enabled in Red Hat OpenStack Platform (RHOSP), the Manila CSI driver is not installed and the storage classes for Manila are not created.
-
-</div>
+> [!NOTE]
+> Manila service is optional. If the service is not enabled in Red Hat OpenStack Platform (RHOSP), the Manila CSI driver is not installed and the storage classes for Manila are not created.
 
 ## Dynamically provisioning Manila CSI volumes by using the web console
 
 To dynamically provision shared storage volumes using the OpenShift Container Platform web console, create a persistent volume claim (PVC) by selecting a Manila CSI storage class.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - RHOSP is deployed with appropriate Manila share infrastructure so that it can be used to dynamically provision and mount volumes in OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
@@ -85,35 +114,58 @@ To dynamically provision shared storage volumes using the OpenShift Container Pl
 
     3.  Select the access mode to specify read and write access for the PVC you are creating.
 
-        <div class="important">
-
-        Use RWX if you want the PV that fulfills this PVC to be mounted to multiple pods on multiple nodes in the cluster.
-
-        </div>
+        > [!IMPORTANT]
+        > Use RWX if you want the PV that fulfills this PVC to be mounted to multiple pods on multiple nodes in the cluster.
 
 4.  Define the size of the storage claim.
 
 5.  Click **Create** to create the PVC and generate a PV.
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 You can now use the new PVC to configure a pod.
 
+</div>
+
 ## Dynamically provisioning Manila CSI volumes by by using the CLI
 
 To dynamically provision shared storage volumes using the CLI, create and apply a persistent volume claim (PVC) YAML file that references a Manila CSI storage class.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - RHOSP is deployed with appropriate Manila share infrastructure so that it can be used to dynamically provision and mount volumes in OpenShift Container Platform.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create and save a file with the `PersistentVolumeClaim` object described by the following YAML:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **pvc-manila.yaml**
+    <div class="title">
+
+    pvc-manila.yaml
 
     </div>
 
@@ -130,6 +182,8 @@ To dynamically provision shared storage volumes using the CLI, create and apply 
           storage: 10Gi
       storageClassName: csi-manila-gold
     ```
+
+    </div>
 
     - `spec.accessModes`: Use RWX if you want the PV that fulfills this PVC to be mounted to multiple pods on multiple nodes in the cluster.
 
@@ -151,13 +205,19 @@ To dynamically provision shared storage volumes using the CLI, create and apply 
 
     The `pvc-manila` shows that it is `Bound`.
 
-<div class="formalpara-title">
+</div>
 
-**Results**
+<div class="formalpara">
+
+<div class="title">
+
+Results
 
 </div>
 
 You can now use the new PVC to configure a pod.
+
+</div>
 
 # Customizing Manila share access rules
 
@@ -165,15 +225,20 @@ To improve storage security by controlling which clients can mount volumes, crea
 
 By default, OpenShift Container Platform creates Manila storage classes that provide access to all IPv4 clients. To limit client access, you can define custom storage classes that use specific client IP addresses or subnets by using the `nfs-ShareClient` parameter.
 
-<div class="important">
+> [!IMPORTANT]
+> When using custom storage classes with restricted access rules, ensure that:
+>
+> - The specified IP addresses or subnets include all OpenShift Container Platform nodes that need to access the storage.
+>
+> - The Manila service in RHOSP supports the share type specified in the storage class.
+>
+> - Network connectivity exists between the allowed clients and the Manila share servers.
 
-When using custom storage classes with restricted access rules, ensure that:
+<div>
 
-- The specified IP addresses or subnets include all OpenShift Container Platform nodes that need to access the storage.
+<div class="title">
 
-- The Manila service in RHOSP supports the share type specified in the storage class.
-
-- Network connectivity exists between the allowed clients and the Manila share servers.
+Prerequisites
 
 </div>
 
@@ -181,11 +246,23 @@ When using custom storage classes with restricted access rules, ensure that:
 
 - Access to a cluster with administrator privileges.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 1.  Create a YAML file for your custom storage class based on the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example custom storage class file**
+    <div class="title">
+
+    Example custom storage class file
 
     </div>
 
@@ -208,6 +285,8 @@ When using custom storage classes with restricted access rules, ensure that:
       csi.storage.k8s.io/node-publish-secret-namespace: openshift-manila-csi-driver
     allowVolumeExpansion: true
     ```
+
+    </div>
 
     - `metadata.name`: Specifies a descriptive name for your custom storage class.
 
@@ -237,9 +316,11 @@ When using custom storage classes with restricted access rules, ensure that:
     $ oc get storageclass csi-manila-gold-restricted
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -248,11 +329,15 @@ When using custom storage classes with restricted access rules, ensure that:
     csi-manila-gold-restricted  manila.csi.openstack.org   Delete          Immediate           true                   43m
     ```
 
+    </div>
+
 4.  Create a persistent volume claim (PVC) that uses the custom storage class based on the following example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example PVC file**
+    <div class="title">
+
+    Example PVC file
 
     </div>
 
@@ -270,6 +355,8 @@ When using custom storage classes with restricted access rules, ensure that:
       storageClassName: csi-manila-gold-restricted
     ```
 
+    </div>
+
     `spec.storageClassName` is the name of your custom storage class that has restricted access. In this example, the name is `csi-manila-gold-restricted`.
 
 5.  Apply the PVC from the file by running the following command:
@@ -277,3 +364,5 @@ When using custom storage classes with restricted access rules, ensure that:
     ``` terminal
     $ oc apply -f pvc-manila-restricted.yaml
     ```
+
+</div>

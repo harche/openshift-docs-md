@@ -1,10 +1,7 @@
 You can update Operators previously installed with Operator Lifecycle Manager (OLM) on your OpenShift Container Platform cluster.
 
-<div class="note">
-
-For information on how OLM handles updates for installed Operators colocated in the same namespace, as well as an alternative method for installing Operators with custom global Operator groups, see "Multitenancy and Operator colocation".
-
-</div>
+> [!NOTE]
+> For information on how OLM handles updates for installed Operators colocated in the same namespace, as well as an alternative method for installing Operators with custom global Operator groups, see "Multitenancy and Operator colocation".
 
 # About preparing for an Operator update
 
@@ -12,29 +9,51 @@ You can change the update channel to start tracking and receiving updates from a
 
 The names of update channels in a subscription can differ between Operators, but the naming scheme typically follows a common convention within a given Operator. For example, channel names might follow a minor release update stream for the application provided by the Operator (`1.2`, `1.3`) or a release frequency (`stable`, `fast`).
 
-<div class="note">
-
-You cannot change installed Operators to a channel that is older than the current channel.
-
-</div>
+> [!NOTE]
+> You cannot change installed Operators to a channel that is older than the current channel.
 
 Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators.
 
 You can use these tools to search for Operators and verify the available Operator versions per update channel across different releases of OpenShift Container Platform. Operators managed by Cluster Version Operator (CVO) are not included.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/)
+
+</div>
 
 # Changing the update channel for an Operator
 
 To change the update channel for an installed Operator, you can use the OpenShift Container Platform web console. The update channel determines which Operator versions your subscription tracks and receives.
 
-<div class="tip">
+> [!TIP]
+> If the approval strategy in the subscription is set to **Automatic**, the update process initiates as soon as a new Operator version is available in the selected channel. If the approval strategy is set to **Manual**, you must manually approve pending updates.
 
-If the approval strategy in the subscription is set to **Automatic**, the update process initiates as soon as a new Operator version is available in the selected channel. If the approval strategy is set to **Manual**, you must manually approve pending updates.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - An Operator previously installed using Operator Lifecycle Manager (OLM).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -50,11 +69,31 @@ If the approval strategy in the subscription is set to **Automatic**, the update
 
     For subscriptions with a **Manual** approval strategy, you can manually approve the update from the **Subscription** tab.
 
+</div>
+
 # Approving a pending Operator update manually
 
 If an installed Operator has the approval strategy in its subscription set to **Manual**, you must manually approve the update before installation can begin. Manual approval reviews the changes and control when updates are applied to prevent unexpected downtime.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - An Operator previously installed using Operator Lifecycle Manager (OLM).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -67,6 +106,8 @@ If an installed Operator has the approval strategy in its subscription set to **
 5.  Review the resources that are listed as available for update. When satisfied, click **Approve**.
 
 6.  Navigate back to the **Ecosystem** → **Installed Operators** page to monitor the progress of the update. When complete, the status changes to **Succeeded** and **Up to date**.
+
+</div>
 
 # Additional resources
 

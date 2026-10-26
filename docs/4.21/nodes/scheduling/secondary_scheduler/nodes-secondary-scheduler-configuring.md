@@ -4,9 +4,27 @@ You can run a custom secondary scheduler in OpenShift Container Platform by inst
 
 You can install the Secondary Scheduler Operator for Red Hat OpenShift through the OpenShift Container Platform web console to configure a secondary scheduler.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -38,21 +56,49 @@ You can install the Secondary Scheduler Operator for Red Hat OpenShift through t
 
         4.  Click **Install**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Verify that **Secondary Scheduler Operator for Red Hat OpenShift** is listed with a **Status** of **Succeeded**.
 
+</div>
+
 # Deploy a secondary scheduler
 
 After you have installed the Secondary Scheduler Operator, you can deploy a secondary scheduler to apply custom placement logic for specific pods.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
 - You have access to the OpenShift Container Platform web console.
 
 - The Secondary Scheduler Operator for Red Hat OpenShift is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -118,17 +164,24 @@ After you have installed the Secondary Scheduler Operator, you can deploy a seco
 
     6.  In the **Scheduler Image** field, enter the image name for your custom scheduler.
 
-        <div class="important">
-
-        Red Hat does not directly support the functionality of your custom secondary scheduler.
-
-        </div>
+        > [!IMPORTANT]
+        > Red Hat does not directly support the functionality of your custom secondary scheduler.
 
     7.  Click **Create**.
+
+</div>
 
 # Schedule a pod using the secondary scheduler
 
 To schedule a pod by using the secondary scheduler, set the `schedulerName` field in the pod definition.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
 
@@ -137,6 +190,16 @@ To schedule a pod by using the secondary scheduler, set the `schedulerName` fiel
 - The Secondary Scheduler Operator for Red Hat OpenShift is installed.
 
 - A secondary scheduler is configured.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -173,7 +236,15 @@ To schedule a pod by using the secondary scheduler, set the `schedulerName` fiel
 
 5.  Click **Create**.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Log in to the OpenShift CLI.
 
@@ -183,9 +254,11 @@ To schedule a pod by using the secondary scheduler, set the `schedulerName` fiel
     $ oc describe pod nginx -n default
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -202,12 +275,13 @@ To schedule a pod by using the secondary scheduler, set the `schedulerName` fiel
     ...
     ```
 
+    </div>
+
 3.  In the events table, find the event with a message similar to `Successfully assigned <namespace>/<pod_name> to <node_name>`.
 
 4.  In the "From" column, verify that the event was generated from the secondary scheduler and not the default scheduler.
 
-    <div class="note">
+    > [!NOTE]
+    > You can also check the `secondary-scheduler-*` pod logs in the `openshift-secondary-scheduler-namespace` to verify that the pod was scheduled by the secondary scheduler.
 
-    You can also check the `secondary-scheduler-*` pod logs in the `openshift-secondary-scheduler-namespace` to verify that the pod was scheduled by the secondary scheduler.
-
-    </div>
+</div>

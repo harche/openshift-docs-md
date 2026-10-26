@@ -10,9 +10,11 @@ The `ConfigMap` object provides mechanisms to inject containers with configurati
 
 The `ConfigMap` object holds key-value pairs of configuration data that can be consumed in pods or used to store configuration data for system components such as controllers. For example:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**`ConfigMap` Object Definition**
+<div class="title">
+
+`ConfigMap` Object Definition
 
 </div>
 
@@ -34,6 +36,8 @@ binaryData:
   bar: L3Jvb3QvMTAw
 ```
 
+</div>
+
 where:
 
 `data`
@@ -42,11 +46,8 @@ Specifies the configuration data.
 `binaryData.bar`
 Specifies a file that contains non-UTF8 data, for example, a binary Java keystore file. Enter the file data in Base 64.
 
-<div class="note">
-
-You can use the `binaryData` field when you create a config map from a binary file, such as an image.
-
-</div>
+> [!NOTE]
+> You can use the `binaryData` field when you create a config map from a binary file, such as an image.
 
 Configuration data can be consumed in pods in a variety of ways. A config map can be used to:
 
@@ -78,6 +79,14 @@ This includes any pods created by using the CLI, or indirectly from a replicatio
 
 To provide configuration data to your pods, you can create a config map by using the OpenShift Container Platform web console. You can use config maps to define key-value pairs that contain information for your applications.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To create a config map as a cluster administrator:
 
   1.  In the Administrator perspective, select `Workloads` → `Config Maps`.
@@ -98,15 +107,27 @@ To provide configuration data to your pods, you can create a config map by using
 
   4.  Select **Create**.
 
+</div>
+
 # Create a config map by using the CLI
 
 To provide configuration data to your pods, you can use the OpenShift CLI (`oc`) to create a config map from directories, specific files, or literal values.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a config map:
 
   ``` terminal
   $ oc create configmap <configmap_name> [options]
   ```
+
+</div>
 
 ## Creating a config map from a directory
 
@@ -142,6 +163,14 @@ ui.properties:          83 bytes
 
 You can see that the two keys in the map are created from the file names in the directory specified in the command. The content of those keys might be large, so the output of `oc describe` only shows the names of the keys and their sizes.
 
+<div>
+
+<div class="title">
+
+Prerequisite
+
+</div>
+
 - You must have a directory with files that contain the data you want to populate a config map with.
 
   The following procedure uses these example files: `game.properties` and `ui.properties`:
@@ -150,9 +179,11 @@ You can see that the two keys in the map are created from the file names in the 
   $ cat example-files/game.properties
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -166,13 +197,17 @@ You can see that the two keys in the map are created from the file names in the 
   secret.code.lives=30
   ```
 
+  </div>
+
   ``` terminal
   $ cat example-files/ui.properties
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -183,7 +218,17 @@ You can see that the two keys in the map are created from the file names in the 
   how.nice.to.look=fairlyNice
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a config map holding the content of each file in this directory by entering the following command:
 
@@ -192,7 +237,15 @@ You can see that the two keys in the map are created from the file names in the 
       --from-file=example-files/
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Enter the `oc get` command for the object with the `-o` option to see the values of the keys:
 
@@ -200,9 +253,11 @@ You can see that the two keys in the map are created from the file names in the 
   $ oc get configmaps game-config -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -232,6 +287,10 @@ You can see that the two keys in the map are created from the file names in the 
     uid: 30944725-d66e-11e5-8cd0-68f728db1985
   ```
 
+  </div>
+
+</div>
+
 ## Creating a config map from a file
 
 You can create a config map from a file, which you can use to quickly add multiple `key=value` pairs for applications to read.
@@ -244,9 +303,14 @@ $ oc create configmap game-config-3 --from-file=game-special-key=example-files/g
 
 You can pass the `--from-file` option multiple times to the CLI.
 
-<div class="note">
+> [!NOTE]
+> If you create a config map from a file, you can include files containing non-UTF8 data that are placed in this field without corrupting the non-UTF8 data. OpenShift Container Platform detects binary files and transparently encodes the file as `MIME`. On the server, the `MIME` payload is decoded and stored without corrupting the data.
 
-If you create a config map from a file, you can include files containing non-UTF8 data that are placed in this field without corrupting the non-UTF8 data. OpenShift Container Platform detects binary files and transparently encodes the file as `MIME`. On the server, the `MIME` payload is decoded and stored without corrupting the data.
+<div>
+
+<div class="title">
+
+Prerequisite
 
 </div>
 
@@ -258,9 +322,11 @@ If you create a config map from a file, you can include files containing non-UTF
   $ cat example-files/game.properties
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -274,13 +340,17 @@ If you create a config map from a file, you can include files containing non-UTF
   secret.code.lives=30
   ```
 
+  </div>
+
   ``` terminal
   $ cat example-files/ui.properties
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -291,7 +361,17 @@ If you create a config map from a file, you can include files containing non-UTF
   how.nice.to.look=fairlyNice
   ```
 
-<!-- -->
+  </div>
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a config map by specifying a specific file:
 
@@ -308,7 +388,15 @@ If you create a config map from a file, you can include files containing non-UTF
       --from-file=game-special-key=example-files/game.properties
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Enter the `oc get` command for the object with the `-o` option to see the values of the keys from the file:
 
@@ -316,9 +404,11 @@ If you create a config map from a file, you can include files containing non-UTF
   $ oc get configmaps game-config-2 -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -348,15 +438,19 @@ If you create a config map from a file, you can include files containing non-UTF
     uid: b4952dc3-d670-11e5-8cd0-68f728db1985
   ```
 
+  </div>
+
 - Enter the `oc get` command for the object with the `-o` option to see the values of the keys from the key-value pair:
 
   ``` terminal
   $ oc get configmaps game-config-3 -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -381,11 +475,23 @@ If you create a config map from a file, you can include files containing non-UTF
     uid: 05f8da22-d671-11e5-8cd0-68f728db1985
   ```
 
+  </div>
+
   You set the `game-special-key` key in the preceding step.
+
+</div>
 
 ## Creating a config map from literal values
 
 You can create a config map by passing literal values in the `key=value` syntax, which allows literal values to be supplied directly on the command line.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - Create a config map by specifying a literal value:
 
@@ -395,7 +501,15 @@ You can create a config map by passing literal values in the `key=value` syntax,
       --from-literal=special.type=charm
   ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 - Enter the `oc get` command for the object with the `-o` option to see the values of the keys:
 
@@ -403,9 +517,11 @@ You can create a config map by passing literal values in the `key=value` syntax,
   $ oc get configmaps special-config -o yaml
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -423,6 +539,10 @@ You can create a config map by passing literal values in the `key=value` syntax,
     selflink: /api/v1/namespaces/default/configmaps/special-config
     uid: dadce046-d673-11e5-8cd0-68f728db1985
   ```
+
+  </div>
+
+</div>
 
 ## Populate environment variables in containers by using config maps
 
@@ -475,11 +595,21 @@ Specifies the project in which the config map resides. Config maps can only be r
 `data`
 Specifies the environment variables to inject.
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - You can consume the keys of this `ConfigMap` in a pod using `configMapKeyRef` sections.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Sample `Pod` specification configured to inject specific environment variables**
+  <div class="title">
+
+  Sample `Pod` specification configured to inject specific environment variables
 
   </div>
 
@@ -519,6 +649,8 @@ Specifies the environment variables to inject.
     restartPolicy: Never
   ```
 
+  </div>
+
   where:
 
   `spec.containers.env`
@@ -544,11 +676,10 @@ Specifies the environment variables to inject.
       SPECIAL_LEVEL_KEY=very
       log_level=INFO
 
-  <div class="note">
+  > [!NOTE]
+  > `SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
 
-  `SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
-
-  </div>
+</div>
 
 ## Set command-line arguments for container commands with config maps
 
@@ -567,11 +698,21 @@ data:
   special.type: charm
 ```
 
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
 - To inject values into a command in a container, you must consume the keys you want to use as environment variables. Then you can refer to them in a container’s command using the `$(VAR_NAME)` syntax.
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Sample pod specification configured to inject specific environment variables**
+  <div class="title">
+
+  Sample pod specification configured to inject specific environment variables
 
   </div>
 
@@ -607,6 +748,8 @@ data:
     restartPolicy: Never
   ```
 
+  </div>
+
   where:
 
   `spec.containers.command`
@@ -615,6 +758,8 @@ data:
   When this pod is run, the output from the echo command run in the test-container container is as follows:
 
       very charm
+
+</div>
 
 ## Inject content into a volume by using config maps
 
@@ -634,6 +779,14 @@ data:
 ```
 
 The following procedure describes options for injecting content into a volume by using config maps.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - The most basic way to inject content into a volume by using a config map is to populate the volume with files where the key is the file name and the content of the file is the value of the key:
 
@@ -713,3 +866,5 @@ The following procedure describes options for injecting content into a volume by
   Specifies the path to config map key.
 
   When this pod is run, the output of the cat command is `very`.
+
+</div>

@@ -14,11 +14,29 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
 You can restart the cluster after a graceful shutdown by powering on nodes, uncordoning schedulable nodes, and approving pending certificate signing requests (CSRs) if nodes are not ready. The cluster returns to normal operations after all nodes and Operators are healthy.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have gracefully shut down your cluster.
 
+</div>
+
 If your cluster fails to recover, follow the steps in "Restoring to an earlier cluster state".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Turn on the control plane nodes.
 
@@ -89,9 +107,11 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
         - Requested Extensions (Extended Key Usage): Must list `TLS Web Client Authentication`.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -108,6 +128,8 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
                           X509v3 Extended Key Usage:
                               TLS Web Client Authentication
           ```
+
+          </div>
 
           The process verifies that the certificate is allowed to be used as a client credential for the node.
 
@@ -156,9 +178,11 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
 
         - Subject Alternative Name (SAN): For serving certificates, this field must contain the correct internal DNS hostname and the internal IP address of the respective compute node.
 
-          <div class="formalpara-title">
+          <div class="formalpara">
 
-          **Example output**
+          <div class="title">
+
+          Example output
 
           </div>
 
@@ -178,6 +202,8 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
                               DNS:worker-0.example.com, IP Address:10.0.12.34
           ```
 
+          </div>
+
           This process verifies the validity of the certificate as a server credential for cluster communication.
 
     3.  Approve each valid CSR by running the following command:
@@ -192,7 +218,15 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
     $ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm uncordon ${node} ; done
     ```
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
 
 1.  Check that there are no degraded cluster Operators by running the following command:
 
@@ -200,9 +234,11 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
     $ oc get clusteroperators
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -219,15 +255,19 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
     ...
     ```
 
+    </div>
+
 2.  Check that all nodes are in the `Ready` state by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -240,6 +280,8 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
     ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.34.2
     ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.34.2
     ```
+
+    </div>
 
     If the cluster did not start properly, you might need to restore your cluster by using an etcd backup. For more information, see "Restoring to an earlier cluster state".
 
@@ -277,6 +319,18 @@ If your cluster fails to recover, follow the steps in "Restoring to an earlier c
     $ oc logs -n openshift-kube-controller-manager -l app=kube-controller-manager
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Shutting down the cluster gracefully](../backup_and_restore/graceful-cluster-shutdown.xml#graceful-shutdown-cluster)
 
 - [Restoring to an earlier cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+</div>

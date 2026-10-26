@@ -28,9 +28,17 @@ Submit a support case to resolve a cluster issue that is affecting the ability o
 
 You can submit a support case to Red Hat Support by using the Customer Support page. Include data that you collected about your issue with your support request.
 
-# Creating a Jira issue
+# Report a bug in OpenShift Virtualization
 
 To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Access the [RHIR](https://access.redhat.com/labs/rhir/?product=cnv).
 
@@ -52,9 +60,19 @@ To report a bug, use the Red Hat Issue Router (RHIR), which is available in the
 
 6.  Review the details of the bug you created.
 
-# Provide feedback on OpenShift Virtualization documentation
+</div>
+
+# Report a OpenShift Virtualization documentation issue
 
 To report an error or request an enhancement in the documentation, log in to your Red Hat Jira account and submit an issue. If you do not have a Red Hat Jira account, you are prompted to create an account.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?priority=1003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563) and in the **Component** field, select **CNV Documentation**.
 
@@ -64,22 +82,24 @@ To report an error or request an enhancement in the documentation, log in to you
 
 4.  Click **Create**.
 
+</div>
+
 # Web console monitoring
 
 Monitor cluster and virtual machine (VM) health with the OpenShift Container Platform web console.
 
 The OpenShift Container Platform web console displays resource usage, alerts, events, and trends for your cluster and for OpenShift Virtualization components and resources.
 
-| Page                                                                                        | Description                                                    |
-|---------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| **Overview** page                                                                           | Cluster details, status, alerts, inventory, and resource usage |
-| **Virtualization** → **Overview** tab                                                       | OpenShift Virtualization resources, usage, alerts, and status  |
-| **Virtualization** → **Top consumers** tab                                                  | Top consumers of CPU, memory, and storage                      |
-| **Virtualization** → **Migrations** tab                                                     | Progress of live migrations                                    |
-| **Virtualization** → **VirtualMachines** tab                                                | CPU, memory, and storage usage summary                         |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
+| Page | Description |
+|----|----|
+| **Overview** page | Cluster details, status, alerts, inventory, and resource usage |
+| **Virtualization** → **Overview** tab | OpenShift Virtualization resources, usage, alerts, and status |
+| **Virtualization** → **Top consumers** tab | Top consumers of CPU, memory, and storage |
+| **Virtualization** → **Migrations** tab | Progress of live migrations |
+| **Virtualization** → **VirtualMachines** tab | CPU, memory, and storage usage summary |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Metrics** tab | VM resource usage, storage, network, and migration |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Events** tab | List of VM events |
+| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status |
 
 Web console pages for monitoring and troubleshooting
 
@@ -89,6 +109,6 @@ Web console pages for monitoring and troubleshooting
 
 - [Collecting data about your environment](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-data-about-your-environment_virt-collecting-virt-data)
 
-- [Using the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
+- [Use the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
 
 - [Red Hat Jira account](https://redhat.atlassian.net/jira)

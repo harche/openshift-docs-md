@@ -30,13 +30,10 @@ Default SCCs are created during installation and when you install some Operators
 
 For information about default security context constraints, see [Default security context constraints](../../../authentication/managing-security-context-constraints.xml#default-sccs_configuring-internal-oauth).
 
-<div class="important">
-
-Do not modify the default SCCs. Customizing the default SCCs can lead to issues when some of the platform pods deploy or OpenShift Container Platform is upgraded. Additionally, the default SCC values are reset to the defaults during some cluster upgrades, which discards all customizations to those SCCs.
-
-Instead of modifying the default SCCs, create and modify your own SCCs as needed. For detailed steps, see [Creating security context constraints](../../../authentication/managing-security-context-constraints.xml#security-context-constraints-creating_configuring-internal-oauth).
-
-</div>
+> [!IMPORTANT]
+> Do not modify the default SCCs. Customizing the default SCCs can lead to issues when some of the platform pods deploy or OpenShift Container Platform is upgraded. Additionally, the default SCC values are reset to the defaults during some cluster upgrades, which discards all customizations to those SCCs.
+>
+> Instead of modifying the default SCCs, create and modify your own SCCs as needed. For detailed steps, see [Creating security context constraints](../../../authentication/managing-security-context-constraints.xml#security-context-constraints-creating_configuring-internal-oauth).
 
 You can use the following basic SCCs:
 
@@ -52,9 +49,11 @@ You can examine the `restricted-v2` SCC by running the following command:
 $ oc describe scc restricted-v2
 ```
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example output**
+<div class="title">
+
+Example output
 
 </div>
 
@@ -94,6 +93,8 @@ Settings:
   Supplemental Groups Strategy: RunAsAny
     Ranges:                                     <none>
 ```
+
+</div>
 
 The `restricted-v2` SCC explicitly denies everything except what it explicitly allows. The following settings define the allowed capabilities and security restrictions:
 

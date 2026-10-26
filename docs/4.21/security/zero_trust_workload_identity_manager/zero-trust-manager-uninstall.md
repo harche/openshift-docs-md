@@ -4,11 +4,29 @@ To remove the Zero Trust Workload Identity Manager from OpenShift Container Plat
 
 To remove the Zero Trust Workload Identity Manager from your cluster, uninstall the Operator using the web console. This helps you clean up resources and delete the service from your environment.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have access to the OpenShift Container Platform web console.
 
 - The Zero Trust Workload Identity Manager is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Log in to the OpenShift Container Platform web console.
 
@@ -20,15 +38,27 @@ To remove the Zero Trust Workload Identity Manager from your cluster, uninstall 
 
     3.  In the confirmation dialog, click **Uninstall**.
 
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
 - Verify that the Zero Trust Workload Identity Manager Operator is uninstalled.
 
   ``` terminal
   $ oc get csv -n openshift-zero-trust-workload-identity
   ```
 
-  <div class="formalpara-title">
+  <div class="formalpara">
 
-  **Example output**
+  <div class="title">
+
+  Example output
 
   </div>
 
@@ -36,11 +66,33 @@ To remove the Zero Trust Workload Identity Manager from your cluster, uninstall 
   No resources found in openshift-zero-trust-workload-identity namespace.
   ```
 
+  </div>
+
+</div>
+
 # Uninstall Zero Trust Workload Identity Manager resources by using the CLI
 
 Remove Zero Trust Workload Identity Manager resources from your cluster using the CLI. This deletes the remaining operands and definitions to help ensure a clean environment after you uninstall the product.
 
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
 - You have access to the cluster with `cluster-admin` privileges.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Uninstall the operands by running each of the following commands:
 
@@ -154,10 +206,16 @@ Remove Zero Trust Workload Identity Manager resources from your cluster using th
         $ oc delete crd zerotrustworkloadidentitymanagers.operator.openshift.io
         ```
 
-<div class="formalpara-title">
+</div>
 
-**Verification**
+<div class="formalpara">
+
+<div class="title">
+
+Verification
 
 </div>
 
 To verify that the resources have been deleted, replace each `oc delete` command with `oc get`, and then run the command. If no resources are returned, the deletion was successful.
+
+</div>

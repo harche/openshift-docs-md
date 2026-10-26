@@ -1,8 +1,16 @@
 If a global proxy is configured on your OpenShift Container Platform cluster, Operator Lifecycle Manager (OLM) automatically configures Operators that it manages with the cluster-wide proxy. However, you can also configure installed Operators to override the global proxy or inject a custom CA certificate.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Configuring the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
 
-<!-- -->
+</div>
 
 - [Configuring a custom PKI (custom CA certificate)](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki)
 
@@ -10,13 +18,28 @@ If a global proxy is configured on your OpenShift Container Platform cluster, Op
 
 If a cluster-wide egress proxy is configured, Operators running with Operator Lifecycle Manager (OLM) inherit the cluster-wide proxy settings on their deployments. Cluster administrators can also override these proxy settings by configuring the subscription of an Operator.
 
-<div class="important">
+> [!IMPORTANT]
+> Operators must handle setting environment variables for proxy settings in the pods for any managed Operands.
 
-Operators must handle setting environment variables for proxy settings in the pods for any managed Operands.
+<div>
+
+<div class="title">
+
+Prerequisites
 
 </div>
 
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Navigate in the web console to the **Ecosystem → Software Catalog** page.
 
@@ -32,9 +55,11 @@ Operators must handle setting environment variables for proxy settings in the po
 
     For example:
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **`Subscription` object with proxy setting overrides**
+    <div class="title">
+
+    `Subscription` object with proxy setting overrides
 
     </div>
 
@@ -61,11 +86,10 @@ Operators must handle setting environment variables for proxy settings in the po
       startingCSV: etcdoperator.v0.9.4-clusterwide
     ```
 
-    <div class="note">
-
-    These environment variables can also be unset using an empty value to remove any previously set cluster-wide or custom proxy settings.
-
     </div>
+
+    > [!NOTE]
+    > These environment variables can also be unset using an empty value to remove any previously set cluster-wide or custom proxy settings.
 
     OLM handles these environment variables as a unit; if at least one of them is set, all three are considered overridden and the cluster-wide defaults are not used for the deployments of the subscribed Operator.
 
@@ -79,9 +103,11 @@ Operators must handle setting environment variables for proxy settings in the po
         | grep -i "PROXY" -A 2
     ```
 
-    <div class="formalpara-title">
+    <div class="formalpara">
 
-    **Example output**
+    <div class="title">
+
+    Example output
 
     </div>
 
@@ -96,15 +122,37 @@ Operators must handle setting environment variables for proxy settings in the po
     ...
     ```
 
+    </div>
+
+</div>
+
 # Injecting a custom CA certificate
 
 When a cluster administrator adds a custom CA certificate to a cluster using a config map, the Cluster Network Operator merges the user-provided certificates and system CA certificates into a single bundle. You can inject this merged bundle into your Operator running on Operator Lifecycle Manager (OLM), which is useful if you have a man-in-the-middle HTTPS proxy.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
 - Custom CA certificate added to the cluster using a config map.
 
 - Desired Operator installed and running on OLM.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an empty config map in the namespace where the subscription for your Operator exists and include the following label:
 
@@ -162,11 +210,10 @@ When a cluster administrator adds a custom CA certificate to a cluster using a c
 
     - Create a `trusted-ca` volume mount.
 
-      <div class="note">
+      > [!NOTE]
+      > Deployments of an Operator can fail to validate the authority and display a `x509 certificate signed by unknown authority` error. This error can occur even after injecting a custom CA when using the subscription of an Operator. In this case, you can set the `mountPath` as `/etc/ssl/certs` for trusted-ca by using the subscription of an Operator.
 
-      Deployments of an Operator can fail to validate the authority and display a `x509 certificate signed by unknown authority` error. This error can occur even after injecting a custom CA when using the subscription of an Operator. In this case, you can set the `mountPath` as `/etc/ssl/certs` for trusted-ca by using the subscription of an Operator.
-
-      </div>
+</div>
 
 # Additional resources
 

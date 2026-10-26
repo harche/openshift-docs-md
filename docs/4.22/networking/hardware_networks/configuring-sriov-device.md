@@ -50,13 +50,10 @@ Specifies the resource name of the SR-IOV network device plugin. You can create 
 `spec.nodeSelector`
 Specifies the nodes to configure. Only SR-IOV network devices on the selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed on selected nodes only.
 
-<div class="important">
-
-The SR-IOV Network Operator applies node network configuration policies to nodes in sequence. Before applying node network configuration policies, the SR-IOV Network Operator checks if the machine config pool (MCP) for a node is in an unhealthy state such as `Degraded` or `Updating`. If a node is in an unhealthy MCP, the process of applying node network configuration policies to all targeted nodes in the cluster pauses until the MCP returns to a healthy state.
-
-To avoid a node in an unhealthy MCP from blocking the application of node network configuration policies to other nodes, including nodes in other MCPs, you must create a separate node network configuration policy for each MCP.
-
-</div>
+> [!IMPORTANT]
+> The SR-IOV Network Operator applies node network configuration policies to nodes in sequence. Before applying node network configuration policies, the SR-IOV Network Operator checks if the machine config pool (MCP) for a node is in an unhealthy state such as `Degraded` or `Updating`. If a node is in an unhealthy MCP, the process of applying node network configuration policies to all targeted nodes in the cluster pauses until the MCP returns to a healthy state.
+>
+> To avoid a node in an unhealthy MCP from blocking the application of node network configuration policies to other nodes, including nodes in other MCPs, you must create a separate node network configuration policy for each MCP.
 
 `spec.priority`
 Optional: Specifies the priority as an integer value between `0` and `99`. A smaller value receives higher priority. For example, a priority of `10` is a higher priority than `99`. The default value is `99`.
@@ -64,13 +61,10 @@ Optional: Specifies the priority as an integer value between `0` and `99`. A sma
 `spec.mtu`
 Optional: Specifies the maximum transmission unit (MTU) of the physical function and all its virtual functions. The maximum MTU value can vary for different network interface controller (NIC) models.
 
-<div class="important">
-
-If you want to create virtual function on the default network interface, ensure that the MTU is set to a value that matches the cluster MTU.
-
-If you want to modify the MTU of a single virtual function while the function is assigned to a pod, leave the MTU value blank in the SR-IOV network node policy. Otherwise, the SR-IOV Network Operator reverts the MTU of the virtual function to the MTU value defined in the SR-IOV network node policy, which might trigger a node drain.
-
-</div>
+> [!IMPORTANT]
+> If you want to create virtual function on the default network interface, ensure that the MTU is set to a value that matches the cluster MTU.
+>
+> If you want to modify the MTU of a single virtual function while the function is assigned to a pod, leave the MTU value blank in the SR-IOV network node policy. Otherwise, the SR-IOV Network Operator reverts the MTU of the virtual function to the MTU value defined in the SR-IOV network node policy, which might trigger a node drain.
 
 `spec.needVhostNet`
 Optional: Set to `true` to mount the `/dev/vhost-net` device in the pod. Use the mounted `/dev/vhost-net` device with Data Plane Development Kit (DPDK) to forward traffic to the kernel network stack.
@@ -81,15 +75,12 @@ Specifies the number of the virtual functions (VF) to create for the SR-IOV phys
 `spec.externallyManaged`
 Indicates whether the SR-IOV Network Operator manages all, or only a subset of virtual functions (VFs). With the value set to `false` the SR-IOV Network Operator manages and configures all VFs on the PF.
 
-<div class="note">
-
-When `externallyManaged` is set to `true`, you must manually create the Virtual Functions (VFs) on the physical function (PF) before applying the `SriovNetworkNodePolicy` resource. If the VFs are not pre-created, the SR-IOV Network Operator’s webhook will block the policy request.
-
-When `externallyManaged` is set to `false`, the SR-IOV Network Operator automatically creates and manages the VFs, including resetting them if necessary.
-
-To use VFs on the host system, you must create them through NMState, and set `externallyManaged` to `true`. In this mode, the SR-IOV Network Operator does not modify the PF or the manually managed VFs, except for those explicitly defined in the `nicSelector` field of your policy. However, the SR-IOV Network Operator continues to manage VFs that are used as pod secondary interfaces.
-
-</div>
+> [!NOTE]
+> When `externallyManaged` is set to `true`, you must manually create the Virtual Functions (VFs) on the physical function (PF) before applying the `SriovNetworkNodePolicy` resource. If the VFs are not pre-created, the SR-IOV Network Operator’s webhook will block the policy request.
+>
+> When `externallyManaged` is set to `false`, the SR-IOV Network Operator automatically creates and manages the VFs, including resetting them if necessary.
+>
+> To use VFs on the host system, you must create them through NMState, and set `externallyManaged` to `true`. In this mode, the SR-IOV Network Operator does not modify the PF or the manually managed VFs, except for those explicitly defined in the `nicSelector` field of your policy. However, the SR-IOV Network Operator continues to manage VFs that are used as pod secondary interfaces.
 
 `spec.nicSelector`
 Identifies the device to which this resource applies. You do not have to specify values for all the parameters. It is recommended to identify the network device with enough precision to avoid selecting a device unintentionally.
@@ -123,11 +114,8 @@ If the `isRdma` parameter is set to `true`, you can continue to use the RDMA-ena
 
 Set `isRdma` to `true` and additionally set `needVhostNet` to `true` to configure a Mellanox NIC for use with Fast data path DPDK applications.
 
-<div class="note">
-
-You cannot set the `isRdma` parameter to `true` for Intel NICs.
-
-</div>
+> [!NOTE]
+> You cannot set the `isRdma` parameter to `true` for Intel NICs.
 
 `spec.linkType`
 Optional: Specifies the link type for the VFs. The default value is `eth` for Ethernet. Change this value to 'ib' for InfiniBand.
@@ -146,9 +134,11 @@ Optional: Set to `true` to exclude advertising an SR-IOV network resource’s NU
 
 The following example describes the configuration for an InfiniBand device:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration for an InfiniBand device**
+<div class="title">
+
+Example configuration for an InfiniBand device
 
 </div>
 
@@ -173,11 +163,15 @@ spec:
 # ...
 ```
 
+</div>
+
 The following example describes the configuration for an SR-IOV network device in a RHOSP virtual machine:
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**Example configuration for an SR-IOV device in a virtual machine**
+<div class="title">
+
+Example configuration for an SR-IOV device in a virtual machine
 
 </div>
 
@@ -199,6 +193,8 @@ spec:
 # ...
 ```
 
+</div>
+
 - When configuring the node network policy for a virtual machine, the `numVfs` parameter is always set to `1`.
 
 - When the virtual machine is deployed on RHOSP, the `netFilter` parameter must refer to a network ID. Valid values for `netFilter` are available from an `SriovNetworkNodeState` object.
@@ -209,11 +205,8 @@ The SR-IOV Network Operator searches your cluster for SR-IOV capable network dev
 
 The CR is assigned the same name as the worker node. The `status.interfaces` list provides information about the network devices on a node.
 
-<div class="important">
-
-Do not modify a `SriovNetworkNodeState` object. The Operator creates and manages these resources automatically.
-
-</div>
+> [!IMPORTANT]
+> Do not modify a `SriovNetworkNodeState` object. The Operator creates and manages these resources automatically.
 
 The following YAML is an example of a `SriovNetworkNodeState` object created by the SR-IOV Network Operator:
 
@@ -285,9 +278,14 @@ The SR-IOV Network Operator supports skipping firmware configuration for Mellano
 
 You must manually configure and allocate the number of virtual functions in the firmware before switching the system to secure boot.
 
-<div class="note">
+> [!NOTE]
+> The number of virtual functions in the firmware is the maximum number of virtual functions that you can request in the policy.
 
-The number of virtual functions in the firmware is the maximum number of virtual functions that you can request in the policy.
+<div>
+
+<div class="title">
+
+Procedure
 
 </div>
 
@@ -357,6 +355,8 @@ The number of virtual functions in the firmware is the maximum number of virtual
         - `Secure Boot Mode: Mode Deployed`
 
     2.  Reboot the system.
+
+</div>
 
 ## Virtual function (VF) partitioning for SR-IOV devices
 
@@ -456,9 +456,11 @@ vf 4     link/ether e6:06:a1:96:2f:de brd ff:ff:ff:ff:ff:ff, spoof checking on, 
 
 The following `testpmd` pod demonstrates container creation with huge pages, reserved CPUs, and the SR-IOV port.
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**An example `testpmd` pod**
+<div class="title">
+
+An example `testpmd` pod
 
 </div>
 
@@ -470,7 +472,6 @@ metadata:
   namespace: mynamespace
   annotations:
     cpu-load-balancing.crio.io: "disable"
-    cpu-quota.crio.io: "disable"
 # ...
 spec:
   containers:
@@ -504,15 +505,19 @@ spec:
       medium: HugePages
 ```
 
+</div>
+
 - This example assumes that the name of the performance profile is `cnf-performance profile`.
 
 ## A test pod template for clusters that use OVS hardware offloading on OpenStack
 
 The following `testpmd` pod demonstrates Open vSwitch (OVS) hardware offloading on Red Hat OpenStack Platform (RHOSP).
 
-<div class="formalpara-title">
+<div class="formalpara">
 
-**An example `testpmd` pod**
+<div class="title">
+
+An example `testpmd` pod
 
 </div>
 
@@ -554,6 +559,8 @@ spec:
       medium: HugePages
 ```
 
+</div>
+
 - If your performance profile is not named `cnf-performance profile`, replace that string with the correct performance profile name.
 
 ## Huge pages resource injection for Downward API
@@ -590,15 +597,20 @@ As with the paths that the Network Resources Injector can create, the paths in t
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
-<div class="note">
+> [!NOTE]
+> When applying the configuration specified in a `SriovNetworkNodePolicy` CR, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. Reboot only happens in the following cases:
+>
+> - With Mellanox NICs (`mlx5` driver) a node reboot happens every time the number of virtual functions (VFs) increase on a physical function (PF).
+>
+> - With Intel NICs, a reboot only happens if the kernel parameters do not include `intel_iommu=on` and `iommu=pt`.
+>
+> It might take several minutes for a configuration change to apply.
 
-When applying the configuration specified in a `SriovNetworkNodePolicy` CR, the SR-IOV Operator might drain the nodes, and in some cases, reboot nodes. Reboot only happens in the following cases:
+<div>
 
-- With Mellanox NICs (`mlx5` driver) a node reboot happens every time the number of virtual functions (VFs) increase on a physical function (PF).
+<div class="title">
 
-- With Intel NICs, a reboot only happens if the kernel parameters do not include `intel_iommu=on` and `iommu=pt`.
-
-It might take several minutes for a configuration change to apply.
+Prerequisites
 
 </div>
 
@@ -611,6 +623,16 @@ It might take several minutes for a configuration change to apply.
 - You have enough available nodes in your cluster to handle the evicted workload from drained nodes.
 
 - You have not selected any control plane nodes for SR-IOV network device configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create an `SriovNetworkNodePolicy` object, and then save the YAML in the `<name>-sriov-node-network.yaml` file. Replace `<name>` with the name for this configuration.
 
@@ -630,11 +652,31 @@ It might take several minutes for a configuration change to apply.
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
 - [Understanding how to update labels on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-updating_nodes-nodes-working)
+
+</div>
 
 # Create a non-uniform memory access (NUMA) aligned SR-IOV pod
 
 You can create a NUMA aligned SR-IOV pod by restricting SR-IOV and the CPU resources allocated from the same NUMA node with `restricted` or `single-numa-node` Topology Manager policies.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -642,11 +684,18 @@ You can create a NUMA aligned SR-IOV pod by restricting SR-IOV and the CPU resou
 
 - You have configured the Topology Manager policy to `single-numa-node`.
 
-  <div class="note">
+  > [!NOTE]
+  > When `single-numa-node` is unable to satisfy the request, you can configure the Topology Manager policy to `restricted`. For more flexible SR-IOV network resource scheduling, see *Excluding SR-IOV network topology during NUMA-aware scheduling* in the *Additional resources* section.
 
-  When `single-numa-node` is unable to satisfy the request, you can configure the Topology Manager policy to `restricted`. For more flexible SR-IOV network resource scheduling, see *Excluding SR-IOV network topology during NUMA-aware scheduling* in the *Additional resources* section.
+</div>
 
-  </div>
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 1.  Create the following SR-IOV pod spec, and then save the YAML in the `<name>-sriov-pod.yaml` file. Replace `<name>` with a name for this pod.
 
@@ -707,6 +756,8 @@ You can create a NUMA aligned SR-IOV pod by restricting SR-IOV and the CPU resou
     $ oc exec sample-pod -- cat /sys/fs/cgroup/cpuset/cpuset.cpus
     ```
 
+</div>
+
 # Exclude the SR-IOV network topology for NUMA-aware scheduling
 
 You can exclude advertising the Non-Uniform Memory Access (NUMA) node for the SR-IOV network to the Topology Manager for more flexible SR-IOV network deployments during NUMA-aware pod scheduling.
@@ -718,6 +769,14 @@ For example, consider a compute node, `compute-1`, that features two NUMA nodes:
 # Troubleshoot SR-IOV configuration
 
 After following the procedure to configure an SR-IOV network device, the following sections address some error conditions.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
 
 - To display the state of nodes, run the following command:
 
@@ -733,10 +792,28 @@ After following the procedure to configure an SR-IOV network device, the followi
 
   - Confirm that VT-d is enabled in the BIOS for the node.
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Using CPU Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
 
-<!-- -->
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
 
 - [Configuring an SR-IOV network attachment](../../networking/hardware_networks/configuring-sriov-net-attach.xml#configuring-sriov-net-attach)
+
+</div>
