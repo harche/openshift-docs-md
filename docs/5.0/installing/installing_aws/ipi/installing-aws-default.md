@@ -291,6 +291,6 @@ Procedure
 
 - [Available cluster customizations](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Removing cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)

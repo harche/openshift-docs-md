@@ -439,7 +439,7 @@ Use these tested IBM Cloud® instance types to ensure compatibility when selecti
 
 See the following machine series:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/ibmcloud/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/ibmcloud/tested_instance_types_x86_64.md>
 
 <div>
 
@@ -1181,4 +1181,4 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

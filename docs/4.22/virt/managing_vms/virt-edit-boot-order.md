@@ -8,7 +8,7 @@ With **Boot Order** in the **VirtualMachine details** page, you can:
 
 - Remove a disk or NIC from the boot order list, and return it back to the inventory of bootable sources.
 
-# Adding items to a boot order list in the web console
+# Add items to a boot order list in the web console
 
 You can add items to a boot order list by using the web console.
 
@@ -45,7 +45,7 @@ Procedure
 
 </div>
 
-# Editing a boot order list in the web console
+# Edit a boot order list in the web console
 
 You can edit the boot order list in the web console.
 
@@ -84,7 +84,7 @@ Procedure
 
 </div>
 
-# Editing a boot order list in the YAML configuration file
+# Edit a boot order list by using the CLI
 
 You can edit the boot order list in a YAML configuration file by using the CLI.
 
@@ -143,7 +143,7 @@ Procedure
 
 </div>
 
-# Removing items from a boot order list in the web console
+# Remove items from a boot order list in the web console
 
 Remove items from a boot order list by using the web console.
 

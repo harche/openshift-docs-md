@@ -357,20 +357,28 @@ Procedure
 
 # Control Plane Only updates
 
-You can use a Control Plane Only update to move between Extended Update Support (EUS) versions of OpenShift Container Platform. This prevents virtual machine workloads from updating during the intermediate upgrade.
+You can use a Control Plane Only update to move between Extended Life Cycle (ELC) versions of OpenShift Container Platform. This prevents virtual machine workloads from updating during the intermediate upgrades.
 
-Every even-numbered minor version of OpenShift Container Platform is an Extended Update Support (EUS) version. Kubernetes requires minor version updates to occur in sequence. You cannot update directly from one EUS version to the next.
+OpenShift Container Platform 5 ELC releases occur every third minor version, starting from version 5.2. Kubernetes requires minor version updates to occur in sequence. You cannot update directly from one ELC version to the next.
 
-To move between EUS versions, first update OpenShift Virtualization to the latest z-stream release of the next odd-numbered minor version. Then update the cluster to the target EUS version of OpenShift Container Platform. After the cluster update, update OpenShift Virtualization to the target EUS version.
+To move between ELC versions, complete the following updates in sequence:
+
+1.  Update OpenShift Container Platform to the first intermediate minor version. Then update OpenShift Virtualization to the latest z-stream of that version.
+
+2.  Update OpenShift Container Platform to the second intermediate minor version. Then update OpenShift Virtualization to the latest z-stream of that version.
+
+3.  Update OpenShift Container Platform to the target ELC version. Then update OpenShift Virtualization to the target ELC version.
+
+For example, to update from version 5.2 to 5.5, you update through versions 5.3 and 5.4 before you reach 5.5.
 
 > [!NOTE]
 > You can update OpenShift Virtualization directly to the latest z-stream release of your current minor version without applying each intermediate z-stream update.
 
-For more information about EUS versions, see the "OpenShift Container Platform Life Cycle Policy".
+For more information about ELC versions, see the "OpenShift Container Platform Life Cycle Policy".
 
 ## Prevent workload updates during a Control Plane Only update
 
-When updating between Extended Update Support (EUS) versions, temporarily disable automatic workload updates. This prevents OpenShift Virtualization from migrating or evicting virtual machines during the upgrade.
+When updating between Extended Life Cycle (ELC) versions, temporarily disable automatic workload updates. This prevents OpenShift Virtualization from migrating or evicting virtual machines during the upgrade.
 
 > [!IMPORTANT]
 > In OpenShift Container Platform 4.16, the underlying Red Hat Enterprise Linux CoreOS (RHCOS) upgraded to version 9.4 of Red Hat Enterprise Linux (RHEL). All `virt-launcher` pods in the cluster must use the same RHEL version.
@@ -399,9 +407,9 @@ Prerequisites
 
 - You have installed the OpenShift CLI (`oc`).
 
-- You are running an EUS version of OpenShift Container Platform and plan to update to the next EUS version.
+- You are running an ELC version of OpenShift Container Platform and plan to update to the next ELC version.
 
-- You have not yet updated to the intermediate odd-numbered minor version.
+- You have not yet updated to the first intermediate minor version.
 
 - You paused the worker nodes' machine config pools as described in the OpenShift Container Platform documentation.
 
@@ -437,7 +445,7 @@ Procedure
     $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
     ```
 
-4.  Update your cluster from the source EUS version to the next minor version of OpenShift Container Platform:
+4.  Update OpenShift Container Platform to the first intermediate minor version:
 
     ``` terminal
     $ oc adm upgrade
@@ -452,7 +460,7 @@ Procedure
     > [!NOTE]
     > Updating OpenShift Container Platform to the next version is a prerequisite for updating OpenShift Virtualization. For more details, see the "Updating clusters" section of the OpenShift Container Platform documentation.
 
-6.  Update OpenShift Virtualization.
+6.  Update OpenShift Virtualization to the latest z-stream of the first intermediate version.
 
     - With the default **Automatic** approval strategy, OpenShift Virtualization automatically updates after the OpenShift Container Platform update completes.
 
@@ -464,7 +472,7 @@ Procedure
     $ oc get csv -n openshift-cnv
     ```
 
-8.  Confirm that OpenShift Virtualization updated to the latest z-stream release of the intermediate version:
+8.  Confirm that OpenShift Virtualization updated to the latest z-stream release of the first intermediate version:
 
     ``` terminal
     $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
@@ -472,29 +480,31 @@ Procedure
 
 9.  Wait until the `HyperConverged` Operator again reports the `Upgradeable` condition.
 
-10. Update OpenShift Container Platform to the target EUS version.
+10. Repeat the previous six steps to update OpenShift Container Platform and OpenShift Virtualization to the second intermediate minor version.
 
-11. Verify the cluster version:
+11. Update OpenShift Container Platform to the target ELC version.
+
+12. Verify the cluster version:
 
     ``` terminal
     $ oc get clusterversion
     ```
 
-12. Update OpenShift Virtualization to the target EUS version.
+13. Update OpenShift Virtualization to the target ELC version.
 
     - With the default **Automatic** approval strategy, OpenShift Virtualization updates automatically.
 
     - If you use the **Manual** approval strategy, approve the pending update in the web console.
 
-13. Monitor the update:
+14. Monitor the update:
 
     ``` terminal
     $ oc get csv -n openshift-cnv
     ```
 
-    The update completes when the `VERSION` field matches the target EUS version and the `PHASE` field reads `Succeeded`.
+    The update completes when the `VERSION` field matches the target ELC version and the `PHASE` field reads `Succeeded`.
 
-14. Restore the `workloadUpdateMethods` configuration recorded in step 1:
+15. Restore the `workloadUpdateMethods` configuration recorded in step 1:
 
     ``` terminal
     $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type json -p \
@@ -562,4 +572,4 @@ Red Hat promotes some candidate releases to the **stable** channel. Other candi
 
 - [Configuring live migration limits and timeouts](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration)
 
-- [Updating multiple virtual machines](../../virt/managing_vms/virt-edit-vms.xml#virt-updating-multiple-vms_virt-edit-vms)
+- [Update multiple virtual machines](../../virt/managing_vms/virt-edit-vms.xml#virt-updating-multiple-vms_virt-edit-vms)

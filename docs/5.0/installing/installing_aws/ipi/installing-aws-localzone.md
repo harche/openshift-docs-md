@@ -1895,4 +1895,4 @@ Procedure
 
 - [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

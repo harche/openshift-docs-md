@@ -210,6 +210,133 @@ If the service uses a custom service CA, the `caCertificate` field must contain 
 `spec.proxy.endpoint`
 Endpoint of the proxy.
 
+# Enable a dynamic plugin with the CLI
+
+You can enable a dynamic plugin to extend the web console with additional pages, perspectives, or dashboard items. Add the `ConsolePlugin` name to `spec.plugins` in the console Operator configuration so the web console loads it.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You logged in to the cluster as a user with `cluster-admin` privileges.
+
+- You installed the dynamic plugin using a scripted installation, such as an Operator or Helm chart.
+
+- A `ConsolePlugin` custom resource (CR) exists on the cluster.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Confirm the name of the `ConsolePlugin` resource by running the following command:
+
+    ``` terminal
+    $ oc get consoleplugin
+    ```
+
+2.  Optional: View details for a specific `ConsolePlugin` resource by running the following commands:
+
+    1.  Set the plugin name as an environment variable:
+
+        ``` terminal
+        $ PLUGIN_NAME="<plugin_name>"
+        ```
+
+        where `<plugin_name>` is the name of the `ConsolePlugin` resource.
+
+    2.  Verify the plugin details:
+
+        ``` terminal
+        $ oc get consoleplugin "${PLUGIN_NAME}" -o yaml
+        ```
+
+        The following example shows a `ConsolePlugin` YAML with the plugin listed in `spec.plugins`:
+
+        ``` yaml
+        apiVersion: operator.openshift.io/v1
+        kind: Console
+        metadata:
+          name: cluster
+        spec:
+          plugins:
+            - <plugin_name>
+            # ...
+        ```
+
+        Replace `<plugin_name>` with the name of your plugin.
+
+3.  Enable the dynamic plugin by adding the `ConsolePlugin` name to the console Operator configuration.
+
+    > [!NOTE]
+    > Make sure the Operator finishes installing the dynamic plugin before you run the following patch command.
+
+    1.  Set the plugin patch as an environment variable:
+
+        ``` terminal
+        $ PLUGIN_PATCH=$(cat <<EOF
+        [
+          {
+            "op": "add",
+            "path": "/spec/plugins/-",
+            "value": "<plugin_name>"
+          }
+        ]
+        EOF
+        )
+        ```
+
+    2.  Patch the console Operator configuration:
+
+        ``` terminal
+        $ oc patch consoles.operator.openshift.io cluster --type=json -p "${PLUGIN_PATCH}"
+        ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Confirm that the console Operator configuration includes the `ConsolePlugin` name by running the following command:
+
+    ``` terminal
+    $ oc get console.operator.openshift.io cluster -o jsonpath='{.spec.plugins}{"\n"}'
+    ```
+
+2.  Refresh the OpenShift Container Platform web console.
+
+    The console can take a few minutes to apply the updated configuration.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Upstream demo instructions for enabling a plugin](https://github.com/openshift/console/tree/main/dynamic-demo-plugin#enabling-the-plugin)
+
+- [Helm template that patches the console Operator configuration](https://github.com/openshift/console-plugin-template/blob/3a06152cffdd10ad9654b6b607cb00a055f29733/charts/openshift-console-plugin/templates/patch-consoles-job.yaml)
+
+</div>
+
 <div>
 
 <div class="title">

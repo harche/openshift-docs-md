@@ -61,9 +61,9 @@ Procedure
 
 </div>
 
-# Migrating VM disks to a different storage class by using the web console
+# Migrate VM disks to another storage class in the web console
 
-You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When migrating a running VM, the VM operation is not interrupted and the data on the migrated disks remains accessible.
+Change the storage class backing one or more disks of a virtual machine (VM) without taking the VM offline. A running VM continues to operate during the migration, and the data on its migrated disks remains accessible.
 
 <div>
 
@@ -129,7 +129,9 @@ Verification
 
 # Migrate VM disks to a different storage class
 
-You can migrate the disks attached to single cluster virtual machines (VMs) from one storage class to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
+You can migrate the disks attached to single cluster virtual machines (VMs) from one storage class to a different storage class by using the OpenShift Container Platform web console. This procedure works for both running and offline VMs.
+
+When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
 
 <div>
 

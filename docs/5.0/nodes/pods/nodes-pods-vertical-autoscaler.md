@@ -53,6 +53,8 @@ Administrators can use the VPA to better use cluster resources, such as preventi
 > [!NOTE]
 > If you stop running the VPA or delete a specific VPA CR in your cluster, the resource requests for the pods already modified by the VPA do not change. However, any new pods get the resources defined in the workload object, not the previous recommendations made by the VPA.
 
+You can pause VPA resource recommendations without uninstalling the VPA Operator by deleting the `VerticalPodAutoscalerController` CR. You can restart the VPA by re-creating the CR. For more information, see "Pausing the Vertical Pod Autoscaler Operator".
+
 ## About the Vertical Pod Autoscaler Operator modes
 
 You can set one of the following VPA modes by using a `VerticalPodAutoscaler` CR:
@@ -1672,6 +1674,314 @@ spec:
 ```
 
 </div>
+
+# Pausing the Vertical Pod Autoscaler Operator
+
+You can pause the Vertical Pod Autoscaler Operator (VPA) resource recommendations by deleting the `VerticalPodAutoscalerController` custom resource (CR) without needing to uninstall the Operator.
+
+Deleting the `VerticalPodAutoscalerController` CR removes the VPA Controller and the pods and operands for the VPA components, but does not remove the pods required by the Operator. Any VPA objects in your cluster stop updating recommendations, but are not deleted.
+
+You can restart the VPA recommendations by manually creating a new `VerticalPodAutoscalerController` CR or restarting the VPA Operator, which re-creates the default VPA Controller, as described in "Restarting a paused Vertical Pod Autoscaler Operator".
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Optional: View the active VPA operands and any active VPA objects to see which objects are to be removed by the pause:
+
+    1.  View the VPA operands by running the following command:
+
+        ``` terminal
+        $ oc get all -n openshift-vertical-pod-autoscaler
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        NAME                                                    READY   STATUS    RESTARTS   AGE
+        pod/vertical-pod-autoscaler-operator-55848bb79b-w7ltm   1/1     Running   0          6m41s
+        pod/vpa-admission-plugin-default-6b87595669-qtrf8       1/1     Running   0          6m32s
+        pod/vpa-recommender-default-7899b4fd8f-vscp4            1/1     Running   0          6m32s
+        pod/vpa-updater-default-695c9b99f-sf8p4                 1/1     Running   0          6m32s
+
+        NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+        service/vpa-operator-metrics   ClusterIP   172.30.23.107   <none>        8443/TCP   6m45s
+        service/vpa-webhook            ClusterIP   172.30.91.29    <none>        443/TCP    6m32s
+
+        NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
+        deployment.apps/vertical-pod-autoscaler-operator   1/1     1            1           6m41s
+        deployment.apps/vpa-admission-plugin-default       1/1     1            1           6m32s
+        deployment.apps/vpa-recommender-default            1/1     1            1           6m32s
+        deployment.apps/vpa-updater-default                1/1     1            1           6m32s
+
+        NAME                                                          DESIRED   CURRENT   READY   AGE
+        replicaset.apps/vertical-pod-autoscaler-operator-55848bb79b   1         1         1       6m42s
+        replicaset.apps/vpa-admission-plugin-default-6b87595669       1         1         1       6m33s
+        replicaset.apps/vpa-recommender-default-7899b4fd8f            1         1         1       6m33s
+        replicaset.apps/vpa-updater-default-695c9b99f                 1         1         1       6m33s
+        ```
+
+        </div>
+
+    2.  View the existing VPA objects in your cluster to make sure none of the objects was removed by the pause by running the following command:
+
+        ``` terminal
+        $ oc get VerticalPodAutoscaler --all-namespaces
+        ```
+
+        <div class="formalpara">
+
+        <div class="title">
+
+        Example output
+
+        </div>
+
+        ``` terminal
+        NAMESPACE            NAME                 MODE                CPU   MEM     PROVIDED   AGE
+        namespace-A          vpa-recommender      InPlaceOrRecreate   25m   250Mi   True       11m
+        namespace-B          vpa-recommender-bb   Initial             50m   500Mi   True       5m32s
+        ```
+
+        </div>
+
+2.  Pause the VPA Operator by running the following command to delete the `VerticalPodAutoscalerController` object:
+
+    ``` terminal
+    $ oc delete VerticalPodAutoscalerController default -n openshift-vertical-pod-autoscaler
+    ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify that the VPA operands are removed by running the following command:
+
+    ``` terminal
+    $ oc get all -n openshift-vertical-pod-autoscaler
+    ```
+
+    ``` terminal
+    NAME                                                    READY   STATUS    RESTARTS   AGE
+    pod/vertical-pod-autoscaler-operator-55848bb79b-w7ltm   1/1     Running   0          11m
+
+    NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+    service/vpa-operator-metrics   ClusterIP   172.30.23.107   <none>        8443/TCP   11m
+
+    NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/vertical-pod-autoscaler-operator   1/1     1            1           11m
+
+    NAME                                                          DESIRED   CURRENT   READY   AGE
+    replicaset.apps/vertical-pod-autoscaler-operator-55848bb79b   1         1         1       11m
+    ```
+
+    Only the resources required to run the Operator remain after you delete the VPA Controller.
+
+2.  Verify that the VPA objects in your cluster remain by running the following command:
+
+    ``` terminal
+    $ oc get VerticalPodAutoscaler --all-namespaces
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    NAMESPACE            NAME                 MODE                CPU   MEM     PROVIDED   AGE
+    namespace-A          vpa-recommender      InPlaceOrRecreate   25m   250Mi   True       11m
+    namespace-B          vpa-recommender-bb   Initial             50m   500Mi   True       5m32s
+    ```
+
+    </div>
+
+    All of your VPA objects remain during a pause. However, they do not update their recommendations.
+
+</div>
+
+## Restarting a paused Vertical Pod Autoscaler Operator
+
+You can restart the paused Vertical Pod Autoscaler Operator (VPA) recommendation behavior by manually re-creating the `VerticalPodAutoscalerController` custom resource (CR) or restarting the VPA Operator.
+
+By default, an annotation in the `openshift-vertical-pod-autoscaler` namespace prevents the Operator from re-creating the VPA Controller upon restart. You can disable this default behavior by removing the annotation. After the restart, the Operator re-creates the default VPA Controller and replaces the annotation in the namespace object.
+
+Alternatively, you can manually create a new, customized VPA Controller, if you have made changes to the default VPA Controller. When you restart the VPA recommendation behavior by manually creating the VPA Controller, you do not need to remove the namespace annotation.
+
+Restarting a paused VPA Controller replaces the pods and operands for the VPA components, restarts the VPA objects in your cluster, and restarts the VPA recommendation behavior.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+- To unpause the VPA recommendations by restarting the VPA Operator, take the following steps:
+
+  1.  Edit the `openshift-vertical-pod-autoscaler` namespace by running the following command:
+
+      ``` terminal
+      $ oc edit namespace openshift-vertical-pod-autoscaler
+      ```
+
+  2.  Remove the `autoscaling.openshift.io/default-vpa-controller-created` annotation:
+
+      <div class="formalpara">
+
+      <div class="title">
+
+      Example object
+
+      </div>
+
+      ``` yaml
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        annotations:
+          autoscaling.openshift.io/default-vpa-controller-created: "true"
+      # ...
+        name: openshift-vertical-pod-autoscaler
+      # ...
+      ```
+
+      </div>
+
+      This example shows the CR with only the annotation you need to remove.
+
+  3.  Restart the VPA Operator by running the following command:
+
+      ``` terminal
+      $ oc rollout restart deployment/vertical-pod-autoscaler-operator -n openshift-vertical-pod-autoscaler
+      ```
+
+  4.  Verify that the Operator has restarted by running the following command:
+
+      ``` terminal
+      $ oc rollout status deployment/vertical-pod-autoscaler-operator -n openshift-vertical-pod-autoscaler
+      ```
+
+      <div class="formalpara">
+
+      <div class="title">
+
+      Expected output
+
+      </div>
+
+      ``` terminal
+      deployment "vertical-pod-autoscaler-operator" successfully rolled out
+      ```
+
+      </div>
+
+- To unpause the VPA by manually re-creating the VPA Controller from a YAML file, take the following steps. For more information, see "Use the Vertical Pod Autoscaler Operator".
+
+  1.  Create a YAML file similar to the following example:
+
+      ``` yaml
+      apiVersion: autoscaling.openshift.io/v1
+      kind: VerticalPodAutoscalerController
+      metadata:
+        name: default
+        namespace: openshift-vertical-pod-autoscaler
+      spec:
+        podMinCPUMillicores: 25
+        podMinMemoryMb: 250
+        recommendationOnly: false
+        safetyMarginFraction: 0.15
+      ```
+
+      The VPA Controller must be named `default` and must be deployed into the `openshift-vertical-pod-autoscaler` namespace.
+
+  2.  Create the VPA Controller CR by running the following command:
+
+      ``` terminal
+      $ oc create -f <file_name>.yaml
+      ```
+
+      Replace `<file_name>` with the YAML file name you created in the previous step.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  View the VPA operands by running the following command:
+
+    ``` terminal
+    $ oc get all -n openshift-vertical-pod-autoscaler
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    NAME                                                    READY   STATUS    RESTARTS   AGE
+    pod/vertical-pod-autoscaler-operator-55848bb79b-w7ltm   1/1     Running   0          6m41s
+    pod/vpa-admission-plugin-default-6b87595669-qtrf8       1/1     Running   0          6m32s
+    pod/vpa-recommender-default-7899b4fd8f-vscp4            1/1     Running   0          6m32s
+    pod/vpa-updater-default-695c9b99f-sf8p4                 1/1     Running   0          6m32s
+
+    NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+    service/vpa-operator-metrics   ClusterIP   172.30.23.107   <none>        8443/TCP   6m45s
+    service/vpa-webhook            ClusterIP   172.30.91.29    <none>        443/TCP    6m32s
+
+    NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/vertical-pod-autoscaler-operator   1/1     1            1           6m41s
+    deployment.apps/vpa-admission-plugin-default       1/1     1            1           6m32s
+    deployment.apps/vpa-recommender-default            1/1     1            1           6m32s
+    deployment.apps/vpa-updater-default                1/1     1            1           6m32s
+
+    NAME                                                          DESIRED   CURRENT   READY   AGE
+    replicaset.apps/vertical-pod-autoscaler-operator-55848bb79b   1         1         1       6m42s
+    replicaset.apps/vpa-admission-plugin-default-6b87595669       1         1         1       6m33s
+    replicaset.apps/vpa-recommender-default-7899b4fd8f            1         1         1       6m33s
+    replicaset.apps/vpa-updater-default-695c9b99f                 1         1         1       6m33s
+    ```
+
+    </div>
+
+    All of the necessary VPA operands are running, indicating that the VPA Operator is unpaused.
+
+</div>
+
+## Re-create a deleted VPA Controller
+
+If you accidentally delete the Vertical Pod Autoscaler Controller, you can manually re-create the `VerticalPodAutoscalerController` custom resource (CR) or restart the VPA Operator as described in "Restarting a paused Vertical Pod Autoscaler Operator".
+
+By default, an annotation in the `openshift-vertical-pod-autoscaler` namespace prevents the Operator from re-creating the VPA Controller upon restart. After you remove the annotation, restarting the Operator re-creates the default VPA Controller and replaces the annotation.
 
 # Uninstall the Vertical Pod Autoscaler Operator
 

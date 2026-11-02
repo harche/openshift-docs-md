@@ -240,7 +240,9 @@ Procedure
 
 # Updating the boot image skew enforcement version
 
-If you are running boot image skew enforcement in the manual mode, you must manually update the boot image version in the `MachineConfiguration` object each time you update the boot image in your cluster. With the boot image updated in the `MachineConfiguration` object, the Machine Config Operator (MCO) can properly perform boot image skew enforcement to ensure that your nodes are up-to-date.
+If you are running boot image skew enforcement in the manual mode, you must manually update the boot image version in the `MachineConfiguration` object each time you update the boot image in your cluster.
+
+With the boot image updated in the `MachineConfiguration` object, the Machine Config Operator (MCO) can properly perform boot image skew enforcement to ensure that your nodes are up-to-date.
 
 <div>
 
@@ -291,7 +293,7 @@ Procedure
       </div>
 
       ``` terminal
-      openshift-install 4.22.0
+      openshift-install 5.0.0
       ```
 
       </div>

@@ -4,7 +4,7 @@ Use the use model and system level information to plan telco RAN DU workloads, c
 
 Specific limits, requirements, and engineering considerations for individual components are described in individual sections.
 
-# Reference design specifications for telco RAN DU 5G deployments
+# Review the validated RAN DU reference design
 
 Red Hat and certified partners offer deep technical expertise and support for networking and operational capabilities required to run telco applications on OpenShift Container Platform 4.17 clusters.
 
@@ -59,7 +59,7 @@ Deviation from the RDS can have some or all of the following consequences:
 > [!NOTE]
 > Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
-# Engineering considerations for the RAN DU use model
+# Plan a RAN DU cluster within the validated limits
 
 The RAN DU use model configures an OpenShift Container Platform cluster running on commodity hardware for hosting RAN distributed unit (DU) workloads.
 
@@ -67,7 +67,7 @@ The RAN DU use model configures an OpenShift Container Platform cluster running 
 > For details of the telco RAN DU RDS KPI test results, see the [telco RAN DU 4.17 reference design specification KPI test results](https://access.redhat.com/articles/7143490). This information is only available to customers and partners.
 
 Cluster topology
-The recommended topology for RAN DU workloads is single-node OpenShift. DU workloads may be run on other cluster topologies such as 3-node compact cluster, high availability (3 control plane + n worker nodes), or SNO+1 as needed. Multiple SNO clusters, or a highly-available 3-node compact cluster, are recommended over the SNO+1 topology.
+The recommended topology for RAN DU workloads is single-node OpenShift. DU workloads can be run on other cluster topologies such as 3-node compact cluster, high availability (3 control plane + n worker nodes), or SNO+1 as needed. Multiple single-node OpenShift clusters, or a highly-available 3-node compact cluster, are recommended over the SNO+1 topology.
 
 Under the standard cluster topology case (3+n), a mixed architecture cluster is allowed only if:
 
@@ -89,19 +89,29 @@ Remote worker node (RWN) cluster topologies are not recommended or included unde
 
 - Additional complexities in workload affinities.
 
-Supported cluster topologies for RAN DU
-| Architecture | SNO | SNO+1 | 3-node | Standard | RWN |
-|--------------|-----|-------|--------|----------|-----|
-| x86_64       | Yes | Yes   | Yes    | Yes      | No  |
-| aarch64      | Yes | No    | No     | No       | No  |
-| mixed        | N/A | No    | No     | Yes      | No  |
+CPU architectures for RAN DU
+| Architecture | Real-time kernel | Standard kernel |
+|--------------|------------------|-----------------|
+| `x86_64`     | Yes              | Yes             |
+| `aarch64`    | No               | Yes             |
 
-Supported cluster topologies for RAN DU
+CPU architectures for RAN DU
+
+- The `aarch64` standard kernel uses 64k page size.
+
+Cluster topologies for RAN DU
+| Architecture | single-node OpenShift | SNO+1 | 3-node | Standard | RWN |
+|--------------|-----------------------|-------|--------|----------|-----|
+| x86_64       | Yes                   | Yes   | Yes    | Yes      | No  |
+| aarch64      | Yes                   | No    | No     | No       | No  |
+| mixed        | N/A                   | No    | No     | Yes      | No  |
+
+Cluster topologies for RAN DU
 
 - The standard mixed-architecture topology uses `x86_64` control plane nodes and `AArch64` worker nodes.
 
 Workloads
-1.  DU workloads are described in [Telco RAN DU application workloads](../scalability_and_performance/telco-ran-du-rds.xml#telco-ran-du-application-workloads_telco-ran-du).
+1.  DU workloads are described in [Review the application limits for a RAN DU workload](../scalability_and_performance/telco-ran-du-rds.xml#telco-ran-du-application-workloads_telco-ran-du).
 
 2.  DU worker nodes are Intel 3rd Generation Xeon (Ice Lake) 2.20 GHz or newer with host firmware tuned for maximum performance.
 
@@ -166,7 +176,7 @@ RHACM is the recommended cluster management solution and is configured to these 
 
 2.  Use a minimal number (up to 10) of managed cluster templates in cluster policies. Use hub-side templating.
 
-3.  Disable RHACM addons with the exception of the `policyController` and configure observability with the default configuration.
+3.  Disable RHACM add-ons with the exception of the `policyController` and configure observability with the default configuration.
 
 The following table describes resource utilization under reference application load.
 
@@ -194,7 +204,7 @@ Additional resources
 
 </div>
 
-# Telco RAN DU application workloads
+# Review the application limits for a RAN DU workload
 
 Develop RAN DU applications that are subject to the following requirements and limitations.
 
@@ -336,7 +346,7 @@ Additional resources
 The RAN DU use model includes cluster performance tuning using `PerformanceProfile` CRs for low-latency performance, and a `TunedPerformancePatch` CR that adds additional RAN-specific tuning.
 
 New in this release
-- No reference design updates in this release
+- You can use the `net.userLevelNetworking` field as an optional variation in the RAN DU `PerformanceProfile` custom resource reference. Enable this setting to reduce NIC queue counts to the number of reserved CPUs. You can also optionally use `net.devices` entries to scope the setting to specific network interfaces.
 
 Description
 The RAN DU use model includes cluster performance tuning using `PerformanceProfile` CRs for low-latency performance, and a `TunedPerformancePatch` CR that adds additional RAN-specific tuning. A reference `PerformanceProfile` is provided for both x86_64 and aarch64 CPU architectures. The single `TunedPerformancePatch` object provided automatically detects the CPU architecture and performs the required additional tuning. The RAN DU use case requires the cluster to be tuned for low-latency performance. The Node Tuning Operator reconciles the `PerformanceProfile` and `TunedPerformancePatch` CRs.
@@ -450,6 +460,20 @@ Engineering considerations
 
   - For additional information on the Node Tuning Operator, see "Using the Node Tuning Operator".
 
+- User-level networking with the `net.userLevelNetworking` field:
+
+  - You can optionally enable the `userLevelNetworking` field. The default RAN DU reference does not enable this field.
+
+  - Enabling the `userLevelNetworking` field on an existing `PerformanceProfile` CR triggers Node Tuning Operator `MachineConfig` regeneration, causing node drain and reboot. Plan this operation in a maintenance window.
+
+  - The `userLevelNetworking` field uses `ethtool` to set NIC queue counts to the number of reserved CPUs. Not all NIC drivers honor `ethtool` queue reduction. The setting might be silently ignored or interrupts might not be fully deallocated. You must validate NIC driver compatibility before enabling this field in production.
+
+  - The Node Tuning Operator does not expose metrics or alerts for NIC queue application. You must manually verify that NIC queue counts were applied as expected, for example, by running `ethtool -l <device>` and `cat /proc/interrupts`.
+
+  - When `net.devices` is omitted, the setting applies to all network interfaces including management, PTP-tracked, and application NICs. Evaluate whether scoping to specific devices using `net.devices` is needed for your deployment.
+
+  - The `userLevelNetworking` field is safe to use alongside the SR-IOV Network Operator. The field only affects physical function (PF) interfaces. The SR-IOV virtual function queue configuration is not impacted.
+
 <div>
 
 <div class="title">
@@ -471,7 +495,7 @@ Additional resources
 Configure Precision Time Protocol (PTP) in cluster nodes to ensure precise timing and reliability in the RAN environment.
 
 New in this release
-- Support for PTP boundary clock without holdover on GNR-D hardware.
+- Dual time receiver ports on a single NIC for BC and T-BC configurations.
 
 Description
 Configure PTP in cluster nodes. PTP ensures precise timing and reliability in the RAN environment, compared to other clock synchronization protocols, like NTP.
@@ -504,7 +528,7 @@ Limits and requirements
 
     - System clock HA support is optional in 2-NIC configuration.
 
-    - GNR-D is not supported for T-BC.
+    - Supports T-BC failover scenarios with dual upstream (TR) PTP port redundancy configuration on a single NIC card sharing PHC, in addition to the existing single-NIC, dual-NIC, and three-NIC WPC T-BC variants.
 
   - T-TSC use-case:
 
@@ -514,15 +538,7 @@ Limits and requirements
 
     - GNR-D is not supported for T-TSC.
 
-  - T-BC without holdover use-case:
-
-    - GNR-D hardware with 0, 1, or 2 additional Carter Flats, e830 NICs
-
-    - Time receiver port must be one of the onboard NAC ports.
-
-    - Time transmitters may be configured to any combination of NAC and Carter Flats ports, up to a total of 23.
-
-    - Holdover is not enabled, so any failure of the Time receiver will enter `FREERUN` state immediately.
+  - BC (without holdover) use-case is deprecated in favor of the T-BC use case.
 
 - Log reduction must be enabled with `true` or `enhanced`.
 
@@ -757,7 +773,7 @@ Additional resources
 Configure cluster tuning settings including cluster capabilities and monitoring for the telco RAN DU reference design.
 
 New in this release
-- OLM profile collection is removed in OpenShift Container Platform 4.22. The `DisableOLMPprof` CR compliance type is now set to `mustnothave` to remove the previously applied configuration from clusters.
+- No reference design updates in this release.
 
 Description
 For a full list of components that you can disable using the cluster capabilities feature, see "Cluster capabilities".
@@ -808,7 +824,18 @@ The following table lists the required platform tuning configurations:
 </tr>
 <tr>
 <td style="text-align: left;"><p>Configure a single OperatorHub catalog source</p></td>
-<td style="text-align: left;"><p>Configure the cluster to use a single catalog source that contains only the Operators required for a RAN DU deployment. Each catalog source increases the CPU use on the cluster. Using a single <code>CatalogSource</code> fits within the platform CPU budget.</p></td>
+<td style="text-align: left;"><p>Configure the cluster to use a single catalog source that contains only the Operators required for a RAN DU deployment. Each catalog source increases the CPU use on the cluster. Using a single <code>CatalogSource</code> fits within the platform CPU budget.</p>
+<p>Create one catalog source for each release version to maintain a consistent set of Operator versions, including z-stream releases, across all clusters. This ensures that clusters do not automatically upgrade to newer Operator versions available in the channel.</p>
+<div class="note">
+<div class="title">
+&#10;</div>
+<p>This requirement is specific to OLMv0. With OLMv0, if multiple Operator versions exist in a single catalog, OLM attempts to move the cluster to the newest version available in the specified channel rather than pinning to the version specified in the subscription.</p>
+</div>
+<p>When updating catalog sources, consider the following:</p>
+<ul>
+<li><p>Use the same catalog source name across different release versions to simplify version management.</p></li>
+<li><p>Ensure that upgrade or update policies are structured so that the catalog source returns to the <code>ready</code> state before proceeding with further updates. Use the <code>soak-seconds</code> annotation on these policies with a value of at least 30 seconds to ensure that the catalog source update has fully propagated.</p></li>
+</ul></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p>Disable the Console Operator</p></td>
@@ -848,7 +875,6 @@ Limits and requirements
 
 | Feature | Description |
 |----|----|
-| Container Runtime | Sets the container runtime to `crun` for all node roles. |
 | Kubelet config and container mount namespace hiding | Reduces the frequency of kubelet housekeeping and eviction monitoring, which reduces CPU usage |
 | SCTP | Optional configuration (enabled by default) |
 | Kdump | Optional configuration (enabled by default) Enables kdump to capture debug information when a kernel panic occurs. The reference CRs that enable kdump have an increased memory reservation based on the set of drivers and kernel modules included in the reference configuration. |
@@ -917,6 +943,8 @@ Additional resources
 - [Using GitOps ZTP to provision clusters at the network far edge](../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#about-ztp_ztp-deploying-far-edge-clusters-at-scale)
 
 - [Red Hat Advanced Cluster Management for Kubernetes](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes)
+
+- [Replacing a failed control plane node](../edge_computing/ztp-advanced-install-ztp.xml#ztp-replacing-failed-control-plane-node_ztp-replacing-failed-control-plane-node)
 
 </div>
 
@@ -1007,7 +1035,7 @@ New in this release
 - No reference design updates in this release
 
 Description
-GitOps Operator and GitOps ZTP provide a GitOps-based infrastructure for managing cluster deployment and configuration. Cluster definitions and configurations are maintained as a declarative state in Git. You can apply `ClusterInstance` CRs to the hub cluster where the `SiteConfig` Operator renders them as installation CRs. In earlier releases, a GitOps ZTP plugin supported the generation of installation CRs from `SiteConfig` CRs. This plugin is now removed. A separate GitOps ZTP plugin is available to enable automatic wrapping of configuration CRs into policies based on the `PolicyGenerator` or `PolicyGenTemplate` CR.
+GitOps Operator and GitOps ZTP provide a GitOps-based infrastructure for managing cluster deployment and configuration. Cluster definitions and configurations are maintained as a declarative state in Git. You can apply `ClusterInstance` CRs to the hub cluster where the `SiteConfig` Operator renders them as installation CRs. In earlier releases, a GitOps ZTP plugin supported the generation of installation CRs from `SiteConfig` CRs. This plugin is now deprecated. A separate GitOps ZTP plugin is available to enable automatic wrapping of configuration CRs into policies based on the `PolicyGenerator` or `PolicyGenTemplate` CR.
 
 You can deploy and manage multiple versions of OpenShift Container Platform on managed clusters using the baseline reference configuration CRs. You can use custom CRs alongside the baseline CRs. To maintain multiple per-version policies simultaneously, use Git to manage the versions of the source and policy CRs by using `PolicyGenerator` or `PolicyGenTemplate` CRs. RHACM `PolicyGenerator` is the recommended generator plugin starting from OpenShift Container Platform 4.19 release.
 
@@ -1083,120 +1111,11 @@ Additional resources
 
 Use the following custom resources (CRs) to configure and deploy OpenShift Container Platform clusters with the telco RAN DU profile. Use the CRs to form the common baseline used in all the specific use models unless otherwise indicated.
 
-> [!NOTE]
-> You can extract the complete set of RAN DU CRs from the `ztp-site-generate` container image. See "Preparing the GitOps ZTP site configuration repository" for more information.
+## Comparing a cluster with the telco RAN DU reference configuration
 
-## Cluster tuning reference CRs
+After you deploy a telco RAN DU cluster, you can use the `cluster-compare` plugin to assess the cluster’s compliance with the telco RAN DU reference design specifications (RDS).
 
-Use the following custom resources (CRs) to configure cluster tuning for the telco RAN DU reference design.
-
-| Component | Reference CR | Description | Optional |
-|----|----|----|----|
-| Cluster capabilities | `example-sno.yaml` | Representative ClusterInstance CR to install single-node OpenShift with the RAN DU profile | No |
-| Console disable | `cluster-tuning/console-disable/ConsoleOperatorDisable.yaml` | Disables the Console Operator. | No |
-| Disconnected registry | `extra-manifest/09-openshift-marketplace-ns.yaml` | Defines a dedicated namespace for managing the OpenShift Operator Marketplace. | No |
-| Disconnected registry | `disconnected-registry/DefaultCatsrc.yaml` | Configures the catalog source for the disconnected registry. | No |
-| Disconnected registry | `cluster-tuning/DisableOLMPprof.yaml` | Removes the obsolete `ConfigMap` CR that disabled OLM performance profiling in earlier releases. OLM performance profiling collection is removed in OpenShift Container Platform 4.22. | No |
-| Disconnected registry | `disconnected-registry/DisconnectedIDMS.yaml` | Configures disconnected registry image content source policy. | No |
-| Disconnected registry | `cluster-tuning/operator-hub/OperatorHub.yaml` | Optional, for multi-node clusters only. Configures the OperatorHub in OpenShift, disabling all default Operator sources. Not required for single-node OpenShift installs with marketplace capability disabled. | No |
-| Monitoring configuration | `cluster-tuning/monitoring-configuration/ReduceMonitoringFootprint.yaml` | Reduces the monitoring footprint by disabling Alertmanager and Telemeter, and sets Prometheus retention to 24 hours | No |
-| Network diagnostics disable | `cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml` | Configures the cluster network settings to disable built-in network troubleshooting and diagnostic features. | No |
-
-Cluster tuning CRs
-
-## Day 2 Operators reference CRs
-
-Use the following custom resources (CRs) to configure Day 2 Operators for the telco RAN DU reference design.
-
-| Component | Reference CR | Description | Optional |
-|----|----|----|----|
-| Cluster Logging Operator | `cluster-logging/ClusterLogForwarder.yaml` | Configures log forwarding for the cluster. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogNS.yaml` | Configures the namespace for cluster logging. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogOperGroup.yaml` | Configures Operator group for cluster logging. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccount.yaml` | New in 4.18. Configures the cluster logging service account. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccountAuditBinding.yaml` | New in 4.18. Configures the cluster logging service account. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccountInfrastructureBinding.yaml` | New in 4.18. Configures the cluster logging service account. | No |
-| Cluster Logging Operator | `cluster-logging/ClusterLogSubscription.yaml` | Manages installation and updates for the Cluster Logging Operator. | No |
-| Lifecycle Agent | `ibu/ImageBasedUpgrade.yaml` | Manage the image-based upgrade process in OpenShift Container Platform. | Yes |
-| Lifecycle Agent | `lca/LcaSubscription.yaml` | Manages installation and updates for the LCA Operator. | Yes |
-| Lifecycle Agent | `lca/LcaSubscriptionNS.yaml` | Configures namespace for LCA subscription. | Yes |
-| Lifecycle Agent | `lca/LcaSubscriptionOperGroup.yaml` | Configures the Operator group for the LCA subscription. | Yes |
-| Local Storage Operator | `storage-lso/StorageClass.yaml` | Defines a storage class with a Delete reclaim policy and no dynamic provisioning in the cluster. | No |
-| Local Storage Operator | `storage/StorageLV.yaml` | Configures local storage devices for the example-storage-class in the openshift-local-storage namespace, specifying device paths and filesystem type. | No |
-| Local Storage Operator | `storage-lso/StorageNS.yaml` | Creates the namespace with annotations for workload management and the deployment wave for the Local Storage Operator. | No |
-| Local Storage Operator | `storage-lso/StorageOperGroup.yaml` | Creates the Operator group for the Local Storage Operator. | No |
-| Local Storage Operator | `storage-lso/StorageSubscription.yaml` | Creates the namespace for the Local Storage Operator with annotations for workload management and deployment wave. | No |
-| LVM Operator | `storage-lvm/LVMOperatorStatus.yaml` | Verifies the installation or upgrade of the LVM Storage Operator. | Yes |
-| LVM Operator | `storage-lvm/StorageLVMCluster.yaml` | Defines an LVM cluster configuration, with placeholders for storage device classes and volume group settings. Optional substitute for the Local Storage Operator. | No |
-| LVM Operator | `storage-lvm/StorageLVMSubscription.yaml` | Manages installation and updates of the LVMS Operator. Optional substitute for the Local Storage Operator. | No |
-| LVM Operator | `storage-lvm/StorageLVMSubscriptionNS.yaml` | Creates the namespace for the LVMS Operator with labels and annotations for cluster monitoring and workload management. Optional substitute for the Local Storage Operator. | No |
-| LVM Operator | `storage-lvm/StorageLVMSubscriptionOperGroup.yaml` | Defines the target namespace for the LVMS Operator. Optional substitute for the Local Storage Operator. | No |
-| Node Tuning Operator | `node-tuning-operator/aarch64/PerformanceProfile.yaml` | Configures node performance settings in an OpenShift Container Platform cluster, optimizing for low latency and real-time workloads for aarch64 CPUs. | No |
-| Node Tuning Operator | `node-tuning-operator/x86_64/PerformanceProfile.yaml` | Configures node performance settings in an OpenShift Container Platform cluster, optimizing for low latency and real-time workloads for x86_64 CPUs. | No |
-| Node Tuning Operator | `node-tuning-operator/TunedPerformancePatch.yaml` | Applies performance tuning settings, including scheduler groups and service configurations for nodes in the specific namespace. | No |
-| Node Tuning Operator | `node-tuning-operator/TunedPowerCustom.yaml` | Applies additional powersave mode tuning as an overlay on top of TunedPerformancePatch. | No |
-| PTP fast event notifications | `ptp-operator/configuration/PtpConfigBoundaryForEvent.yaml` | Configures PTP settings for PTP boundary clocks with additional options for event synchronization. Dependent on cluster role. | No |
-| PTP fast event notifications | `ptp-operator/configuration/PtpConfigForHAForEvent.yaml` | Configures PTP for highly available boundary clocks with additional PTP fast event settings. Dependent on cluster role. | No |
-| PTP fast event notifications | `ptp-operator/configuration/PtpConfigMasterForEvent.yaml` | Configures PTP for PTP grandmaster clocks with additional PTP fast event settings. Dependent on cluster role. | No |
-| PTP fast event notifications | `ptp-operator/configuration/PtpConfigSlaveForEvent.yaml` | Configures PTP for PTP ordinary clocks with additional PTP fast event settings. Dependent on cluster role. | No |
-| PTP fast event notifications | `ptp-operator/PtpOperatorConfigForEvent.yaml` | Overrides the default OperatorConfig. Configures the PTP Operator specifying node selection criteria for running PTP daemons in the openshift-ptp namespace. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigBoundary.yaml` | Configures PTP settings for PTP boundary clocks. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigDualCardGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have dual NICs. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigThreeCardGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have 3 NICs. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have a single NIC. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigSlave.yaml` | Configures PTP settings for a PTP ordinary clock. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigDualFollower.yaml` | Configures PTP settings for a PTP ordinary clock with 2 interfaces in an active/standby configuration. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigTBCWpc.yaml` | Configures PTP as a Telecom boundary clock. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigDualCardTBCWpc.yaml` | Configures PTP as a Telecom boundary clock for hosts that have dual NICs. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigThreeCardTBCWpc.yaml` | Configures PTP as a Telecom boundary clock for hosts that have 3 NICs. Dependent on cluster role. | No |
-| PTP Operator | `ptp-operator/configuration/PtpConfigTTSCWpc.yaml` | Configures PTP settings for a PTP Telecom Time Slave Clock with single interface. Dependent on cluster role. | N |
-| PTP Operator | `ptp-operator/configuration/PtpConfigGnrdBcNoHoldover.yaml` | Configures PTP settings for a PTP Boundary Clock without holdover on GNR-D hardware. Dependent on cluster role. | N |
-| PTP Operator | `ptp-operator/PtpOperatorConfig.yaml` | Configures the PTP Operator settings, specifying node selection criteria for running PTP daemons in the openshift-ptp namespace. | No |
-| PTP Operator | `ptp-operator/PtpSubscription.yaml` | Manages installation and updates of the PTP Operator in the openshift-ptp namespace. | No |
-| PTP Operator | `ptp-operator/PtpSubscriptionNS.yaml` | Configures the namespace for the PTP Operator. | No |
-| PTP Operator | `ptp-operator/PtpSubscriptionOperGroup.yaml` | Configures the Operator group for the PTP Operator. | No |
-| PTP Operator (high availability) | `ptp-operator/configuration/PtpConfigBoundary.yaml` | Configures PTP settings for highly available PTP boundary clocks. | No |
-| PTP Operator (high availability) | `ptp-operator/configuration/PtpConfigForHA.yaml` | Configures PTP settings for highly available PTP boundary clocks. | No |
-| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsNS.yaml` | Configures namespace for the VRAN Acceleration Operator. Optional part of application workload. | Yes |
-| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsOperGroup.yaml` | Configures the Operator group for the VRAN Acceleration Operator. Optional part of application workload. | Yes |
-| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsSubscription.yaml` | Manages installation and updates for the VRAN Acceleration Operator. Optional part of application workload. | Yes |
-| SR-IOV FEC Operator | `sriov-fec-operator/SriovFecClusterConfig.yaml` | Configures SR-IOV FPGA Ethernet Controller (FEC) settings for nodes, specifying drivers, VF amount, and node selection. | Yes |
-| SR-IOV Operator | `sriov-operator/SriovNetwork.yaml` | Defines an SR-IOV network configuration, with placeholders for various network settings. | No |
-| SR-IOV Operator | `sriov-operator/SriovNetworkNodePolicy.yaml` | Configures SR-IOV network settings for specific nodes, including device type, RDMA support, physical function names, and the number of virtual functions. | No |
-| SR-IOV Operator | `sriov-operator/SriovOperatorConfig.yaml` | Configures SR-IOV Network Operator settings, including node selection, injector, and webhook options. | No |
-| SR-IOV Operator | `sriov-operator/SriovOperatorConfigForSNO.yaml` | Configures the SR-IOV Network Operator settings for single-node OpenShift, including node selection, injector, webhook options, and disabling node drain, in the openshift-sriov-network-operator namespace. | No |
-| SR-IOV Operator | `sriov-operator/SriovSubscription.yaml` | Manages the installation and updates of the SR-IOV Network Operator. | No |
-| SR-IOV Operator | `sriov-operator/SriovSubscriptionNS.yaml` | Creates the namespace for the SR-IOV Network Operator with specific annotations for workload management and deployment waves. | No |
-| SR-IOV Operator | `sriov-operator/SriovSubscriptionOperGroup.yaml` | Defines the target namespace for the SR-IOV Network Operators, enabling their management and deployment within this namespace. | No |
-
-Day 2 Operators CRs
-
-## Machine configuration reference CRs
-
-Use the following custom resources (CRs) to configure machine settings for the telco RAN DU reference design.
-
-| Component | Reference CR | Description | Optional |
-|----|----|----|----|
-| Container runtime (crun) | `optional-extra-manifest/enable-crun-master.yaml` | Configures the container runtime (crun) for control plane nodes. | No |
-| Container runtime (crun) | `optional-extra-manifest/enable-crun-worker.yaml` | Configures the container runtime (crun) for worker nodes. | No |
-| Kdump enable | `extra-manifest/06-kdump-master.yaml` | Configures kdump crash reporting on master nodes. | No |
-| Kdump enable | `extra-manifest/06-kdump-worker.yaml` | Configures kdump crash reporting on worker nodes. | No |
-| Kubelet configuration and container mount hiding | `extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on control plane nodes. | No |
-| Kubelet configuration and container mount hiding | `extra-manifest/01-container-mount-ns-and-kubelet-conf-worker.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on worker nodes. | No |
-| One-shot time sync | `extra-manifest/99-sync-time-once-master.yaml` | Synchronizes time once on master nodes. | No |
-| One-shot time sync | `extra-manifest/99-sync-time-once-worker.yaml` | Synchronizes time once on worker nodes. | No |
-| SCTP | `extra-manifest/03-sctp-machine-config-master.yaml` | Loads the SCTP kernel module on master nodes. | Yes |
-| SCTP | `extra-manifest/03-sctp-machine-config-worker.yaml` | Loads the SCTP kernel module on worker nodes. | Yes |
-| Set RCU normal | `extra-manifest/08-set-rcu-normal-master.yaml` | Disables rcu_expedited by setting rcu_normal after the control plane node has booted. | No |
-| Set RCU normal | `extra-manifest/08-set-rcu-normal-worker.yaml` | Disables rcu_expedited by setting rcu_normal after the worker node has booted. | No |
-| SRIOV-related kernel arguments | `extra-manifest/07-sriov-related-kernel-args-master.yaml` | Enables SR-IOV support on master nodes. | No |
-| SRIOV-related kernel arguments | `extra-manifest/07-sriov-related-kernel-args-worker.yaml` | Enables SR-IOV support on worker nodes. | No |
-
-Machine configuration CRs
-
-# Comparing a cluster with the telco RAN DU reference configuration
-
-After you deploy a telco RAN DU cluster, you can use the `cluster-compare` plugin to assess the cluster’s compliance with the telco RAN DU reference design specifications (RDS). The `cluster-compare` plugin is an OpenShift CLI (`oc`) plugin. The plugin uses a telco RAN DU reference configuration to validate the cluster with the telco RAN DU custom resources (CRs).
+The `cluster-compare` plugin is an OpenShift CLI (`oc`) plugin. The plugin uses a telco RAN DU reference configuration to validate the cluster with the telco RAN DU custom resources (CRs).
 
 The plugin-specific reference configuration for telco RAN DU is packaged in a container image with the telco RAN DU CRs.
 
@@ -1366,24 +1285,154 @@ Additional resources
 
 </div>
 
+## Cluster tuning reference CRs
+
+Use the following custom resources (CRs) to configure cluster tuning for the telco RAN DU reference design.
+
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Console disable | `cluster-tuning/console-disable/ConsoleOperatorDisable.yaml` | Disables the Console Operator. | No |
+| Disconnected registry | `extra-manifest/09-openshift-marketplace-ns.yaml` | Defines a dedicated namespace for managing the OpenShift Operator Marketplace. | No |
+| Disconnected registry | `disconnected-registry/DefaultCatsrc.yaml` | Configures the catalog source for the disconnected registry. | No |
+| Disconnected registry | `cluster-tuning/DisableOLMPprof.yaml` | Removes the obsolete `ConfigMap` CR that disabled OLM performance profiling in earlier releases. OLM performance profiling collection is removed in OpenShift Container Platform 4.22. | No |
+| Disconnected registry | `disconnected-registry/DisconnectedIDMS.yaml` | Configures disconnected registry image content source policy. | No |
+| Disconnected registry | `cluster-tuning/operator-hub/OperatorHub.yaml` | Optional, for multi-node clusters only. Configures the OperatorHub in OpenShift, disabling all default Operator sources. Not required for single-node OpenShift installs with marketplace capability disabled. | No |
+| Image registry | `image-registry/ImageRegistryConfig.yaml` | Configures the internal image registry with backend storage settings. | No |
+| Image registry | `image-registry/ImageRegistryPV.yaml` | Defines a PersistentVolume for image registry storage. | No |
+| Monitoring configuration | `cluster-tuning/monitoring-configuration/ReduceMonitoringFootprint.yaml` | Reduces the monitoring footprint by disabling Alertmanager and Telemeter, and sets Prometheus retention to 24 hours | No |
+| Network diagnostics disable | `cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml` | Configures the cluster network settings to disable built-in network troubleshooting and diagnostic features. | No |
+
+Cluster tuning CRs
+
+## Day 2 Operators reference CRs
+
+Use the following custom resources (CRs) to configure Day 2 Operators for the telco RAN DU reference design.
+
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Cluster Logging Operator | `cluster-logging/ClusterLogForwarder.yaml` | Configures log forwarding for the cluster. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogNS.yaml` | Configures the namespace for cluster logging. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogOperGroup.yaml` | Configures Operator group for cluster logging. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccount.yaml` | New in 4.18. Configures the cluster logging service account. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccountAuditBinding.yaml` | New in 4.18. Configures the cluster logging service account. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogServiceAccountInfrastructureBinding.yaml` | New in 4.18. Configures the cluster logging service account. | No |
+| Cluster Logging Operator | `cluster-logging/ClusterLogSubscription.yaml` | Manages installation and updates for the Cluster Logging Operator. | No |
+| Data protection | `data-protection/OadpDataProtectionApplication.yaml` | Configures the OADP DataProtectionApplication for backup and restore. | No |
+| Data protection | `data-protection/OadpSecret.yaml` | Configures the OADP cloud credentials secret. | No |
+| Data protection | `data-protection/OadpSubscription.yaml` | Manages installation and updates for the OADP Operator. | No |
+| Data protection | `data-protection/OadpSubscriptionNS.yaml` | Configures the namespace for the OADP Operator. | No |
+| Data protection | `data-protection/OadpSubscriptionOperGroup.yaml` | Configures the Operator group for the OADP Operator. | No |
+| Lifecycle Agent | `ibu/ImageBasedUpgrade.yaml` | Manage the image-based upgrade process in OpenShift Container Platform. | No |
+| Lifecycle Agent | `ibu/PlatformBackupRestore.yaml` | Configures backup and restore of RHACM artifacts for image-based upgrades on managed clusters. | No |
+| Lifecycle Agent | `ibu/PlatformBackupRestoreLvms.yaml` | Configures backup and restore of LVM Storage artifacts for image-based upgrades on clusters that use LVM Storage. | No |
+| Lifecycle Agent | `ibu/PlatformBackupRestoreWithIBGU.yaml` | Configures backup and restore of RHACM artifacts for image-based upgrades orchestrated with `ImageBasedGroupUpgrade` CRs. | No |
+| Lifecycle Agent | `lca/LcaSubscription.yaml` | Manages installation and updates for the LCA Operator. | No |
+| Lifecycle Agent | `lca/LcaSubscriptionNS.yaml` | Configures namespace for LCA subscription. | No |
+| Lifecycle Agent | `lca/LcaSubscriptionOperGroup.yaml` | Configures the Operator group for the LCA subscription. | No |
+| Local Storage Operator | `storage-lso/StorageClass.yaml` | Defines a storage class with a Delete reclaim policy and no dynamic provisioning in the cluster. | No |
+| Local Storage Operator | `storage/StorageLV.yaml` | Configures local storage devices for the example-storage-class in the openshift-local-storage namespace, specifying device paths and filesystem type. | No |
+| Local Storage Operator | `storage-lso/StorageNS.yaml` | Creates the namespace with annotations for workload management and the deployment wave for the Local Storage Operator. | No |
+| Local Storage Operator | `storage-lso/StorageOperGroup.yaml` | Creates the Operator group for the Local Storage Operator. | No |
+| Local Storage Operator | `storage-lso/StoragePV.yaml` | Defines a PersistentVolume template for local storage. | No |
+| Local Storage Operator | `storage-lso/StoragePVC.yaml` | Defines a PersistentVolumeClaim template for local storage. | No |
+| Local Storage Operator | `storage-lso/StorageSubscription.yaml` | Creates the namespace for the Local Storage Operator with annotations for workload management and deployment wave. | No |
+| LVM Operator | `storage-lvm/LVMOperatorStatus.yaml` | Verifies the installation or upgrade of the LVM Storage Operator. | No |
+| LVM Operator | `storage-lvm/StorageLVMCluster.yaml` | Defines an LVM cluster configuration, with placeholders for storage device classes and volume group settings. Optional substitute for the Local Storage Operator. | No |
+| LVM Operator | `storage-lvm/StorageLVMSubscription.yaml` | Manages installation and updates of the LVMS Operator. Optional substitute for the Local Storage Operator. | No |
+| LVM Operator | `storage-lvm/StorageLVMSubscriptionNS.yaml` | Creates the namespace for the LVMS Operator with labels and annotations for cluster monitoring and workload management. Optional substitute for the Local Storage Operator. | No |
+| LVM Operator | `storage-lvm/StorageLVMSubscriptionOperGroup.yaml` | Defines the target namespace for the LVMS Operator. Optional substitute for the Local Storage Operator. | No |
+| Node Tuning Operator | `node-tuning-operator/aarch64/PerformanceProfile.yaml` | Configures node performance settings in an OpenShift Container Platform cluster, optimizing for low latency and real-time workloads for aarch64 CPUs. | No |
+| Node Tuning Operator | `node-tuning-operator/x86_64/PerformanceProfile.yaml` | Configures node performance settings in an OpenShift Container Platform cluster, optimizing for low latency and real-time workloads for x86_64 CPUs. | No |
+| Node Tuning Operator | `node-tuning-operator/TunedPerformancePatch.yaml` | Applies performance tuning settings, including scheduler groups and service configurations for nodes in the specific namespace. | No |
+| Node Tuning Operator | `node-tuning-operator/TunedPowerCustom.yaml` | Applies additional powersave mode tuning as an overlay on top of TunedPerformancePatch. | No |
+| NMState Operator | `nmstate/NMState.yaml` | Configures the NMState instance for declarative network configuration. | No |
+| NMState Operator | `nmstate/NMStateSubscription.yaml` | Manages installation and updates for the NMState Operator. | No |
+| NMState Operator | `nmstate/NMStateSubscriptionNS.yaml` | Configures the namespace for the NMState Operator. | No |
+| NMState Operator | `nmstate/NMStateSubscriptionOperGroup.yaml` | Configures the Operator group for the NMState Operator. | No |
+| PTP fast event notifications | `ptp-operator/configuration/PtpConfigBoundaryForEvent.yaml` | Configures PTP settings for PTP boundary clocks with additional options for event synchronization. Dependent on cluster role. | No |
+| PTP fast event notifications | `ptp-operator/configuration/PtpConfigForHAForEvent.yaml` | Configures PTP for highly available boundary clocks with additional PTP fast event settings. Dependent on cluster role. | No |
+| PTP fast event notifications | `ptp-operator/configuration/PtpConfigMasterForEvent.yaml` | Configures PTP for PTP grandmaster clocks with additional PTP fast event settings. Dependent on cluster role. | No |
+| PTP fast event notifications | `ptp-operator/configuration/PtpConfigSlaveForEvent.yaml` | Configures PTP for PTP ordinary clocks with additional PTP fast event settings. Dependent on cluster role. | No |
+| PTP fast event notifications | `ptp-operator/PtpOperatorConfigForEvent.yaml` | Overrides the default OperatorConfig. Configures the PTP Operator specifying node selection criteria for running PTP daemons in the openshift-ptp namespace. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigBoundary.yaml` | Configures PTP settings for PTP boundary clocks. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigDualCardGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have dual NICs. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigThreeCardGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have 3 NICs. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigGmWpc.yaml` | Configures PTP grandmaster clock settings for hosts that have a single NIC. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigSlave.yaml` | Configures PTP settings for a PTP ordinary clock. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigDualFollower.yaml` | Configures PTP settings for a PTP ordinary clock with 2 interfaces in an active/standby configuration. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigTBCWpc.yaml` | Configures PTP as a Telecom boundary clock. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigDualCardTBCWpc.yaml` | Configures PTP as a Telecom boundary clock for hosts that have dual NICs. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigThreeCardTBCWpc.yaml` | Configures PTP as a Telecom boundary clock for hosts that have 3 NICs. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigDualTrTBC.yaml` | Configures PTP as a Telcom boundary clock for hosts that receive PTP time on two ports of a single NIC sharing a common PHC/DPLL. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigGnrdTGM.yaml` | Configures PTP as a Telecom Grand Master (T-GM) on GNR-D hardware. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigMaster.yaml` | Configures PTP grandmaster clock settings. Provided for testing only. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigTTSCWpc.yaml` | Configures PTP settings for a PTP Telecom Time Slave Clock with single interface. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/configuration/PtpConfigGnrdBcNoHoldover.yaml` | Configures PTP settings for a PTP Boundary Clock without holdover on GNR-D hardware. Dependent on cluster role. | No |
+| PTP Operator | `ptp-operator/PtpOperatorConfig.yaml` | Configures the PTP Operator settings, specifying node selection criteria for running PTP daemons in the openshift-ptp namespace. | No |
+| PTP Operator | `ptp-operator/PtpSubscription.yaml` | Manages installation and updates of the PTP Operator in the openshift-ptp namespace. | No |
+| PTP Operator | `ptp-operator/PtpSubscriptionNS.yaml` | Configures the namespace for the PTP Operator. | No |
+| PTP Operator | `ptp-operator/PtpSubscriptionOperGroup.yaml` | Configures the Operator group for the PTP Operator. | No |
+| PTP Operator (high availability) | `ptp-operator/configuration/PtpConfigBoundary.yaml` | Configures PTP settings for highly available PTP boundary clocks. | No |
+| PTP Operator (high availability) | `ptp-operator/configuration/PtpConfigForHA.yaml` | Configures PTP settings for highly available PTP boundary clocks. | No |
+| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsNS.yaml` | Configures namespace for the VRAN Acceleration Operator. | No |
+| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsOperGroup.yaml` | Configures the Operator group for the VRAN Acceleration Operator. | No |
+| SR-IOV FEC Operator | `sriov-fec-operator/AcceleratorsSubscription.yaml` | Manages installation and updates for the VRAN Acceleration Operator. | No |
+| SR-IOV FEC Operator | `sriov-fec-operator/SriovFecClusterConfig.yaml` | Configures SR-IOV FPGA Ethernet Controller (FEC) settings for nodes, specifying drivers, VF amount, and node selection. | No |
+| SR-IOV FEC Operator | `sriov-fec-operator/SriovVrbClusterConfig.yaml` | Configures SR-IOV vRAN Boost (VRB) acceleration settings for nodes, specifying drivers and node selection. | No |
+| SR-IOV Operator | `sriov-operator/SriovNetwork.yaml` | Defines an SR-IOV network configuration, with placeholders for various network settings. | No |
+| SR-IOV Operator | `sriov-operator/SriovNetworkNodePolicy.yaml` | Configures SR-IOV network settings for specific nodes, including device type, RDMA support, physical function names, and the number of virtual functions. | No |
+| SR-IOV Operator | `sriov-operator/SriovOperatorConfig.yaml` | Configures SR-IOV Network Operator settings, including node selection, injector, and webhook options. | No |
+| SR-IOV Operator | `sriov-operator/SriovOperatorConfigForSNO.yaml` | Configures the SR-IOV Network Operator settings for single-node OpenShift, including node selection, injector, webhook options, and disabling node drain, in the openshift-sriov-network-operator namespace. | No |
+| SR-IOV Operator | `sriov-operator/SriovSubscription.yaml` | Manages the installation and updates of the SR-IOV Network Operator. | No |
+| SR-IOV Operator | `sriov-operator/SriovSubscriptionNS.yaml` | Creates the namespace for the SR-IOV Network Operator with specific annotations for workload management and deployment waves. | No |
+| SR-IOV Operator | `sriov-operator/SriovSubscriptionOperGroup.yaml` | Defines the target namespace for the SR-IOV Network Operators, enabling their management and deployment within this namespace. | No |
+
+Day 2 Operators CRs
+
+## Machine configuration reference CRs
+
+Use the following custom resources (CRs) to configure machine settings for the telco RAN DU reference design.
+
+| Component | Reference CR | Description | Optional |
+|----|----|----|----|
+| Disk encryption | `extra-manifest/01-disk-encryption-pcr-rebind-master.yaml` | Configures TPM disk encryption PCR rebinding on master nodes. | No |
+| Disk encryption | `extra-manifest/01-disk-encryption-pcr-rebind-worker.yaml` | Configures TPM disk encryption PCR rebinding on worker nodes. | No |
+| GNR-D interface renaming | `extra-manifest/10-rename-gnrd-interfaces-master.yaml` | Renames GNR-D network interfaces on master nodes. | No |
+| GNR-D interface renaming | `extra-manifest/10-rename-gnrd-interfaces-worker.yaml` | Renames GNR-D network interfaces on worker nodes. | No |
+| Kdump enable | `extra-manifest/06-kdump-master.yaml` | Configures kdump crash reporting on master nodes. | No |
+| Kdump enable | `extra-manifest/06-kdump-worker.yaml` | Configures kdump crash reporting on worker nodes. | No |
+| Kubelet configuration and container mount hiding | `extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on control plane nodes. | No |
+| Kubelet configuration and container mount hiding | `extra-manifest/01-container-mount-ns-and-kubelet-conf-worker.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on worker nodes. | No |
+| Machine config pool | `machine-config/MachineConfigPool.yaml` | Defines the worker-du MachineConfigPool for multi-node cluster configurations. | No |
+| One-shot time sync | `extra-manifest/99-sync-time-once-master.yaml` | Synchronizes time once on master nodes. | No |
+| One-shot time sync | `extra-manifest/99-sync-time-once-worker.yaml` | Synchronizes time once on worker nodes. | No |
+| Reboot | `machine-config/RebootMachineConfig.yaml` | Configures a `MachineConfig` CR for node reboots triggered by TALM. | No |
+| SCTP | `extra-manifest/03-sctp-machine-config-master.yaml` | Loads the SCTP kernel module on master nodes. | Yes |
+| SCTP | `extra-manifest/03-sctp-machine-config-worker.yaml` | Loads the SCTP kernel module on worker nodes. | Yes |
+| SCTP | `machine-config/MachineConfigSctp.yaml` | Standalone MachineConfig for loading the SCTP kernel module. | No |
+| Set RCU normal | `extra-manifest/08-set-rcu-normal-master.yaml` | Disables rcu_expedited by setting rcu_normal after the control plane node has booted. | No |
+| Set RCU normal | `extra-manifest/08-set-rcu-normal-worker.yaml` | Disables rcu_expedited by setting rcu_normal after the worker node has booted. | No |
+| SRIOV-related kernel arguments | `extra-manifest/07-sriov-related-kernel-args-master.yaml` | Enables SR-IOV support on master nodes. | No |
+| SRIOV-related kernel arguments | `extra-manifest/07-sriov-related-kernel-args-worker.yaml` | Enables SR-IOV support on worker nodes. | No |
+
+Machine configuration CRs
+
 # Telco RAN DU 4.17 validated software components
 
 The Red Hat telco RAN DU 4.17 solution has been validated using the following Red Hat software products for OpenShift Container Platform managed clusters.
 
 | Component                                | Software version |
 |------------------------------------------|------------------|
-| OpenShift Container Platform             | 4.22             |
-| Cluster Logging Operator                 | 6.5              |
-| Local Storage Operator                   | 4.22             |
+| OpenShift Container Platform             | 5.0              |
+| Cluster Logging Operator                 | 6.7              |
+| Local Storage Operator                   | 5.0              |
 | OpenShift API for Data Protection (OADP) | 1.6              |
-| PTP Operator                             | 4.22             |
-| SR-IOV Operator                          | 4.22             |
+| PTP Operator                             | 5.0              |
+| SR-IOV Operator                          | 5.0              |
 | SRIOV-FEC Operator                       | 2.12             |
-| Lifecycle Agent Operator                 | 4.22             |
+| Lifecycle Agent Operator                 | 5.0              |
 
 Telco RAN DU managed cluster validated software components
-
-- Cluster Logging Operator will be updated to 6.6 when the aligned Cluster Logging Operator version is released.
 
 <div>
 

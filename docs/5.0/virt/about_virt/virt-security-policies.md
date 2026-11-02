@@ -6,7 +6,7 @@ OpenShift Virtualization provides built-in security features and authorization p
 
 - Virtual machine (VM) workloads run as unprivileged pods.
 
-- Security context constraints (SCCs) are defined for the `kubevirt-controller` service account. For more information about SSCs, see "Additional resources".
+- Security context constraints (SCCs) are defined for the `kubevirt-controller` service account. For more information about SCCs, see "Additional resources".
 
 - TLS certificates for OpenShift Virtualization components are renewed and rotated automatically.
 
@@ -38,9 +38,9 @@ TLS certificates are automatically deleted and replaced according to the followi
 
 # Authorization
 
-OpenShift Virtualization uses role-based access control (RBAC) to define permissions for human users and service accounts. The permissions defined for service accounts control the actions that OpenShift Virtualization components can perform.
+OpenShift Virtualization uses role-based access control (RBAC) to define permissions for users and service accounts.
 
-You can also use RBAC roles to manage user access to virtualization features. For example, an administrator can create an RBAC role that provides the permissions required to launch a virtual machine. The administrator can then restrict access by binding the role to specific users.
+By default, OpenShift Virtualization aggregates virtualization permissions into standard OpenShift Container Platform cluster roles (`view`, `edit`, and `admin`). You can disable this role aggregation if you want to grant virtualization permissions manually to specific users or groups.
 
 ## Default cluster roles for OpenShift Virtualization
 
@@ -50,32 +50,58 @@ By using cluster role aggregation, OpenShift Virtualization extends the default 
 |----|----|----|
 | `view` | `kubevirt.io:view` | A user that can view all OpenShift Virtualization resources in the cluster but cannot create, delete, modify, or access them. For example, the user can see that a virtual machine (VM) is running but cannot shut it down or gain access to its console. |
 | `edit` | `kubevirt.io:edit` | A user that can modify all OpenShift Virtualization resources in the cluster. For example, the user can create VMs, access VM consoles, and delete VMs. |
-| `admin` | `kubevirt.io:admin` | A user that has full permissions to all OpenShift Virtualization resources, including the ability to delete collections of resources. The user can also view and modify the OpenShift Virtualization runtime configuration, which is located in the `HyperConverged` custom resource in the `openshift-cnv` namespace. |
+| `admin` | `kubevirt.io:admin` | A user that has full permissions to manage virtual machines and related resources, including the ability to delete collections of resources. The scope of permissions depends on whether the role is bound using a `ClusterRoleBinding` (cluster-wide) or `RoleBinding` (namespace-scoped). |
 | `N/A` | `kubevirt.io:migrate` | A user that can create, delete, and update VM live migration requests, which are represented by namespaced `VirtualMachineInstanceMigration` (VMIM) objects. This role is specific to OpenShift Virtualization. |
 
 OpenShift Virtualization cluster roles
 
 ## Role aggregation
 
-By default, OpenShift Virtualization uses role aggregation to grant users virtualization-related roles automatically.
+Users with default `admin`, `edit`, or `view` roles automatically receive matching virtualization permissions. You can disable this behavior to control virtualization access explicitly.
 
 > [!IMPORTANT]
-> Configuring role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+> Disabling OpenShift Virtualization role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 >
 > For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
-When role aggregation is enabled, OpenShift Virtualization extends the default OpenShift Container Platform cluster roles with permissions for accessing virtualization objects. For example, a user with the `edit` cluster role automatically receives the `kubevirt.io:edit` role, which allows them to create and modify VMs.
+By default, OpenShift Virtualization uses Kubernetes aggregated cluster roles to extend the default `admin`, `edit`, and `view` cluster roles with permissions for virtualization resources. When a user has one of these default roles in a namespace, they can perform the corresponding virtualization operations. For example, a user with the `edit` role in a namespace can create and modify virtual machines (VMs) in that namespace.
 
-When role aggregation is disabled, users do not receive virtualization-related roles by default. You must explicitly grant virtualization roles to users who need access to virtualization resources. Disabling role aggregation provides more granular control over which users can access virtualization resources in your cluster.
+The OpenShift Virtualization cluster roles are aggregated as follows:
 
-You can re-enable role aggregation at any time to restore the default behavior.
+| OpenShift Virtualization cluster role | Default cluster role |
+|---------------------------------------|----------------------|
+| `kubevirt.io:admin`                   | `admin`              |
+| `kubevirt.io:edit`                    | `edit`               |
+| `kubevirt.io:view`                    | `view`               |
 
-## Configure role aggregation by using the web console
+OpenShift Virtualization cluster role aggregation
 
-You can configure virtualization role aggregation by using the OpenShift Container Platform web console.
+In clusters that require stricter authorization boundaries, you can disable this automatic aggregation by setting `spec.virtualization.roleAggregationStrategy` to `Manual` in the `HyperConverged` custom resource (CR). The HyperConverged Operator (HCO) propagates the setting to KubeVirt at runtime and automatically enables the required `OptOutRoleAggregation` feature gate. Do not edit the KubeVirt CR or the feature gate directly.
 
 > [!IMPORTANT]
-> Configuring role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+> Setting the strategy to `Manual` immediately removes virtualization permissions from all users who rely on aggregated `admin`, `edit`, or `view` roles. The change takes effect at runtime with no grace period. Before disabling role aggregation, grant virtualization permissions explicitly to users and groups that require access.
+
+The `roleAggregationStrategy` field supports the following values:
+
+| Value | Behavior |
+|----|----|
+| `AggregateToDefault` (default) | Aggregates OpenShift Virtualization cluster roles to the default `admin`, `edit`, and `view` cluster roles. |
+| `Manual` | Does not aggregate kubevirt cluster roles to the default cluster roles. Administrators must bind kubevirt cluster roles explicitly to users or groups. |
+
+roleAggregationStrategy field values
+
+If the field is not set, `AggregateToDefault` behavior is used.
+
+When the strategy is `Manual`, the `aggregate-to-admin`, `aggregate-to-edit`, and `aggregate-to-view` labels on kubevirt cluster roles are set to `false`. Users with the standard `admin`, `edit`, or `view` roles do not automatically receive the corresponding kubevirt permissions. Existing RBAC bindings that grant kubevirt cluster roles directly continue to work.
+
+You can change the strategy at any time. HCO and kubevirt apply the change at runtime, and reinstalling OpenShift Virtualization or restarting any pods is not required and not necessary.
+
+## Control virtualization role assignment with the web console
+
+Disable automatic virtualization permissions to enforce stricter authorization boundaries in your cluster.
+
+> [!IMPORTANT]
+> Disabling OpenShift Virtualization role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 >
 > For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -88,6 +114,8 @@ Prerequisites
 </div>
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
+
+- OpenShift Virtualization is installed.
 
 </div>
 
@@ -109,11 +137,201 @@ Procedure
 
 5.  Under **General settings**, expand **Automatically grant Virtualization roles**.
 
-6.  Choose the appropriate option:
+6.  Select the required state:
 
-    - To disable role aggregation, toggle **Automatically grant Virtualization roles** to off. Users no longer receive virtualization-related roles by default.
+    - To disable role aggregation, toggle **Automatically grant Virtualization roles** to off.
 
-    - To re-enable role aggregation, toggle **Automatically grant Virtualization roles** to on. Users receive virtualization-related roles by default.
+    - To enable role aggregation, toggle **Automatically grant Virtualization roles** to on.
+
+</div>
+
+<div class="formalpara">
+
+<div class="title">
+
+Verification
+
+</div>
+
+Navigate to **Virtualization** → **Settings** → **Cluster** and verify that **Automatically grant Virtualization roles** shows the intended state.
+
+</div>
+
+## Control virtualization role assignment with CLI
+
+Disable automatic virtualization permissions to enforce stricter authorization boundaries in your cluster.
+
+> [!IMPORTANT]
+> Disabling OpenShift Virtualization role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with `cluster-admin` permissions.
+
+- OpenShift Virtualization is installed.
+
+- The OpenShift CLI (`oc`) is installed.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Disable role aggregation by running the following command:
+
+    ``` terminal
+    $ oc patch hyperconverged kubevirt-hyperconverged \
+        -n openshift-cnv \
+        --type=merge \
+        -p '{"spec":{"virtualization":{"roleAggregationStrategy":"Manual"}}}'
+    ```
+
+2.  Verify that the HyperConverged Operator (HCO) propagated the setting to KubeVirt:
+
+    ``` terminal
+    $ oc get kubevirt kubevirt-kubevirt-hyperconverged \
+        -n openshift-cnv \
+        -o jsonpath='{.spec.configuration.roleAggregationStrategy}'
+    ```
+
+    The output shows `Manual`.
+
+3.  Verify that the `OptOutRoleAggregation` feature gate is enabled:
+
+    ``` terminal
+    $ oc get kubevirt kubevirt-kubevirt-hyperconverged \
+        -n openshift-cnv \
+        -o jsonpath='{.spec.configuration.developerConfiguration.featureGates}' | grep -o OptOutRoleAggregation
+    ```
+
+    The output shows `OptOutRoleAggregation`.
+
+4.  Optional: Verify that a cluster role is no longer marked for aggregation. For example, verify that the `kubevirt.io:edit` cluster role has an `aggregate-to-edit` label value of `false`:
+
+    ``` terminal
+    $ oc get clusterrole kubevirt.io:edit \
+        -o jsonpath='{.metadata.labels.rbac\.authorization\.k8s\.io/aggregate-to-edit}'
+    ```
+
+    The output shows `false`.
+
+5.  Optional: To re-enable aggregation, set the field to `AggregateToDefault`:
+
+    ``` terminal
+    $ oc patch hyperconverged kubevirt-hyperconverged \
+        -n openshift-cnv \
+        --type=merge \
+        -p '{"spec":{"virtualization":{"roleAggregationStrategy":"AggregateToDefault"}}}'
+    ```
+
+    Alternatively, remove the field entirely from the HyperConverged CR:
+
+    ``` terminal
+    $ oc patch hyperconverged kubevirt-hyperconverged \
+        -n openshift-cnv \
+        --type=json \
+        -p '[{"op":"remove","path":"/spec/virtualization/roleAggregationStrategy"}]'
+    ```
+
+    When the field is set, including when it is set to `AggregateToDefault`, HCO keeps the `OptOutRoleAggregation` feature gate enabled. When the field is removed, HCO removes the feature gate and KubeVirt uses its default aggregation behavior.
+
+</div>
+
+## Bind virtualization roles to users
+
+When role aggregation is disabled, bind OpenShift Virtualization cluster roles explicitly to users or groups. These roles supplement the default OpenShift Container Platform `admin`, `edit`, and `view` roles.
+
+> [!IMPORTANT]
+> Disabling OpenShift Virtualization role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with `cluster-admin` permissions or with the `escalate` and `bind` permissions on the cluster role you want to assign.
+
+- The target namespace exists, if you are creating a `RoleBinding`.
+
+- The OpenShift CLI (`oc`) is installed.
+
+</div>
+
+> [!IMPORTANT]
+> Users also need the base OpenShift Container Platform `edit` or `view` role to access core resources such as pods, persistent volume claims, and events. The OpenShift Virtualization cluster roles grant virtualization-specific permissions only.
+>
+> Regardless of the `roleAggregationStrategy` value, all authenticated users retain read access to the KubeVirt custom resource (CR) itself through the `kubevirt.io:default` cluster role.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Use a `RoleBinding` to grant access in one namespace or a `ClusterRoleBinding` to grant access in all namespaces.
+
+    - `RoleBinding` example that grants `kubevirt.io:edit` permissions to the `developers` group in the `dev-team` namespace:
+
+      ``` yaml
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: virt-editors
+        namespace: dev-team
+      subjects:
+        - kind: Group
+          name: developers
+          apiGroup: rbac.authorization.k8s.io
+      roleRef:
+        kind: ClusterRole
+        name: kubevirt.io:edit
+        apiGroup: rbac.authorization.k8s.io
+      ```
+
+    - `ClusterRoleBinding` example that grants `kubevirt.io:view` permissions to the `vm-viewers` group in all namespaces:
+
+      ``` yaml
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: virt-viewers
+      subjects:
+        - kind: Group
+          name: vm-viewers
+          apiGroup: rbac.authorization.k8s.io
+      roleRef:
+        kind: ClusterRole
+        name: kubevirt.io:view
+        apiGroup: rbac.authorization.k8s.io
+      ```
+
+2.  Save the manifest to a file.
+
+3.  Apply the manifest:
+
+    ``` terminal
+    $ oc apply -f <filename>.yaml
+    ```
 
 </div>
 
@@ -125,7 +343,29 @@ Verification
 
 </div>
 
-- Navigate to **Virtualization** → **Settings** and click the **Cluster** tab. Under **General settings**, verify that **Automatically grant Virtualization roles** reflects the expected state.
+- For a `RoleBinding`, verify that the binding was created and grants the expected permissions:
+
+  ``` terminal
+  $ oc get rolebinding virt-editors -n dev-team
+  ```
+
+  ``` terminal
+  $ oc auth can-i create virtualmachines -n dev-team --as-group=developers
+  ```
+
+  The output shows `yes`.
+
+- For a `ClusterRoleBinding`, verify that the binding grants permissions cluster-wide:
+
+  ``` terminal
+  $ oc get clusterrolebinding virt-viewers
+  ```
+
+  ``` terminal
+  $ oc auth can-i list virtualmachines --all-namespaces --as-group=vm-viewers
+  ```
+
+  The output shows `yes`.
 
 </div>
 

@@ -6,6 +6,8 @@ Run `oc help` to list all commands or run `oc <command> --help` to get additiona
 
 # OpenShift CLI (oc) developer commands
 
+The `oc` developer commands provide users and developers with tools for interacting with OpenShift Container Platform resources, including building images, deploying applications, and managing pods, secrets, and configurations.
+
 ## oc annotate
 
 Update the annotations on a resource

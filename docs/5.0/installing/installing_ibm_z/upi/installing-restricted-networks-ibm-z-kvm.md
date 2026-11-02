@@ -2733,6 +2733,6 @@ Procedure
 
 - [Image configuration resources (Classic)](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)

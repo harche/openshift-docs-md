@@ -128,9 +128,9 @@ You can troubleshoot these components by using the following procedures:
 
 - [Getting support](../support/getting-support.xml#getting-support)
 
-- [About remote health monitoring](../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Using remote health monitoring in a restricted network](../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#remote-health-reporting-from-restricted-network)
+- [Configure remote health monitoring for restricted networks](../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#remote-health-reporting-from-restricted-network)
 
 - [Troubleshooting installations](../support/troubleshooting/troubleshooting-installations.xml#troubleshooting-installations)
 
@@ -140,9 +140,9 @@ You can troubleshoot these components by using the following procedures:
 
 - [Troubleshooting network issues](../support/troubleshooting/troubleshooting-network-issues.xml#troubleshooting-network-issues)
 
-- [Using Red Hat Lightspeed to identify issues with your cluster](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
+- [Identify and resolve cluster issues with Red Hat Lightspeed](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
 
-- [Showing data collected by remote health monitoring](../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#showing-data-collected-by-remote-health-monitoring)
+- [View data collected by remote health monitoring](../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#showing-data-collected-by-remote-health-monitoring)
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#gathering-cluster-data)
 

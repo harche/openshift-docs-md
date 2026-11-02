@@ -428,7 +428,7 @@ The optional **Customization** step groups advanced settings into tabs. The foll
 
 Key customization settings
 
-# Configuring project-level default networks
+# Configure project-level default networks
 
 As a cluster administrator, you can configure project-level network defaults for virtual machine (VM) creation and network interface selection, using namespace annotations in the OpenShift Container Platform project, `kubevirt.io/allow-pod-network` and `kubevirt.io/default-network`.
 

@@ -401,7 +401,7 @@ Procedure
 
     ``` terminal
     NAME                                   DISPLAY                       VERSION   REPLACES     PHASE
-    kubernetes-nmstate-operator.v4.22.0   Kubernetes NMState Operator   4.22.0                 Succeeded
+    kubernetes-nmstate-operator.v5.0.0   Kubernetes NMState Operator   5.0.0               Succeeded
     ```
 
     </div>
@@ -409,7 +409,7 @@ Procedure
 3.  Delete the CSV resource. After you delete the file, OLM deletes certain resources, such as `RBAC`, that it created for the Operator.
 
     ``` terminal
-    $ oc delete --namespace openshift-nmstate clusterserviceversion kubernetes-nmstate-operator.v4.22.0
+    $ oc delete --namespace openshift-nmstate clusterserviceversion kubernetes-nmstate-operator.v5.0.0
     ```
 
 4.  Delete the `nmstate` CR and any associated `Deployment` resources by running the following commands:

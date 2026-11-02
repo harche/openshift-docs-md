@@ -1177,7 +1177,7 @@ There are several Microsoft Azure instance types tested with OpenShift Container
 
 See the following machine types based on 64-bit x86 architecture:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
@@ -1185,7 +1185,7 @@ There are several Microsoft Azure ARM64 instance types tested with OpenShift Con
 
 See the following machine types based on 64-bit ARM architecture:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_aarch64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/azure/tested_instance_types_aarch64.md>
 
 # Using the Azure Marketplace offering
 
@@ -2465,7 +2465,7 @@ Use the `01_vnet.json` Azure Resource Manager (ARM) template to deploy the virtu
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/01_vnet.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/01_vnet.json[role=include]
 ```
 
 </div>
@@ -2544,7 +2544,7 @@ Use the `02_storage.json` Azure Resource Manager (ARM) template to deploy stored
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/02_storage.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/02_storage.json[role=include]
 ```
 
 </div>
@@ -2672,7 +2672,7 @@ Use the `03_infra.json` Azure Resource Manager (ARM) template to deploy networki
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/03_infra.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/03_infra.json[role=include]
 ```
 
 </div>
@@ -2760,7 +2760,7 @@ Use the `04_bootstrap.json` Azure Resource Manager (ARM) template to deploy the 
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/04_bootstrap.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/04_bootstrap.json[role=include]
 ```
 
 </div>
@@ -2838,7 +2838,7 @@ Use the `05_masters.json` Azure Resource Manager (ARM) template to deploy the co
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/05_masters.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/05_masters.json[role=include]
 ```
 
 </div>
@@ -2988,7 +2988,7 @@ Use the `06_workers.json` Azure Resource Manager (ARM) template to deploy worker
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/06_workers.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azure/06_workers.json[role=include]
 ```
 
 </div>
@@ -3596,7 +3596,7 @@ Additional resources
 
 </div>
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 </div>
 

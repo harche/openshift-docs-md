@@ -1,4 +1,4 @@
-You can *opt in*, enable, or *opt out*, disable, reporting health and usage data for your cluster.
+Control whether your cluster sends health data to Red Hat. Enable reporting to receive proactive monitoring and recommendations, or disable it based on privacy requirements, security policies, or network restrictions.
 
 # Enable remote health reporting
 
@@ -131,7 +131,7 @@ The following lists some consequences of disabling remote health reporting on a 
 
 In restricted networks, Telemetry and Red Hat Lightspeed data still gets gathered through the appropriate configuration of your proxy.
 
-# Disabling remote health reporting
+# Disable remote health reporting
 
 You can change your existing global cluster pull secret to disable remote health reporting. This configuration disables both Telemetry and the Insights Operator.
 
@@ -175,7 +175,7 @@ Procedure
 
 </div>
 
-# Registering your disconnected cluster
+# Register your disconnected cluster
 
 Register your disconnected OpenShift Container Platform cluster on the Red Hat Hybrid Cloud Console so that your cluster does not get impacted by disabling remote health reporting. For more information, see "Consequences of disabling remote health reporting".
 
@@ -232,7 +232,7 @@ Additional resources
 
 To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret* by using the `oc set data secret/additional-pull-secret -n kube-system` command.
 
-Hypershift manages the new credential propagation among the HostedCluster nodes.
+Hosted control planes manage the new credential propagation among the HostedCluster nodes.
 
 Use this procedure when you need a separate registry to store images than the registry used during installation.
 

@@ -1,6 +1,6 @@
-As an administrator, you can review the metrics collected by Telemetry and the Insights Operator.
+Review the metrics and configuration data collected by Telemetry and the Insights Operator. View collected data to verify transmission, troubleshoot connectivity issues, or understand what information is sent to Red Hat.
 
-# Showing data collected by Telemetry
+# Show data collected by Telemetry
 
 You can view the cluster and components time series data captured by Telemetry.
 
@@ -185,7 +185,7 @@ Procedure
 
 </div>
 
-# Showing data collected by the Insights Operator
+# Show data collected by the Insights Operator
 
 You can review the data that is collected by the Insights Operator.
 

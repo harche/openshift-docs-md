@@ -27,7 +27,7 @@ Deviation from the RDS can have some or all of the following consequences:
 > [!NOTE]
 > Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
-# Hub cluster architecture overview
+# Review how the hub cluster manages the fleet
 
 Use the features and components running on the management hub cluster to manage many other clusters in a hub-and-spoke topology. The hub cluster provides a highly available and centralized interface for managing the configuration, lifecycle, and observability of the fleet of deployed clusters.
 
@@ -52,7 +52,7 @@ The telco management hub reference design specification (RDS) and the associated
 <figcaption>Hub cluster reference design architecture</figcaption>
 </figure>
 
-# Telco management hub cluster use model
+# Review the services that the hub cluster provides
 
 The hub cluster provides managed cluster installation, configuration, observability and ongoing lifecycle management for telco application and workload clusters.
 
@@ -138,7 +138,7 @@ Additional resources
 
 </div>
 
-# Hub cluster topology
+# Plan the hub cluster node layout
 
 In production environments, the OpenShift Container Platform hub cluster must be highly available to maintain high availability of the management functions.
 
@@ -176,7 +176,9 @@ Additional resources
 
 # Hub cluster networking
 
-The reference hub cluster is designed to operate in a disconnected networking environment where direct access to the internet is not possible. As with all OpenShift Container Platform clusters, the hub cluster requires access to an image registry hosting all OpenShift and Day 2 Operator Lifecycle Manager (OLM) images.
+The reference hub cluster is designed to operate in a disconnected networking environment where direct access to the internet is not possible.
+
+As with all OpenShift Container Platform clusters, the hub cluster requires access to an image registry hosting all OpenShift and Day 2 Operator Lifecycle Manager (OLM) images.
 
 The hub cluster supports dual-stack networking support for IPv6 and IPv4 networks. IPv6 is typical in edge or far-edge network segments, while IPv4 is more prevalent for use with legacy equipment in the data center.
 
@@ -456,7 +458,9 @@ Additional resources
 
 # Git repository
 
-The telco management hub cluster supports a GitOps-driven methodology for installing and managing the configuration of OpenShift clusters for various telco applications. This methodology requires an accessible Git repository that serves as the authoritative source of truth for cluster definitions and configuration artifacts.
+The telco management hub cluster supports a GitOps-driven methodology for installing and managing the configuration of OpenShift clusters for various telco applications.
+
+This methodology requires an accessible Git repository that serves as the authoritative source of truth for cluster definitions and configuration artifacts.
 
 Red Hat does not offer a commercially supported Git server. An existing Git server provided in the production environment can be used. Gitea and Gogs are examples of self-hosted Git servers that you can use.
 
@@ -564,7 +568,9 @@ Additional resources
 
 # Observability
 
-The Red Hat Advanced Cluster Management (RHACM) multicluster engine Observability component provides centralized aggregation and visualization of metrics and alerts for all managed clusters. To balance performance and data analysis, the monitoring service maintains a subset list of aggregated metrics that are collected at a downsampled interval. The metrics can be accessed on the hub through a set of different preconfigured dashboards.
+The Red Hat Advanced Cluster Management (RHACM) multicluster engine Observability component provides centralized aggregation and visualization of metrics and alerts for all managed clusters.
+
+To balance performance and data analysis, the monitoring service maintains a subset list of aggregated metrics that are collected at a downsampled interval. The metrics can be accessed on the hub through a set of different preconfigured dashboards.
 
 Observability installation
 The primary CR to enable and configure the Observability service is the `MulticlusterObservability` CR, which defines the following settings: The primary custom resource (CR) to enable and configure the observability service is the `MulticlusterObservability` CR, which defines the following settings:
@@ -791,7 +797,7 @@ The recommended method for single-node OpenShift upgrade is the image-based upgr
 > The RHACM multicluster engine Observability component brings you a centralized view of the health and status of all the managed clusters. By default, every managed cluster is enabled to send metrics and alerts, created by their Cluster Monitoring Operator (CMO), back to Observability. For more information, see "Observability".
 
 Limits and requirements
-- For more information about limits on number of clusters managed by a single hub cluster, see "Telco management hub cluster use model".
+- For more information about limits on number of clusters managed by a single hub cluster, see "Hub cluster scaling target".
 
 - The number of managed clusters that can be effectively managed by the hub depends on various factors, including:
 
@@ -968,9 +974,6 @@ Use the Cluster Logging Operator to collect and ship logs off the node for remot
 New in this release
 - No reference design updates in this release
 
-Description
-Use the Cluster Logging Operator to collect and ship logs off the node for remote archival and analysis. The reference configuration uses Kafka to ship audit and infrastructure logs to a remote archive.
-
 Limits and requirements
 - The reference configuration does not include local log storage.
 
@@ -1138,7 +1141,9 @@ Verification
 
 # Comparing a cluster with the telco hub reference configuration
 
-After you deploy a telco hub cluster, you can use the `cluster-compare` plugin to assess the cluster’s compliance with the telco hub reference design specifications (RDS). The `cluster-compare` plugin is an OpenShift CLI (`oc`) plugin. The plugin uses a telco hub reference configuration to validate the cluster with the telco hub custom resources (CRs).
+After you deploy a telco hub cluster, you can use the `cluster-compare` plugin to assess the cluster’s compliance with the telco hub reference design specifications (RDS).
+
+The `cluster-compare` plugin is an OpenShift CLI (`oc`) plugin. The plugin uses a telco hub reference configuration to validate the cluster with the telco hub custom resources (CRs).
 
 The plugin-specific reference configuration for telco hub is packaged in a container image with the telco hub CRs.
 

@@ -12,7 +12,7 @@ The O-Cloud Manager implements the O-RAN O2 IMS specification through its REST A
 The O-Cloud Manager REST APIs are served over a single ingress route on the hub cluster with different paths routing to different backend services.
 
 Base URL
-All APIs share a single hostname exposed through an OpenShift Container Platform route on the hub cluster. Each API uses a versioned path prefix appended to this hostname. For example, the Inventory API base URL has the following form: `https://<route-hostname>/O2ims_infrastructureInventory/v2`
+All APIs share a single hostname exposed through an OpenShift Container Platform route on the hub cluster. Each API uses a versioned path prefix appended to this hostname. For example, the Inventory API uses the path `/O2ims_infrastructureInventory/v2`, appended to the route hostname.
 
 Authentication
 All API requests require a bearer token in the `Authorization` header. Each backend service independently validates the token before processing the request. For more information about acquiring a token, see the authentication procedures in the section "Prepare the O-Cloud Manager environment".

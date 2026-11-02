@@ -2665,11 +2665,11 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 # Additional resources
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [How to generate SOSREPORT within OpenShift Container Platform version 4 nodes without SSH](https://access.redhat.com/solutions/4387261)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Enabling multipathing with kernel arguments on RHCOS](../../../machine_configuration/machine-configs-configure.xml#rhcos-enabling-multipath-day-2_machine-configs-configure)
 

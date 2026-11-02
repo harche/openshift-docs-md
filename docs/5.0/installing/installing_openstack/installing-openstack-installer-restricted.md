@@ -54,7 +54,7 @@ Additional resources
 
 - [Image configuration resources](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
 
@@ -1209,6 +1209,6 @@ Additional resources
 
 </div>
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 </div>

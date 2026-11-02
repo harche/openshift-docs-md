@@ -2121,13 +2121,13 @@ Additional resources
 
 - [Configuring the firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
 - [Configuring additional trust stores for the mirror registry’s CA](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [View the events from the vSphere Problem Detector Operator to determine if the cluster has permission or storage configuration issues](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector)
 

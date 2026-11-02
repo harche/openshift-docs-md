@@ -2222,7 +2222,7 @@ Additional resources
 
 </div>
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 </div>
 
@@ -2230,7 +2230,7 @@ Additional resources
 
 - [Postinstallation cluster tasks](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Configuring ingress cluster traffic by using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#nw-using-nodeport_configuring-ingress-cluster-traffic-nodeport)
 

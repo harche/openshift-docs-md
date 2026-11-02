@@ -496,11 +496,11 @@ Additional resources
 
 - [Configuring your firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)
 

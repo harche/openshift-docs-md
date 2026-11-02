@@ -1011,7 +1011,7 @@ OpenShift Container Platform supports specific Google Cloud instance types that 
 
 See the following machine series:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/gcp/tested_instance_types.md>
 
 ## Using custom machine types
 
@@ -1948,7 +1948,7 @@ Verification
 You can use the following `01_vpc.tf` Infrastructure Manager template to deploy the VPC that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/01_vpc/01_vpc.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/01_vpc/01_vpc.tf[role=include]
 ```
 
 # Networking requirements for user-provisioned infrastructure
@@ -2138,7 +2138,7 @@ Verification
 You can use the following `02_lb_ext.tf` Infrastructure Manager template to deploy the external load balancer that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_lb_ext/02_lb_ext.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/02_lb_ext/02_lb_ext.tf[role=include]
 ```
 
 ## Infrastructure Manager template for the internal load balancer
@@ -2146,7 +2146,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/
 You can use the following `02_lb_int.tf` Infrastructure Manager template to deploy the internal load balancer that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_lb_int/02_lb_int.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/02_lb_int/02_lb_int.tf[role=include]
 ```
 
 # Creating a private DNS zone in Google Cloud
@@ -2272,7 +2272,7 @@ Verification
 You can use the following `02_dns.tf` Infrastructure Manager template to deploy the private DNS that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_dns/02_dns.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/02_dns/02_dns.tf[role=include]
 ```
 
 # Creating firewall rules and IAM roles in Google Cloud
@@ -2368,7 +2368,7 @@ Verification
 You can use the following `03_security.tf` Infrastructure Manager template to deploy the firewall rules and IAM roles that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/03_security/03_security.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/03_security/03_security.tf[role=include]
 ```
 
 # Creating IAM policy bindings in Google Cloud
@@ -2627,7 +2627,7 @@ Verification
 You can use the following `04_bootstrap.tf` Infrastructure Manager template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/04_bootstrap/04_bootstrap.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/04_bootstrap/04_bootstrap.tf[role=include]
 ```
 
 # Creating the control plane machines in Google Cloud
@@ -2782,7 +2782,7 @@ Verification
 You can use the following `05_control_plane.tf` Infrastructure Manager template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/05_control_plane/05_control_plane.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/05_control_plane/05_control_plane.tf[role=include]
 ```
 
 # Creating additional worker machines in Google Cloud
@@ -2899,7 +2899,7 @@ Verification
 You can use the following `06_worker.tf` Infrastructure Manager template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/06_worker/06_worker.tf[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/gcp/06_worker/06_worker.tf[role=include]
 ```
 
 # Removing bootstrap resources in Google Cloud
@@ -3564,7 +3564,7 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 # Additional resources
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customizing your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
@@ -3574,6 +3574,6 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Configuring additional trust stores](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)

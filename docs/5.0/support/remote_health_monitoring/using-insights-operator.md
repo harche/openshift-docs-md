@@ -1,4 +1,4 @@
-The Insights Operator periodically gathers configuration and component failure status and, by default, reports that data every two hours to Red Hat. This information enables Red Hat to assess configuration and deeper failure data than is reported through Telemetry. Users of OpenShift Container Platform can display the report in the [Advisor](https://console.redhat.com/openshift/insights/advisor/) service on Red Hat Hybrid Cloud Console.
+Configure the Insights Operator to control how Red Hat Lightspeed identifies cluster issues and recommendations. Customize what configuration and component failure data is gathered, manage alerts, enable on-demand gathering, and obfuscate data before transmission to Red Hat.
 
 <div>
 
@@ -8,9 +8,9 @@ Additional resources
 
 </div>
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- [Using Red Hat Lightspeed to identify issues with your cluster](../../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
+- [Identify and resolve cluster issues with Red Hat Lightspeed](../../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
 
 </div>
 
@@ -196,7 +196,7 @@ The following table describes the available configuration attributes:
 </tbody>
 </table>
 
-# Creating the insights-config ConfigMap object
+# Create the insights-config ConfigMap object
 
 You can create the `insights-config` `ConfigMap` object for the Insights Operator with custom configurations.
 
@@ -416,7 +416,7 @@ Procedure
 
 </div>
 
-# Downloading your Insights Operator archive
+# Download your Insights Operator archive
 
 Insights Operator stores gathered data in an archive located in the `openshift-insights` namespace of your cluster. You can download and review the data that is gathered by the Insights Operator.
 
@@ -495,7 +495,7 @@ When you run a gather operation on-demand, any configuration that was previously
 > [!NOTE]
 > If you enable Technology Preview in your cluster, the Insights Operator runs gather operations in individual pods. This is part of the Technology Preview feature set for the Insights Operator and supports the new data gathering features.
 
-## Viewing Insights Operator gather durations
+## View Insights Operator gather durations
 
 You can view the time it takes for the Insights Operator to gather the information contained in the archive. This helps you to understand Insights Operator resource usage and issues with Red Hat Lightspeed Advisor.
 
@@ -998,7 +998,7 @@ Procedure
 
 </div>
 
-# Obfuscating Deployment Validation Operator data
+# Obfuscate Deployment Validation Operator data
 
 By default, when you install the Deployment Validation Operator (DVO), the name and unique identifier (UID) of a resource are included in the data that is captured and processed by the Insights Operator for OpenShift Container Platform. If you are a cluster administrator, you can configure the Insights Operator to obfuscate data from the Deployment Validation Operator (DVO). For example, you can obfuscate workload names in the archive file that is then sent to Red Hat.
 

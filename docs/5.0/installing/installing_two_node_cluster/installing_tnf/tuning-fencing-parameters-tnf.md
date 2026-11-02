@@ -2,7 +2,9 @@ You can tune fencing parameters if your two-node OpenShift Container Platform cl
 
 # Overview of tuning fencing parameters
 
-You can tune fencing parameters in OpenShift Container Platform two-node clusters to address specific operational issues without affecting default settings. Tuning prevents spurious node fencing during normal operations, resolves timeout failures, and improves cluster stability under load. Use preset configurations for common scenarios or customize individual parameters to match your system environment needs.
+You can tune fencing parameters in OpenShift Container Platform two-node clusters to address specific operational issues without affecting default settings.
+
+Tuning prevents spurious node fencing during normal operations, resolves timeout failures, and improves cluster stability under load. Use preset configurations for common scenarios or customize individual parameters to match your system environment needs.
 
 Tune fencing parameters only when you observe specific problems in your cluster. Do not change parameters preemptively. Adjust only the parameter that addresses your observed symptom.
 

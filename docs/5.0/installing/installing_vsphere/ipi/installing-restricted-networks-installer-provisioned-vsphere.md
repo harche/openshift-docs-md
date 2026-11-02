@@ -1589,11 +1589,11 @@ Additional resources
 
 - [Configuring the firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customize your cluster](../../../installing/install_config/installing-customizing.xml#installing-customizing)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Registering your disconnected cluster](../../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
 

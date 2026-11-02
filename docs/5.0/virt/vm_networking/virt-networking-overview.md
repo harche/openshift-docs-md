@@ -227,7 +227,7 @@ You configure a secondary network, attach a VM to the secondary network interfac
 
 - [Connect a virtual machine to the default pod network](../../virt/vm_networking/virt-connecting-vm-to-default-pod-network.xml#virt-connecting-vm-to-default-pod-network)
 
-- [Configuring project-level default networks](../../virt/creating_vm/virt-creating-vms-web.xml#virt-vm-configuring-default-network-per-project_virt-creating-vms-web)
+- [Configure project-level default networks](../../virt/creating_vm/virt-creating-vms-web.xml#virt-vm-configuring-default-network-per-project_virt-creating-vms-web)
 
 - [Connect a virtual machine to a custom primary overlay network](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-connecting-vm-to-primary-udn)
 

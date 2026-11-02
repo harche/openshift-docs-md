@@ -239,7 +239,7 @@ Procedure
 
 # Additional resources
 
-- [Monitoring stack for Red Hat OpenShift](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.22)
+- [Monitoring stack for Red Hat OpenShift](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest)
 
 - [About OpenShift Container Platform monitoring](../observability/monitoring/about-ocp-monitoring.xml#about-ocp-monitoring)
 

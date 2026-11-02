@@ -368,6 +368,6 @@ Additional resources
 
 </div>
 
-- For more information about the Telemetry service, see [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring).
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 </div>

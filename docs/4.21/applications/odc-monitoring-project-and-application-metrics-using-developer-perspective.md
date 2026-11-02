@@ -142,6 +142,8 @@ To see the alerts for your workload:
 
 # Image vulnerabilities breakdown
 
+The **Developer** perspective shows image vulnerability details in the **Image Vulnerabilities breakdown** window, including severity levels, vulnerable container images, and fixable container images.
+
 In the **Developer** perspective, the project dashboard shows the **Image Vulnerabilities** link in the **Status** section. Using this link, you can view the **Image Vulnerabilities breakdown** window, which includes details regarding vulnerable container images and fixable container images. The icon color indicates severity:
 
 - Red: High priority. Fix immediately.
@@ -158,6 +160,8 @@ Based on the severity level, you can prioritize vulnerabilities and fix them in 
 </figure>
 
 # Monitoring your application and image vulnerabilities metrics
+
+After you create and deploy applications, you can use the **Developer** perspective to monitor image vulnerability metrics across your cluster, including counts of vulnerable images and their severity levels.
 
 After you create applications in your project and deploy them, use the **Developer** perspective in the web console to see the metrics for your application dependency vulnerabilities across your cluster. The metrics help you to analyze the following image vulnerabilities in detail:
 

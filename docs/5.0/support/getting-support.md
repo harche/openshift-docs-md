@@ -208,4 +208,4 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 # Additional resources
 
-- [Using Red Hat Lightspeed to identify issues with your cluster](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
+- [Identify and resolve cluster issues with Red Hat Lightspeed](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)

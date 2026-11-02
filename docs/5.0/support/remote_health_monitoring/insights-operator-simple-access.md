@@ -1,6 +1,4 @@
-Insights Operator automates the import of Simple Content Access (SCA) entitlement certificates every 8 hours. These Red Hat Subscription Management (RHSM) certificates allow the cluster to authenticate with the Red Hat Content Delivery Network (CDN) to access subscription-governed content.
-
-SCA supports multi-architecture clusters by generating architecture-specific secrets, such as `amd64` or `arm64`, in the `openshift-config-managed` namespace to ensure compatibility across all worker node types.
+Manage how the Insights Operator imports Simple Content Access (SCA) entitlement certificates so your cluster can authenticate with Red Hat Content Delivery Network. Configure import intervals, enable or disable SCA, and verify secrets.
 
 <div>
 
@@ -89,7 +87,7 @@ Verification
 
 </div>
 
-# Configuring simple content access import interval
+# Configure simple content access import interval
 
 You can configure how often the Insights Operator imports the simple content access (sca) entitlements by using the `insights-config` `ConfigMap` object in the `openshift-insights` namespace. The entitlement import normally occurs every eight hours, but you can shorten this sca interval if you update your simple content access configuration in the `insights-config` `ConfigMap` object.
 
@@ -146,7 +144,7 @@ Procedure
 
 </div>
 
-## Disabling simple content access import
+## Disable simple content access import
 
 You can disable the importing of simple content access entitlements by using the `insights-config` `ConfigMap` object in the `openshift-insights` namespace.
 
@@ -201,7 +199,7 @@ Procedure
 
 </div>
 
-## Enabling a previously disabled simple content access import
+## Enable a previously disabled simple content access import
 
 If the importing of simple content access entitlements is disabled, the Insights Operator does not import simple content access entitlements. You can change this behavior.
 

@@ -2,10 +2,12 @@ You can use the web console to create, update, roll back, or delete a Helm relea
 
 # Installing a Helm release from a URL
 
-A Helm release is a deployed instance of a Helm chart within your OpenShift Container Platform cluster. You can install charts from the Software Catalog or by using a direct chart URL. Using a direct URL avoids the need for a configured Helm repository. However, this method circumvents the validation that the Software Catalog provides. Use the direct URL method only when a chart is not available from the Software Catalog or configured repositories.
+A Helm release is a deployed instance of a Helm chart in your OpenShift Container Platform cluster. You can install a Helm release directly from a chart URL instead of from the software catalog.
+
+Usually, you install charts from the software catalog in the web console. By default, the catalog lists charts that Red Hat provides, and administrators can add more charts for the whole cluster or for a single namespace. If you need only one or two charts, you can skip adding them to the catalog and install a chart directly from its URL instead. However, a chart that you install from a URL does not get the review that Red Hat and your administrators give catalog charts, so use this method only when you trust the source of the chart.
 
 > [!WARNING]
-> Install charts only from URLs you trust, because unverified charts can introduce security risks to your cluster. When possible, use charts from the Software Catalog or a configured Helm repository instead.
+> Charts that Red Hat or your administrators have not reviewed can introduce security risks to your cluster.
 
 <div>
 
@@ -15,7 +17,7 @@ Prerequisites
 
 </div>
 
-- You’ve logged in to the OpenShift Container Platform web console.
+- You have logged in to the OpenShift Container Platform web console.
 
 - You have the necessary project permissions to install a Helm chart.
 
@@ -31,11 +33,11 @@ Procedure
 
 </div>
 
-1.  In the OpenShift Container Platform web console, select **Ecosystem \> Helm** from the navigation menu. The **Helm** view opens.
+1.  In the OpenShift Container Platform web console, navigate to **Ecosystem \> Helm**. The **Helm** view opens.
 
 2.  In the **Project** drop-down menu, select the project where you want to install the Helm release; for example, **default**.
 
-3.  From the **Helm Releases** tab, click **Create**.
+3.  From the **Helm releases** tab, click **Create**.
 
 4.  Select **Helm chart URL**. The **Install Helm chart from URL** view opens.
 
@@ -46,22 +48,34 @@ Procedure
 
 6.  In the **Release name** field, enter a name for the Helm release you want to install.
 
-7.  In the **Chart version** field, enter the chart version number if it is not detected automatically.
+7.  In the **Chart version** field, enter the chart version number if the web console does not detect it automatically.
 
-8.  Click **Next**. The **Configure Helm release** view opens.
+8.  Optional: If the chart URL requires authentication, select a secret from the **Secret for Basic authentication** list. If the secret you need does not exist, create it:
 
-    - Review the configuration. Make sure that **Chart URL**, **Release name**, and **Chart version** are correct.
+    1.  From the **Secret for Basic authentication** list, select **Create Secret**. The **Create authentication Secret** dialog opens.
 
-9.  For the **Configure via** option, select either **Form view** or **YAML view**.
+    2.  In the **Secret name** field, enter a unique name for the secret.
+
+    3.  Optional: In the **Secret username** field, enter the username for the chart URL.
+
+    4.  In the **Secret password or token** field, enter the password or token for the chart URL.
+
+    5.  Click **Create**. The web console selects the new secret in the **Secret for Basic authentication** list.
+
+9.  Click **Next**. The **Configure Helm release** view opens.
+
+10. Review the configuration. Make sure that the **Chart URL**, **Release name**, and **Version** fields are correct.
+
+11. For the **Configure via** option, select either **Form view** or **YAML view**.
 
     - Choose **Form view** (the default) for a guided configuration of standard parameters.
 
-    - Choose **YAML view** if you need to change advanced settings that are not available in Form view.
+    - Choose **YAML view** if you need to change advanced settings that are not available in **Form view**.
 
       > [!NOTE]
-      > The **Form view** might not display every field from your Helm chart. For full control over all configuration parameters, select **YAML view**.
+      > The **Form view** might not display every field from your Helm chart. If the chart does not include a values schema, **Form view** is unavailable and you must use **YAML view**. For full control over all configuration parameters, select **YAML view**.
 
-10. Click **Install**. The **Helm Releases** tab opens and displays a status of **Deployed** if the installation succeeds.
+12. Click **Install**. The **Helm releases** tab opens and displays a status of **Deployed** if the installation succeeds.
 
 </div>
 
@@ -73,7 +87,7 @@ Verification
 
 </div>
 
-- The **Helm Releases** tab displays the new Helm release in the table.
+- The **Helm releases** tab displays the new Helm release in the table.
 
 - The **Status** column for the Helm release displays **Deployed**.
 
@@ -107,9 +121,13 @@ Procedure
 
 1.  Navigate to **Ecosystem** → **Helm**.
 
-2.  Click the overflow menu in the release’s row and select **Upgrade Helm Release**.
+2.  Click the overflow menu in the release’s row and select **Upgrade Helm release**.
 
-3.  On the **Upgrade Helm Release** page, select the chart version you want if available, edit the values as needed, then click **Upgrade** to create a revision of the Helm release. The **Ecosystem** → **Helm** page shows the updated revision count.
+3.  On the **Upgrade Helm release** page, select the chart version you want, if available.
+
+4.  Optional: If the release uses a chart URL that requires authentication, select a secret from the **Secret for Basic authentication** list. If you selected a secret when you installed the release, that secret is already selected. If that secret no longer exists, the page displays a notification, and you must select or create a different secret.
+
+5.  Edit the values as needed, then click **Upgrade** to create a revision of the Helm release. The **Ecosystem** → **Helm** page shows the updated revision count.
 
 </div>
 

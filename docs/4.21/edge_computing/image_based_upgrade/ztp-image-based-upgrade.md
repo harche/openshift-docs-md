@@ -16,7 +16,9 @@ Additional resources
 
 # Managing the image-based upgrade at scale using the ImageBasedGroupUpgrade CR on the hub
 
-The `ImageBasedGroupUpgrade` CR combines the `ImageBasedUpgrade` and `ClusterGroupUpgrade` APIs. For example, you can define the cluster selection and rollout strategy with the `ImageBasedGroupUpgrade` API in the same way as the `ClusterGroupUpgrade` API. The stage transitions are different from the `ImageBasedUpgrade` API. You can use the `ImageBasedGroupUpgrade` API to combine several stage transitions, also called actions, into one step that share one rollout strategy.
+The `ImageBasedGroupUpgrade` CR combines the `ImageBasedUpgrade` and `ClusterGroupUpgrade` APIs.
+
+For example, you can define the cluster selection and rollout strategy with the `ImageBasedGroupUpgrade` API in the same way as the `ClusterGroupUpgrade` API. The stage transitions are different from the `ImageBasedUpgrade` API. You can use the `ImageBasedGroupUpgrade` API to combine several stage transitions, also called actions, into one step that share one rollout strategy.
 
 <div class="example">
 
@@ -229,7 +231,9 @@ Shows all failed actions along with a detailed error message.
 
 # Performing an image-based upgrade on managed clusters at scale in several steps
 
-For use cases when you need better control of when the upgrade interrupts your service, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` CR. You can use the `ImageBasedGroupUpgrade` CR to add actions after the earlier step is complete. After evaluating the results of the earlier steps, you can move to the next upgrade stage or troubleshoot any failed steps throughout the procedure.
+For use cases when you need better control of when the upgrade interrupts your service, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` CR. You can use the `ImageBasedGroupUpgrade` CR to add actions after the earlier step is complete.
+
+After evaluating the results of the earlier steps, you can move to the next upgrade stage or troubleshoot any failed steps throughout the procedure.
 
 > [!IMPORTANT]
 > Only certain action combinations are supported and listed in *Supported action combinations*.
@@ -294,14 +298,14 @@ Procedure
             timeout: 2400
     ```
 
-    Where:
+    where:
 
     - `clusterLabelSelectors`: Clusters to upgrade.
 
     - `seedImageRef`: Target platform version, the seed image, and the secret required to access the image.
 
-    > [!NOTE]
-    > If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the {lco} adds the secret to the manifest list for the `Prep` stage. The {lco} recreates the secret in each spoke cluster in the `openshift-lifecycle-agent` namespace.
+      > [!NOTE]
+      > If you add the seed image pull secret in the hub cluster, in the same namespace as the `ImageBasedGroupUpgrade` resource, the {lco} adds the secret to the manifest list for the `Prep` stage. The {lco} recreates the secret in each spoke cluster in the `openshift-lifecycle-agent` namespace.
 
     - `extraManifests`: Optional: Applies additional manifests, which are not in the seed image, to the target cluster. Also applies `ConfigMap` objects for custom catalog sources.
 
@@ -321,13 +325,7 @@ Procedure
     $ oc get ibgu -o yaml
     ```
 
-    <div class="formalpara">
-
-    <div class="title">
-
-    Example output
-
-    </div>
+    Example output:
 
     ``` yaml
     # ...
@@ -344,8 +342,6 @@ Procedure
         name: spoke6
     # ...
     ```
-
-    </div>
 
     The earlier output of an example plan starts with the `Prep` stage only and you add actions to the plan based on the results of the earlier step. The TALM adds a label to the clusters to mark if the upgrade succeeded or failed. For example, the TALM applies the `lcm.openshift.io/ibgu-prep-failed` label to clusters that failed the `Prep` stage.
 
@@ -407,13 +403,7 @@ Verification
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output
-
-  </div>
+  Example output:
 
   ``` yaml
   # ...
@@ -437,8 +427,6 @@ Verification
       name: spoke6
   # ...
   ```
-
-  </div>
 
 </div>
 
@@ -466,7 +454,9 @@ Additional resources
 
 # Performing an image-based upgrade on managed clusters at scale in one step
 
-For use cases when service interruption is not a concern, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` custom resource (CR). You can use the `ImageBasedGroupUpgrade` CR to combine several actions in one step with one rollout strategy. With one rollout strategy, you can reduce the upgrade time but you can only troubleshoot failed clusters after the upgrade plan is complete.
+For use cases when service interruption is not a concern, you can upgrade a set of your managed clusters by using the `ImageBasedGroupUpgrade` custom resource (CR).
+
+You can use the `ImageBasedGroupUpgrade` CR to combine several actions in one step with one rollout strategy. With one rollout strategy, you can reduce the upgrade time but you can only troubleshoot failed clusters after the upgrade plan is complete.
 
 <div>
 
@@ -569,13 +559,7 @@ Verification
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output
-
-  </div>
+  Example output:
 
   ``` yaml
   # ...
@@ -596,8 +580,6 @@ Verification
       name: spoke6
   # ...
   ```
-
-  </div>
 
 </div>
 
@@ -807,13 +789,7 @@ Verification
   $ oc get ibgu -o yaml
   ```
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output
-
-  </div>
+  \+ .Example output
 
   ``` yaml
   # ...
@@ -825,8 +801,6 @@ Verification
       name: spoke4
   # ...
   ```
-
-  </div>
 
 </div>
 

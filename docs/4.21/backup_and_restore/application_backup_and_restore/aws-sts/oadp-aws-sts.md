@@ -1,4 +1,4 @@
-Install the OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
+Install the OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) by installing the OADP Operator. The Operator installs Velero 1.16.
 
 You configure AWS for Velero, create a default `Secret`, and then install the Data Protection Application. For more details, see *Installing the OADP Operator*.
 
@@ -476,24 +476,6 @@ Procedure
 
 </div>
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
-- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
-
-- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
-
-- [Installing from the software catalog using the web console](../../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-from-software-catalog-using-web-console_olm-installing-operators-in-namespace)
-
-- [Backing up applications](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
-
-</div>
-
 # Perform a backup with OADP and AWS STS
 
 Perform a backup by using OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) (AWS STS). The following `hello-world` example application has no persistent volumes (PVs) attached.
@@ -727,3 +709,15 @@ Procedure
     ```
 
 </div>
+
+# Additional resources
+
+- [Velero 1.16](https://velero.io/docs/)
+
+- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
+
+- [Installing from the software catalog using the web console](../../../operators/user/olm-installing-operators-in-namespace.xml#olm-installing-from-software-catalog-using-web-console_olm-installing-operators-in-namespace)
+
+- [Backing up applications](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)

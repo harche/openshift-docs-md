@@ -132,7 +132,7 @@ Additional resources
 
 </div>
 
-- [Using Red Hat Lightspeed to identify issues with your cluster](https://docs.openshift.com/container-platform/latest/support/getting-support.html)
+- [Identify and resolve cluster issues with Red Hat Lightspeed](https://docs.openshift.com/container-platform/latest/support/getting-support.html)
 
 </div>
 

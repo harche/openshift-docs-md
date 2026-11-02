@@ -4,7 +4,9 @@ Sigstore is a collection of open source tools that you can use individually or t
 
 # Understand image signature verification
 
-Cluster administrators or application developers can use the sigstore project to improve supply chain security by verifying that container images have not been tampered with and come from trusted sources. You can configure signature verification for all platform and Operator images, including in disconnected environments. This capability is useful for organizations that require strict supply chain security.
+Cluster administrators or application developers can use the sigstore project to improve supply chain security by verifying that container images have not been tampered with and come from trusted sources.
+
+You can configure signature verification for all platform and Operator images, including in disconnected environments. This capability is useful for organizations that require strict supply chain security.
 
 With the sigstore project, signatures can be stored in the same registry as the container images, eliminating the need for a separate signature server. When using mirror registries, you must also mirror the sigstore signatures. The oc-mirror plugin v2 mirrors signatures automatically.
 

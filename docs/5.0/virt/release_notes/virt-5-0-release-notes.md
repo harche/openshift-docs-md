@@ -41,6 +41,17 @@ On clusters where the Kube Descheduler Operator is installed, OpenShift Virtuali
 
 <!-- -->
 
+Control Plane Only updates move between ELC versions instead of EUS versions
+OpenShift Container Platform 5 replaces Extended Update Support (EUS) releases with Extended Life Cycle (ELC) releases. ELC releases occur every third minor version, starting with OpenShift Container Platform 5.2. OpenShift Container Platform 5.0 is not an ELC release.
+
+Because ELC releases are three minor versions apart, a Control Plane Only update passes through two intermediate minor versions instead of one. For each intermediate version, update OpenShift Container Platform first, and then update OpenShift Virtualization to the latest z-stream release of that version before you move to the target ELC version.
+
+For more information, see [Control Plane Only updates](../../virt/updating/upgrading-virt.xml#virt-about-control-plane-only-updates_upgrading-virt).
+
+[CNV-82691](https://redhat.atlassian.net/browse/CNV-82691)
+
+<!-- -->
+
 Self-service Technical Supportability Review
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices. The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization, and coverage is continually expanding.
 
@@ -83,6 +94,13 @@ KubeVirt Redfish for VM management is generally available
 With this release, KubeVirt Redfish is generally available. KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This update also adds `bcrypt` hashed passwords for more secure authentication to the KubeVirt Redfish API.
 
 For more information, see [Configuring KubeVirt Redfish for VM management](../post_installation_configuration/virt-kubevirt-redfish.xml#virt-kubevirt-redfish).
+
+<!-- -->
+
+Pause the guest agent probe during virtual machine updates
+You can pause the guest agent probe for a virtual machine (VM) by adding the `kubevirt.io/pause-guest-agent-probes=true` annotation to the VM. While the probe is paused, the kubelet does not restart the VM if the guest agent probe fails, for example during a guest operating system update. After the update completes, remove the annotation to resume the probe.
+
+[CNV-82132](https://issues.redhat.com/browse/CNV-82132)
 
 <!-- -->
 
@@ -154,6 +172,20 @@ Automatic cleanup of source PVCs after storage migration
 You can clear the option to keep source persistent volume claims (PVCs) after a storage migration. If you clear this option in the web console, OpenShift Virtualization cleans up the original PVCs after the storage migration completes. By default, OpenShift Virtualization retains the source PVCs after a storage migration, and you clean up the PVCs manually.
 
 [CNV-73509](https://issues.redhat.com/browse/CNV-73509)
+
+<!-- -->
+
+Cloud provider credential injection for virtual machines on ROSA clusters
+You can inject Kubernetes service account tokens into a virtual machine (VM) guest on Red Hat OpenShift Service on AWS (ROSA) clusters. The `virt-launcher` pod holds short-lived tokens used for AWS IAM Roles for Service Accounts (IRSA). OpenShift Virtualization uses `containerPath` volumes and `virtiofs` filesystem devices to expose these tokens to the VM guest, so that applications inside the VM can authenticate with AWS APIs without managing static credentials.
+
+[CNV-95907](https://redhat.atlassian.net/browse/CNV-95907)
+
+<!-- -->
+
+Scratch space inherits the storage class of the target volume
+The Containerized Data Importer (CDI) provisions the scratch space persistent volume claim (PVC) from the same storage class as the target volume instead of falling back to the cluster default storage class. This behavior applies to all clusters and requires no feature gate or `HyperConverged` custom resource (CR) configuration. To override it, specify a storage class in the `spec.storage.scratchSpaceStorageClass` field of the `HyperConverged` CR.
+
+[CNV-72238](https://redhat.atlassian.net/browse/CNV-72238)
 
 <!-- -->
 
@@ -331,3 +363,14 @@ If you enable the `spec.featureGates.enableMultiArchBootImageImport` feature gat
 To work around this problem, delete the leftover boot source resources. First, identify the active `DataSource` objects, which are the objects that resolve to the PVC or volume snapshot that you want to keep. Then, delete the stale `DataSource` objects and the PVCs and volume snapshots that they reference. As a result, only the architecture-suffixed boot sources remain.
 
 [CNV-68996](https://issues.redhat.com/browse/CNV-68996)
+
+<!-- -->
+
+A storage migration can report completion before copying any data
+A `MultiNamespaceVirtualMachineStorageMigration` object can intermittently report the `Completed` phase within milliseconds of the migration starting, before the migration copies any data. By default, a migration plan that you create in the OpenShift Container Platform web console decommissions the source volumes after a successful migration.
+
+As a consequence, the controller can delete the source persistent volume claims (PVCs) even though the migration never copied their contents to the target data volumes and PVCs. This can result in data loss.
+
+To work around this problem, select the **Keep original volumes at source after successful migration** checkbox when you create the storage migration. Verify that the target volumes contain the migrated data, and then delete the source volumes manually. As a result, the source data remains available if a migration reports completion without copying data.
+
+[CNV-98287](https://redhat.atlassian.net/browse/CNV-98287)

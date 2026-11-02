@@ -19,7 +19,7 @@
 
 ### Release notes
 
-- [OpenShift Container Platform 4.22 release notes](release_notes/ocp-5-0-release-notes.md)
+- [OpenShift Container Platform 5.0 release notes](release_notes/ocp-5-0-release-notes.md)
 - [Additional release notes](release_notes/addtl-release-notes.md)
 
 ### Tutorials
@@ -740,6 +740,7 @@
   - [Use cases for a secondary network](networking/multiple_networks/use-cases-secondary-network.md)
   - **Primary networks**
     - [UserDefinedNetwork CR](networking/multiple_networks/primary_networks/about-user-defined-networks.md)
+    - [Metrics for user-defined networks](networking/multiple_networks/primary_networks/udn-metrics.md)
     - [NetworkAttachmentDefinition CR](networking/multiple_networks/primary_networks/about-primary-nwt-nad.md)
   - **Secondary networks**
     - [Creating secondary networks on OVN-Kubernetes](networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.md)
@@ -2047,7 +2048,8 @@
   - [Self validation checkups](virt/post_installation_configuration/virt-self-validation-checkups.md)
   - [Allocate physical cores for virtual machines](virt/post_installation_configuration/virt-physical-cores-allocation-vms.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
-  - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
+  - [Virtual machine recovery from node failures](virt/post_installation_configuration/virt-vm-recovery-from-node-failures.md)
+  - [Configure certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
   - [Configuring KubeVirt Redfish for VM management](virt/post_installation_configuration/virt-kubevirt-redfish.md)
 - **Updating**
   - [Updating OpenShift Virtualization](virt/updating/upgrading-virt.md)
@@ -2087,7 +2089,7 @@
   - [Virtual machine labels and annotations](virt/managing_vms/virt-vm-labels-annotations.md)
   - **Advanced virtual machine management**
     - [Working with resource quotas for virtual machines](virt/managing_vms/advanced_vm_management/virt-working-with-resource-quotas-for-vms.md)
-    - [Configuring the Application-Aware Quota Operator](virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md)
+    - [Accurate VM resource measurement with AAQ](virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md)
     - [Specifying nodes for virtual machines](virt/managing_vms/advanced_vm_management/virt-specifying-nodes-for-vms.md)
     - [UEFI mode for virtual machines](virt/managing_vms/advanced_vm_management/virt-uefi-mode-for-vms.md)
     - [Configuring PXE booting for virtual machines](virt/managing_vms/advanced_vm_management/virt-configuring-pxe-booting.md)
@@ -2111,7 +2113,7 @@
     - [Inserting CD-ROMs in virtual machines](virt/managing_vms/virtual_disks/virt-inserting-cd-roms-in-virtual-machines.md)
   - **CPU models**
     - [Choose a CPU model](virt/managing_vms/cpu_models/virt-choosing-cpu-models.md)
-    - [Configure CPU models](virt/managing_vms/cpu_models/virt-configuring-default-cpu-model.md)
+    - [Configure the default CPU model](virt/managing_vms/cpu_models/virt-configuring-default-cpu-model.md)
     - [Schedule virtual machines](virt/managing_vms/cpu_models/virt-schedule-vms.md)
 - **Networking**
   - [Networking configuration overview](virt/vm_networking/virt-networking-overview.md)

@@ -1,12 +1,12 @@
 The telco core reference design specifications (RDS) configures an OpenShift Container Platform cluster running on commodity hardware to host telco core workloads.
 
-# Telco core RDS use model overview
+# Review which core functions the reference design supports
 
 The Telco core reference design specification (RDS) describes a platform that supports large-scale telco applications including control plane and centralized data plane functions such as user plane functions (UPF).
 
 These functions generally require scalability, complex networking support, resilient software-defined storage, and performance requirements that are less stringent than far-edge deployments such as RAN.
 
-# About the telco core cluster use model
+# Check that your workloads fit the telco core use model
 
 The telco core cluster use model supports large-scale telco applications on commodity hardware, including control plane functions and centralized data plane functions such as 5G user plane functions (UPF).
 
@@ -48,28 +48,28 @@ Deviation from the RDS can have some or all of the following consequences:
 > [!NOTE]
 > Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
-# Telco core common baseline model
+# Review the baseline common to every telco core cluster
 
 The following configurations and use models are applicable to all telco core use cases. The telco core use cases build on this common baseline of features.
 
 Cluster topology
 The telco core reference design supports two distinct cluster configuration variants:
 
-- A non-schedulable control plane variant, where user workloads are strictly prohibited from running on master nodes.
+- A non-schedulable control plane variant, where user workloads are strictly prohibited from running on control plane nodes.
 
-- A schedulable control plane variant, which allows for user workloads to run on master nodes to optimize resource utilization. This variant is only applicable to bare-metal control plane nodes and must be configured at installation time.
+- A schedulable control plane variant, which allows for user workloads to run on control plane nodes to optimize resource utilization. This variant is only applicable to bare-metal control plane nodes and must be configured at installation time.
 
-  All clusters, regardless of the variant, must conform to the following requirements:
+All clusters, regardless of the variant, must conform to the following requirements:
 
 - A highly available control plane consisting of three or more nodes.
 
 - The use of multiple machine config pools.
 
-Storage
-Telco core use cases require highly available persistent storage as provided by an external storage solution. OpenShift Data Foundation might be used to manage access to the external storage.
+  Storage
+  Telco core use cases require highly available persistent storage as provided by an external storage solution. OpenShift Data Foundation might be used to manage access to the external storage.
 
-Networking
-Telco core cluster networking conforms to the following requirements:
+  Networking
+  Telco core cluster networking conforms to the following requirements:
 
 - Dual stack IPv4/IPv6 (IPv4 primary).
 
@@ -91,8 +91,8 @@ Telco core cluster networking conforms to the following requirements:
 
   - Application workload layer. User plane networking runs in cloud-native network functions (CNFs).
 
-Service Mesh
-Telco CNFs can use Service Mesh. Telco core clusters typically include a Service Mesh implementation. The choice of implementation and configuration is outside the scope of this specification.
+    Service Mesh
+    Telco CNFs can use Service Mesh. Telco core clusters typically include a Service Mesh implementation. The choice of implementation and configuration is outside the scope of this specification.
 
 # Deployment planning
 
@@ -112,9 +112,9 @@ Using careful MCP planning, you can control the timing and order of which set of
 
 Before beginning the initial deployment, review the following engineering considerations:
 
-**PerformanceProfile and Tuned profile association:**
+**Performance profile requirement:**
 
-When using PerformanceProfiles, remember that each Machine Config Pool (MCP) must be linked to exactly one PerformanceProfile or Tuned profile definition. Consequently, even if the desired configuration is identical for multiple MCPs, each MCP still requires its own dedicated PerformanceProfile definition.
+Give every control plane and worker MachineConfigPool (MCP) its own `PerformanceProfile` resource, with enough reserved cores for the OpenShift Container Platform platform. Workload partitioning and that profile keep platform work off the CPUs that run applications. Link each MCP to only one `PerformanceProfile` or `Tuned` profile, and use a separate `PerformanceProfile` even when two MCPs need the same settings.
 
 **Planning your MCP labeling strategy:**
 
@@ -204,7 +204,7 @@ The following engineering considerations apply to the telco core cluster common 
 
   - Intel Sierra Forest CPUs when supported by the OpenShift Container Platform.
 
-  - IRQ balancing is enabled on worker nodes. The `PerformanceProfile` CR sets the `globallyDisableIrqLoadBalancing` parameter to a value of `false`. Guaranteed QoS pods are annotated to ensure isolation as described in "CPU partitioning and performance tuning".
+  - IRQ balancing is enabled on worker nodes.
 
 - All cluster nodes should have the following features:
 
@@ -214,15 +214,15 @@ The following engineering considerations apply to the telco core cluster common 
 
   - Have the stock (non-realtime) kernel enabled
 
-  - Are not configured for workload partitioning
-
 - The balance between power management and maximum performance varies between machine config pools in the cluster. The following configurations should be consistent for all nodes in a machine config pools group.
 
   - Cluster scaling. See "Scalability" for more information.
 
   - Clusters should be able to scale to at least 120 nodes.
 
-- CPU partitioning is configured using a `PerformanceProfile` CR and is applied to nodes on a per `MachineConfigPool` basis. See "CPU partitioning and performance tuning" for additional considerations.
+- The cluster must have workload partitioning enabled and a `PerformanceProfile` resource for all control plane and worker MachineConfigPools (MCPs). This isolates platform resources from workload resources.
+
+  - CPU partitioning is configured by using a `PerformanceProfile` CR and is applied to nodes for each MachineConfigPool. See "CPU partitioning and performance tuning" for additional considerations.
 
 - CPU requirements for OpenShift Container Platform depend on the configured feature set and application workload characteristics. For a cluster configured according to the reference configuration running a simulated workload of 3000 pods as created by the kube-burner node-density test, the following CPU requirements are validated:
 
@@ -252,11 +252,17 @@ Plan telco core workloads and cluster resources by using the following informati
 
 - Use a mix of best-effort and burstable QoS pods as required by your applications.
 
-  - Use guaranteed QoS pods with proper configuration of reserved or isolated CPUs in the `PerformanceProfile` CR that configures the node.
+- Low-latency workloads require special configuration to avoid being affected by interrupts, the kernel scheduler, or other parts of the platform.
 
-  - Guaranteed QoS Pods must include annotations for fully isolating CPUs.
+  - Use guaranteed QoS pods with reserved or isolated CPUs configured in the `PerformanceProfile` CR for the MachineConfigPool where the application runs.
 
-  - Best effort and burstable pods are not guaranteed exclusive CPU use. Workloads can be preempted by other workloads, operating system daemons, or kernel tasks.
+  - Guaranteed QoS pods must include annotations for fully isolating CPUs:
+
+    - `cpu-load-balancing.crio.io: "disable"`
+
+    - `irq-load-balancing.crio.io: "disable"`
+
+  - Best-effort and burstable pods are not guaranteed exclusive CPU use. Workloads can be preempted by other workloads, operating system daemons, or kernel tasks.
 
 - Use exec probes sparingly and only when no other suitable option is available.
 
@@ -283,17 +289,18 @@ The following sections describe the various OpenShift Container Platform compone
 CPU partitioning separates sensitive workloads from general-purpose tasks, interrupts, and driver work queues to improve performance and reduce latency.
 
 New in this release
-- There are no reference design updates in this release.
+- The reference design includes a tuning update for `GOMAXPROCS`.
 
 Description
 CPU partitioning improves performance and reduces latency by separating sensitive workloads from general-purpose tasks, interrupts, and driver work queues. The CPUs allocated to those auxiliary processes are referred to as **reserved** in the following sections. In a system with Hyper-Threading enabled, a CPU is one hyper-thread.
 
 Limits and requirements
-- The operating system needs a certain amount of CPU to perform all the support tasks, including kernel networking.
+- Allocate CPUs to the reserved (management) partition so the operating system can run platform tasks, including kernel networking. The minimum number of reserved cores depends on the application workload and must be assessed for a production-scale deployment. The number of reserved cores can differ between control plane and worker nodes.
 
-  - A system with just user plane networking applications (DPDK) needs at least one core (2 hyper-threads when enabled) reserved for the operating system and the infrastructure components.
+- In a system with Hyper-Threading enabled, core sibling threads must always be in the same pool of CPUs because they influence each other.
 
-- In a system with Hyper-Threading enabled, core sibling threads must always be in the same pool of CPUs.
+  > [!WARNING]
+  > Keep all CPUs from the same logical group in one pool. On AMD Zen 4 and later processors, a logical group is a core complex (CCX), and those cores share an L3 cache. On some Intel processors, a logical group is the set of cores that share an L2 cache, for example Intel Sierra Forest.
 
 - The set of reserved and isolated cores must include all CPU cores.
 
@@ -314,6 +321,8 @@ Engineering considerations
 
 - For schedulable control planes, the minimum recommended reserved capacity is at least 16 CPUs.
 
+- For worker MachineConfigPools, reserve at least one full core (2 hyper-threads when Hyper-Threading is enabled). Additional reserved cores on worker nodes may be required depending on the application workload.
+
 - The actual required reserved CPU capacity depends on the cluster configuration and workload attributes.
 
 - The reserved CPU value must be rounded up to a full core (2 hyper-threads) alignment.
@@ -324,7 +333,9 @@ Engineering considerations
 
 - The real-time workload hint should be enabled for real-time capable workloads.
 
-  - Applying the real-time `workloadHint` setting results in the `nohz_full` kernel command line parameter being applied to improve performance of high performance applications.
+  - Applying the `workloadHints.realtime` setting results in the `nohz_full` kernel command line parameter being applied to improve performance of high performance applications.
+
+- The reference `PerformanceProfile` CR sets `globallyDisableIrqLoadBalancing` to `false`.
 
 - Hardware without IRQ affinity support affects isolated CPUs. All server hardware must support IRQ affinity to ensure that pods with guaranteed CPU QoS can fully use allocated CPUs.
 
@@ -348,13 +359,9 @@ You can enable schedulable control planes to run workloads on control plane node
 Enabling workloads on control plane nodes
 You can enable schedulable control planes to run workloads on control plane nodes, utilizing idle CPU capacity on bare-metal machines for potential cost savings. This feature is only applicable to clusters with bare-metal control plane nodes.
 
-There are two distinct parts to this functionality:
+Workload partitioning is mandatory for every core cluster. As described in "Telco core cluster common use model engineering considerations", you must configure workload partitioning during the initial "day zero" cluster installation. You cannot enable it later. Because workload partitioning is always enabled, it is already in place when you decide to run workloads on control plane nodes.
 
-1.  Allowing workloads on control plane nodes: This feature can be configured after initial cluster installation, allowing you to enable it when you need to run workloads on those nodes.
-
-2.  Enabling workload partitioning: This is a critical isolation measure that protects the control plane from interference by regular workloads, ensuring cluster stability and reliability. Workload partitioning must be configured during the initial "day zero" cluster installation and cannot be enabled later.
-
-If you plan to run workloads on your control plane nodes, you must first enable workload partitioning during the initial setup. You can then enable the schedulable control plane feature at a later time.
+You can allow workloads on control plane nodes at any time after the initial cluster installation.
 
 Workload characterization and limitations
 You must test and verify workloads to ensure that applications do not interfere with core cluster functions. It is recommended that you start with lightweight containers that do not heavily load the CPU or networking.
@@ -418,17 +425,7 @@ The following diagram describes the telco core reference design networking confi
 > The diagram shows the recommended network topology, where bonding uses ports from the same dual-port NIC. Bonding ports across different NICs is not recommended.
 
 New in this release
-- Per-interface IP forwarding
-
-- Support for alt-names on network interfaces
-
-- Host firewall rules for multi-node clusters
-
-- MetalLB `ConfigurationStatus` CRD
-
-- Extended BGP/L2 advertisements with service selectors
-
-- Support for Intel E830 Jasper Beach in telco core
+- There are no reference design updates in this release.
 
 > [!NOTE]
 > If you have custom `FRRConfiguration` CRs in the `metallb-system` namespace, you must move them under the `openshift-network-operator` namespace.
@@ -869,7 +866,7 @@ Additional resources
 The GitOps Operator provides a GitOps-driven infrastructure for managing cluster deployment and configuration.
 
 New in this release
-- There are no reference design updates in this release.
+- The reference design includes support for control plane node replacement through GitOps ZTP.
 
 Description
 The GitOps Operator provides a GitOps driven infrastructure for managing cluster deployment and configuration. Cluster definitions and configuration are maintained in a Git repository.
@@ -906,6 +903,8 @@ Additional resources
 - [Preparing the GitOps ZTP site configuration repository for version independence](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-preparing-the-ztp-git-repository-ver-ind_ztp-preparing-the-hub-cluster)
 
 - [Adding custom content to the GitOps ZTP pipeline](../edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.xml#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config)
+
+- [Replacing a failed control plane node by using the `ClusterInstance` CR](../edge_computing/ztp-advanced-install-ztp.xml#ztp-replacing-failed-control-plane-node_ztp-advanced-install-ztp)
 
 </div>
 
@@ -1150,6 +1149,17 @@ Telco core clusters are expected to be installed in networks without direct acce
 Limits and requirements
 - A unique name is required for all custom `CatalogSource` resources. Do not reuse the default catalog names.
 
+- Create one catalog source for each release version so that all clusters for that release stay on the same Operator z-stream. A separate catalog source for each release keeps Operator Lifecycle Manager from selecting a newer Operator version in the channel.
+
+  > [!NOTE]
+  > This requirement applies to OLMv0. With OLMv0, if a single catalog contains multiple Operator versions, Operator Lifecycle Manager (OLM) tries to move the cluster to the newest version in the specified channel instead of staying on the version in the `Subscription` resource.
+
+  When you update catalog sources, follow these guidelines:
+
+  - Use the same catalog source name across release versions.
+
+  - Structure upgrade or update policies so that the catalog source returns to the `ready` state before further updates proceed. Set the `ran.openshift.io/soak-seconds` annotation on these policies to at least 30 seconds so that the catalog source update has fully propagated.
+
 Engineering considerations
 - A valid time source must be configured as part of cluster installation.
 
@@ -1176,7 +1186,7 @@ Additional resources
 Telco core clusters require hardening against multiple attack vectors through various security features and configurations.
 
 New in this release
-- Starting with OpenShift Container Platform 4.17, administrators can use the `oc commatrix` plugin to automatically generate `MachineConfig` CRs with a default set of nftables firewall rules. The generated `MachineConfig` CRs can then be added to the cluster configuration to improve security.
+- CRI-O verifies sigstore image signatures for platform content and for telco core reference design Operator images. The reference configuration includes a `ClusterImagePolicy` resource for the Operator images as a required extra manifest.
 
 Description
 Telco customers are security conscious and require clusters to be hardened against multiple attack vectors. In OpenShift Container Platform, there is no single component or feature responsible for securing a cluster. Described below are various security oriented features and configurations for the use models covered in the telco core RDS.
@@ -1188,6 +1198,8 @@ Telco customers are security conscious and require clusters to be hardened again
 - Rootless DPDK pods: Many user-plane networking (DPDK) CNFs require pods to run with root privileges. With this feature, a conformant DPDK pod can be run without requiring root privileges. Rootless DPDK pods create a tap device in a rootless pod that injects traffic from a DPDK application to the kernel.
 
 - Storage: The storage network should be isolated and non-routable to other cluster networks. See the "Storage" section for additional details.
+
+- Since OpenShift Container Platform 4.22, a `ClusterImagePolicy` CR named `openshift` is deployed and managed by the Cluster Version Operator (CVO) at installation. The policy instructs CRI-O to verify sigstore signatures for the OpenShift Container Platform release and payload images. Starting with OpenShift Container Platform 5.0, telco core reference design Operator images can also be verified by using custom `ClusterImagePolicy` resources. The reference configuration includes a `ClusterImagePolicy` resource for these Operator images as a required extra manifest at installation.
 
 Security-conscious cluster administrators can configure nftables rules to restrict inbound network flows. See [the OpenShift Container Platform documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/installation_configuration/configuring-firewall.html#network-commatrix-plugin-intro_configuring-firewall) for a supported method for implementing custom nftables firewall rules in OpenShift Container Platform cluster nodes with the `oc commatrix` plugin. You can add the generated `MachineConfig` CRs to the cluster configuration at install time as extra manifests. When the cluster is managed under a Hub RDS compliant RHACM cluster the content of the `MachineConfig` resource is maintained across the life of the cluster through a `Policy` resource.
 
@@ -1218,6 +1230,8 @@ Limits and requirements
 Engineering considerations
 - For rootless DPDK pod support, enable the SELinux `container_use_devices` boolean on the host to allow the tap device to be created. This introduces an acceptable security risk.
 
+- Before you install or update the cluster, mirror the telco core reference design Operator images and their signatures. `ClusterImagePolicy` resources can verify those signatures only when both are in the mirror registry. For more information, see "Mirroring images for a disconnected installation by using the oc-mirror plugin v2".
+
 <div>
 
 <div class="title">
@@ -1225,6 +1239,8 @@ Engineering considerations
 Additional resources
 
 </div>
+
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 - [Configuring your firewall for OpenShift Container Platform](../installing/install_config/configuring-firewall.xml#configuring-firewall_configuring-firewall)
 
@@ -1241,7 +1257,7 @@ Additional resources
 The cert-manager Operator for OpenShift Container Platform manages the lifecycle of TLS certificates for cluster components and workloads.
 
 New in this release
-- The cert-manager Operator is a new optional component in this release.
+- There are no reference design updates in this release.
 
 Description
 The cert-manager Operator for OpenShift Container Platform manages the lifecycle of TLS certificates for cluster components and workloads. The cert-manager Operator automates certificate issuance, renewal, and rotation, eliminating manual certificate management. The reference configuration includes the cert-manager Operator to optionally manage certificates for the API server and ingress controller endpoints.
@@ -1638,6 +1654,7 @@ Use the following custom resources (CRs) to configure node settings for the telc
 | Container mount namespace hiding | `mount_namespace_config_worker.yaml` | Configures a mount namespace for sharing container-specific mounts between kubelet and CRI-O on worker nodes. | No |
 | Kdump enable | `kdump-master.yaml` | Configures kdump crash reporting on master nodes. | No |
 | Kdump enable | `kdump-worker.yaml` | Configures kdump crash reporting on worker nodes. | No |
+| Image signature verification | `clusterimagepolicy-telco-core-operators.yaml` | Configures CRI-O to enable image sigstore signature verification on RDS Operator images. | No |
 
 Node configuration CRs
 
@@ -1767,6 +1784,6 @@ The Red Hat telco core 4.17 solution has been validated using the following Red
 
 Telco core cluster validated software components
 
-- OpenShift Data Foundation is expected to be updated to 5.0 when the aligned OpenShift Data Foundation version is released.
+- The OpenShift Data Foundation entry will be updated when the aligned OpenShift Data Foundation 5.0 version is released.
 
 - The cert-manager Operator and Red Hat OpenShift GitOps Operator are platform-agnostic operators. The support lifecycle for these operators is independent from the support lifecycle for OpenShift Container Platform. You might need to update to a newer minor version of these operators at the end of an operator lifecycle, or when planning to update the OpenShift Container Platform cluster to continue support. For support lifecycle details for platform-agnostic operators, see [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators).

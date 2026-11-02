@@ -57,7 +57,7 @@ Procedure
 
     For more information about cluster version condition types, see "Understanding cluster version condition types".
 
-2.  If the condition `RetrievedUpdates` is `False`, change the channel to `stable-<4.y>` or `fast-<4.y>` by running the following command:
+2.  If the condition `RetrievedUpdates` is `False`, change the channel to `stable-<5.y>` or `fast-<5.y>` by running the following command:
 
     ``` terminal
     $ oc adm upgrade channel <channel>

@@ -353,7 +353,7 @@ There are several Microsoft Azure instance types tested with OpenShift Container
 
 See the following machine types based on 64-bit x86 architecture:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Enabling trusted launch for Azure VMs
 
@@ -913,4 +913,4 @@ Next steps
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

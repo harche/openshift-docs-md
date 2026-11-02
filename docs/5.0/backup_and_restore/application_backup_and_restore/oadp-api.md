@@ -1,7 +1,7 @@
 You can use the following APIs with OADP:
 
 Velero API
-Velero API documentation is maintained by Velero and is not maintained by Red Hat. For more information, see [API types](https://velero.io/docs/main/api-types/) (Velero documentation).
+Velero API documentation is maintained by Velero and is not maintained by Red Hat.
 
 OADP API
 The following are the OADP APIs:
@@ -25,8 +25,6 @@ The following are the OADP APIs:
 - `Features`
 
 - `DataMover`
-
-  For more information, see in [OADP Operator](https://pkg.go.dev/github.com/openshift/oadp-operator)(Go documentation).
 
 # DataProtectionApplicationSpec type
 
@@ -60,7 +58,7 @@ Additional resources
 
 # BackupLocation type
 
-The following are `BackupLocation` OADP APIs:
+Use the `BackupLocation` OADP API type to define where OADP stores backups in OpenShift Container Platform. You can specify a Velero backup storage location or an automatically provisioned cloud storage bucket.
 
 | Property | Type | Description |
 |----|----|----|
@@ -88,7 +86,7 @@ Additional resources
 
 # SnapshotLocation type
 
-The following are `SnapshotLocation` OADP APIs:
+Use the `SnapshotLocation` OADP API type to define where OADP stores volume snapshots in OpenShift Container Platform. It uses the Velero `VolumeSnapshotLocationSpec` to specify the snapshot storage backend.
 
 | Property | Type | Description |
 |----|----|----|
@@ -110,7 +108,7 @@ Additional resources
 
 # ApplicationConfig type
 
-The following are `ApplicationConfig` OADP APIs:
+Use the `ApplicationConfig` OADP API type to define Velero and Restic server configuration for OADP backup and restore operations in OpenShift Container Platform.
 
 | Property | Type | Description |
 |----|----|----|
@@ -133,7 +131,7 @@ Additional resources
 
 # VeleroConfig type
 
-The following are `VeleroConfig` OADP APIs:
+Use the `VeleroConfig` OADP API type to configure the Velero server instance for OADP in OpenShift Container Platform. It controls plugins, feature flags, pod configuration, and logging for the Velero server.
 
 | Property | Type | Description |
 |----|----|----|
@@ -161,7 +159,7 @@ Additional resources
 
 # CustomPlugin type
 
-The following are `CustomPlugin` OADP APIs:
+Use the `CustomPlugin` OADP API type to define the name and container image of a custom Velero plugin for OADP in OpenShift Container Platform.
 
 | Property | Type | Description |
 |----|----|----|
@@ -184,7 +182,7 @@ Additional resources
 
 # ResticConfig type
 
-The following are `ResticConfig` OADP APIs:
+Use the `ResticConfig` OADP API type to enable and configure Restic-based backup and restore in OpenShift Container Platform. It defines the Restic timeout, supplemental groups, and pod configuration.
 
 | Property | Type | Description |
 |----|----|----|
@@ -209,7 +207,7 @@ Additional resources
 
 # PodConfig type
 
-The following are `PodConfig` OADP APIs:
+Use the `PodConfig` OADP API type to configure pod-level settings for Velero and Restic pods in OpenShift Container Platform. It defines node selectors, tolerations, resource limits, and labels for backup and restore pods.
 
 | Property | Type | Description |
 |----|----|----|
@@ -220,23 +218,9 @@ The following are `PodConfig` OADP APIs:
 
 PodConfig
 
-<div>
-
-<div class="title">
-
-Additional resources
-
-</div>
-
-- [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features-plugins)
-
-- [Complete schema definitions for the type `PodConfig`](https://pkg.go.dev/github.com/openshift/oadp-operator/api/v1alpha1#PodConfig)(Go documentation)
-
-</div>
-
 # Features type
 
-The following are `Features` OADP APIs:
+Use the `Features` OADP API type to configure optional OADP features in OpenShift Container Platform. It defines the Data Mover configuration for volume snapshot data movement.
 
 | Property | Type | Description |
 |----|----|----|
@@ -258,7 +242,7 @@ Additional resources
 
 # DataMover type
 
-The following are `DataMover` OADP APIs:
+Use the `DataMover` OADP API type to enable and configure the volume snapshot mover controller and CSI Data Mover plugin in OpenShift Container Platform. It controls data movement for volume snapshot backup and restore operations.
 
 | Property | Type | Description |
 |----|----|----|
@@ -267,3 +251,13 @@ The following are `DataMover` OADP APIs:
 | `timeout` | [string](https://pkg.go.dev/builtin#string) | A user-supplied duration string for `VolumeSnapshotBackup` and `VolumeSnapshotRestore` to complete. Default is `10m` (10 minutes). A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as `300ms`, `-1.5h`, or `2h45m`. Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, and `h`. |
 
 DataMover
+
+# Additional resources
+
+- [Velero API types](https://velero.io/docs/main/api-types/)
+
+- [OADP Operator (Go documentation)](https://pkg.go.dev/github.com/openshift/oadp-operator)
+
+- [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features-plugins)
+
+- [Complete schema definitions for the type `PodConfig`](https://pkg.go.dev/github.com/openshift/oadp-operator/api/v1alpha1#PodConfig)

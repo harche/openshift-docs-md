@@ -1,12 +1,4 @@
-You can manually gather and upload Insights Operator archives to diagnose issues from a restricted network.
-
-To use the Insights Operator in a restricted network, you must complete the following tasks:
-
-- Create a copy of your Insights Operator archive.
-
-- Upload the Insights Operator archive to the Red Hat Hybrid Cloud Console.
-
-Additionally, you can select to obfuscate the Insights Operator data before data upload.
+Configure remote health monitoring in restricted network environments to diagnose issues. Run manual data collection, upload archives to Red Hat, and enable data obfuscation to protect sensitive information.
 
 <div>
 
@@ -22,7 +14,7 @@ Additional resources
 
 </div>
 
-# Running an Insights Operator gather operation
+# Run an Insights Operator gather operation
 
 You must run a gather operation to create an Insights Operator archive.
 
@@ -49,7 +41,7 @@ Procedure
 1.  Create a file named `gather-job.yaml` using this template:
 
     ``` yaml
-    link:https://raw.githubusercontent.com/openshift/insights-operator/release-4.22/docs/gather-job.yaml[role=include]
+    link:https://raw.githubusercontent.com/openshift/insights-operator/release-5.0/docs/gather-job.yaml[role=include]
     ```
 
 2.  Copy your `insights-operator` image version:
@@ -177,7 +169,19 @@ Procedure
 
 </div>
 
-# Uploading an Insights Operator archive
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Insights Operator gather job template (GitHub)](https://github.com/openshift/insights-operator/blob/release-4.22/docs/gather-job.yaml)
+
+</div>
+
+# Upload an Insights Operator archive
 
 You can manually upload an Insights Operator archive to [console.redhat.com](https://console.redhat.com) to diagnose potential issues.
 
@@ -283,7 +287,7 @@ Verification
 
 </div>
 
-# Enabling Insights Operator data obfuscation
+# Enable Insights Operator data obfuscation
 
 You can enable obfuscation to mask sensitive and identifiable IPv4 addresses and cluster base domains that the Insights Operator sends to [console.redhat.com](https://console.redhat.com).
 
@@ -292,7 +296,7 @@ You can enable obfuscation to mask sensitive and identifiable IPv4 addresses and
 
 Obfuscation assigns non-identifying values to cluster IPv4 addresses, and uses a translation table that is retained in memory to change IP addresses to their obfuscated versions throughout the Insights Operator archive before uploading the data to [console.redhat.com](https://console.redhat.com).
 
-For cluster base domains, obfuscation changes the base domain to a hardcoded substring. For example, `cluster-api.openshift.example.com` becomes `cluster-api.<CLUSTER_BASE_DOMAIN>`.
+For cluster base domains, obfuscation changes the base domain to a hard-coded substring. For example, `cluster-api.openshift.example.com` becomes `cluster-api.<CLUSTER_BASE_DOMAIN>`.
 
 The following procedure enables obfuscation using the `support` secret in the `openshift-config` namespace.
 

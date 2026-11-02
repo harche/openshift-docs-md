@@ -1412,6 +1412,6 @@ Additional resources
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- Optional: [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- Optional: [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - Optional: [Remove cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)

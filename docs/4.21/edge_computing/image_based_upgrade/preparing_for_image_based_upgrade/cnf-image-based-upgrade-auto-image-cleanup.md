@@ -42,7 +42,7 @@ Procedure
 
 # Disable the automatic image cleanup of the container storage disk
 
-Disable the automatic image cleanup threshold.
+To prevent automatic image cleanup from running during image-based upgrade preparation in OpenShift Container Platform, you can annotate the `ImageBasedUpgrade` resource. You can also remove the annotation to re-enable automatic cleanup.
 
 <div>
 

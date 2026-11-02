@@ -252,7 +252,7 @@ Procedure
 
         ``` terminal
         NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-        kube-apiserver   4.22.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 8; 1 node is at revision 10
+        kube-apiserver   5.0.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 8; 1 node is at revision 10
         ```
 
         </div>
@@ -685,7 +685,7 @@ Procedure
 
         ``` terminal
         NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-        kube-apiserver   4.22.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 12; 1 node is at revision 14
+        kube-apiserver   5.0.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 12; 1 node is at revision 14
         ```
 
         </div>

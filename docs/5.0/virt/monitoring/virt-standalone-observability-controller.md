@@ -15,7 +15,7 @@ The standalone observability controller provides the following capabilities:
 
 # Enable the standalone observability controller
 
-You can enable the standalone observability controller by setting the `deployObservabilityController` feature gate in the `HyperConverged` custom resource (CR). By enabling the standalone observability controller, you can update monitoring and alerts independently of the OpenShift Virtualization control plane.
+You can enable the standalone observability controller by setting the `deployObservabilityController` feature gate in the `HyperConverged` custom resource (CR). You can then update monitoring and alerts independently of the OpenShift Virtualization control plane.
 
 > [!IMPORTANT]
 > The standalone observability controller is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.

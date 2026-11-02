@@ -1380,9 +1380,9 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/oc_mirror_v2/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
 

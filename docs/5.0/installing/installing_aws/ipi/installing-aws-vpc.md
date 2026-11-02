@@ -19,6 +19,43 @@ The following prerequisites must be met:
 
 - If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
+## Subnet requirements for AWS dual-stack networking with IPv4 primary
+
+When deploying a dual-stack cluster into an existing VPC with IPv4 as the primary IP family (`ipFamily: DualStackIPv4Primary`), you must ensure that all subnets hosting cluster nodes have automatic IPv6 address assignment enabled (`AssignIpv6AddressOnCreation`).
+
+If IPv6 auto-assignment is disabled on these subnets, EC2 instances will not receive an IPv6 address at launch, causing network initialization and cluster bootstrapping to fail.
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Verify the `AssignIpv6AddressOnCreation` attribute for your subnets by running the following command:
+
+    ``` terminal
+    $ aws ec2 describe-subnets \
+        --filters "Name=vpc-id,Values=<vpc_id>" \
+        --query "Subnets[*].[SubnetId, AssignIpv6AddressOnCreation]" \
+        --output table \
+        --region <aws_region>
+    ```
+
+    Replace `<vpc_id>` with your VPC ID and `<aws_region>` with your AWS region.
+
+2.  If any subnet where cluster instances reside returns `False`, enable IPv6 auto-assignment by running the following command:
+
+    ``` terminal
+    $ aws ec2 modify-subnet-attribute \
+        --subnet-id <subnet_id> \
+        --assign-ipv6-address-on-creation \
+        --region <aws_region>
+    ```
+
+</div>
+
 # About using a custom VPC
 
 You can deploy a cluster into existing subnets in an existing Amazon Virtual Private Cloud (VPC) in Amazon Web Services (AWS).
@@ -480,7 +517,7 @@ The following AWS instance types have been tested with OpenShift Container Platf
 
 See the following machine types based on 64-bit x86 architecture:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/aws/tested_instance_types_x86_64.md>
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
@@ -493,7 +530,7 @@ The following AWS 64-bit ARM instance types have been tested with OpenShift Cont
 
 See the following machine types based on 64-bit ARM architecture:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_aarch64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/aws/tested_instance_types_aarch64.md>
 
 ## Enabling a user-managed DNS
 
@@ -2010,7 +2047,7 @@ Procedure
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Removing cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)
 

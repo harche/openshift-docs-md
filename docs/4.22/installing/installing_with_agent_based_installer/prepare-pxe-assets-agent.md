@@ -457,9 +457,7 @@ Procedure
 
 ## Adding IBM Z agents with z/VM
 
-You can manually add IBM Z® agents with z/VM.
-
-Only use this procedure for IBM Z® clusters with z/VM.
+You can manually add IBM Z® agents with z/VM. Only use this procedure for IBM Z® clusters with z/VM.
 
 <div>
 
@@ -570,9 +568,7 @@ Additional resources
 
 ## Adding IBM Z agents with RHEL KVM
 
-You can manually add IBM Z® agents with RHEL KVM.
-
-Only use this procedure for IBM Z® clusters with RHEL KVM.
+You can manually add IBM Z® agents with RHEL KVM. Only use this procedure for IBM Z® clusters with RHEL KVM.
 
 > [!NOTE]
 > The `nmstateconfig` parameter must be configured for the KVM boot.

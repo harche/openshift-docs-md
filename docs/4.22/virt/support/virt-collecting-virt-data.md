@@ -374,9 +374,9 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
 
-- [Installing the QEMU guest agent on a Linux VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent)
+- [Install the QEMU guest agent on a Linux VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent)
 
-- [Installing VirtIO drivers from a SATA CD drive on an existing Windows VM](../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-installing-virtio-drivers-existing-windows_virt-install-virtio-drivers-on-windows-vms)
+- [Install VirtIO drivers from a SATA CD on an existing VM](../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-installing-virtio-drivers-existing-windows_virt-install-virtio-drivers-on-windows-vms)
 
 - [Connect to the desktop viewer by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-connecting-desktop-viewer-web_virt-accessing-vm-consoles)
 

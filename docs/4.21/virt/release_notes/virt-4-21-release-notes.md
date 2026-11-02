@@ -300,6 +300,17 @@ To work around this problem, manually delete the stale boot source resources:
 
     [CNV-75084](https://issues.redhat.com/browse/CNV-75084)
 
+<!-- -->
+
+A storage migration can report completion before copying any data
+A `MultiNamespaceVirtualMachineStorageMigration` object can intermittently report the `Completed` phase within milliseconds of the migration starting, before the migration copies any data. By default, a migration plan that you create in the OpenShift Container Platform web console decommissions the source volumes after a successful migration.
+
+As a consequence, the controller can delete the source persistent volume claims (PVCs) even though the migration never copied their contents to the target data volumes and PVCs. This can result in data loss.
+
+To work around this problem, select the **Keep original volumes at source after successful migration** checkbox when you create the storage migration. Verify that the target volumes contain the migrated data, and then delete the source volumes manually. As a result, the source data remains available if a migration reports completion without copying data.
+
+[CNV-98287](https://redhat.atlassian.net/browse/CNV-98287)
+
 # Maintenance releases
 
 ## OpenShift Virtualization 4.21.1 updates

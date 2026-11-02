@@ -13,7 +13,7 @@ After the drivers are installed, the `container-native-virtualization/virtio-win
 
 Supported drivers
 
-# Downloading the VirtIO drivers ISO from the web console
+# Download the VirtIO drivers ISO from the web console
 
 You can download the `virtio-win` ISO file from the OpenShift Container Platform web console. The ISO file includes the VirtIO drivers and the QEMU guest agent installer for Microsoft Windows virtual machines (VMs).
 
@@ -38,7 +38,7 @@ Procedure
 
 </div>
 
-# Attaching VirtIO container disk to Windows VMs during installation
+# Attach a VirtIO container disk during Windows installation
 
 You must attach the VirtIO container disk to the Windows VM to install the necessary Windows drivers. This can be done during creation of the VM.
 
@@ -72,7 +72,7 @@ After the VM is created, the `virtio-win` SATA CD disk will be attached to the V
 
 </div>
 
-# Attaching VirtIO container disk to an existing Windows VM
+# Attach a VirtIO container disk to an existing Windows VM
 
 You must attach the VirtIO container disk to the Windows VM to install the necessary Windows drivers. This can be done to an existing VM.
 
@@ -96,7 +96,7 @@ Procedure
 
 </div>
 
-# Installing VirtIO drivers from a container disk added as a SATA CD drive
+# Install VirtIO drivers from a container disk SATA CD
 
 You can install VirtIO drivers from a container disk that you add to a Windows virtual machine (VM) as a SATA CD drive.
 
@@ -167,7 +167,7 @@ Procedure
 
 </div>
 
-# Installing VirtIO drivers during Windows installation
+# Install VirtIO drivers during Windows setup
 
 You can install the VirtIO drivers while installing Windows on a virtual machine (VM).
 
@@ -224,7 +224,7 @@ Verification
 
 If the **Virtio-Win** directory is present and contains a sub-directory for each driver, the installation was successful.
 
-# Installing VirtIO drivers from a SATA CD drive on an existing Windows VM
+# Install VirtIO drivers from a SATA CD on an existing VM
 
 You can install the VirtIO drivers from a SATA CD drive on an existing Windows virtual machine (VM).
 

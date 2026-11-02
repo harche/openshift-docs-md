@@ -2,7 +2,7 @@ Troubleshoot OpenShift API for Data Protection (OADP) issues by using diagnostic
 
 You can troubleshoot OADP issues by using the following methods:
 
-- Debug Velero custom resources (CRs) by using the OpenShift CLI tool.
+- Debug Velero custom resources (CRs) by using the OpenShift CLI tool or the Velero CLI tool. The Velero CLI tool provides more detailed logs and information.
 
 - Debug Velero or Restic pod crashes, which are caused due to a lack of memory or CPU.
 

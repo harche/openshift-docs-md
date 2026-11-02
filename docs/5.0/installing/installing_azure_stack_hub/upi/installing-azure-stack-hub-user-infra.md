@@ -1476,7 +1476,7 @@ Use the `01_vnet.json` Azure Resource Manager (ARM) template to deploy the virtu
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/01_vnet.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/01_vnet.json[role=include]
 ```
 
 </div>
@@ -1555,7 +1555,7 @@ Use the `02_storage.json` Azure Resource Manager (ARM) template to deploy stored
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/02_storage.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/02_storage.json[role=include]
 ```
 
 </div>
@@ -1700,7 +1700,7 @@ Use the `03_infra.json` Azure Resource Manager (ARM) template to deploy networki
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/03_infra.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/03_infra.json[role=include]
 ```
 
 </div>
@@ -1798,7 +1798,7 @@ Use the `04_bootstrap.json` Azure Resource Manager (ARM) template to deploy the 
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/04_bootstrap.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/04_bootstrap.json[role=include]
 ```
 
 </div>
@@ -1873,7 +1873,7 @@ Use the `05_masters.json` Azure Resource Manager (ARM) template to deploy the co
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/05_masters.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/05_masters.json[role=include]
 ```
 
 </div>
@@ -2020,7 +2020,7 @@ Use the `06_workers.json` Azure Resource Manager (ARM) template to deploy worker
 </div>
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/06_workers.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/azurestack/06_workers.json[role=include]
 ```
 
 </div>
@@ -2438,7 +2438,7 @@ Additional resources
 
 </div>
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 </div>
 

@@ -284,7 +284,7 @@ Procedure
 
 To add new registries or update authentication for your OpenShift Container Platform cluster, you can update the global pull secret by appending new credentials to the *additional-pull-secret* by using the `oc set data secret/additional-pull-secret -n kube-system` command.
 
-Hypershift manages the new credential propagation among the HostedCluster nodes.
+Hosted control planes manage the new credential propagation among the HostedCluster nodes.
 
 > [!IMPORTANT]
 > The global pull secret is a HostedControlPlane feature only and is not an OCP standalone feature.

@@ -1755,8 +1755,8 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Configuring a custom PKI](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki)
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)

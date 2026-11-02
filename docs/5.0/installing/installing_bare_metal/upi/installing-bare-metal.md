@@ -2535,10 +2535,10 @@ Procedure
     </div>
 
     ``` terminal
-    "location": "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live.aarch64.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live.ppc64le.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live.s390x.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live.x86_64.iso",
+    "location": "<url>/art/storage/releases/rhcos-5.0-aarch64/<release>/aarch64/rhcos-<release>-live.aarch64.iso",
+    "location": "<url>/art/storage/releases/rhcos-5.0-ppc64le/<release>/ppc64le/rhcos-<release>-live.ppc64le.iso",
+    "location": "<url>/art/storage/releases/rhcos-5.0-s390x/<release>/s390x/rhcos-<release>-live.s390x.iso",
+    "location": "<url>/art/storage/releases/rhcos-5.0/<release>/x86_64/rhcos-<release>-live.x86_64.iso",
     ```
 
     </div>
@@ -2694,18 +2694,18 @@ Procedure
     </div>
 
     ``` terminal
-    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-kernel-aarch64"
-    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-initramfs.aarch64.img"
-    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-rootfs.aarch64.img"
-    "<url>/art/storage/releases/rhcos-4.22-ppc64le/49.84.202110081256-0/ppc64le/rhcos-<release>-live-kernel-ppc64le"
-    "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live-initramfs.ppc64le.img"
-    "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live-rootfs.ppc64le.img"
-    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-kernel-s390x"
-    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-initramfs.s390x.img"
-    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-rootfs.s390x.img"
-    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-kernel-x86_64"
-    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-initramfs.x86_64.img"
-    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-rootfs.x86_64.img"
+    "<url>/art/storage/releases/rhcos-5.0-aarch64/<release>/aarch64/rhcos-<release>-live-kernel-aarch64"
+    "<url>/art/storage/releases/rhcos-5.0-aarch64/<release>/aarch64/rhcos-<release>-live-initramfs.aarch64.img"
+    "<url>/art/storage/releases/rhcos-5.0-aarch64/<release>/aarch64/rhcos-<release>-live-rootfs.aarch64.img"
+    "<url>/art/storage/releases/rhcos-5.0-ppc64le/49.84.202110081256-0/ppc64le/rhcos-<release>-live-kernel-ppc64le"
+    "<url>/art/storage/releases/rhcos-5.0-ppc64le/<release>/ppc64le/rhcos-<release>-live-initramfs.ppc64le.img"
+    "<url>/art/storage/releases/rhcos-5.0-ppc64le/<release>/ppc64le/rhcos-<release>-live-rootfs.ppc64le.img"
+    "<url>/art/storage/releases/rhcos-5.0-s390x/<release>/s390x/rhcos-<release>-live-kernel-s390x"
+    "<url>/art/storage/releases/rhcos-5.0-s390x/<release>/s390x/rhcos-<release>-live-initramfs.s390x.img"
+    "<url>/art/storage/releases/rhcos-5.0-s390x/<release>/s390x/rhcos-<release>-live-rootfs.s390x.img"
+    "<url>/art/storage/releases/rhcos-5.0/<release>/x86_64/rhcos-<release>-live-kernel-x86_64"
+    "<url>/art/storage/releases/rhcos-5.0/<release>/x86_64/rhcos-<release>-live-initramfs.x86_64.img"
+    "<url>/art/storage/releases/rhcos-5.0/<release>/x86_64/rhcos-<release>-live-rootfs.x86_64.img"
     ```
 
     </div>
@@ -5810,13 +5810,13 @@ Additional resources
 
 </div>
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-baremetal.xml#configuring-registry-storage-baremetal)
 

@@ -366,7 +366,9 @@ Procedure
 
 # Deploying a Java application by uploading a JAR file
 
-You can use the web console **Developer** perspective to upload a JAR file by using the following options:
+You can use the web console **Developer** perspective to deploy a Java application by uploading a JAR file.
+
+You can upload a JAR file by using the following options:
 
 - Navigate to the **+Add** view of the **Developer** perspective, and click **Upload JAR file** in the **From Local Machine** tile. Browse and select your JAR file, or drag a JAR file to deploy your application.
 
@@ -414,16 +416,16 @@ Procedure
 
 9.  Click **Create** to deploy the application. A toast notification is shown to notify you that the JAR file is being uploaded. The toast notification also includes a link to view the build logs.
 
+    > [!NOTE]
+    > If you attempt to close the browser tab while the build is running, a web alert is displayed.
+
+    After the JAR file is uploaded and the application is deployed, you can view the application in the **Topology** view.
+
 </div>
-
-> [!NOTE]
-> If you attempt to close the browser tab while the build is running, a web alert is displayed.
-
-After the JAR file is uploaded and the application is deployed, you can view the application in the **Topology** view.
 
 # Using the Devfile registry to access devfiles
 
-You can use the devfiles in the **+Add** flow of the **Developer** perspective to create an application. The **+Add** flow provides a complete integration with the [devfile community registry](https://registry.devfile.io/viewer). A devfile is a portable YAML file that describes your development environment without needing to configure it from scratch. Using the **Devfile registry**, you can use a preconfigured devfile to create an application.
+You can use the devfiles in the **+Add** flow of the **Developer** perspective to create an application from a preconfigured devfile in the devfile community registry. A devfile is a portable YAML file that describes your development environment without needing to configure it from scratch.
 
 <div>
 
@@ -478,7 +480,7 @@ Procedure
 
 - [Default cluster roles](../../authentication/using-rbac.xml#default-roles_using-rbac)
 
-- [Monitoring stack for Red Hat OpenShift](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.22)
+- [Monitoring stack for Red Hat OpenShift](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest)
 
 - [Installing the OpenShift Pipelines Operator](https://docs.openshift.com/pipelines/latest/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines)
 

@@ -1,5 +1,12 @@
 Install the Helm CLI to manage software packages on your OpenShift Container Platform cluster from a local workstation.
 
+The Helm v4 CLI is now the current version of the Helm CLI for OpenShift Container Platform. You can still use the Helm v3 CLI in OpenShift Container Platform 5.0, but it is not available in OpenShift Container Platform 5.1 and later. For information about moving from Helm v3 to Helm v4, see "Helm CLI for Red Hat OpenShift compatibility matrix."
+
+> [!IMPORTANT]
+> The Helm v3 CLI is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
+>
+> For the most recent list of major functionality that has been deprecated or removed within OpenShift Container Platform, refer to the *Deprecated and removed features* section of the OpenShift Container Platform release notes.
+
 You can find the URL to the latest binaries in the OpenShift Container Platform web console by clicking the help icon (**?**) and selecting **Command Line Tools**.
 
 Replace \<version\> in the curl commands with the Helm version that matches your OpenShift Container Platform cluster version. For more information, see "Helm CLI for Red Hat OpenShift compatibility matrix."

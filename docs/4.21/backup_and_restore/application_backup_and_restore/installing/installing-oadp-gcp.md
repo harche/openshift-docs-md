@@ -642,7 +642,7 @@ Prerequisites
 
 </div>
 
-- You have installed a cluster in manual mode with [Google Cloud Workload Identity configured](https://docs.openshift.com/container-platform/latest/installing/installing_gcp/installing-gcp-customizations.html#installing-gcp-with-short-term-creds_installing-gcp-customizations).
+- You have installed a cluster in manual mode with Google Cloud Workload Identity configured.
 
 - You have access to the Cloud Credential Operator utility (`ccoctl`) and to the associated workload identity pool.
 
@@ -736,15 +736,15 @@ Prerequisites
 
 </div>
 
-- You must install the OADP Operator.
+- You have installed the OADP Operator.
 
-- You must configure object storage as a backup location.
+- You have configured object storage as a backup location.
 
-- If you use snapshots to back up PVs, your cloud provider must support either a native snapshot API or Container Storage Interface (CSI) snapshots.
+- If you use snapshots to back up PVs, your cloud provider supports either a native snapshot API or Container Storage Interface (CSI) snapshots.
 
-- If the backup and snapshot locations use the same credentials, you must create a `Secret` with the default name for your storage provider: `cloud-credentials` for AWS, Multicloud Object Gateway (MCG), Red Hat OpenShift Data Foundation (ODF), IBM Cloud, or KubeVirt; `cloud-credentials-azure` for Azure; or `cloud-credentials-gcp` for GCP.
+- If the backup and snapshot locations use the same credentials, you have created a `Secret` with the default name for your storage provider: `cloud-credentials` for AWS, Multicloud Object Gateway (MCG), Red Hat OpenShift Data Foundation (ODF), IBM Cloud, or KubeVirt; `cloud-credentials-azure` for Azure; or `cloud-credentials-gcp` for GCP.
 
-- If the backup and snapshot locations use different credentials, you must create two `Secrets`:
+- If the backup and snapshot locations use different credentials, you have created two `Secrets`:
 
   - `Secret` with a custom name for the backup location. You add this `Secret` to the `DataProtectionApplication` CR.
 
@@ -2048,7 +2048,7 @@ Procedure
 
 # Additional resources
 
-- [Velero 1.16](https://velero.io/docs/v1.16/)
+- [Velero 1.16](https://velero.io/docs/)
 
 - [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
 

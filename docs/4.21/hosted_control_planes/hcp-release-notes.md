@@ -2,7 +2,7 @@ With this release, hosted control planes for OpenShift Container Platform 4.21 i
 
 # New features and enhancements
 
-This release adds improvements related to the following components and concepts:
+This topic lists new features and enhancements in hosted control planes 4.17.
 
 ARM64 compute nodes now supported with 64-bit x86 control plane
 In this release, ARM64 compute nodes are supported with a 64-bit x86 control plane on bare-metal deployments of hosted control planes. For more information about multi-architecture support for hosted control planes, see the [Support matrix for hosted control planes](../hosted_control_planes/hcp-prepare/hcp-requirements.xml#hcp-support-matrix_hcp-requirements).

@@ -2,7 +2,9 @@ Configure a reference configuration to validate configuration resources from a c
 
 # Structure of the metadata.yaml file
 
-The `metadata.yaml` file provides a central configuration point to define and configure the templates in a reference configuration. The file features a hierarchy of `parts` and `components`. `parts` are groups of `components` and `components` are groups of templates. Under each component, you can configure template dependencies, validation rules, and add descriptive metadata.
+The `metadata.yaml` file provides a central configuration point to define and configure the templates in a reference configuration.
+
+The file features a hierarchy of `parts` and `components`. `parts` are groups of `components` and `components` are groups of templates. Under each component, you can configure template dependencies, validation rules, and add descriptive metadata.
 
 <div class="formalpara">
 
@@ -346,7 +348,7 @@ You can configure exclusions in the `metadata.yaml` file in the following ways:
   > [!NOTE]
   > `pathToKey` is a dot separated path. Use quotes to escape key values featuring a period.
 
-## Excluding all fields not specified in a template
+# Excluding all fields not specified in a template
 
 During the comparison process, the `cluster-compare` plugin renders a template by merging fields from the corresponding custom resource (CR). If you configure the `ignore-unspecified-fields` to `true`, all fields that are present in the CR, but not in the template, are excluded from the merge. Use this approach when you want to focus the comparison on the fields specified in the template only.
 
@@ -380,7 +382,7 @@ Procedure
 
 </div>
 
-## Excluding specific fields by setting default exclusion fields
+# Excluding specific fields by setting default exclusion fields
 
 You can exclude fields by defining a default value for `fieldsToOmitRefs` in the `defaultOmitRef` field. This default exclusion applies to all templates, unless overridden by the `config.fieldsToOmitRefs` field for a specific template.
 
@@ -394,13 +396,7 @@ Procedure
 
 - Create a `metadata.yaml` file to match your use case. Use the following structure as an example:
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example metadata.yaml file
-
-  </div>
+  Example `metadata.yaml` file:
 
   ``` yaml
   apiVersion: v2
@@ -415,8 +411,6 @@ Procedure
            - pathToKey: a.custom.default."k8s.io"
   ```
 
-  </div>
-
   where:
 
   `defaultOmitRef: default`
@@ -427,7 +421,7 @@ Procedure
 
 </div>
 
-## Excluding specific fields
+# Excluding specific fields
 
 You can specify fields to exclude by defining the path to the field, and then referencing the definition in the `config` section for a template.
 
@@ -441,13 +435,7 @@ Procedure
 
 - Create a `metadata.yaml` file to match your use case. Use the following structure as an example:
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example metadata.yaml file
-
-  </div>
+  Example `metadata.yaml` file:
 
   ``` yaml
   apiVersion: v2
@@ -468,8 +456,6 @@ Procedure
            - pathToKey: spec.selector.matchLabels.k8s-app
   ```
 
-  </div>
-
   where:
 
   `deployments`
@@ -483,7 +469,7 @@ Procedure
 
 </div>
 
-## Excluding specific fields by setting default exclusion groups
+# Excluding specific fields by setting default exclusion groups
 
 You can create default groups of fields to exclude. A group of exclusions can reference another group to avoid duplication when defining exclusions.
 
@@ -497,13 +483,7 @@ Procedure
 
 - Create a `metadata.yaml` file to match your use case. Use the following structure as an example:
 
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example metadata.yaml file
-
-  </div>
+  Example `metadata.yaml` file:
 
   ``` yaml
   apiVersion: v2
@@ -527,8 +507,6 @@ Procedure
         - pathToKey: status
   ```
 
-  </div>
-
   where:
 
   `include: common`
@@ -548,7 +526,7 @@ The `cluster-compare` plugin provides two functions for inline validation:
 
 When you use either the `regex` or `capturegroups` function for inline validation, the `cluster-compare` plugin enforces that identically named capture groups have the same values across multiple fields within a template. This means that if a named capture group, such as `(?<username>[a-z0-9]+)`, appears in multiple fields, the values for that group must be consistent throughout the template.
 
-## Configuring inline validation with the regex function
+# Configuring inline validation with the regex function
 
 Use the `regex` inline function to validate fields using regular expressions.
 
@@ -600,7 +578,7 @@ Procedure
 
 </div>
 
-## Configuring inline validation with the capturegroups function
+# Configuring inline validation with the capturegroups function
 
 Use the `capturegroups` inline function for more precise validation of fields featuring multi-line strings. This function also ensures that identically named capture groups have the same values across multiple fields.
 
@@ -661,13 +639,13 @@ Procedure
 
     If the username value captured in the `data.username` field does not match the value captured in `bigTextBlock`, the `cluster-compare` plugin warns you about the inconsistent matching.
 
+    The following is example output with a warning about the inconsistent matching:
+
+    ``` terminal
+    WARNING: Capturegroup (?<username>…) matched multiple values: « mismatchuser | exampleuser »
+    ```
+
 </div>
-
-The following is example output with a warning about the inconsistent matching:
-
-``` terminal
-WARNING: Capturegroup (?<username>…) matched multiple values: « mismatchuser | exampleuser »
-```
 
 # Configuring descriptions for the output
 

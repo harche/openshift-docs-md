@@ -105,4 +105,4 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

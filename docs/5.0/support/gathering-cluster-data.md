@@ -171,18 +171,6 @@ Procedure
   $ oc adm must-gather -- REDUCE_LOGS=skip_rotated_logs /usr/bin/gather
   ```
 
-- To compress every uncompressed diagnostic log file that is larger than 10 MB, set the `REDUCE_LOGS` environment variable by running the following command:
-
-  ``` terminal
-  $ oc adm must-gather -- REDUCE_LOGS=compress_logs /usr/bin/gather
-  ```
-
-- To compress service logs, set the `REDUCE_LOGS` environment variable by running the following command:
-
-  ``` terminal
-  $ oc adm must-gather -- REDUCE_LOGS=compress_service_logs /usr/bin/gather
-  ```
-
 - To exclude logs entirely and significantly reduce the size of the `must-gather` archive, add a double dash (`--`) after `oc adm must-gather` command and add the `--no-logs` argument:
 
   ``` terminal
@@ -580,7 +568,9 @@ Procedure
 
 ## Changing the must-gather storage limit
 
-When using the `oc adm must-gather` command to collect data the default maximum storage for the information is 30% of the storage capacity of the container. After the 30% limit is reached the container is killed and the gathering process stops. Information already gathered is downloaded to your local storage. To run the must-gather command again, you need either a container with more storage capacity or to adjust the maximum volume percentage.
+When using the `oc adm must-gather` command to collect data the default maximum storage for the information is 30% of the storage capacity of the container.
+
+After the 30% limit is reached the container is killed and the gathering process stops. Information already gathered is downloaded to your local storage. To run the must-gather command again, you need either a container with more storage capacity or to adjust the maximum volume percentage.
 
 <div>
 
@@ -656,21 +646,29 @@ The self-service TSR provides a solid baseline for cluster health. If you need a
 
 # About Support Log Gather
 
-Support Log Gather Operator builds on the functionality of the traditional `must-gather` tool to automate the collection of debugging data. It streamlines troubleshooting by packaging the collected information into a single `.tar` file and optionally uploading it to the specified Red Hat Support case.
+Support Log Gather Operator builds on the functionality of the traditional `must-gather` tool to automate the collection of debugging data. It streamlines troubleshooting by packaging the collected information into a single `.tar` file and automatically uploading it to the specified Red Hat Support case.
+
+> [!IMPORTANT]
+> Support Log Gather is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 The key features of Support Log Gather include the following:
 
-- **Flexible permissions model**: Creates a `MustGather` custom resource without `cluster-admin` privileges. The job runs as the service account that you specify in the CR. Ensure that this service account has sufficient permissions to collect diagnostic data.
+- **No administrator privileges required**: Enables you to collect and upload logs without needing elevated permissions, making it easier for non-administrators to gather data securely.
 
 - **Simplified log collection**: Collects debugging data from the cluster, such as resource definitions and service logs.
 
 - **Configurable data upload**: Provides configuration options to either automatically upload the `.tar` file to a support case, or store it locally for manual upload.
 
-- **Optional data obfuscation**: Obfuscates sensitive information such as IP addresses, MAC addresses, secrets, and ConfigMaps in the collected bundle before upload or local persistence by using the integrated `must-gather-clean` tool.
-
 ## Installing Support Log Gather by using the web console
 
 You can use the web console to install the Support Log Gather.
+
+> [!IMPORTANT]
+> Support Log Gather is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 <div>
 
@@ -748,6 +746,11 @@ Verification
 
 To enable automated log collection for support cases, you can install Support Log Gather from the command-line interface (CLI).
 
+> [!IMPORTANT]
+> Support Log Gather is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
 <div>
 
 <div class="title">
@@ -804,7 +807,7 @@ Procedure
           name: support-log-gather-operator
           namespace: must-gather-operator
         spec:
-          channel: stable
+          channel: tech-preview
           name: support-log-gather-operator
           source: redhat-operators
           sourceNamespace: openshift-marketplace
@@ -866,7 +869,7 @@ Verification
 
     ``` terminal
     NAME                          PACKAGE                       SOURCE            CHANNEL
-    support-log-gather-operator   support-log-gather-operator   redhat-operators  stable
+    support-log-gather-operator   support-log-gather-operator   redhat-operators  tech-preview
     ```
 
     </div>
@@ -896,7 +899,12 @@ Verification
 
 ## Configuring a Support Log Gather instance
 
-You must create a `MustGather` custom resource (CR) from the command-line interface (CLI) to automate the collection of diagnostic data from your cluster. This process also optionally uploads the data to a Red Hat Support case.
+You must create a `MustGather` custom resource (CR) from the command-line interface (CLI) to automate the collection of diagnostic data from your cluster. This process also automatically uploads the data to a Red Hat Support case.
+
+> [!IMPORTANT]
+> Support Log Gather is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 <div>
 
@@ -910,11 +918,9 @@ Prerequisites
 
 - You have installed Support Log Gather in your cluster.
 
+- You have a Red Hat Support case ID.
+
 - You have created a Kubernetes secret containing your Red Hat Customer Portal credentials. The secret must contain a username field and a password field.
-
-- If you want to upload the logs to a Red Hat Support case, you have a Red Hat Support case ID.
-
-- If you want to persist the archive, you have created a persistent volume claim (PVC) in the CR namespace.
 
 - If you are using a custom image, you have configured an `ImageStream` resource in the Operator namespace that references an approved custom image URL.
 
@@ -941,7 +947,7 @@ Procedure
     </div>
 
     ``` yaml
-    apiVersion: operator.openshift.io/v1
+    apiVersion: operator.openshift.io/v1alpha1
     kind: MustGather
     metadata:
       name: example-mg
@@ -957,6 +963,10 @@ Procedure
       imageStreamRef:
         name: "network-debug-tools"
         tag: "v1.2"
+      proxyConfig:
+        httpProxy: "http://proxy.example.com:8080"
+        httpsProxy: "https://proxy.example.com:8443"
+        noProxy: ".example.com,localhost"
       mustGatherTimeout: "1h30m9s"
       uploadTarget:
         type: SFTP
@@ -1047,92 +1057,6 @@ Verification
 
     When successful, the process must create an archive and upload it to the Red Hat Secure File Transfer Protocol (SFTP) server for the specified case.
 
-4.  If no job is created, check validation errors by running the following command:
-
-    ``` terminal
-    $ oc get mustgather example-mg -o yaml
-    ```
-
-    For failures that the controller detects after the CR is created, the controller sets `status.status` to `Failed`, `status.completed` to `true`, and describes the failure in `status.reason`.
-
-    However, if a referenced secret or obfuscation ConfigMap is missing, the controller generates a requeueing error and a `Warning` event without setting `status.status` to `Failed` so that the CR keeps retrying.
-
-</div>
-
-## Updating Support Log Gather
-
-After you upgrade your cluster, update Support Log Gather to a version that is compatible with the updated OpenShift Container Platform version.
-
-> [!NOTE]
-> The `operator.openshift.io/v1alpha1` is deprecated and and is planned for removal in a future release. After you update Support Log Gather, update any `MustGather` custom resources (CRs) that use this API version to `operator.openshift.io/v1`.
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
-- You have updated your OpenShift Container Platform cluster.
-
-- You have installed a previous version of Support Log Gather.
-
-- You have installed the OpenShift CLI (`oc`).
-
-- You have access to the cluster using an account with `cluster-admin` permissions.
-
-</div>
-
-<div>
-
-<div class="title">
-
-Procedure
-
-</div>
-
-1.  Log in to the OpenShift CLI (`oc`).
-
-2.  Update the `Subscription` CR for Support Log Gather by running the following command:
-
-    ``` terminal
-    $ oc patch subscription support-log-gather-operator -n must-gather-operator --type merge -p '{"spec":{"channel":"stable"}}'
-    ```
-
-</div>
-
-<div>
-
-<div class="title">
-
-Verification
-
-</div>
-
-- Verify that the Operator update completed successfully by running the following command:
-
-  ``` terminal
-  $ oc get csv -n must-gather-operator
-  ```
-
-  <div class="formalpara">
-
-  <div class="title">
-
-  Example output
-
-  </div>
-
-  ``` terminal
-  NAME                                  DISPLAY                VERSION   REPLACES                              PHASE
-  support-log-gather-operator.v5.0.0    support log gather     5.0.0     support-log-gather-operator.v4.22.0   Succeeded
-  ```
-
-  </div>
-
-  The value of `PHASE` for the updated CSV must be `Succeeded`.
-
 </div>
 
 ## Configurations for reducing the must-gather log size
@@ -1141,8 +1065,7 @@ Large `must-gather` logs can take a significant amount of time to upload to supp
 
 The following examples demonstrate different methods for reducing the must-gather log size:
 
-Skip rotated logs
-You can exclude older, rotated log files, such as `*.gz` or `*.1` files, from the collection by setting the shell variable `REDUCE_LOGS=skip_rotated_logs` before running the `gather` script.
+**Skipping rotated logs** You can exclude older, rotated log files, such as `*.gz` or `*.1` files, from the collection by setting the shell variable `REDUCE_LOGS=skip_rotated_logs` before running the `gather` script.
 
 <div class="formalpara">
 
@@ -1153,12 +1076,12 @@ Example `MustGather` CR configured to skip rotated logs
 </div>
 
 ``` yaml
-apiVersion: operator.openshift.io/v1
+apiVersion: operator.openshift.io/v1alpha1
 kind: MustGather
 metadata:
   name: full-mustgather
 spec:
-  serviceAccountName: must-gather-admin
+  serviceAccountName: must-gather-operator
   gatherSpec:
     command:
       - /bin/sh
@@ -1177,86 +1100,7 @@ spec:
 </div>
 
 `REDUCE_LOGS=skip_rotated_logs gather`
-Sets the `REDUCE_LOGS` shell variable and executes the `gather` script to exclude the collection of rotated log files.
-
-> [!IMPORTANT]
-> When you create a `MustGather` CR in the Operator namespace, do not set `serviceAccountName` to the Operator service account. Instead, use a dedicated service account with the permissions required to run the `must-gather` tool.
-
-Compress all uncompressed logs
-You can configure the `gather` script to compress uncompressed diagnostic log files larger than 10 MB. Set the `REDUCE_LOGS` shell variable to `compress_logs` when you run the `gather` script.
-
-<div class="formalpara">
-
-<div class="title">
-
-Example `MustGather` CR configured to compress logs
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: full-mustgather
-spec:
-  serviceAccountName: must-gather-admin
-  gatherSpec:
-    command:
-      - /bin/sh
-      - -c
-      - |
-        REDUCE_LOGS=compress_logs gather
-  uploadTarget:
-    type: SFTP
-    sftp:
-      caseID: '02527285'
-      caseManagementAccountSecretRef:
-        name: sftp-access-rh-creds
-      internalUser: true
-```
-
-</div>
-
-`REDUCE_LOGS=compress_logs gather`
-Sets the `REDUCE_LOGS` and executes the `gather` script to compress the uncompressed diagnostic log files.
-
-Compress service logs
-You can compress all the collected service logs into a `.tar.gz` archive by setting the `REDUCE_LOGS` shell variable to `compress_service_logs` when you run the `gather` script.
-
-<div class="formalpara">
-
-<div class="title">
-
-Example `MustGather` CR configured to compress service logs
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: full-mustgather
-spec:
-  serviceAccountName: must-gather-admin
-  gatherSpec:
-    command:
-      - /bin/sh
-      - -c
-      - |
-        REDUCE_LOGS=compress_service_logs gather
-  uploadTarget:
-    type: SFTP
-    sftp:
-      caseID: '02527285'
-      caseManagementAccountSecretRef:
-        name: sftp-access-rh-creds
-      internalUser: true
-```
-
-</div>
-
-`REDUCE_LOGS=compress_service_logs gather`
-Sets the `REDUCE_LOGS` and executes the `gather` script to compress the service logs.
+Sets the `REDUCE_LOGS` shell variable and executes the `gather` script. As a result, the script excludes the collection of rotated log files.
 
 <div>
 
@@ -1270,12 +1114,11 @@ Additional resources
 
 </div>
 
-## Configuration parameters for the MustGather custom resource
+## Configuration parameters for MustGather custom resource
 
-You can configure data collection and upload settings by creating a `MustGather` custom resource (CR), and monitor the progress and completion status in the CR `status` section.
+You can manage your `MustGather` custom resource (CR) by creating a YAML file that specifies the parameters for data collection and the upload process. The following table provides an overview of the parameters that you can configure in the `MustGather` CR.
 
 <table>
-<caption>Configuration parameters</caption>
 <colgroup>
 <col style="width: 20%" />
 <col style="width: 60%" />
@@ -1340,69 +1183,34 @@ You can configure data collection and upload settings by creating a `MustGather`
 <td style="text-align: left;"><p>The value must be a number with a time unit. The valid units are <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours). By default, no time limit is set.</p></td>
 </tr>
 <tr>
-<td style="text-align: left;"><p><code>spec.obfuscate</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies the post-gather obfuscation settings for sensitive data by using <code>must-gather-clean</code>. For more information, see "Data obfuscation in must-gather bundles".</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.enabled</code></p></td>
-<td style="text-align: left;"><p>Optional: Enables data obfuscation. The valid values are <code>true</code> and <code>false</code>. When set to <code>true</code>, you must specify at least one of the following parameters: <code>uploadTarget</code>, <code>storage</code>, or <code>obfuscate.source</code>. The default value is <code>false</code>.</p></td>
-<td style="text-align: left;"><p><code>boolean</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.obfuscationConfigRef</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies a ConfigMap in the custom resource namespace with a <code>config.yaml</code> key that contains <code>must-gather-clean</code> rules. If omitted, the default configuration is used, which is consistent IP and MAC address replacement and omitting Secrets and ConfigMaps.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.obfuscationConfigRef.name</code></p></td>
-<td style="text-align: left;"><p>Specifies the name of the ConfigMap. This field is required when <code>spec.obfuscate.obfuscationConfigRef</code> is set.</p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.source</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies an existing PVC bundle to run in obfuscate-only mode without performing a gather operation. You must specify <code>spec.uploadTarget</code> and set <code>spec.obfuscate.enabled</code> to <code>true</code>. When you specify this field, you must not specify <code>spec.imageStreamRef</code>, <code>spec.gatherSpec.command</code>, or set <code>spec.gatherSpec.audit</code> to <code>true</code>.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.source.claim.name</code></p></td>
-<td style="text-align: left;"><p>Specifies the name of the source PVC. This field is required when <code>spec.obfuscate.source</code> is specified.</p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-</tr>
-<tr>
-<td style="text-align: left;"><p><code>spec.obfuscate.source.subPath</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies a subpath within the source PVC. The value must not contain relative parent directory indicators (<code>..</code>).</p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-</tr>
-<tr>
 <td style="text-align: left;"><p><code>spec.retainResourcesOnCompletion</code></p></td>
 <td style="text-align: left;"><p>Optional: Specifies whether to retain the <code>must-gather</code> job and its related resources after the completion of data collection. The valid values are <code>true</code> and <code>false</code>. The default value is <code>false</code>.</p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.serviceAccountName</code></p></td>
-<td style="text-align: left;"><p>Specifies the name of a service account with sufficient permissions to collect diagnostic data.</p>
+<td style="text-align: left;"><p>Optional: Specifies the name of the service account. The default value is <code>default</code>.</p>
 <div class="note">
 <div class="title">
 &#10;</div>
-<p>Because the <code>default</code> service account has minimal permissions, you can specify the service account that you created. When you create a <code>MustGather</code> CR in the Operator namespace, do not set <code>serviceAccountName</code> to the Operator service account. Instead, use a dedicated service account with the permissions required to run the <code>must-gather</code> tool.</p>
+<p>Because the <code>default</code> service account has minimal permissions, you can specify the service account that you created.</p>
 </div></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.storage</code></p></td>
 <td style="text-align: left;"><p>Optional: Defines the storage configuration for the <code>must-gather</code> bundle.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.storage.persistentVolume</code></p></td>
 <td style="text-align: left;"><p>Defines the details of the persistent volume.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.storage.persistentVolume.claim</code></p></td>
 <td style="text-align: left;"><p>Defines the details of the persistent volume claim (PVC).</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.storage.persistentVolume.claim.name</code></p></td>
@@ -1411,7 +1219,7 @@ You can configure data collection and upload settings by creating a `MustGather`
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.storage.persistentVolume.subPath</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies the path within the PVC to store the bundle. Each run creates an isolated subdirectory under this path named <code>must-gather.local.&lt;cluster-id-suffix&gt;.&lt;timestamp&gt;.&lt;random&gt;</code>. The value must not contain relative parent directory indicators (<code>..</code>).</p></td>
+<td style="text-align: left;"><p>Optional: Specifies the path within the PVC to store the bundle.</p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 </tr>
 <tr>
@@ -1422,7 +1230,7 @@ You can configure data collection and upload settings by creating a `MustGather`
 <tr>
 <td style="text-align: left;"><p><code>spec.uploadTarget</code></p></td>
 <td style="text-align: left;"><p>Optional: Defines the upload location for the <code>must-gather</code> bundle.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseID</code></p></td>
@@ -1432,7 +1240,7 @@ You can configure data collection and upload settings by creating a `MustGather`
 <tr>
 <td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseManagementAccountSecretRef</code></p></td>
 <td style="text-align: left;"><p>Defines the credentials required for authenticating and uploading the files to the Red Hat Customer Portal support case. The value must contain a <code>username</code> and <code>password</code> field.</p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
 </tr>
 <tr>
 <td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseManagementAccountSecretRef.name</code></p></td>
@@ -1459,213 +1267,6 @@ You can configure data collection and upload settings by creating a `MustGather`
 
 > [!NOTE]
 > If you do not specify `spec.uploadTarget` or `spec.storage`, the pod saves the data to an ephemeral volume and the data is permanently deleted when the pod terminates.
-
-| Field name | Description | Type |
-|----|----|----|
-| `status.completed` | Specifies whether the job finished. The Operator sets this field to `true` when the job finishes. | `boolean` |
-| `status.conditions` | Specifies standard Kubernetes conditions. On validation failure, the Operator sets the `type` field to `ReconcileError` and the `reason` field to `ValidationFailed`. | List of objects |
-| `status.reason` | Specifies the description of the outcome or validation failure. | `string` |
-| `status.status` | Specifies the overall resource status. The valid values are `Completed` and `Failed`. This field is empty while the job is running. | `string` |
-
-Status fields
-
-## Data obfuscation in must-gather bundles
-
-The `MustGather` custom resource (CR) automatically obfuscates sensitive data in collected diagnostic bundles before the system uploads them to Red Hat Support or saves them to a persistent volume claim (PVC).
-
-When you enable obfuscation, the Operator runs `must-gather-clean` on newly collected diagnostic bundle or on an existing bundle that the `MustGather` CR references. By default, the Operator replaces IP addresses and MAC addresses, and excludes Kubernetes `Secret` and `ConfigMap` resources. To customize the obfuscation rules, provide a `ConfigMap` that contains a `config.yaml` file.
-
-If obfuscation fails, the gather job fails. The the system does not upload or save the diagnostic bundle.
-
-Select an obfuscation mode for a `MustGather` CR based on whether you want to collect new bundle or clean an existing bundle, and whether you want to upload the result or save it to a PVC.
-
-| Mode | Description | Required configuration |
-|----|----|----|
-| Gather, obfuscate, and upload | Collects data, applies default obfuscation rules, and uploads the cleaned bundle to SFTP. | `spec.obfuscate.enabled: true` and `spec.uploadTarget` |
-| Gather, obfuscate with custom rules, and upload | Collects data, applies custom rules from a `ConfigMap` referenced in `spec.obfuscate.obfuscationConfigRef`, and uploads the bundle to SFTP. | `spec.obfuscate.enabled: true`, `spec.obfuscate.obfuscationConfigRef`, and `spec.uploadTarget` |
-| Obfuscate and upload an existing bundle | Skips the gather phase, obfuscates an existing PVC bundle mounted as read-only, and uploads the result. | `spec.obfuscate.enabled: true`, `spec.obfuscate.source`, and `spec.uploadTarget` |
-| Gather, obfuscate, and save to PVC | Collects data, applies obfuscation rules, and persists raw and cleaned output to a PVC without uploading. | `spec.obfuscate.enabled: true` and `spec.storage` |
-
-Obfuscation modes
-
-> [!IMPORTANT]
-> Observe the following constraints when you configure data obfuscation:
->
-> - When you set `spec.obfuscate.enabled: true`, specify at least one of the following fields: `spec.uploadTarget`, `spec.storage`, or `spec.obfuscate.source`.
->
-> - When you specify `spec.obfuscate.source`, set `spec.obfuscate.enabled: true` and specify `spec.uploadTarget`.
->
-> - Do not specify `spec.obfuscate.source` with `spec.imageStreamRef`, `spec.gatherSpec.command`, or `spec.gatherSpec.audit: true`.
->
-> - If `spec.obfuscate.obfuscationConfigRef` is invalid, the obfuscation step and the job fail.
->
->   - If the `ConfigMap` referenced by `spec.obfuscate.obfuscationConfigRef` does not exist, the controller requeues the request and emits a `Warning` event without creating a job.
->
->   - If the `ConfigMap` contains invalid `must-gather-clean` rules, the obfuscation step and the job fail.
-
-## Custom obfuscation rules for must-gather bundles
-
-You can override the default obfuscation rules that the Operator applies to a `must-gather` bundle by creating a `ConfigMap` object that contains a `config.yaml` key with custom `must-gather-clean` rules.
-
-<div class="formalpara">
-
-<div class="title">
-
-Example `config.yaml`
-
-</div>
-
-``` yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-obfuscation-rules
-  namespace: must-gather-operator
-data:
-  config.yaml: |
-    config:
-      obfuscate:
-        - type: IP
-          replacementType: Consistent
-          target: All
-        - type: MAC
-          replacementType: Consistent
-          target: All
-        - type: Regex
-          regex: "my-internal-domain\\.corp\\.example\\.com"
-          replacementType: Consistent
-      omit:
-        - type: Kubernetes
-          kubernetesResource:
-            kind: "Secret"
-```
-
-</div>
-
-## MustGather CR configuration examples for data obfuscation
-
-You can use the `MustGather` custom resource (CR) to configure data obfuscation for each supported mode.
-
-The following YAML manifests demonstrate the supported data obfuscation configurations:
-
-<div class="formalpara">
-
-<div class="title">
-
-Example: Gather, obfuscate, and upload with default rules
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: obfuscated-gather
-spec:
-  serviceAccountName: must-gather-admin
-  obfuscate:
-    enabled: true
-  uploadTarget:
-    type: SFTP
-    sftp:
-      caseID: '02527285'
-      caseManagementAccountSecretRef:
-        name: case-management-creds
-      internalUser: true
-```
-
-</div>
-
-<div class="formalpara">
-
-<div class="title">
-
-Example: Gather, obfuscate, and upload with custom rules
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: obfuscated-gather-custom
-spec:
-  serviceAccountName: must-gather-admin
-  obfuscate:
-    enabled: true
-    obfuscationConfigRef:
-      name: my-obfuscation-rules
-  uploadTarget:
-    type: SFTP
-    sftp:
-      caseID: '02527285'
-      caseManagementAccountSecretRef:
-        name: case-management-creds
-      internalUser: true
-```
-
-</div>
-
-<div class="formalpara">
-
-<div class="title">
-
-Example: Obfuscate and upload an existing bundle from a PVC
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: obfuscate-and-upload
-spec:
-  serviceAccountName: must-gather-admin
-  obfuscate:
-    enabled: true
-    source:
-      claim:
-        name: must-gather-pvc
-      subPath: must-gather-data
-  uploadTarget:
-    type: SFTP
-    sftp:
-      caseID: '02527285'
-      caseManagementAccountSecretRef:
-        name: case-management-creds
-      internalUser: true
-```
-
-</div>
-
-When using PVC storage mode, the raw output is stored at `<subPath>/<directoryName>/` and the cleaned output is stored at `<subPath>/<directoryName>/cleaned/`. The Operator writes the `obfuscation.log` file to both locations.
-
-<div class="formalpara">
-
-<div class="title">
-
-Example: Gather, obfuscate, and save to a PVC
-
-</div>
-
-``` yaml
-apiVersion: operator.openshift.io/v1
-kind: MustGather
-metadata:
-  name: obfuscated-gather-pvc
-spec:
-  serviceAccountName: must-gather-admin
-  obfuscate:
-    enabled: true
-  storage:
-    type: PersistentVolume
-    persistentVolume:
-      claim:
-        name: must-gather-pvc
-      subPath: collections
-```
-
-</div>
 
 ## Uninstalling Support Log Gather
 

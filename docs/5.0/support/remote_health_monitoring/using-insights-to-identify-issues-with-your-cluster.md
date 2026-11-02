@@ -1,3 +1,5 @@
+Identify and resolve cluster issues by using Red Hat Lightspeed Advisor service. View recommendations for configuration, availability, security, and performance issues. Filter recommendations, manage workload recommendations, and disable notifications for specific issues.
+
 Red Hat Lightspeed repeatedly analyzes the data Insights Operator sends, which includes workload recommendations from Deployment Validation Operator (DVO). Users of OpenShift Container Platform can display the results in the [Advisor](https://console.redhat.com/openshift/insights/advisor/) service on the Red Hat Hybrid Cloud Console.
 
 # About Red Hat Lightspeed Advisor for OpenShift Container Platform
@@ -30,7 +32,7 @@ Additional resources
 
 </div>
 
-# Understanding Red Hat Lightspeed advisor service recommendations
+# Understand Red Hat Lightspeed advisor service recommendations
 
 The Red Hat Lightspeed advisor service bundles information about various cluster states and component configurations that can negatively affect the service availability, fault tolerance, performance, or security of your clusters and workloads.
 
@@ -48,7 +50,7 @@ The information set is called a recommendation in the Red Hat Lightspeed adviso
 
 - **Description:** A brief synopsis of the issue, including how it affects your clusters
 
-# Displaying potential issues with your cluster
+# Display potential issues with your cluster
 
 You can display a Red Hat Lightspeed report in **Red Hat Lightspeed Advisor** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
@@ -94,7 +96,7 @@ Procedure
 
 </div>
 
-# Displaying all Red Hat Lightspeed advisor service recommendations
+# Display all Red Hat Lightspeed advisor service recommendations
 
 The **Recommendations** view, by default, only displays the recommendations that are detected on your clusters. However, you can view all of the recommendations in the archive of the service.
 
@@ -168,7 +170,7 @@ Additional resources
 
 </div>
 
-## Filtering Red Hat Lightspeed advisor service recommendations
+## Filter Red Hat Lightspeed advisor service recommendations
 
 As an OpenShift Container Platform cluster manager, you can filter the recommendations that are displayed on the recommendations list. By applying filters, you can reduce the number of reported recommendations and concentrate on your highest priority recommendations.
 
@@ -218,7 +220,7 @@ Verification
 
 </div>
 
-## Removing filters from Red Hat Lightspeed advisor service recommendations
+## Remove filters from Red Hat Lightspeed advisor service recommendations
 
 You can apply multiple filters to the list of recommendations. When ready, you can remove them individually or completely reset them.
 

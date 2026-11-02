@@ -390,7 +390,7 @@ OpenShift Container Platform supports specific Google Cloud instance types that 
 
 See the following machine series:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/gcp/tested_instance_types.md>
 
 ## Tested instance types for Google Cloud on 64-bit ARM infrastructures
 
@@ -398,7 +398,7 @@ OpenShift Container Platform supports specific Google Cloud 64-bit ARM instance 
 
 See the following machine series for 64-bit ARM machines:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types_arm.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/gcp/tested_instance_types_arm.md>
 
 ## Using custom machine types
 
@@ -2161,7 +2161,7 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 # Additional resources
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Validating an installation](../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
@@ -2173,6 +2173,6 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Configuring additional trust stores](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)

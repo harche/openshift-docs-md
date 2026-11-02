@@ -4,7 +4,7 @@ IBM® Secure Execution for Linux is a s390x security technology that is introduc
 
 Hardware administrators, KVM administrators, and KVM code cannot access data in an IBM® Secure Execution guest VM.
 
-# Enabling VMs to run IBM Secure Execution on IBM Z and IBM LinuxONE
+# Enable Secure Execution for VMs on IBM Z
 
 To enable IBM® Secure Execution virtual machines (VMs) on IBM Z® and IBM® LinuxONE on the compute nodes of your cluster, you must ensure that you meet the prerequisites and complete the following steps.
 
@@ -61,11 +61,11 @@ Procedure
 
 </div>
 
-# Launching an IBM Secure Execution VM on IBM Z and IBM LinuxONE
+# IBM Secure Execution VM deployment
 
 Before launching an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE, you must add the `launchSecurity` parameter to the VM manifest. Otherwise, the VM does not start correctly because it does not have access to the devices.
 
-## Launching an IBM Secure Execution VM by using the CLI
+## Launch a Secure Execution VM from the CLI
 
 You can launch an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE by using the command-line interface.
 
@@ -124,7 +124,7 @@ Procedure
 
 </div>
 
-## Launching an IBM Secure Execution VM by using a common instance type
+## Launch a Secure Execution VM from an instance type
 
 You can launch an IBM® Secure Execution VM on IBM Z® and IBM® LinuxONE by using a common instance type.
 
@@ -170,7 +170,7 @@ Procedure
 
 </div>
 
-# Creating a bootable and encrypted IBM Secure Execution VM image on IBM Z and IBM LinuxONE
+# Create an encrypted Secure Execution VM image for IBM Z
 
 You can create a bootable and encrypted IBM Secure Execution VM image for Red Hat Enterprise Linux (RHEL) on IBM Z and IBM LinuxONE.
 
@@ -512,7 +512,7 @@ Procedure
 
 </div>
 
-# Upload and use an IBM Secure Execution bootable image on IBM Z and IBM LinuxONE
+# Upload a Secure Execution bootable image for IBM Z
 
 You can upload an IBM® Secure Execution bootable image and associate it with a predefined preference so that virtual machines (VMs) created from the image automatically enable the `launchSecurity` setting.
 
@@ -564,12 +564,9 @@ Procedure
 
 </div>
 
-> [!NOTE]
-> When you create a new VM from the uploaded bootable image, OpenShift Container Platform automatically enables `launchSecurity`.
-
 # Confidential computing with CCRV on IBM Z and IBM LinuxONE
 
-You can deploy confidential computing workloads with encrypted volumes, attestation capabilities, and hardware-backed memory protection by using IBM® Confidential Computing Container Runtime for Red Hat Virtualization Solutions (CCRV). You can use CCRV with OpenShift Virtualization on IBM® z17 and IBM® LinuxONE 5.
+Deploy confidential computing workloads with encrypted volumes, attestation, and hardware-backed memory protection by using IBM® Confidential Computing Container Runtime for Red Hat Virtualization Solutions (CCRV) on IBM® z17 and IBM® LinuxONE 5.
 
 For more information, see the IBM® documentation on 'Deploying Confidential Computing with CCRV on OpenShift Virtualization'.
 

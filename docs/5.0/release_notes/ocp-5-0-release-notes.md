@@ -30,6 +30,8 @@ The scope of support for layered and dependent components of OpenShift Container
 
 # New features and enhancements
 
+This topic lists new features and enhancements in OpenShift Container Platform 4.17.
+
 This release adds improvements related to the following components and concepts:
 
 ## AI applications
@@ -92,9 +94,7 @@ You can create a `ResourceOverride` object in a project to set CPU and memory ov
 Pause and restart the Verical Pod Autoscaler
 You can pause Verical Pod Autoscaler (VPA) behavior without uninstalling the Operator or removing any vertical pod autoscalers by deleting the `VerticalPodAutoscalerController` CR. You can restart the VPA by re-creating the CR.
 
-## Cluster Version Operator
-
-## etcd
+<!-- -->
 
 etcd selectable database size
 When large or high-churn workloads approach the default 8 GiB limit, you can increase the etcd backend database quota up to 16 GiB. After you increase the quota, you cannot decrease it.
@@ -120,7 +120,7 @@ If an installation or update exceeds the deadline, OLM v1 reports `ProgressDeadl
 Default catalog images match the cluster version
 Operator Lifecycle Manager (OLM) v1 selects image tags for default Operator catalogs based on the cluster version. On OpenShift Container Platform 5.0 clusters, the default catalogs use the `v5.0` image tag.
 
-## IBM Power
+<!-- -->
 
 The IBM Power® release on OpenShift Container Platform 4.17 adds improvements and new capabilities to OpenShift Container Platform components
 New features on IBM Power® include:
@@ -133,17 +133,15 @@ New features on IBM Power® include:
 
   - IBM Power®10 and IBM Power®11 may use either RHEL version 9 or RHEL version 10 stream
 
-## IBM Z and IBM LinuxONE
+<!-- -->
 
 The IBM Z® and IBM® LinuxONE release on OpenShift Container Platform 4.17 adds improvements and new capabilities to OpenShift Container Platform components
 New features on IBM Z® and IBM® LinuxONE include:
 
-+Self-service Technical Supportability Review
+Self-service Technical Supportability Review
 You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices. The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization, and coverage is continually expanding.
 
 For more information, see [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze) and [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255). \* SR-IOV Network Operator support for IBM Z® and IBM® LinuxONE \* Custom Metrics Autoscaler Operator (KEDA) on IBM Z® \* Dual Operating Stream on IBM Z®
-
-## Insights Operator
 
 ## Installation and update
 
@@ -170,6 +168,11 @@ You can install OpenShift Container Platform in Google Cloud Dedicated (GCD) reg
 GCD is available from 4.22.16 and later.
 
 For more information, see [Installing a cluster on Google Cloud Dedicated](../installing/installing_gcp/installing-gcp-dedicated.xml#installing-gcp-dedicated).
+
+Google Cloud installations support global KMS keys for control plane and compute pool disk encryption
+Google Cloud installations accept global-location Key Management Service (KMS) keys for control plane and compute machine pool disk encryption. When you specify KMS keys in the `defaultMachinePlatform` field in the `install-config.yaml` file, the installation program now uses these keys to encrypt the image registry and storage. These keys must be regional; global KMS keys are not supported for the default machine platform because they encrypt Google Cloud Storage (GCS) buckets, which require regional keys. However, when you specify KMS keys in the control plane or compute machine pool configurations, these keys can be either regional or global because they encrypt Compute Engine persistent disks, which support global KMS keys.
+
+For more information, see [Installation configuration parameters for Google Cloud](../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp).
 
 RHOSO token authentication
 You can now use OpenStack Identity API v3 token authentication for clusters deployed on RHOSO.
@@ -244,6 +247,15 @@ You must provision and replace these compute nodes manually. Before you add the 
 For more information, see [Add compute machines without vSphere integration](../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra).
 
 ## Networking
+
+OVN-Kubernetes exposes user-defined network (UDN) scale metrics
+With this release, OVN-Kubernetes exposes Prometheus scale metrics for user-defined network (UDN) `NetworkAttachmentDefinition` (NAD) sync, node annotation updates, and northbound database (NBDB) programming. Use the metrics to find bottlenecks when you create or scale user-defined networks. These metrics are available from the `ovnkube-cluster-manager` and `ovnkube-controller` metrics endpoints when you enable OVN-Kubernetes scale metrics. The following metrics are available:
+
+- `ovnkube_clustermanager_udn_nad_sync_duration_seconds`
+
+- `ovnkube_clustermanager_udn_update_node_annotation_duration_seconds`
+
+- `ovnkube_controller_udn_nbdb_programmed_duration_seconds`
 
 Selectable HAProxy versions on Ingress Controllers
 With this release, you can set `spec.haproxyVersion` on an `IngressController` custom resource to choose HAProxy 2.8 or HAProxy 3.2. Set `2.8` on OpenShift Container Platform 4.22 before you update if you need Ingress Controllers to keep HAProxy 2.8. Pin HAProxy 3.2 after you update when you want a later cluster update to keep the current default. If you set a version that a target release does not support, a preflight check blocks the cluster update until you unset the field or change it to a supported version. For more information, see [HAProxy version changes before a cluster update](../updating/preparing_for_updates/updating-cluster-prepare.xml#update-preparing-haproxy-version_updating-cluster-prepare) and [Selecting an HAProxy version](../networking/networking_operators/ingress-operator.xml#nw-selecting-haproxy-version_configuring-ingress).
@@ -358,6 +370,18 @@ IPv6 is not available on the following platforms because the vendor does not pro
 
 For OVN-Kubernetes dual-stack configuration requirements that apply to all IPv6 clusters, see [OVN-Kubernetes IPv6 and dual-stack limitations](../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-limitations_about-ovn-kubernetes).
 
+Virtual Machines tab on Network details pages
+With this release, you can monitor secondary networks and manage Kubernetes services in the web console, removing the need for manual YAML authoring and disjointed navigation.
+
+You can view all workloads associated with a specific network directly from the new **Virtual Machines** tab by navigating to any secondary network’s details page (including `NetworkAttachmentDefinition` \[NAD\], `UserDefinedNetwork` \[UDN\], or `ClusterUserDefinedNetwork` \[CUDN\]) by clicking its name under the Virtual Machine’s **Configuration** → **Network** tab.
+
+[OCPNETUI-16](https://issues.redhat.com/browse/OCPNETUI-16)
+
+Service and route management
+You can build new services using an interactive form alongside a live, side-by-side YAML preview. You can monitor service and route status at a glance with backend health indicators now integrated directly into the **Services** and **Routes** list views.
+
+[OCPNETUI-16](https://issues.redhat.com/browse/OCPNETUI-16)
+
 ## Nodes
 
 Additional CRI-O storage locations is generally available
@@ -430,8 +454,6 @@ This feature is not available for hosted control planes.
 
 Default catalog images match the cluster version
 Operator Lifecycle Manager (OLM) Classic selects image tags for default Operator catalogs based on the cluster version. On OpenShift Container Platform 5.0 clusters, the default catalogs use the `v5.0` image tag.
-
-## Postinstallation configuration
 
 ## Red Hat Enterprise Linux CoreOS (RHCOS)
 
@@ -539,8 +561,6 @@ For more information, see [Configuring TLS security profiles](../security/tls-se
 Configurable PKI for platform certificates (Technology Preview)
 With this release, you can configure cryptographic parameters (key algorithms, key sizes, and elliptic curves) for internally generated platform certificates by using the `PKI` custom resource. Configuration applies at the cluster-wide or per-category (signer, serving, and client certificates) level and can be set at installation time or changed after installation. Operators automatically reissue non-conforming certificates when the configuration changes. This capability is a Technology Preview feature.
 
-## Support
-
 ## Storage
 
 CSI volume group snapshots is generally available
@@ -614,6 +634,13 @@ In OpenShift Container Platform 5.0, the web console uses the Helm v4 software d
 
 [OCPSTRAT-2913](https://issues.redhat.com/browse/OCPSTRAT-2913)
 
+Install a Helm chart from a URL that requires authentication
+In OpenShift Container Platform 5.0, you can use the web console to install or upgrade a Helm release from a chart URL that requires Basic HTTP authentication. Previously, you could install a Helm release from a chart URL only if the chart did not require authentication. As a result, you can now install charts from private registries and servers by selecting or creating a secret that contains your credentials.
+
+For more information, see [Installing a Helm release from a URL](../applications/working_with_helm_charts/odc-working-with-helm-releases.xml#odc-creating-helm-release-from-url_working-with-helm-releases).
+
+[OCPSTRAT-3238](https://issues.redhat.com/browse/OCPSTRAT-3238)
+
 # Notable technical changes
 
 This section includes several technical changes for OpenShift Container Platform 4.17.
@@ -661,6 +688,8 @@ In this release, a new feature completes a preemptive leader transfer before att
 This feature safely causes leader elections to increase by, at most during normal operations, once per the etcd Operator defragmentation reconciliation cycle. This increase should not affect the existing `too many leader election` alerts. Those alerts are still a reliable indicator for whether the cluster is suffering from excessive, unexpected leader elections, which can potentially cause disruptions.
 
 # Deprecated and removed features
+
+This topic lists features that are deprecated or removed in OpenShift Container Platform 4.17.
 
 ## Extensions deprecated and removed features
 
@@ -767,6 +796,8 @@ Edge computing deprecated and removed tracker
 
 # Deprecated features
 
+This topic lists features that are deprecated in OpenShift Container Platform 4.17.
+
 `ClusterExtension` service account field is deprecated
 As of OpenShift Container Platform 5.0, the `spec.serviceAccount` field in a `ClusterExtension` object is optional and deprecated. Operator Lifecycle Manager (OLM) v1 uses the Operator Controller service account with cluster administrator permissions to manage extensions.
 
@@ -843,7 +874,25 @@ The following issues are fixed for this release:
 
 - Before this update, the `AWSMachine` controller was requeuing machine instances before confirming the presence of tags. As a consequence, duplicate Amazon Web Services (AWS) EC2 instances were created. With this release, the `AWSMachine` controller verifies tags before requeuing instances. As a result, duplicate EC2 instances are not created. ([OCPBUGS-62985](https://redhat.atlassian.net/browse/OCPBUGS-62985))
 
+- Before this update, the `cloud-controller-manager` cluster Operator did not set its `Progressing` status condition to `True` during cluster upgrades. As a consequence, the Cluster Version Operator (CVO) waited for the Operator without receiving proper progress signals, and upgrade monitoring tests failed. With this release, the `cloud-controller-manager` Operator correctly reports `Progressing=True` during version changes. As a result, cluster upgrades proceed with accurate Operator status reporting. ([OCPBUGS-64852](https://redhat.atlassian.net/browse/OCPBUGS-64852))
+
 - Before this update, if an OpenStack cloud provider lacked the optional Standard Attributes Tag extension, the Machine API Provider for OpenStack (MAPO) attempted to apply port tags during network port creation. As a consequence, provisioning failed. With this release, MAPO checks whether the `standard-attr-tag` extension is available before applying tags. If unsupported, MAPO skips tag assignment or returns an error prompting you to remove explicit configurations. As a result, machine provisioning completes successfully. ([OCPBUGS-77061](https://redhat.atlassian.net/browse/OCPBUGS-77061))
+
+- Before this update, a programming error forced load balancers to always use control-plane instance groups rather than treating them as optional. As a consequence, load balancers included control plane nodes even when they had the `node.kubernetes.io/exclude-from-external-load-balancers` label. With this release, the logic for reusing the instance groups is corrected. As a result, nodes with the `node.kubernetes.io/exclude-from-external-load-balancers` label are correctly excluded from load balancers. ([OCPBUGS-84569](https://redhat.atlassian.net/browse/OCPBUGS-84569))
+
+- Before this update, when you installed a cluster with `featureSet: TechPreviewNoUpgrade` and `baselineCapabilitySet: None`, the `openshift-cluster-api-vsphere` and `openshift-cluster-api-baremetal` `CredentialsRequest` custom resources (CRs) in the `0000_30_cluster-api_01_credentials-request.yaml` file did not have the `capability.openshift.io/name: CloudCredential` annotation. As a consequence, the Cluster Version Operator (CVO) attempted to apply these CRs even though the `CloudCredential` capability was not enabled, causing the installation to become unresponsive and result in an error indicating that the `CredentialsRequest` custom resource definition (CRD) was not available. With this release, the required capability annotation is added to the `CredentialsRequest` CRs. As a result, cluster installations with `TechPreviewNoUpgrade` and `baselineCapabilitySet: None` complete successfully. ([OCPBUGS-85063](https://redhat.atlassian.net/browse/OCPBUGS-85063))
+
+- Before this update, when using vSphere Installer-provisioned infrastructure with static IP configuration, name server settings were lost when the Control Plane Machine Set (CPMS) was recreated. As a consequence, control plane nodes had incorrect DNS configuration after CPMS recreation. With this release, name server settings are preserved when recreating the CPMS. As a result, DNS configuration on control plane nodes remains correct after CPMS recreation. ([OCPBUGS-86860](https://redhat.atlassian.net/browse/OCPBUGS-86860))
+
+- Before this update, the Cluster API Operator mounted only container images associated with the current release, not images referenced by existing revisions from previous releases. As a consequence, after upgrading a cluster with `featureSet: TechPreviewNoUpgrade`, the revision and installation program controllers failed when iterating over old revisions because the required images were not available. With this release, the Cluster API Operator mounts images for both the current release and any images referenced by existing revisions. As a result, cluster upgrades with Cluster API enabled complete successfully without rendering failures. ([OCPBUGS-87001](https://redhat.atlassian.net/browse/OCPBUGS-87001))
+
+- Before this update, on Microsoft Azure, the `cloud-controller-manager` Operator transitioned to `Progressing=True` during `MachineSet` scaling operations when the cloud-controller-manager `daemonset` was rolling out to newly added nodes. As a consequence, tests that expected cluster Operators to remain non-progressing during node scaling failed. With this release, the Operator correctly reports `Progressing=False` during `MachineSet` scaling operations while `daemonset` pods are being scheduled to new nodes. As a result, the Operator status accurately reflects that scaling operations do not represent Operator version changes or configuration updates. ([OCPBUGS-98617](https://redhat.atlassian.net/browse/OCPBUGS-98617))
+
+- Before this update, the Machine API Operator unconditionally emitted a `Status upgrade` event on every status reconciliation while its operands were rolling out during cluster upgrades. As a consequence, during single-node upgrades, the same event was emitted over 20 times, causing upgrades to fail the pathological-event invariant test that detects excessive event repetition. With this release, the Machine API Operator only emits `Status upgrade` events when transitioning into a new `Progressing` state or when the upgrade target or message changes. As a result, single-node cluster upgrades complete successfully without triggering pathological-event failures. ([OCPBUGS-100067](https://redhat.atlassian.net/browse/OCPBUGS-100067))
+
+- Before this update, when Microsoft Azure Disk CSI found a disk already attached to a virtual machine (VM) whose provisioning state was `Failed`, `cloud-provider-azure` refreshed that VM by sending an empty `VirtualMachine` resource through a `CreateOrUpdate` element, producing a PUT request with an empty body. As a consequence, Azure rejected the refresh request with a `LocationRequired` error, which prevented recovery and obscured the earlier VM failure. With this release, the refresh operation uses the existing `BeginUpdate` operation with an empty VirtualMachineUpdate, preserving the intended no-op refresh as a PATCH request for both standard and flexible VM paths. As a result, failed VM refresh operations complete successfully and Azure no longer rejects the refresh with `LocationRequired` errors. ([OCPBUGS-100185](https://redhat.atlassian.net/browse/OCPBUGS-100185))
+
+- Before this update, on hosted control planes, certificate signing requests (CSRs) for newly added machine pools required manual approval when using egress IP configurations. As a consequence, administrators had to manually approve all new CSRs, preventing automatic node onboarding. With this release, the cluster machine approver correctly handles CSR approval for hosted control plane machine pools with egress IP. As a result, CSRs are automatically approved and nodes can join the cluster without manual intervention. ([OCPBUGS-113529](https://redhat.atlassian.net/browse/OCPBUGS-113529))
 
 ## Cloud Credential Operator
 
@@ -859,10 +908,6 @@ The following issues are fixed for this release:
 
 - Before this update, an upgrade with a control plane `MachineConfig` might have caused quorum loss. As a consequence, the upgrade caused prolonged API and etcd downtime, leading to service interruption. With this release, the `cluster-etcd-operator` keeps guard pods that prevent a `MachineConfig` object from draining the node. As a result, etcd maintains quorum during upgrades. ([OCPBUGS-66334](https://redhat.atlassian.net/browse/OCPBUGS-66334))
 
-## Helm
-
-- Before this update, installing a Helm chart by using the Chart URL option in the OpenShift Container Platform web console with an Oracle® Cloud Infrastructure (OCI) URL that included a version number, for example, `oci://registry-1.docker.io/bitnamicharts/nginx:22.6.12` failed with an error indicating that the chart was not available or could not be found. As a consequence, users could not install Helm charts from OCI registries when specifying the version number directly in the URL. With this release, the Helm chart installation process correctly handles OCI URLs that include version numbers. As a result, users can successfully install Helm charts from OCI registries by providing the complete URL with the version number in the web console Chart URL field.
-
 ## Hosted Control Planes
 
 - Before this update, KubeVirt-based `NodePool` resources incorrectly reported `ClusterNetworkCIDRConflict` errors because the controller flagged OVN-Kubernetes internal overlay IP addresses as conflicting with the cluster network. With this release, Classless Inter-Domain Routing (CIDR) conflict detection is triggered only when all the non-link local addresses for the machine fall within the cluster network. As a result, when external addresses exist, in-network addresses are correctly treated as expected container network interface (CNI) internal IP addresses, which prevents false positive conflict reports. ([OCPBUGS-84269](https://redhat.atlassian.net/browse/OCPBUGS-84269))
@@ -873,11 +918,11 @@ The following issues are fixed for this release:
 
 ## Installer
 
-- Before this update, when you configured networking with the `agent-tui` parameter during an Assisted Installer workflow, the `NetworkManager` keyfiles were not automatically passed to the CoreOS installation program. As a consequence, network configurations did not persist into the installed operating system, causing nodes to have missing or incorrect network settings. With this release, the agent detects manually-created `NetworkManager` keyfiles by comparing their modification times against the agent-tui start time and automatically appends the `--copy-network` command to the CoreOS installation program arguments. As a result, network configurations persist to the installed system. ([OCPBUGS-63472](https://redhat.atlassian.net/browse/OCPBUGS-63472))
+- Before this update, when you configured networking with the `agent-tui` parameter during an Assisted Installation Program workflow, the `NetworkManager` keyfiles were not automatically passed to the CoreOS installation program. As a consequence, network configurations did not persist into the installed operating system, causing nodes to have missing or incorrect network settings. With this release, the agent detects manually-created `NetworkManager` keyfiles by comparing their modification times against the agent-tui start time and automatically appends the `--copy-network` command to the CoreOS installation program arguments. As a result, network configurations persist to the installed system. ([OCPBUGS-63472](https://redhat.atlassian.net/browse/OCPBUGS-63472))
 
 - Before this update, older versions of Software Development Kit (SDK) for Virtual Private Cloud (VPC) could not parse a VPC with new security group rule types, such as `any`, that were introduced by IBM Cloud. As a consequence, the installation program could not successfully set up a new VPC or use an existing VPC with such a protocol type. With this release, the SDK for VPC is updated to a version that supports parsing the new types. As a result, the installation process can create or use a VPC with the new security group rule types. ([OCPBUGS-78429](https://redhat.atlassian.net/browse/OCPBUGS-78429))
 
-- Before this update, the installation program created inbound Amazon Web Services (AWS) security group rules for OVN database traffic that used inconsistent port numbers across OpenShift Container Platform versions (some versions used `6441-6442` instead of `6641-6642`). As a consequence, clusters exposed unnecessary security group rules that no longer reflected how OVN-Kubernetes communicates, as OVN databases now run locally on each node and communicate over UNIX domain sockets rather than TCP. With this release, the installation program does not create security group rules for OVN database ports on AWS. As a result, newly installed AWS clusters no longer include these unused inbound security group rules. ([OCPBUGS-79536](https://redhat.atlassian.net/browse/OCPBUGS-79536))
+- Before this update, the installation program created inbound Amazon Web Services (AWS) security group rules for OVN database traffic that used inconsistent port numbers across OpenShift Container Platform versions (some versions used `6441-6442` instead of `6641-6642`). As a consequence, clusters exposed unnecessary security group rules that no longer reflected how OVN-Kubernetes communicates, as OVN databases run locally on each node and communicate over UNIX domain sockets rather than TCP. With this release, the installation program does not create security group rules for OVN database ports on AWS. As a result, newly installed AWS clusters no longer include these unused inbound security group rules. ([OCPBUGS-79536](https://redhat.atlassian.net/browse/OCPBUGS-79536))
 
 - Before this update, during an appliance-based no-registry installation, the `watch-iri-tls-certs.path` and `reconfigure-local-registry-iri-tls.sh` files were only included in the installation ignition, not the bootstrap ignition. As a consequence, the appliance registry continued serving with self-signed certificates instead of the Internal Release Image (IRI) TLS certificate generated by Assisted Service, causing other nodes to fail pulling images over api-int and the installation to fail. With this release, the `watch-iri-tls-certs.path` unit and `reconfigure-local-registry-iri-tls.service` are included in the bootstrap ignition to reconfigure the registry with the correct IRI TLS certificate immediately. As a result, the installation completes successfully. ([OCPBUGS-81505](https://redhat.atlassian.net/browse/OCPBUGS-81505))
 
@@ -1121,7 +1166,7 @@ The following issues are fixed for this release:
 
 ## must-gather
 
-- Before this update, `oc adm must-gather` collected the OpenShift console OAuth client secret in plaintext within the `cluster-scoped-resources/oauth.openshift.io/oauthclients/console.yaml` file. As a consequence, sensitive OAuth `client_secret` values were exposed in must-gather archives, creating a security risk when sharing diagnostic data. With this release, `oc adm inspect` and `must-gather` now redact `OAuthClient.secret` fields before writing YAML output, consistent with Secret, Route TLS, and Proxy credential handling. As a result, must-gather archives no longer contain plaintext OAuth client secrets. ([OCPBUGS-99013](https://redhat.atlassian.net/browse/OCPBUGS-99013))
+- Before this update, `oc adm must-gather` collected the OpenShift console OAuth client secret in plain text within the `cluster-scoped-resources/oauth.openshift.io/oauthclients/console.yaml` file. As a consequence, sensitive OAuth `client_secret` values were exposed in must-gather archives, creating a security risk when sharing diagnostic data. With this release, `oc adm inspect` and `must-gather` redact `OAuthClient.secret` fields before writing YAML output, consistent with Secret, Route TLS, and Proxy credential handling. As a result, must-gather archives no longer contain plain text OAuth client secrets. ([OCPBUGS-99013](https://redhat.atlassian.net/browse/OCPBUGS-99013))
 
 ## Networking
 
@@ -1148,8 +1193,6 @@ The following issues are fixed for this release:
 - Before this update, the `nodeSelector` field description for the `NodeNetworkConfigurationPolicy` (NNCP) custom resource did not clarify that only simple key-value equality matching was supported. As a consequence, users expected that `matchLabels` and `matchExpressions` constructs would work in the `nodeSelector` field. However, the policy was rejected when they tried to use the constructs. With this release, the `nodeSelector` field description clarifies that only direct key-value pair matching is supported. As a result, `oc explain nncp.spec.nodeSelector` accurately describes the supported syntax. ([OCPBUGS-78801](https://issues.redhat.com/browse/OCPBUGS-78801))
 
 - Before this update, OVN-Kubernetes used the `vm.kubevirt.io/name` label to identify `virt-launcher` pods during live migration status checks. As a consequence, when many virtual machines in the same namespace had the same `spec.template.spec.hostname` value, they shared the same label value on their `virt-launcher` pods. This caused the third and later VMs to fail to start with the error `Failed to discover live migration status: unexpected live migration state at pods`, as OVN-Kubernetes wrongly identified pods from other VMs. With this release, OVN-Kubernetes correctly identifies `virt-launcher` pods when many VMs share the same hostname. As a result, virtual machines start successfully regardless of whether other VMs in the namespace use the same hostname value. ([OCPBUGS-79408](https://issues.redhat.com/browse/OCPBUGS-79408))
-
-- Before this update, the installation program created inbound Amazon Web Services (AWS) security group rules for a TCP port range historically used for Open Virtual Network (OVN) northbound and southbound database traffic between control plane and compute nodes. These rules used inconsistent port numbers across OpenShift Container Platform versions. As a consequence, clusters exposed unnecessary and inconsistently numbered inbound security group rules. These rules no longer reflected how OVN-Kubernetes (OVN-K) communicates the northbound and southbound databases that run locally on each node and communicate over UNIX domain sockets rather than TCP. With this release, the installation program no longer creates the security group rules for these OVN database ports on AWS. As a result, newly installed AWS clusters no longer include the unused, inconsistently numbered inbound security group rules. ([OCPBUGS-79536](https://issues.redhat.com/browse/OCPBUGS-79536))
 
 - Before this update, the **Create UserDefinedNetwork** form in a web console did not trim whitespace from subnet CIDR values before submitting. As a consequence, copying a CIDR value with whitespace triggered a validation error. With this release, the form trims whitespace from CIDR input before validation. As a result, users can copy CIDR values with whitespace without errors. ([OCPBUGS-81271](https://issues.redhat.com/browse/OCPBUGS-81271))
 
@@ -1284,8 +1327,6 @@ For more information, see [Scheduling NUMA-aware workloads](../scalability_and_p
 
 - Before this update, the `openshift-clients` RPM package had a hard dependency on `bash-completion`. As a consequence, users installing the package in minimal environments or systems without bash-completion faced installation failures or unnecessary package installations. With this release, the dependency on `bash-completion` is made optional. As a result, the `openshift-clients` RPM can be installed in minimal environments without requiring bash-completion. ([OCPBUGS-88342](https://redhat.atlassian.net/browse/OCPBUGS-88342))
 
-- Before this update, `oc adm must-gather` collected the OpenShift console OAuth client secret in plaintext within the `cluster-scoped-resources/oauth.openshift.io/oauthclients/console.yaml` file. As a consequence, sensitive OAuth `client_secret` values were exposed in must-gather archives, creating a security risk when sharing diagnostic data. With this release, `oc adm inspect` and `must-gather` now redact `OAuthClient.secret` fields before writing YAML output, consistent with Secret, Route TLS, and Proxy credential handling. As a result, must-gather archives no longer contain plaintext OAuth client secrets. ([OCPBUGS-99013](https://redhat.atlassian.net/browse/OCPBUGS-99013))
-
 - Before this update, the `oc adm storage-admin` conformance test used a brittle `HaveSuffix("no")` assertion that expected `oc auth can-i` output to end exactly with "no". As a consequence, when `oc auth can-i` began appending RBAC diagnostic information about missing ClusterRole references in version 5.0, the test failed because the output ended with "not found" instead of "no", causing the pass rate to drop from 100% to 76.9% on certain job configurations. With this release, the test assertion is updated to handle trailing RBAC diagnostic messages. As a result, the `oc adm storage-admin` test passes reliably even when RBAC diagnostics are included in the `oc auth can-i` output. ([OCPBUGS-99047](https://redhat.atlassian.net/browse/OCPBUGS-99047))
 
 - Before this update, when using `oc login --exec-plugin oc-oidc` with Microsoft Entra ID (Azure AD), the OIDC token refresh failed after token expiration with the error "AADSTS900144: The request body must contain the following parameter: 'client_id'". As a consequence, users had to manually re-authenticate every time their ID token expired, typically after one hour. With this release, the `oc-oidc` exec credential plugin explicitly sets `AuthStyle: oauth2.AuthStyleInParams` to ensure `client_id` is always sent in the POST body when refreshing tokens. As a result, expired OIDC tokens are refreshed transparently against Microsoft Entra ID and other OIDC providers without requiring manual re-authentication. ([OCPBUGS-100310](https://redhat.atlassian.net/browse/OCPBUGS-100310))
@@ -1334,7 +1375,7 @@ For more information, see [Scheduling NUMA-aware workloads](../scalability_and_p
 
 - With this release, end-to-end test automation has been added to validate that storage components no longer generate self-signed certificates. As a result, the feature is properly tested in automated test suites. ([OCPBUGS-84247](https://redhat.atlassian.net/browse/OCPBUGS-84247))
 
-- Before this update, CSI driver configuration tests did not skip execution when the `ClusterCSIDriver` resource state was set to `Removed`. As a consequence, tests that attempted to configure CSI drivers timed out waiting for the storage operator to become progressing, resulting in test failures with messages such as "Failed to wait for operator Progressing=True". With this release, CSI driver configuration tests correctly detect when a `ClusterCSIDriver` is in the `Removed` state and skip execution. As a result, tests no longer fail when CSI drivers are intentionally removed. ([OCPBUGS-84809](https://redhat.atlassian.net/browse/OCPBUGS-84809))
+- Before this update, CSI driver configuration tests did not skip execution when the `ClusterCSIDriver` resource state was set to `Removed`. As a consequence, tests that attempted to configure CSI drivers timed out waiting for the storage Operator to become progressing, resulting in test failures with messages such as "Failed to wait for Operator Progressing=True". With this release, CSI driver configuration tests correctly detect when a `ClusterCSIDriver` is in the `Removed` state and skip execution. As a result, tests no longer fail when CSI drivers are intentionally removed. ([OCPBUGS-84809](https://redhat.atlassian.net/browse/OCPBUGS-84809))
 
 - Before this update, the SELinux warning controller of the Kubernetes Controller Manager performed `O(V * P^2)` operations during every Prometheus metrics scrape, where V is the number of volumes and P is the number of pods per volume. As a consequence, on large clusters with hundreds of nodes and attached volumes, the KCM leader `/metrics` endpoint took over 12 seconds to respond, exceeding the 5-second Prometheus scrape timeout and causing `KubeControllerManagerDown` alerts to fire. With this release, the SELinux warning controller is optimized to reduce computational overhead during metrics collection. As a result, metrics scraping completes within the timeout period, and cluster monitoring operates correctly on large production clusters. ([OCPBUGS-85410](https://redhat.atlassian.net/browse/OCPBUGS-85410))
 
@@ -1364,9 +1405,13 @@ For more information, see [Scheduling NUMA-aware workloads](../scalability_and_p
 
 - Before this update, in hosted control planes deployments where the management cluster required a proxy for external access, the CSI driver controller deployments did not receive `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` environment variables. As a consequence, CSI driver controller containers could not reach cloud provider APIs through the proxy, causing all volume provisioning operations to fail. With this release, the CSI Operator injects proxy environment variables into hosted control planes CSI driver controller deployments. As a result, volume provisioning operations complete successfully in proxy-enabled hosted control planes environments. ([OCPBUGS-111893](https://redhat.atlassian.net/browse/OCPBUGS-111893))
 
+## Two node with Arbiter
+
+- Before this update, the Machine Config Operator (MCO) sync logic operated independently per machine-config pool, which allowed the arbiter and control-plane machine-config pools to restart nodes simultaneously. As a consequence, it caused temporary quorum loss during MCO reboot and upgrade events in two-node clusters with arbiter configurations. With this release, MCO now handles arbiter nodes as a special case and prevents the arbiter and control-plane machine-config pools from restarting nodes at the same time. As a result, quorum is maintained during MCO reboot and upgrade events, avoiding temporary etcd quorum loss. ([OCPBUGS-64681](https://redhat.atlassian.net/browse/OCPBUGS-64681))
+
 ## Virtualization
 
-- Before this update, the Hosted Cluster Config Operator (HCCO) machine controller included link-local addresses (such as `169.254.0.2` and `fe80::*`) in EndpointSlice endpoints. Because Kubernetes 1.33 rejects link-local addresses in EndpointSlice endpoints, the HCCO failed to create endpoints for `kubevirt` guest cluster `LoadBalancer` shadow services. As a consequence, `LoadBalancer` services in `kubevirt`-based hosted clusters failed with "Connection refused" errors. With this release, the HCCO filters out link-local addresses before creating EndpointSlice endpoints. As a result, `LoadBalancer` services in `kubevirt`-based hosted clusters are accessible from the management cluster. ([OCPBUGS-83604](https://redhat.atlassian.net/browse/OCPBUGS-83604))
+- Before this update, the Hosted Cluster Config Operator (HCCO) machine controller included link-local addresses such as `169.254.0.2` and `fe80::*` in `EndpointSlice` endpoints. Kubernetes 1.33 rejects link-local addresses in `EndpointSlice` endpoints. As a consequence, the HCCO to fail when creating endpoints for `kubevirt` guest cluster `LoadBalancer` shadow services. `LoadBalancer` services in `kubevirt`-based hosted clusters failed with "Connection refused" errors. With this release, the HCCO filters out link-local addresses before creating `EndpointSlice` endpoints. `LoadBalancer` services in `kubevirt`-based hosted clusters are now accessible from the management cluster. ([OCPBUGS-83604](https://redhat.atlassian.net/browse/OCPBUGS-83604))
 
 ## Web console
 
@@ -1524,6 +1569,7 @@ Multi-Architecture Technology Preview tracker
 | OVN-Kubernetes and CNI diagnostics toolsets for the MCP server | Not Available | Not Available | General Availability |
 | Dynamic Configuration Manager (DCM) | Technology Preview | General Availability | General Availability |
 | SR-IOV Network Operator support for Intel C741 Emmitsburg Chipset | Technology Preview | General Availability | General Availability |
+| SR-IOV Network Operator support for s390x | Not Available | Not Available | General Availability |
 | Dual-port NIC for PTP ordinary clock | General Availability | General Availability | General Availability |
 | DPU Operator | Technology Preview | Technology Preview | Technology Preview |
 | Fast IPAM for the Whereabouts IPAM CNI plugin | Technology Preview | Technology Preview | Technology Preview |
@@ -1616,6 +1662,7 @@ Security Technology Preview tracker
 | Increasing max number of volumes per node for vSphere | Technology Preview | Technology Preview | Technology Preview |
 | RWX/RWO SELinux mount option | Technology Preview | Technology Preview | Technology Preview |
 | CSI volume group snapshots | Technology Preview | Technology Preview | General Availability |
+| CIFS/SMB CSI Driver Operator | General Availability | General Availability | General Availability |
 | Volume Attribute Classes | General Availability | General Availability | General Availability |
 
 Storage Technology Preview tracker
@@ -1703,6 +1750,8 @@ Known issues in OpenShift Container Platform 4.17 can affect nodes, pods, and ne
 - Currently, you cannot use Single Root I/O Virtualization (SR-IOV) virtual functions (VFs) as ports in a bond device. The affected VFs are on Intel `i40e` (710 series) or `ice` (E810 series) network interface cards (NICs). A kernel regression causes the `set_mac_address` operation to fail when you add a second VF to the bond. The operation returns `Error -11 calling set_mac_address` (resource temporarily unavailable). As a consequence, the bond device does not become active, and you cannot add the affected VFs to the bond. To work around this problem, do not configure bond devices that use `i40e` or `ice` VFs as ports on affected nodes. ([RHEL-143410](https://redhat.atlassian.net/browse/RHEL-143410))
 
 - Currently, the `ListenerSet` custom resource definition (CRD) is installed on the cluster, but the OpenShift Container Platform Gateway API implementation does not support `ListenerSet` resources. As a consequence, a `ListenerSet` that targets a OpenShift Container Platform-managed `Gateway` is not reconciled, and the listeners that it defines are not programmed onto the `Gateway` and do not route traffic. The `ListenerSet` reports an `Accepted=False` status condition with the `UnsupportedByController` reason, and the `ListenerSetOnManagedGateway` alert fires. As a workaround, define listeners directly on the `Gateway` resource instead of using a `ListenerSet`. ([OCPBUGS-100435](https://redhat.atlassian.net/browse/OCPBUGS-100435))
+
+- Currently, Red Hat Enterprise Linux CoreOS (RHCOS) version 10 VMware vSphere installer-provisioned infrastructure nodes experience a `serial-getty@ttyS0` restart loop. This state occurs because there is no serial port present. The restart loop causes continuous `mount-table` churn that is visible on every node. In long-lived clusters, this might lead to `node-exporter` memory exhaustion, and control-plane degradation. ([OCPBUGS-133499](https://redhat.atlassian.net/browse/OCPBUGS-133499))
 
 # Asynchronous errata updates
 

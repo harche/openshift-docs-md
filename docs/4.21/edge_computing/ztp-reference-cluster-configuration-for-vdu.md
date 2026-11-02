@@ -160,7 +160,9 @@ Additional resources
 
 ## Reduced platform management footprint
 
-To reduce the overall management footprint of the platform, a `MachineConfig` custom resource (CR) is required that places all Kubernetes-specific mount points in a new namespace separate from the host operating system. The following base64-encoded example `MachineConfig` CR illustrates this configuration.
+To reduce the overall management footprint of the platform, a `MachineConfig` custom resource (CR) is required that places all Kubernetes-specific mount points in a new namespace separate from the host operating system.
+
+The following base64-encoded example `MachineConfig` CR illustrates this configuration.
 
 <div class="formalpara">
 
@@ -401,7 +403,9 @@ spec:
 
 ## Automatic kernel crash dumps with kdump
 
-`kdump` is a Linux kernel feature that creates a kernel crash dump when the kernel crashes. You can use the crash dump to debug and find the cause of the kernel crash. To enable `kdump`, you apply `MachineConfig` custom resources (CRs) that reserve memory for the crash kernel and enable the `kdump` systemd service. The `ztp-site-generate` container provides the following reference CRs for this configuration:
+`kdump` is a Linux kernel feature that creates a kernel crash dump when the kernel crashes.
+
+You can use the crash dump to debug and find the cause of the kernel crash. To enable `kdump`, you apply `MachineConfig` custom resources (CRs) that reserve memory for the crash kernel and enable the `kdump` systemd service. The `ztp-site-generate` container provides the following reference CRs for this configuration:
 
 - `06-kdump-master.yaml` for control plane nodes
 
@@ -424,7 +428,9 @@ Additional resources
 
 ## Disable automatic CRI-O cache wipe
 
-After an uncontrolled host shutdown or cluster reboot, CRI-O automatically deletes the entire CRI-O cache, causing all images to be pulled from the registry when the node reboots. This can result in unacceptably slow recovery times or recovery failures. To prevent this from happening in single-node OpenShift clusters that you install with GitOps ZTP, disable the CRI-O delete cache feature during cluster installation.
+After an uncontrolled host shutdown or cluster reboot, CRI-O automatically deletes the entire CRI-O cache, causing all images to be pulled from the registry when the node reboots.
+
+This can result in unacceptably slow recovery times or recovery failures. To prevent this from happening in single-node OpenShift clusters that you install with GitOps ZTP, disable the CRI-O delete cache feature during cluster installation.
 
 <div class="formalpara">
 
@@ -1324,7 +1330,9 @@ spec:
 
 ## PTP
 
-Single-node OpenShift clusters use Precision Time Protocol (PTP) for network time synchronization. The following example `PtpConfig` CRs illustrate the required PTP configurations for ordinary clocks, boundary clocks, and grandmaster clocks. The exact configuration you apply will depend on the node hardware and specific use case.
+Single-node OpenShift clusters use Precision Time Protocol (PTP) for network time synchronization.
+
+The following example `PtpConfig` CRs illustrate the required PTP configurations for ordinary clocks, boundary clocks, and grandmaster clocks. The exact configuration you apply will depend on the node hardware and specific use case.
 
 <div class="formalpara">
 
@@ -2163,7 +2171,9 @@ data:
 
 ## Operator Lifecycle Manager
 
-Single-node OpenShift clusters that run distributed unit workloads require consistent access to CPU resources. Operator Lifecycle Manager (OLM) collects performance data from Operators at regular intervals, resulting in an increase in CPU utilisation. The following `ConfigMap` custom resource (CR) disables the collection of Operator performance data by OLM.
+Single-node OpenShift clusters that run distributed unit workloads require consistent access to CPU resources.
+
+Operator Lifecycle Manager (OLM) collects performance data from Operators at regular intervals, resulting in an increase in CPU utilisation. The following `ConfigMap` custom resource (CR) disables the collection of Operator performance data by OLM.
 
 <div class="formalpara">
 

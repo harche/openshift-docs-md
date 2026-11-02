@@ -237,10 +237,10 @@ Procedure
     $ ibmcloud is security-group-rule-add $DEFAULT_SG inbound tcp --remote 0.0.0.0/0 --port-min 443 --port-max 443
     ```
 
-</div>
+    > [!NOTE]
+    > Be sure that your endpoint gateways are configured to use this security group.
 
-> [!NOTE]
-> Be sure that your endpoint gateways are configured to use this security group.
+</div>
 
 # Generating a key pair for cluster node SSH access
 
@@ -710,7 +710,7 @@ Use these tested IBM Cloud® instance types to ensure compatibility when selecti
 
 See the following machine series:
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/ibmcloud/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-5.0/docs/user/ibmcloud/tested_instance_types_x86_64.md>
 
 ## Sample customized install-config.yaml file for IBM Cloud
 

@@ -90,7 +90,9 @@ The following high-level steps outline the deployment process:
 
 # High availability for virtualized control planes
 
-A virtualized control plane relies on `etcd` quorum to remain operational. With three control plane VMs, the cluster tolerates the loss of one VM but becomes unavailable if two VMs fail simultaneously. To protect quorum, distribute VMs across physical nodes and prevent disruptive operations from affecting more than one control plane VM at a time.
+A virtualized control plane relies on `etcd` quorum to remain operational. With three control plane VMs, the cluster tolerates the loss of one VM but becomes unavailable if two VMs fail simultaneously.
+
+To protect quorum, distribute VMs across physical nodes and prevent disruptive operations from affecting more than one control plane VM at a time.
 
 > [!IMPORTANT]
 > Live migration is not supported for virtualized control plane VMs. The eviction strategy for control plane VMs must be set to `None` to prevent the hosting cluster from attempting to migrate them during node drain operations.

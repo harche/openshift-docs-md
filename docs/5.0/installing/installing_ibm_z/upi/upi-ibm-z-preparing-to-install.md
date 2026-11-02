@@ -561,4 +561,4 @@ Procedure
 
 - [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

@@ -1,4 +1,4 @@
-OpenShift Container Platform collects telemetry and configuration data about your cluster and reports it to Red Hat by using the Telemeter Client and the Insights Operator. The data that is provided to Red Hat enables the benefits outlined in this document.
+Learn what remote health monitoring is, how Telemetry and the Insights Operator collect cluster data, and what benefits Red Hat provides through proactive monitoring and recommendations.
 
 A cluster that reports data to Red Hat through Telemetry and the Insights Operator is considered a *connected cluster*.
 
@@ -105,7 +105,7 @@ Additional resources
 
 - [Upstream cluster-monitoring-operator source code](https://github.com/openshift/cluster-monitoring-operator/blob/master/manifests/0000_50_cluster-monitoring-operator_04-config.yaml)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 </div>
 
@@ -135,7 +135,7 @@ Additional resources
 
 - [Red Hat Lightspeed Data & Application Security](https://console.redhat.com/security/insights)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 </div>
 
@@ -238,6 +238,6 @@ Additional resources
 
 - [Information collected by the Insights Operator](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#insights-operator-what-information-is-collected_about-remote-health-monitoring)
 
-- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 </div>

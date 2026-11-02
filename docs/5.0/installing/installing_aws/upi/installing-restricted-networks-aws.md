@@ -765,7 +765,7 @@ CloudFormation template for the VPC
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/01_vpc.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/01_vpc.yaml[role=include]
 ```
 
 </div>
@@ -963,7 +963,7 @@ CloudFormation template for the network and load balancers
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/02_cluster_infra.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/02_cluster_infra.yaml[role=include]
 ```
 
 </div>
@@ -1116,7 +1116,7 @@ CloudFormation template for security objects
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/03_cluster_security.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/03_cluster_security.yaml[role=include]
 ```
 
 </div>
@@ -1536,7 +1536,7 @@ CloudFormation template for the bootstrap machine
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/04_cluster_bootstrap.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/04_cluster_bootstrap.yaml[role=include]
 ```
 
 </div>
@@ -1776,7 +1776,7 @@ CloudFormation template for control plane machines
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/05_cluster_master_nodes.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/05_cluster_master_nodes.yaml[role=include]
 ```
 
 </div>
@@ -1949,7 +1949,7 @@ CloudFormation template for compute machines
 </div>
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/06_cluster_worker_node.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-5.0/upi/aws/cloudformation/06_cluster_worker_node.yaml[role=include]
 ```
 
 </div>
@@ -2921,7 +2921,7 @@ Additional resources
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Managing AWS resources as a single unit with CloudFormation stacks (AWS documentation)](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
 
@@ -2935,7 +2935,7 @@ Additional resources
 
 - [Image configuration resources](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Enable or disable remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
 - [Changing the cloud provider credentials configuration](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)
 

@@ -3,7 +3,7 @@ You can create virtual machines (VMs) from the command line by editing or creati
 > [!NOTE]
 > You can also create VMs from instance types by using the OpenShift Container Platform web console.
 
-# Creating a VM from a VirtualMachine manifest
+# Create a VM from a manifest
 
 You can create a virtual machine (VM) from a `VirtualMachine` manifest. To simplify the creation of these manifests, you can use the `virtctl` command-line tool.
 
@@ -115,7 +115,7 @@ Procedure
 
 </div>
 
-# Uploading a virtual machine image by using the CLI
+# Upload a VM image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
 

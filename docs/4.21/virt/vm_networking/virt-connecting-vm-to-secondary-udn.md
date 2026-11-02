@@ -262,7 +262,7 @@ Review the following considerations before configuring a user-defined network (U
 
 # Configuring a RoCE adapter for virtual machine networking on IBM Z®
 
-On IBM Z® z17, RoCE adapters support promiscuous mode at the hardware level, which forwards traffic for all virtual machine MAC addresses without manual registration. On earlier IBM Z® generations, each virtual machine MAC address must be manually registered with the RoCE interface because promiscuous mode is not available.
+On IBM Z® z17, RoCE adapters support promiscuous mode at the hardware level, which forwards traffic for all virtual machine MAC addresses. This prevents the requirement of manually registering each virtual machine MAC address with the RoCE interface.
 
 Use the following procedure to enable promiscuous mode on IBM Z® z17.
 

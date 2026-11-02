@@ -386,4 +386,4 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 - [Configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations)
 
-- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [Understand remote health monitoring capabilities](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
