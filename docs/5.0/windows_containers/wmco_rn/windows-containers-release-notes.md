@@ -1,21 +1,36 @@
 You can review the release notes to learn about the changes introduced through each release of the Red Hat OpenShift support for Windows Containers and the Windows Machine Config Operator (WMCO).
 
-# Release notes for Red Hat Windows Machine Config Operator 10.22.0
+# Release notes for Red Hat Windows Machine Config Operator 11.0.0
 
-Issued: DD Mm 2026
+Issued: 03 November 2026
 
-You can review the following release notes to learn about the new features and bug fixes in the Windows Machine Config Operator (WMCO) version 10.22.0.
+You can review the following release notes to learn about the new features and bug fixes in the Windows Machine Config Operator (WMCO) version 11.0.0.
 
-The components of the WMCO version 10.22.0 were released in TBD.
+The components of the WMCO version 11.0.0 were released in [RHSA-2026:94562](https://access.redhat.com/errata/RHSA-2026:94562).
 
 ## New features and improvements
 
-Windows Server 2025 support
-The WMCO now supports Windows Server 2025, OS Build [10.0.26100](https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91) or later for all supported platforms.
+WMCO metrics server follows the cluster TLS security profile
+The WMCO metrics server uses the TLS security profile configured for the cluster when the `spec.tlsAdherence` parameter is set to `StrictAllComponents`. When you change the cluster TLS profile or the adherence policy, the Operator pod restarts and applies the new settings. This keeps the metrics server aligned with the cluster TLS policy, including a custom profile.
+
+To use this feature, you must enable the `TechPreviewNoUpgrade` feature set. For more information, see "Understanding feature gates".
+
+> [!IMPORTANT]
+> Enabling this feature set cannot be undone and prevents minor version updates.
+
+<!-- -->
 
 Kubernetes upgrade
-The WMCO now uses Kubernetes version 1.35.
+The WMCO now uses Kubernetes version 1.36.
 
 ## Bug fixes
 
-- Before this update, if you enabled the `ClusterAPIMachineManagement` feature gate by enabling the `TechPreviewNoUpgrade` feature set, OpenShift Container Platform provisioned the `openshift-cluster-api` namespace. However, the WMCO was not adding the `windows-user-data` secret to that namespace, which is required by Cluster API compute machine sets. Because of the missing secret, CAPI-provisioned Windows machines would not bootstrap, remaining stuck in the `Pending` phase, and never joining the cluster. With this release, the OpenShift Container Platform now detects whether the `openshift-cluster-api` namespace exists and mirrors the `windows-user-data` secret into that namespace. CAPI-provisioned Windows machines successfully receive the bootstrap secret, are no longer getting stuck in `Pending` state, and join the cluster as expected. ([OCPBUGS-38401](https://issues.redhat.com/browse/OCPBUGS-38401))
+- Before this update, old `ovnkube-client-*.pem` certificate files would accumulate indefinitely in the `C:\k\cni\config` directory, because the `hybrid-overlay` service generates a new time-stamped certificate daily during certificate rotation. As a consequence, the accumulated certificates could cause unnecessary disk usage growth over time. With this release, the Windows Instance Config Daemon (WICD) now has cleanup logic for older files, which runs during the normal reconciliation loop, every two minutes, and keeps only the two most recent certificates, deleting any older certificates. As a result, old `ovnkube-client-.pem` certificate files are now automatically pruned, so that only the latest required certificates remain and disk usage no longer grows unbounded from stale cert files. ([OCPBUGS-86246](https://issues.redhat.com/browse/OCPBUGS-86246))
+
+- Before this update, the Windows Prometheus recording rule for the `instance:node_cpu_utilisation:rate1m` metric recorded the `CPU idle` rate. The Linux recording rule with the same name records CPU utilization. As a consequence, the OpenShift Virtualization `HighCPUWorkload` alert fired for Windows nodes that had low CPU utilization, because the alert treated idle time as utilization. With this release, the Windows recording rule records CPU utilization. As a result, the `instance:node_cpu_utilisation:rate1m` metric reports CPU utilization for Windows nodes, and the HighCPUWorkload alert fires when a Windows node is highly utilized. ([OCPBUGS-85061](https://issues.redhat.com/browse/OCPBUGS-85061))
+
+- Before this update, the SSH connection between the WMCO and a Windows node would terminate when the WMCO rebooted the node after a configuration update. As a consequence, the WMCO incorrectly treated the SSH disconnection as a reboot failure, preventing the Windows node from completing required reboots. With this release, the reboot validation process is modified to ignore SSH termination errors and instead verify a successful reboot by using explicit node reachability checks and SSH reconnection. As a result, Windows nodes successfully reboot upon node configuration changes. ([OCPBUGS-90077](https://issues.redhat.com/browse/OCPBUGS-90077))
+
+- Before this update, the CRI plug-in in the WMCO containerd 1.7.27 runtime copied `image-config` labels onto the container and treated them like the CRI labels, including labels in the reserved `containerd.io/` and `io.cri-containerd` namespaces. As a consequence, a crafted image label could have reached the `restart-monitor` logger and caused the logger to run a command with `host-root` privileges from that label on the Windows node. With this release, the WMCO updates the Windows containerd runtime from 1.7.27 to 1.7.33. The updated runtime filters those reserved namespaces from `image-config` labels and preserves ordinary image labels and labels supplied by the CRI request. As a result, a label in a reserved containerd or CRI namespace does not reach the `restart-monitor` logger. ([OCPBUGS-123789](https://issues.redhat.com/browse/OCPBUGS-123789))
+
+- Before this update, if a Windows node or the WICD submitted a certificate signing request (CSR), the WMCO only checked that the expected organization, such as `system:nodes` or `system:wicd-nodes`, was present in the CSR subject. The validation did not require that organization to be the only one listed. As a consequence, a CSR could include the required organization plus additional organizations and still pass validation. WMCO approved and signed those CSRs, issuing certificates that did not strictly match the expected node identity constraints. With this release, the validation now requires that the CSR subject contain exactly one organization, and the CSR must match the expected group for the certificate type, such as `WICD`, `kubelet client`, or `kubelet serving`. As a result, CSRs with extra, missing, or incorrect organizations are rejected. ([WINC-1942](https://issues.redhat.com/browse/WINC-1942))

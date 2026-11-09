@@ -717,6 +717,9 @@ The Dynamic Accelerator Slicer (DAS) Operator was introduced to allow dynamic GP
 
 For more information on DRA, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
 
+Removal of unsupported DHE and CBC-mode ciphers for OpenShift Virtualization
+Before this update, `Old` and `Intermediate` Transport Layer Security (TLS) security profiles contained unsupported Diffie-Hellman-Ephemeral (DHE) and Cipher Block Chaining (CBC) mode ciphers. As a consequence, upgrading OpenShift Virtualization failed if existing `NetworkAddonsConfig` custom resources still listed these unsupported ciphers. With this release, TLS security profiles are aligned with Mozilla Server Side TLS v5.7 guidelines and unsupported DHE ciphers are removed from default TLS profile configuration. `Custom` TLS profiles require manual removal of the removed ciphers. As a result, OpenShift Virtualization is successfully upgraded.
+
 # Fixed issues
 
 You can review the list of issues resolved for OpenShift Container Platform 4.17 to see if any of the issues affect your clusters or environments are fixed.
@@ -1325,6 +1328,8 @@ You can review the list of known issues in OpenShift Container Platform 4.17 to 
 
 - Currently, Extended Update Support (EUS) to EUS image-based upgrades are not supported on clusters that have cert-manager installed. ([OCPBUGS-86967](https://issues.redhat.com/browse/OCPBUGS-86967))
 
+- Currently, Red Hat Enterprise Linux CoreOS (RHCOS) version 10 VMware vSphere installer-provisioned infrastructure nodes experience a `serial-getty@ttyS0` restart loop. This state occurs because there is no serial port present. The restart loop causes continuous `mount-table` churn that is visible on every node. In long-lived clusters, this might lead to `node-exporter` memory exhaustion, and control-plane degradation. ([OCPBUGS-133499](https://redhat.atlassian.net/browse/OCPBUGS-133499))
+
 # Asynchronous errata updates
 
 Security, bug fix, and enhancement updates for OpenShift Container Platform 4.17 are released as asynchronous errata through the Red Hat Network. All OpenShift Container Platform 4.17 errata is available on the Red Hat Customer Portal. Red Hat Customer Portal users can enable errata notifications in the account settings for Red Hat Subscription Management (RHSM). When errata notifications are enabled, users are notified through email whenever new errata relevant to their registered systems are released.
@@ -1352,6 +1357,68 @@ Additional resources
 - [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console)
 
 </div>
+
+## RHSA-2026:95347 - OpenShift Container Platform 4.17.22 bug fix and security update
+
+Issued: 5 November 2026
+
+OpenShift Container Platform release 4.17.22 is now available. The list of fixed bugs that are included in the update is documented in the [RHSA-2026:95347](https://access.redhat.com/errata/RHSA-2026:95347) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:95345](https://access.redhat.com/errata/RHBA-2026:95345) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.22 --pullspecs
+```
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, a two-node {ocp} with fencing (TNF) cluster could remain degraded with only one active node after a node reboot. This issue could occur during an upgrade or a Machine Config Operator (MCO)-driven Red Hat Enterprise Linux CoreOS (RHCOS) update. With this update, TNF clusters do not stay in this degraded state after a reboot. ([OCPBUGS-84695](https://issues.redhat.com/browse/OCPBUGS-84695))
+
+- Before this update, JSON merge patches could bypass field-level Common Expression Language (CEL) immutability rules on the `HostedCluster` custom resource by removing the `spec.infraID` or `spec.clusterID` specifications. As a consequence, the controller re-provisioned the infrastructure and orphaned existing resources. With this release, parent-level CEL validation rules reject API requests attempting to clear these fields. ([OCPBUGS-129442](https://issues.redhat.com/browse/OCPBUGS-129442))
+
+- Before this update, when reconciling virtual machines (VMs) on Microsoft Azure, a creation operation could fail and leave a virtual network interface controller (NIC) attached to a load balancer without a corresponding VM. As a consequence, the load balancer could not be used until the orphaned NIC was removed. With this release, the reconciler cleans up orphaned NICs when VM creation fails. As a result, load balancers are not blocked by orphaned NICs after failed VM creation. ([OCPBUGS-133098](https://issues.redhat.com/browse/OCPBUGS-133098))
+
+- Before this update, during etcd encryption key rotation, data in namespaces deleted with remaining etcd content was skipped. As a consequence, premature key retirement and API server failures occurred. With this release, this type of data is automatically rewritten with the current encryption key before retiring older keys. As a result, the API server remains available. ([OCPBUGS-133399](https://redhat.atlassian.net/browse/OCPBUGS-133399))
+
+- Before this update, missing domain name system (DNS) subject alternative names (SANs) for the headless `etcd-client` service caused intermittent peer transport layer security (TLS) rejections due to duplicate PTR records. This release adds the missing DNS name. As a result, connection rejections are prevented and etcd reliability in bare metal deployments is improved. ([OCPBUGS-133444](https://issues.redhat.com/browse/OCPBUGS-133444))
+
+- Before this update, a race condition during two-node {ocp} with fencing (TNF) installations could fail to sync the `external-etcd-pod` `ConfigMap` across all nodes. As a consequence, installation failures occurred. With this release the race condition is fixed. As a result, TNF installations are successful. ([OCPBUGS-133467](https://issues.redhat.com/browse/OCPBUGS-133467))
+
+- Before this update, revealed values on the **Secret** details page could automatically become hidden when the page refreshed. With this release, the reveal state is preserved so that values remain visible until you click **Hide values**. As a result, secret values are not unexpectedly hidden. ([OCPBUGS-134589](https://issues.redhat.com/browse/OCPBUGS-134589))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHBA-2026:92328 - OpenShift Container Platform 4.17.21 bug fix and security update
+
+Issued: 3 November 2026
+
+OpenShift Container Platform release 4.17.21 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:92328](https://access.redhat.com/errata/RHBA-2026:92328) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:92331](https://access.redhat.com/errata/RHSA-2026:92331) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.21 --pullspecs
+```
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, an infinite boot loop occurred during Lenovo SR645 V3 hardware provisioning. As a consequence, the host stalled on a boot option restoration screen and could not complete the provisioning. With this release, the `ironic` resource skips setting the boot device. As a result, NVRAM loss does not occur, and provisioning succeeds. ([OCPBUGS-129569](https://issues.redhat.com/browse/OCPBUGS-129569))
+
+- Before this update, on the **Observe** → **Metrics** page, multiple queries previously restarted their color index at `0`. As a consequence, series color squares were misaligned with graph lines. With this release, the color index is correctly offset by counting series from earlier queries. As a result, each color square matches its corresponding graph line. ([OCPBUGS-132931](https://issues.redhat.com/browse/OCPBUGS-132931))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHSA-2026:79154 - OpenShift Container Platform 4.17.18 bug fix and security update
 

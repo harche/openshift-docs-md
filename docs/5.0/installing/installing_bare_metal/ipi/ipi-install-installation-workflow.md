@@ -2,7 +2,7 @@ Before you can install an OpenShift Container Platform cluster on bare metal, yo
 
 # Installations RHEL on the provisioner node
 
-With the configuration of the prerequisites complete, the next step is to install RHEL 9.x on the provisioner node. The installer uses the provisioner node as the orchestrator while installing the OpenShift Container Platform cluster.
+With the configuration of the prerequisites complete, the next step is to install RHEL 10.x on the provisioner node. The installer uses the provisioner node as the orchestrator while installing the OpenShift Container Platform cluster.
 
 For the purposes of this document, installing RHEL on the provisioner node is out of scope. However, options include but are not limited to using a RHEL Satellite server, PXE, or installation media.
 

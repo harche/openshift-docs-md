@@ -1225,26 +1225,6 @@ For example, you might want to override your default storage configuration to ad
 
 Or, if you used Ignition to modify the storage configuration as a post-installation task, your cluster might be reporting an `irreconcilableChanges` status in the `MachineConfigNode` object status fields. This messaging can alert you to these differences, so that you can determine if you want new hardware with the new configurations.
 
-> [!IMPORTANT]
-> Overriding irreconcilable fields is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
->
-> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-<div>
-
-<div class="title">
-
-Prerequisites
-
-</div>
-
-- You enabled the required Technology Preview features for your cluster by adding the `TechPreviewNoUpgrade` feature set to the `FeatureGate` CR named `cluster`. For information about enabling Feature Gates, see *Enabling features using feature gates*.
-
-  > [!WARNING]
-  > Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-</div>
-
 <div>
 
 <div class="title">

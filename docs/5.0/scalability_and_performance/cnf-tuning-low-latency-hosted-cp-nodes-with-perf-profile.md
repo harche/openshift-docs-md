@@ -166,6 +166,8 @@ Additional resources
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
 
+- [Gathering data for a hosted cluster by using the CLI](../hosted_control_planes/hcp-troubleshooting.xml#hcp-must-gather-cli)
+
 </div>
 
 ## Run the Performance Profile Creator on a hosted cluster using Podman

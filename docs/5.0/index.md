@@ -1194,6 +1194,64 @@
 ### Hosted control planes
 
 - [Hosted control planes release notes](hosted_control_planes/hcp-release-notes.md)
+- [Hosted control planes overview](hosted_control_planes/index.md)
+- **Preparing to deploy hosted control planes**
+  - [Requirements for hosted control planes](hosted_control_planes/hcp-prepare/hcp-requirements.md)
+  - [Sizing guidance for hosted control planes](hosted_control_planes/hcp-prepare/hcp-sizing-guidance.md)
+  - [Overriding resouce utilization measurements](hosted_control_planes/hcp-prepare/hcp-override-resource-util.md)
+  - [Installing the hosted control plane command-line interface](hosted_control_planes/hcp-prepare/hcp-cli.md)
+  - [Distributing hosted cluster workloads](hosted_control_planes/hcp-prepare/hcp-distribute-workloads.md)
+  - [Enabling or disabling the hosted control planes feature](hosted_control_planes/hcp-prepare/hcp-enable-disable.md)
+- **Deploying hosted control planes**
+  - [Deploying hosted control planes on AWS](hosted_control_planes/hcp-deploy/hcp-deploy-aws.md)
+  - [Deploying hosted control planes on Azure](hosted_control_planes/hcp-deploy/hcp-deploy-azure.md)
+  - [Deploying hosted control planes on bare metal](hosted_control_planes/hcp-deploy/hcp-deploy-bm.md)
+  - [Deploying hosted control planes on OpenShift Virtualization](hosted_control_planes/hcp-deploy/hcp-deploy-virt.md)
+  - [Deploying hosted control planes on non-bare-metal agent machines](hosted_control_planes/hcp-deploy/hcp-deploy-non-bm.md)
+  - [Deploying hosted control planes on IBM Z](hosted_control_planes/hcp-deploy/hcp-deploy-ibmz.md)
+  - [Deploying hosted control planes on IBM Power](hosted_control_planes/hcp-deploy/hcp-deploy-ibm-power.md)
+  - [Deploying hosted control planes on OpenStack](hosted_control_planes/hcp-deploy/hcp-deploy-openstack.md)
+- **Managing hosted control planes**
+  - [Managing hosted control planes on AWS](hosted_control_planes/hcp-manage/hcp-manage-aws.md)
+  - [Managing hosted control planes on bare metal](hosted_control_planes/hcp-manage/hcp-manage-bm.md)
+  - [Managing hosted control planes on OpenShift Virtualization](hosted_control_planes/hcp-manage/hcp-manage-virt.md)
+  - [Managing hosted control planes on non-bare-metal agent machines](hosted_control_planes/hcp-manage/hcp-manage-non-bm.md)
+  - [Managing hosted control planes on IBM Power](hosted_control_planes/hcp-manage/hcp-manage-ibm-power.md)
+  - [Managing hosted control planes on OpenStack](hosted_control_planes/hcp-manage/hcp-manage-openstack.md)
+- **Deploying hosted control planes in a disconnected environment**
+  - [Introduction to hosted control planes in a disconnected environment](hosted_control_planes/hcp-disconnected/hcp-deploy-dc.md)
+  - [Deploying hosted control planes on OpenShift Virtualization in a disconnected environment](hosted_control_planes/hcp-disconnected/hcp-deploy-dc-virt.md)
+  - [Deploying hosted control planes on bare metal in a disconnected environment](hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.md)
+  - [Deploying hosted control planes on IBM Z in a disconnected environment](hosted_control_planes/hcp-disconnected/disconnected-install-ibmz-hcp.md)
+  - [Monitoring user workload in a disconnected environment](hosted_control_planes/hcp-disconnected/hcp-dc-monitor.md)
+- [Configuring certificates for hosted control planes](hosted_control_planes/hcp-certificates.md)
+- [Updating hosted control planes](hosted_control_planes/hcp-updating.md)
+- [Managing RHCOS version streams within a hosted cluster](hosted_control_planes/hcp-dual-stream.md)
+- **High availability for hosted control planes**
+  - [About high availability for hosted control planes](hosted_control_planes/hcp_high_availability/about-hcp-ha.md)
+  - [Recovering a failing etcd cluster](hosted_control_planes/hcp_high_availability/hcp-recovering-etcd-cluster.md)
+  - [Backing up and restoring etcd on a hosted cluster](hosted_control_planes/hcp_high_availability/hcp-backup-restore-on-premise.md)
+  - [Backing up and restoring etcd on the management cluster](hosted_control_planes/hcp_high_availability/hcp-backup-restore-aws.md)
+  - [Backing up and restoring a hosted cluster on OpenShift Virtualization](hosted_control_planes/hcp_high_availability/hcp-backup-restore-virt.md)
+  - [Disaster recovery for a hosted cluster in AWS](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-aws.md)
+  - [Disaster recovery for a hosted cluster by using OADP](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp.md)
+  - [Automated disaster recovery for a hosted cluster by using OADP](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp-auto.md)
+  - [Backing up etcd data for hosted control planes by using the etcd snapshot method](hosted_control_planes/hcp_high_availability/hcp-backup-etcd-snapshot.md)
+- [Authentication and authorization for hosted control planes](hosted_control_planes/hcp-authentication-authorization.md)
+- [Handling machine configuration for hosted control planes](hosted_control_planes/hcp-machine-config.md)
+- [Feature gates in a hosted cluster](hosted_control_planes/hcp-using-feature-gates.md)
+- [Observability for hosted control planes](hosted_control_planes/hcp-observability.md)
+- [Networking for hosted control planes](hosted_control_planes/hcp-networking.md)
+- [Troubleshooting hosted control planes](hosted_control_planes/hcp-troubleshooting.md)
+- **Destroying a hosted cluster**
+  - [Destroying a hosted cluster on AWS](hosted_control_planes/hcp-destroy/hcp-destroy-aws.md)
+  - [Destroying a hosted cluster on bare metal](hosted_control_planes/hcp-destroy/hcp-destroy-bm.md)
+  - [Destroying a hosted cluster on OpenShift Virtualization](hosted_control_planes/hcp-destroy/hcp-destroy-virt.md)
+  - [Destroying a hosted cluster on IBM Z](hosted_control_planes/hcp-destroy/hcp-destroy-ibmz.md)
+  - [Destroying a hosted cluster on IBM Power](hosted_control_planes/hcp-destroy/hcp-destroy-ibm-power.md)
+  - [Destroying a hosted cluster on OpenStack](hosted_control_planes/hcp-destroy/hcp-destroy-openstack.md)
+  - [Destroying a hosted cluster on non-bare-metal agent machines](hosted_control_planes/hcp-destroy/hcp-destroy-non-bm.md)
+- [Manually importing a hosted cluster](hosted_control_planes/hcp-import.md)
 
 ### Virtualized control planes
 
@@ -1416,7 +1474,6 @@
 - [Performing latency tests for platform verification](scalability_and_performance/cnf-performing-platform-verification-latency-tests.md)
 - [Improving cluster stability in high latency environments using worker latency profiles](scalability_and_performance/scaling-worker-latency-profiles.md)
 - [Workload partitioning](scalability_and_performance/enabling-workload-partitioning.md)
-- [Using the Node Observability Operator](scalability_and_performance/node-observability-operator.md)
 
 ### AI workloads
 

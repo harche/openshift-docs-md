@@ -2,7 +2,7 @@ You must meet several prerequisites before installing a cluster on bare metal by
 
 Installer-provisioned installation of OpenShift Container Platform requires:
 
-1.  One provisioner node with Red Hat Enterprise Linux (RHEL) 9.x installed. The provisioner can be removed after installation.
+1.  One provisioner node with Red Hat Enterprise Linux (RHEL) 10.x installed. The provisioner can be removed after installation.
 
 2.  Three control plane nodes
 
@@ -30,7 +30,7 @@ Installer-provisioned installation involves several hardware node requirements:
 
 - **Baseboard Management Controller:** The `provisioner` node must be able to access the baseboard management controller (BMC) of each OpenShift Container Platform cluster node. You may use IPMI, Redfish, or a proprietary protocol.
 
-- **Latest generation:** Nodes must be of the most recent generation. Installer-provisioned installation relies on BMC protocols, which must be compatible across nodes. Additionally, RHEL 9.x ships with the most recent drivers for RAID controllers. Ensure that the nodes are recent enough to support RHEL 9.x for the `provisioner` node and RHCOS 9.x for the control plane and worker nodes.
+- **Latest generation:** Nodes must be of the most recent generation. Installer-provisioned installation relies on BMC protocols, which must be compatible across nodes. Additionally, RHEL 10.x ships with the most recent drivers for RAID controllers. Ensure that the nodes are recent enough to support RHEL 10.x for the `provisioner` node and RHCOS 10.x for the control plane and worker nodes.
 
 - **Registry node:** (Optional) If setting up a disconnected mirrored registry, it is recommended the registry reside in its own node.
 
@@ -464,7 +464,7 @@ While the cluster nodes can contain more than two NICs, the installation process
 | NIC1 | `provisioning` | `<provisioning_vlan>` |
 | NIC2 | `baremetal`    | `<baremetal_vlan>`    |
 
-The Red Hat Enterprise Linux (RHEL) 9.x installation process on the provisioner node might vary. To install Red Hat Enterprise Linux (RHEL) 9.x using a local Satellite server or a PXE server, PXE-enable NIC2.
+The Red Hat Enterprise Linux (RHEL) 10.x installation process on the provisioner node might vary. To install Red Hat Enterprise Linux (RHEL) 10.x using a local Satellite server or a PXE server, PXE-enable NIC2.
 
 | PXE                                                | Boot order |
 |----------------------------------------------------|------------|

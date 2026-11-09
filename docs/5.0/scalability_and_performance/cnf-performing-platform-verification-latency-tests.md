@@ -164,7 +164,7 @@ Procedure
 
 ## Run hwlatdetect
 
-To measure hardware latency, run the `hwlatdetect` tool. This diagnostic utility is available in the `rt-kernel` package through your Red Hat Enterprise Linux (RHEL) 9.x subscription.
+To measure hardware latency, run the `hwlatdetect` tool. This diagnostic utility is available in the `rt-kernel` package through your Red Hat Enterprise Linux (RHEL) 10.x subscription.
 
 > [!NOTE]
 > When executing `podman` commands as a non-root or non-privileged user, mounting paths can fail with `permission denied` errors. Depending on your local operating system and SELinux configuration, you might also experience issues running these commands from your home directory. To make the `podman` commands work, run the commands from a folder that is not your home/\<username\> directory, and append `:Z` to the volumes creation. For example, `-v $(pwd)/:/kubeconfig:Z`. This allows `podman` to do the proper SELinux relabeling.

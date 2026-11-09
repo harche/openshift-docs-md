@@ -28,6 +28,8 @@ For the complete documentation for multicluster engine, see "Cluster lifecycle w
 
 - [Red Hat Advanced Cluster Management for Kubernetes](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes)
 
+- [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
+
 - [Using GitOps Zero Touch Provisioning (ZTP) to provision clusters at the network far edge](../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-challenges-of-far-edge-deployments_ztp-deploying-far-edge-clusters-at-scale)
 
 - [Installing and upgrading multicluster engine Operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-install-intro)

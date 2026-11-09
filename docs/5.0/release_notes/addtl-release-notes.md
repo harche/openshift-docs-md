@@ -31,6 +31,9 @@ E
 F
 [File Integrity Operator](../security/file_integrity_operator/file-integrity-operator-release-notes.xml#file-integrity-operator-release-notes-v0)
 
+H
+[Hosted control planes release notes](../hosted_control_planes/hcp-release-notes.xml#hcp-release-notes)
+
 J
 [JobSet Operator](../ai_workloads/jobset_operator/jobset-release-notes.xml#js-release-notes)
 

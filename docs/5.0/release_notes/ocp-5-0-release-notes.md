@@ -4,7 +4,7 @@ Built on Red Hat Enterprise Linux (RHEL) and Kubernetes, OpenShift Container Pl
 
 # About this release
 
-OpenShift Container Platform ([RHBA-2026:449](https://access.redhat.com/errata/RHBA-2026:449)) is now available. This release uses [Kubernetes 1.36](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+OpenShift Container Platform ([RHEA-2026:4893](https://access.redhat.com/errata/RHEA-2026:4893)) is now available. This release uses [Kubernetes 1.36](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.36.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
 
 OpenShift Container Platform 4.17 clusters are available at <https://console.redhat.com/openshift>. From the Red Hat Hybrid Cloud Console, you can deploy OpenShift Container Platform clusters to either on-premises or cloud environments.
 
@@ -203,6 +203,13 @@ You can install and run OpenShift Container Platform 4.17 on VMware Cloud Founda
 
 For more information, see [VMware vSphere infrastructure requirements](../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-infrastructure_ipi-vsphere-installation-reqs).
 
+vCenter in-place upgrades on VMware vSphere clusters
+OpenShift Container Platform clusters deployed on VMware vSphere now support vCenter in-place upgrades from vCenter 8 to vCenter 9 without requiring cluster redeployment. When you perform this upgrade, all cluster nodes remain in the `Ready` state, all cluster operators remain available, and the vSphere Container Storage Interface (CSI) driver continues to operate without interruption. No OpenShift Container Platform configuration changes are required.
+
+This support applies to vCenter in-place upgrades only. vCenter server replacement scenarios are not covered by this feature.
+
+For more information, see [VMware vSphere infrastructure requirements](../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-infrastructure_ipi-vsphere-installation-reqs).
+
 Creating cluster update assessments with OpenShift Lightspeed
 With this release, as a Technology Preview you can use the agentic OpenShift Lightspeed-driven **Cluster Update** page on the web console to check update availability, evaluate compatibility with your cluster, and produce an update assessment that you can review as you prepare for a cluster update.
 
@@ -247,6 +254,21 @@ You must provision and replace these compute nodes manually. Before you add the 
 For more information, see [Add compute machines without vSphere integration](../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml#adding-bare-metal-compute-vsphere-user-infra).
 
 ## Networking
+
+Gateway API CRDs updated to version 1.5.1
+With this release, OpenShift Container Platform updates the managed Gateway API custom resource definitions (CRDs) to version 1.5.1. The Gateway API controller is initially based on Red Hat OpenShift Service Mesh 3.4 and Istio 1.30.
+
+This release adds support for the following Gateway API version 1.5.1 features:
+
+- `TLSRoute` resources that route TLS traffic by matching the Server Name Indication (SNI) hostname, typically for passthrough scenarios where the backend, rather than the gateway, terminates TLS.
+
+- A Cross-Origin Resource Sharing (CORS) filter on `HTTPRoute` resources that configures CORS headers by using a built-in filter.
+
+- `ReferenceGrant` resources at the stable `gateway.networking.k8s.io/v1` API version.
+
+For more information, see [Understand Gateway API](../networking/ingress_load_balancing/configuring_gateway_api/understand-gateway-api.xml#understand-gateway-api_understand-gateway-api).
+
+<!-- -->
 
 OVN-Kubernetes exposes user-defined network (UDN) scale metrics
 With this release, OVN-Kubernetes exposes Prometheus scale metrics for user-defined network (UDN) `NetworkAttachmentDefinition` (NAD) sync, node annotation updates, and northbound database (NBDB) programming. Use the metrics to find bottlenecks when you create or scale user-defined networks. These metrics are available from the `ovnkube-cluster-manager` and `ovnkube-controller` metrics endpoints when you enable OVN-Kubernetes scale metrics. The following metrics are available:
@@ -747,6 +769,7 @@ Networking deprecated and removed tracker
 | Kubernetes topology label `failure-domain.beta.kubernetes.io/zone` | Deprecated | Deprecated | Deprecated |
 | Kubernetes topology label `failure-domain.beta.kubernetes.io/region` | Deprecated | Deprecated | Deprecated |
 | Dynamic Accelerator Slicer (DAS) Operator | Technology Preview | Removed | Removed |
+| Node Observability Operator | Technology Preview | Technology Preview | Removed |
 | runC container runtime | General Availability | Deprecated | Deprecated |
 
 Node deprecated and removed tracker
@@ -841,6 +864,10 @@ This section includes removed features for OpenShift Container Platform 4.17.
 ## The adding kernel modules to nodes with kvc feature is removed
 
 The adding kernel modules to nodes with kvc feature was deprecated in OpenShift Container Platform 4.22, and is now removed from OpenShift Container Platform 5.0.
+
+## The Node Observability Operator is removed
+
+The Node Observability Operator was a Technology Preview feature and is now removed from OpenShift Container Platform 5.0.
 
 # Fixed issues
 
@@ -1631,7 +1658,7 @@ RHOSP Technology Preview tracker
 | Hyperthreading-aware CPU manager policy | Technology Preview | Technology Preview | Technology Preview |
 | LLC-aware CPU pinning | Technology Preview | Technology Preview | General Availability |
 | Mount namespace encapsulation | Technology Preview | Technology Preview | Technology Preview |
-| Node Observability Operator | Technology Preview | Technology Preview | Technology Preview |
+| Node Observability Operator | Technology Preview | Technology Preview | Removed |
 | Increasing the etcd database size | Technology Preview | Technology Preview | General Availability |
 | Kubernetes KMS v2 encryption for etcd | Not Available | Technology Preview | Technology Preview |
 | Managing etcd size by setting the `eventTTLMinutes` property | Technology Preview | General Availability | General Availability |

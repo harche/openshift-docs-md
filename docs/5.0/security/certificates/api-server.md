@@ -4,6 +4,8 @@ By default, the API server certificate is issued by an internal OpenShift Contai
 
 > [!NOTE]
 > In hosted control plane clusters, you can add as many custom certificates to your Kubernetes API Server as you need. However, do not add a certificate for the endpoint that worker nodes use to communicate with the control plane.
+>
+> For more information, see "Configure a custom API server certificate in a hosted cluster".
 
 # Add an API server named certificate for the first time
 
@@ -178,5 +180,96 @@ Procedure
     ```
 
     Confirm that the `PROGRESSING` status column remains `False`. If the status changes to `True`, verify that your underlying `apiserver/cluster` resource parameters were not modified structural layout changes during the substitution.
+
+</div>
+
+# Configure a custom API server certificate in a hosted cluster
+
+To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
+
+You can configure a custom certificate during either Day 1 or Day 2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
+
+  - `tls.crt`: The certificate
+
+  - `tls.key`: The private key
+
+- If your `HostedCluster` configuration includes custom serving certificates via the `spec.configuration.apiServer.servingCerts.namedCertificates` specification, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the external API server address. For example, depending on the hostname pattern used in your environment, the address might be in the following format: `api.<cluster_name>.<domain>`.
+
+  The `HostedCluster` resource automatically includes the external API address in the default Kubernetes API server certificate SANs. If the same hostname is in both the custom certificate and the automatically generated Kubernetes API server certificate, the configuration is rejected to prevent TLS serving ambiguity.
+
+  This validation applies to all service publishing strategies, including `LoadBalancer` and `NodePort`. The only exception is when you use Amazon Web Services (AWS) as the provider with `Private` or `PublicAndPrivate` endpoint access configurations, where the platform manages the SAN conflict.
+
+- The certificate must be valid for the external API endpoint.
+
+- The validity period of the certificate aligns with your cluster’s expected life cycle.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Create a secret with your custom certificate by entering the following command:
+
+    ``` terminal
+    $ oc create secret tls sample-hosted-kas-custom-cert \
+      --cert=path/to/cert.crt \
+      --key=path/to/key.key \
+      -n <hosted_cluster_namespace>
+    ```
+
+2.  Update your `HostedCluster` configuration with the custom certificate details, as shown in the following example:
+
+    ``` yaml
+    spec:
+      configuration:
+        apiServer:
+          servingCerts:
+            namedCertificates:
+            - names:
+              - api-custom-cert-sample-hosted.sample-hosted.example.com
+              servingCertificate:
+                name: sample-hosted-kas-custom-cert
+    ```
+
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.names` specifies the list of DNS names that the certificate is valid for.
+
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.servingCertificate` specifies the name of the secret that contains the custom certificate.
+
+3.  Apply the changes to your `HostedCluster` configuration by entering the following command:
+
+    ``` terminal
+    $ oc apply -f <hosted_cluster_config>.yaml
+    ```
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+- Check the API server pods to ensure that the new certificate is mounted.
+
+- Test the connection to the API server by using the custom domain name.
+
+- Verify the certificate details in your browser or by using tools such as `openssl`.
 
 </div>

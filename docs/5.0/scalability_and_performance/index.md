@@ -49,8 +49,6 @@ Review guidance for planning, optimizing, and measuring the performance and scal
 
 [Workload partitioning](../scalability_and_performance/enabling-workload-partitioning.xml#enabling-workload-partitioning)
 
-[Using the Node Observability Operator](../scalability_and_performance/node-observability-operator.xml#using-node-observability-operator)
-
 # Additional resources
 
 - [Getting support](../support/getting-support.xml#getting-support)

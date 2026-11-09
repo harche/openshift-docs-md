@@ -1308,3 +1308,15 @@ After the nodes are available, the containerized TuneD daemon calculates the req
     ```
 
     </div>
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Hosted control planes overview](../hosted_control_planes/index.xml#hosted-control-planes-overview)
+
+</div>

@@ -369,9 +369,6 @@ Procedure
         packages:
          - name: aws-load-balancer-operator
          - name: 3scale-operator
-         - name: node-observability-operator
-           channels:
-           - name: stable
     additionalImages:
      - name: registry.redhat.io/ubi8/ubi:latest
      - name: registry.redhat.io/ubi9/ubi@sha256:20f695d2a91352d4eaa25107535126727b5945bff38ed36a3e59590f495046f0

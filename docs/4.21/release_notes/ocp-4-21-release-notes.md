@@ -953,6 +953,28 @@ This section will continue to be updated over time to provide notes on enhanceme
 > [!IMPORTANT]
 > For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
+## RHSA-2026:92994 - OpenShift Container Platform 4.17.41 bug fix and security update
+
+Issued: 3 November 2026
+
+OpenShift Container Platform release 4.17.41 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:92994](https://access.redhat.com/errata/RHSA-2026:92994) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:92995](https://access.redhat.com/errata/RHSA-2026:92995) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.41 --pullspecs
+```
+
+### Fixed issues
+
+There are no notable fixed issues in this release.
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:83702 - OpenShift Container Platform 4.17.39 bug fix and security update
 
 Issued: 20 October 2026

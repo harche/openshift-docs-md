@@ -158,6 +158,18 @@ For most OpenShift Container Platform clusters, control plane machines are defin
 
 - `openshift-kube-scheduler`
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
+
+</div>
+
 # Operators in OpenShift Container Platform
 
 Operators are the foundational control plane extensions of OpenShift Container Platform. Use Operators as the preferred method to package, deploy, and manage services on the control plane, and to support your applications.
