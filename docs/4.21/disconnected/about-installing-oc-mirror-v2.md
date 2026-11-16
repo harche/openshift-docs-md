@@ -407,7 +407,7 @@ Additional resources
 
 </div>
 
-- [About the OpenShift Update Service](../updating/understanding_updates/intro-to-updates.xml#update-service-about_understanding-openshift-updates)
+- [Updating a cluster in a disconnected environment using the OpenShift Update Service](../disconnected/updating/disconnected-update-osus.xml#updating-disconnected-cluster-osus)
 
 </div>
 

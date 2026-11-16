@@ -953,6 +953,34 @@ This section will continue to be updated over time to provide notes on enhanceme
 > [!IMPORTANT]
 > For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
+## RHSA-2026:95409 - OpenShift Container Platform 4.17.42 bug fix and security update
+
+Issued: 9 November 2026
+
+OpenShift Container Platform release 4.17.42 is now available. The list of fixed bugs that are included in the update is documented in the [RHSA-2026:95409](https://access.redhat.com/errata/RHSA-2026:95409) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:95407](https://access.redhat.com/errata/RHBA-2026:95407) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.42 --pullspecs
+```
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, JSON merge patches could bypass field-level Common Expression Language (CEL) immutability rules on the `HostedCluster` custom resource by removing the `spec.infraID` or `spec.clusterID` specifications. As a consequence, the controller re-provisioned the infrastructure and orphaned existing resources. With this release, parent-level CEL validation rules reject API requests attempting to clear these fields. ([OCPBUGS-129443](https://issues.redhat.com/browse/OCPBUGS-129443))
+
+- Before this update, when reconciling virtual machines (VMs) on Microsoft Azure, a creation operation could fail and leave a virtual network interface controller (NIC) attached to a load balancer without a corresponding VM. As a consequence, the load balancer could not be used until the orphaned NIC was removed. With this release, the reconciler cleans up orphaned NICs when VM creation fails. As a result, load balancers are not blocked by orphaned NICs after failed VM creation. ([OCPBUGS-133099](https://issues.redhat.com/browse/OCPBUGS-133099))
+
+- Before this update, an infinite boot loop occurred during Lenovo SR645 V3 hardware provisioning after Red Hat Enterprise Linux CoreOS (RHCOS) was written to the disk. As a consequence, the host stalled on a boot option restoration screen and could not complete the provisioning. With this release, the `ironic` resource skips setting the boot device. As a result, non-volatile random-access memory (NVRAM) loss does not occur, and provisioning succeeds. ([OCPBUGS-134138](https://issues.redhat.com/browse/OCPBUGS-134138))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:92994 - OpenShift Container Platform 4.17.41 bug fix and security update
 
 Issued: 3 November 2026
@@ -970,6 +998,34 @@ $ oc adm release info 4.21.41 --pullspecs
 ### Fixed issues
 
 There are no notable fixed issues in this release.
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:89626 - OpenShift Container Platform 4.17.40 bug fix and security update
+
+Issued: 26 October 2026
+
+OpenShift Container Platform release 4.17.40 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:89626](https://access.redhat.com/errata/RHSA-2026:89626) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:89229](https://access.redhat.com/errata/RHSA-2026:89229) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.40 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when you navigated to a **Terminal** tab of a node in the OpenShift Container Platform web console, the component checked for the debug pod even if the pod was still being created. As a consequence, a `Debug pod not found or was deleted.` error appeared before the terminal loaded successfully. With this release, a loading spinner is shown when the debug pod is being created, and the cleanup logic guards against an undefined namespace to prevent errors on early unmount. As a result, the **Terminal** tab of a node loads without displaying a false error message. ([OCPBUGS-111098](https://issues.redhat.com/browse/OCPBUGS-111098))
+
+- Before this update, the boot image controller required an exact match between machine set failure domains and the platform’s configured failure domains. As a consequence, machine sets with valid but non-matching failure domain configurations were skipped during boot image updates. With this release, the boot image controller accepts machine sets with compatible failure domain configurations even when they do not exactly match the platform configuration. As a result, boot images are updated correctly across all valid machine sets. ([OCPBUGS-129667](https://issues.redhat.com/browse/OCPBUGS-129667))
+
+- Before this update, the OpenShift Container Platform web console expected an Ingress Controller to exist even when the Ingress capability was disabled in hosted control plane clusters. As a consequence, hosted control plane clusters with disabled Ingress capability could not access the web console. With this release, the web console correctly handles hosted control plane clusters without Ingress Controllers. As a result, the web console is accessible in hosted control plane environments with disabled Ingress capability. ([OCPBUGS-130936](https://issues.redhat.com/browse/OCPBUGS-130936))
+
+- Before this update, selecting a specific project in the project selector caused the **Namespace** column to be hidden on the **Pods** tab on the Node Details page, even when Namespace was enabled under **Manage Columns**. As a consequence, users could not determine which namespace each pod belonged to, even though the tab displayed pods from multiple namespaces. With this release, the **Namespace** column is displayed correctly on the **Node Details Pods** tab regardless of the selected project. As a result, users can identify the namespace of each pod when viewing the **Pods** tab on a node. ([OCPBUGS-132569](https://issues.redhat.com/browse/OCPBUGS-132569))
 
 ### Updating
 

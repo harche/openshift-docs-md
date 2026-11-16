@@ -21,6 +21,8 @@ Before replacing the built-in OAuth server with an external provider, ensure tha
 
 If there are any issues with the external identity provider, you need one of these methods to gain access to the OpenShift Container Platform cluster in an emergency situation.
 
+If the JSON Web Token (JWT) from your OIDC identity provider does not include all of the claims that you need, such as group memberships, you can use external claims sourcing. External claims sourcing retrieves user identity information from external HTTP endpoints, such as a provider’s `UserInfo` endpoint or the Microsoft Graph API, and supplements the claims in the JWT with that data. You can configure up to 5 external sources per OIDC provider, with up to 16 claim mappings and 16 predicates per source. This feature requires the `TechPreviewNoUpgrade` feature set.
+
 ## Disabled OAuth resources
 
 When you enable direct authentication, several OAuth resources are intentionally removed.
@@ -620,6 +622,283 @@ spec:
       issuerURL: my-issuer-url
     name: my-oidc-provider-name
 ```
+
+</div>
+
+## Configuring external claims sourcing
+
+You can use external claims sourcing with your OIDC identity provider to retrieve additional user identity information, such as group memberships, from external HTTP endpoints. Use external claims sourcing when JWT token size limits prevent your identity provider from including all claim data in the token.
+
+> [!IMPORTANT]
+> External claims sourcing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have configured an external OIDC identity provider for direct authentication.
+
+- You have enabled the `TechPreviewNoUpgrade` feature set on the cluster.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You know the endpoint URL for the external claims source.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Optional: If your external claims endpoint uses a TLS certificate not trusted by the system certificate authority bundle, create a config map containing the certificate authority bundle by running the following command:
+
+    ``` terminal
+    $ oc create configmap external-claims-ca \
+        --from-file=ca-bundle.crt=<path_to_ca_bundle> \
+        -n openshift-config
+    ```
+
+    Replace `<path_to_ca_bundle>` with the path to the PEM-encoded certificate authority bundle file.
+
+2.  Optional: If the external endpoint requires client credential authentication, such as the Microsoft Graph API, create a secret for the client credentials by running the following command:
+
+    ``` terminal
+    $ oc create secret generic external-claims-client-secret \
+        --from-literal=client-secret=<client_secret_value> \
+        -n openshift-config
+    ```
+
+    Replace `<client_secret_value>` with the client secret value from your identity provider’s app registration.
+
+3.  Edit the authentication configuration by running the following command:
+
+    ``` terminal
+    $ oc edit authentication.config/cluster
+    ```
+
+4.  Add the `externalClaimsSources` field under your `oidcProviders` entry.
+
+    The following example uses the `RequestProvidedToken` authentication mode to retrieve group membership from a `UserInfo` endpoint:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: Authentication
+    metadata:
+      name: cluster
+    # ...
+    spec:
+      type: OIDC
+      oidcProviders:
+      - name: my-oidc-provider
+        issuer:
+          issuerURL: https://idp.example.com
+          audiences:
+          - my-client-id
+        claimMappings:
+          username:
+            claim: email
+            prefixPolicy: Prefix
+            prefix:
+              prefixString: 'oidc:'
+          groups:
+            expression: >-
+              has(claims.groups)
+                ? (type(claims.groups) == string
+                    ? claims.groups.split(',')
+                    : claims.groups)
+                : []
+    # ...
+        externalClaimsSources:
+        - authentication:
+            type: RequestProvidedToken
+          url:
+            hostname: idp.example.com
+            pathExpression: "['userinfo']"
+          mappings:
+          - name: groups
+            expression: "has(response.body.groups) ? response.body.groups.join(',') : ''"
+          predicates:
+          - expression: "!has(claims.groups)"
+          tls:
+            certificateAuthority:
+              name: external-claims-ca
+    ```
+
+    where:
+
+    `spec.oidcProviders.externalClaimsSources`
+    Specifies one or more external endpoints for sourcing additional identity information.
+
+    `spec.oidcProviders.externalClaimsSources.authentication.type`
+    Specifies the authentication mode. `RequestProvidedToken` passes the user’s ID token to the external endpoint. `ClientCredential` uses OAuth2 client credentials to obtain a separate access token.
+
+    `spec.oidcProviders.externalClaimsSources.url`
+    Specifies the external endpoint URL. The `pathExpression` CEL expression returns a list of path segments joined with `/` to form the request path. The `claims` variable provides access to JWT token claims for constructing dynamic paths.
+
+    `spec.oidcProviders.externalClaimsSources.mappings`
+    Specifies claim mappings that extract values from the external endpoint response by using CEL expressions. Expressions must return a string value. To map array values such as groups, use the `.join(',')` method to convert the array to a comma-separated string, and use a corresponding `claimMappings` expression with `.split(',')` to convert it back to a list. The `response.body` variable provides access to the parsed JSON response. Mapping names must be unique across all external claims sources.
+
+    `spec.oidcProviders.externalClaimsSources.predicates`
+    Specifies optional CEL expressions that control whether this source is queried. All expressions must evaluate to `true` for the source to be queried. When omitted, the source is always queried.
+
+    `spec.oidcProviders.externalClaimsSources.tls.certificateAuthority`
+    Specifies the optional certificate authority config map for the external endpoint. Omit if the endpoint certificate is trusted by the system certificate authority bundle.
+
+    The following example uses the `ClientCredential` authentication mode to retrieve group membership from Microsoft Entra ID by using the Microsoft Graph API:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: Authentication
+    metadata:
+      name: cluster
+    # ...
+    spec:
+      type: OIDC
+      oidcProviders:
+      - name: entra-id
+        issuer:
+          issuerURL: https://login.microsoftonline.com/<tenant_id>/v2.0
+          audiences:
+          - <application_client_id>
+        claimMappings:
+          username:
+            claim: preferred_username
+            prefixPolicy: Prefix
+            prefix:
+              prefixString: 'oidc:'
+          groups:
+            expression: >-
+              has(claims.groups)
+                ? (type(claims.groups) == string
+                    ? claims.groups.split(',')
+                    : claims.groups)
+                : []
+    # ...
+        externalClaimsSources:
+        - authentication:
+            type: ClientCredential
+            clientCredential:
+              clientID: <application_client_id>
+              clientSecret:
+                name: external-claims-client-secret
+              tokenEndpoint: https://login.microsoftonline.com/<tenant_id>/oauth2/v2.0/token
+              scopes:
+              - "https://graph.microsoft.com/.default"
+          url:
+            hostname: graph.microsoft.com
+            pathExpression: "['v1.0', 'users', claims.preferred_username, 'memberOf']"
+          mappings:
+          - name: groups
+            expression: "has(response.body.value) ? response.body.value.map(x, x.displayName).join(',') : ''"
+    ```
+
+    where:
+
+    `spec.oidcProviders.externalClaimsSources.authentication.clientCredential.clientID`
+    Specifies the client application ID for OAuth2 client credential authentication.
+
+    `spec.oidcProviders.externalClaimsSources.authentication.clientCredential.clientSecret`
+    Specifies a reference to a secret in the `openshift-config` namespace. The value must be stored in the `client-secret` key.
+
+    `spec.oidcProviders.externalClaimsSources.authentication.clientCredential.tokenEndpoint`
+    Specifies the OAuth2 token endpoint URL for exchanging client credentials for an access token.
+
+    `spec.oidcProviders.externalClaimsSources.authentication.clientCredential.scopes`
+    Specifies the OAuth2 scopes to request when obtaining the access token.
+
+    If a request to an external source fails, the claims from that source are unavailable for the authentication attempt. Whether authentication succeeds depends on how your claim mappings and validation rules are configured. If a successfully sourced external claim has the same name as a claim in the JWT token, the externally sourced value replaces the token value.
+
+5.  Save and exit the editor to apply the configuration.
+
+    Wait for the authentication configuration to be applied.
+
+6.  Check the Cluster Authentication Operator status by running the following command:
+
+    ``` terminal
+    $ oc get co authentication
+    ```
+
+    Wait until `PROGRESSING` is `False` and `DEGRADED` is `False`:
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output showing completed rollout
+
+    </div>
+
+    ``` terminal
+    NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+    authentication   5.0.0    True        False         False      10m
+    ```
+
+    </div>
+
+    If `DEGRADED` is `True`, review the `MESSAGE` column and the `oauth-apiserver` pod logs in the `openshift-oauth-apiserver` namespace.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Log in to the cluster by authenticating with your identity provider by running the following command:
+
+    ``` terminal
+    $ oc login --exec-plugin=oc-oidc \
+        --issuer-url=https://idp.example.com \
+        --client-id=my-client-id
+    ```
+
+2.  Check your group memberships to confirm that external claims sourcing is working by running the following command:
+
+    ``` terminal
+    $ oc create -o yaml -f - <<EOF
+    apiVersion: authentication.k8s.io/v1
+    kind: SelfSubjectReview
+    EOF
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    apiVersion: authentication.k8s.io/v1
+    kind: SelfSubjectReview
+    metadata:
+      creationTimestamp: "2026-01-01T00:00:00Z"
+    status:
+      userInfo:
+        username: "oidc:user@example.com"
+        groups:
+        - "engineering"
+        - "platform-team"
+        - "system:authenticated"
+    ```
+
+    </div>
+
+    Check that the groups include entries from the external endpoint.
 
 </div>
 

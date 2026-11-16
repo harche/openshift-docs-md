@@ -16,5 +16,20 @@ Additional resources
 
 </div>
 
-> [!IMPORTANT]
-> Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+# Run Once Duration Override Operator 1.5.0
+
+Review the features, enhancements, and advisory for the release of Run Once Duration Override Operator 1.5.0.
+
+Issued: 3 November 2026
+
+The following advisory is available for the Run Once Duration Override Operator 1.5.0:
+
+- [RHBA-2026:94759](https://access.redhat.com/errata/RHBA-2026:94759)
+
+## New features and enhancements
+
+- This release of the Run Once Duration Override Operator updates the Kubernetes version to 1.36.
+
+## Bug fixes
+
+- This release of the Run Once Duration Override Operator addresses several Common Vulnerabilities and Exposures (CVEs).

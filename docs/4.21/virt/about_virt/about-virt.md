@@ -106,7 +106,7 @@ However, because OpenShift Virtualization is conceptually different from vSphere
 
 OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
 
-The latest stable release of OpenShift Virtualization 4.21 is 4.21.17.
+The latest stable release of OpenShift Virtualization 4.21 is 4.21.24.
 
 # Volume and access modes for VM disks
 
