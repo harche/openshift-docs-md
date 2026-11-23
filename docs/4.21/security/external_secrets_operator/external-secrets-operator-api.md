@@ -271,9 +271,26 @@ The `componentConfig` field defines configuration overrides for a specific `exte
 <td style="text-align: left;"><p><code>overrideEnv</code></p></td>
 <td style="text-align: left;"><p><strong>EnvVar</strong></p>
 <p><em>array</em></p></td>
-<td style="text-align: left;"><p><code>overrideEnv</code> specifies custom environment variables for this component’s container. These are merged with operator-managed environment variables, with user-defined values taking precedence. Environment variable names starting with <code>HOSTNAME</code>, <code>KUBERNETES_</code> or <code>EXTERNAL_SECRETS_</code> are reserved and are not allowed.</p></td>
+<td style="text-align: left;"><p><code>overrideEnv</code> specifies custom environment variables for this component’s container. These are merged with operator-managed environment variables, with user-defined values taking precedence. Environment variable names starting with <code>HOSTNAME</code>, <code>KUBERNETES_</code> <code>EXTERNAL_SECRETS_</code>, <code>SSL_CERT_DIR</code>, and <code>SSL_CERT_FILE</code> are reserved and are not allowed.</p></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The maximum number of items is 50.</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p><code>advancedOverrides</code></p></td>
+<td style="text-align: left;"><p><em>RawExtension</em></p></td>
+<td style="text-align: left;"><p><code>advancedOverrides</code> applies a raw strategic merge patch onto the Operator-generated <code>Deployment</code> specification. Do not use the <code>advancedOverrides</code> field unless you understand the impact. Setting fields outside the <code>allowlist</code> causes validation to fail and puts the <code>ExternalSecretsConfig</code> custom resource (CR) into a <code>Degraded</code> condition.</p>
+<p>Only the following <code>Deployment</code> field paths are allowed in the <code>advancedOverrides</code> field:</p>
+<ul>
+<li><p><code>spec.template.spec.affinity</code></p></li>
+<li><p><code>spec.template.spec.tolerations</code></p></li>
+<li><p><code>spec.template.spec.nodeSelector</code></p></li>
+<li><p><code>spec.template.spec.topologySpreadConstraints</code></p></li>
+<li><p><code>spec.template.spec.containers[*].args</code></p></li>
+<li><p><code>spec.template.spec.containers[*].resources</code></p></li>
+</ul>
+<p>If an allowed field overlaps a first-class setting in the <code>ExternalSecretsConfig</code> CR, the <code>advancedOverrides</code> value takes precedence.</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Optional</p></td>
 </tr>
 </tbody>
 </table>
@@ -463,6 +480,16 @@ The `deploymentConfig` field defines configuration overrides for a Kubernetes De
 <td style="text-align: left;"><p>10</p></td>
 <td style="text-align: left;"><p>The maximum value is 50.</p>
 <p>The minimum value is 1.</p></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p><code>replicas</code></p></td>
+<td style="text-align: left;"><p><em>integer</em></p></td>
+<td style="text-align: left;"><p><code>replicas</code> specifies the desired number of pod replicas for the deployment of this component. The Operator always enables leader election for the <code>ExternalSecretsCoreController</code> and <code>CertController</code> components, so only one replica process changes at a time.</p>
+<p>Leader election stays enabled even when <code>replicas</code> is 1 because rolling updates can briefly run two pods. The <code>Webhook</code> and <code>BitwardenSDKServer</code> components do not use leader election, regardless of the replica count.</p></td>
+<td style="text-align: left;"><p>1</p></td>
+<td style="text-align: left;"><p>The maximum value is 10.</p>
+<p>The minimum value is 1.</p>
+<p>Optional</p></td>
 </tr>
 </tbody>
 </table>

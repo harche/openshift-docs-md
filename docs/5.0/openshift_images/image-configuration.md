@@ -1040,13 +1040,15 @@ Node actions and drain/reboot behahior
 
   - Automatic rotation of the `/etc/kubernetes/kubelet-ca.crt` certificate authority (CA) by the Kubernetes API Server Operator.
 
-- When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
+- When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing or deleting an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
 
   - The addition of a registry with the `pull-from-mirror = "digest-only"` parameter set for each mirror.
 
   - The addition of a mirror with the `pull-from-mirror = "digest-only"` parameter set in a registry.
 
   - The addition of items to the `unqualified-search-registries` list.
+
+  You can create a node disruption policy to prevent the MCO from draining and rebooting nodes upon the modification of these objects. For more information, see "Using node disruption policies to minimize disruption from machine config changes".
 
 </div>
 
@@ -1738,3 +1740,5 @@ Procedure
 - [Updating the global cluster pull secret](../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets)
 
 - [Configuring project-scoped image pull secrets for mirrored registries](../openshift_images/image-configuration.xml#images-configuration-registry-mirror-project-secret_image-configuration)
+
+- [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-config-node-disruption)

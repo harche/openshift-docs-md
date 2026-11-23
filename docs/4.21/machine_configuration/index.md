@@ -28,7 +28,7 @@ When you perform node management operations, you create or modify a `KubeletConf
 > [!IMPORTANT]
 > When changes are made to a machine configuration, the Machine Config Operator (MCO) automatically reboots all corresponding nodes in order for the changes to take effect.
 >
-> You can mitigate the disruption caused by some machine config changes by using a node disruption policy. See *Understanding node restart behaviors after machine config changes*.
+> You can mitigate the disruption caused by some machine config changes by using a node disruption policy. See "Using node disruption policies to minimize disruption from machine config changes".
 >
 > Alternatively, you can prevent the nodes from automatically rebooting after machine configuration changes before making the changes. Pause the autoreboot process by setting the `spec.paused` field to `true` in the corresponding machine config pool. When paused, machine configuration changes are not applied until you set the `spec.paused` field to `false` and the nodes have rebooted into the new configuration.
 >
@@ -40,13 +40,15 @@ When you perform node management operations, you create or modify a `KubeletConf
 >
 >   - Automatic rotation of the `/etc/kubernetes/kubelet-ca.crt` certificate authority (CA) by the Kubernetes API Server Operator.
 >
-> - When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
+> - When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing or deleting an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
 >
 >   - The addition of a registry with the `pull-from-mirror = "digest-only"` parameter set for each mirror.
 >
 >   - The addition of a mirror with the `pull-from-mirror = "digest-only"` parameter set in a registry.
 >
 >   - The addition of items to the `unqualified-search-registries` list.
+>
+>   You can create a node disruption policy to prevent the MCO from draining and rebooting nodes upon the modification of these objects. For more information, see "Using node disruption policies to minimize disruption from machine config changes".
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated.
 
@@ -142,7 +144,7 @@ Tasks for the MCO configuration that can be done after installation are included
 
   - Automatic rotation of the `/etc/kubernetes/kubelet-ca.crt` certificate authority (CA) by the Kubernetes API Server Operator.
 
-- When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
+- When the MCO detects changes to the `/etc/containers/registries.conf` file, such as editing or deleting an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object, it drains the corresponding nodes, applies the changes, and uncordons the nodes. The node drain does not happen for the following changes:
 
   - The addition of a registry with the `pull-from-mirror = "digest-only"` parameter set for each mirror.
 
@@ -150,7 +152,7 @@ Tasks for the MCO configuration that can be done after installation are included
 
   - The addition of items to the `unqualified-search-registries` list.
 
-In other cases, you can mitigate the disruption to your workload when the MCO makes changes by using *node disruption policies*. For information, see *Understanding node restart behaviors after machine config changes*.
+  You can create a node disruption policy to prevent the MCO from draining and rebooting nodes upon the modification of these objects. For more information, see "Using node disruption policies to minimize disruption from machine config changes".
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated. For more information on configuration drift, see *Understanding configuration drift detection*.
 
@@ -208,7 +210,7 @@ If the MCO drains pods on the master node, note the following conditions:
 > [!NOTE]
 > In certain cases the nodes are not drained. For more information, see "About the Machine Config Operator."
 
-There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Understanding node restart behaviors after machine config changes" and "Disabling the Machine Config Operator from automatically rebooting".
+There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Using node disruption policies to minimize disruption from machine config changes" and "Disabling the Machine Config Operator from automatically rebooting."
 
 # Understanding configuration drift detection
 

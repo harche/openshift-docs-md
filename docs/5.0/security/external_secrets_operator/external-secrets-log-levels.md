@@ -1015,3 +1015,631 @@ Verification
     </div>
 
 </div>
+
+# Replicas for external-secrets components
+
+Set the `replicas` field to run more than one pod for each `external-secrets` component in the External Secrets Operator for Red Hat OpenShift. Multiple replicas keep the component available if a pod fails.
+
+The following components support replica settings:
+
+| Component name | Description |
+|----|----|
+| `ExternalSecretsCoreController` | Main `external-secrets` controller |
+| `Webhook` | `external-secrets` webhook server |
+| `CertController` | Certificate controller for webhook Transport Layer Security (TLS) certificates |
+| `BitwardenSDKServer` | Bitwarden SDK server plugin |
+
+Components that support replica settings
+
+You can add one configuration entry for each component, for a maximum of four entries.
+
+## Leader election
+
+Leader election ensures that only one replica of a controller processes changes at a time, even when several replicas are running.
+
+- For the `ExternalSecretsCoreController` and `CertController` components, the External Secrets Operator for Red Hat OpenShift always sets `--enable-leader-election=true` in the container arguments. Leader election stays enabled even when you set `replicas` to 1. During rolling updates, two pods can briefly run, and only one replica processes changes.
+
+- For `Webhook` and `BitwardenSDKServer`, neither component uses leader election, regardless of the `replicas` count.
+
+# Configure replicas for external-secrets components
+
+Run more than one pod of an `external-secrets` component in the External Secrets Operator by setting the `replicas` field in the `ExternalSecretsConfig` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster with `cluster-admin` privileges.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have created the `ExternalSecretsConfig` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the `ExternalSecretsConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc edit externalsecretsconfigs.operator.openshift.io cluster
+    ```
+
+2.  Add the `componentConfigs` field under `spec.controllerConfig` as follows:
+
+    ``` yaml
+    apiVersion: operator.openshift.io/v1alpha1
+    kind: ExternalSecretsConfig
+    metadata:
+      name: cluster
+    spec:
+      controllerConfig:
+        componentConfigs:
+          - componentName: ExternalSecretsCoreController
+            deploymentConfigs:
+              replicas: 2
+          - componentName: Webhook
+            deploymentConfigs:
+              replicas: 2
+    ```
+
+    where:
+
+    `spec.controllerConfig.componentConfigs.componentName.deploymentConfigs.replicas`
+    Specifies the desired number of pod replicas for the component deployment. The value must be at least 1. The maximum value is 10. If you do not specify a value, the default is 1.
+
+3.  Save the file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify that the deployment uses the `replicas` value by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.replicas}'
+    ```
+
+    The output displays the `replicas` value you configured.
+
+2.  Verify that the `ExternalSecretsCoreController` component uses leader election by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="external-secrets")].args}'
+    ```
+
+    The output includes `--enable-leader-election=true`.
+
+3.  Optional: Verify that a replica holds a leader election lease in the operand namespace by running the following command:
+
+    ``` terminal
+    $ oc get lease -n external-secrets
+    ```
+
+    The output lists a lease with a non-empty holder identity for the active leader.
+
+4.  Optional: If the cluster runs the `CertController` component, verify that the component uses leader election by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets-cert-controller -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="cert-controller")].args}'
+    ```
+
+    The output includes `--enable-leader-election=true`.
+
+</div>
+
+# Advanced overrides for external-secrets component deployments
+
+You can customize pod placement, container arguments, and resource settings for External Secrets Operator components. Advanced overrides let you change deployment settings when dedicated configuration fields do not provide the options you need.
+
+> [!WARNING]
+> Do not set the `advancedOverrides` field unless necessary. A field outside the allowed paths fails validation and sets the `ExternalSecretsConfig` custom resource (CR) to the `Degraded` condition.
+
+The following components support the `advancedOverrides` field:
+
+| Component name | Description |
+|----|----|
+| `ExternalSecretsCoreController` | Main `external-secrets` controller |
+| `Webhook` | `external-secrets` webhook server |
+| `CertController` | Certificate controller for the webhook Transport Layer Security certificates |
+| `BitwardenSDKServer` | Bitwarden SDK server plugin |
+
+Components that support the `advancedOverrides` field
+
+You can add one configuration entry per component, up to four entries.
+
+Set the `advancedOverrides` field in the relevant entry of the `spec.controllerConfig.componentConfigs` list in the `ExternalSecretsConfig` CR.
+
+You can use only the following `Deployment` field paths in the `advancedOverrides` field:
+
+`spec.template.spec.affinity`
+Specifies the rules that place the pods on specific nodes or keep them apart from other pods.
+
+`spec.template.spec.tolerations`
+Specifies the taints that the pods can tolerate when scheduled on nodes.
+
+`spec.template.spec.nodeSelector`
+Specifies the node labels that a node must have for the pods to run on it.
+
+`spec.template.spec.topologySpreadConstraints`
+Specifies how the pods spread across zones or nodes.
+
+`spec.template.spec.containers[*].args`
+Specifies the command-line flags that the containers use at startup.
+
+`spec.template.spec.containers[*].resources`
+Specifies the CPU and memory requests and limits for the containers.
+
+If you configure the same deployment setting through both the `advancedOverrides` field and a dedicated field, such as `spec.appConfig.affinity`, the `advancedOverrides` value applies.
+
+Set the following fields in the relevant `componentConfigs` entry, not in its `advancedOverrides` field:
+
+- `deploymentConfigs.replicas`
+
+- `deploymentConfigs.revisionHistoryLimit`
+
+- `overrideEnv`
+
+The External Secrets Operator merges overrides from the `args` field with the managed arguments by flag name. The External Secrets Operator keeps the other default flags. Specify only the flags that you want to change or add. For the `ExternalSecretsCoreController` and `CertController` components, `--enable-leader-election=true` remains enabled unless you override it.
+
+# Override scheduling, arguments, and resources for external-secrets components
+
+Customize an `external-secrets` component deployment to meet your scheduling and resource requirements or to change its container arguments. Set the `advancedOverrides` field for the relevant component in the `componentConfigs` list of the `ExternalSecretsConfig` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have installed `jq`.
+
+- You have created the `ExternalSecretsConfig` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the `ExternalSecretsConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc edit externalsecretsconfigs.operator.openshift.io cluster
+    ```
+
+2.  Add the `componentConfigs` field under the `spec.controllerConfig`. Include only the overrides that you need, as in the following example:
+
+    ``` yaml
+    apiVersion: operator.openshift.io/v1alpha1
+    kind: ExternalSecretsConfig
+    metadata:
+      name: cluster
+    spec:
+      controllerConfig:
+        componentConfigs:
+          - componentName: ExternalSecretsCoreController
+            advancedOverrides:
+              spec:
+                template:
+                  spec:
+                    affinity:
+                      podAntiAffinity:
+                        preferredDuringSchedulingIgnoredDuringExecution:
+                          - weight: 100
+                            podAffinityTerm:
+                              topologyKey: kubernetes.io/hostname
+                              labelSelector:
+                                matchLabels:
+                                  app: external-secrets
+                    topologySpreadConstraints:
+                      - maxSkew: 1
+                        topologyKey: topology.kubernetes.io/zone
+                        whenUnsatisfiable: ScheduleAnyway
+                    containers:
+                      - name: external-secrets
+                        args:
+                          - --concurrent=20
+                          - --client-burst=200
+                          - --client-qps=100
+                        resources:
+                          requests:
+                            cpu: 200m
+                            memory: 256Mi
+                          limits:
+                            cpu: "1"
+                            memory: 512Mi
+    ```
+
+    where:
+
+    `spec.controllerConfig.componentConfigs.componentName`
+    Specifies the component to override, such as `ExternalSecretsCoreController`, `Webhook`, `CertController`, or `BitwardenSDKServer`.
+
+    `spec.controllerConfig.componentConfigs.advancedOverrides`
+    Specifies the changes to apply to the `Deployment` of the component. Include only the allowed `Deployment` field paths. You can omit `containers[].name`. If you set `containers[].name`, the name must match the component container name.
+
+3.  Save the file.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify that the `ExternalSecretsConfig` CR is ready by running the following command:
+
+    ``` terminal
+    $ oc get externalsecretsconfigs.operator.openshift.io cluster -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'
+    ```
+
+    The output is `True`.
+
+2.  Verify that the `Deployment` uses the `affinity` override by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.affinity}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "external-secrets"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 100
+          }
+        ]
+      }
+    }
+    ```
+
+    </div>
+
+3.  Verify that the `Deployment` uses the `topologySpreadConstraints` override by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.topologySpreadConstraints}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    [
+      {
+        "maxSkew": 1,
+        "topologyKey": "topology.kubernetes.io/zone",
+        "whenUnsatisfiable": "ScheduleAnyway"
+      }
+    ]
+    ```
+
+    </div>
+
+4.  Verify that the `Deployment` uses the container `resources` override by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="external-secrets")].resources}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "limits": {
+        "cpu": "1",
+        "memory": "512Mi"
+      },
+      "requests": {
+        "cpu": "200m",
+        "memory": "256Mi"
+      }
+    }
+    ```
+
+    </div>
+
+5.  Verify that the External Secrets Operator merges the `args` overrides with the default flags by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="external-secrets")].args}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    [
+      "--concurrent=20",
+      "--metrics-addr=:8080",
+      "--loglevel=warn",
+      "--zap-time-encoding=epoch",
+      "--enable-leader-election=true",
+      "--enable-push-secret-reconciler=true",
+      "--enable-cluster-store-reconciler=true",
+      "--enable-cluster-external-secret-reconciler=true",
+      "--client-burst=200",
+      "--client-qps=100"
+    ]
+    ```
+
+    </div>
+
+</div>
+
+# Transport Layer Security profile support
+
+Control secure connections for the External Secrets Operator for Red Hat OpenShift through the cluster Transport Layer Security (TLS) profile. The profile determines the minimum TLS version and cipher suites for the Operator and its operands.
+
+The cluster defines the profile in the `apiserver.config.openshift.io/cluster` `APIServer` custom resource (CR). When the profile is in effect, the External Secrets Operator applies it to the following components:
+
+- The secure serving endpoints of the External Secrets Operator for metrics and the webhook.
+
+- The `external-secrets`, `external-secrets-webhook`, and `external-secrets-cert-controller` operand `Deployment` objects.
+
+- The `bitwarden-sdk-server` operand `Deployment`, when you enable it.
+
+The External Secrets Operator injects the following operand container arguments, derived from the cluster TLS security profile:
+
+- `--tls-min-version=<version>`
+
+- `--tls-ciphers=<cipher_list>`
+
+When the minimum TLS version is 1.3, such as with the `Modern` profile, the External Secrets Operator omits the `--tls-ciphers` argument.
+
+## Transport Layer Security adherence
+
+To apply the cluster TLS security profile to the External Secrets Operator, set the `spec.tlsAdherence` field to `StrictAllComponents` in the `APIServer` CR. This setting requires cluster-wide adherence.
+
+If you leave the `spec.tlsAdherence` field unset or select `LegacyAdheringComponentsOnly`, the External Secrets Operator and the operands retain their default TLS settings.
+
+When the TLS security profile or the adherence policy changes, the External Secrets Operator restarts. The restart reloads the new settings and reconciles operand `Deployment` objects.
+
+# Configure the Transport Layer Security profile
+
+Align secure connections with your cluster policy by configuring the Transport Layer Security (TLS) profile for the External Secrets Operator for Red Hat OpenShift. Enable `StrictAllComponents` adherence in the `APIServer` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have access to the cluster with `cluster-admin` privileges.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have installed `jq`.
+
+- You have installed the External Secrets Operator for Red Hat OpenShift.
+
+- You have created an `ExternalSecretsConfig` CR and confirmed that the `external-secrets` operand `Deployment` is available.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the cluster `APIServer` CR by running the following command:
+
+    ``` terminal
+    $ oc edit apiserver cluster
+    ```
+
+2.  Set the `spec.tlsSecurityProfile` field to the profile you require.
+
+    The profile can be `Old`, `Intermediate`, `Modern`, or `Custom`. If you omit this field, the platform default is `Intermediate`.
+
+3.  Set the `spec.tlsAdherence` field to `StrictAllComponents` to apply the cluster TLS security profile to the External Secrets Operator and the operands. The following example shows the resulting configuration with the `Intermediate` profile and cluster-wide adherence:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: APIServer
+    metadata:
+      name: cluster
+    spec:
+      tlsSecurityProfile:
+        type: Intermediate
+        intermediate: {}
+      tlsAdherence: StrictAllComponents
+    ```
+
+    where:
+
+    `spec.tlsAdherence`
+    If you omit this field or select `LegacyAdheringComponentsOnly`, the External Secrets Operator and the operands use the default TLS settings.
+
+    Explicit operand argument overrides take precedence over TLS arguments derived from the cluster profile.
+
+4.  Save your changes.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Verify the TLS security profile on the `APIServer` CR by running the following command:
+
+    ``` terminal
+    $ oc get apiserver cluster -o jsonpath='{.spec.tlsSecurityProfile}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    {
+      "intermediate": {},
+      "type": "Intermediate"
+    }
+    ```
+
+    </div>
+
+2.  Verify that the External Secrets Operator pod logged that the cluster TLS profile is in use by running the following command:
+
+    ``` terminal
+    $ oc logs -n external-secrets-operator deploy/external-secrets-operator-controller-manager -c manager | grep -i 'cluster TLS'
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    I1116 14:38:46.710262       1 main.go:315] "cluster TLS profile will be used for both operator and operands" logger="setup" profileType="Intermediate"
+    ```
+
+    </div>
+
+3.  Verify that the `external-secrets` operand `Deployment` includes the TLS arguments by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="external-secrets")].args}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    [
+      "--concurrent=1",
+      "--metrics-addr=:8080",
+      "--loglevel=warn",
+      "--zap-time-encoding=epoch",
+      "--enable-leader-election=true",
+      "--enable-push-secret-reconciler=true",
+      "--enable-cluster-store-reconciler=true",
+      "--enable-cluster-external-secret-reconciler=true",
+      "--tls-min-version=1.2",
+      "--tls-ciphers=TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+    ]
+    ```
+
+    </div>
+
+4.  Optional: Check the webhook `Deployment` by running the following command:
+
+    ``` terminal
+    $ oc get deployment external-secrets-webhook -n external-secrets -o jsonpath='{.spec.template.spec.containers[?(@.name=="webhook")].args}' | jq .
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` json
+    [
+      "webhook",
+      "--dns-name=external-secrets-webhook.external-secrets.svc",
+      "--port=10250",
+      "--cert-dir=/tmp/certs",
+      "--check-interval=5m0s",
+      "--metrics-addr=:8080",
+      "--healthz-addr=:8081",
+      "--loglevel=warn",
+      "--zap-time-encoding=epoch",
+      "--tls-min-version=1.2",
+      "--tls-ciphers=TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+    ]
+    ```
+
+    </div>
+
+</div>
+
+# Additional resources
+
+- [Configuring TLS security profiles](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/security_and_compliance/tls-security-profiles)

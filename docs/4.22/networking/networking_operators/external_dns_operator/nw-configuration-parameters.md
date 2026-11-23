@@ -1,4 +1,4 @@
-To customize the behavior of the External DNS Operator, configure the available parameters in the `ExternalDNS` custom resource (CR). By configuraing parameters, you can control how the Operator synchronizes services and routes with your external DNS provider.
+To customize the behavior of the External DNS Operator, configure the available parameters in the `ExternalDNS` custom resource (CR). By configuring parameters, you can control how the Operator synchronizes services and routes with your external DNS provider.
 
 # External DNS Operator configuration parameters
 

@@ -338,6 +338,119 @@ Windows workloads created on Windows nodes in proxy-enabled clusters do not inhe
 
 For more information on the cluster-wide proxy, see "Configuring the cluster-wide proxy".
 
+# Configure a cluster TLS security profile for the Windows Machine Config Operator metrics server
+
+The Windows Machine Config Operator (WMCO) can enforce the cluster-wide TLS security profile on its metrics server if the TLS adherence policy on the cluster `APIServer` resource is set to `StrictAllComponents`.
+
+> [!IMPORTANT]
+> The cluster TLS security profile for the Windows Machine Config Operator metrics server is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+>
+> For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+When the `spec.tlsAdherence` parameter on the `APIServer` resource named `cluster` in the `config.openshift.io` API group is set to `StrictAllComponents`, the WMCO reads the `spec.tlsSecurityProfile` value from the resource and applies the corresponding TLS arguments to the WMCO metrics server. If you change the cluster-wide TLS profile or the TLS adherence policy, the WMCO pod restarts and the metrics server applies the new settings.
+
+> [!IMPORTANT]
+> If the cluster-wide TLS security profile is set to the `Modern` (TLS 1.3) profile, the WMCO metrics endpoint refuses TLS 1.2 connections. If the cluster-wide TLS security profile is `Custom`, the metrics endpoint accepts only the ciphers listed in the profile. If your metrics scraper is restricted to the TLS 1.2 profile, it could stop collecting WMCO metrics.
+
+This configuration applies only to the WMCO metrics server. It does not change the TLS configuration of the Windows nodes, Windows workloads, or Windows exporter.
+
+To use this feature, you must enable the `TechPreviewNoUpgrade` feature set. For more information, see "Understanding feature gates".
+
+> [!IMPORTANT]
+> Enabling this feature set cannot be undone and prevents minor version updates.
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Edit the cluster `APIServer` custom resource (CR) by running the following command:
+
+    ``` terminal
+    $ oc edit apiserver cluster
+    ```
+
+2.  Add or modify the `tlsAdherence` field in the `spec` section and set it to `StrictAllComponents` by using the following example:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: APIServer
+    metadata:
+      name: cluster
+    spec:
+      tlsSecurityProfile:
+        type: Intermediate
+        intermediate: {}
+      tlsAdherence: StrictAllComponents
+    ```
+
+    where:
+
+    `spec.tlsSecurityProfile.type`
+    Specifies the TLS security profile type. Valid values are `Old`, `Intermediate`, `Modern`, or `Custom`. Also, specify the appropriate field for the selected type. The fields are `old: {}`, `intermediate: {}`, `modern: {}`, or `custom:`. For `Custom`, also add the allowed ciphers to the `spec.tlsSecurityProfile.custom.ciphers` parameter.
+
+    If a TLS security profile type is not specified, the default is `Intermediate`. This parameter is optional.
+
+    For more information and example TLS security profiles, see "Configuring TLS security profiles".
+
+    `spec.tlsAdherence`
+    When set to `StrictAllComponents`, specifies that cluster-wide TLS settings are enforced on all components.
+
+3.  Save the changes and exit the editor.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Verification
+
+</div>
+
+1.  Check that the WMCO metrics server is using the cluster-wide TLS policy by running the following command:
+
+    ``` terminal
+    $ oc logs -n openshift-windows-machine-config-operator deployment/windows-machine-config-operator | grep "TLS configuration loaded"
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    {"level":"info","ts":"2026-11-16T16:30:45Z","logger":"setup","msg":"TLS configuration loaded","minVersion":"VersionTLS12","cipherSuites":9,"adherencePolicy":"StrictAllComponents"}
+    ```
+
+    </div>
+
+    The output reflects the resolved profile. The `Intermediate` profile would report `minVersion: VersionTLS12` with the full 9-entry cipher suites list, as shown in this example. The `Modern` profile would report `minVersion: VersionTLS13`.
+
+    The `TLS configuration loaded` string indicates that the metrics server is using the cluster-wide TLS profile. The log message also shows the adherence policy that the WMCO read from the `APIServer` resource, `StrictAllComponents` in this example.
+
+    If the command returns no output, the WMCO is not applying the profile, likely because `spec.tlsAdherence` parameter is not set to `StrictAllComponents`.
+
+</div>
+
 # Mirror registry support for Windows containers
 
 When using the Windows Machine Config Operator (WMCO), your Windows workloads can pull images from a registry mirror rather than from a public registry by using an `ImageDigestMirrorSet` (IDMS) or `ImageTagMirrorSet` (ITMS) object to configure your cluster to pull images from the mirror registry.
@@ -439,6 +552,18 @@ The Windows Machine Config Operator (WMCO) watches for changes to the IDMS and I
 
 > [!NOTE]
 > The IDMS and ITMS objects must be created before you can add Windows nodes using a mirrored registry.
+
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-config-node-disruption)
+
+</div>
 
 ## Configure image registry repository mirroring
 
@@ -796,6 +921,10 @@ Procedure
 - [Configuring hybrid networking](../networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.xml#configuring-hybrid-ovnkubernetes)
 
 - [Configuring the cluster-wide proxy](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
+
+- [Understanding feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling)
+
+- [Configuring TLS security profiles](../security/tls-security-profiles.xml#tls-security-profiles)
 
 - [About disconnected installation mirroring](../disconnected/index.xml#installing-mirroring-disconnected-about)
 

@@ -18,7 +18,7 @@ To use this feature, you must enable the `TechPreviewNoUpgrade` feature set. For
 > [!IMPORTANT]
 > Enabling this feature set cannot be undone and prevents minor version updates.
 
-<!-- -->
+For more information, see [Configure a cluster TLS security profile for the Windows Machine Config Operator metrics server](../../windows_containers/enabling-windows-container-workloads.xml#wmco-tls-security-profile_enabling-windows-container-workloads).
 
 Kubernetes upgrade
 The WMCO now uses Kubernetes version 1.36.

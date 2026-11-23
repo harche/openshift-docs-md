@@ -440,6 +440,18 @@ The Windows Machine Config Operator (WMCO) watches for changes to the IDMS and I
 > [!NOTE]
 > The IDMS and ITMS objects must be created before you can add Windows nodes using a mirrored registry.
 
+<div>
+
+<div class="title">
+
+Additional resources
+
+</div>
+
+- [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-config-node-disruption)
+
+</div>
+
 ## Configure image registry repository mirroring
 
 You can create postinstallation mirror configuration custom resources (CR) to redirect image pull requests from a source image registry to a mirrored image registry.
